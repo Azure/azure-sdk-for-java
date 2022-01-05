@@ -8,7 +8,6 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
-import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -17,26 +16,25 @@ import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.iot.deviceupdate.models.AccessCondition;
-import com.azure.iot.deviceupdate.models.File;
-import com.azure.iot.deviceupdate.models.ImportUpdateInput;
-import com.azure.iot.deviceupdate.models.Operation;
-import com.azure.iot.deviceupdate.models.PageableListOfOperations;
-import com.azure.iot.deviceupdate.models.PageableListOfStrings;
-import com.azure.iot.deviceupdate.models.Update;
-import com.azure.iot.deviceupdate.models.UpdatesDeleteUpdateResponse;
-import com.azure.iot.deviceupdate.models.UpdatesGetOperationResponse;
-import com.azure.iot.deviceupdate.models.UpdatesImportUpdateResponse;
+import com.azure.core.util.polling.DefaultPollingStrategy;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.core.util.serializer.TypeReference;
+import java.time.Duration;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Updates. */
@@ -61,655 +59,726 @@ public final class UpdatesImpl {
      * The interface defining all the services for DeviceUpdateClientUpdates to be used by the proxy service to perform
      * REST calls.
      */
-    @Host("https://{accountEndpoint}")
+    @Host("https://{endpoint}")
     @ServiceInterface(name = "DeviceUpdateClientUp")
     private interface UpdatesService {
-        @Post("/deviceupdate/{instanceId}/v2/updates")
+        @Post("/deviceupdate/{instanceId}/updates")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<UpdatesImportUpdateResponse> importUpdate(
-                @HostParam("accountEndpoint") String accountEndpoint,
+        Mono<Response<BinaryData>> importUpdate(
+                @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @QueryParam("action") String action,
-                @BodyParam("application/json") ImportUpdateInput updateToImport,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") BinaryData updateToImport,
+                RequestOptions requestOptions,
                 Context context);
 
-        @Get("/deviceupdate/{instanceId}/v2/updates/providers/{provider}/names/{name}/versions/{version}")
+        @Get("/deviceupdate/{instanceId}/updates")
+        @ExpectedResponses({200})
+        Mono<Response<BinaryData>> listUpdates(
+                @HostParam("endpoint") String endpoint,
+                @PathParam(value = "instanceId", encoded = true) String instanceId,
+                @QueryParam("api-version") String apiVersion,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/deviceupdate/{instanceId}/updates/providers/{provider}/names/{name}/versions/{version}")
         @ExpectedResponses({200, 304})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Update>> getUpdate(
-                @HostParam("accountEndpoint") String accountEndpoint,
+        Mono<Response<BinaryData>> getUpdate(
+                @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("provider") String provider,
                 @PathParam("name") String name,
                 @PathParam("version") String version,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @HeaderParam("Accept") String accept,
+                @QueryParam("api-version") String apiVersion,
+                RequestOptions requestOptions,
                 Context context);
 
-        @Delete("/deviceupdate/{instanceId}/v2/updates/providers/{provider}/names/{name}/versions/{version}")
+        @Delete("/deviceupdate/{instanceId}/updates/providers/{provider}/names/{name}/versions/{version}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<UpdatesDeleteUpdateResponse> deleteUpdate(
-                @HostParam("accountEndpoint") String accountEndpoint,
+        Mono<Response<Void>> deleteUpdate(
+                @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("provider") String provider,
                 @PathParam("name") String name,
                 @PathParam("version") String version,
+                @QueryParam("api-version") String apiVersion,
+                RequestOptions requestOptions,
                 Context context);
 
-        @Get("/deviceupdate/{instanceId}/v2/updates/providers")
+        @Get("/deviceupdate/{instanceId}/updates/providers")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<PageableListOfStrings>> getProviders(
-                @HostParam("accountEndpoint") String accountEndpoint,
+        Mono<Response<BinaryData>> listProviders(
+                @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @HeaderParam("Accept") String accept,
+                @QueryParam("api-version") String apiVersion,
+                RequestOptions requestOptions,
                 Context context);
 
-        @Get("/deviceupdate/{instanceId}/v2/updates/providers/{provider}/names")
+        @Get("/deviceupdate/{instanceId}/updates/providers/{provider}/names")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<PageableListOfStrings>> getNames(
-                @HostParam("accountEndpoint") String accountEndpoint,
+        Mono<Response<BinaryData>> listNames(
+                @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("provider") String provider,
-                @HeaderParam("Accept") String accept,
+                @QueryParam("api-version") String apiVersion,
+                RequestOptions requestOptions,
                 Context context);
 
-        @Get("/deviceupdate/{instanceId}/v2/updates/providers/{provider}/names/{name}/versions")
+        @Get("/deviceupdate/{instanceId}/updates/providers/{provider}/names/{name}/versions")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<PageableListOfStrings>> getVersions(
-                @HostParam("accountEndpoint") String accountEndpoint,
+        Mono<Response<BinaryData>> listVersions(
+                @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("provider") String provider,
                 @PathParam("name") String name,
-                @HeaderParam("Accept") String accept,
+                @QueryParam("api-version") String apiVersion,
+                RequestOptions requestOptions,
                 Context context);
 
-        @Get("/deviceupdate/{instanceId}/v2/updates/providers/{provider}/names/{name}/versions/{version}/files")
+        @Get("/deviceupdate/{instanceId}/updates/providers/{provider}/names/{name}/versions/{version}/files")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<PageableListOfStrings>> getFiles(
-                @HostParam("accountEndpoint") String accountEndpoint,
+        Mono<Response<BinaryData>> listFiles(
+                @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("provider") String provider,
                 @PathParam("name") String name,
                 @PathParam("version") String version,
-                @HeaderParam("Accept") String accept,
+                @QueryParam("api-version") String apiVersion,
+                RequestOptions requestOptions,
                 Context context);
 
-        @Get(
-                "/deviceupdate/{instanceId}/v2/updates/providers/{provider}/names/{name}/versions/{version}/files/{fileId}")
+        @Get("/deviceupdate/{instanceId}/updates/providers/{provider}/names/{name}/versions/{version}/files/{fileId}")
         @ExpectedResponses({200, 304})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<File>> getFile(
-                @HostParam("accountEndpoint") String accountEndpoint,
+        Mono<Response<BinaryData>> getFile(
+                @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("provider") String provider,
                 @PathParam("name") String name,
                 @PathParam("version") String version,
                 @PathParam("fileId") String fileId,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @HeaderParam("Accept") String accept,
+                @QueryParam("api-version") String apiVersion,
+                RequestOptions requestOptions,
                 Context context);
 
-        @Get("/deviceupdate/{instanceId}/v2/updates/operations")
+        @Get("/deviceupdate/{instanceId}/updates/operations")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<PageableListOfOperations>> getOperations(
-                @HostParam("accountEndpoint") String accountEndpoint,
+        Mono<Response<BinaryData>> listOperations(
+                @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
-                @QueryParam("$filter") String filter,
-                @QueryParam("$top") Integer top,
-                @HeaderParam("Accept") String accept,
+                @QueryParam("api-version") String apiVersion,
+                RequestOptions requestOptions,
                 Context context);
 
-        @Get("/deviceupdate/{instanceId}/v2/updates/operations/{operationId}")
+        @Get("/deviceupdate/{instanceId}/updates/operations/{operationId}")
         @ExpectedResponses({200, 304})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<UpdatesGetOperationResponse> getOperation(
-                @HostParam("accountEndpoint") String accountEndpoint,
+        Mono<Response<BinaryData>> getOperation(
+                @HostParam("endpoint") String endpoint,
                 @PathParam(value = "instanceId", encoded = true) String instanceId,
                 @PathParam("operationId") String operationId,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @HeaderParam("Accept") String accept,
+                @QueryParam("api-version") String apiVersion,
+                RequestOptions requestOptions,
                 Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<PageableListOfStrings>> getProvidersNext(
+        Mono<Response<BinaryData>> listUpdatesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("accountEndpoint") String accountEndpoint,
-                @HeaderParam("Accept") String accept,
+                @HostParam("endpoint") String endpoint,
+                RequestOptions requestOptions,
                 Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<PageableListOfStrings>> getNamesNext(
+        Mono<Response<BinaryData>> listProvidersNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("accountEndpoint") String accountEndpoint,
-                @HeaderParam("Accept") String accept,
+                @HostParam("endpoint") String endpoint,
+                RequestOptions requestOptions,
                 Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<PageableListOfStrings>> getVersionsNext(
+        Mono<Response<BinaryData>> listNamesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("accountEndpoint") String accountEndpoint,
-                @HeaderParam("Accept") String accept,
+                @HostParam("endpoint") String endpoint,
+                RequestOptions requestOptions,
                 Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<PageableListOfStrings>> getFilesNext(
+        Mono<Response<BinaryData>> listVersionsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("accountEndpoint") String accountEndpoint,
-                @HeaderParam("Accept") String accept,
+                @HostParam("endpoint") String endpoint,
+                RequestOptions requestOptions,
                 Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<PageableListOfOperations>> getOperationsNext(
+        Mono<Response<BinaryData>> listFilesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("accountEndpoint") String accountEndpoint,
-                @HeaderParam("Accept") String accept,
+                @HostParam("endpoint") String endpoint,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        Mono<Response<BinaryData>> listOperationsNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                RequestOptions requestOptions,
                 Context context);
     }
 
     /**
      * Import new update version.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>action</td><td>String</td><td>Yes</td><td>Import update action.</td></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     {
+     *         importManifest: {
+     *             url: String
+     *             sizeInBytes: long
+     *             hashes: {
+     *                 String: String
+     *             }
+     *         }
+     *         friendlyName: String
+     *         files: [
+     *             {
+     *                 filename: String
+     *                 url: String
+     *             }
+     *         ]
+     *     }
+     * ]
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     updateId: {
+     *         provider: String
+     *         name: String
+     *         version: String
+     *     }
+     *     description: String
+     *     friendlyName: String
+     *     isDeployable: Boolean
+     *     updateType: String
+     *     installedCriteria: String
+     *     compatibility: [
+     *         {
+     *             String: String
+     *         }
+     *     ]
+     *     instructions: {
+     *         steps: [
+     *             {
+     *                 type: String(Inline/Reference)
+     *                 description: String
+     *                 handler: String
+     *                 handlerProperties: Object
+     *                 files: [
+     *                     String
+     *                 ]
+     *                 updateId: (recursive schema, see updateId above)
+     *             }
+     *         ]
+     *     }
+     *     referencedBy: [
+     *         (recursive schema, see above)
+     *     ]
+     *     scanResult: String
+     *     manifestVersion: String
+     *     importedDateTime: String
+     *     createdDateTime: String
+     *     etag: String
+     * }
+     * }</pre>
+     *
      * @param updateToImport The update to be imported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return update metadata.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UpdatesImportUpdateResponse> importUpdateWithResponseAsync(ImportUpdateInput updateToImport) {
-        final String action = "import";
+    public Mono<Response<BinaryData>> importUpdateWithResponseAsync(
+            BinaryData updateToImport, RequestOptions requestOptions) {
         return FluxUtil.withContext(
                 context ->
                         service.importUpdate(
-                                this.client.getAccountEndpoint(),
+                                this.client.getEndpoint(),
                                 this.client.getInstanceId(),
-                                action,
+                                this.client.getServiceVersion().getVersion(),
                                 updateToImport,
+                                requestOptions,
                                 context));
     }
 
     /**
      * Import new update version.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>action</td><td>String</td><td>Yes</td><td>Import update action.</td></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     {
+     *         importManifest: {
+     *             url: String
+     *             sizeInBytes: long
+     *             hashes: {
+     *                 String: String
+     *             }
+     *         }
+     *         friendlyName: String
+     *         files: [
+     *             {
+     *                 filename: String
+     *                 url: String
+     *             }
+     *         ]
+     *     }
+     * ]
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     updateId: {
+     *         provider: String
+     *         name: String
+     *         version: String
+     *     }
+     *     description: String
+     *     friendlyName: String
+     *     isDeployable: Boolean
+     *     updateType: String
+     *     installedCriteria: String
+     *     compatibility: [
+     *         {
+     *             String: String
+     *         }
+     *     ]
+     *     instructions: {
+     *         steps: [
+     *             {
+     *                 type: String(Inline/Reference)
+     *                 description: String
+     *                 handler: String
+     *                 handlerProperties: Object
+     *                 files: [
+     *                     String
+     *                 ]
+     *                 updateId: (recursive schema, see updateId above)
+     *             }
+     *         ]
+     *     }
+     *     referencedBy: [
+     *         (recursive schema, see above)
+     *     ]
+     *     scanResult: String
+     *     manifestVersion: String
+     *     importedDateTime: String
+     *     createdDateTime: String
+     *     etag: String
+     * }
+     * }</pre>
+     *
      * @param updateToImport The update to be imported.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return update metadata.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UpdatesImportUpdateResponse> importUpdateWithResponseAsync(
-            ImportUpdateInput updateToImport, Context context) {
-        final String action = "import";
+    public Mono<Response<BinaryData>> importUpdateWithResponseAsync(
+            BinaryData updateToImport, RequestOptions requestOptions, Context context) {
         return service.importUpdate(
-                this.client.getAccountEndpoint(), this.client.getInstanceId(), action, updateToImport, context);
-    }
-
-    /**
-     * Import new update version.
-     *
-     * @param updateToImport The update to be imported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> importUpdateAsync(ImportUpdateInput updateToImport) {
-        return importUpdateWithResponseAsync(updateToImport).flatMap((UpdatesImportUpdateResponse res) -> Mono.empty());
-    }
-
-    /**
-     * Import new update version.
-     *
-     * @param updateToImport The update to be imported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> importUpdateAsync(ImportUpdateInput updateToImport, Context context) {
-        return importUpdateWithResponseAsync(updateToImport, context)
-                .flatMap((UpdatesImportUpdateResponse res) -> Mono.empty());
-    }
-
-    /**
-     * Import new update version.
-     *
-     * @param updateToImport The update to be imported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void importUpdate(ImportUpdateInput updateToImport) {
-        importUpdateAsync(updateToImport).block();
-    }
-
-    /**
-     * Import new update version.
-     *
-     * @param updateToImport The update to be imported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> importUpdateWithResponse(ImportUpdateInput updateToImport, Context context) {
-        return importUpdateWithResponseAsync(updateToImport, context).block();
-    }
-
-    /**
-     * Get a specific update version.
-     *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param version Update version.
-     * @param accessCondition Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific update version.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Update>> getUpdateWithResponseAsync(
-            String provider, String name, String version, AccessCondition accessCondition) {
-        final String accept = "application/json";
-        String ifNoneMatchInternal = null;
-        if (accessCondition != null) {
-            ifNoneMatchInternal = accessCondition.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        return FluxUtil.withContext(
-                context ->
-                        service.getUpdate(
-                                this.client.getAccountEndpoint(),
-                                this.client.getInstanceId(),
-                                provider,
-                                name,
-                                version,
-                                ifNoneMatch,
-                                accept,
-                                context));
-    }
-
-    /**
-     * Get a specific update version.
-     *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param version Update version.
-     * @param accessCondition Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific update version.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Update>> getUpdateWithResponseAsync(
-            String provider, String name, String version, AccessCondition accessCondition, Context context) {
-        final String accept = "application/json";
-        String ifNoneMatchInternal = null;
-        if (accessCondition != null) {
-            ifNoneMatchInternal = accessCondition.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        return service.getUpdate(
-                this.client.getAccountEndpoint(),
+                this.client.getEndpoint(),
                 this.client.getInstanceId(),
-                provider,
-                name,
-                version,
-                ifNoneMatch,
-                accept,
+                this.client.getServiceVersion().getVersion(),
+                updateToImport,
+                requestOptions,
                 context);
     }
 
     /**
-     * Get a specific update version.
+     * Import new update version.
      *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param version Update version.
-     * @param accessCondition Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>action</td><td>String</td><td>Yes</td><td>Import update action.</td></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     {
+     *         importManifest: {
+     *             url: String
+     *             sizeInBytes: long
+     *             hashes: {
+     *                 String: String
+     *             }
+     *         }
+     *         friendlyName: String
+     *         files: [
+     *             {
+     *                 filename: String
+     *                 url: String
+     *             }
+     *         ]
+     *     }
+     * ]
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     updateId: {
+     *         provider: String
+     *         name: String
+     *         version: String
+     *     }
+     *     description: String
+     *     friendlyName: String
+     *     isDeployable: Boolean
+     *     updateType: String
+     *     installedCriteria: String
+     *     compatibility: [
+     *         {
+     *             String: String
+     *         }
+     *     ]
+     *     instructions: {
+     *         steps: [
+     *             {
+     *                 type: String(Inline/Reference)
+     *                 description: String
+     *                 handler: String
+     *                 handlerProperties: Object
+     *                 files: [
+     *                     String
+     *                 ]
+     *                 updateId: (recursive schema, see updateId above)
+     *             }
+     *         ]
+     *     }
+     *     referencedBy: [
+     *         (recursive schema, see above)
+     *     ]
+     *     scanResult: String
+     *     manifestVersion: String
+     *     importedDateTime: String
+     *     createdDateTime: String
+     *     etag: String
+     * }
+     * }</pre>
+     *
+     * @param updateToImport The update to be imported.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific update version.
+     * @return update metadata.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Update> getUpdateAsync(String provider, String name, String version, AccessCondition accessCondition) {
-        return getUpdateWithResponseAsync(provider, name, version, accessCondition)
-                .flatMap(
-                        (Response<Update> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginImportUpdateAsync(
+            BinaryData updateToImport, RequestOptions requestOptions) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.importUpdateWithResponseAsync(updateToImport, requestOptions),
+                new DefaultPollingStrategy<>(this.client.getHttpPipeline()),
+                new TypeReferenceBinaryData(),
+                new TypeReferenceBinaryData());
     }
 
     /**
-     * Get a specific update version.
+     * Import new update version.
      *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param version Update version.
-     * @param accessCondition Parameter group.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>action</td><td>String</td><td>Yes</td><td>Import update action.</td></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     {
+     *         importManifest: {
+     *             url: String
+     *             sizeInBytes: long
+     *             hashes: {
+     *                 String: String
+     *             }
+     *         }
+     *         friendlyName: String
+     *         files: [
+     *             {
+     *                 filename: String
+     *                 url: String
+     *             }
+     *         ]
+     *     }
+     * ]
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     updateId: {
+     *         provider: String
+     *         name: String
+     *         version: String
+     *     }
+     *     description: String
+     *     friendlyName: String
+     *     isDeployable: Boolean
+     *     updateType: String
+     *     installedCriteria: String
+     *     compatibility: [
+     *         {
+     *             String: String
+     *         }
+     *     ]
+     *     instructions: {
+     *         steps: [
+     *             {
+     *                 type: String(Inline/Reference)
+     *                 description: String
+     *                 handler: String
+     *                 handlerProperties: Object
+     *                 files: [
+     *                     String
+     *                 ]
+     *                 updateId: (recursive schema, see updateId above)
+     *             }
+     *         ]
+     *     }
+     *     referencedBy: [
+     *         (recursive schema, see above)
+     *     ]
+     *     scanResult: String
+     *     manifestVersion: String
+     *     importedDateTime: String
+     *     createdDateTime: String
+     *     etag: String
+     * }
+     * }</pre>
+     *
+     * @param updateToImport The update to be imported.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific update version.
+     * @return update metadata.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Update> getUpdateAsync(
-            String provider, String name, String version, AccessCondition accessCondition, Context context) {
-        return getUpdateWithResponseAsync(provider, name, version, accessCondition, context)
-                .flatMap(
-                        (Response<Update> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginImportUpdateAsync(
+            BinaryData updateToImport, RequestOptions requestOptions, Context context) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.importUpdateWithResponseAsync(updateToImport, requestOptions, context),
+                new DefaultPollingStrategy<>(this.client.getHttpPipeline()),
+                new TypeReferenceBinaryData(),
+                new TypeReferenceBinaryData());
     }
 
     /**
-     * Get a specific update version.
+     * Import new update version.
      *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param version Update version.
-     * @param accessCondition Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>action</td><td>String</td><td>Yes</td><td>Import update action.</td></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     {
+     *         importManifest: {
+     *             url: String
+     *             sizeInBytes: long
+     *             hashes: {
+     *                 String: String
+     *             }
+     *         }
+     *         friendlyName: String
+     *         files: [
+     *             {
+     *                 filename: String
+     *                 url: String
+     *             }
+     *         ]
+     *     }
+     * ]
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     updateId: {
+     *         provider: String
+     *         name: String
+     *         version: String
+     *     }
+     *     description: String
+     *     friendlyName: String
+     *     isDeployable: Boolean
+     *     updateType: String
+     *     installedCriteria: String
+     *     compatibility: [
+     *         {
+     *             String: String
+     *         }
+     *     ]
+     *     instructions: {
+     *         steps: [
+     *             {
+     *                 type: String(Inline/Reference)
+     *                 description: String
+     *                 handler: String
+     *                 handlerProperties: Object
+     *                 files: [
+     *                     String
+     *                 ]
+     *                 updateId: (recursive schema, see updateId above)
+     *             }
+     *         ]
+     *     }
+     *     referencedBy: [
+     *         (recursive schema, see above)
+     *     ]
+     *     scanResult: String
+     *     manifestVersion: String
+     *     importedDateTime: String
+     *     createdDateTime: String
+     *     etag: String
+     * }
+     * }</pre>
+     *
+     * @param updateToImport The update to be imported.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific update version.
+     * @return update metadata.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Update getUpdate(String provider, String name, String version, AccessCondition accessCondition) {
-        return getUpdateAsync(provider, name, version, accessCondition).block();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginImportUpdate(
+            BinaryData updateToImport, RequestOptions requestOptions) {
+        return this.beginImportUpdateAsync(updateToImport, requestOptions).getSyncPoller();
     }
 
     /**
-     * Get a specific update version.
+     * Get a list of all updates that have been imported to Device Update for IoT Hub.
      *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param version Update version.
-     * @param accessCondition Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>search</td><td>String</td><td>No</td><td>Request updates matching a free-text search expression.</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         {
+     *             updateId: {
+     *                 provider: String
+     *                 name: String
+     *                 version: String
+     *             }
+     *             description: String
+     *             friendlyName: String
+     *             isDeployable: Boolean
+     *             updateType: String
+     *             installedCriteria: String
+     *             compatibility: [
+     *                 {
+     *                     String: String
+     *                 }
+     *             ]
+     *             instructions: {
+     *                 steps: [
+     *                     {
+     *                         type: String(Inline/Reference)
+     *                         description: String
+     *                         handler: String
+     *                         handlerProperties: Object
+     *                         files: [
+     *                             String
+     *                         ]
+     *                         updateId: (recursive schema, see updateId above)
+     *                     }
+     *                 ]
+     *             }
+     *             referencedBy: [
+     *                 (recursive schema, see above)
+     *             ]
+     *             scanResult: String
+     *             manifestVersion: String
+     *             importedDateTime: String
+     *             createdDateTime: String
+     *             etag: String
+     *         }
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific update version.
+     * @return a list of all updates that have been imported to Device Update for IoT Hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Update> getUpdateWithResponse(
-            String provider, String name, String version, AccessCondition accessCondition, Context context) {
-        return getUpdateWithResponseAsync(provider, name, version, accessCondition, context).block();
-    }
-
-    /**
-     * Delete a specific update version.
-     *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param version Update version.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UpdatesDeleteUpdateResponse> deleteUpdateWithResponseAsync(
-            String provider, String name, String version) {
-        return FluxUtil.withContext(
-                context ->
-                        service.deleteUpdate(
-                                this.client.getAccountEndpoint(),
-                                this.client.getInstanceId(),
-                                provider,
-                                name,
-                                version,
-                                context));
-    }
-
-    /**
-     * Delete a specific update version.
-     *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param version Update version.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UpdatesDeleteUpdateResponse> deleteUpdateWithResponseAsync(
-            String provider, String name, String version, Context context) {
-        return service.deleteUpdate(
-                this.client.getAccountEndpoint(), this.client.getInstanceId(), provider, name, version, context);
-    }
-
-    /**
-     * Delete a specific update version.
-     *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param version Update version.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteUpdateAsync(String provider, String name, String version) {
-        return deleteUpdateWithResponseAsync(provider, name, version)
-                .flatMap((UpdatesDeleteUpdateResponse res) -> Mono.empty());
-    }
-
-    /**
-     * Delete a specific update version.
-     *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param version Update version.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteUpdateAsync(String provider, String name, String version, Context context) {
-        return deleteUpdateWithResponseAsync(provider, name, version, context)
-                .flatMap((UpdatesDeleteUpdateResponse res) -> Mono.empty());
-    }
-
-    /**
-     * Delete a specific update version.
-     *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param version Update version.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteUpdate(String provider, String name, String version) {
-        deleteUpdateAsync(provider, name, version).block();
-    }
-
-    /**
-     * Delete a specific update version.
-     *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param version Update version.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteUpdateWithResponse(String provider, String name, String version, Context context) {
-        return deleteUpdateWithResponseAsync(provider, name, version, context).block();
-    }
-
-    /**
-     * Get a list of all update providers that have been imported to Device Update for IoT Hub.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all update providers that have been imported to Device Update for IoT Hub.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<String>> getProvidersSinglePageAsync() {
-        final String accept = "application/json";
+    public Mono<PagedResponse<BinaryData>> listUpdatesSinglePageAsync(RequestOptions requestOptions) {
         return FluxUtil.withContext(
                         context ->
-                                service.getProviders(
-                                        this.client.getAccountEndpoint(), this.client.getInstanceId(), accept, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
-    }
-
-    /**
-     * Get a list of all update providers that have been imported to Device Update for IoT Hub.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all update providers that have been imported to Device Update for IoT Hub.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<String>> getProvidersSinglePageAsync(Context context) {
-        final String accept = "application/json";
-        return service.getProviders(this.client.getAccountEndpoint(), this.client.getInstanceId(), accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
-    }
-
-    /**
-     * Get a list of all update providers that have been imported to Device Update for IoT Hub.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all update providers that have been imported to Device Update for IoT Hub.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> getProvidersAsync() {
-        return new PagedFlux<>(
-                () -> getProvidersSinglePageAsync(), nextLink -> getProvidersNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Get a list of all update providers that have been imported to Device Update for IoT Hub.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all update providers that have been imported to Device Update for IoT Hub.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> getProvidersAsync(Context context) {
-        return new PagedFlux<>(
-                () -> getProvidersSinglePageAsync(context),
-                nextLink -> getProvidersNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Get a list of all update providers that have been imported to Device Update for IoT Hub.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all update providers that have been imported to Device Update for IoT Hub.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> getProviders() {
-        return new PagedIterable<>(getProvidersAsync());
-    }
-
-    /**
-     * Get a list of all update providers that have been imported to Device Update for IoT Hub.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all update providers that have been imported to Device Update for IoT Hub.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> getProviders(Context context) {
-        return new PagedIterable<>(getProvidersAsync(context));
-    }
-
-    /**
-     * Get a list of all update names that match the specified provider.
-     *
-     * @param provider Update provider.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all update names that match the specified provider.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<String>> getNamesSinglePageAsync(String provider) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.getNames(
-                                        this.client.getAccountEndpoint(),
+                                service.listUpdates(
+                                        this.client.getEndpoint(),
                                         this.client.getInstanceId(),
-                                        provider,
-                                        accept,
+                                        this.client.getServiceVersion().getVersion(),
+                                        requestOptions,
                                         context))
                 .map(
                         res ->
@@ -717,281 +786,85 @@ public final class UpdatesImpl {
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
                                         null));
     }
 
     /**
-     * Get a list of all update names that match the specified provider.
+     * Get a list of all updates that have been imported to Device Update for IoT Hub.
      *
-     * @param provider Update provider.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>search</td><td>String</td><td>No</td><td>Request updates matching a free-text search expression.</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         {
+     *             updateId: {
+     *                 provider: String
+     *                 name: String
+     *                 version: String
+     *             }
+     *             description: String
+     *             friendlyName: String
+     *             isDeployable: Boolean
+     *             updateType: String
+     *             installedCriteria: String
+     *             compatibility: [
+     *                 {
+     *                     String: String
+     *                 }
+     *             ]
+     *             instructions: {
+     *                 steps: [
+     *                     {
+     *                         type: String(Inline/Reference)
+     *                         description: String
+     *                         handler: String
+     *                         handlerProperties: Object
+     *                         files: [
+     *                             String
+     *                         ]
+     *                         updateId: (recursive schema, see updateId above)
+     *                     }
+     *                 ]
+     *             }
+     *             referencedBy: [
+     *                 (recursive schema, see above)
+     *             ]
+     *             scanResult: String
+     *             manifestVersion: String
+     *             importedDateTime: String
+     *             createdDateTime: String
+     *             etag: String
+     *         }
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all update names that match the specified provider.
+     * @return a list of all updates that have been imported to Device Update for IoT Hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<String>> getNamesSinglePageAsync(String provider, Context context) {
-        final String accept = "application/json";
-        return service.getNames(
-                        this.client.getAccountEndpoint(), this.client.getInstanceId(), provider, accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
-    }
-
-    /**
-     * Get a list of all update names that match the specified provider.
-     *
-     * @param provider Update provider.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all update names that match the specified provider.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> getNamesAsync(String provider) {
-        return new PagedFlux<>(
-                () -> getNamesSinglePageAsync(provider), nextLink -> getNamesNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Get a list of all update names that match the specified provider.
-     *
-     * @param provider Update provider.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all update names that match the specified provider.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> getNamesAsync(String provider, Context context) {
-        return new PagedFlux<>(
-                () -> getNamesSinglePageAsync(provider, context),
-                nextLink -> getNamesNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Get a list of all update names that match the specified provider.
-     *
-     * @param provider Update provider.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all update names that match the specified provider.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> getNames(String provider) {
-        return new PagedIterable<>(getNamesAsync(provider));
-    }
-
-    /**
-     * Get a list of all update names that match the specified provider.
-     *
-     * @param provider Update provider.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all update names that match the specified provider.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> getNames(String provider, Context context) {
-        return new PagedIterable<>(getNamesAsync(provider, context));
-    }
-
-    /**
-     * Get a list of all update versions that match the specified provider and name.
-     *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all update versions that match the specified provider and name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<String>> getVersionsSinglePageAsync(String provider, String name) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.getVersions(
-                                        this.client.getAccountEndpoint(),
-                                        this.client.getInstanceId(),
-                                        provider,
-                                        name,
-                                        accept,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
-    }
-
-    /**
-     * Get a list of all update versions that match the specified provider and name.
-     *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all update versions that match the specified provider and name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<String>> getVersionsSinglePageAsync(String provider, String name, Context context) {
-        final String accept = "application/json";
-        return service.getVersions(
-                        this.client.getAccountEndpoint(), this.client.getInstanceId(), provider, name, accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
-    }
-
-    /**
-     * Get a list of all update versions that match the specified provider and name.
-     *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all update versions that match the specified provider and name.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> getVersionsAsync(String provider, String name) {
-        return new PagedFlux<>(
-                () -> getVersionsSinglePageAsync(provider, name), nextLink -> getVersionsNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Get a list of all update versions that match the specified provider and name.
-     *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all update versions that match the specified provider and name.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> getVersionsAsync(String provider, String name, Context context) {
-        return new PagedFlux<>(
-                () -> getVersionsSinglePageAsync(provider, name, context),
-                nextLink -> getVersionsNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Get a list of all update versions that match the specified provider and name.
-     *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all update versions that match the specified provider and name.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> getVersions(String provider, String name) {
-        return new PagedIterable<>(getVersionsAsync(provider, name));
-    }
-
-    /**
-     * Get a list of all update versions that match the specified provider and name.
-     *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all update versions that match the specified provider and name.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> getVersions(String provider, String name, Context context) {
-        return new PagedIterable<>(getVersionsAsync(provider, name, context));
-    }
-
-    /**
-     * Get a list of all update file identifiers for the specified version.
-     *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param version Update version.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all update file identifiers for the specified version.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<String>> getFilesSinglePageAsync(String provider, String name, String version) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.getFiles(
-                                        this.client.getAccountEndpoint(),
-                                        this.client.getInstanceId(),
-                                        provider,
-                                        name,
-                                        version,
-                                        accept,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
-    }
-
-    /**
-     * Get a list of all update file identifiers for the specified version.
-     *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param version Update version.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all update file identifiers for the specified version.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<String>> getFilesSinglePageAsync(
-            String provider, String name, String version, Context context) {
-        final String accept = "application/json";
-        return service.getFiles(
-                        this.client.getAccountEndpoint(),
+    public Mono<PagedResponse<BinaryData>> listUpdatesSinglePageAsync(RequestOptions requestOptions, Context context) {
+        return service.listUpdates(
+                        this.client.getEndpoint(),
                         this.client.getInstanceId(),
-                        provider,
-                        name,
-                        version,
-                        accept,
+                        this.client.getServiceVersion().getVersion(),
+                        requestOptions,
                         context)
                 .map(
                         res ->
@@ -999,284 +872,661 @@ public final class UpdatesImpl {
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
                                         null));
     }
 
     /**
-     * Get a list of all update file identifiers for the specified version.
+     * Get a list of all updates that have been imported to Device Update for IoT Hub.
      *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param version Update version.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>search</td><td>String</td><td>No</td><td>Request updates matching a free-text search expression.</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         {
+     *             updateId: {
+     *                 provider: String
+     *                 name: String
+     *                 version: String
+     *             }
+     *             description: String
+     *             friendlyName: String
+     *             isDeployable: Boolean
+     *             updateType: String
+     *             installedCriteria: String
+     *             compatibility: [
+     *                 {
+     *                     String: String
+     *                 }
+     *             ]
+     *             instructions: {
+     *                 steps: [
+     *                     {
+     *                         type: String(Inline/Reference)
+     *                         description: String
+     *                         handler: String
+     *                         handlerProperties: Object
+     *                         files: [
+     *                             String
+     *                         ]
+     *                         updateId: (recursive schema, see updateId above)
+     *                     }
+     *                 ]
+     *             }
+     *             referencedBy: [
+     *                 (recursive schema, see above)
+     *             ]
+     *             scanResult: String
+     *             manifestVersion: String
+     *             importedDateTime: String
+     *             createdDateTime: String
+     *             etag: String
+     *         }
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all update file identifiers for the specified version.
+     * @return a list of all updates that have been imported to Device Update for IoT Hub.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> getFilesAsync(String provider, String name, String version) {
+    public PagedFlux<BinaryData> listUpdatesAsync(RequestOptions requestOptions) {
         return new PagedFlux<>(
-                () -> getFilesSinglePageAsync(provider, name, version),
-                nextLink -> getFilesNextSinglePageAsync(nextLink));
+                () -> listUpdatesSinglePageAsync(requestOptions),
+                nextLink -> listUpdatesNextSinglePageAsync(nextLink, null));
     }
 
     /**
-     * Get a list of all update file identifiers for the specified version.
+     * Get a list of all updates that have been imported to Device Update for IoT Hub.
      *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param version Update version.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>search</td><td>String</td><td>No</td><td>Request updates matching a free-text search expression.</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         {
+     *             updateId: {
+     *                 provider: String
+     *                 name: String
+     *                 version: String
+     *             }
+     *             description: String
+     *             friendlyName: String
+     *             isDeployable: Boolean
+     *             updateType: String
+     *             installedCriteria: String
+     *             compatibility: [
+     *                 {
+     *                     String: String
+     *                 }
+     *             ]
+     *             instructions: {
+     *                 steps: [
+     *                     {
+     *                         type: String(Inline/Reference)
+     *                         description: String
+     *                         handler: String
+     *                         handlerProperties: Object
+     *                         files: [
+     *                             String
+     *                         ]
+     *                         updateId: (recursive schema, see updateId above)
+     *                     }
+     *                 ]
+     *             }
+     *             referencedBy: [
+     *                 (recursive schema, see above)
+     *             ]
+     *             scanResult: String
+     *             manifestVersion: String
+     *             importedDateTime: String
+     *             createdDateTime: String
+     *             etag: String
+     *         }
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all update file identifiers for the specified version.
+     * @return a list of all updates that have been imported to Device Update for IoT Hub.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> getFilesAsync(String provider, String name, String version, Context context) {
+    public PagedFlux<BinaryData> listUpdatesAsync(RequestOptions requestOptions, Context context) {
         return new PagedFlux<>(
-                () -> getFilesSinglePageAsync(provider, name, version, context),
-                nextLink -> getFilesNextSinglePageAsync(nextLink, context));
+                () -> listUpdatesSinglePageAsync(requestOptions, context),
+                nextLink -> listUpdatesNextSinglePageAsync(nextLink, null, context));
     }
 
     /**
-     * Get a list of all update file identifiers for the specified version.
+     * Get a list of all updates that have been imported to Device Update for IoT Hub.
      *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param version Update version.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>search</td><td>String</td><td>No</td><td>Request updates matching a free-text search expression.</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         {
+     *             updateId: {
+     *                 provider: String
+     *                 name: String
+     *                 version: String
+     *             }
+     *             description: String
+     *             friendlyName: String
+     *             isDeployable: Boolean
+     *             updateType: String
+     *             installedCriteria: String
+     *             compatibility: [
+     *                 {
+     *                     String: String
+     *                 }
+     *             ]
+     *             instructions: {
+     *                 steps: [
+     *                     {
+     *                         type: String(Inline/Reference)
+     *                         description: String
+     *                         handler: String
+     *                         handlerProperties: Object
+     *                         files: [
+     *                             String
+     *                         ]
+     *                         updateId: (recursive schema, see updateId above)
+     *                     }
+     *                 ]
+     *             }
+     *             referencedBy: [
+     *                 (recursive schema, see above)
+     *             ]
+     *             scanResult: String
+     *             manifestVersion: String
+     *             importedDateTime: String
+     *             createdDateTime: String
+     *             etag: String
+     *         }
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all update file identifiers for the specified version.
+     * @return a list of all updates that have been imported to Device Update for IoT Hub.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> getFiles(String provider, String name, String version) {
-        return new PagedIterable<>(getFilesAsync(provider, name, version));
+    public PagedIterable<BinaryData> listUpdates(RequestOptions requestOptions) {
+        return new PagedIterable<>(listUpdatesAsync(requestOptions));
     }
 
     /**
-     * Get a list of all update file identifiers for the specified version.
+     * Get a specific update version.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ifNoneMatch</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will be performed only if the ETag on the server does not match this value.</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     updateId: {
+     *         provider: String
+     *         name: String
+     *         version: String
+     *     }
+     *     description: String
+     *     friendlyName: String
+     *     isDeployable: Boolean
+     *     updateType: String
+     *     installedCriteria: String
+     *     compatibility: [
+     *         {
+     *             String: String
+     *         }
+     *     ]
+     *     instructions: {
+     *         steps: [
+     *             {
+     *                 type: String(Inline/Reference)
+     *                 description: String
+     *                 handler: String
+     *                 handlerProperties: Object
+     *                 files: [
+     *                     String
+     *                 ]
+     *                 updateId: (recursive schema, see updateId above)
+     *             }
+     *         ]
+     *     }
+     *     referencedBy: [
+     *         (recursive schema, see above)
+     *     ]
+     *     scanResult: String
+     *     manifestVersion: String
+     *     importedDateTime: String
+     *     createdDateTime: String
+     *     etag: String
+     * }
+     * }</pre>
      *
      * @param provider Update provider.
      * @param name Update name.
      * @param version Update version.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all update file identifiers for the specified version.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> getFiles(String provider, String name, String version, Context context) {
-        return new PagedIterable<>(getFilesAsync(provider, name, version, context));
-    }
-
-    /**
-     * Get a specific update file from the version.
-     *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param version Update version.
-     * @param fileId File identifier.
-     * @param accessCondition Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific update file from the version.
+     * @return a specific update version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<File>> getFileWithResponseAsync(
-            String provider, String name, String version, String fileId, AccessCondition accessCondition) {
-        final String accept = "application/json";
-        String ifNoneMatchInternal = null;
-        if (accessCondition != null) {
-            ifNoneMatchInternal = accessCondition.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
+    public Mono<Response<BinaryData>> getUpdateWithResponseAsync(
+            String provider, String name, String version, RequestOptions requestOptions) {
         return FluxUtil.withContext(
                 context ->
-                        service.getFile(
-                                this.client.getAccountEndpoint(),
+                        service.getUpdate(
+                                this.client.getEndpoint(),
                                 this.client.getInstanceId(),
                                 provider,
                                 name,
                                 version,
-                                fileId,
-                                ifNoneMatch,
-                                accept,
+                                this.client.getServiceVersion().getVersion(),
+                                requestOptions,
                                 context));
     }
 
     /**
-     * Get a specific update file from the version.
+     * Get a specific update version.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ifNoneMatch</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will be performed only if the ETag on the server does not match this value.</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     updateId: {
+     *         provider: String
+     *         name: String
+     *         version: String
+     *     }
+     *     description: String
+     *     friendlyName: String
+     *     isDeployable: Boolean
+     *     updateType: String
+     *     installedCriteria: String
+     *     compatibility: [
+     *         {
+     *             String: String
+     *         }
+     *     ]
+     *     instructions: {
+     *         steps: [
+     *             {
+     *                 type: String(Inline/Reference)
+     *                 description: String
+     *                 handler: String
+     *                 handlerProperties: Object
+     *                 files: [
+     *                     String
+     *                 ]
+     *                 updateId: (recursive schema, see updateId above)
+     *             }
+     *         ]
+     *     }
+     *     referencedBy: [
+     *         (recursive schema, see above)
+     *     ]
+     *     scanResult: String
+     *     manifestVersion: String
+     *     importedDateTime: String
+     *     createdDateTime: String
+     *     etag: String
+     * }
+     * }</pre>
      *
      * @param provider Update provider.
      * @param name Update name.
      * @param version Update version.
-     * @param fileId File identifier.
-     * @param accessCondition Parameter group.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific update file from the version.
+     * @return a specific update version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<File>> getFileWithResponseAsync(
-            String provider,
-            String name,
-            String version,
-            String fileId,
-            AccessCondition accessCondition,
-            Context context) {
-        final String accept = "application/json";
-        String ifNoneMatchInternal = null;
-        if (accessCondition != null) {
-            ifNoneMatchInternal = accessCondition.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
-        return service.getFile(
-                this.client.getAccountEndpoint(),
+    public Mono<Response<BinaryData>> getUpdateWithResponseAsync(
+            String provider, String name, String version, RequestOptions requestOptions, Context context) {
+        return service.getUpdate(
+                this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 provider,
                 name,
                 version,
-                fileId,
-                ifNoneMatch,
-                accept,
+                this.client.getServiceVersion().getVersion(),
+                requestOptions,
                 context);
     }
 
     /**
-     * Get a specific update file from the version.
+     * Get a specific update version.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ifNoneMatch</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will be performed only if the ETag on the server does not match this value.</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     updateId: {
+     *         provider: String
+     *         name: String
+     *         version: String
+     *     }
+     *     description: String
+     *     friendlyName: String
+     *     isDeployable: Boolean
+     *     updateType: String
+     *     installedCriteria: String
+     *     compatibility: [
+     *         {
+     *             String: String
+     *         }
+     *     ]
+     *     instructions: {
+     *         steps: [
+     *             {
+     *                 type: String(Inline/Reference)
+     *                 description: String
+     *                 handler: String
+     *                 handlerProperties: Object
+     *                 files: [
+     *                     String
+     *                 ]
+     *                 updateId: (recursive schema, see updateId above)
+     *             }
+     *         ]
+     *     }
+     *     referencedBy: [
+     *         (recursive schema, see above)
+     *     ]
+     *     scanResult: String
+     *     manifestVersion: String
+     *     importedDateTime: String
+     *     createdDateTime: String
+     *     etag: String
+     * }
+     * }</pre>
      *
      * @param provider Update provider.
      * @param name Update name.
      * @param version Update version.
-     * @param fileId File identifier.
-     * @param accessCondition Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific update file from the version.
+     * @return a specific update version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<File> getFileAsync(
-            String provider, String name, String version, String fileId, AccessCondition accessCondition) {
-        return getFileWithResponseAsync(provider, name, version, fileId, accessCondition)
-                .flatMap(
-                        (Response<File> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+    public Response<BinaryData> getUpdateWithResponse(
+            String provider, String name, String version, RequestOptions requestOptions) {
+        return getUpdateWithResponseAsync(provider, name, version, requestOptions).block();
     }
 
     /**
-     * Get a specific update file from the version.
+     * Delete a specific update version.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * @param provider Update provider.
      * @param name Update name.
      * @param version Update version.
-     * @param fileId File identifier.
-     * @param accessCondition Parameter group.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteUpdateWithResponseAsync(
+            String provider, String name, String version, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
+                context ->
+                        service.deleteUpdate(
+                                this.client.getEndpoint(),
+                                this.client.getInstanceId(),
+                                provider,
+                                name,
+                                version,
+                                this.client.getServiceVersion().getVersion(),
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Delete a specific update version.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * @param provider Update provider.
+     * @param name Update name.
+     * @param version Update version.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific update file from the version.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<File> getFileAsync(
-            String provider,
-            String name,
-            String version,
-            String fileId,
-            AccessCondition accessCondition,
-            Context context) {
-        return getFileWithResponseAsync(provider, name, version, fileId, accessCondition, context)
-                .flatMap(
-                        (Response<File> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+    public Mono<Response<Void>> deleteUpdateWithResponseAsync(
+            String provider, String name, String version, RequestOptions requestOptions, Context context) {
+        return service.deleteUpdate(
+                this.client.getEndpoint(),
+                this.client.getInstanceId(),
+                provider,
+                name,
+                version,
+                this.client.getServiceVersion().getVersion(),
+                requestOptions,
+                context);
     }
 
     /**
-     * Get a specific update file from the version.
+     * Delete a specific update version.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * @param provider Update provider.
      * @param name Update name.
      * @param version Update version.
-     * @param fileId File identifier.
-     * @param accessCondition Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific update file from the version.
+     * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public File getFile(String provider, String name, String version, String fileId, AccessCondition accessCondition) {
-        return getFileAsync(provider, name, version, fileId, accessCondition).block();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginDeleteUpdateAsync(
+            String provider, String name, String version, RequestOptions requestOptions) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.deleteUpdateWithResponseAsync(provider, name, version, requestOptions),
+                new DefaultPollingStrategy<>(this.client.getHttpPipeline()),
+                new TypeReferenceBinaryData(),
+                new TypeReferenceBinaryData());
     }
 
     /**
-     * Get a specific update file from the version.
+     * Delete a specific update version.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * @param provider Update provider.
      * @param name Update name.
      * @param version Update version.
-     * @param fileId File identifier.
-     * @param accessCondition Parameter group.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific update file from the version.
+     * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<File> getFileWithResponse(
-            String provider,
-            String name,
-            String version,
-            String fileId,
-            AccessCondition accessCondition,
-            Context context) {
-        return getFileWithResponseAsync(provider, name, version, fileId, accessCondition, context).block();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginDeleteUpdateAsync(
+            String provider, String name, String version, RequestOptions requestOptions, Context context) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.deleteUpdateWithResponseAsync(provider, name, version, requestOptions, context),
+                new DefaultPollingStrategy<>(this.client.getHttpPipeline()),
+                new TypeReferenceBinaryData(),
+                new TypeReferenceBinaryData());
     }
 
     /**
-     * Get a list of all import update operations. Completed operations are kept for 7 days before auto-deleted. Delete
-     * operations are not returned by this API version.
+     * Delete a specific update version.
      *
-     * @param filter Restricts the set of operations returned. Only one specific filter is supported: "status eq
-     *     'NotStarted' or status eq 'Running'".
-     * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
-     *     service returns the number of available items up to but not greater than the specified value n.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * @param provider Update provider.
+     * @param name Update name.
+     * @param version Update version.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all import update operations.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginDeleteUpdate(
+            String provider, String name, String version, RequestOptions requestOptions) {
+        return this.beginDeleteUpdateAsync(provider, name, version, requestOptions).getSyncPoller();
+    }
+
+    /**
+     * Get a list of all update providers that have been imported to Device Update for IoT Hub.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         String
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a list of all update providers that have been imported to Device Update for IoT Hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<Operation>> getOperationsSinglePageAsync(String filter, Integer top) {
-        final String accept = "application/json";
+    public Mono<PagedResponse<BinaryData>> listProvidersSinglePageAsync(RequestOptions requestOptions) {
         return FluxUtil.withContext(
                         context ->
-                                service.getOperations(
-                                        this.client.getAccountEndpoint(),
+                                service.listProviders(
+                                        this.client.getEndpoint(),
                                         this.client.getInstanceId(),
-                                        filter,
-                                        top,
-                                        accept,
+                                        this.client.getServiceVersion().getVersion(),
+                                        requestOptions,
                                         context))
                 .map(
                         res ->
@@ -1284,38 +1534,1036 @@ public final class UpdatesImpl {
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
                                         null));
     }
 
     /**
-     * Get a list of all import update operations. Completed operations are kept for 7 days before auto-deleted. Delete
-     * operations are not returned by this API version.
+     * Get a list of all update providers that have been imported to Device Update for IoT Hub.
      *
-     * @param filter Restricts the set of operations returned. Only one specific filter is supported: "status eq
-     *     'NotStarted' or status eq 'Running'".
-     * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
-     *     service returns the number of available items up to but not greater than the specified value n.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         String
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all import update operations.
+     * @return a list of all update providers that have been imported to Device Update for IoT Hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<Operation>> getOperationsSinglePageAsync(String filter, Integer top, Context context) {
-        final String accept = "application/json";
-        return service.getOperations(
-                        this.client.getAccountEndpoint(), this.client.getInstanceId(), filter, top, accept, context)
+    public Mono<PagedResponse<BinaryData>> listProvidersSinglePageAsync(
+            RequestOptions requestOptions, Context context) {
+        return service.listProviders(
+                        this.client.getEndpoint(),
+                        this.client.getInstanceId(),
+                        this.client.getServiceVersion().getVersion(),
+                        requestOptions,
+                        context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
+    }
+
+    /**
+     * Get a list of all update providers that have been imported to Device Update for IoT Hub.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         String
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a list of all update providers that have been imported to Device Update for IoT Hub.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listProvidersAsync(RequestOptions requestOptions) {
+        return new PagedFlux<>(
+                () -> listProvidersSinglePageAsync(requestOptions),
+                nextLink -> listProvidersNextSinglePageAsync(nextLink, null));
+    }
+
+    /**
+     * Get a list of all update providers that have been imported to Device Update for IoT Hub.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         String
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a list of all update providers that have been imported to Device Update for IoT Hub.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listProvidersAsync(RequestOptions requestOptions, Context context) {
+        return new PagedFlux<>(
+                () -> listProvidersSinglePageAsync(requestOptions, context),
+                nextLink -> listProvidersNextSinglePageAsync(nextLink, null, context));
+    }
+
+    /**
+     * Get a list of all update providers that have been imported to Device Update for IoT Hub.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         String
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a list of all update providers that have been imported to Device Update for IoT Hub.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listProviders(RequestOptions requestOptions) {
+        return new PagedIterable<>(listProvidersAsync(requestOptions));
+    }
+
+    /**
+     * Get a list of all update names that match the specified provider.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         String
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param provider Update provider.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a list of all update names that match the specified provider.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BinaryData>> listNamesSinglePageAsync(String provider, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
+                        context ->
+                                service.listNames(
+                                        this.client.getEndpoint(),
+                                        this.client.getInstanceId(),
+                                        provider,
+                                        this.client.getServiceVersion().getVersion(),
+                                        requestOptions,
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
+    }
+
+    /**
+     * Get a list of all update names that match the specified provider.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         String
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param provider Update provider.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a list of all update names that match the specified provider.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BinaryData>> listNamesSinglePageAsync(
+            String provider, RequestOptions requestOptions, Context context) {
+        return service.listNames(
+                        this.client.getEndpoint(),
+                        this.client.getInstanceId(),
+                        provider,
+                        this.client.getServiceVersion().getVersion(),
+                        requestOptions,
+                        context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
+    }
+
+    /**
+     * Get a list of all update names that match the specified provider.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         String
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param provider Update provider.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a list of all update names that match the specified provider.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listNamesAsync(String provider, RequestOptions requestOptions) {
+        return new PagedFlux<>(
+                () -> listNamesSinglePageAsync(provider, requestOptions),
+                nextLink -> listNamesNextSinglePageAsync(nextLink, null));
+    }
+
+    /**
+     * Get a list of all update names that match the specified provider.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         String
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param provider Update provider.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a list of all update names that match the specified provider.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listNamesAsync(String provider, RequestOptions requestOptions, Context context) {
+        return new PagedFlux<>(
+                () -> listNamesSinglePageAsync(provider, requestOptions, context),
+                nextLink -> listNamesNextSinglePageAsync(nextLink, null, context));
+    }
+
+    /**
+     * Get a list of all update names that match the specified provider.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         String
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param provider Update provider.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a list of all update names that match the specified provider.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listNames(String provider, RequestOptions requestOptions) {
+        return new PagedIterable<>(listNamesAsync(provider, requestOptions));
+    }
+
+    /**
+     * Get a list of all update versions that match the specified provider and name.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         String
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param provider Update provider.
+     * @param name Update name.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a list of all update versions that match the specified provider and name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BinaryData>> listVersionsSinglePageAsync(
+            String provider, String name, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
+                        context ->
+                                service.listVersions(
+                                        this.client.getEndpoint(),
+                                        this.client.getInstanceId(),
+                                        provider,
+                                        name,
+                                        this.client.getServiceVersion().getVersion(),
+                                        requestOptions,
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
+    }
+
+    /**
+     * Get a list of all update versions that match the specified provider and name.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         String
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param provider Update provider.
+     * @param name Update name.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a list of all update versions that match the specified provider and name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BinaryData>> listVersionsSinglePageAsync(
+            String provider, String name, RequestOptions requestOptions, Context context) {
+        return service.listVersions(
+                        this.client.getEndpoint(),
+                        this.client.getInstanceId(),
+                        provider,
+                        name,
+                        this.client.getServiceVersion().getVersion(),
+                        requestOptions,
+                        context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
+    }
+
+    /**
+     * Get a list of all update versions that match the specified provider and name.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         String
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param provider Update provider.
+     * @param name Update name.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a list of all update versions that match the specified provider and name.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listVersionsAsync(String provider, String name, RequestOptions requestOptions) {
+        return new PagedFlux<>(
+                () -> listVersionsSinglePageAsync(provider, name, requestOptions),
+                nextLink -> listVersionsNextSinglePageAsync(nextLink, null));
+    }
+
+    /**
+     * Get a list of all update versions that match the specified provider and name.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         String
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param provider Update provider.
+     * @param name Update name.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a list of all update versions that match the specified provider and name.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listVersionsAsync(
+            String provider, String name, RequestOptions requestOptions, Context context) {
+        return new PagedFlux<>(
+                () -> listVersionsSinglePageAsync(provider, name, requestOptions, context),
+                nextLink -> listVersionsNextSinglePageAsync(nextLink, null, context));
+    }
+
+    /**
+     * Get a list of all update versions that match the specified provider and name.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         String
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param provider Update provider.
+     * @param name Update name.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a list of all update versions that match the specified provider and name.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listVersions(String provider, String name, RequestOptions requestOptions) {
+        return new PagedIterable<>(listVersionsAsync(provider, name, requestOptions));
+    }
+
+    /**
+     * Get a list of all update file identifiers for the specified version.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         String
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param provider Update provider.
+     * @param name Update name.
+     * @param version Update version.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a list of all update file identifiers for the specified version.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BinaryData>> listFilesSinglePageAsync(
+            String provider, String name, String version, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
+                        context ->
+                                service.listFiles(
+                                        this.client.getEndpoint(),
+                                        this.client.getInstanceId(),
+                                        provider,
+                                        name,
+                                        version,
+                                        this.client.getServiceVersion().getVersion(),
+                                        requestOptions,
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
+    }
+
+    /**
+     * Get a list of all update file identifiers for the specified version.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         String
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param provider Update provider.
+     * @param name Update name.
+     * @param version Update version.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a list of all update file identifiers for the specified version.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BinaryData>> listFilesSinglePageAsync(
+            String provider, String name, String version, RequestOptions requestOptions, Context context) {
+        return service.listFiles(
+                        this.client.getEndpoint(),
+                        this.client.getInstanceId(),
+                        provider,
+                        name,
+                        version,
+                        this.client.getServiceVersion().getVersion(),
+                        requestOptions,
+                        context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
+    }
+
+    /**
+     * Get a list of all update file identifiers for the specified version.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         String
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param provider Update provider.
+     * @param name Update name.
+     * @param version Update version.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a list of all update file identifiers for the specified version.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listFilesAsync(
+            String provider, String name, String version, RequestOptions requestOptions) {
+        return new PagedFlux<>(
+                () -> listFilesSinglePageAsync(provider, name, version, requestOptions),
+                nextLink -> listFilesNextSinglePageAsync(nextLink, null));
+    }
+
+    /**
+     * Get a list of all update file identifiers for the specified version.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         String
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param provider Update provider.
+     * @param name Update name.
+     * @param version Update version.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a list of all update file identifiers for the specified version.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listFilesAsync(
+            String provider, String name, String version, RequestOptions requestOptions, Context context) {
+        return new PagedFlux<>(
+                () -> listFilesSinglePageAsync(provider, name, version, requestOptions, context),
+                nextLink -> listFilesNextSinglePageAsync(nextLink, null, context));
+    }
+
+    /**
+     * Get a list of all update file identifiers for the specified version.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         String
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param provider Update provider.
+     * @param name Update name.
+     * @param version Update version.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a list of all update file identifiers for the specified version.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listFiles(
+            String provider, String name, String version, RequestOptions requestOptions) {
+        return new PagedIterable<>(listFilesAsync(provider, name, version, requestOptions));
+    }
+
+    /**
+     * Get a specific update file from the version.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ifNoneMatch</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will be performed only if the ETag on the server does not match this value.</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     fileId: String
+     *     fileName: String
+     *     sizeInBytes: long
+     *     hashes: {
+     *         String: String
+     *     }
+     *     mimeType: String
+     *     scanResult: String
+     *     scanDetails: String
+     *     etag: String
+     * }
+     * }</pre>
+     *
+     * @param provider Update provider.
+     * @param name Update name.
+     * @param version Update version.
+     * @param fileId File identifier.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a specific update file from the version.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getFileWithResponseAsync(
+            String provider, String name, String version, String fileId, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
+                context ->
+                        service.getFile(
+                                this.client.getEndpoint(),
+                                this.client.getInstanceId(),
+                                provider,
+                                name,
+                                version,
+                                fileId,
+                                this.client.getServiceVersion().getVersion(),
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Get a specific update file from the version.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ifNoneMatch</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will be performed only if the ETag on the server does not match this value.</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     fileId: String
+     *     fileName: String
+     *     sizeInBytes: long
+     *     hashes: {
+     *         String: String
+     *     }
+     *     mimeType: String
+     *     scanResult: String
+     *     scanDetails: String
+     *     etag: String
+     * }
+     * }</pre>
+     *
+     * @param provider Update provider.
+     * @param name Update name.
+     * @param version Update version.
+     * @param fileId File identifier.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a specific update file from the version.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getFileWithResponseAsync(
+            String provider,
+            String name,
+            String version,
+            String fileId,
+            RequestOptions requestOptions,
+            Context context) {
+        return service.getFile(
+                this.client.getEndpoint(),
+                this.client.getInstanceId(),
+                provider,
+                name,
+                version,
+                fileId,
+                this.client.getServiceVersion().getVersion(),
+                requestOptions,
+                context);
+    }
+
+    /**
+     * Get a specific update file from the version.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ifNoneMatch</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will be performed only if the ETag on the server does not match this value.</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     fileId: String
+     *     fileName: String
+     *     sizeInBytes: long
+     *     hashes: {
+     *         String: String
+     *     }
+     *     mimeType: String
+     *     scanResult: String
+     *     scanDetails: String
+     *     etag: String
+     * }
+     * }</pre>
+     *
+     * @param provider Update provider.
+     * @param name Update name.
+     * @param version Update version.
+     * @param fileId File identifier.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a specific update file from the version.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getFileWithResponse(
+            String provider, String name, String version, String fileId, RequestOptions requestOptions) {
+        return getFileWithResponseAsync(provider, name, version, fileId, requestOptions).block();
+    }
+
+    /**
+     * Get a list of all import update operations. Completed operations are kept for 7 days before auto-deleted. Delete
+     * operations are not returned by this API version.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
+     *     <tr><td>top</td><td>String</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         {
+     *             operationId: String
+     *             status: String(Undefined/NotStarted/Running/Succeeded/Failed)
+     *             updateId: {
+     *                 provider: String
+     *                 name: String
+     *                 version: String
+     *             }
+     *             resourceLocation: String
+     *             error: {
+     *                 code: String
+     *                 message: String
+     *                 target: String
+     *                 details: [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 innererror: {
+     *                     code: String
+     *                     message: String
+     *                     errorDetail: String
+     *                     innerError: (recursive schema, see innerError above)
+     *                 }
+     *                 occurredDateTime: String
+     *             }
+     *             traceId: String
+     *             lastActionDateTime: String
+     *             createdDateTime: String
+     *             etag: String
+     *         }
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a list of all import update operations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BinaryData>> listOperationsSinglePageAsync(RequestOptions requestOptions) {
+        return FluxUtil.withContext(
+                        context ->
+                                service.listOperations(
+                                        this.client.getEndpoint(),
+                                        this.client.getInstanceId(),
+                                        this.client.getServiceVersion().getVersion(),
+                                        requestOptions,
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
                                         null));
     }
 
@@ -1323,467 +2571,1053 @@ public final class UpdatesImpl {
      * Get a list of all import update operations. Completed operations are kept for 7 days before auto-deleted. Delete
      * operations are not returned by this API version.
      *
-     * @param filter Restricts the set of operations returned. Only one specific filter is supported: "status eq
-     *     'NotStarted' or status eq 'Running'".
-     * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
-     *     service returns the number of available items up to but not greater than the specified value n.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all import update operations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Operation> getOperationsAsync(String filter, Integer top) {
-        return new PagedFlux<>(
-                () -> getOperationsSinglePageAsync(filter, top),
-                nextLink -> getOperationsNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Get a list of all import update operations. Completed operations are kept for 7 days before auto-deleted. Delete
-     * operations are not returned by this API version.
+     * <p><strong>Query Parameters</strong>
      *
-     * @param filter Restricts the set of operations returned. Only one specific filter is supported: "status eq
-     *     'NotStarted' or status eq 'Running'".
-     * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
-     *     service returns the number of available items up to but not greater than the specified value n.
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
+     *     <tr><td>top</td><td>String</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         {
+     *             operationId: String
+     *             status: String(Undefined/NotStarted/Running/Succeeded/Failed)
+     *             updateId: {
+     *                 provider: String
+     *                 name: String
+     *                 version: String
+     *             }
+     *             resourceLocation: String
+     *             error: {
+     *                 code: String
+     *                 message: String
+     *                 target: String
+     *                 details: [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 innererror: {
+     *                     code: String
+     *                     message: String
+     *                     errorDetail: String
+     *                     innerError: (recursive schema, see innerError above)
+     *                 }
+     *                 occurredDateTime: String
+     *             }
+     *             traceId: String
+     *             lastActionDateTime: String
+     *             createdDateTime: String
+     *             etag: String
+     *         }
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all import update operations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BinaryData>> listOperationsSinglePageAsync(
+            RequestOptions requestOptions, Context context) {
+        return service.listOperations(
+                        this.client.getEndpoint(),
+                        this.client.getInstanceId(),
+                        this.client.getServiceVersion().getVersion(),
+                        requestOptions,
+                        context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
+    }
+
+    /**
+     * Get a list of all import update operations. Completed operations are kept for 7 days before auto-deleted. Delete
+     * operations are not returned by this API version.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
+     *     <tr><td>top</td><td>String</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         {
+     *             operationId: String
+     *             status: String(Undefined/NotStarted/Running/Succeeded/Failed)
+     *             updateId: {
+     *                 provider: String
+     *                 name: String
+     *                 version: String
+     *             }
+     *             resourceLocation: String
+     *             error: {
+     *                 code: String
+     *                 message: String
+     *                 target: String
+     *                 details: [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 innererror: {
+     *                     code: String
+     *                     message: String
+     *                     errorDetail: String
+     *                     innerError: (recursive schema, see innerError above)
+     *                 }
+     *                 occurredDateTime: String
+     *             }
+     *             traceId: String
+     *             lastActionDateTime: String
+     *             createdDateTime: String
+     *             etag: String
+     *         }
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return a list of all import update operations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Operation> getOperationsAsync(String filter, Integer top, Context context) {
+    public PagedFlux<BinaryData> listOperationsAsync(RequestOptions requestOptions) {
         return new PagedFlux<>(
-                () -> getOperationsSinglePageAsync(filter, top, context),
-                nextLink -> getOperationsNextSinglePageAsync(nextLink, context));
+                () -> listOperationsSinglePageAsync(requestOptions),
+                nextLink -> listOperationsNextSinglePageAsync(nextLink, null));
     }
 
     /**
      * Get a list of all import update operations. Completed operations are kept for 7 days before auto-deleted. Delete
      * operations are not returned by this API version.
      *
-     * @param filter Restricts the set of operations returned. Only one specific filter is supported: "status eq
-     *     'NotStarted' or status eq 'Running'".
-     * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
-     *     service returns the number of available items up to but not greater than the specified value n.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all import update operations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Operation> getOperations(String filter, Integer top) {
-        return new PagedIterable<>(getOperationsAsync(filter, top));
-    }
-
-    /**
-     * Get a list of all import update operations. Completed operations are kept for 7 days before auto-deleted. Delete
-     * operations are not returned by this API version.
+     * <p><strong>Query Parameters</strong>
      *
-     * @param filter Restricts the set of operations returned. Only one specific filter is supported: "status eq
-     *     'NotStarted' or status eq 'Running'".
-     * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
-     *     service returns the number of available items up to but not greater than the specified value n.
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
+     *     <tr><td>top</td><td>String</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         {
+     *             operationId: String
+     *             status: String(Undefined/NotStarted/Running/Succeeded/Failed)
+     *             updateId: {
+     *                 provider: String
+     *                 name: String
+     *                 version: String
+     *             }
+     *             resourceLocation: String
+     *             error: {
+     *                 code: String
+     *                 message: String
+     *                 target: String
+     *                 details: [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 innererror: {
+     *                     code: String
+     *                     message: String
+     *                     errorDetail: String
+     *                     innerError: (recursive schema, see innerError above)
+     *                 }
+     *                 occurredDateTime: String
+     *             }
+     *             traceId: String
+     *             lastActionDateTime: String
+     *             createdDateTime: String
+     *             etag: String
+     *         }
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all import update operations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Operation> getOperations(String filter, Integer top, Context context) {
-        return new PagedIterable<>(getOperationsAsync(filter, top, context));
+    public PagedFlux<BinaryData> listOperationsAsync(RequestOptions requestOptions, Context context) {
+        return new PagedFlux<>(
+                () -> listOperationsSinglePageAsync(requestOptions, context),
+                nextLink -> listOperationsNextSinglePageAsync(nextLink, null, context));
+    }
+
+    /**
+     * Get a list of all import update operations. Completed operations are kept for 7 days before auto-deleted. Delete
+     * operations are not returned by this API version.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
+     *     <tr><td>top</td><td>String</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         {
+     *             operationId: String
+     *             status: String(Undefined/NotStarted/Running/Succeeded/Failed)
+     *             updateId: {
+     *                 provider: String
+     *                 name: String
+     *                 version: String
+     *             }
+     *             resourceLocation: String
+     *             error: {
+     *                 code: String
+     *                 message: String
+     *                 target: String
+     *                 details: [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 innererror: {
+     *                     code: String
+     *                     message: String
+     *                     errorDetail: String
+     *                     innerError: (recursive schema, see innerError above)
+     *                 }
+     *                 occurredDateTime: String
+     *             }
+     *             traceId: String
+     *             lastActionDateTime: String
+     *             createdDateTime: String
+     *             etag: String
+     *         }
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a list of all import update operations.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listOperations(RequestOptions requestOptions) {
+        return new PagedIterable<>(listOperationsAsync(requestOptions));
     }
 
     /**
      * Retrieve operation status.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ifNoneMatch</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will be performed only if the ETag on the server does not match this value.</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     operationId: String
+     *     status: String(Undefined/NotStarted/Running/Succeeded/Failed)
+     *     updateId: {
+     *         provider: String
+     *         name: String
+     *         version: String
+     *     }
+     *     resourceLocation: String
+     *     error: {
+     *         code: String
+     *         message: String
+     *         target: String
+     *         details: [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror: {
+     *             code: String
+     *             message: String
+     *             errorDetail: String
+     *             innerError: (recursive schema, see innerError above)
+     *         }
+     *         occurredDateTime: String
+     *     }
+     *     traceId: String
+     *     lastActionDateTime: String
+     *     createdDateTime: String
+     *     etag: String
+     * }
+     * }</pre>
+     *
      * @param operationId Operation identifier.
-     * @param accessCondition Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation metadata.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UpdatesGetOperationResponse> getOperationWithResponseAsync(
-            String operationId, AccessCondition accessCondition) {
-        final String accept = "application/json";
-        String ifNoneMatchInternal = null;
-        if (accessCondition != null) {
-            ifNoneMatchInternal = accessCondition.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
+    public Mono<Response<BinaryData>> getOperationWithResponseAsync(String operationId, RequestOptions requestOptions) {
         return FluxUtil.withContext(
                 context ->
                         service.getOperation(
-                                this.client.getAccountEndpoint(),
+                                this.client.getEndpoint(),
                                 this.client.getInstanceId(),
                                 operationId,
-                                ifNoneMatch,
-                                accept,
+                                this.client.getServiceVersion().getVersion(),
+                                requestOptions,
                                 context));
     }
 
     /**
      * Retrieve operation status.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ifNoneMatch</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will be performed only if the ETag on the server does not match this value.</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     operationId: String
+     *     status: String(Undefined/NotStarted/Running/Succeeded/Failed)
+     *     updateId: {
+     *         provider: String
+     *         name: String
+     *         version: String
+     *     }
+     *     resourceLocation: String
+     *     error: {
+     *         code: String
+     *         message: String
+     *         target: String
+     *         details: [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror: {
+     *             code: String
+     *             message: String
+     *             errorDetail: String
+     *             innerError: (recursive schema, see innerError above)
+     *         }
+     *         occurredDateTime: String
+     *     }
+     *     traceId: String
+     *     lastActionDateTime: String
+     *     createdDateTime: String
+     *     etag: String
+     * }
+     * }</pre>
+     *
      * @param operationId Operation identifier.
-     * @param accessCondition Parameter group.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation metadata.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UpdatesGetOperationResponse> getOperationWithResponseAsync(
-            String operationId, AccessCondition accessCondition, Context context) {
-        final String accept = "application/json";
-        String ifNoneMatchInternal = null;
-        if (accessCondition != null) {
-            ifNoneMatchInternal = accessCondition.getIfNoneMatch();
-        }
-        String ifNoneMatch = ifNoneMatchInternal;
+    public Mono<Response<BinaryData>> getOperationWithResponseAsync(
+            String operationId, RequestOptions requestOptions, Context context) {
         return service.getOperation(
-                this.client.getAccountEndpoint(),
+                this.client.getEndpoint(),
                 this.client.getInstanceId(),
                 operationId,
-                ifNoneMatch,
-                accept,
+                this.client.getServiceVersion().getVersion(),
+                requestOptions,
                 context);
     }
 
     /**
      * Retrieve operation status.
      *
-     * @param operationId Operation identifier.
-     * @param accessCondition Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation metadata.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Operation> getOperationAsync(String operationId, AccessCondition accessCondition) {
-        return getOperationWithResponseAsync(operationId, accessCondition)
-                .flatMap(
-                        (UpdatesGetOperationResponse res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Retrieve operation status.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ifNoneMatch</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will be performed only if the ETag on the server does not match this value.</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     operationId: String
+     *     status: String(Undefined/NotStarted/Running/Succeeded/Failed)
+     *     updateId: {
+     *         provider: String
+     *         name: String
+     *         version: String
+     *     }
+     *     resourceLocation: String
+     *     error: {
+     *         code: String
+     *         message: String
+     *         target: String
+     *         details: [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror: {
+     *             code: String
+     *             message: String
+     *             errorDetail: String
+     *             innerError: (recursive schema, see innerError above)
+     *         }
+     *         occurredDateTime: String
+     *     }
+     *     traceId: String
+     *     lastActionDateTime: String
+     *     createdDateTime: String
+     *     etag: String
+     * }
+     * }</pre>
      *
      * @param operationId Operation identifier.
-     * @param accessCondition Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation metadata.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Operation> getOperationAsync(String operationId, AccessCondition accessCondition, Context context) {
-        return getOperationWithResponseAsync(operationId, accessCondition, context)
-                .flatMap(
-                        (UpdatesGetOperationResponse res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Retrieve operation status.
-     *
-     * @param operationId Operation identifier.
-     * @param accessCondition Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation metadata.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Operation getOperation(String operationId, AccessCondition accessCondition) {
-        return getOperationAsync(operationId, accessCondition).block();
-    }
-
-    /**
-     * Retrieve operation status.
-     *
-     * @param operationId Operation identifier.
-     * @param accessCondition Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation metadata.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Operation> getOperationWithResponse(
-            String operationId, AccessCondition accessCondition, Context context) {
-        return getOperationWithResponseAsync(operationId, accessCondition, context).block();
+    public Response<BinaryData> getOperationWithResponse(String operationId, RequestOptions requestOptions) {
+        return getOperationWithResponseAsync(operationId, requestOptions).block();
     }
 
     /**
      * Get the next page of items.
      *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         {
+     *             updateId: {
+     *                 provider: String
+     *                 name: String
+     *                 version: String
+     *             }
+     *             description: String
+     *             friendlyName: String
+     *             isDeployable: Boolean
+     *             updateType: String
+     *             installedCriteria: String
+     *             compatibility: [
+     *                 {
+     *                     String: String
+     *                 }
+     *             ]
+     *             instructions: {
+     *                 steps: [
+     *                     {
+     *                         type: String(Inline/Reference)
+     *                         description: String
+     *                         handler: String
+     *                         handlerProperties: Object
+     *                         files: [
+     *                             String
+     *                         ]
+     *                         updateId: (recursive schema, see updateId above)
+     *                     }
+     *                 ]
+     *             }
+     *             referencedBy: [
+     *                 (recursive schema, see above)
+     *             ]
+     *             scanResult: String
+     *             manifestVersion: String
+     *             importedDateTime: String
+     *             createdDateTime: String
+     *             etag: String
+     *         }
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
      * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of strings with server paging support.
+     * @return the list of updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<String>> getProvidersNextSinglePageAsync(String nextLink) {
-        final String accept = "application/json";
+    public Mono<PagedResponse<BinaryData>> listUpdatesNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions) {
         return FluxUtil.withContext(
                         context ->
-                                service.getProvidersNext(nextLink, this.client.getAccountEndpoint(), accept, context))
+                                service.listUpdatesNext(nextLink, this.client.getEndpoint(), requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
                                         null));
     }
 
     /**
      * Get the next page of items.
      *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         {
+     *             updateId: {
+     *                 provider: String
+     *                 name: String
+     *                 version: String
+     *             }
+     *             description: String
+     *             friendlyName: String
+     *             isDeployable: Boolean
+     *             updateType: String
+     *             installedCriteria: String
+     *             compatibility: [
+     *                 {
+     *                     String: String
+     *                 }
+     *             ]
+     *             instructions: {
+     *                 steps: [
+     *                     {
+     *                         type: String(Inline/Reference)
+     *                         description: String
+     *                         handler: String
+     *                         handlerProperties: Object
+     *                         files: [
+     *                             String
+     *                         ]
+     *                         updateId: (recursive schema, see updateId above)
+     *                     }
+     *                 ]
+     *             }
+     *             referencedBy: [
+     *                 (recursive schema, see above)
+     *             ]
+     *             scanResult: String
+     *             manifestVersion: String
+     *             importedDateTime: String
+     *             createdDateTime: String
+     *             etag: String
+     *         }
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
      * @param nextLink The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of strings with server paging support.
+     * @return the list of updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<String>> getProvidersNextSinglePageAsync(String nextLink, Context context) {
-        final String accept = "application/json";
-        return service.getProvidersNext(nextLink, this.client.getAccountEndpoint(), accept, context)
+    public Mono<PagedResponse<BinaryData>> listUpdatesNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions, Context context) {
+        return service.listUpdatesNext(nextLink, this.client.getEndpoint(), requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
                                         null));
     }
 
     /**
      * Get the next page of items.
      *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         String
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
      * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of strings with server paging support.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<String>> getNamesNextSinglePageAsync(String nextLink) {
-        final String accept = "application/json";
+    public Mono<PagedResponse<BinaryData>> listProvidersNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions) {
         return FluxUtil.withContext(
-                        context -> service.getNamesNext(nextLink, this.client.getAccountEndpoint(), accept, context))
+                        context ->
+                                service.listProvidersNext(nextLink, this.client.getEndpoint(), requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
                                         null));
     }
 
     /**
      * Get the next page of items.
      *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         String
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
      * @param nextLink The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of strings with server paging support.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<String>> getNamesNextSinglePageAsync(String nextLink, Context context) {
-        final String accept = "application/json";
-        return service.getNamesNext(nextLink, this.client.getAccountEndpoint(), accept, context)
+    public Mono<PagedResponse<BinaryData>> listProvidersNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions, Context context) {
+        return service.listProvidersNext(nextLink, this.client.getEndpoint(), requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
                                         null));
     }
 
     /**
      * Get the next page of items.
      *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         String
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
      * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of strings with server paging support.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<String>> getVersionsNextSinglePageAsync(String nextLink) {
-        final String accept = "application/json";
+    public Mono<PagedResponse<BinaryData>> listNamesNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions) {
         return FluxUtil.withContext(
-                        context -> service.getVersionsNext(nextLink, this.client.getAccountEndpoint(), accept, context))
+                        context -> service.listNamesNext(nextLink, this.client.getEndpoint(), requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
                                         null));
     }
 
     /**
      * Get the next page of items.
      *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         String
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
      * @param nextLink The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of strings with server paging support.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<String>> getVersionsNextSinglePageAsync(String nextLink, Context context) {
-        final String accept = "application/json";
-        return service.getVersionsNext(nextLink, this.client.getAccountEndpoint(), accept, context)
+    public Mono<PagedResponse<BinaryData>> listNamesNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions, Context context) {
+        return service.listNamesNext(nextLink, this.client.getEndpoint(), requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
                                         null));
     }
 
     /**
      * Get the next page of items.
      *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         String
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
      * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of strings with server paging support.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<String>> getFilesNextSinglePageAsync(String nextLink) {
-        final String accept = "application/json";
+    public Mono<PagedResponse<BinaryData>> listVersionsNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions) {
         return FluxUtil.withContext(
-                        context -> service.getFilesNext(nextLink, this.client.getAccountEndpoint(), accept, context))
+                        context ->
+                                service.listVersionsNext(nextLink, this.client.getEndpoint(), requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
                                         null));
     }
 
     /**
      * Get the next page of items.
      *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         String
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
      * @param nextLink The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of strings with server paging support.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<String>> getFilesNextSinglePageAsync(String nextLink, Context context) {
-        final String accept = "application/json";
-        return service.getFilesNext(nextLink, this.client.getAccountEndpoint(), accept, context)
+    public Mono<PagedResponse<BinaryData>> listVersionsNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions, Context context) {
+        return service.listVersionsNext(nextLink, this.client.getEndpoint(), requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
                                         null));
     }
 
     /**
      * Get the next page of items.
      *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         String
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
      * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of strings with server paging support.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BinaryData>> listFilesNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
+                        context -> service.listFilesNext(nextLink, this.client.getEndpoint(), requestOptions, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         String
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param nextLink The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the list of strings with server paging support.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BinaryData>> listFilesNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions, Context context) {
+        return service.listFilesNext(nextLink, this.client.getEndpoint(), requestOptions, context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         {
+     *             operationId: String
+     *             status: String(Undefined/NotStarted/Running/Succeeded/Failed)
+     *             updateId: {
+     *                 provider: String
+     *                 name: String
+     *                 version: String
+     *             }
+     *             resourceLocation: String
+     *             error: {
+     *                 code: String
+     *                 message: String
+     *                 target: String
+     *                 details: [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 innererror: {
+     *                     code: String
+     *                     message: String
+     *                     errorDetail: String
+     *                     innerError: (recursive schema, see innerError above)
+     *                 }
+     *                 occurredDateTime: String
+     *             }
+     *             traceId: String
+     *             lastActionDateTime: String
+     *             createdDateTime: String
+     *             etag: String
+     *         }
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param nextLink The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the list of operations with server paging support.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<Operation>> getOperationsNextSinglePageAsync(String nextLink) {
-        final String accept = "application/json";
+    public Mono<PagedResponse<BinaryData>> listOperationsNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions) {
         return FluxUtil.withContext(
                         context ->
-                                service.getOperationsNext(nextLink, this.client.getAccountEndpoint(), accept, context))
+                                service.listOperationsNext(
+                                        nextLink, this.client.getEndpoint(), requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
                                         null));
     }
 
     /**
      * Get the next page of items.
      *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         {
+     *             operationId: String
+     *             status: String(Undefined/NotStarted/Running/Succeeded/Failed)
+     *             updateId: {
+     *                 provider: String
+     *                 name: String
+     *                 version: String
+     *             }
+     *             resourceLocation: String
+     *             error: {
+     *                 code: String
+     *                 message: String
+     *                 target: String
+     *                 details: [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 innererror: {
+     *                     code: String
+     *                     message: String
+     *                     errorDetail: String
+     *                     innerError: (recursive schema, see innerError above)
+     *                 }
+     *                 occurredDateTime: String
+     *             }
+     *             traceId: String
+     *             lastActionDateTime: String
+     *             createdDateTime: String
+     *             etag: String
+     *         }
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
      * @param nextLink The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of operations with server paging support.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<Operation>> getOperationsNextSinglePageAsync(String nextLink, Context context) {
-        final String accept = "application/json";
-        return service.getOperationsNext(nextLink, this.client.getAccountEndpoint(), accept, context)
+    public Mono<PagedResponse<BinaryData>> listOperationsNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions, Context context) {
+        return service.listOperationsNext(nextLink, this.client.getEndpoint(), requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
                                         null));
+    }
+
+    private static final class TypeReferenceBinaryData extends TypeReference<BinaryData> {
+        // empty
+    }
+
+    private List<BinaryData> getValues(BinaryData binaryData, String path) {
+        try {
+            Map<?, ?> obj = binaryData.toObject(Map.class);
+            List<?> values = (List<?>) obj.get(path);
+            return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
+        } catch (RuntimeException e) {
+            return null;
+        }
+    }
+
+    private String getNextLink(BinaryData binaryData, String path) {
+        try {
+            Map<?, ?> obj = binaryData.toObject(Map.class);
+            return (String) obj.get(path);
+        } catch (RuntimeException e) {
+            return null;
+        }
     }
 }

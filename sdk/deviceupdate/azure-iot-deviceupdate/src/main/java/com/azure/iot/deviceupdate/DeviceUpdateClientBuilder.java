@@ -5,9 +5,14 @@
 package com.azure.iot.deviceupdate;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -15,29 +20,31 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.iot.deviceupdate.implementation.DeviceUpdateClientImpl;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /** A builder for creating a new instance of the DeviceUpdateClient type. */
 @ServiceClientBuilder(
         serviceClients = {
             UpdatesClient.class,
-            DevicesClient.class,
-            DeploymentsClient.class,
+            ManagementClient.class,
             UpdatesAsyncClient.class,
-            DevicesAsyncClient.class,
-            DeploymentsAsyncClient.class
+            ManagementAsyncClient.class
         })
 public final class DeviceUpdateClientBuilder {
     private static final String SDK_NAME = "name";
 
     private static final String SDK_VERSION = "version";
+
+    static final String[] DEFAULT_SCOPES = new String[] {"https://api.adu.microsoft.com/.default"};
 
     private final Map<String, String> properties = new HashMap<>();
 
@@ -49,16 +56,16 @@ public final class DeviceUpdateClientBuilder {
     /*
      * Account endpoint.
      */
-    private String accountEndpoint;
+    private String endpoint;
 
     /**
      * Sets Account endpoint.
      *
-     * @param accountEndpoint the accountEndpoint value.
+     * @param endpoint the endpoint value.
      * @return the DeviceUpdateClientBuilder.
      */
-    public DeviceUpdateClientBuilder accountEndpoint(String accountEndpoint) {
-        this.accountEndpoint = accountEndpoint;
+    public DeviceUpdateClientBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -79,6 +86,22 @@ public final class DeviceUpdateClientBuilder {
     }
 
     /*
+     * Service version
+     */
+    private DeviceUpdateServiceVersion serviceVersion;
+
+    /**
+     * Sets Service version.
+     *
+     * @param serviceVersion the serviceVersion value.
+     * @return the DeviceUpdateClientBuilder.
+     */
+    public DeviceUpdateClientBuilder serviceVersion(DeviceUpdateServiceVersion serviceVersion) {
+        this.serviceVersion = serviceVersion;
+        return this;
+    }
+
+    /*
      * The HTTP pipeline to send requests through
      */
     private HttpPipeline pipeline;
@@ -91,22 +114,6 @@ public final class DeviceUpdateClientBuilder {
      */
     public DeviceUpdateClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
-        return this;
-    }
-
-    /*
-     * The serializer to serialize an object into a string
-     */
-    private SerializerAdapter serializerAdapter;
-
-    /**
-     * Sets The serializer to serialize an object into a string.
-     *
-     * @param serializerAdapter the serializerAdapter value.
-     * @return the DeviceUpdateClientBuilder.
-     */
-    public DeviceUpdateClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
-        this.serializerAdapter = serializerAdapter;
         return this;
     }
 
@@ -140,6 +147,22 @@ public final class DeviceUpdateClientBuilder {
      */
     public DeviceUpdateClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
+        return this;
+    }
+
+    /*
+     * The TokenCredential used for authentication.
+     */
+    private TokenCredential tokenCredential;
+
+    /**
+     * Sets The TokenCredential used for authentication.
+     *
+     * @param tokenCredential the tokenCredential value.
+     * @return the DeviceUpdateClientBuilder.
+     */
+    public DeviceUpdateClientBuilder credential(TokenCredential tokenCredential) {
+        this.tokenCredential = tokenCredential;
         return this;
     }
 
@@ -181,6 +204,23 @@ public final class DeviceUpdateClientBuilder {
      */
     private final List<HttpPipelinePolicy> pipelinePolicies;
 
+    /*
+     * The client options such as application ID and custom headers to set on a
+     * request.
+     */
+    private ClientOptions clientOptions;
+
+    /**
+     * Sets The client options such as application ID and custom headers to set on a request.
+     *
+     * @param clientOptions the clientOptions value.
+     * @return the DeviceUpdateClientBuilder.
+     */
+    public DeviceUpdateClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
+        return this;
+    }
+
     /**
      * Adds a custom Http pipeline policy.
      *
@@ -198,14 +238,19 @@ public final class DeviceUpdateClientBuilder {
      * @return an instance of DeviceUpdateClientImpl.
      */
     private DeviceUpdateClientImpl buildInnerClient() {
+        if (serviceVersion == null) {
+            this.serviceVersion = DeviceUpdateServiceVersion.getLatest();
+        }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
-        if (serializerAdapter == null) {
-            this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        }
         DeviceUpdateClientImpl client =
-                new DeviceUpdateClientImpl(pipeline, serializerAdapter, accountEndpoint, instanceId);
+                new DeviceUpdateClientImpl(
+                        pipeline,
+                        JacksonAdapter.createDefaultSerializerAdapter(),
+                        endpoint,
+                        instanceId,
+                        serviceVersion);
         return client;
     }
 
@@ -215,21 +260,40 @@ public final class DeviceUpdateClientBuilder {
         if (httpLogOptions == null) {
             httpLogOptions = new HttpLogOptions();
         }
+        if (clientOptions == null) {
+            clientOptions = new ClientOptions();
+        }
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-        policies.add(
-                new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, buildConfiguration));
+        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
+        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
+        HttpHeaders headers = new HttpHeaders();
+        clientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
+        if (headers.getSize() > 0) {
+            policies.add(new AddHeadersPolicy(headers));
+        }
+        policies.addAll(
+                this.pipelinePolicies.stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                        .collect(Collectors.toList()));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
         policies.add(new CookiePolicy());
-        policies.addAll(this.pipelinePolicies);
+        if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
+        }
+        policies.addAll(
+                this.pipelinePolicies.stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                        .collect(Collectors.toList()));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
         HttpPipeline httpPipeline =
                 new HttpPipelineBuilder()
                         .policies(policies.toArray(new HttpPipelinePolicy[0]))
                         .httpClient(httpClient)
+                        .clientOptions(clientOptions)
                         .build();
         return httpPipeline;
     }
@@ -244,21 +308,12 @@ public final class DeviceUpdateClientBuilder {
     }
 
     /**
-     * Builds an instance of DevicesAsyncClient async client.
+     * Builds an instance of ManagementAsyncClient async client.
      *
-     * @return an instance of DevicesAsyncClient.
+     * @return an instance of ManagementAsyncClient.
      */
-    public DevicesAsyncClient buildDevicesAsyncClient() {
-        return new DevicesAsyncClient(buildInnerClient().getDevices());
-    }
-
-    /**
-     * Builds an instance of DeploymentsAsyncClient async client.
-     *
-     * @return an instance of DeploymentsAsyncClient.
-     */
-    public DeploymentsAsyncClient buildDeploymentsAsyncClient() {
-        return new DeploymentsAsyncClient(buildInnerClient().getDeployments());
+    public ManagementAsyncClient buildManagementAsyncClient() {
+        return new ManagementAsyncClient(buildInnerClient().getManagements());
     }
 
     /**
@@ -271,20 +326,11 @@ public final class DeviceUpdateClientBuilder {
     }
 
     /**
-     * Builds an instance of DevicesClient sync client.
+     * Builds an instance of ManagementClient sync client.
      *
-     * @return an instance of DevicesClient.
+     * @return an instance of ManagementClient.
      */
-    public DevicesClient buildDevicesClient() {
-        return new DevicesClient(buildInnerClient().getDevices());
-    }
-
-    /**
-     * Builds an instance of DeploymentsClient sync client.
-     *
-     * @return an instance of DeploymentsClient.
-     */
-    public DeploymentsClient buildDeploymentsClient() {
-        return new DeploymentsClient(buildInnerClient().getDeployments());
+    public ManagementClient buildManagementClient() {
+        return new ManagementClient(buildInnerClient().getManagements());
     }
 }

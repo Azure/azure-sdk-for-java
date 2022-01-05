@@ -4,30 +4,29 @@
 
 package com.azure.iot.deviceupdate;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.Context;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.iot.deviceupdate.implementation.UpdatesImpl;
-import com.azure.iot.deviceupdate.models.AccessCondition;
-import com.azure.iot.deviceupdate.models.File;
-import com.azure.iot.deviceupdate.models.ImportUpdateInput;
-import com.azure.iot.deviceupdate.models.Operation;
-import com.azure.iot.deviceupdate.models.Update;
 
 /** Initializes a new instance of the synchronous DeviceUpdateClient type. */
 @ServiceClient(builder = DeviceUpdateClientBuilder.class)
 public final class UpdatesClient {
-    private final UpdatesImpl serviceClient;
+    @Generated private final UpdatesImpl serviceClient;
 
     /**
      * Initializes an instance of Updates client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     UpdatesClient(UpdatesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -35,327 +34,579 @@ public final class UpdatesClient {
     /**
      * Import new update version.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>action</td><td>String</td><td>Yes</td><td>Import update action.</td></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     {
+     *         importManifest: {
+     *             url: String
+     *             sizeInBytes: long
+     *             hashes: {
+     *                 String: String
+     *             }
+     *         }
+     *         friendlyName: String
+     *         files: [
+     *             {
+     *                 filename: String
+     *                 url: String
+     *             }
+     *         ]
+     *     }
+     * ]
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     updateId: {
+     *         provider: String
+     *         name: String
+     *         version: String
+     *     }
+     *     description: String
+     *     friendlyName: String
+     *     isDeployable: Boolean
+     *     updateType: String
+     *     installedCriteria: String
+     *     compatibility: [
+     *         {
+     *             String: String
+     *         }
+     *     ]
+     *     instructions: {
+     *         steps: [
+     *             {
+     *                 type: String(Inline/Reference)
+     *                 description: String
+     *                 handler: String
+     *                 handlerProperties: Object
+     *                 files: [
+     *                     String
+     *                 ]
+     *                 updateId: (recursive schema, see updateId above)
+     *             }
+     *         ]
+     *     }
+     *     referencedBy: [
+     *         (recursive schema, see above)
+     *     ]
+     *     scanResult: String
+     *     manifestVersion: String
+     *     importedDateTime: String
+     *     createdDateTime: String
+     *     etag: String
+     * }
+     * }</pre>
+     *
      * @param updateToImport The update to be imported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return update metadata.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void importUpdate(ImportUpdateInput updateToImport) {
-        this.serviceClient.importUpdate(updateToImport);
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginImportUpdate(
+            BinaryData updateToImport, RequestOptions requestOptions) {
+        return this.serviceClient.beginImportUpdate(updateToImport, requestOptions);
     }
 
     /**
-     * Import new update version.
+     * Get a list of all updates that have been imported to Device Update for IoT Hub.
      *
-     * @param updateToImport The update to be imported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>search</td><td>String</td><td>No</td><td>Request updates matching a free-text search expression.</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         {
+     *             updateId: {
+     *                 provider: String
+     *                 name: String
+     *                 version: String
+     *             }
+     *             description: String
+     *             friendlyName: String
+     *             isDeployable: Boolean
+     *             updateType: String
+     *             installedCriteria: String
+     *             compatibility: [
+     *                 {
+     *                     String: String
+     *                 }
+     *             ]
+     *             instructions: {
+     *                 steps: [
+     *                     {
+     *                         type: String(Inline/Reference)
+     *                         description: String
+     *                         handler: String
+     *                         handlerProperties: Object
+     *                         files: [
+     *                             String
+     *                         ]
+     *                         updateId: (recursive schema, see updateId above)
+     *                     }
+     *                 ]
+     *             }
+     *             referencedBy: [
+     *                 (recursive schema, see above)
+     *             ]
+     *             scanResult: String
+     *             manifestVersion: String
+     *             importedDateTime: String
+     *             createdDateTime: String
+     *             etag: String
+     *         }
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a list of all updates that have been imported to Device Update for IoT Hub.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> importUpdateWithResponse(ImportUpdateInput updateToImport, Context context) {
-        return this.serviceClient.importUpdateWithResponse(updateToImport, context);
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listUpdates(RequestOptions requestOptions) {
+        return this.serviceClient.listUpdates(requestOptions);
     }
 
     /**
      * Get a specific update version.
      *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param version Update version.
-     * @param accessCondition Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific update version.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Update getUpdate(String provider, String name, String version, AccessCondition accessCondition) {
-        return this.serviceClient.getUpdate(provider, name, version, accessCondition);
-    }
-
-    /**
-     * Get a specific update version.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ifNoneMatch</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will be performed only if the ETag on the server does not match this value.</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     updateId: {
+     *         provider: String
+     *         name: String
+     *         version: String
+     *     }
+     *     description: String
+     *     friendlyName: String
+     *     isDeployable: Boolean
+     *     updateType: String
+     *     installedCriteria: String
+     *     compatibility: [
+     *         {
+     *             String: String
+     *         }
+     *     ]
+     *     instructions: {
+     *         steps: [
+     *             {
+     *                 type: String(Inline/Reference)
+     *                 description: String
+     *                 handler: String
+     *                 handlerProperties: Object
+     *                 files: [
+     *                     String
+     *                 ]
+     *                 updateId: (recursive schema, see updateId above)
+     *             }
+     *         ]
+     *     }
+     *     referencedBy: [
+     *         (recursive schema, see above)
+     *     ]
+     *     scanResult: String
+     *     manifestVersion: String
+     *     importedDateTime: String
+     *     createdDateTime: String
+     *     etag: String
+     * }
+     * }</pre>
      *
      * @param provider Update provider.
      * @param name Update name.
      * @param version Update version.
-     * @param accessCondition Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific update version.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Update> getUpdateWithResponse(
-            String provider, String name, String version, AccessCondition accessCondition, Context context) {
-        return this.serviceClient.getUpdateWithResponse(provider, name, version, accessCondition, context);
+    public Response<BinaryData> getUpdateWithResponse(
+            String provider, String name, String version, RequestOptions requestOptions) {
+        return this.serviceClient.getUpdateWithResponse(provider, name, version, requestOptions);
     }
 
     /**
      * Delete a specific update version.
      *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param version Update version.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteUpdate(String provider, String name, String version) {
-        this.serviceClient.deleteUpdate(provider, name, version);
-    }
-
-    /**
-     * Delete a specific update version.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * @param provider Update provider.
      * @param name Update name.
      * @param version Update version.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteUpdateWithResponse(String provider, String name, String version, Context context) {
-        return this.serviceClient.deleteUpdateWithResponse(provider, name, version, context);
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginDeleteUpdate(
+            String provider, String name, String version, RequestOptions requestOptions) {
+        return this.serviceClient.beginDeleteUpdate(provider, name, version, requestOptions);
     }
 
     /**
      * Get a list of all update providers that have been imported to Device Update for IoT Hub.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all update providers that have been imported to Device Update for IoT Hub.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> getProviders() {
-        return this.serviceClient.getProviders();
-    }
-
-    /**
-     * Get a list of all update providers that have been imported to Device Update for IoT Hub.
+     * <p><strong>Query Parameters</strong>
      *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         String
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all update providers that have been imported to Device Update for IoT Hub.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> getProviders(Context context) {
-        return this.serviceClient.getProviders(context);
+    public PagedIterable<BinaryData> listProviders(RequestOptions requestOptions) {
+        return this.serviceClient.listProviders(requestOptions);
     }
 
     /**
      * Get a list of all update names that match the specified provider.
      *
-     * @param provider Update provider.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all update names that match the specified provider.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> getNames(String provider) {
-        return this.serviceClient.getNames(provider);
-    }
-
-    /**
-     * Get a list of all update names that match the specified provider.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         String
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
      *
      * @param provider Update provider.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all update names that match the specified provider.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> getNames(String provider, Context context) {
-        return this.serviceClient.getNames(provider, context);
+    public PagedIterable<BinaryData> listNames(String provider, RequestOptions requestOptions) {
+        return this.serviceClient.listNames(provider, requestOptions);
     }
 
     /**
      * Get a list of all update versions that match the specified provider and name.
      *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all update versions that match the specified provider and name.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> getVersions(String provider, String name) {
-        return this.serviceClient.getVersions(provider, name);
-    }
-
-    /**
-     * Get a list of all update versions that match the specified provider and name.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filter updates by its properties.</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         String
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
      *
      * @param provider Update provider.
      * @param name Update name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all update versions that match the specified provider and name.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> getVersions(String provider, String name, Context context) {
-        return this.serviceClient.getVersions(provider, name, context);
+    public PagedIterable<BinaryData> listVersions(String provider, String name, RequestOptions requestOptions) {
+        return this.serviceClient.listVersions(provider, name, requestOptions);
     }
 
     /**
      * Get a list of all update file identifiers for the specified version.
      *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param version Update version.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all update file identifiers for the specified version.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> getFiles(String provider, String name, String version) {
-        return this.serviceClient.getFiles(provider, name, version);
-    }
-
-    /**
-     * Get a list of all update file identifiers for the specified version.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         String
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
      *
      * @param provider Update provider.
      * @param name Update name.
      * @param version Update version.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all update file identifiers for the specified version.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> getFiles(String provider, String name, String version, Context context) {
-        return this.serviceClient.getFiles(provider, name, version, context);
+    public PagedIterable<BinaryData> listFiles(
+            String provider, String name, String version, RequestOptions requestOptions) {
+        return this.serviceClient.listFiles(provider, name, version, requestOptions);
     }
 
     /**
      * Get a specific update file from the version.
      *
-     * @param provider Update provider.
-     * @param name Update name.
-     * @param version Update version.
-     * @param fileId File identifier.
-     * @param accessCondition Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific update file from the version.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public File getFile(String provider, String name, String version, String fileId, AccessCondition accessCondition) {
-        return this.serviceClient.getFile(provider, name, version, fileId, accessCondition);
-    }
-
-    /**
-     * Get a specific update file from the version.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ifNoneMatch</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will be performed only if the ETag on the server does not match this value.</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     fileId: String
+     *     fileName: String
+     *     sizeInBytes: long
+     *     hashes: {
+     *         String: String
+     *     }
+     *     mimeType: String
+     *     scanResult: String
+     *     scanDetails: String
+     *     etag: String
+     * }
+     * }</pre>
      *
      * @param provider Update provider.
      * @param name Update name.
      * @param version Update version.
      * @param fileId File identifier.
-     * @param accessCondition Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific update file from the version.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<File> getFileWithResponse(
-            String provider,
-            String name,
-            String version,
-            String fileId,
-            AccessCondition accessCondition,
-            Context context) {
-        return this.serviceClient.getFileWithResponse(provider, name, version, fileId, accessCondition, context);
+    public Response<BinaryData> getFileWithResponse(
+            String provider, String name, String version, String fileId, RequestOptions requestOptions) {
+        return this.serviceClient.getFileWithResponse(provider, name, version, fileId, requestOptions);
     }
 
     /**
      * Get a list of all import update operations. Completed operations are kept for 7 days before auto-deleted. Delete
      * operations are not returned by this API version.
      *
-     * @param filter Restricts the set of operations returned. Only one specific filter is supported: "status eq
-     *     'NotStarted' or status eq 'Running'".
-     * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
-     *     service returns the number of available items up to but not greater than the specified value n.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all import update operations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Operation> getOperations(String filter, Integer top) {
-        return this.serviceClient.getOperations(filter, top);
-    }
-
-    /**
-     * Get a list of all import update operations. Completed operations are kept for 7 days before auto-deleted. Delete
-     * operations are not returned by this API version.
+     * <p><strong>Query Parameters</strong>
      *
-     * @param filter Restricts the set of operations returned. Only one specific filter is supported: "status eq
-     *     'NotStarted' or status eq 'Running'".
-     * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
-     *     service returns the number of available items up to but not greater than the specified value n.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Restricts the set of operations returned. Only one specific filter is supported: "status eq 'NotStarted' or status eq 'Running'"</td></tr>
+     *     <tr><td>top</td><td>String</td><td>No</td><td>Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.</td></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value: [
+     *         {
+     *             operationId: String
+     *             status: String(Undefined/NotStarted/Running/Succeeded/Failed)
+     *             updateId: {
+     *                 provider: String
+     *                 name: String
+     *                 version: String
+     *             }
+     *             resourceLocation: String
+     *             error: {
+     *                 code: String
+     *                 message: String
+     *                 target: String
+     *                 details: [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 innererror: {
+     *                     code: String
+     *                     message: String
+     *                     errorDetail: String
+     *                     innerError: (recursive schema, see innerError above)
+     *                 }
+     *                 occurredDateTime: String
+     *             }
+     *             traceId: String
+     *             lastActionDateTime: String
+     *             createdDateTime: String
+     *             etag: String
+     *         }
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all import update operations.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Operation> getOperations(String filter, Integer top, Context context) {
-        return this.serviceClient.getOperations(filter, top, context);
+    public PagedIterable<BinaryData> listOperations(RequestOptions requestOptions) {
+        return this.serviceClient.listOperations(requestOptions);
     }
 
     /**
      * Retrieve operation status.
      *
-     * @param operationId Operation identifier.
-     * @param accessCondition Parameter group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation metadata.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Operation getOperation(String operationId, AccessCondition accessCondition) {
-        return this.serviceClient.getOperation(operationId, accessCondition);
-    }
-
-    /**
-     * Retrieve operation status.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ifNoneMatch</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will be performed only if the ETag on the server does not match this value.</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     operationId: String
+     *     status: String(Undefined/NotStarted/Running/Succeeded/Failed)
+     *     updateId: {
+     *         provider: String
+     *         name: String
+     *         version: String
+     *     }
+     *     resourceLocation: String
+     *     error: {
+     *         code: String
+     *         message: String
+     *         target: String
+     *         details: [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror: {
+     *             code: String
+     *             message: String
+     *             errorDetail: String
+     *             innerError: (recursive schema, see innerError above)
+     *         }
+     *         occurredDateTime: String
+     *     }
+     *     traceId: String
+     *     lastActionDateTime: String
+     *     createdDateTime: String
+     *     etag: String
+     * }
+     * }</pre>
      *
      * @param operationId Operation identifier.
-     * @param accessCondition Parameter group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation metadata.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Operation> getOperationWithResponse(
-            String operationId, AccessCondition accessCondition, Context context) {
-        return this.serviceClient.getOperationWithResponse(operationId, accessCondition, context);
+    public Response<BinaryData> getOperationWithResponse(String operationId, RequestOptions requestOptions) {
+        return this.serviceClient.getOperationWithResponse(operationId, requestOptions);
     }
 }

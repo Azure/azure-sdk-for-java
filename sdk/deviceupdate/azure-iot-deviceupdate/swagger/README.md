@@ -18,17 +18,24 @@ cd <swagger-folder>
 autorest --java --use=C:/work/autorest.java
 ```
 
-### Code generation settings
+## Generate autorest code
 ``` yaml
-use: '@autorest/java@4.0.16'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/deviceupdate/data-plane/Microsoft.DeviceUpdate/preview/2020-09-01/deviceupdate.json
+input-file: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/deviceupdate/data-plane/Microsoft.DeviceUpdate/preview/2021-06-01-preview/deviceupdate.json
 java: true
 output-folder: ../
 namespace: com.azure.iot.deviceupdate
 generate-client-interfaces: false
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
+low-level-client: true
+credential-types: tokencredential
+credential-scopes: https://api.adu.microsoft.com/.default
+title: DeviceUpdateClient
+service-name: DeviceUpdate
+service-versions:
+  - 2021-06-01-preview
+generate-client-as-impl: true
 add-context-parameter: true
-generate-sync-async-clients: true
 context-client-method-parameter: true
+generate-sync-async-clients: true
 ```

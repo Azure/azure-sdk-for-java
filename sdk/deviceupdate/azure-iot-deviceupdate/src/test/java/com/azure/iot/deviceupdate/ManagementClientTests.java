@@ -3,7 +3,6 @@
 package com.azure.iot.deviceupdate;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -18,18 +17,16 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.AzureCliCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
 
-public class UpdatesClientTests extends TestBase {
-    private static final String FILE_NAME = "setup.exe";
+public class ManagementClientTests extends TestBase {
     private static final String DEFAULT_SCOPE = "https://api.adu.microsoft.com/.default";
 
-    private UpdatesAsyncClient createClient() {
+    private ManagementAsyncClient createClient() {
         TokenCredential credentials;
         HttpClient httpClient;
         HttpPipelinePolicy recordingPolicy = null;
@@ -40,7 +37,7 @@ public class UpdatesClientTests extends TestBase {
 
         if (getTestMode() != TestMode.PLAYBACK) {
             // Record & Live
-            credentials = new DefaultAzureCredentialBuilder().build();
+            credentials = new AzureCliCredentialBuilder().build();
             httpClient = HttpClient.createDefault();
             if (getTestMode() == TestMode.RECORD) {
                 recordingPolicy = interceptorManager.getRecordPolicy();
@@ -66,24 +63,40 @@ public class UpdatesClientTests extends TestBase {
             .instanceId(TestData.INSTANCE_ID)
             .pipeline(httpPipeline)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .buildUpdatesAsyncClient();
+            .buildManagementAsyncClient();
     }
 
     @Test
-    public void testGetUpdateNotFound() {
-        UpdatesAsyncClient client = createClient();
-        try {
-            client.getUpdateWithResponse("foo", "bar", "0.0.0.1", null).block();
-            fail("Expected NotFound response");
-        } catch (HttpResponseException e) {
-            assertEquals(404, e.getResponse().getStatusCode());
-        }
+    public void testGetAllDeployments() {
+        ManagementAsyncClient client = createClient();
+        PagedFlux<BinaryData> response = client.listDeploymentsForGroup("Uncategorized", null);
+
+        assertNotNull(response);
+        assertEquals(0, response.toStream().count());
     }
 
     @Test
-    public void testGetProviders() {
-        UpdatesAsyncClient client = createClient();
-        PagedFlux<BinaryData> response = client.listProviders(null);
+    public void testListDeviceTags() {
+        ManagementAsyncClient client = createClient();
+        PagedFlux<BinaryData> response = client.listDeviceTags(null);
+
+        assertNotNull(response);
+        assertEquals(1, response.toStream().count());
+    }
+
+    @Test
+    public void testListDevices() {
+        ManagementAsyncClient client = createClient();
+        PagedFlux<BinaryData> response = client.listDevices(null);
+
+        assertNotNull(response);
+        assertEquals(3, response.toStream().count());
+    }
+
+    @Test
+    public void testGetAllDeviceClasses() {
+        ManagementAsyncClient client = createClient();
+        PagedFlux<BinaryData> response = client.listDeviceClasses(null);
 
         assertNotNull(response);
         assertEquals(1, response.toStream().count());

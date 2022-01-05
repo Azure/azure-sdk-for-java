@@ -1,15 +1,15 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.prod.adu.microsoft.com/deviceupdate/blue/v2/updates/providers",
+    "Uri" : "https://REDACTED.api.adu.microsoft.com/deviceupdate/sdkinstance/updates/providers?api-version=2021-06-01-preview",
     "Headers" : { },
     "Response" : {
-      "traceparent" : "00-a045e3d48e1318438bc649f64208c08e-50d0b2daf90a564a-00",
+      "content-length" : "22",
+      "traceparent" : "00-312170ccde4205459197a1768b96edbc-a2e0d96675fd124b-00",
       "retry-after" : "0",
-      "Content-Length" : "60",
       "StatusCode" : "200",
-      "Body" : "{\"value\":[\"Contoso\",\"Microsoft-Corporation\",\"Test-Content\"]}",
-      "Date" : "Tue, 02 Mar 2021 21:28:55 GMT",
+      "Body" : "{\"value\":[\"fabrikam\"]}",
+      "Date" : "Mon, 29 Nov 2021 06:54:05 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

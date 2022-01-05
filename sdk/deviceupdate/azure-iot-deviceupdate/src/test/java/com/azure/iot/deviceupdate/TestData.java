@@ -3,6 +3,7 @@
 package com.azure.iot.deviceupdate;
 
 import com.azure.core.util.Configuration;
+
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
@@ -14,7 +15,7 @@ public class TestData {
 
     public static final String CLIENT_ID = GetTestValue("CLIENT_ID", "clientId");
 
-    public static final String INSTANCE_ID = GetTestValue("INSTANCE_ID", "blue");
+    public static final String INSTANCE_ID = GetTestValue("INSTANCE_ID", "sdkinstance");
 
     public static final String PROVIDER = "Contoso";
 
