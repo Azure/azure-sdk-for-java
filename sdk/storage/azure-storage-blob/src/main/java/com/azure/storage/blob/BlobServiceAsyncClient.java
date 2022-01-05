@@ -316,6 +316,15 @@ public final class BlobServiceAsyncClient {
     }
 
     /**
+     * Gets the sas token string being used to authenticate this client
+     *
+     * @return The sas token string
+     */
+    public String getSasTokenString() {
+
+    }
+
+    /**
      * Returns a reactive Publisher emitting all the containers in this account lazily as needed. For more information,
      * see the <a href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
      *

@@ -477,6 +477,15 @@ public class BlobAsyncClientBase {
     }
 
     /**
+     * Gets the sas token string being used to authenticate this client
+     *
+     * @return The sas token string
+     */
+    public String getSasTokenString() {
+
+    }
+
+    /**
      * Determines if the blob this client represents exists in the cloud.
      *
      * <p><strong>Code Samples</strong></p>

@@ -277,6 +277,15 @@ public class BlobClientBase {
     }
 
     /**
+     * Gets the sas token string being used to authenticate this client
+     *
+     * @return The sas token string
+     */
+    public String getSasTokenString() {
+        return client.getSasTokenString();
+    }
+
+    /**
      * Determines if a blob is a snapshot
      *
      * @return A boolean that indicates if a blob is a snapshot

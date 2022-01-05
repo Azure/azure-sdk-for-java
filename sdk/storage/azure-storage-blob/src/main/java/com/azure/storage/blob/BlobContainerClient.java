@@ -220,6 +220,15 @@ public final class BlobContainerClient {
     }
 
     /**
+     * Gets the sas token string being used to authenticate this client
+     *
+     * @return The sas token string
+     */
+    public String getSasTokenString() {
+        return client.getSasTokenString();
+    }
+
+    /**
      * Gets if the container this client represents exists in the cloud.
      *
      * <p><strong>Code Samples</strong></p>

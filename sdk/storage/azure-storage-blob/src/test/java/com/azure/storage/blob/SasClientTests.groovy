@@ -1169,4 +1169,65 @@ class SasClientTests extends APISpec {
         null                                                      | null             | SasProtocol.HTTPS_ONLY | null              || "%s" + "\nr\nb\no\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n\n" + SasProtocol.HTTPS_ONLY + "\n" + Constants.SAS_SERVICE_VERSION + "\n\n"
         null                                                      | null             | null                   | "encryptionScope" || "%s" + "\nr\nb\no\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nencryptionScope\n"
     }
+
+    def "service client get sas string"() {
+        setup:
+        def service = new AccountSasService()
+            .setBlobAccess(true)
+        def resourceType = new AccountSasResourceType()
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
+        def permissions = new AccountSasPermission()
+            .setReadPermission(true)
+            .setCreatePermission(false)
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        when:
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+        def sas = primaryBlobServiceClient.generateAccountSas(sasValues)
+        def sc = getServiceClient(sas, primaryBlobServiceClient.getAccountUrl())
+
+        then:
+        sc.getSasTokenString() == sas
+    }
+
+    def "container client get sas string"() {
+        setup:
+        def permissions = new BlobContainerSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setAddPermission(true)
+            .setListPermission(true)
+            .setDeleteVersionPermission(true)
+            .setTagsPermission(true)
+
+        def expiryTime = namer.getUtcNow().plusDays(1)
+        def sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions)
+        def sas = cc.generateSas(sasValues)
+        def client = getContainerClient(sas, cc.getBlobContainerUrl())
+
+        expect:
+        client.getSasTokenString() == sas
+    }
+
+    def "blob client get sas token"() {
+        setup:
+        def snapshotBlob = new SpecializedBlobClientBuilder().blobClient(sasClient.createSnapshot()).buildBlockBlobClient()
+        def snapshotId = snapshotBlob.getSnapshotId()
+        def permissions = new BlobSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+            .setAddPermission(true)
+        def sasValues = generateValues(permissions)
+        def sas = snapshotBlob.generateSas(sasValues)
+        def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName)
+
+        expect:
+        client.getSasTokenString() == sas
+    }
 }

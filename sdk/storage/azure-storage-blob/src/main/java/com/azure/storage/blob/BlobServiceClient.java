@@ -200,6 +200,15 @@ public final class BlobServiceClient {
     }
 
     /**
+     * Gets the sas token string being used to authenticate this client
+     *
+     * @return The sas token string
+     */
+    public String getSasTokenString() {
+        return blobServiceAsyncClient.getSasTokenString();
+    }
+
+    /**
      * Returns a lazy loaded list of containers in this account. The returned {@link PagedIterable} can be consumed
      * while new items are automatically retrieved as needed. For more information, see the <a
      * href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
