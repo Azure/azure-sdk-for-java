@@ -556,9 +556,13 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                 return;
             }
 
-            if (linkHasNoCredits.compareAndSet(true, false)) {
-                logger.info("linkName[{}] entityPath[{}] creditsToAdd[{}] There are no more credits on link."
-                        + " Adding more. {}", linkName, entityPath, credits, message);
+            int currentLinkCredits = link.getCredits();
+            // Add more credits if the link has fewer credits than prefetch value. This allows users to control how
+            // many events to buffer on the client and also control the throughput. If users need higher throughput,
+            // they can set a higher prefetch number and allocate larger heap size accordingly.
+            if (currentLinkCredits <= prefetch) {
+                logger.info("linkName[{}] entityPath[{}] creditsToAdd[{}] Link running low on credits. Adding more. "
+                                +"{}", linkName, entityPath, credits, message);
 
                 link.addCredits(credits).subscribe(noop -> {
                 }, error -> {
