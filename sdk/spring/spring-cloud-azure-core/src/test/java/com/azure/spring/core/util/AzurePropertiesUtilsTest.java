@@ -7,7 +7,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.authentication.TokenCredentialProperties;
 import com.azure.spring.core.properties.client.ClientProperties;
-import com.azure.spring.core.properties.profile.AzureProfile;
+import com.azure.spring.core.properties.profile.AzureProfileProperties;
 import com.azure.spring.core.properties.proxy.ProxyProperties;
 import com.azure.spring.core.properties.retry.RetryProperties;
 import org.junit.jupiter.api.Assertions;
@@ -164,7 +164,7 @@ class AzurePropertiesUtilsTest {
         private final ProxyProperties proxy = new ProxyProperties();
         private final RetryProperties retry = new RetryProperties();
         private final TokenCredentialProperties credential = new TokenCredentialProperties();
-        private final AzureProfile profile = new AzureProfile();
+        private final AzureProfileProperties profile = new AzureProfileProperties();
 
         @Override
         public ClientProperties getClient() {
@@ -187,7 +187,7 @@ class AzurePropertiesUtilsTest {
         }
 
         @Override
-        public AzureProfile getProfile() {
+        public AzureProfileProperties getProfile() {
             return profile;
         }
     }
@@ -198,7 +198,7 @@ class AzurePropertiesUtilsTest {
         private final ProxyProperties proxy = new ProxyProperties();
         private final RetryProperties retry = new RetryProperties();
         private final TokenCredentialProperties credential = new TokenCredentialProperties();
-        private final AzureProfile profile = new AzureProfile();
+        private final AzureProfileProperties profile = new AzureProfileProperties();
 
         @Override
         public ClientProperties getClient() {
@@ -221,7 +221,7 @@ class AzurePropertiesUtilsTest {
         }
 
         @Override
-        public AzureProfile getProfile() {
+        public AzureProfileProperties getProfile() {
             return profile;
         }
 

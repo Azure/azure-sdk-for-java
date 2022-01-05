@@ -3,8 +3,11 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.properties;
 
+import com.azure.core.management.AzureEnvironment;
 import com.azure.spring.core.aware.AzureProfileAware;
-import com.azure.spring.core.properties.profile.KnownAzureEnvironment;
+import org.springframework.util.Assert;
+
+import static com.azure.spring.core.aware.AzureProfileAware.CloudType.OTHER;
 
 /**
  * Properties to Azure Active Directory endpoints.
@@ -57,7 +60,7 @@ public class AADProfileEnvironmentProperties {
      * @param cloudType The cloud type.
      */
     public void updatePropertiesByCloudType(AzureProfileAware.CloudType cloudType) {
-        KnownAzureEnvironment knownAzureEnvironment = new KnownAzureEnvironment(cloudType);
+        AzureEnvironment knownAzureEnvironment = convertToManagementAzureEnvironmentByType(cloudType);
         if (this.activeDirectoryEndpoint == null) {
             this.activeDirectoryEndpoint = knownAzureEnvironment.getActiveDirectoryEndpoint();
         }
@@ -68,5 +71,20 @@ public class AADProfileEnvironmentProperties {
 
     private String addSlash(String uri) {
         return uri.endsWith("/") ? uri : uri + "/";
+    }
+
+    private static com.azure.core.management.AzureEnvironment convertToManagementAzureEnvironmentByType(
+        AzureProfileAware.CloudType cloud) {
+        Assert.isTrue(cloud != OTHER, "cloud type should not be other for PredefinedAzureEnvironment");
+        switch (cloud) {
+            case AZURE_CHINA:
+                return com.azure.core.management.AzureEnvironment.AZURE_CHINA;
+            case AZURE_US_GOVERNMENT:
+                return com.azure.core.management.AzureEnvironment.AZURE_US_GOVERNMENT;
+            case AZURE_GERMANY:
+                return com.azure.core.management.AzureEnvironment.AZURE_GERMANY;
+            default:
+                return com.azure.core.management.AzureEnvironment.AZURE;
+        }
     }
 }
