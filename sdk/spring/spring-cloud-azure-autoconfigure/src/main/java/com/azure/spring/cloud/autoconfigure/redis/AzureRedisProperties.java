@@ -13,6 +13,9 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 @ConfigurationProperties("spring.cloud.azure.redis")
 public class AzureRedisProperties {
 
+    /**
+     * Name of the Azure Cache for Redis.
+     */
     private String name;
 
     @NestedConfigurationProperty

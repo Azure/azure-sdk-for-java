@@ -14,14 +14,28 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
  */
 public class AzureStorageProperties extends AbstractAzureServiceConfigurationProperties implements StorageProperties {
 
+    /**
+     * Endpoint for Azure Storage service.
+     */
     protected String endpoint;
-
+    /**
+     * Storage account access key.
+     */
     protected String accountKey;
 
+    /**
+     * Shared access signatures (SAS) token used to authorize requests sent to the service.
+     */
     protected String sasToken;
 
+    /**
+     * Connection string to connect to the service.
+     */
     protected String connectionString;
 
+    /**
+     * Name for the storage account.
+     */
     protected String accountName;
 
     @NestedConfigurationProperty

@@ -15,7 +15,13 @@ public class AzureStorageQueueProperties extends AzureStorageProperties implemen
     public static final String PREFIX = "spring.cloud.azure.storage.queue";
     public static final String QUEUE_ENDPOINT_PATTERN = "https://%s.queue%s";
 
+    /**
+     * Queue service version used when making API requests.
+     */
     private QueueServiceVersion serviceVersion;
+    /**
+     * How queue message body is represented in HTTP requests and responses.
+     */
     private String messageEncoding;
 
 

@@ -4,8 +4,6 @@
 package com.azure.spring.core.properties.profile;
 
 import com.azure.spring.core.aware.AzureProfileAware;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,8 +12,6 @@ import java.util.Map;
  * The AzureEnvironment defines all properties to Azure services, such as endpoints, resource ids, etc.
  */
 public class AzureEnvironment implements AzureProfileAware.Environment {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(AzureEnvironment.class);
 
     /**
      * The management portal URL.

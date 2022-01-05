@@ -3,10 +3,12 @@
 
 package com.azure.spring.service.eventhubs;
 
+import com.azure.spring.service.eventhubs.properties.EventBatchProperties;
 import com.azure.spring.service.eventhubs.properties.EventHubConsumerProperties;
 import com.azure.spring.service.eventhubs.properties.EventHubProducerProperties;
 import com.azure.spring.service.eventhubs.properties.EventHubsNamespaceProperties;
 import com.azure.spring.service.eventhubs.properties.EventProcessorClientProperties;
+import com.azure.spring.service.eventhubs.properties.LoadBalancingProperties;
 import com.azure.spring.service.storage.blob.TestAzureStorageBlobProperties;
 
 import java.time.Duration;
@@ -65,8 +67,8 @@ class TestAzureEventHubsProperties extends TestAzureEventHubsCommonProperties im
         private Boolean trackLastEnqueuedEventProperties;
         private Map<String, StartPosition> initialPartitionEventPosition = new HashMap<>();
         private Duration partitionOwnershipExpirationInterval;
-        private final EventBatch batch = new EventBatch();
-        private final LoadBalancing loadBalancing = new LoadBalancing();
+        private final EventBatchProperties batch = new EventBatchProperties();
+        private final LoadBalancingProperties loadBalancing = new LoadBalancingProperties();
         private final BlobCheckpointStore checkpointStore = new BlobCheckpointStore();
 
         public Boolean getTrackLastEnqueuedEventProperties() {
@@ -93,11 +95,11 @@ class TestAzureEventHubsProperties extends TestAzureEventHubsCommonProperties im
             this.partitionOwnershipExpirationInterval = partitionOwnershipExpirationInterval;
         }
 
-        public EventBatch getBatch() {
+        public EventBatchProperties getBatch() {
             return batch;
         }
 
-        public LoadBalancing getLoadBalancing() {
+        public LoadBalancingProperties getLoadBalancing() {
             return loadBalancing;
         }
 

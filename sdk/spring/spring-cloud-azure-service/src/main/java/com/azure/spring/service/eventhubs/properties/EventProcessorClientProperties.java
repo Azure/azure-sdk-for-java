@@ -25,79 +25,45 @@ public interface EventProcessorClientProperties extends EventHubConsumerProperti
     /**
      * Event processor load balancing properties.
      */
-    class LoadBalancing {
+    interface LoadBalancing {
 
         /**
-         * The time interval between load balancing update cycles.
+         * Get the time interval between load balancing update cycles.
+         * @return the update interval.
          */
-        private Duration updateInterval;
-        /**
-         * The load balancing strategy for claiming partition ownership.
-         */
-        private LoadBalancingStrategy strategy = LoadBalancingStrategy.BALANCED;
-        /**
-         * The time duration after which the ownership of partition expires.
-         */
-        private Duration partitionOwnershipExpirationInterval;
-
-        public Duration getUpdateInterval() {
-            return updateInterval;
-        }
-
-        public void setUpdateInterval(Duration updateInterval) {
-            this.updateInterval = updateInterval;
-        }
-
-        public LoadBalancingStrategy getStrategy() {
-            return strategy;
-        }
-
-        public void setStrategy(LoadBalancingStrategy strategy) {
-            this.strategy = strategy;
-        }
-
-        public Duration getPartitionOwnershipExpirationInterval() {
-            return partitionOwnershipExpirationInterval;
-        }
+        Duration getUpdateInterval();
 
         /**
-         * Set the partition ownership expiration interval.
-         * @param partitionOwnershipExpirationInterval the partition ownership expiration interval.
+         * Get the load balancing strategy for claiming partition ownership.
+         * @return the load balancing strategy.
          */
-        public void setPartitionOwnershipExpirationInterval(Duration partitionOwnershipExpirationInterval) {
-            this.partitionOwnershipExpirationInterval = partitionOwnershipExpirationInterval;
-        }
+        LoadBalancingStrategy getStrategy();
+
+        /**
+         * Get the time duration after which the ownership of partition expires.
+         * @return the expiration interval.
+         */
+        Duration getPartitionOwnershipExpirationInterval();
+
     }
 
     /**
      * Event processor batch properties.
      */
-    class EventBatch {
+    interface EventBatch {
 
         /**
-         * The max time duration to wait to receive an event before processing events.
+         * Get the max time duration to wait to receive an event before processing events.
+         * @return the max wait time.
          */
-        private Duration maxWaitTime;
+        Duration getMaxWaitTime();
+
         /**
-         * The maximum number of events that will be in the batch.
+         * Get the maximum number of events that will be in the batch.
+         * @return the max size.
          */
-        private Integer maxSize;
+        Integer getMaxSize();
 
-        public Duration getMaxWaitTime() {
-            return maxWaitTime;
-        }
-
-        public void setMaxWaitTime(Duration maxWaitTime) {
-            this.maxWaitTime = maxWaitTime;
-        }
-
-        public Integer getMaxSize() {
-            return maxSize;
-        }
-
-        public void setMaxSize(Integer maxSize) {
-            this.maxSize = maxSize;
-        }
     }
 
     /**
