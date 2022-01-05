@@ -117,7 +117,9 @@ pr:
       - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
 
 parameters:
-  Artifacts:
+  - name: Artifacts
+    type: object
+    default:
     - name: spring-cloud-azure-core
       groupId: com.azure.spring
       safeName: springcloudazurecore
