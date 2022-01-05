@@ -67,6 +67,7 @@
   },
   "variables": {
     "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/5ae67dd6-50cb-40e7-96ff-dc2bfa4b606b')]",
+    "roleDefinitionIdAAD": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/3913510d-42f4-4e42-8a64-420c390055eb')]",
     "uniqueAzConfigName": "[concat(parameters('baseName'),'-' , parameters('configurationStores_azconfig_java_name'))]",
     "uniqueAppInsightsName": "[concat(parameters('baseName'),'-' , parameters('appinsights_java_name'))]",
     "endpointValue": "[concat('https://', parameters('baseName'), '-', parameters('configurationStores_azconfig_java_name'), parameters('endpointSuffix'))]",
@@ -97,6 +98,15 @@
       "name": "[guid(resourceGroup().id)]",
       "properties": {
         "roleDefinitionId": "[variables('roleDefinitionId')]",
+        "principalId": "[parameters('testApplicationOid')]"
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2018-09-01-preview",
+      "name": "[guid(resourceGroup().id)]",
+      "properties": {
+        "roleDefinitionId": "[variables('roleDefinitionIdAAD')]",
         "principalId": "[parameters('testApplicationOid')]"
       }
     },
@@ -177,6 +187,10 @@
     "roleDefinitionId": {
       "type": "string",
       "value": "[variables('roleDefinitionId')]"
+    },
+    "roleDefinitionIdAAD": {
+      "type": "string",
+      "value": "[variables('roleDefinitionIdAAD')]"
     },
     "APPLICATIONINSIGHTS_CONNECTION_STRING": {
       "value": "[reference(resourceId('Microsoft.Insights/components', variables('uniqueAppInsightsName')), '2020-02-02-preview').ConnectionString]",
