@@ -47,14 +47,15 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
 
     // When we regenerate recordings, make sure that the schema group matches what we are persisting.
     static final String PLAYBACK_TEST_GROUP = "mygroup";
+    static final String PLAYBACK_ENDPOINT = "https://foo.servicebus.windows.net";
 
     private String schemaGroup;
     private SchemaRegistryClientBuilder builder;
-    private TokenCredential tokenCredential;
-    private String endpoint;
 
     @Override
     protected void beforeTest() {
+        TokenCredential tokenCredential;
+        String endpoint;
         if (interceptorManager.isPlaybackMode()) {
             tokenCredential = mock(TokenCredential.class);
             schemaGroup = PLAYBACK_TEST_GROUP;
@@ -66,7 +67,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
                 });
             });
 
-            endpoint = "https://foo.servicebus.windows.net";
+            endpoint = PLAYBACK_ENDPOINT;
         } else {
             tokenCredential = new DefaultAzureCredentialBuilder().build();
             endpoint = System.getenv(SCHEMA_REGISTRY_ENDPOINT);
@@ -304,54 +305,6 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
                 assertEquals(404, ((ResourceNotFoundException) error).getResponse().getStatusCode());
             })
             .verify();
-    }
-
-    /**
-     * This is run in playback mode because the GUID is unique for each schema. This is a schema that was previously
-     * registered in Azure Portal.
-     */
-    @Test
-    public void getSchemaByIdFromPortal() {
-        // Arrange
-        final SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder()
-            .fullyQualifiedNamespace(endpoint)
-            .credential(tokenCredential)
-            .httpClient(interceptorManager.getPlaybackClient())
-            .buildAsyncClient();
-        final String schemaId = "f45b841fcb88401e961ca45477906be9";
-
-        // Act & Assert
-        StepVerifier.create(client.getSchema(schemaId))
-            .assertNext(schema -> {
-                assertNotNull(schema.getProperties());
-                assertEquals(schemaId, schema.getProperties().getId());
-                assertEquals(SchemaFormat.AVRO, schema.getProperties().getFormat());
-            })
-            .verifyComplete();
-    }
-
-    /**
-     * Verifies that the new serializer works with 1.0.0 schema registry client.
-     * https://search.maven.org/artifact/com.azure/azure-data-schemaregistry/1.0.0/
-     */
-    @Test
-    public void getSchemaBackCompatibility() {
-        // Arrange
-        final SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder()
-            .fullyQualifiedNamespace(endpoint)
-            .credential(tokenCredential)
-            .httpClient(interceptorManager.getPlaybackClient())
-            .buildAsyncClient();
-        final String schemaId = "e5691f79e3964309ac712ec52abcccca";
-
-        // Act & Assert
-        StepVerifier.create(client.getSchema(schemaId))
-            .assertNext(schema -> {
-                assertNotNull(schema.getProperties());
-                assertEquals(schemaId, schema.getProperties().getId());
-                assertEquals(SchemaFormat.AVRO, schema.getProperties().getFormat());
-            })
-            .verifyComplete();
     }
 
     static void assertSchemaRegistrySchema(SchemaRegistrySchema actual, String expectedSchemaId, SchemaFormat format,
