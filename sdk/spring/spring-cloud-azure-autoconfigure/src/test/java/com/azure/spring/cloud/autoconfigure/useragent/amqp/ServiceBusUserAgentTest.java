@@ -8,6 +8,7 @@ import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.useragent.util.UserAgentTestUtil;
+import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.service.servicebus.factory.ServiceBusClientBuilderFactory;
 import org.junit.jupiter.api.Assertions;
@@ -15,7 +16,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
-import static com.azure.spring.core.AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ServiceBusUserAgentTest {
@@ -37,7 +37,7 @@ class ServiceBusUserAgentTest {
                 ServiceBusClientBuilder builder = context.getBean(ServiceBusClientBuilder.class);
                 ClientOptions options = (ClientOptions) UserAgentTestUtil.getPrivateFieldValue(ServiceBusClientBuilder.class, "clientOptions", builder);
                 Assertions.assertNotNull(options);
-                Assertions.assertEquals(AZURE_SPRING_SERVICE_BUS, options.getApplicationId());
+                Assertions.assertEquals(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS, options.getApplicationId());
 
             });
     }

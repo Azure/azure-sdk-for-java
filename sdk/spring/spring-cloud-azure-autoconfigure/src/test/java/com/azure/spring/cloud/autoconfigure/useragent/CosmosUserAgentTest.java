@@ -10,13 +10,13 @@ import com.azure.spring.cloud.autoconfigure.cosmos.AzureCosmosAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.cosmos.properties.AzureCosmosProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.useragent.util.UserAgentTestUtil;
+import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.service.cosmos.CosmosClientBuilderFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
-import static com.azure.spring.core.AzureSpringIdentifier.AZURE_SPRING_COSMOS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
@@ -43,7 +43,7 @@ class CosmosUserAgentTest {
                 CosmosClientBuilder builder = context.getBean(CosmosClientBuilder.class);
                 String userAgent = (String) UserAgentTestUtil.getPrivateFieldValue(CosmosClientBuilder.class, "userAgentSuffix", builder);
                 Assertions.assertNotNull(userAgent);
-                Assertions.assertEquals(AZURE_SPRING_COSMOS, userAgent);
+                Assertions.assertEquals(AzureSpringIdentifier.AZURE_SPRING_COSMOS, userAgent);
             });
     }
 
