@@ -1,5 +1,16 @@
 # Ingesting data into Azure Cosmos DB via the Spark Connector for Spark 3.*
 
+## Checklist
+The checklist below can help to identify which sections of this document will be relevant for your scenario.
+- [ ] Target container has been provisioned with reasonable number of physical partitions and sufficient RUs. - [Creating a new container](#creating-a-new-container-if-the-ingestion-via-the-cosmos-spark-connector-is-for-the-initial-migration)
+- [ ] The chosen partition key on the target container allows for reasonable distribution of documents and load. - [Choosing a good partition key](#choosing-a-good-partition-key)
+- [ ] The indexing policy of the target container has been tuned to minimize the RU-charge overhead necessary for indexing purposes. - [Indexing policy](#indexing-policy)
+- [ ] An `id` column exists in the input data frame (and values are immutable or DF has been persisted) being written to Cosmos DB. - [Populating "id" column](#populating-id-column)
+- [ ] The incoming data frame, which is written to Cosmos DB, has a reasonable number of Spark partitions and distribution of data across physical partitions in Cosmos DB. - [Check whether repartitioning is required](#check-whether-repartitioning-is-required) and [Optimization recommendations when migrating  into large containers (>> 100 physical partitions or >> 5 TB of data)](#optimization-recommendations-when-migrating-into-large-containers--100-physical-partitions-or--5-tb-of-data)
+- [ ] The serialization settings have been checked to achieve the right behaviour for skipping json properties with null/default values if desired. - [Serialization settings](#serialization-settings)
+- [ ] Bulk mode is enabled when writing to Cosmos DB.
+- [ ] The ThroughputControl has been configured to avoid consuming more RUs for the ingestion than intended. - [Client-side throughput control](#throughput-control)
+
 ## Introduction
 The `cosmos.oltp` data source can be used to write a data frame into Cosmos DB. By default the ingestion will happen using bulk mode and parameters like the `micro batch size` are automatically modified behind the scenes depending on the rate of throttled requests and transient errors like request timeouts. The `cosmos.oltp` data source will attempt to saturate the available throughput. So, a certain amount of 429 (Throttled requests) are expected and are actually a good sign, because it means, the available throughput is really  saturated. If it is not desired to saturate the entire available throughput, [client-side throughput control](#throughput-control) can be enabled - which means the ingestion will only attempt to saturate the throughput budget provided via throughput control. A good conceptual overview of the `bulk mode` protocol can be found here [Introducing bulk support in the .Net SDK](https://devblogs.microsoft.com/cosmosdb/introducing-bulk-support-in-the-net-sdk/) and here [Bulk support improvements](https://devblogs.microsoft.com/cosmosdb/bulk-improvements-net-sdk/) -the blog post is for the .Net SDK but the concept and protocol used is identical in the Java SDK as well.
 
@@ -36,17 +47,6 @@ You can find more details about the client-throughput control feature and its co
 All transient errors (Throttled requests, network timeouts, any recoverable service errors etc.) are retried automatically by the `cosmos.oltp` data source. Any non-transient errors - for example "400-Bad request" when the value of the "id" column is invalid - which would not be recoverable by retries, will result in the Spark job failing. When your container has a "unique key constraint policy" any 409 "Conflict" (indicating violation of unique key constraint) handling will depend on the `spark.cosmos.write.strategy`.
 - For `ItemOverwrite` a 409 - Conflict due to unique key violation will result in an error - and the Spark hob will fail.
 - For `ItemAppend` like conflicts on pk+id any unique key policy constraint violation will be ignored.
-
-## Checklist
-The checklist below can help to identify which sections of this document will be relevant for your scenario.
-- [ ] Target container has been provisioned with reasonable number of physical partitions and sufficient RUs. - [Creating a new container](#creating-a-new-container-if-the-ingestion-via-the-cosmos-spark-connector-is-for-the-initial-migration)
-- [ ] The chosen partition key on the target container allows for reasonable distribution of documents and load. - [Choosing a good partition key](#choosing-a-good-partition-key)
-- [ ] The indexing policy of the target container has been tuned to minimize the RU-charge overhead necessary for indexing purposes. - [Indexing policy](#indexing-policy)
-- [ ] An `id` column exists in the input data frame (and values are immutable or DF has been persisted) being written to Cosmos DB. - [Populating "id" column](#populating-id-column)
-- [ ] The incoming data frame, which is written to Cosmos DB, has a reasonable number of Spark partitions and distribution of data across physical partitions in Cosmos DB. - [Check whether repartitioning is required](#check-whether-repartitioning-is-required) and [Optimization recommendations when migrating  into large containers (>> 100 physical partitions or >> 5 TB of data)](#optimization-recommendations-when-migrating-into-large-containers--100-physical-partitions-or--5-tb-of-data)
-- [ ] The serialization settings have been checked to achieve the right behaviour for skipping json properties with null/default values if desired. - [Serialization settings](#serialization-settings)
-- [ ] Bulk mode is enabled when writing to Cosmos DB.
-- [ ] The ThroughputControl has been configured to avoid consuming more RUs for the ingestion than intended. - [Client-side throughput control](#throughput-control)
 
 ## Preparation
 Below are a couple of tips/best-practices that can help you to prepare for a data migration into a Cosmos DB container.
