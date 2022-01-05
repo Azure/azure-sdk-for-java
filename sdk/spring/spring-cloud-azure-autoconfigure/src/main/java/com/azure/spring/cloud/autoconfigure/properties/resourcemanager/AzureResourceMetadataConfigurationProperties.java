@@ -1,21 +1,28 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.core.properties.resource;
+package com.azure.spring.cloud.autoconfigure.properties.resourcemanager;
+
+import com.azure.spring.core.properties.AzureResourceMetadata;
 
 /**
  * Metadata defining an Azure resource.
  */
-public class AzureResourceMetadata {
-
-    private String resourceGroup;
-    private String resourceId;
-    private String region;
+public class AzureResourceMetadataConfigurationProperties implements AzureResourceMetadata {
 
     /**
-     * Get the resource group of this resource.
-     * @return The resource group.
+     * The resource group holds an Azure resource.
      */
+    private String resourceGroup;
+    /**
+     * ID of an Azure resource.
+     */
+    private String resourceId;
+    /**
+     * The region of an Azure resource.
+     */
+    private String region;
+
     public String getResourceGroup() {
         return resourceGroup;
     }
@@ -28,10 +35,6 @@ public class AzureResourceMetadata {
         this.resourceGroup = resourceGroup;
     }
 
-    /**
-     * Get the resource id of this resource.
-     * @return The resource id.
-     */
     public String getResourceId() {
         return resourceId;
     }
@@ -44,10 +47,6 @@ public class AzureResourceMetadata {
         this.resourceId = resourceId;
     }
 
-    /**
-     * Get the region of this resource.
-     * @return The region.
-     */
     public String getRegion() {
         return region;
     }

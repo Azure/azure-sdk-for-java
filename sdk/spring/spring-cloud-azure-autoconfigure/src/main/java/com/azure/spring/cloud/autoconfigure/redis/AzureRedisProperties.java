@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.redis;
 
-import com.azure.spring.core.properties.resource.AzureResourceMetadata;
+import com.azure.spring.cloud.autoconfigure.properties.resourcemanager.AzureResourceMetadataConfigurationProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
@@ -16,7 +16,7 @@ public class AzureRedisProperties {
     private String name;
 
     @NestedConfigurationProperty
-    private final AzureResourceMetadata resource = new AzureResourceMetadata();
+    private final AzureResourceMetadataConfigurationProperties resource = new AzureResourceMetadataConfigurationProperties();
 
     public String getName() {
         return name;
@@ -26,7 +26,7 @@ public class AzureRedisProperties {
         this.name = name;
     }
 
-    public AzureResourceMetadata getResource() {
+    public AzureResourceMetadataConfigurationProperties getResource() {
         return resource;
     }
 

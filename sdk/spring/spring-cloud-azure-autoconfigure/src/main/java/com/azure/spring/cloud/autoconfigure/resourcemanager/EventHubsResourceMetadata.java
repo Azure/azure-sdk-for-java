@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.resourcemanager;
 
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
-import com.azure.spring.core.properties.resource.AzureResourceMetadata;
+import com.azure.spring.cloud.autoconfigure.properties.resourcemanager.AzureResourceMetadataConfigurationProperties;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -12,7 +12,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * Azure Event Hubs resource metadata.
  */
 @ConfigurationProperties(prefix = AzureEventHubsProperties.PREFIX + ".resource")
-public class EventHubsResourceMetadata extends AzureResourceMetadata {
+public class EventHubsResourceMetadata extends AzureResourceMetadataConfigurationProperties {
 
     @Value("${spring.cloud.azure.eventhubs.namespace:}")
     private String name;

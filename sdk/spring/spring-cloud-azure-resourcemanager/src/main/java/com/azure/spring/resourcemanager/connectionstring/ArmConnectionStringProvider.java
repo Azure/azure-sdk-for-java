@@ -5,7 +5,7 @@ package com.azure.spring.resourcemanager.connectionstring;
 
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.core.connectionstring.ConnectionStringProvider;
-import com.azure.spring.core.properties.resource.AzureResourceMetadata;
+import com.azure.spring.core.properties.AzureResourceMetadata;
 
 /**
  * To provide an Azure service connection string from Azure Resource Manager (ARM).

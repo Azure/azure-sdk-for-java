@@ -5,7 +5,7 @@ package com.azure.spring.resourcemanager.implementation.crud;
 
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.spring.core.properties.resource.AzureResourceMetadata;
+import com.azure.spring.core.properties.AzureResourceMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;

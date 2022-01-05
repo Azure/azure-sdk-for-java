@@ -6,7 +6,7 @@ package com.azure.spring.resourcemanager.implementation.crud;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.eventhubs.models.EventHubConsumerGroup;
-import com.azure.spring.core.properties.resource.AzureResourceMetadata;
+import com.azure.spring.core.properties.AzureResourceMetadata;
 import reactor.util.function.Tuple3;
 import reactor.util.function.Tuples;
 
