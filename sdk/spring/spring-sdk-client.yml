@@ -47,18 +47,18 @@ parameters:
   - name: PreBuildSteps
     type: object
     default: []
-  - name: NewSpringBootVersion
+  - name: CurrentSpringBootVersion
     type: string
-    default: 2.6.1
-  - name: NewSpringCloudVersion
+    default: 'not-specified' # Set a default that breaks in obvious ways.
+  - name: CurrentSpringCloudVersion
     type: string
-    default: 2021.0.0
+    default: 'not-specified' # Set a default that breaks in obvious ways.
   - name: LastSpringBootVersion
     type: string
-    default: 2.5.7
+    default: 'not-specified' # Set a default that breaks in obvious ways.
   - name: LastSpringCloudVersion
     type: string
-    default: 2020.0.4
+    default: 'not-specified' # Set a default that breaks in obvious ways.
 
 stages:
   - stage: Build
@@ -92,13 +92,13 @@ stages:
             - AZURE_TEST.*=.*/
           PreBuildSteps: ${{ parameters.PreBuildSteps }}
 
-  - stage: TestNewSpringBootVersion
+  - stage: TestCurrentSpringBootVersion
     jobs:
       - template: ../../sdk/spring/spring-sdk-client-test.yml
         parameters:
           Artifacts: ${{ parameters.Artifacts }}
-          SpringBootVersion: ${{ parameters.NewSpringBootVersion }}
-          SpringCloudVersion: ${{ parameters.NewSpringCloudVersion }}
+          SpringBootVersion: ${{ parameters.CurrentSpringBootVersion }}
+          SpringCloudVersion: ${{ parameters.CurrentSpringCloudVersion }}
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
 
   - stage: TestLastSpringBootVersion

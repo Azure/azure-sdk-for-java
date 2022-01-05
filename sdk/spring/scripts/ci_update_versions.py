@@ -4,7 +4,7 @@
 # Make sure 'spring_boot_{Spring boot version}_managed_external_dependencies.txt' exists before use it.
 #
 # Sample:
-#  `python .\sdk\spring\scripts\ci_update_versions.py --sbv 2.6.1`.
+#  `python .\sdk\spring\scripts\ci_update_versions.py --s 2.6.1`.
 #
 # The script must be run at the root of azure-sdk-for-java.
 
@@ -19,6 +19,7 @@ include_update_marker = re.compile(r'\{x-include-update;([^;]+);([^}]+)\}')
 version_update_marker = re.compile(r'\{x-version-update;([^;]+);([^}]+)\}')
 external_dependency_include_regex = r'(?<=<include>).+?(?=</include>)'
 external_dependency_version_regex = r'(?<=<version>).+?(?=</version>)'
+SPRING_BOOT_MANAGED_EXTERNAL_DEPENDENCIES_FILE = 'sdk/spring/scripts/spring_boot_{}_managed_external_dependencies.txt'
 
 def get_version_type(match):
     return match.group(2)
@@ -73,11 +74,13 @@ def load_version_map_from_file(the_file, version_map):
                 value = key_value[1]
                 version_map[key] = value
 
+def get_spring_boot_managed_external_dependencies_file(spring_boot_version):
+    return SPRING_BOOT_MANAGED_EXTERNAL_DEPENDENCIES_FILE.format(spring_boot_version)
+
 def update_versions_all(target_folder, spring_boot_version):
-    SPRING_BOOT_MANAGED_EXTERNAL_DEPENDENCIES_FILE_NAME = 'sdk/spring/scripts/spring_boot_{}_managed_external_dependencies.txt'.format(spring_boot_version)
     external_dependency_version_map = {}
     # Read artifact version from dependency_file.
-    dependency_file = SPRING_BOOT_MANAGED_EXTERNAL_DEPENDENCIES_FILE_NAME
+    dependency_file = get_spring_boot_managed_external_dependencies_file(spring_boot_version)
     log.info('external_dependency_file=' + dependency_file)
     load_version_map_from_file(dependency_file, external_dependency_version_map)
     for root, _, files in os.walk(target_folder):
@@ -88,8 +91,8 @@ def update_versions_all(target_folder, spring_boot_version):
 
 def main():
     parser = argparse.ArgumentParser(description='Replace version numbers in poms.')
-    parser.add_argument('--target-folder', '--tf', type=str, required=False, default="./sdk/spring", help='Set target folder.')
-    parser.add_argument('--spring-boot-version', '--sbv', type=str, required=True)
+    parser.add_argument('--target-folder', '-t', type=str, required=False, default="./sdk/spring", help='Set target folder.')
+    parser.add_argument('--spring-boot-version', '-s', type=str, required=True)
     parser.add_argument(
         '--log',
         type=str,

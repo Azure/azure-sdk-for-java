@@ -55,8 +55,8 @@ trigger:
       - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus/pom.xml
-      - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
       - sdk/spring/spring-cloud-azure-test-eventhubs-binder/pom.xml
+      - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
 
 pr:
   branches:
@@ -113,14 +113,14 @@ pr:
       - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus/pom.xml
-      - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
       - sdk/spring/spring-cloud-azure-test-eventhubs-binder/pom.xml
+      - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
 
 extends:
   template: ../../sdk/spring/spring-sdk-client.yml
   parameters:
-    NewSpringBootVersion: 2.6.1
-    NewSpringCloudVersion: 2021.0.0
+    CurrentSpringBootVersion: 2.6.1
+    CurrentSpringCloudVersion: 2021.0.0
     LastSpringBootVersion: 2.5.7
     LastSpringCloudVersion: 2020.0.4
     ServiceDirectory: spring

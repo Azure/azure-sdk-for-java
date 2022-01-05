@@ -4,7 +4,7 @@
 #
 # The script must be run at the root of azure-sdk-for-java.
 def main():
-    target_file = './sdk/spring/tree.txt'
+    target_file = './sdk/spring/dependency_tree.txt'
     with open(target_file, 'r') as file:
         for line in file:
             if line.startswith('[INFO]'):

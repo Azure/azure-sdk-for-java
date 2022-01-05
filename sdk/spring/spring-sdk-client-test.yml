@@ -39,10 +39,10 @@ parameters:
     default: []
   - name: SpringBootVersion
     type: string
-    default: 2.6.1
+    default: 'not-specified' # Set a default that breaks in obvious ways.
   - name: SpringCloudVersion
     type: string
-    default: 2021.0.0
+    default: 'not-specified' # Set a default that breaks in obvious ways.
 
 jobs:
   - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
@@ -80,7 +80,7 @@ jobs:
               pip install in-place & pip install termcolor
             displayName: 'python module install'
           - script: |
-              python ./sdk/spring/scripts/ci_update_versions.py --sbv ${{parameters.SpringBootVersion}}
+              python ./sdk/spring/scripts/ci_update_versions.py -s ${{parameters.SpringBootVersion}}
             displayName: 'update spring boot versions'
           - script: |
               python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b ${{parameters.SpringBootVersion}} -c ${{parameters.SpringCloudVersion}}
@@ -124,8 +124,8 @@ jobs:
           pip install in-place & pip install termcolor
         displayName: 'python module install'
       - script: |
-          python ./sdk/spring/scripts/ci_update_versions.py --sbv ${{parameters.SpringBootVersion}}
-        displayName: 'update spring boot versions'
+          python ./sdk/spring/scripts/ci_update_versions.py -s ${{parameters.SpringBootVersion}}
+        displayName: 'update external dependencies version'
       - script: |
           python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b ${{parameters.SpringBootVersion}} -c ${{parameters.SpringCloudVersion}}
         displayName: 'insert dependency management'
@@ -133,8 +133,8 @@ jobs:
           mvn -f sdk/spring/pom.xml -P dev --batch-mode --fail-at-end $(WagonOptions) -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true -pl $(ProjectList) -am install
         displayName: 'maven_install'
       - script: |
-          cd ./sdk/spring && mvn dependency:tree>tree.txt
+          cd ./sdk/spring && mvn dependency:tree>dependency_tree.txt
         displayName: 'maven_dependency'
       - script: |
-          python ./sdk/spring/scripts/ci_read_dptree.py
+          python ./sdk/spring/scripts/ci_read_dependency_tree.py
         displayName: '${{parameters.SpringBootVersion}}_dependencyTree_output'
