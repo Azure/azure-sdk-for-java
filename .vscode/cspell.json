@@ -46,7 +46,10 @@
     ".vscode/cspell.json",
     "eng/code-quality-reports/src/main/resources",
     "*.parquet",
-    "sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/implementation/guava25*/**/*.java"
+    "sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/implementation/guava25*/**/*.java",
+    "**/implementation/**/models/**",
+    "**/implementation/**/*Impl*",
+    "**/*-perf/**"
   ],
   "words": [
     "adal",
