@@ -117,8 +117,10 @@ pr:
       - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
 
 extends:
-  template: ../../sdk/spring/spring-sdk-client.yml
+#  template: ../../sdk/spring/spring-sdk-client.yml
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
+    Spring: true
     CurrentSpringBootVersion: 2.6.1
     CurrentSpringCloudVersion: 2021.0.0
     LastSpringBootVersion: 2.5.7
