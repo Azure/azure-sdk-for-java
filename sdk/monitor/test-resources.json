@@ -171,8 +171,8 @@
     },
     {
       "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2020-10-01-preview",
-      "name": "[guid(resourceGroup().id)]",
+      "apiVersion": "2018-09-01-preview",
+      "name": "[guid(concat(resourceGroup().id, variables('uniqueAppInsightsName')))]",
       "properties": {
         "roleDefinitionId": "[variables('roleDefinitionIdAAD')]",
         "principalId": "[parameters('testApplicationOid')]"
