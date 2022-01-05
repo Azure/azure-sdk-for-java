@@ -5,11 +5,11 @@
 ### Features Added
 - Added ability to customize the refresh time before the token expires.
 - Added new constructor with required param `tokenRefresher` for `CommunicationTokenRefreshOptions`
-- Deprecated old constructor overloads in `CommunicationTokenRefreshOptions`, replacing with fluent setters
+- Deprecated old constructor overloads in `CommunicationTokenRefreshOptions` and replaced by fluent setters
 - Added fluent setters for optional properties:
-    - Added `setRefreshProactively(boolean refreshProactively)` setter, that allows setting whether the token should be proactively renewed prior to its expiry or on demand.
-    - Added `setInitialToken(String initialToken)` setter, that allows setting the optional serialized JWT token
-    - Added `setRefreshIntervalBeforeTokenExpiry(Duration refreshIntervalBeforeTokenExpiry)` setter, that allows setting the time span before token expiry that causes the tokenRefresher to be called if refreshProactively is true
+    - Added `setRefreshProactively(boolean refreshProactively)` setter that allows setting whether the token should be proactively renewed prior to its expiry or on demand.
+    - Added `setInitialToken(String initialToken)` setter that allows setting the optional serialized JWT token
+    - Added `setRefreshIntervalBeforeTokenExpiry(Duration refreshIntervalBeforeTokenExpiry)` setter that allows setting the time span before token expiry that causes the `tokenRefresher` to be called if `refreshProactively` is true
 
 ### Breaking Changes
 
