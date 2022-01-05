@@ -64,13 +64,13 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>msal4j</artifactId>
-      <version>1.11.0</version> <!-- {x-version-update;eventhubs_com.microsoft.azure:msal4j;external_dependency} -->
+      <version>0.4.0-preview</version> <!-- {x-version-update;eventhubs_com.microsoft.azure:msal4j;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>adal4j</artifactId>
-      <version>1.6.7</version> <!-- {x-version-update;com.microsoft.azure:adal4j;external_dependency} -->
+      <version>1.6.5</version> <!-- {x-version-update;com.microsoft.azure:adal4j;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
