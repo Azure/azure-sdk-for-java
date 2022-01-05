@@ -6,7 +6,7 @@ package com.azure.spring.resourcemanager.connectionstring;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.spring.core.service.AzureServiceType;
-import com.azure.spring.core.properties.AzureResourceMetadata;
+import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 import com.azure.spring.resourcemanager.implementation.crud.StorageAccountCrud;
 
 /**

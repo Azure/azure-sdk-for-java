@@ -6,7 +6,7 @@ package com.azure.spring.resourcemanager.implementation.crud;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
-import com.azure.spring.core.properties.AzureResourceMetadata;
+import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 
 /**
  * Resource manager for Event Hubs namespace.

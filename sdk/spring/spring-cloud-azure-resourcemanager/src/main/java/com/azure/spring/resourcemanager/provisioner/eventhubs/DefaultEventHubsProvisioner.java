@@ -4,7 +4,7 @@
 package com.azure.spring.resourcemanager.provisioner.eventhubs;
 
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.spring.core.properties.AzureResourceMetadata;
+import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 import com.azure.spring.resourcemanager.implementation.crud.EventHubNamespaceCrud;
 import com.azure.spring.resourcemanager.implementation.crud.EventHubsConsumerGroupCrud;
 import com.azure.spring.resourcemanager.implementation.crud.EventHubsCrud;

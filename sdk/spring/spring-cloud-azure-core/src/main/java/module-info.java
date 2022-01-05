@@ -26,6 +26,7 @@ module com.azure.spring.core {
     exports com.azure.spring.core.properties.client;
     exports com.azure.spring.core.properties.profile;
     exports com.azure.spring.core.properties.proxy;
+    exports com.azure.spring.core.properties.resource;
     exports com.azure.spring.core.properties.retry;
     exports com.azure.spring.core.resource;
     exports com.azure.spring.core.service;

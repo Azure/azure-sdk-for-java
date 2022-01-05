@@ -6,7 +6,7 @@ package com.azure.spring.resourcemanager.implementation.crud;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.storage.models.StorageAccount;
-import com.azure.spring.core.properties.AzureResourceMetadata;
+import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 
 /**
  * Resource manager for Storage account.
