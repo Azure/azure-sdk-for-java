@@ -41,13 +41,16 @@ Licensed under the MIT License.
     <codesnippet.skip>false</codesnippet.skip>
     <javadocDoclet></javadocDoclet>
     <javadocDocletOptions></javadocDocletOptions>
+
+    <!-- CosmosSkip - This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
+    <revapi.skip>true</revapi.skip>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.25.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.24.0</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
 
     <dependency>
@@ -159,16 +162,6 @@ Licensed under the MIT License.
           <source>1.8</source>
           <target>1.8</target>
           <failOnWarning>true</failOnWarning>
-        </configuration>
-      </plugin>
-
-      <!-- CosmosSkip - This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
-      <plugin>
-        <groupId>org.revapi</groupId>
-        <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
-        <configuration>
-          <skip>true</skip>
         </configuration>
       </plugin>
 
