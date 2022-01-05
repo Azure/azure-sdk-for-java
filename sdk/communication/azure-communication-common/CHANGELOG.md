@@ -3,7 +3,7 @@
 ## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
-- Added the ability to customize the refresh time before the token expires.
+- Added ability to customize the refresh time before the token expires.
 - Added new constructor with required param `tokenRefresher` for `CommunicationTokenRefreshOptions`
 - Deprecated old constructor overloads in `CommunicationTokenRefreshOptions`, replacing with fluent setters
 - Added fluent setters for optional properties:
