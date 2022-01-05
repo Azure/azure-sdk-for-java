@@ -1,16 +1,16 @@
 # Release History
 
-## 1.12.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.11.5 (2022-01-05)
 
 ### Bugs Fixed
 - Set default `maxConnections` value to match the default used in `reactor-netty` when `HttpClientOptions` is set but 
-`maximumConnectionPoolSize` is not specified.
+  `maximumConnectionPoolSize` is not specified. ([#26083](https://github.com/Azure/azure-sdk-for-java/pull/26083))
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.23.1` to `1.24.0`.
 
 ## 1.11.4 (2021-12-07)
 
