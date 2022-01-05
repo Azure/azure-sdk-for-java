@@ -431,7 +431,7 @@
       <plugin>
         <groupId>org.revapi</groupId>
         <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.14.6-SNAPSHOT</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <version>0.14.6</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <goals>
@@ -759,7 +759,7 @@
         <plugin>
           <groupId>org.revapi</groupId>
           <artifactId>revapi-maven-plugin</artifactId>
-          <version>0.14.6-SNAPSHOT</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+          <version>0.14.6</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
           <configuration>
             <skip>${revapi.skip}</skip>
             <convertAnalysisConfigurationFiles>true</convertAnalysisConfigurationFiles>
@@ -791,7 +791,7 @@
             <dependency>
               <groupId>org.revapi</groupId>
               <artifactId>revapi-java</artifactId>
-              <version>0.26.1-SNAPSHOT</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
+              <version>0.26.1</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
             </dependency>
             <dependency>
               <groupId>org.revapi</groupId>
@@ -870,7 +870,7 @@
       <plugin>
         <groupId>org.revapi</groupId>
         <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.14.6-SNAPSHOT</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <version>0.14.6</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
         <configuration>
           <checkDependencies>false</checkDependencies>
         </configuration>
