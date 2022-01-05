@@ -99,7 +99,7 @@ stages:
   - ${{if eq(parameters.Spring, 'true')}}:
     - stage: TestCurrentSpringBootVersion
       jobs:
-        - template: ../../sdk/spring/spring-sdk-client-test.yml
+        - template: ../../../../sdk/spring/spring-sdk-client-test.yml
           parameters:
             Artifacts: ${{ parameters.Artifacts }}
             SpringBootVersion: ${{ parameters.CurrentSpringBootVersion }}
@@ -108,7 +108,7 @@ stages:
 
     - stage: TestLastSpringBootVersion
       jobs:
-        - template: ../../sdk/spring/spring-sdk-client-test.yml
+        - template: ../../../../sdk/spring/spring-sdk-client-test.yml
           parameters:
             Artifacts: ${{ parameters.Artifacts }}
             SpringBootVersion: ${{ parameters.LastSpringBootVersion }}
