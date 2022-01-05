@@ -48,21 +48,10 @@ parameters:
   type: object
   default: []
 
-- name: CurrentSpringBootVersion
-  type: string
-  default: 'not-specified' # Set a default that breaks in obvious ways.
-- name: CurrentSpringCloudVersion
-  type: string
-  default: 'not-specified' # Set a default that breaks in obvious ways.
-- name: LastSpringBootVersion
-  type: string
-  default: 'not-specified' # Set a default that breaks in obvious ways.
-- name: LastSpringCloudVersion
-  type: string
-  default: 'not-specified' # Set a default that breaks in obvious ways.
-- name: Spring
-  type: boolean
-  default: false
+- name: AdditionalStagesOfSpring
+  type: object
+  default: {}
+
 
 stages:
   - stage: Build
@@ -96,24 +85,7 @@ stages:
           - AZURE_TEST.*=.*/
         PreBuildSteps: ${{ parameters.PreBuildSteps }}
 
-  - ${{if eq(parameters.Spring, 'true')}}:
-    - stage: TestCurrentSpringBootVersion
-      jobs:
-        - template: ../../../../sdk/spring/spring-sdk-client-test.yml
-          parameters:
-            Artifacts: ${{ parameters.Artifacts }}
-            SpringBootVersion: ${{ parameters.CurrentSpringBootVersion }}
-            SpringCloudVersion: ${{ parameters.CurrentSpringCloudVersion }}
-            ServiceDirectory: ${{ parameters.ServiceDirectory }}
-
-    - stage: TestLastSpringBootVersion
-      jobs:
-        - template: ../../../../sdk/spring/spring-sdk-client-test.yml
-          parameters:
-            Artifacts: ${{ parameters.Artifacts }}
-            SpringBootVersion: ${{ parameters.LastSpringBootVersion }}
-            SpringCloudVersion: ${{ parameters.LastSpringCloudVersion }}
-            ServiceDirectory: ${{ parameters.ServiceDirectory }}
+  ${{parameters.AdditionalStagesOfSpring}}
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:

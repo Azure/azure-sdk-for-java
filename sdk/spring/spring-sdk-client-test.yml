@@ -13,7 +13,7 @@ parameters:
     default: client
   - name: ServiceDirectory
     type: string
-    default: not-specified
+    default: spring
   - name: MatrixConfigs
     type: object
     default:

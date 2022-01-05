@@ -120,7 +120,6 @@ extends:
 #  template: ../../sdk/spring/spring-sdk-client.yml
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
-    Spring: true
     CurrentSpringBootVersion: 2.6.1
     CurrentSpringCloudVersion: 2021.0.0
     LastSpringBootVersion: 2.5.7
@@ -336,3 +335,18 @@ extends:
         skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
+    AdditionalStagesOfSpring:
+      - stage: TestCurrentSpringBootVersion
+        jobs:
+          - template: ../../../../sdk/spring/spring-sdk-client-test.yml
+            parameters:
+              Artifacts: ${{Artifacts }}
+              SpringBootVersion: 2.6.1
+              SpringCloudVersion: 2021.0.0
+      - stage: TestLastSpringBootVersion
+        jobs:
+          - template: ../../../../sdk/spring/spring-sdk-client-test.yml
+            parameters:
+              Artifacts: ${{Artifacts }}
+              SpringBootVersion: 2.5.7
+              SpringCloudVersion: 2020.0.4
