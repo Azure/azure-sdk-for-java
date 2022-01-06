@@ -104,7 +104,7 @@ public class AADB2CProperties implements InitializingBean {
     private String baseUri;
 
     /**
-     * Specify the primary sign in flow key.
+     * Specify the primary sign-in flow key.
      */
     private String loginFlow = DEFAULT_KEY_SIGN_UP_OR_SIGN_IN;
 

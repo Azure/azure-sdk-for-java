@@ -27,7 +27,7 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties imp
     /**
      * Whether to share the same connection for producers or consumers.
      */
-    private Boolean isSharedConnection;
+    private Boolean sharedConnection;
     private final Producer producer = new Producer();
     private final Consumer consumer = new Consumer();
     private final Processor processor = new Processor();
@@ -111,11 +111,11 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties imp
     }
 
     public Boolean getSharedConnection() {
-        return isSharedConnection;
+        return sharedConnection;
     }
 
     public void setSharedConnection(Boolean sharedConnection) {
-        isSharedConnection = sharedConnection;
+        this.sharedConnection = sharedConnection;
     }
 
     public Producer getProducer() {

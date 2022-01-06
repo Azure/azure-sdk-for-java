@@ -3,6 +3,7 @@
     {
       "name": "azure.activedirectory.active-directory-groups",
       "type": "java.util.List<java.lang.String>",
+      "description": "Expected UserGroups that an authority will be granted to if found in the response from the MemeberOf Graph API Call.",
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
@@ -22,7 +23,7 @@
     {
       "name": "azure.activedirectory.app-id-uri",
       "type": "java.lang.String",
-      "description": "App ID URI which might be used in the <code>\"aud\"<\/code> claim of an <code>id_token<\/code>.",
+      "description": "App ID URI which might be used in the 'aud' claim of an id_token.",
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
@@ -32,6 +33,7 @@
     {
       "name": "azure.activedirectory.application-type",
       "type": "java.lang.String",
+      "description": "Type of the AAD application.",
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
@@ -69,7 +71,7 @@
     {
       "name": "azure.activedirectory.b2c.app-id-uri",
       "type": "java.lang.String",
-      "description": "App ID URI which might be used in the <code>\"aud\"<\/code> claim of an token.",
+      "description": "App ID URI which might be used in the 'aud' claim of an token.",
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
@@ -188,7 +190,7 @@
     {
       "name": "azure.activedirectory.b2c.tenant",
       "type": "java.lang.String",
-      "description": "The name of the b2c tenant. @deprecated It's recommended to use 'baseUri' instead.",
+      "description": "The name of the b2c tenant.",
       "deprecation": {
         "level": "error",
         "reason": "Configuration updated to baseUri.",
@@ -345,7 +347,7 @@
     {
       "name": "azure.activedirectory.resource-server.claim-to-authority-prefix-map",
       "type": "java.util.Map<java.lang.String,java.lang.String>",
-      "description": "<pre> Configure which claim will be used to build GrantedAuthority, and prefix of the GrantedAuthority's string value. Default value is: \"scp\" -> \"SCOPE_\", \"roles\" -> \"APPROLE_\". Example: If use the default value, and the access_token's \"scp\" scope value is \"testValue\", then GrantedAuthority with \"SCOPE_testValue\" will be created.. <\/pre> @see org.springframework.security.core.GrantedAuthority.",
+      "description": "Configure which claim will be used to build GrantedAuthority, and prefix of the GrantedAuthority's string value. Default value is: \"scp\" -> \"SCOPE_\", \"roles\" -> \"APPROLE_\". Example: If use the default value, and the access_token's \"scp\" scope value is \"testValue\", then GrantedAuthority with \"SCOPE_testValue\" will be created.",
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
@@ -355,7 +357,7 @@
     {
       "name": "azure.activedirectory.resource-server.principal-claim-name",
       "type": "java.lang.String",
-      "description": "<pre> Configure which claim in access token be returned in AuthenticatedPrincipal#getName. Default value is \"sub\". Example: If use the default value, and the access_token's \"sub\" scope value is \"testValue\", then AuthenticatedPrincipal#getName will return \"testValue\". <\/pre> @see org.springframework.security.core.AuthenticatedPrincipal#getName.",
+      "description": "Configure which claim in access token be returned in AuthenticatedPrincipal#getName. Default value is \"sub\". Example: If use the default value, and the access_token's \"sub\" scope value is \"testValue\", then AuthenticatedPrincipal#getName will return \"testValue\".",
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
@@ -365,7 +367,7 @@
     {
       "name": "azure.activedirectory.session-stateless",
       "type": "java.lang.Boolean",
-      "description": "If <code>true<\/code> activates the stateless auth filter {@link AADAppRoleStatelessAuthenticationFilter}. The default is <code>false<\/code> which activates {@link AADAuthenticationFilter}.",
+      "description": "If true activates the stateless auth filter AADAppRoleStatelessAuthenticationFilter. The default is false which activates AADAuthenticationFilter.",
       "defaultValue": false,
       "deprecation": {
         "level": "error",
@@ -612,7 +614,7 @@
     {
       "name": "azure.keyvault.tenant-id",
       "type": "java.lang.String",
-      "description": "Tenant id for the key vault. This is a legacy property.",
+      "description": "Tenant id for the key vault.",
       "deprecation": {
         "level": "error",
         "reason": "Deprecate to move all Key Vault Secret Azure environment related under 'spring.cloud.azure.keyvault.secret.profile' prefix.",
@@ -622,7 +624,7 @@
     {
       "name": "azure.keyvault.uri",
       "type": "java.lang.String",
-      "description": "Azure Key Vault endpoint. This is a legacy property.",
+      "description": "Azure Key Vault endpoint.",
       "deprecation": {
         "level": "error",
         "reason": "Deprecate to move all Key Vault Secret related under 'spring.cloud.azure.keyvault.secret' prefix.",
@@ -632,7 +634,7 @@
     {
       "name": "azure.storage.account-key",
       "type": "java.lang.String",
-      "description": "Storage account access key. This is a legacy property.",
+      "description": "Storage account access key.",
       "deprecation": {
         "level": "error",
         "reason": "Deprecate to move all Storage Blob related under 'spring.cloud.azure.storage.blob' prefix.",
@@ -642,7 +644,7 @@
     {
       "name": "azure.storage.account-name",
       "type": "java.lang.String",
-      "description": "Name for the storage account. This is a legacy property.",
+      "description": "Name for the storage account.",
       "deprecation": {
         "level": "error",
         "reason": "Deprecate to move all Storage Blob related under 'spring.cloud.azure.storage.blob' prefix.",
@@ -652,7 +654,7 @@
     {
       "name": "azure.storage.blob-endpoint",
       "type": "java.lang.String",
-      "description": "Endpoint for the storage blob. This is a legacy property.",
+      "description": "Endpoint for the storage blob.",
       "deprecation": {
         "level": "error",
         "reason": "Deprecate to move all Storage Blob related under 'spring.cloud.azure.storage.blob' prefix.",
@@ -662,7 +664,7 @@
     {
       "name": "azure.storage.file-endpoint",
       "type": "java.lang.String",
-      "description": "Endpoint for the storage file share. This is a legacy property.",
+      "description": "Endpoint for the storage file share.",
       "deprecation": {
         "level": "error",
         "reason": "Deprecate to move all Storage File Share related under 'spring.cloud.azure.storage.fileshare' prefix.",
@@ -928,6 +930,55 @@
         "reason": "The 'servicebus-queue' binder is dropped and 'servicebus' binder is provided instead with the ability of interacting with both queue and topic.",
         "replacement": "spring.cloud.stream.servicebus.bindings"
       }
+    },
+    {
+      "name": "spring.cloud.azure.cosmos.direct-connection.connect-timeout",
+      "description": "Connect timeout for direct client, represents timeout for establishing connections with an endpoint.",
+      "type": "java.time.Duration"
+    },
+    {
+      "name": "spring.cloud.azure.cosmos.direct-connection.connection-endpoint-rediscovery-enabled",
+      "description": "Whether to enable the direct TCP connection endpoint rediscovery."
+    },
+    {
+      "name": "spring.cloud.azure.cosmos.direct-connection.idle-connection-timeout",
+      "description": "Idle connection timeout for the direct client. Direct client doesn't close a single connection to an endpoint by default unless specified."
+    },
+    {
+      "name": "spring.cloud.azure.cosmos.direct-connection.idle-endpoint-timeout",
+      "description": "Idle connection timeout for the direct client. If there are no requests to a specific endpoint for idle endpoint timeout duration, direct client closes all connections to that endpoint to save resources and I/O cost."
+    },
+    {
+      "name": "spring.cloud.azure.cosmos.direct-connection.max-connections-per-endpoint",
+      "description": "Max connections per endpoint, represents the size of connection pool for a specific endpoint."
+    },
+    {
+      "name": "spring.cloud.azure.cosmos.direct-connection.max-requests-per-connection",
+      "description": "Max requests per connection, represents the number of requests that will be queued on a single connection for a specific endpoint."
+    },
+    {
+      "name": "spring.cloud.azure.cosmos.direct-connection.network-request-timeout",
+      "description": "Network request timeout interval (time to wait for response from network peer)."
+    },
+    {
+      "name": "spring.cloud.azure.cosmos.gateway-connection.idle-connection-timeout",
+      "description": "Timeout for an idle connection. After that time, the connection will be automatically closed."
+    },
+    {
+      "name": "spring.cloud.azure.cosmos.gateway-connection.max-connection-pool-size",
+      "description": "Size of the connection pool."
+    },
+    {
+      "name": "spring.cloud.azure.cosmos.gateway-connection.proxy",
+      "description": "Proxy options for the gateway client."
+    },
+    {
+      "name": "spring.cloud.azure.cosmos.throttling-retry-options.max-retry-attempts-on-throttled-requests",
+      "description": "Maximum number of retries in the case where the request fails because the service has applied rate limiting on the client."
+    },
+    {
+      "name": "spring.cloud.azure.cosmos.throttling-retry-options.max-retry-wait-time",
+      "description": "Maximum retry time in seconds. When a request fails due to a throttle error, the service sends back a response that contains a value indicating the client should not retry before the time period has elapsed (Retry-After). The MaxRetryWaitTime flag allows the application to set a maximum wait time for all retry attempts. If the cumulative wait time exceeds the MaxRetryWaitTime, the SDK will stop retrying and return the error to the application."
     }
   ]
 }

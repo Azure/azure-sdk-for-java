@@ -121,6 +121,9 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     private Map<String, AuthorizationClientProperties> authorizationClients = new HashMap<>();
 
+    /**
+     * Type of the AAD application.
+     */
     private AADApplicationType applicationType;
 
     /**

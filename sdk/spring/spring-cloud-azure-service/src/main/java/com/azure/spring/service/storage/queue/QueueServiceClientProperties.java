@@ -4,6 +4,7 @@
 package com.azure.spring.service.storage.queue;
 
 import com.azure.spring.service.storage.common.StorageProperties;
+import com.azure.storage.queue.QueueMessageEncoding;
 import com.azure.storage.queue.QueueServiceVersion;
 
 /**
@@ -12,7 +13,7 @@ import com.azure.storage.queue.QueueServiceVersion;
 public interface QueueServiceClientProperties extends StorageProperties {
 
     QueueServiceVersion getServiceVersion();
-    
-    String getMessageEncoding();
+
+    QueueMessageEncoding getMessageEncoding();
 
 }

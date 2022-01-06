@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.storage.queue.properties;
 
 import com.azure.spring.cloud.autoconfigure.storage.common.AzureStorageProperties;
 import com.azure.spring.service.storage.queue.QueueServiceClientProperties;
+import com.azure.storage.queue.QueueMessageEncoding;
 import com.azure.storage.queue.QueueServiceVersion;
 
 /**
@@ -22,7 +23,7 @@ public class AzureStorageQueueProperties extends AzureStorageProperties implemen
     /**
      * How queue message body is represented in HTTP requests and responses.
      */
-    private String messageEncoding;
+    private QueueMessageEncoding messageEncoding;
 
 
     public String getEndpoint() {
@@ -41,11 +42,12 @@ public class AzureStorageQueueProperties extends AzureStorageProperties implemen
         this.serviceVersion = serviceVersion;
     }
 
-    public String getMessageEncoding() {
+    @Override
+    public QueueMessageEncoding getMessageEncoding() {
         return messageEncoding;
     }
 
-    public void setMessageEncoding(String messageEncoding) {
+    public void setMessageEncoding(QueueMessageEncoding messageEncoding) {
         this.messageEncoding = messageEncoding;
     }
 }
