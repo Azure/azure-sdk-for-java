@@ -30,9 +30,13 @@ public class EventHubsMessageConverter extends AbstractAzureMessageConverter<Eve
 
     private static final Set<String> IGNORED_HEADERS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
         EventHubsHeaders.PARTITION_KEY,
+        EventHubsHeaders.BATCH_CONVERTED_PARTITION_KEY,
         EventHubsHeaders.ENQUEUED_TIME,
+        EventHubsHeaders.BATCH_CONVERTED_ENQUEUED_TIME,
         EventHubsHeaders.OFFSET,
+        EventHubsHeaders.BATCH_CONVERTED_OFFSET,
         EventHubsHeaders.SEQUENCE_NUMBER,
+        EventHubsHeaders.BATCH_CONVERTED_SEQUENCE_NUMBER,
         EventHubsHeaders.BATCH_CONVERTED_SYSTEM_PROPERTIES,
         EventHubsHeaders.BATCH_CONVERTED_APPLICATION_PROPERTIES
         )));
@@ -86,7 +90,8 @@ public class EventHubsMessageConverter extends AbstractAzureMessageConverter<Eve
             }
         });
 
-        ignoredHeaders.forEach(header -> LOGGER.info("Message header {} will be ignored.", header));
+        ignoredHeaders.forEach(header -> LOGGER.info("Message headers {} is not supported to be set and will be "
+            + "ignored.", header));
     }
 
     @Override

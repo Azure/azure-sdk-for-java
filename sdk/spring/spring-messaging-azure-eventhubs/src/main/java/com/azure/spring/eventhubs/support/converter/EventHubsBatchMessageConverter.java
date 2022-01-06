@@ -118,10 +118,10 @@ public class EventHubsBatchMessageConverter extends AbstractAzureMessageConverte
             batchConvertedSystemProperties.add(event.getSystemProperties());
             batchConvertedApplicationProperties.add(event.getProperties());
         }
-        headers.put(EventHubsHeaders.ENQUEUED_TIME, enqueueTimeList);
-        headers.put(EventHubsHeaders.OFFSET, offSetList);
-        headers.put(EventHubsHeaders.SEQUENCE_NUMBER, sequenceNumberList);
-        headers.put(EventHubsHeaders.PARTITION_KEY, partitionKeyList);
+        headers.put(EventHubsHeaders.BATCH_CONVERTED_ENQUEUED_TIME, enqueueTimeList);
+        headers.put(EventHubsHeaders.BATCH_CONVERTED_OFFSET, offSetList);
+        headers.put(EventHubsHeaders.BATCH_CONVERTED_SEQUENCE_NUMBER, sequenceNumberList);
+        headers.put(EventHubsHeaders.BATCH_CONVERTED_PARTITION_KEY, partitionKeyList);
         headers.put(EventHubsHeaders.BATCH_CONVERTED_SYSTEM_PROPERTIES, batchConvertedSystemProperties);
         headers.put(EventHubsHeaders.BATCH_CONVERTED_APPLICATION_PROPERTIES, batchConvertedApplicationProperties);
 
