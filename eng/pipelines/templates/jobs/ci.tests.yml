@@ -105,6 +105,11 @@ jobs:
         # we want to run this when we aren't running from source and aren't generating Jacoco test coverage
         condition: and(succeeded(), ne(variables['TestFromSource'], 'true'), not(and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'))))
 
+      - ${{if eq(parameters.SkipDependencyTree, 'true')}}:
+          - script: |
+              mvn dependency:tree -f ./sdk/spring
+            displayName: 'Dependency tree'
+
       - task: Maven@3
         displayName: 'Run tests'
         inputs:
@@ -118,12 +123,6 @@ jobs:
           goals: $(TestGoals) $(AdditionalTestGoals)
         # we want to run this when TestFromSource isn't true
         condition: and(succeeded(), ne(variables['TestFromSource'],'true'))
-
-      - ${{if eq(parameters.SkipDependencyTree, 'true')}}:
-        - script: |
-            mvn dependency:tree -f ./sdk/spring
-          displayName: 'Dependency tree'
-
 
       - task: Maven@3
         displayName: 'Generate aggregate code coverage report'
