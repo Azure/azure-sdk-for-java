@@ -28,17 +28,29 @@ public abstract class AzureProfileAdapter implements AzureProfileAware.Profile {
     public abstract AzureProfileAware.AzureEnvironment getEnvironment();
 
     private AzureProfileAware.AzureEnvironment decideAzureEnvironment(AzureProfileAware.CloudType cloud) {
-        switch (cloud) {
+        AzureEnvironment managementAzureEnvironment = decideManagementAzureEnvironment(cloud, null);
+        return getEnvironment().fromManagementAzureEnvironment(managementAzureEnvironment);
+    }
+
+    /**
+     * Decide the corresponding {@link AzureEnvironment} by the {@link com.azure.spring.core.aware.AzureProfileAware.CloudType}.
+     * @param cloudType The provided cloud type.
+     * @param defaultManagementEnvironment The default management {@link AzureEnvironment}.
+     * @return The corresponding {@link AzureEnvironment}.
+     */
+    public static AzureEnvironment decideManagementAzureEnvironment(AzureProfileAware.CloudType cloudType,
+                                                                     AzureEnvironment defaultManagementEnvironment) {
+        switch (cloudType) {
             case AZURE_CHINA:
-                return getEnvironment().fromManagementAzureEnvironment(AzureEnvironment.AZURE_CHINA);
+                return AzureEnvironment.AZURE_CHINA;
             case AZURE_US_GOVERNMENT:
-                return getEnvironment().fromManagementAzureEnvironment(AzureEnvironment.AZURE_US_GOVERNMENT);
+                return AzureEnvironment.AZURE_US_GOVERNMENT;
             case AZURE_GERMANY:
-                return getEnvironment().fromManagementAzureEnvironment(AzureEnvironment.AZURE_GERMANY);
+                return AzureEnvironment.AZURE_GERMANY;
             case AZURE:
-                return getEnvironment().fromManagementAzureEnvironment(AzureEnvironment.AZURE);
+                return AzureEnvironment.AZURE;
             default:
-                return getEnvironment().fromManagementAzureEnvironment(null);
+                return defaultManagementEnvironment;
         }
     }
 
