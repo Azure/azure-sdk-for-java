@@ -81,6 +81,12 @@ public final class TestUtils {
             .get("FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL");
     public static final String FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL_CONFIGURATION =
         Configuration.getGlobalConfiguration().get("FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL");
+    public static final String AZURE_CLIENT_ID
+        = Configuration.getGlobalConfiguration().get("AZURE_CLIENT_ID");
+    public static final String AZURE_TENANT_ID
+        = Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID");
+    public static final String AZURE_FORM_RECOGNIZER_CLIENT_SECRET
+        = Configuration.getGlobalConfiguration().get("AZURE_CLIENT_SECRET");
 
     private TestUtils() {
     }
@@ -280,15 +286,15 @@ public final class TestUtils {
             return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
         }
 
-        if (endpoint.contains(".azurecr.io")) {
+        if (endpoint.contains(".io")) {
             return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
         }
 
-        if (endpoint.contains(".azurecr.cn")) {
+        if (endpoint.contains(".cn")) {
             return AzureAuthorityHosts.AZURE_CHINA;
         }
 
-        if (endpoint.contains(".azurecr.us")) {
+        if (endpoint.contains(".us")) {
             return AzureAuthorityHosts.AZURE_GOVERNMENT;
         }
 
