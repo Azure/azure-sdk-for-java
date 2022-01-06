@@ -49,13 +49,17 @@
     "sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/implementation/guava25*/**/*.java",
     "**/implementation/**/models/**",
     "**/implementation/**/*Impl*",
-    "**/*-perf/**"
+    "**/*-perf/**",
+    "**/*-tests/**",
+    "**/*-test-*/**"
   ],
   "words": [
     "adal",
     "amqp",
+    "AUHours",
     "autoscale",
     "azsdk",
+    "azsynapse",
     "azurestackhci",
     "backoff",
     "cacerts",
@@ -71,13 +75,17 @@
     "deallocate",
     "decryptor",
     "Deserialization",
+    "Dgenerate",
     "dlocal",
+    "dummyrg",
     "eastus",
+    "embedme",
     "encryptor",
     "etag",
     "eventhub",
     "eventhubs",
     "fout",
+    "fqdns",
     "gmavenplus",
     "guids",
     "hana",
@@ -85,17 +93,24 @@
     "hdfs",
     "hdinsight",
     "hvac",
+    "hybridkubernetes",
     "intellij",
+    "iotcentral",
     "ipconfiguration",
     "Iscsi",
     "jacksonavro",
     "jacoco",
     "javadocs",
+    "JSESSIONID",
     "jtoken",
     "keyvault",
     "kube",
+    "kubeconfig",
+    "kubeconfigs",
     "KUBERNETES",
+    "kubernetesconfiguration",
     "kusto",
+    "listbyconfigurationprofileassignments",
     "localizable",
     "logz",
     "Lucene",
@@ -123,10 +138,12 @@
     "runtimes",
     "servicebus",
     "skus",
+    "sonatype",
     "ssis",
     "substringof",
     "Sybase",
     "testdb",
+    "TFVC",
     "timeframe",
     "tofile",
     "undelete",
@@ -162,6 +179,30 @@
       "words": [
         "Bourrillion",
         "kevinb"
+      ]
+    },
+    {
+      "filename": "**/sdk/remoterendering/TestResources/**",
+      "words": [
+        "Phong"
+      ]
+    },
+    {
+      "filename": "**/sdk/datalakeanalytics/azure-resourcemanager-datalakeanalytics/**",
+      "words": [
+        "AUHOURS"
+      ]
+    },
+    {
+      "filename": "**/sdk/communication/azure-communication-identity/CHANGELOG.md",
+      "words": [
+        "reponse"
+      ]
+    },
+    {
+      "filename": "/sdk/agrifood/**",
+      "words": [
+        "NDVI"
       ]
     }
   ],

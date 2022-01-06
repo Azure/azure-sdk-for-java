@@ -104,7 +104,7 @@ public interface IKey extends Closeable {
     ListenableFuture<Pair<byte[], String>> wrapKeyAsync(final byte[] key, final String algorithm) throws NoSuchAlgorithmException;
 
     /**
-     * Unwraps (decrypts) the specified encryped key material.
+     * Unwraps (decrypts) the specified encrypted key material.
      *
      * @param encryptedKey
      *            The encrypted key to decrypt

@@ -161,7 +161,7 @@ public class CommunicationIdentityClientTestBase extends TestBase {
             .flatMap(httpResponse -> {
                 final HttpResponse bufferedResponse = httpResponse.buffer();
 
-                // Should sanitize printed reponse url
+                // Should sanitize printed response url
                 System.out.println("MS-CV header for " + testName + " request "
                     + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
                 return Mono.just(bufferedResponse);
