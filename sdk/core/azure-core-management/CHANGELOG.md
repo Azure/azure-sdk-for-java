@@ -1,16 +1,16 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.5.0 (2022-01-05)
 
 ### Features Added
 
 - Supported new Azure region `Region.SWEDEN_CENTRAL`.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.23.1` to `1.24.0`.
 
 ## 1.4.4 (2021-12-07)
 
