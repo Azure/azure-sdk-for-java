@@ -1,6 +1,6 @@
 # Release History
 
-## 1.11.5 (2022-01-05)
+## 1.11.5 (2022-01-06)
 
 ### Bugs Fixed
 - Set default `maxConnections` value to match the default used in `reactor-netty` when `HttpClientOptions` is set but 
