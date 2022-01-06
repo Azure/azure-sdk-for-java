@@ -80,11 +80,11 @@ jobs:
         displayName: 'Run Linting'
         inputs:
           mavenPomFile: ClientFromSourcePom.xml
-          goals: 'checkstyle:check spotbugs:check'
-          # Skip failing on Checkstyle and Spotbugs errors.
+          goals: 'checkstyle:check spotbugs:check revapi:check'
+          # Skip failing on Checkstyle, RevApi, and Spotbugs errors.
           # This is being done as the error reporting will be captured, so if any error reports exist the build can be
           # failed later allowing all libraries to be validated.
-          options: '$(DefaultOptions) -T 1C -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -pl "!com.azure:azure-sdk-from-source,$(SkipLintingProjects)"'
+          options: '$(DefaultOptions) -T 2C -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.failBuildOnProblemsFound=false -pl "!com.azure:azure-sdk-from-source,$(SkipLintingProjects)"'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaBuildVersion)
