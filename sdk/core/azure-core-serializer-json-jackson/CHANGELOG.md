@@ -1,14 +1,13 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.2.11 (2022-01-05)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.23.1` to `1.24.0`.
+- Upgraded Jackson from `2.13.0` to `2.13.1`.
 
 ## 1.2.10 (2021-12-07)
 
