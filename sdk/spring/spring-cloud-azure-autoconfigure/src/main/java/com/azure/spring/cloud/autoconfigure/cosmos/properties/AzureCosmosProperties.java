@@ -79,7 +79,7 @@ public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProp
      */
     private Boolean readRequestsFallbackEnabled;
     /**
-     * Permission list  which contains the resource tokens needed to access resources.
+     * Permission list which contains the resource tokens needed to access resources.
      */
     private final List<CosmosPermissionProperties> permissions = new ArrayList<>();
     /**
