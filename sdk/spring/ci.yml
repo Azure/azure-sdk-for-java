@@ -331,7 +331,6 @@ parameters:
       skipVerifyChangelog: true
 
 extends:
-#  template: ../../sdk/spring/spring-sdk-client.yml
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: spring
