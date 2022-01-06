@@ -849,6 +849,17 @@ public class StoreReaderTest {
         assertThat(this.getMatchingElementCount(cosmosDiagnostics, "storeResult") >= 1).isTrue();
     }
 
+    @Test(groups = "unit")
+    public void createStoreResultOnNonCosmosException() {
+        TransportClient transportClient = Mockito.mock(TransportClient.class);
+        AddressSelector addressSelector = Mockito.mock(AddressSelector.class);
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+        StoreReader storeReader = new StoreReader(transportClient, addressSelector, sessionContainer);
+        StoreResult storeResult = storeReader.createStoreResult(null, new IllegalStateException("Test"), false, false, null);
+        assertThat(storeResult.getException().toString()).contains("\"causeInfo\":\"[class: class java.lang.IllegalStateException, message:" +
+            " Test]\"");
+    }
+
     public static void validateSuccess(Mono<List<StoreResult>> single,
                                        MultiStoreResultValidator validator) {
         validateSuccess(single, validator, 10000);

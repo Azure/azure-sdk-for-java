@@ -32,6 +32,8 @@
   <properties>
     <!-- Anomaly detector temporarily skipping code coverage until tests are added -->
     <jacoco.skip>true</jacoco.skip>
+    <!-- TODO: (https://github.com/Azure/azure-sdk-for-java/issues/18279) -->
+    <checkstyle.skip>true</checkstyle.skip>
     <codesnippet.skip>false</codesnippet.skip>
     <javadocDoclet></javadocDoclet>
     <javadocDocletOptions></javadocDocletOptions>

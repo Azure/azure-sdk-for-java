@@ -13,7 +13,7 @@ Licensed under the MIT License.
 
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos</artifactId>
-  <version>4.24.0</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+  <version>4.25.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
   <name>Microsoft Azure SDK for SQL API of Azure Cosmos DB Service</name>
   <description>This Package contains Microsoft Azure Cosmos SDK (with Reactive Extension Reactor support) for Azure Cosmos DB SQL API</description>
   <packaging>jar</packaging>
@@ -56,6 +56,12 @@ Licensed under the MIT License.
     <codesnippet.skip>false</codesnippet.skip>
     <javadocDoclet></javadocDoclet>
     <javadocDocletOptions></javadocDocletOptions>
+
+    <!-- Prevents Checkstyle validating implementation files. -->
+    <checkstyle.excludes>**/implementation/**/*.java</checkstyle.excludes>
+
+    <!-- Prevents Checkstyle validating test source files. -->
+    <checkstyle.includeTestSourceDirectory>false</checkstyle.includeTestSourceDirectory>
   </properties>
 
   <dependencies>
@@ -115,22 +121,22 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
-      <version>2.13.0</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+      <version>2.13.1</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
-      <version>2.13.0</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+      <version>2.13.1</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.13.0</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+      <version>2.13.1</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jsr310</artifactId>
-      <version>2.13.0</version> <!-- {x-version-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+      <version>2.13.1</version> <!-- {x-version-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -287,10 +293,10 @@ Licensed under the MIT License.
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.fasterxml.jackson.core:jackson-annotations:[2.13.0]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-core:[2.13.0]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-databind:[2.13.0]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.13.0]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-annotations:[2.13.1]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-core:[2.13.1]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-databind:[2.13.1]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.13.1]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
                 <include>com.fasterxml.jackson.module:jackson-module-afterburner:[2.12.5]</include> <!-- {x-include-update;cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
                 <include>io.dropwizard.metrics:metrics-core:[4.1.0]</include> <!-- {x-include-update;cosmos_io.dropwizard.metrics:metrics-core;external_dependency} -->
                 <include>io.micrometer:micrometer-core:[1.8.0]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->

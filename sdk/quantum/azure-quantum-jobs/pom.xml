@@ -33,8 +33,9 @@
   </scm>
 
    <properties>
-    <!-- require minimal code coverage until tests are added -->
-    <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
+     <!-- require minimal code coverage until tests are added -->
+     <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
+     <checkstyle.skip>true</checkstyle.skip>
      <codesnippet.skip>false</codesnippet.skip>
      <javadocDoclet></javadocDoclet>
      <javadocDocletOptions></javadocDocletOptions>
