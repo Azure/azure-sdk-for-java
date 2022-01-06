@@ -66,7 +66,7 @@ jobs:
             displayName: 'python module install'
           - script: |
               python ./sdk/spring/scripts/ci_update_versions.py -s ${{parameters.SpringBootVersion}}
-            displayName: 'update spring boot versions'
+            displayName: 'update external dependencies version'
           - script: |
               python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b ${{parameters.SpringBootVersion}} -c ${{parameters.SpringCloudVersion}}
             displayName: 'insert dependency management'
