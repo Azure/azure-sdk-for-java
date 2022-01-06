@@ -628,10 +628,6 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="[a-zA-Z0-9]*" files="com.azure.identity.implementation.intellij.LittleEndianDataInputStream"/>
   <suppress checks="[a-zA-Z0-9]*" files="com.azure.identity.implementation.intellij.Salsa20"/>
 
-  <!-- Checkstyle suppressions to keep HttpPipelinePolicy in implementation folder. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
-            files="com.azure.communication.callingserver.implementation.RedirectPolicy.java"/>
-
   <!-- Suppress VisibilityModifier in MemberConverterImplTests.-->
   <suppress checks="VisibilityModifier"
             files="com.azure.core.implementation.jackson.MemberNameConverterImplTests.java"/>
