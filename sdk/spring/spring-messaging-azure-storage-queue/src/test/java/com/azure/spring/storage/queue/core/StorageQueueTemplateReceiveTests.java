@@ -112,7 +112,7 @@ public class StorageQueueTemplateReceiveTests {
             .thenReturn(new PagedFlux<>(() -> Mono.error(new QueueStorageException("error happened", null, null))));
 
         final Mono<Message<?>> mono = this.operation.receiveAsync(this.destination);
-        verifyStorageQueueRuntimeExceptionThrown(mono);
+        verifyQueueStorageExceptionThrown(mono);
     }
 
     @Test
