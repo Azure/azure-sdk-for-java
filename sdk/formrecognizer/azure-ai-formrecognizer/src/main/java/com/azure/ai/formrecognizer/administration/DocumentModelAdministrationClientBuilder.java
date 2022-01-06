@@ -93,7 +93,7 @@ public final class DocumentModelAdministrationClientBuilder {
 
     private ClientOptions clientOptions;
     private String endpoint;
-    private AzureKeyCredential credential;
+    private AzureKeyCredential azureKeyCredential;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
     private HttpPipeline httpPipeline;
@@ -134,7 +134,7 @@ public final class DocumentModelAdministrationClientBuilder {
      *
      * @return A DocumentTrainingAsyncClient with the options set from the builder.
      * @throws NullPointerException if {@link #endpoint(String) endpoint} or {@link #credential(AzureKeyCredential)}
-     * has not been set.
+     * has not been set or {@code audience} is null when using {@link #credential(TokenCredential)}.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      */
     public DocumentModelAdministrationAsyncClient buildAsyncClient() {
@@ -152,9 +152,18 @@ public final class DocumentModelAdministrationClientBuilder {
         HttpPipeline pipeline = httpPipeline;
         // Create a default Pipeline if it is not given
         if (pipeline == null) {
-            pipeline = Utility.buildHttpPipeline(clientOptions, httpLogOptions, buildConfiguration,
-                retryPolicy, credential, tokenCredential, audience, perCallPolicies, perRetryPolicies, httpClient);
+            pipeline = Utility.buildHttpPipeline(clientOptions,
+                httpLogOptions,
+                buildConfiguration,
+                retryPolicy,
+                azureKeyCredential,
+                tokenCredential,
+                audience,
+                perCallPolicies,
+                perRetryPolicies,
+                httpClient);
         }
+
         final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
             .endpoint(endpoint)
             .apiVersion(serviceVersion.getVersion())
@@ -201,7 +210,7 @@ public final class DocumentModelAdministrationClientBuilder {
      * @throws NullPointerException If {@code azureKeyCredential} is null.
      */
     public DocumentModelAdministrationClientBuilder credential(AzureKeyCredential azureKeyCredential) {
-        this.credential = Objects.requireNonNull(azureKeyCredential, "'azureKeyCredential' cannot be null.");
+        this.azureKeyCredential = Objects.requireNonNull(azureKeyCredential, "'azureKeyCredential' cannot be null.");
         return this;
     }
 
@@ -358,11 +367,9 @@ public final class DocumentModelAdministrationClientBuilder {
      * Sets the audience for the Azure Form Recognizer service.
      *
      * @param audience ARM management scope associated with the given form recognizer resource.
-     * @throws NullPointerException If {@code audience} is null.
      * @return The updated {@link DocumentModelAdministrationClientBuilder} object.
      */
     public DocumentModelAdministrationClientBuilder audience(FormRecognizerAudience audience) {
-        Objects.requireNonNull(audience, "'audience' can't be null");
         this.audience = audience;
         return this;
     }

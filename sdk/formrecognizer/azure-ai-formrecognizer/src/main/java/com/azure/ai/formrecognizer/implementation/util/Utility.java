@@ -77,7 +77,7 @@ public final class Utility {
     }
 
     public static HttpPipeline buildHttpPipeline(ClientOptions clientOptions, HttpLogOptions logOptions,
-                                                 Configuration configuration, RetryPolicy retryPolicy, AzureKeyCredential credential,
+                                                 Configuration configuration, RetryPolicy retryPolicy, AzureKeyCredential azureKeyCredential,
                                                  TokenCredential tokenCredential, FormRecognizerAudience audience,
                                                  List<HttpPipelinePolicy> perCallPolicies,
                                                  List<HttpPipelinePolicy> perRetryPolicies, HttpClient httpClient) {
@@ -106,11 +106,13 @@ public final class Utility {
 
         // Authentications
         if (tokenCredential != null) {
+            Objects.requireNonNull(audience, "'audience' is required and can not be null");
             httpPipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential, audience.toString()));
-        } else if (credential != null) {
-            httpPipelinePolicies.add(new AzureKeyCredentialPolicy(Constants.OCP_APIM_SUBSCRIPTION_KEY, credential));
+        } else if (azureKeyCredential != null) {
+            httpPipelinePolicies.add(new AzureKeyCredentialPolicy(Constants.OCP_APIM_SUBSCRIPTION_KEY,
+                azureKeyCredential));
         } else {
-            // Throw exception that credential and tokenCredential cannot be null
+            // Throw exception that azureKeyCredential and tokenCredential cannot be null
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("Missing credential information while building a client."));
         }
