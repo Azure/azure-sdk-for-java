@@ -21,6 +21,10 @@
 
 - Improved performance of logging.
 
+#### Dependency Updates
+
+- Upgraded Jackson from `2.13.0` to `2.13.1`.
+
 ## 1.23.1 (2021-12-07)
 
 ### Other Changes
