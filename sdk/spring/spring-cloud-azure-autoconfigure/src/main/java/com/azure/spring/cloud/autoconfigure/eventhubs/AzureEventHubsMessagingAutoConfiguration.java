@@ -16,7 +16,9 @@ import com.azure.spring.eventhubs.core.producer.EventHubsProducerFactory;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.eventhubs.core.properties.ProcessorProperties;
 import com.azure.spring.eventhubs.core.properties.ProducerProperties;
+import com.azure.spring.eventhubs.support.converter.EventHubsMessageConverter;
 import com.azure.spring.messaging.PropertiesSupplier;
+import com.azure.spring.messaging.ConsumerIdentifier;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -27,7 +29,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import reactor.util.function.Tuple2;
 
 import static com.azure.spring.core.util.AzurePropertiesUtils.copyAzureCommonProperties;
 
@@ -69,7 +70,7 @@ public class AzureEventHubsMessagingAutoConfiguration {
         @ConditionalOnMissingBean
         public EventHubsProcessorFactory defaultEventHubsNamespaceProcessorFactory(
             NamespaceProperties properties, CheckpointStore checkpointStore,
-            ObjectProvider<PropertiesSupplier<Tuple2<String, String>, ProcessorProperties>> suppliers) {
+            ObjectProvider<PropertiesSupplier<ConsumerIdentifier, ProcessorProperties>> suppliers) {
             return new DefaultEventHubsNamespaceProcessorFactory(checkpointStore, properties,
                 suppliers.getIfAvailable());
         }
@@ -98,8 +99,17 @@ public class AzureEventHubsMessagingAutoConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        public EventHubsTemplate eventHubsTemplate(EventHubsProducerFactory producerFactory) {
-            return new EventHubsTemplate(producerFactory);
+        public EventHubsMessageConverter messageConverter() {
+            return new EventHubsMessageConverter();
+        }
+
+        @Bean
+        @ConditionalOnMissingBean
+        public EventHubsTemplate eventHubsTemplate(EventHubsProducerFactory producerFactory,
+                                                   EventHubsMessageConverter messageConverter) {
+            EventHubsTemplate eventHubsTemplate = new EventHubsTemplate(producerFactory);
+            eventHubsTemplate.setMessageConverter(messageConverter);
+            return eventHubsTemplate;
         }
 
     }

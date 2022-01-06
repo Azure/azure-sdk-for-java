@@ -4,7 +4,6 @@
 package com.azure.spring.messaging.core;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.core.NestedRuntimeException;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import reactor.core.publisher.Mono;
@@ -15,7 +14,6 @@ import java.util.Map;
 import static org.assertj.core.api.Fail.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public abstract class SendOperationTest<O extends SendOperation> {
 
@@ -45,14 +43,6 @@ public abstract class SendOperationTest<O extends SendOperation> {
     }
 
     @Test
-    public void testSendCreateSenderFailure() {
-        whenSendWithException();
-
-        assertThrows(NestedRuntimeException.class, () -> this.sendOperation.sendAsync(destination, this.message,
-            null).block());
-    }
-
-    @Test
     public void testSendFailure() {
         String errorMessage = "Send failed.";
         setupError(errorMessage);
@@ -69,8 +59,6 @@ public abstract class SendOperationTest<O extends SendOperation> {
     protected abstract void verifyGetClientCreator(int times);
 
     protected abstract void verifySendCalled(int times);
-
-    protected abstract void whenSendWithException();
 
     public String getConsumerGroup() {
         return consumerGroup;

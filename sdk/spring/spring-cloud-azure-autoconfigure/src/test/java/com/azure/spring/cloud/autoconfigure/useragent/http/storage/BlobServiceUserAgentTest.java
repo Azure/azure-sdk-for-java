@@ -7,6 +7,7 @@ import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.storage.blob.properties.AzureStorageBlobProperties;
 import com.azure.spring.cloud.autoconfigure.useragent.util.UserAgentTestUtil;
+import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.service.storage.blob.BlobServiceClientBuilderFactory;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
@@ -16,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
-import static com.azure.spring.core.AzureSpringIdentifier.AZURE_SPRING_STORAGE_BLOB;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class BlobServiceUserAgentTest {
@@ -40,7 +40,7 @@ public class BlobServiceUserAgentTest {
                 BlobServiceClient client = context.getBean(BlobServiceClient.class);
                 String userAgent = UserAgentTestUtil.getUserAgent(client.getHttpPipeline());
                 Assertions.assertNotNull(userAgent);
-                Assertions.assertTrue(userAgent.contains(AZURE_SPRING_STORAGE_BLOB));
+                Assertions.assertTrue(userAgent.contains(AzureSpringIdentifier.AZURE_SPRING_STORAGE_BLOB));
             });
     }
 }

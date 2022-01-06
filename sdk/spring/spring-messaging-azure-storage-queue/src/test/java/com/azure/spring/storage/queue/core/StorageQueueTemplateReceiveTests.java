@@ -150,12 +150,12 @@ public class StorageQueueTemplateReceiveTests {
         assertThrows(IllegalStateException.class, () -> operation.setCheckpointMode(CheckpointMode.TIME));
     }
 
-    private void verifyStorageQueueRuntimeExceptionThrown(Mono<Message<?>> mono) {
+    private void verifyQueueStorageExceptionThrown(Mono<Message<?>> mono) {
         try {
             mono.block();
             fail("Test should fail.");
         } catch (Exception e) {
-            assertEquals(StorageQueueRuntimeException.class, e.getClass());
+            assertEquals(QueueStorageException.class, e.getClass());
         }
     }
 }

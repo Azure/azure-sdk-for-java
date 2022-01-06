@@ -7,6 +7,7 @@ import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.storage.fileshare.AzureStorageFileShareAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.storage.fileshare.properties.AzureStorageFileShareProperties;
 import com.azure.spring.cloud.autoconfigure.useragent.util.UserAgentTestUtil;
+import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.service.storage.fileshare.ShareServiceClientBuilderFactory;
 import com.azure.storage.file.share.ShareServiceAsyncClient;
 import com.azure.storage.file.share.ShareServiceClient;
@@ -17,7 +18,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
-import static com.azure.spring.core.AzureSpringIdentifier.AZURE_SPRING_STORAGE_FILES;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ShareServiceUserAgentTest {
@@ -42,7 +42,7 @@ public class ShareServiceUserAgentTest {
                 ShareServiceClient client = context.getBean(ShareServiceClient.class);
                 String userAgent = UserAgentTestUtil.getUserAgent(client.getHttpPipeline());
                 Assertions.assertNotNull(userAgent);
-                Assertions.assertTrue(userAgent.contains(AZURE_SPRING_STORAGE_FILES));
+                Assertions.assertTrue(userAgent.contains(AzureSpringIdentifier.AZURE_SPRING_STORAGE_FILES));
             });
     }
 }
