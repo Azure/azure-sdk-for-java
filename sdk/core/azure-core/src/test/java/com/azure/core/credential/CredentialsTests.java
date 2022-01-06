@@ -154,6 +154,18 @@ public class CredentialsTests {
         pipeline.send(request).block();
     }
 
+    @Test
+    public void getSignatureReturnsCorrectValueAfterUpdate() {
+        AzureSasCredential credential = new AzureSasCredential("foo");
+        AzureSasCredentialPolicy policy = new AzureSasCredentialPolicy(credential);
+
+        Assertions.assertEquals("foo", policy.getSasSignature());
+
+        credential.update("bar");
+
+        Assertions.assertEquals("bar", policy.getSasSignature());
+    }
+
 
     static class InvalidInputsArgumentProvider implements ArgumentsProvider {
 
