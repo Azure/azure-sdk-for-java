@@ -23,6 +23,7 @@ public class AzureResourceMetadataConfigurationProperties implements AzureResour
      */
     private String region;
 
+    @Override
     public String getResourceGroup() {
         return resourceGroup;
     }
@@ -35,6 +36,7 @@ public class AzureResourceMetadataConfigurationProperties implements AzureResour
         this.resourceGroup = resourceGroup;
     }
 
+    @Override
     public String getResourceId() {
         return resourceId;
     }
@@ -47,6 +49,7 @@ public class AzureResourceMetadataConfigurationProperties implements AzureResour
         this.resourceId = resourceId;
     }
 
+    @Override
     public String getRegion() {
         return region;
     }
