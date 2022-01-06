@@ -760,6 +760,7 @@
         <module>sdk/deviceupdate</module>
         <module>sdk/devspaces</module>
         <module>sdk/devtestlabs</module>
+        <module>sdk/dfp</module>
         <module>sdk/digitaltwins</module>
         <module>sdk/edgeorder</module>
         <module>sdk/elastic</module>
