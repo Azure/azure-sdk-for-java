@@ -9,6 +9,7 @@ import com.azure.spring.core.implementation.connectionstring.ServiceBusConnectio
 import org.apache.qpid.jms.JmsConnectionExtensions;
 import org.apache.qpid.jms.JmsConnectionFactory;
 import org.apache.qpid.jms.policy.JmsDefaultPrefetchPolicy;
+import org.messaginghub.pooled.jms.JmsPoolConnectionFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -19,13 +20,13 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.jms.core.JmsTemplate;
 
 import javax.jms.ConnectionFactory;
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.azure.spring.core.AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS;
-import static com.azure.spring.core.AzureSpringIdentifier.VERSION;
 
 /**
  * An auto-configuration for Service Bus JMS.
@@ -34,7 +35,7 @@ import static com.azure.spring.core.AzureSpringIdentifier.VERSION;
 @AutoConfigureBefore(JmsAutoConfiguration.class)
 @AutoConfigureAfter({ JndiConnectionFactoryAutoConfiguration.class })
 @ConditionalOnClass({ ConnectionFactory.class, JmsConnectionFactory.class,
-    ServiceBusJmsConnectionFactoryFactory.class })
+    JmsPoolConnectionFactory.class, JmsTemplate.class })
 @EnableConfigurationProperties({ ServiceBusJmsProperties.class,
     JmsProperties.class })
 @Import({ ServiceBusJmsConnectionFactoryConfiguration.class, ServiceBusJmsContainerConfiguration.class })
@@ -52,7 +53,9 @@ public class ServiceBusJmsAutoConfiguration {
                 AzureServiceBusJmsProperties.PrefetchPolicy prefetchProperties = serviceBusJMSProperties
                     .getPrefetchPolicy();
                 updatePrefetchPolicy(factory, prefetchProperties);
-                setupUserAgent(factory);
+                if(serviceBusJMSProperties.getPricingTier().equalsIgnoreCase("premium")) {
+                    setupUserAgent(factory);
+                }
             }
         };
     }
@@ -86,7 +89,8 @@ public class ServiceBusJmsAutoConfiguration {
 
     private void setupUserAgent(ServiceBusJmsConnectionFactory jmsConnectionFactory) {
         final Map<String, Object> properties = new HashMap<>();
-        String userAgent = "ServiceBusJms-unknown/" + AZURE_SPRING_SERVICE_BUS + VERSION;
+        properties.put("com.microsoft:is-client-provider", true);
+        String userAgent = "ServiceBusJms-unknown/" + AZURE_SPRING_SERVICE_BUS;
         properties.put("user-agent", userAgent);
         //set user agent
         jmsConnectionFactory.setExtension(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES.toString(),

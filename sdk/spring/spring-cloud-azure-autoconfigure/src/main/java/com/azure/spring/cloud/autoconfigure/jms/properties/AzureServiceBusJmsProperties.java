@@ -25,6 +25,8 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
 
     private int idleTimeout = 1800000;
 
+    private String pricingTier;
+
     private final Listener listener = new Listener();
 
     private final PrefetchPolicy prefetchPolicy = new PrefetchPolicy();
@@ -63,6 +65,15 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
      */
     public void setTopicClientId(String topicClientId) {
         this.topicClientId = topicClientId;
+    }
+
+
+    public String getPricingTier() {
+        return this.pricingTier;
+    }
+
+    public void setPricingTier(String pricingTier) {
+        this.pricingTier = pricingTier;
     }
 
     /**
