@@ -23,6 +23,9 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties imp
 
     public static final String PREFIX = "spring.cloud.azure.eventhubs";
 
+    /**
+     * Whether to share the same connection for producers or consumers.
+     */
     private Boolean isSharedConnection;
     private final Producer producer = new Producer();
     private final Consumer consumer = new Consumer();

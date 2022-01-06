@@ -5,8 +5,8 @@ package com.azure.spring.cloud.autoconfigure.properties.core;
 
 import com.azure.spring.cloud.autoconfigure.properties.core.authentication.TokenCredentialConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.resourcemanager.AzureResourceMetadataConfigurationProperties;
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
@@ -26,7 +26,7 @@ public abstract class AbstractAzureServiceConfigurationProperties implements Azu
     protected final AzureProfileConfigurationProperties profile = new AzureProfileConfigurationProperties();
 
     @NestedConfigurationProperty
-    protected final AzureResourceMetadata resource = new AzureResourceMetadata();
+    protected final AzureResourceMetadataConfigurationProperties resource = new AzureResourceMetadataConfigurationProperties();
 
     public boolean isEnabled() {
         return enabled;
@@ -46,7 +46,7 @@ public abstract class AbstractAzureServiceConfigurationProperties implements Azu
         return profile;
     }
 
-    public AzureResourceMetadata getResource() {
+    public AzureResourceMetadataConfigurationProperties getResource() {
         return resource;
     }
 }
