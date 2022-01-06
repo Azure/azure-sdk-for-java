@@ -40,6 +40,9 @@ parameters:
   - name: PreBuildSteps
     type: object
     default: []
+  - name: SkipDependencyTree
+    type: boolean
+    default: false
 
 jobs:
   - job: 'Test'
@@ -115,6 +118,12 @@ jobs:
           goals: $(TestGoals) $(AdditionalTestGoals)
         # we want to run this when TestFromSource isn't true
         condition: and(succeeded(), ne(variables['TestFromSource'],'true'))
+
+      - ${{if eq(parameters.SkipDependencyTree, 'true')}}:
+        - task: Maven@3
+          displayName: 'Dependency tree'
+          - script: |
+              mvn dependency:tree -f ./sdk/spring
 
       - task: Maven@3
         displayName: 'Generate aggregate code coverage report'
