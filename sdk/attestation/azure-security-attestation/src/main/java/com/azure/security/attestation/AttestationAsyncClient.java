@@ -290,12 +290,12 @@ public final class AttestationAsyncClient {
      * </p>
      * @return cached signers.
      */
-    Mono<List<AttestationSigner>> getCachedAttestationSigners() {
+    Mono<List<AttestationSigner>> getCachedAttestationSigners(Context context) {
         if (this.cachedSigners.get() != null) {
             return Mono.just(this.cachedSigners.get());
         } else {
-            return withContext(context -> this.signerImpl.getWithResponseAsync(context)
-                .map(response -> AttestationSignerImpl.attestationSignersFromJwks(response.getValue())))
+            return this.signerImpl.getWithResponseAsync(context)
+                .map(response -> AttestationSignerImpl.attestationSignersFromJwks(response.getValue()))
                 .map(signers -> {
                     this.cachedSigners.compareAndSet(null, signers);
                     return this.cachedSigners.get();
@@ -422,7 +422,7 @@ public final class AttestationAsyncClient {
             .map(response -> Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken())))
             .flatMap(response -> {
                 if (finalValidationOptions.getValidateToken()) {
-                    return getCachedAttestationSigners()
+                    return getCachedAttestationSigners(context)
                         .map(signers -> {
                             response.getValue().validate(signers, finalValidationOptions);
                             return response;
@@ -564,7 +564,7 @@ public final class AttestationAsyncClient {
             .map(response -> Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken())))
             .flatMap(response -> {
                 if (finalValidationOptions.getValidateToken()) {
-                    return getCachedAttestationSigners()
+                    return getCachedAttestationSigners(context)
                         .map(signers -> {
                             response.getValue().validate(signers, finalValidationOptions);
                             return response;
