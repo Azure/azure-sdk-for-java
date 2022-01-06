@@ -68,10 +68,20 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
     }
 
 
+    /**
+     * Gets the pricing tier.
+     *
+     * @return the pricing tier
+     */
     public String getPricingTier() {
         return this.pricingTier;
     }
 
+    /**
+     * Sets the pricing tier.
+     *
+     * @param pricingTier the pricing tier
+     */
     public void setPricingTier(String pricingTier) {
         this.pricingTier = pricingTier;
     }
@@ -123,6 +133,9 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
             throw new IllegalArgumentException("'spring.jms.servicebus.connection-string' should be provided");
         }
 
+        if (!pricingTier.matches("(?i)premium|standard|basic")) {
+            throw new IllegalArgumentException("'spring.jms.servicebus.pricing-tier' is not valid");
+        }
     }
 
     /**
