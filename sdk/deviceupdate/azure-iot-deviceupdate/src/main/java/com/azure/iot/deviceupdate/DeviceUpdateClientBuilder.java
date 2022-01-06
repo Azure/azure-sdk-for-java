@@ -4,6 +4,7 @@
 
 package com.azure.iot.deviceupdate;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -26,7 +27,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.iot.deviceupdate.implementation.DeviceUpdateClientImpl;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -40,15 +40,17 @@ import java.util.stream.Collectors;
             ManagementAsyncClient.class
         })
 public final class DeviceUpdateClientBuilder {
-    private static final String SDK_NAME = "name";
+    @Generated private static final String SDK_NAME = "name";
 
-    private static final String SDK_VERSION = "version";
+    @Generated private static final String SDK_VERSION = "version";
 
-    static final String[] DEFAULT_SCOPES = new String[] {"https://api.adu.microsoft.com/.default"};
+    @Generated static final String[] DEFAULT_SCOPES = new String[] {"https://api.adu.microsoft.com/.default"};
 
-    private final Map<String, String> properties = new HashMap<>();
+    @Generated
+    private final Map<String, String> properties = CoreUtils.getProperties("azure-iot-deviceupdate.properties");
 
     /** Create an instance of the DeviceUpdateClientBuilder. */
+    @Generated
     public DeviceUpdateClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
@@ -56,7 +58,7 @@ public final class DeviceUpdateClientBuilder {
     /*
      * Account endpoint.
      */
-    private String endpoint;
+    @Generated private String endpoint;
 
     /**
      * Sets Account endpoint.
@@ -64,6 +66,7 @@ public final class DeviceUpdateClientBuilder {
      * @param endpoint the endpoint value.
      * @return the DeviceUpdateClientBuilder.
      */
+    @Generated
     public DeviceUpdateClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
@@ -72,7 +75,7 @@ public final class DeviceUpdateClientBuilder {
     /*
      * Account instance identifier.
      */
-    private String instanceId;
+    @Generated private String instanceId;
 
     /**
      * Sets Account instance identifier.
@@ -80,6 +83,7 @@ public final class DeviceUpdateClientBuilder {
      * @param instanceId the instanceId value.
      * @return the DeviceUpdateClientBuilder.
      */
+    @Generated
     public DeviceUpdateClientBuilder instanceId(String instanceId) {
         this.instanceId = instanceId;
         return this;
@@ -88,7 +92,7 @@ public final class DeviceUpdateClientBuilder {
     /*
      * Service version
      */
-    private DeviceUpdateServiceVersion serviceVersion;
+    @Generated private DeviceUpdateServiceVersion serviceVersion;
 
     /**
      * Sets Service version.
@@ -96,6 +100,7 @@ public final class DeviceUpdateClientBuilder {
      * @param serviceVersion the serviceVersion value.
      * @return the DeviceUpdateClientBuilder.
      */
+    @Generated
     public DeviceUpdateClientBuilder serviceVersion(DeviceUpdateServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
@@ -104,7 +109,7 @@ public final class DeviceUpdateClientBuilder {
     /*
      * The HTTP pipeline to send requests through
      */
-    private HttpPipeline pipeline;
+    @Generated private HttpPipeline pipeline;
 
     /**
      * Sets The HTTP pipeline to send requests through.
@@ -112,6 +117,7 @@ public final class DeviceUpdateClientBuilder {
      * @param pipeline the pipeline value.
      * @return the DeviceUpdateClientBuilder.
      */
+    @Generated
     public DeviceUpdateClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
@@ -120,7 +126,7 @@ public final class DeviceUpdateClientBuilder {
     /*
      * The HTTP client used to send the request.
      */
-    private HttpClient httpClient;
+    @Generated private HttpClient httpClient;
 
     /**
      * Sets The HTTP client used to send the request.
@@ -128,6 +134,7 @@ public final class DeviceUpdateClientBuilder {
      * @param httpClient the httpClient value.
      * @return the DeviceUpdateClientBuilder.
      */
+    @Generated
     public DeviceUpdateClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
@@ -137,7 +144,7 @@ public final class DeviceUpdateClientBuilder {
      * The configuration store that is used during construction of the service
      * client.
      */
-    private Configuration configuration;
+    @Generated private Configuration configuration;
 
     /**
      * Sets The configuration store that is used during construction of the service client.
@@ -145,6 +152,7 @@ public final class DeviceUpdateClientBuilder {
      * @param configuration the configuration value.
      * @return the DeviceUpdateClientBuilder.
      */
+    @Generated
     public DeviceUpdateClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
@@ -153,7 +161,7 @@ public final class DeviceUpdateClientBuilder {
     /*
      * The TokenCredential used for authentication.
      */
-    private TokenCredential tokenCredential;
+    @Generated private TokenCredential tokenCredential;
 
     /**
      * Sets The TokenCredential used for authentication.
@@ -161,6 +169,7 @@ public final class DeviceUpdateClientBuilder {
      * @param tokenCredential the tokenCredential value.
      * @return the DeviceUpdateClientBuilder.
      */
+    @Generated
     public DeviceUpdateClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
         return this;
@@ -169,7 +178,7 @@ public final class DeviceUpdateClientBuilder {
     /*
      * The logging configuration for HTTP requests and responses.
      */
-    private HttpLogOptions httpLogOptions;
+    @Generated private HttpLogOptions httpLogOptions;
 
     /**
      * Sets The logging configuration for HTTP requests and responses.
@@ -177,6 +186,7 @@ public final class DeviceUpdateClientBuilder {
      * @param httpLogOptions the httpLogOptions value.
      * @return the DeviceUpdateClientBuilder.
      */
+    @Generated
     public DeviceUpdateClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
@@ -186,7 +196,7 @@ public final class DeviceUpdateClientBuilder {
      * The retry policy that will attempt to retry failed requests, if
      * applicable.
      */
-    private RetryPolicy retryPolicy;
+    @Generated private RetryPolicy retryPolicy;
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
@@ -194,6 +204,7 @@ public final class DeviceUpdateClientBuilder {
      * @param retryPolicy the retryPolicy value.
      * @return the DeviceUpdateClientBuilder.
      */
+    @Generated
     public DeviceUpdateClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
@@ -202,13 +213,13 @@ public final class DeviceUpdateClientBuilder {
     /*
      * The list of Http pipeline policies to add.
      */
-    private final List<HttpPipelinePolicy> pipelinePolicies;
+    @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /*
      * The client options such as application ID and custom headers to set on a
      * request.
      */
-    private ClientOptions clientOptions;
+    @Generated private ClientOptions clientOptions;
 
     /**
      * Sets The client options such as application ID and custom headers to set on a request.
@@ -216,6 +227,7 @@ public final class DeviceUpdateClientBuilder {
      * @param clientOptions the clientOptions value.
      * @return the DeviceUpdateClientBuilder.
      */
+    @Generated
     public DeviceUpdateClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
@@ -227,6 +239,7 @@ public final class DeviceUpdateClientBuilder {
      * @param customPolicy The custom Http pipeline policy to add.
      * @return the DeviceUpdateClientBuilder.
      */
+    @Generated
     public DeviceUpdateClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         pipelinePolicies.add(customPolicy);
         return this;
@@ -237,6 +250,7 @@ public final class DeviceUpdateClientBuilder {
      *
      * @return an instance of DeviceUpdateClientImpl.
      */
+    @Generated
     private DeviceUpdateClientImpl buildInnerClient() {
         if (serviceVersion == null) {
             this.serviceVersion = DeviceUpdateServiceVersion.getLatest();
@@ -254,6 +268,7 @@ public final class DeviceUpdateClientBuilder {
         return client;
     }
 
+    @Generated
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration =
                 (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
@@ -303,6 +318,7 @@ public final class DeviceUpdateClientBuilder {
      *
      * @return an instance of UpdatesAsyncClient.
      */
+    @Generated
     public UpdatesAsyncClient buildUpdatesAsyncClient() {
         return new UpdatesAsyncClient(buildInnerClient().getUpdates());
     }
@@ -312,6 +328,7 @@ public final class DeviceUpdateClientBuilder {
      *
      * @return an instance of ManagementAsyncClient.
      */
+    @Generated
     public ManagementAsyncClient buildManagementAsyncClient() {
         return new ManagementAsyncClient(buildInnerClient().getManagements());
     }
@@ -321,6 +338,7 @@ public final class DeviceUpdateClientBuilder {
      *
      * @return an instance of UpdatesClient.
      */
+    @Generated
     public UpdatesClient buildUpdatesClient() {
         return new UpdatesClient(buildInnerClient().getUpdates());
     }
@@ -330,6 +348,7 @@ public final class DeviceUpdateClientBuilder {
      *
      * @return an instance of ManagementClient.
      */
+    @Generated
     public ManagementClient buildManagementClient() {
         return new ManagementClient(buildInnerClient().getManagements());
     }
