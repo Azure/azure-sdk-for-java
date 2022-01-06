@@ -95,12 +95,14 @@ public class EventHubsMessageConverterTest extends UnaryAzureMessageConverterTes
     }
 
     @Test
-    public void testSystemPropertiesScreenedOut() {
+    public void testIgnoredHeadersScreenedOut() {
         Map<String, Object> headerMap = new HashMap<>();
         headerMap.put(EventHubsHeaders.PARTITION_KEY, PARTITION_KEY);
         headerMap.put(EventHubsHeaders.ENQUEUED_TIME, ENQUEUED_TIME);
         headerMap.put(EventHubsHeaders.OFFSET, OFFSET);
         headerMap.put(EventHubsHeaders.SEQUENCE_NUMBER, SEQUENCE_NUMBER);
+        headerMap.put(EventHubsHeaders.BATCH_CONVERTED_SYSTEM_PROPERTIES, "test");
+        headerMap.put(EventHubsHeaders.BATCH_CONVERTED_APPLICATION_PROPERTIES, "test");
         MessageHeaders headers = new MessageHeaders(headerMap);
 
         EventData eventData = new EventData(EVENT_DATA);
@@ -112,6 +114,8 @@ public class EventHubsMessageConverterTest extends UnaryAzureMessageConverterTes
         assertFalse(eventData.getProperties().containsKey(EventHubsHeaders.ENQUEUED_TIME));
         assertFalse(eventData.getProperties().containsKey(EventHubsHeaders.OFFSET));
         assertFalse(eventData.getProperties().containsKey(EventHubsHeaders.SEQUENCE_NUMBER));
+        assertFalse(eventData.getProperties().containsKey(EventHubsHeaders.BATCH_CONVERTED_SYSTEM_PROPERTIES));
+        assertFalse(eventData.getProperties().containsKey(EventHubsHeaders.BATCH_CONVERTED_APPLICATION_PROPERTIES));
     }
 
     @Test

@@ -14,33 +14,26 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 
-import java.nio.charset.StandardCharsets;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.messaging.support.NativeMessageHeaderAccessor.NATIVE_HEADERS;
 
 @SuppressWarnings("unchecked")
-public class EventHubBatchMessageConverterTest {
-
-    private static final String PARTITION_KEY = "abc";
-    private static final Instant ENQUEUED_TIME = Instant.now().minus(1, ChronoUnit.DAYS);
-    private static final Long OFFSET = 1234567890L;
-    private static final Long SEQUENCE_NUMBER = 123456L;
+public class EventHubsBatchMessageConverterTest {
 
     private final String headerProperties = "headerProperties";
     private final String payload1 = new String(new char[10000]).replace("\0", "a");
@@ -50,7 +43,8 @@ public class EventHubBatchMessageConverterTest {
     private final User payloadPojo1 = new User(payload1);
     private final User payloadPojo2 = new User(payload2);
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final EventHubBatchMessageConverter converter = new EventHubBatchMessageConverter();
+    private final EventHubsBatchMessageConverter batchConverter = new EventHubsBatchMessageConverter();
+    private final EventHubsMessageConverter recordConverter = new EventHubsMessageConverter();
 
     private final PartitionContext partitionContext = new PartitionContext("TEST_NAMESPACE",
         "TEST_EVENT_HUB", "TEST_DEFAULT_GROUP", "TEST_TEST_ID");
@@ -67,79 +61,11 @@ public class EventHubBatchMessageConverterTest {
     }
 
     @Test
-    public void sendPayloadAsByte() {
-        EventData azureMessage = convertToEventData(payloadBytes1);
-        assertNotNull(azureMessage);
-        assertArrayEquals(azureMessage.getBody(), payloadBytes1);
-        assertEventDataHeadersEqual(azureMessage);
-    }
-
-    @Test
-    public void sendPayloadAsString() {
-        EventData azureMessage = convertToEventData(payload1);
-        assertNotNull(azureMessage);
-        assertEquals(azureMessage.getBodyAsString(), payload1);
-        assertEventDataHeadersEqual(azureMessage);
-    }
-
-    @Test
-    public void sendPayloadAsPojoClass() throws JsonProcessingException {
-        EventData azureMessage = convertToEventData(payloadPojo1);
-        assertNotNull(azureMessage);
-        assertArrayEquals(azureMessage.getBody(), objectMapper.writeValueAsBytes(payloadPojo1));
-        assertEventDataHeadersEqual(azureMessage);
-    }
-
-    @Test
-    public void testNonUtf8DecodingPayload() {
-        String utf16Payload = new String(payload1.getBytes(), StandardCharsets.UTF_16);
-        Message<String> message = MessageBuilder.withPayload(utf16Payload).build();
-        EventData azureMessage = converter.fromMessage(message, EventData.class);
-        assertEquals(utf16Payload, azureMessage.getBodyAsString());
-        assertNotEquals(payload1, azureMessage.getBodyAsString());
-    }
-
-    @Test
-    public void testConvertCustomHeadersToEventData() {
-        Map<String, Object> headerMap = new HashMap<>();
-        headerMap.put("fake-header", "fake-value");
-        MessageHeaders headers = new MessageHeaders(headerMap);
-
-        EventData eventData = new EventData(payload1);
-
-        EventHubBatchMessageConverter converter = new EventHubBatchMessageConverter();
-        converter.setCustomHeaders(headers, eventData);
-
-        assertEquals(eventData.getProperties().get("fake-header"), "fake-value");
-        assertEquals(eventData.getBodyAsString(), payload1);
-    }
-
-    @Test
-    public void testSystemPropertiesScreenedOut() {
-        Map<String, Object> headerMap = new HashMap<>();
-        headerMap.put(EventHubsHeaders.PARTITION_KEY, PARTITION_KEY);
-        headerMap.put(EventHubsHeaders.ENQUEUED_TIME, ENQUEUED_TIME);
-        headerMap.put(EventHubsHeaders.OFFSET, OFFSET);
-        headerMap.put(EventHubsHeaders.SEQUENCE_NUMBER, SEQUENCE_NUMBER);
-        MessageHeaders headers = new MessageHeaders(headerMap);
-
-        EventData eventData = new EventData(payload1);
-
-        EventHubBatchMessageConverter converter = new EventHubBatchMessageConverter();
-        converter.setCustomHeaders(headers, eventData);
-
-        assertFalse(eventData.getProperties().containsKey(EventHubsHeaders.PARTITION_KEY));
-        assertFalse(eventData.getProperties().containsKey(EventHubsHeaders.ENQUEUED_TIME));
-        assertFalse(eventData.getProperties().containsKey(EventHubsHeaders.OFFSET));
-        assertFalse(eventData.getProperties().containsKey(EventHubsHeaders.SEQUENCE_NUMBER));
-    }
-
-    @Test
     public void receivePayloadAsByte() throws JsonProcessingException {
         setupEventDataListByPayload(payloadBytes1, payloadBytes2);
         EventBatchContext eventBatchContext = new EventBatchContext(partitionContext, events, checkpointStore,
             lastEnqueuedEventProperties);
-        Message<?> message = this.converter.toMessage(eventBatchContext, byte[].class);
+        Message<?> message = this.batchConverter.toMessage(eventBatchContext, byte[].class);
         List<byte[]> convertedPayload = (List<byte[]>) message.getPayload();
         assertEventBatchPayloadEqual(convertedPayload);
     }
@@ -149,7 +75,7 @@ public class EventHubBatchMessageConverterTest {
         setupEventDataListByPayload(payload1, payload2);
         EventBatchContext eventBatchContext = new EventBatchContext(partitionContext, events, checkpointStore,
             lastEnqueuedEventProperties);
-        Message<?> message = this.converter.toMessage(eventBatchContext, String.class);
+        Message<?> message = this.batchConverter.toMessage(eventBatchContext, String.class);
         List<byte[]> convertedPayload = ((List<String>) message.getPayload()).stream().map(String::getBytes).collect(Collectors.toList());
         assertEventBatchPayloadEqual(convertedPayload);
     }
@@ -159,7 +85,7 @@ public class EventHubBatchMessageConverterTest {
         setupEventDataListByPayload(objectMapper.writeValueAsBytes(payloadPojo1), objectMapper.writeValueAsBytes(payloadPojo2));
         EventBatchContext eventBatchContext = new EventBatchContext(partitionContext, events, checkpointStore,
             lastEnqueuedEventProperties);
-        Message<?> message = this.converter.toMessage(eventBatchContext, User.class);
+        Message<?> message = this.batchConverter.toMessage(eventBatchContext, User.class);
         List<byte[]> convertedPayload = new ArrayList<>();
         for (User user : ((List<User>) message.getPayload())) {
             byte[] bytes = objectMapper.writeValueAsBytes(user);
@@ -176,7 +102,7 @@ public class EventHubBatchMessageConverterTest {
         events.forEach(eventData -> eventData.getProperties().put(NATIVE_HEADERS, nativeHeadersString));
         EventBatchContext eventBatchContext = new EventBatchContext(partitionContext, events, checkpointStore,
             lastEnqueuedEventProperties);
-        Map<String, Object> headerHeadersMap = converter.buildCustomHeaders(eventBatchContext);
+        Map<String, Object> headerHeadersMap = batchConverter.buildCustomHeaders(eventBatchContext);
         assertNotNull(headerHeadersMap.get(EventHubsHeaders.BATCH_CONVERTED_APPLICATION_PROPERTIES));
         List<Map<String, Object>> headers =
             (List<Map<String, Object>>) headerHeadersMap.get(EventHubsHeaders.BATCH_CONVERTED_APPLICATION_PROPERTIES);
@@ -188,7 +114,7 @@ public class EventHubBatchMessageConverterTest {
         setupEventDataListByPayload(payloadBytes1, payloadBytes2);
         EventBatchContext eventBatchContext = new EventBatchContext(partitionContext, events, checkpointStore,
             lastEnqueuedEventProperties);
-        Map<String, Object> headerHeadersMap = converter.buildCustomHeaders(eventBatchContext);
+        Map<String, Object> headerHeadersMap = batchConverter.buildCustomHeaders(eventBatchContext);
 
         assertTrue(headerHeadersMap.containsKey(EventHubsHeaders.ENQUEUED_TIME));
         assertEquals(((List<Map<String, Object>>) headerHeadersMap.get(EventHubsHeaders.ENQUEUED_TIME)).size(), 2);
@@ -210,15 +136,8 @@ public class EventHubBatchMessageConverterTest {
 
     private <U> EventData convertToEventData(U payload) {
         Message<U> message = MessageBuilder.withPayload(payload).setHeader(headerProperties, headerProperties).build();
-        EventData azureMessage = converter.fromMessage(message, EventData.class);
+        EventData azureMessage = recordConverter.fromMessage(message, EventData.class);
         return azureMessage;
-    }
-
-    private void assertEventDataHeadersEqual(EventData azureMessage) {
-        Assertions.assertNotNull(azureMessage.getSystemProperties());
-        Assertions.assertNotNull(azureMessage.getBody());
-        Assertions.assertNotNull(azureMessage.getProperties());
-        assertEquals(azureMessage.getProperties().get(headerProperties), headerProperties);
     }
 
     private void setupEventDataListByPayload(Object payload1, Object payload2) throws JsonProcessingException {

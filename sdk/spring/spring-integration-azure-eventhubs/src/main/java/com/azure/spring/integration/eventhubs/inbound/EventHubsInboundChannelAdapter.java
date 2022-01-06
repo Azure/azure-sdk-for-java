@@ -12,7 +12,7 @@ import com.azure.spring.eventhubs.checkpoint.CheckpointManagers;
 import com.azure.spring.eventhubs.checkpoint.EventCheckpointManager;
 import com.azure.spring.eventhubs.core.EventHubsProcessorContainer;
 import com.azure.spring.eventhubs.support.EventHubsHeaders;
-import com.azure.spring.eventhubs.support.converter.EventHubBatchMessageConverter;
+import com.azure.spring.eventhubs.support.converter.EventHubsBatchMessageConverter;
 import com.azure.spring.eventhubs.support.converter.EventHubsMessageConverter;
 import com.azure.spring.integration.eventhubs.inbound.health.EventHusProcessorInstrumentation;
 import com.azure.spring.integration.instrumentation.Instrumentation;
@@ -298,7 +298,7 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
 
     private class IntegrationBatchEventProcessingListener implements InstrumentationEventProcessingListener, BatchEventProcessingListener {
 
-        private EventHubBatchMessageConverter messageConverter = new EventHubBatchMessageConverter();
+        private EventHubsBatchMessageConverter messageConverter = new EventHubsBatchMessageConverter();
         private Class<?> payloadType = byte[].class;
         private InstrumentationManager instrumentationManager;
         private String instrumentationId;
@@ -331,7 +331,7 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
          *
          * @param converter the converter
          */
-        public void setMessageConverter(EventHubBatchMessageConverter converter) {
+        public void setMessageConverter(EventHubsBatchMessageConverter converter) {
             this.messageConverter = converter;
         }
 
