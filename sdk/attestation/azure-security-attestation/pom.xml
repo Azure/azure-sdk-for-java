@@ -56,8 +56,7 @@
       <version>9.10.1</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
     </dependency>
     <!-- Added this dependency to include necessary annotations used by reactor core.
-    Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
-    which is used in @Nullable annotation in reactor core classes -->
+    Without this dependency, java throws a warning about the GuardedBy attribute. -->
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>jsr305</artifactId>
