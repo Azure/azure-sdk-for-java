@@ -212,8 +212,8 @@ class LockRenewalOperation implements AutoCloseable {
         // Lock renewal to follow the same behavior as C# SDK
         // C# class : github.com/azure-sdk-for-net/.../Azure.Messaging.ServiceBus/src/Processor/ReceiverManager.cs#L367
 
-        if (remainingTime.isNegative() || remainingTime.toMillis() < 400) {
-            logger.info("Duration was negative or less than 400ms. now[{}] lockedUntil[{}]", now, initialLockedUntil);
+        if (remainingTime.toMillis() < 400) {
+            logger.info("Duration was less than 400ms. now[{}] lockedUntil[{}]", now, initialLockedUntil);
             return Duration.ZERO;
         } else {
             // Adjust the interval, so we can buffer time for the time it'll take to refresh.
