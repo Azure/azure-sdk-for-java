@@ -106,10 +106,6 @@ page at http://checkstyle.sourceforge.net/config.html -->
       <property name="severity" value="warning"/>
     </module>
 
-    <module name="HideUtilityClassConstructor">
-      <property name="severity" value="error"/>
-    </module>
-
     <module name="MissingDeprecated"/>
 
     <module name="StaticVariableNameCheck">
@@ -135,7 +131,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
       <property name="severity" value="warning"/>
     </module>
 
-    <module name="OuterTypeFilename"/>
+    <module name="EqualsAvoidNullCheck"/>
 
     <module name="MethodNameCheck">
       <!-- Validates identifiers for method names. -->
