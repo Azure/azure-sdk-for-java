@@ -60,7 +60,6 @@ jobs:
         Artifacts: ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
         SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
-        SkipDependencyTree: true
         PreBuildSteps:
           - script: |
               pip install in-place & pip install termcolor
@@ -72,52 +71,52 @@ jobs:
               python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b ${{parameters.SpringBootVersion}} -c ${{parameters.SpringCloudVersion}}
             displayName: 'insert dependency management'
 
-#  - job: 'maven_dependency'
-#    variables:
-#      - template: ../../eng/pipelines/templates/variables/globals.yml
-#    pool:
-#      name: azsdk-pool-mms-ubuntu-2004-general
-#      vmImage: MMSUbuntu20.04
-#    steps:
-#      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-#        parameters:
-#          Paths:
-#            - 'sdk/${{ parameters.ServiceDirectory }}'
-#            - '**/*.xml'
-#            - '**/*.md'
-#            - '.vscode/cspell.json'
-#            - '!sdk/**/test-recordings'
-#            - '!sdk/**/session-records'
-#      - template: ../../eng/pipelines/templates/steps/generate-project-list.yml
-#        parameters:
-#          Artifacts: ${{ parameters.Artifacts }}
-#          AdditionalModules: ${{ parameters.AdditionalModules }}
-#          JobType: 'maven_dependency'
-#          SDKType: ${{parameters.SDKType}}
-#          ServiceDirectory: ${{parameters.ServiceDirectory}}
-#      - task: PythonScript@0
-#        displayName: 'Generate directories variable for sparse checkout'
-#        inputs:
-#          scriptPath: 'eng/scripts/generate_from_source_pom.py'
-#          arguments: '--set-pipeline-variable CheckoutDirectories --project-list $(ProjectList)'
-#          workingDirectory: '$(System.DefaultWorkingDirectory)'
-#      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-#        parameters:
-#          Paths: $(CheckoutDirectories)
-#          SkipDefaultCheckout: true
-#      - template: ../../eng/pipelines/templates/steps/install-reporting-tools.yml
-#      - script: |
-#          pip install in-place & pip install termcolor
-#        displayName: 'python module install'
-#      - script: |
-#          python ./sdk/spring/scripts/ci_update_versions.py -s ${{parameters.SpringBootVersion}}
-#        displayName: 'update external dependencies version'
-#      - script: |
-#          python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b ${{parameters.SpringBootVersion}} -c ${{parameters.SpringCloudVersion}}
-#        displayName: 'insert dependency management'
-#      - script: |
-#          mvn -f sdk/spring/pom.xml -P dev --batch-mode --fail-at-end $(WagonOptions) -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true -pl $(ProjectList) -am install
-#        displayName: 'maven_install'
-#      - script: |
-#          mvn dependency:tree>./sdk/spring/dependency_tree.txt -f ./sdk/spring && python ./sdk/spring/scripts/ci_read_dependency_tree.py
-#        displayName: '${{parameters.SpringBootVersion}}_dependencyTree'
+  - job: 'maven_dependency'
+    variables:
+      - template: ../../eng/pipelines/templates/variables/globals.yml
+    pool:
+      name: azsdk-pool-mms-ubuntu-2004-general
+      vmImage: MMSUbuntu20.04
+    steps:
+      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+        parameters:
+          Paths:
+            - 'sdk/${{ parameters.ServiceDirectory }}'
+            - '**/*.xml'
+            - '**/*.md'
+            - '.vscode/cspell.json'
+            - '!sdk/**/test-recordings'
+            - '!sdk/**/session-records'
+      - template: ../../eng/pipelines/templates/steps/generate-project-list.yml
+        parameters:
+          Artifacts: ${{ parameters.Artifacts }}
+          AdditionalModules: ${{ parameters.AdditionalModules }}
+          JobType: 'maven_dependency'
+          SDKType: ${{parameters.SDKType}}
+          ServiceDirectory: ${{parameters.ServiceDirectory}}
+      - task: PythonScript@0
+        displayName: 'Generate directories variable for sparse checkout'
+        inputs:
+          scriptPath: 'eng/scripts/generate_from_source_pom.py'
+          arguments: '--set-pipeline-variable CheckoutDirectories --project-list $(ProjectList)'
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
+      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+        parameters:
+          Paths: $(CheckoutDirectories)
+          SkipDefaultCheckout: true
+      - template: ../../eng/pipelines/templates/steps/install-reporting-tools.yml
+      - script: |
+          pip install in-place & pip install termcolor
+        displayName: 'python module install'
+      - script: |
+          python ./sdk/spring/scripts/ci_update_versions.py -s ${{parameters.SpringBootVersion}}
+        displayName: 'update external dependencies version'
+      - script: |
+          python ./sdk/spring/scripts/ci_insert_dependency_management_in_pom_files.py -b ${{parameters.SpringBootVersion}} -c ${{parameters.SpringCloudVersion}}
+        displayName: 'insert dependency management'
+      - script: |
+          mvn -f sdk/spring/pom.xml -P dev --batch-mode --fail-at-end $(WagonOptions) -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true -pl $(ProjectList) -am install
+        displayName: 'maven_install'
+      - script: |
+          mvn dependency:tree>./sdk/spring/dependency_tree.txt -f ./sdk/spring && python ./sdk/spring/scripts/ci_read_dependency_tree.py
+        displayName: '${{parameters.SpringBootVersion}}_dependencyTree'
