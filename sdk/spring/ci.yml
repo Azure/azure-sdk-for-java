@@ -335,7 +335,7 @@ extends:
   parameters:
     ServiceDirectory: spring
     Artifacts: ${{ parameters.Artifacts }}
-    AdditionalStagesOfSpring:
+    AdditionalStagesAfterBuild:
       - stage: TestCurrentSpringBootVersion
         jobs:
           - template: ../../../../sdk/spring/spring-sdk-client-test.yml
