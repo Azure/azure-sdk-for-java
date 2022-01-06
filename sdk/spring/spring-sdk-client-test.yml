@@ -50,24 +50,9 @@ jobs:
       JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
       CloudConfig:
         Cloud: Public
-      MatrixConfigs:
-        - ${{ each config in parameters.MatrixConfigs }}:
-            - ${{ config }}
-        - ${{ each config in parameters.AdditionalMatrixConfigs }}:
-            - ${{ config }}
-      MatrixFilters:
-        - ${{ each filter in parameters.MatrixFilters }}:
-            - ${{ filter }}
-        # Skip TestFromSource jobs for SDKType data
-        - ${{ if eq(parameters.SDKType, 'data') }}:
-            - TestFromSource=^(?!true).*
-      MatrixReplace:
-        - ${{ each replacement in parameters.MatrixReplace }}:
-            - ${{ replacement }}
-        - ${{ if eq(parameters.SDKType, 'data') }}:
-            - TestGoals=.*/verify
-            - TestOptions=.*/-am
-        - AZURE_TEST.*=.*/
+      MatrixConfigs: ${{ parameters.MatrixConfigs }}
+      MatrixFilters: ${{ parameters.MatrixFilters }}
+      MatrixReplace: ${{ parameters.MatrixReplace }}
       AdditionalParameters:
         SDKType: ${{ parameters.SDKType }}
         ServiceDirectory: ${{ parameters.ServiceDirectory }}
