@@ -1,5 +1,15 @@
 # Release History
 
+## 1.0.0-beta.3 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.0.0-beta.2 (2022-01-06)
 
 - Azure Resource Manager StreamAnalytics client library for Java. This package contains Microsoft Azure SDK for StreamAnalytics Management SDK. Stream Analytics Client. Package tag package-pure-2020-03. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
