@@ -120,10 +120,10 @@ jobs:
         condition: and(succeeded(), ne(variables['TestFromSource'],'true'))
 
       - ${{if eq(parameters.SkipDependencyTree, 'true')}}:
-        - task: Maven@3
+        - script: |
+            mvn dependency:tree -f ./sdk/spring
           displayName: 'Dependency tree'
-          - script: |
-              mvn dependency:tree -f ./sdk/spring
+
 
       - task: Maven@3
         displayName: 'Generate aggregate code coverage report'
