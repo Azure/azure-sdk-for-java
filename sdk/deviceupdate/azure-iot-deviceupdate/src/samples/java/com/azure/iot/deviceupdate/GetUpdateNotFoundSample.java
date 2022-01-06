@@ -3,14 +3,15 @@ package com.azure.iot.deviceupdate;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 
 public class GetUpdateNotFoundSample {
     public static void main(String[] args) {
         UpdatesAsyncClient client = new DeviceUpdateClientBuilder()
-            .endpoint(TestData.ACCOUNT_ENDPOINT)
-            .instanceId(TestData.INSTANCE_ID)
+            .endpoint(Configuration.getGlobalConfiguration().get("AZURE_ACCOUNT_ENDPOINT"))
+            .instanceId(Configuration.getGlobalConfiguration().get("AZURE_INSTANCE_ID"))
             .credential(new DefaultAzureCredentialBuilder().build())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildUpdatesAsyncClient();

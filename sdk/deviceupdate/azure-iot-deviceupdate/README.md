@@ -33,7 +33,7 @@ For the best development experience, developers should use the official Microsof
 
 In order to interact with the Device Update for IoT Hub service, you will need to create an instance of a [TokenCredential class](https://docs.microsoft.com/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable) and pass it to the constructor of your `DeviceUpdateClientBuilder` class.
 
-Please refer to [Java SDK Get Started document](https://docs.microsoft.com/en-us/azure/developer/java/sdk/get-started#set-up-authentication) for more authentication configuration.
+Please refer to [Java SDK Get Started document](https://docs.microsoft.com/azure/developer/java/sdk/get-started#set-up-authentication) for more authentication configuration.
 
 ## Key concepts
 
@@ -63,10 +63,6 @@ try {
     }
 }
 ```
-
-## Next steps
-
-Get started with our [Device Update for IoT Hub samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/deviceupdate/azure-iot-deviceupdate/src/samples)
 
 ## Contributing
 
