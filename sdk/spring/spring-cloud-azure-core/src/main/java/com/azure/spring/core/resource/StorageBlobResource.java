@@ -221,6 +221,7 @@ public final class StorageBlobResource extends AzureStorageResource {
 
     /**
      * Opens a blob input stream to download the blob.
+     *
      * @return An <code>InputStream</code> object that represents the stream to use for reading from the blob.
      * @throws IOException If a storage service error occurred or not existed.
      */

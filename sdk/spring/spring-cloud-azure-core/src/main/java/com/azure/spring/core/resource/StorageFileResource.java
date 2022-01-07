@@ -149,6 +149,7 @@ public final class StorageFileResource extends AzureStorageResource {
 
     /**
      * Create relative resource from current location.
+     *
      * @param relativePath the relative path.
      * @return StorageFileResource with relative path from current location.
      */

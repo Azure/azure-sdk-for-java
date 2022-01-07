@@ -36,7 +36,7 @@ final class AzureStorageUtils {
     }
 
     /**
-     * Get the storage protocal prefix string of storageType
+     * Get the storage protocal prefix string of storageType.
      *
      * @param storageType the storagetype of current resource
      * @return the exact storage protocal prefix string
@@ -46,7 +46,7 @@ final class AzureStorageUtils {
     }
 
     /**
-     * Get the location's path
+     * Get the location's path.
      *
      * @param location
      * @param storageType
