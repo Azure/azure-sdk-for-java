@@ -2,13 +2,15 @@
 
 ## 2.11.0-beta.1 (Unreleased)
 
-### Features Added
-
 ### Breaking Changes
 
-### Bugs Fixed
+- Removed preview features of `ExportPipelinesClient`, `ImportPipelinesClient`, `PipelineRunsClient`, `ScopeMapsClient`, `TokensClient`.
 
 ### Other Changes
+
+### Dependency Updates
+
+- Updated `api-version` to `2021-09-01`.
 
 ## 2.10.0 (2021-11-22)
 
