@@ -184,7 +184,7 @@
     "dir": "azure-resourcemanager-dns",
     "source": "specification/dns/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.dns",
-    "args": "--tag=package-2018-03-preview"
+    "args": "--tag=package-2018-05"
   },
   "dns-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-dns",
