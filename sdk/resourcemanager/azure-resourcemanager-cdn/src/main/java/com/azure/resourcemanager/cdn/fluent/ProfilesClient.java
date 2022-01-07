@@ -17,11 +17,11 @@ import com.azure.resourcemanager.cdn.fluent.models.ProfileInner;
 import com.azure.resourcemanager.cdn.fluent.models.ResourceUsageInner;
 import com.azure.resourcemanager.cdn.fluent.models.SsoUriInner;
 import com.azure.resourcemanager.cdn.fluent.models.SupportedOptimizationTypesListResultInner;
+import com.azure.resourcemanager.cdn.models.ProfileUpdateParameters;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -29,7 +29,8 @@ import reactor.core.publisher.Mono;
 public interface ProfilesClient
     extends InnerSupportsGet<ProfileInner>, InnerSupportsListing<ProfileInner>, InnerSupportsDelete<Void> {
     /**
-     * Lists all of the CDN profiles within an Azure subscription.
+     * Lists all of the Azure Front Door Standard, Azure Front Door Premium, and CDN profiles within an Azure
+     * subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -39,7 +40,8 @@ public interface ProfilesClient
     PagedFlux<ProfileInner> listAsync();
 
     /**
-     * Lists all of the CDN profiles within an Azure subscription.
+     * Lists all of the Azure Front Door Standard, Azure Front Door Premium, and CDN profiles within an Azure
+     * subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -49,7 +51,8 @@ public interface ProfilesClient
     PagedIterable<ProfileInner> list();
 
     /**
-     * Lists all of the CDN profiles within an Azure subscription.
+     * Lists all of the Azure Front Door Standard, Azure Front Door Premium, and CDN profiles within an Azure
+     * subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -61,7 +64,7 @@ public interface ProfilesClient
     PagedIterable<ProfileInner> list(Context context);
 
     /**
-     * Lists all of the CDN profiles within a resource group.
+     * Lists all of the Azure Front Door Standard, Azure Front Door Premium, and CDN profiles within a resource group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -73,7 +76,7 @@ public interface ProfilesClient
     PagedFlux<ProfileInner> listByResourceGroupAsync(String resourceGroupName);
 
     /**
-     * Lists all of the CDN profiles within a resource group.
+     * Lists all of the Azure Front Door Standard, Azure Front Door Premium, and CDN profiles within a resource group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -85,7 +88,7 @@ public interface ProfilesClient
     PagedIterable<ProfileInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Lists all of the CDN profiles within a resource group.
+     * Lists all of the Azure Front Door Standard, Azure Front Door Premium, and CDN profiles within a resource group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param context The context to associate with this operation.
@@ -98,324 +101,317 @@ public interface ProfilesClient
     PagedIterable<ProfileInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Gets a CDN profile with the specified profile name under the specified subscription and resource group.
+     * Gets an Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified profile name
+     * under the specified subscription and resource group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a CDN profile with the specified profile name under the specified subscription and resource group.
+     * @return an Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified profile name
+     *     under the specified subscription and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ProfileInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String profileName);
 
     /**
-     * Gets a CDN profile with the specified profile name under the specified subscription and resource group.
+     * Gets an Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified profile name
+     * under the specified subscription and resource group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a CDN profile with the specified profile name under the specified subscription and resource group.
+     * @return an Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified profile name
+     *     under the specified subscription and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ProfileInner> getByResourceGroupAsync(String resourceGroupName, String profileName);
 
     /**
-     * Gets a CDN profile with the specified profile name under the specified subscription and resource group.
+     * Gets an Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified profile name
+     * under the specified subscription and resource group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a CDN profile with the specified profile name under the specified subscription and resource group.
+     * @return an Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified profile name
+     *     under the specified subscription and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ProfileInner getByResourceGroup(String resourceGroupName, String profileName);
 
     /**
-     * Gets a CDN profile with the specified profile name under the specified subscription and resource group.
+     * Gets an Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified profile name
+     * under the specified subscription and resource group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a CDN profile with the specified profile name under the specified subscription and resource group.
+     * @return an Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified profile name
+     *     under the specified subscription and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ProfileInner> getByResourceGroupWithResponse(
         String resourceGroupName, String profileName, Context context);
 
     /**
-     * Creates a new CDN profile with a profile name under the specified subscription and resource group.
+     * Creates a new Azure Front Door Standard or Azure Front Door Premium or CDN profile with a profile name under the
+     * specified subscription and resource group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
      * @param profile Profile properties needed to create a new profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN profile is a logical grouping of endpoints that share the same settings, such as CDN provider and
-     *     pricing tier.
+     * @return a profile is a logical grouping of endpoints that share the same settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
         String resourceGroupName, String profileName, ProfileInner profile);
 
     /**
-     * Creates a new CDN profile with a profile name under the specified subscription and resource group.
+     * Creates a new Azure Front Door Standard or Azure Front Door Premium or CDN profile with a profile name under the
+     * specified subscription and resource group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
      * @param profile Profile properties needed to create a new profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN profile is a logical grouping of endpoints that share the same settings, such as CDN provider and
-     *     pricing tier.
+     * @return a profile is a logical grouping of endpoints that share the same settings.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ProfileInner>, ProfileInner> beginCreateAsync(
         String resourceGroupName, String profileName, ProfileInner profile);
 
     /**
-     * Creates a new CDN profile with a profile name under the specified subscription and resource group.
+     * Creates a new Azure Front Door Standard or Azure Front Door Premium or CDN profile with a profile name under the
+     * specified subscription and resource group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
      * @param profile Profile properties needed to create a new profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN profile is a logical grouping of endpoints that share the same settings, such as CDN provider and
-     *     pricing tier.
+     * @return a profile is a logical grouping of endpoints that share the same settings.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ProfileInner>, ProfileInner> beginCreate(
         String resourceGroupName, String profileName, ProfileInner profile);
 
     /**
-     * Creates a new CDN profile with a profile name under the specified subscription and resource group.
+     * Creates a new Azure Front Door Standard or Azure Front Door Premium or CDN profile with a profile name under the
+     * specified subscription and resource group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
      * @param profile Profile properties needed to create a new profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN profile is a logical grouping of endpoints that share the same settings, such as CDN provider and
-     *     pricing tier.
+     * @return a profile is a logical grouping of endpoints that share the same settings.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ProfileInner>, ProfileInner> beginCreate(
         String resourceGroupName, String profileName, ProfileInner profile, Context context);
 
     /**
-     * Creates a new CDN profile with a profile name under the specified subscription and resource group.
+     * Creates a new Azure Front Door Standard or Azure Front Door Premium or CDN profile with a profile name under the
+     * specified subscription and resource group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
      * @param profile Profile properties needed to create a new profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN profile is a logical grouping of endpoints that share the same settings, such as CDN provider and
-     *     pricing tier.
+     * @return a profile is a logical grouping of endpoints that share the same settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ProfileInner> createAsync(String resourceGroupName, String profileName, ProfileInner profile);
 
     /**
-     * Creates a new CDN profile with a profile name under the specified subscription and resource group.
+     * Creates a new Azure Front Door Standard or Azure Front Door Premium or CDN profile with a profile name under the
+     * specified subscription and resource group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
      * @param profile Profile properties needed to create a new profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN profile is a logical grouping of endpoints that share the same settings, such as CDN provider and
-     *     pricing tier.
+     * @return a profile is a logical grouping of endpoints that share the same settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ProfileInner create(String resourceGroupName, String profileName, ProfileInner profile);
 
     /**
-     * Creates a new CDN profile with a profile name under the specified subscription and resource group.
+     * Creates a new Azure Front Door Standard or Azure Front Door Premium or CDN profile with a profile name under the
+     * specified subscription and resource group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
      * @param profile Profile properties needed to create a new profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN profile is a logical grouping of endpoints that share the same settings, such as CDN provider and
-     *     pricing tier.
+     * @return a profile is a logical grouping of endpoints that share the same settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ProfileInner create(String resourceGroupName, String profileName, ProfileInner profile, Context context);
 
     /**
-     * Updates an existing CDN profile with the specified profile name under the specified subscription and resource
-     * group.
+     * Updates an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified
+     * profile name under the specified subscription and resource group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param tags Profile tags.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
+     * @param profileUpdateParameters Profile properties needed to update an existing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN profile is a logical grouping of endpoints that share the same settings, such as CDN provider and
-     *     pricing tier.
+     * @return a profile is a logical grouping of endpoints that share the same settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String profileName, Map<String, String> tags);
+        String resourceGroupName, String profileName, ProfileUpdateParameters profileUpdateParameters);
 
     /**
-     * Updates an existing CDN profile with the specified profile name under the specified subscription and resource
-     * group.
+     * Updates an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified
+     * profile name under the specified subscription and resource group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param tags Profile tags.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
+     * @param profileUpdateParameters Profile properties needed to update an existing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN profile is a logical grouping of endpoints that share the same settings, such as CDN provider and
-     *     pricing tier.
+     * @return a profile is a logical grouping of endpoints that share the same settings.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ProfileInner>, ProfileInner> beginUpdateAsync(
-        String resourceGroupName, String profileName, Map<String, String> tags);
+        String resourceGroupName, String profileName, ProfileUpdateParameters profileUpdateParameters);
 
     /**
-     * Updates an existing CDN profile with the specified profile name under the specified subscription and resource
-     * group.
+     * Updates an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified
+     * profile name under the specified subscription and resource group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param tags Profile tags.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
+     * @param profileUpdateParameters Profile properties needed to update an existing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN profile is a logical grouping of endpoints that share the same settings, such as CDN provider and
-     *     pricing tier.
+     * @return a profile is a logical grouping of endpoints that share the same settings.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ProfileInner>, ProfileInner> beginUpdate(
-        String resourceGroupName, String profileName, Map<String, String> tags);
+        String resourceGroupName, String profileName, ProfileUpdateParameters profileUpdateParameters);
 
     /**
-     * Updates an existing CDN profile with the specified profile name under the specified subscription and resource
-     * group.
+     * Updates an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified
+     * profile name under the specified subscription and resource group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param tags Profile tags.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
+     * @param profileUpdateParameters Profile properties needed to update an existing profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN profile is a logical grouping of endpoints that share the same settings, such as CDN provider and
-     *     pricing tier.
+     * @return a profile is a logical grouping of endpoints that share the same settings.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ProfileInner>, ProfileInner> beginUpdate(
-        String resourceGroupName, String profileName, Map<String, String> tags, Context context);
+        String resourceGroupName, String profileName, ProfileUpdateParameters profileUpdateParameters, Context context);
 
     /**
-     * Updates an existing CDN profile with the specified profile name under the specified subscription and resource
-     * group.
+     * Updates an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified
+     * profile name under the specified subscription and resource group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param tags Profile tags.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
+     * @param profileUpdateParameters Profile properties needed to update an existing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN profile is a logical grouping of endpoints that share the same settings, such as CDN provider and
-     *     pricing tier.
+     * @return a profile is a logical grouping of endpoints that share the same settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ProfileInner> updateAsync(String resourceGroupName, String profileName, Map<String, String> tags);
+    Mono<ProfileInner> updateAsync(
+        String resourceGroupName, String profileName, ProfileUpdateParameters profileUpdateParameters);
 
     /**
-     * Updates an existing CDN profile with the specified profile name under the specified subscription and resource
-     * group.
+     * Updates an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified
+     * profile name under the specified subscription and resource group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
+     * @param profileUpdateParameters Profile properties needed to update an existing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN profile is a logical grouping of endpoints that share the same settings, such as CDN provider and
-     *     pricing tier.
+     * @return a profile is a logical grouping of endpoints that share the same settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ProfileInner> updateAsync(String resourceGroupName, String profileName);
+    ProfileInner update(String resourceGroupName, String profileName, ProfileUpdateParameters profileUpdateParameters);
 
     /**
-     * Updates an existing CDN profile with the specified profile name under the specified subscription and resource
-     * group.
+     * Updates an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified
+     * profile name under the specified subscription and resource group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param tags Profile tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN profile is a logical grouping of endpoints that share the same settings, such as CDN provider and
-     *     pricing tier.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ProfileInner update(String resourceGroupName, String profileName, Map<String, String> tags);
-
-    /**
-     * Updates an existing CDN profile with the specified profile name under the specified subscription and resource
-     * group.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN profile is a logical grouping of endpoints that share the same settings, such as CDN provider and
-     *     pricing tier.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ProfileInner update(String resourceGroupName, String profileName);
-
-    /**
-     * Updates an existing CDN profile with the specified profile name under the specified subscription and resource
-     * group.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param tags Profile tags.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
+     * @param profileUpdateParameters Profile properties needed to update an existing profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN profile is a logical grouping of endpoints that share the same settings, such as CDN provider and
-     *     pricing tier.
+     * @return a profile is a logical grouping of endpoints that share the same settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProfileInner update(String resourceGroupName, String profileName, Map<String, String> tags, Context context);
+    ProfileInner update(
+        String resourceGroupName, String profileName, ProfileUpdateParameters profileUpdateParameters, Context context);
 
     /**
-     * Deletes an existing CDN profile with the specified parameters. Deleting a profile will result in the deletion of
-     * all of the sub-resources including endpoints, origins and custom domains.
+     * Deletes an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified
+     * parameters. Deleting a profile will result in the deletion of all of the sub-resources including endpoints,
+     * origins and custom domains.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -425,54 +421,62 @@ public interface ProfilesClient
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String profileName);
 
     /**
-     * Deletes an existing CDN profile with the specified parameters. Deleting a profile will result in the deletion of
-     * all of the sub-resources including endpoints, origins and custom domains.
+     * Deletes an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified
+     * parameters. Deleting a profile will result in the deletion of all of the sub-resources including endpoints,
+     * origins and custom domains.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String profileName);
 
     /**
-     * Deletes an existing CDN profile with the specified parameters. Deleting a profile will result in the deletion of
-     * all of the sub-resources including endpoints, origins and custom domains.
+     * Deletes an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified
+     * parameters. Deleting a profile will result in the deletion of all of the sub-resources including endpoints,
+     * origins and custom domains.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName);
 
     /**
-     * Deletes an existing CDN profile with the specified parameters. Deleting a profile will result in the deletion of
-     * all of the sub-resources including endpoints, origins and custom domains.
+     * Deletes an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified
+     * parameters. Deleting a profile will result in the deletion of all of the sub-resources including endpoints,
+     * origins and custom domains.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName, Context context);
 
     /**
-     * Deletes an existing CDN profile with the specified parameters. Deleting a profile will result in the deletion of
-     * all of the sub-resources including endpoints, origins and custom domains.
+     * Deletes an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified
+     * parameters. Deleting a profile will result in the deletion of all of the sub-resources including endpoints,
+     * origins and custom domains.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -482,11 +486,13 @@ public interface ProfilesClient
     Mono<Void> deleteAsync(String resourceGroupName, String profileName);
 
     /**
-     * Deletes an existing CDN profile with the specified parameters. Deleting a profile will result in the deletion of
-     * all of the sub-resources including endpoints, origins and custom domains.
+     * Deletes an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified
+     * parameters. Deleting a profile will result in the deletion of all of the sub-resources including endpoints,
+     * origins and custom domains.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -495,11 +501,13 @@ public interface ProfilesClient
     void delete(String resourceGroupName, String profileName);
 
     /**
-     * Deletes an existing CDN profile with the specified parameters. Deleting a profile will result in the deletion of
-     * all of the sub-resources including endpoints, origins and custom domains.
+     * Deletes an existing Azure Front Door Standard or Azure Front Door Premium or CDN profile with the specified
+     * parameters. Deleting a profile will result in the deletion of all of the sub-resources including endpoints,
+     * origins and custom domains.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -578,7 +586,8 @@ public interface ProfilesClient
      * type from the listed values.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -593,7 +602,8 @@ public interface ProfilesClient
      * type from the listed values.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -608,7 +618,8 @@ public interface ProfilesClient
      * type from the listed values.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -623,7 +634,8 @@ public interface ProfilesClient
      * type from the listed values.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -635,10 +647,12 @@ public interface ProfilesClient
         String resourceGroupName, String profileName, Context context);
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of endpoints under the given Azure Front Door Standard or Azure Front Door
+     * Premium or CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -648,10 +662,12 @@ public interface ProfilesClient
     PagedFlux<ResourceUsageInner> listResourceUsageAsync(String resourceGroupName, String profileName);
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of endpoints under the given Azure Front Door Standard or Azure Front Door
+     * Premium or CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -661,10 +677,12 @@ public interface ProfilesClient
     PagedIterable<ResourceUsageInner> listResourceUsage(String resourceGroupName, String profileName);
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of endpoints under the given Azure Front Door Standard or Azure Front Door
+     * Premium or CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

@@ -60,7 +60,7 @@ public final class ManagedRuleSetsClientImpl implements ManagedRuleSetsClient {
     @ServiceInterface(name = "CdnManagementClientM")
     private interface ManagedRuleSetsService {
         @Headers({"Content-Type: application/json"})
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/CdnWebApplicationFirewallManagedRuleSets")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/cdnWebApplicationFirewallManagedRuleSets")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedRuleSetDefinitionList>> list(
@@ -122,7 +122,7 @@ public final class ManagedRuleSetsClientImpl implements ManagedRuleSetsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -253,7 +253,7 @@ public final class ManagedRuleSetsClientImpl implements ManagedRuleSetsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

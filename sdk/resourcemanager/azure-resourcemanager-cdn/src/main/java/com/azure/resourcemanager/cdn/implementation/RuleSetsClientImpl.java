@@ -103,9 +103,9 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
                 + "/{profileName}/ruleSets/{ruleSetName}")
-        @ExpectedResponses({200, 201, 202})
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
+        Mono<Response<RuleSetInner>> create(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("profileName") String profileName,
@@ -119,7 +119,7 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
                 + "/{profileName}/ruleSets/{ruleSetName}")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
@@ -172,7 +172,8 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * Lists existing AzureFrontDoor rule sets within a profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -222,14 +223,15 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists existing AzureFrontDoor rule sets within a profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -284,7 +286,8 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * Lists existing AzureFrontDoor rule sets within a profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -301,7 +304,8 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * Lists existing AzureFrontDoor rule sets within a profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -319,7 +323,8 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * Lists existing AzureFrontDoor rule sets within a profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -334,7 +339,8 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * Lists existing AzureFrontDoor rule sets within a profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -351,7 +357,8 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param ruleSetName Name of the rule set under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -398,7 +405,7 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -406,7 +413,8 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param ruleSetName Name of the rule set under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -459,7 +467,8 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param ruleSetName Name of the rule set under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -485,7 +494,8 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param ruleSetName Name of the rule set under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -503,7 +513,8 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param ruleSetName Name of the rule set under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -522,7 +533,8 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * Creates a new rule set within the specified profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param ruleSetName Name of the rule set under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -530,7 +542,7 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * @return friendly RuleSet name mapping to the any RuleSet or secret related information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
+    public Mono<Response<RuleSetInner>> createWithResponseAsync(
         String resourceGroupName, String profileName, String ruleSetName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -568,14 +580,15 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a new rule set within the specified profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param ruleSetName Name of the rule set under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -584,7 +597,7 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * @return friendly RuleSet name mapping to the any RuleSet or secret related information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
+    private Mono<Response<RuleSetInner>> createWithResponseAsync(
         String resourceGroupName, String profileName, String ruleSetName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -626,87 +639,8 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * Creates a new rule set within the specified profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly RuleSet name mapping to the any RuleSet or secret related information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<RuleSetInner>, RuleSetInner> beginCreateAsync(
-        String resourceGroupName, String profileName, String ruleSetName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, profileName, ruleSetName);
-        return this
-            .client
-            .<RuleSetInner, RuleSetInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RuleSetInner.class, RuleSetInner.class, this.client.getContext());
-    }
-
-    /**
-     * Creates a new rule set within the specified profile.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly RuleSet name mapping to the any RuleSet or secret related information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<RuleSetInner>, RuleSetInner> beginCreateAsync(
-        String resourceGroupName, String profileName, String ruleSetName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, profileName, ruleSetName, context);
-        return this
-            .client
-            .<RuleSetInner, RuleSetInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RuleSetInner.class, RuleSetInner.class, context);
-    }
-
-    /**
-     * Creates a new rule set within the specified profile.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly RuleSet name mapping to the any RuleSet or secret related information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<RuleSetInner>, RuleSetInner> beginCreate(
-        String resourceGroupName, String profileName, String ruleSetName) {
-        return beginCreateAsync(resourceGroupName, profileName, ruleSetName).getSyncPoller();
-    }
-
-    /**
-     * Creates a new rule set within the specified profile.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly RuleSet name mapping to the any RuleSet or secret related information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<RuleSetInner>, RuleSetInner> beginCreate(
-        String resourceGroupName, String profileName, String ruleSetName, Context context) {
-        return beginCreateAsync(resourceGroupName, profileName, ruleSetName, context).getSyncPoller();
-    }
-
-    /**
-     * Creates a new rule set within the specified profile.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param ruleSetName Name of the rule set under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -715,36 +649,23 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RuleSetInner> createAsync(String resourceGroupName, String profileName, String ruleSetName) {
-        return beginCreateAsync(resourceGroupName, profileName, ruleSetName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return createWithResponseAsync(resourceGroupName, profileName, ruleSetName)
+            .flatMap(
+                (Response<RuleSetInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Creates a new rule set within the specified profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param ruleSetName Name of the rule set under the profile which is unique globally.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly RuleSet name mapping to the any RuleSet or secret related information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RuleSetInner> createAsync(
-        String resourceGroupName, String profileName, String ruleSetName, Context context) {
-        return beginCreateAsync(resourceGroupName, profileName, ruleSetName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates a new rule set within the specified profile.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param ruleSetName Name of the rule set under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -760,7 +681,8 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * Creates a new rule set within the specified profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param ruleSetName Name of the rule set under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -769,8 +691,9 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * @return friendly RuleSet name mapping to the any RuleSet or secret related information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RuleSetInner create(String resourceGroupName, String profileName, String ruleSetName, Context context) {
-        return createAsync(resourceGroupName, profileName, ruleSetName, context).block();
+    public Response<RuleSetInner> createWithResponse(
+        String resourceGroupName, String profileName, String ruleSetName, Context context) {
+        return createWithResponseAsync(resourceGroupName, profileName, ruleSetName, context).block();
     }
 
     /**
@@ -778,7 +701,8 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param ruleSetName Name of the rule set under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -824,7 +748,7 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -832,7 +756,8 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param ruleSetName Name of the rule set under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -884,14 +809,15 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param ruleSetName Name of the rule set under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String profileName, String ruleSetName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, profileName, ruleSetName);
@@ -906,7 +832,8 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param ruleSetName Name of the rule set under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -914,7 +841,7 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String profileName, String ruleSetName, Context context) {
         context = this.client.mergeContext(context);
@@ -930,14 +857,15 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param ruleSetName Name of the rule set under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String ruleSetName) {
         return beginDeleteAsync(resourceGroupName, profileName, ruleSetName).getSyncPoller();
@@ -948,7 +876,8 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param ruleSetName Name of the rule set under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -956,7 +885,7 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String ruleSetName, Context context) {
         return beginDeleteAsync(resourceGroupName, profileName, ruleSetName, context).getSyncPoller();
@@ -967,7 +896,8 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param ruleSetName Name of the rule set under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -986,7 +916,8 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param ruleSetName Name of the rule set under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1006,7 +937,8 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param ruleSetName Name of the rule set under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1022,7 +954,8 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param ruleSetName Name of the rule set under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1038,7 +971,8 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * Checks the quota and actual usage of endpoints under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param ruleSetName Name of the rule set under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1093,14 +1027,15 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Checks the quota and actual usage of endpoints under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param ruleSetName Name of the rule set under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1160,7 +1095,8 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * Checks the quota and actual usage of endpoints under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param ruleSetName Name of the rule set under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1179,7 +1115,8 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * Checks the quota and actual usage of endpoints under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param ruleSetName Name of the rule set under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1199,7 +1136,8 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * Checks the quota and actual usage of endpoints under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param ruleSetName Name of the rule set under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1216,7 +1154,8 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
      * Checks the quota and actual usage of endpoints under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param ruleSetName Name of the rule set under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1262,7 +1201,7 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1333,7 +1272,7 @@ public final class RuleSetsClientImpl implements RuleSetsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

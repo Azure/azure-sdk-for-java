@@ -40,7 +40,6 @@ import com.azure.resourcemanager.cdn.models.CdnWebApplicationFirewallPolicyPatch
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -75,7 +74,7 @@ public final class PoliciesClientImpl
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn"
-                + "/CdnWebApplicationFirewallPolicies")
+                + "/cdnWebApplicationFirewallPolicies")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CdnWebApplicationFirewallPolicyList>> listByResourceGroup(
@@ -89,7 +88,7 @@ public final class PoliciesClientImpl
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn"
-                + "/CdnWebApplicationFirewallPolicies/{policyName}")
+                + "/cdnWebApplicationFirewallPolicies/{policyName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CdnWebApplicationFirewallPolicyInner>> getByResourceGroup(
@@ -104,7 +103,7 @@ public final class PoliciesClientImpl
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn"
-                + "/CdnWebApplicationFirewallPolicies/{policyName}")
+                + "/cdnWebApplicationFirewallPolicies/{policyName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -120,7 +119,7 @@ public final class PoliciesClientImpl
         @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn"
-                + "/CdnWebApplicationFirewallPolicies/{policyName}")
+                + "/cdnWebApplicationFirewallPolicies/{policyName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -134,10 +133,10 @@ public final class PoliciesClientImpl
             @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn"
-                + "/CdnWebApplicationFirewallPolicies/{policyName}")
+                + "/cdnWebApplicationFirewallPolicies/{policyName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -146,6 +145,7 @@ public final class PoliciesClientImpl
             @PathParam("policyName") String policyName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -208,7 +208,7 @@ public final class PoliciesClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -369,7 +369,7 @@ public final class PoliciesClientImpl
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -531,7 +531,7 @@ public final class PoliciesClientImpl
                             cdnWebApplicationFirewallPolicy,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -604,7 +604,7 @@ public final class PoliciesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines web application firewall policy for Azure CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<CdnWebApplicationFirewallPolicyInner>, CdnWebApplicationFirewallPolicyInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -634,7 +634,7 @@ public final class PoliciesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines web application firewall policy for Azure CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CdnWebApplicationFirewallPolicyInner>, CdnWebApplicationFirewallPolicyInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -665,7 +665,7 @@ public final class PoliciesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines web application firewall policy for Azure CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CdnWebApplicationFirewallPolicyInner>, CdnWebApplicationFirewallPolicyInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -686,7 +686,7 @@ public final class PoliciesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines web application firewall policy for Azure CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CdnWebApplicationFirewallPolicyInner>, CdnWebApplicationFirewallPolicyInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -787,7 +787,7 @@ public final class PoliciesClientImpl
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the CdnWebApplicationFirewallPolicy.
-     * @param tags CdnWebApplicationFirewallPolicy tags.
+     * @param cdnWebApplicationFirewallPolicyPatchParameters CdnWebApplicationFirewallPolicy parameters to be patched.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -795,7 +795,9 @@ public final class PoliciesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String policyName, Map<String, String> tags) {
+        String resourceGroupName,
+        String policyName,
+        CdnWebApplicationFirewallPolicyPatchParameters cdnWebApplicationFirewallPolicyPatchParameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -815,10 +817,15 @@ public final class PoliciesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (cdnWebApplicationFirewallPolicyPatchParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter cdnWebApplicationFirewallPolicyPatchParameters is required and cannot be null."));
+        } else {
+            cdnWebApplicationFirewallPolicyPatchParameters.validate();
+        }
         final String accept = "application/json";
-        CdnWebApplicationFirewallPolicyPatchParameters cdnWebApplicationFirewallPolicyPatchParameters =
-            new CdnWebApplicationFirewallPolicyPatchParameters();
-        cdnWebApplicationFirewallPolicyPatchParameters.withTags(tags);
         return FluxUtil
             .withContext(
                 context ->
@@ -832,7 +839,7 @@ public final class PoliciesClientImpl
                             cdnWebApplicationFirewallPolicyPatchParameters,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -841,7 +848,7 @@ public final class PoliciesClientImpl
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the CdnWebApplicationFirewallPolicy.
-     * @param tags CdnWebApplicationFirewallPolicy tags.
+     * @param cdnWebApplicationFirewallPolicyPatchParameters CdnWebApplicationFirewallPolicy parameters to be patched.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -850,7 +857,10 @@ public final class PoliciesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String policyName, Map<String, String> tags, Context context) {
+        String resourceGroupName,
+        String policyName,
+        CdnWebApplicationFirewallPolicyPatchParameters cdnWebApplicationFirewallPolicyPatchParameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -870,10 +880,15 @@ public final class PoliciesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (cdnWebApplicationFirewallPolicyPatchParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter cdnWebApplicationFirewallPolicyPatchParameters is required and cannot be null."));
+        } else {
+            cdnWebApplicationFirewallPolicyPatchParameters.validate();
+        }
         final String accept = "application/json";
-        CdnWebApplicationFirewallPolicyPatchParameters cdnWebApplicationFirewallPolicyPatchParameters =
-            new CdnWebApplicationFirewallPolicyPatchParameters();
-        cdnWebApplicationFirewallPolicyPatchParameters.withTags(tags);
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -893,16 +908,20 @@ public final class PoliciesClientImpl
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the CdnWebApplicationFirewallPolicy.
-     * @param tags CdnWebApplicationFirewallPolicy tags.
+     * @param cdnWebApplicationFirewallPolicyPatchParameters CdnWebApplicationFirewallPolicy parameters to be patched.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines web application firewall policy for Azure CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<CdnWebApplicationFirewallPolicyInner>, CdnWebApplicationFirewallPolicyInner>
-        beginUpdateAsync(String resourceGroupName, String policyName, Map<String, String> tags) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, policyName, tags);
+        beginUpdateAsync(
+            String resourceGroupName,
+            String policyName,
+            CdnWebApplicationFirewallPolicyPatchParameters cdnWebApplicationFirewallPolicyPatchParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, policyName, cdnWebApplicationFirewallPolicyPatchParameters);
         return this
             .client
             .<CdnWebApplicationFirewallPolicyInner, CdnWebApplicationFirewallPolicyInner>getLroResult(
@@ -919,18 +938,24 @@ public final class PoliciesClientImpl
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the CdnWebApplicationFirewallPolicy.
-     * @param tags CdnWebApplicationFirewallPolicy tags.
+     * @param cdnWebApplicationFirewallPolicyPatchParameters CdnWebApplicationFirewallPolicy parameters to be patched.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines web application firewall policy for Azure CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CdnWebApplicationFirewallPolicyInner>, CdnWebApplicationFirewallPolicyInner>
-        beginUpdateAsync(String resourceGroupName, String policyName, Map<String, String> tags, Context context) {
+        beginUpdateAsync(
+            String resourceGroupName,
+            String policyName,
+            CdnWebApplicationFirewallPolicyPatchParameters cdnWebApplicationFirewallPolicyPatchParameters,
+            Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, policyName, tags, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(
+                resourceGroupName, policyName, cdnWebApplicationFirewallPolicyPatchParameters, context);
         return this
             .client
             .<CdnWebApplicationFirewallPolicyInner, CdnWebApplicationFirewallPolicyInner>getLroResult(
@@ -947,16 +972,20 @@ public final class PoliciesClientImpl
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the CdnWebApplicationFirewallPolicy.
-     * @param tags CdnWebApplicationFirewallPolicy tags.
+     * @param cdnWebApplicationFirewallPolicyPatchParameters CdnWebApplicationFirewallPolicy parameters to be patched.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines web application firewall policy for Azure CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CdnWebApplicationFirewallPolicyInner>, CdnWebApplicationFirewallPolicyInner>
-        beginUpdate(String resourceGroupName, String policyName, Map<String, String> tags) {
-        return beginUpdateAsync(resourceGroupName, policyName, tags).getSyncPoller();
+        beginUpdate(
+            String resourceGroupName,
+            String policyName,
+            CdnWebApplicationFirewallPolicyPatchParameters cdnWebApplicationFirewallPolicyPatchParameters) {
+        return beginUpdateAsync(resourceGroupName, policyName, cdnWebApplicationFirewallPolicyPatchParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -965,17 +994,22 @@ public final class PoliciesClientImpl
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the CdnWebApplicationFirewallPolicy.
-     * @param tags CdnWebApplicationFirewallPolicy tags.
+     * @param cdnWebApplicationFirewallPolicyPatchParameters CdnWebApplicationFirewallPolicy parameters to be patched.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines web application firewall policy for Azure CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CdnWebApplicationFirewallPolicyInner>, CdnWebApplicationFirewallPolicyInner>
-        beginUpdate(String resourceGroupName, String policyName, Map<String, String> tags, Context context) {
-        return beginUpdateAsync(resourceGroupName, policyName, tags, context).getSyncPoller();
+        beginUpdate(
+            String resourceGroupName,
+            String policyName,
+            CdnWebApplicationFirewallPolicyPatchParameters cdnWebApplicationFirewallPolicyPatchParameters,
+            Context context) {
+        return beginUpdateAsync(resourceGroupName, policyName, cdnWebApplicationFirewallPolicyPatchParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -984,7 +1018,7 @@ public final class PoliciesClientImpl
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the CdnWebApplicationFirewallPolicy.
-     * @param tags CdnWebApplicationFirewallPolicy tags.
+     * @param cdnWebApplicationFirewallPolicyPatchParameters CdnWebApplicationFirewallPolicy parameters to be patched.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -992,8 +1026,10 @@ public final class PoliciesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CdnWebApplicationFirewallPolicyInner> updateAsync(
-        String resourceGroupName, String policyName, Map<String, String> tags) {
-        return beginUpdateAsync(resourceGroupName, policyName, tags)
+        String resourceGroupName,
+        String policyName,
+        CdnWebApplicationFirewallPolicyPatchParameters cdnWebApplicationFirewallPolicyPatchParameters) {
+        return beginUpdateAsync(resourceGroupName, policyName, cdnWebApplicationFirewallPolicyPatchParameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1004,26 +1040,7 @@ public final class PoliciesClientImpl
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the CdnWebApplicationFirewallPolicy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy for Azure CDN.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CdnWebApplicationFirewallPolicyInner> updateAsync(String resourceGroupName, String policyName) {
-        final Map<String, String> tags = null;
-        return beginUpdateAsync(resourceGroupName, policyName, tags)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Update an existing CdnWebApplicationFirewallPolicy with the specified policy name under the specified
-     * subscription and resource group.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param policyName The name of the CdnWebApplicationFirewallPolicy.
-     * @param tags CdnWebApplicationFirewallPolicy tags.
+     * @param cdnWebApplicationFirewallPolicyPatchParameters CdnWebApplicationFirewallPolicy parameters to be patched.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1032,8 +1049,11 @@ public final class PoliciesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CdnWebApplicationFirewallPolicyInner> updateAsync(
-        String resourceGroupName, String policyName, Map<String, String> tags, Context context) {
-        return beginUpdateAsync(resourceGroupName, policyName, tags, context)
+        String resourceGroupName,
+        String policyName,
+        CdnWebApplicationFirewallPolicyPatchParameters cdnWebApplicationFirewallPolicyPatchParameters,
+        Context context) {
+        return beginUpdateAsync(resourceGroupName, policyName, cdnWebApplicationFirewallPolicyPatchParameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1044,7 +1064,7 @@ public final class PoliciesClientImpl
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the CdnWebApplicationFirewallPolicy.
-     * @param tags CdnWebApplicationFirewallPolicy tags.
+     * @param cdnWebApplicationFirewallPolicyPatchParameters CdnWebApplicationFirewallPolicy parameters to be patched.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1052,8 +1072,10 @@ public final class PoliciesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CdnWebApplicationFirewallPolicyInner update(
-        String resourceGroupName, String policyName, Map<String, String> tags) {
-        return updateAsync(resourceGroupName, policyName, tags).block();
+        String resourceGroupName,
+        String policyName,
+        CdnWebApplicationFirewallPolicyPatchParameters cdnWebApplicationFirewallPolicyPatchParameters) {
+        return updateAsync(resourceGroupName, policyName, cdnWebApplicationFirewallPolicyPatchParameters).block();
     }
 
     /**
@@ -1062,24 +1084,7 @@ public final class PoliciesClientImpl
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the CdnWebApplicationFirewallPolicy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy for Azure CDN.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CdnWebApplicationFirewallPolicyInner update(String resourceGroupName, String policyName) {
-        final Map<String, String> tags = null;
-        return updateAsync(resourceGroupName, policyName, tags).block();
-    }
-
-    /**
-     * Update an existing CdnWebApplicationFirewallPolicy with the specified policy name under the specified
-     * subscription and resource group.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param policyName The name of the CdnWebApplicationFirewallPolicy.
-     * @param tags CdnWebApplicationFirewallPolicy tags.
+     * @param cdnWebApplicationFirewallPolicyPatchParameters CdnWebApplicationFirewallPolicy parameters to be patched.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1088,8 +1093,12 @@ public final class PoliciesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CdnWebApplicationFirewallPolicyInner update(
-        String resourceGroupName, String policyName, Map<String, String> tags, Context context) {
-        return updateAsync(resourceGroupName, policyName, tags, context).block();
+        String resourceGroupName,
+        String policyName,
+        CdnWebApplicationFirewallPolicyPatchParameters cdnWebApplicationFirewallPolicyPatchParameters,
+        Context context) {
+        return updateAsync(resourceGroupName, policyName, cdnWebApplicationFirewallPolicyPatchParameters, context)
+            .block();
     }
 
     /**
@@ -1123,6 +1132,7 @@ public final class PoliciesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1133,8 +1143,9 @@ public final class PoliciesClientImpl
                             policyName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1169,6 +1180,7 @@ public final class PoliciesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -1177,6 +1189,7 @@ public final class PoliciesClientImpl
                 policyName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -1257,7 +1270,7 @@ public final class PoliciesClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

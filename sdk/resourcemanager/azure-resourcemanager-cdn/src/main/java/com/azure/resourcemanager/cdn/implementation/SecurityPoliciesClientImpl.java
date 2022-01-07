@@ -35,9 +35,8 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cdn.fluent.SecurityPoliciesClient;
 import com.azure.resourcemanager.cdn.fluent.models.SecurityPolicyInner;
+import com.azure.resourcemanager.cdn.fluent.models.SecurityPolicyProperties;
 import com.azure.resourcemanager.cdn.models.SecurityPolicyListResult;
-import com.azure.resourcemanager.cdn.models.SecurityPolicyParameters;
-import com.azure.resourcemanager.cdn.models.SecurityPolicyProperties;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -166,7 +165,8 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
      * Lists security policies associated with the profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -216,14 +216,15 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists security policies associated with the profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -278,7 +279,8 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
      * Lists security policies associated with the profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -295,7 +297,8 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
      * Lists security policies associated with the profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -314,7 +317,8 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
      * Lists security policies associated with the profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -329,7 +333,8 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
      * Lists security policies associated with the profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -346,7 +351,8 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
      * Gets an existing security policy within a profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -393,14 +399,15 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets an existing security policy within a profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -452,7 +459,8 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
      * Gets an existing security policy within a profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -476,7 +484,8 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
      * Gets an existing security policy within a profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -492,7 +501,8 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
      * Gets an existing security policy within a profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -510,9 +520,10 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
      * Creates a new security policy within the specified profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
-     * @param parameters object which contains security policy parameters.
+     * @param securityPolicy The security policy properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -520,7 +531,7 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String profileName, String securityPolicyName, SecurityPolicyParameters parameters) {
+        String resourceGroupName, String profileName, String securityPolicyName, SecurityPolicyInner securityPolicy) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -544,12 +555,12 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (parameters != null) {
-            parameters.validate();
+        if (securityPolicy == null) {
+            return Mono.error(new IllegalArgumentException("Parameter securityPolicy is required and cannot be null."));
+        } else {
+            securityPolicy.validate();
         }
         final String accept = "application/json";
-        SecurityPolicyInner securityPolicy = new SecurityPolicyInner();
-        securityPolicy.withParameters(parameters);
         return FluxUtil
             .withContext(
                 context ->
@@ -564,16 +575,17 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
                             securityPolicy,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a new security policy within the specified profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
-     * @param parameters object which contains security policy parameters.
+     * @param securityPolicy The security policy properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -585,7 +597,7 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
         String resourceGroupName,
         String profileName,
         String securityPolicyName,
-        SecurityPolicyParameters parameters,
+        SecurityPolicyInner securityPolicy,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -610,12 +622,12 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (parameters != null) {
-            parameters.validate();
+        if (securityPolicy == null) {
+            return Mono.error(new IllegalArgumentException("Parameter securityPolicy is required and cannot be null."));
+        } else {
+            securityPolicy.validate();
         }
         final String accept = "application/json";
-        SecurityPolicyInner securityPolicy = new SecurityPolicyInner();
-        securityPolicy.withParameters(parameters);
         context = this.client.mergeContext(context);
         return service
             .create(
@@ -634,19 +646,20 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
      * Creates a new security policy within the specified profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
-     * @param parameters object which contains security policy parameters.
+     * @param securityPolicy The security policy properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return securityPolicy association for AzureFrontDoor profile.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<SecurityPolicyInner>, SecurityPolicyInner> beginCreateAsync(
-        String resourceGroupName, String profileName, String securityPolicyName, SecurityPolicyParameters parameters) {
+        String resourceGroupName, String profileName, String securityPolicyName, SecurityPolicyInner securityPolicy) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, profileName, securityPolicyName, parameters);
+            createWithResponseAsync(resourceGroupName, profileName, securityPolicyName, securityPolicy);
         return this
             .client
             .<SecurityPolicyInner, SecurityPolicyInner>getLroResult(
@@ -661,25 +674,26 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
      * Creates a new security policy within the specified profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
-     * @param parameters object which contains security policy parameters.
+     * @param securityPolicy The security policy properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return securityPolicy association for AzureFrontDoor profile.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SecurityPolicyInner>, SecurityPolicyInner> beginCreateAsync(
         String resourceGroupName,
         String profileName,
         String securityPolicyName,
-        SecurityPolicyParameters parameters,
+        SecurityPolicyInner securityPolicy,
         Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, profileName, securityPolicyName, parameters, context);
+            createWithResponseAsync(resourceGroupName, profileName, securityPolicyName, securityPolicy, context);
         return this
             .client
             .<SecurityPolicyInner, SecurityPolicyInner>getLroResult(
@@ -690,41 +704,43 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
      * Creates a new security policy within the specified profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
-     * @param parameters object which contains security policy parameters.
+     * @param securityPolicy The security policy properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return securityPolicy association for AzureFrontDoor profile.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SecurityPolicyInner>, SecurityPolicyInner> beginCreate(
-        String resourceGroupName, String profileName, String securityPolicyName, SecurityPolicyParameters parameters) {
-        return beginCreateAsync(resourceGroupName, profileName, securityPolicyName, parameters).getSyncPoller();
+        String resourceGroupName, String profileName, String securityPolicyName, SecurityPolicyInner securityPolicy) {
+        return beginCreateAsync(resourceGroupName, profileName, securityPolicyName, securityPolicy).getSyncPoller();
     }
 
     /**
      * Creates a new security policy within the specified profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
-     * @param parameters object which contains security policy parameters.
+     * @param securityPolicy The security policy properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return securityPolicy association for AzureFrontDoor profile.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SecurityPolicyInner>, SecurityPolicyInner> beginCreate(
         String resourceGroupName,
         String profileName,
         String securityPolicyName,
-        SecurityPolicyParameters parameters,
+        SecurityPolicyInner securityPolicy,
         Context context) {
-        return beginCreateAsync(resourceGroupName, profileName, securityPolicyName, parameters, context)
+        return beginCreateAsync(resourceGroupName, profileName, securityPolicyName, securityPolicy, context)
             .getSyncPoller();
     }
 
@@ -732,9 +748,10 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
      * Creates a new security policy within the specified profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
-     * @param parameters object which contains security policy parameters.
+     * @param securityPolicy The security policy properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -742,8 +759,8 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SecurityPolicyInner> createAsync(
-        String resourceGroupName, String profileName, String securityPolicyName, SecurityPolicyParameters parameters) {
-        return beginCreateAsync(resourceGroupName, profileName, securityPolicyName, parameters)
+        String resourceGroupName, String profileName, String securityPolicyName, SecurityPolicyInner securityPolicy) {
+        return beginCreateAsync(resourceGroupName, profileName, securityPolicyName, securityPolicy)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -752,29 +769,10 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
      * Creates a new security policy within the specified profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return securityPolicy association for AzureFrontDoor profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SecurityPolicyInner> createAsync(
-        String resourceGroupName, String profileName, String securityPolicyName) {
-        final SecurityPolicyParameters parameters = null;
-        return beginCreateAsync(resourceGroupName, profileName, securityPolicyName, parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates a new security policy within the specified profile.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param securityPolicyName Name of the security policy under the profile.
-     * @param parameters object which contains security policy parameters.
+     * @param securityPolicy The security policy properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -786,9 +784,9 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
         String resourceGroupName,
         String profileName,
         String securityPolicyName,
-        SecurityPolicyParameters parameters,
+        SecurityPolicyInner securityPolicy,
         Context context) {
-        return beginCreateAsync(resourceGroupName, profileName, securityPolicyName, parameters, context)
+        return beginCreateAsync(resourceGroupName, profileName, securityPolicyName, securityPolicy, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -797,9 +795,10 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
      * Creates a new security policy within the specified profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
-     * @param parameters object which contains security policy parameters.
+     * @param securityPolicy The security policy properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -807,34 +806,18 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityPolicyInner create(
-        String resourceGroupName, String profileName, String securityPolicyName, SecurityPolicyParameters parameters) {
-        return createAsync(resourceGroupName, profileName, securityPolicyName, parameters).block();
+        String resourceGroupName, String profileName, String securityPolicyName, SecurityPolicyInner securityPolicy) {
+        return createAsync(resourceGroupName, profileName, securityPolicyName, securityPolicy).block();
     }
 
     /**
      * Creates a new security policy within the specified profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return securityPolicy association for AzureFrontDoor profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecurityPolicyInner create(String resourceGroupName, String profileName, String securityPolicyName) {
-        final SecurityPolicyParameters parameters = null;
-        return createAsync(resourceGroupName, profileName, securityPolicyName, parameters).block();
-    }
-
-    /**
-     * Creates a new security policy within the specified profile.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param securityPolicyName Name of the security policy under the profile.
-     * @param parameters object which contains security policy parameters.
+     * @param securityPolicy The security policy properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -846,18 +829,19 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
         String resourceGroupName,
         String profileName,
         String securityPolicyName,
-        SecurityPolicyParameters parameters,
+        SecurityPolicyInner securityPolicy,
         Context context) {
-        return createAsync(resourceGroupName, profileName, securityPolicyName, parameters, context).block();
+        return createAsync(resourceGroupName, profileName, securityPolicyName, securityPolicy, context).block();
     }
 
     /**
-     * Updates an existing Secret within a profile.
+     * Updates an existing security policy within a profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
-     * @param parameters object which contains security policy parameters.
+     * @param securityPolicyProperties Security policy update properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -865,7 +849,10 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> patchWithResponseAsync(
-        String resourceGroupName, String profileName, String securityPolicyName, SecurityPolicyParameters parameters) {
+        String resourceGroupName,
+        String profileName,
+        String securityPolicyName,
+        SecurityPolicyProperties securityPolicyProperties) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -889,12 +876,14 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (parameters != null) {
-            parameters.validate();
+        if (securityPolicyProperties == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter securityPolicyProperties is required and cannot be null."));
+        } else {
+            securityPolicyProperties.validate();
         }
         final String accept = "application/json";
-        SecurityPolicyProperties securityPolicyProperties = new SecurityPolicyProperties();
-        securityPolicyProperties.withParameters(parameters);
         return FluxUtil
             .withContext(
                 context ->
@@ -909,16 +898,17 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
                             securityPolicyProperties,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Updates an existing Secret within a profile.
+     * Updates an existing security policy within a profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
-     * @param parameters object which contains security policy parameters.
+     * @param securityPolicyProperties Security policy update properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -930,7 +920,7 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
         String resourceGroupName,
         String profileName,
         String securityPolicyName,
-        SecurityPolicyParameters parameters,
+        SecurityPolicyProperties securityPolicyProperties,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -955,12 +945,14 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (parameters != null) {
-            parameters.validate();
+        if (securityPolicyProperties == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter securityPolicyProperties is required and cannot be null."));
+        } else {
+            securityPolicyProperties.validate();
         }
         final String accept = "application/json";
-        SecurityPolicyProperties securityPolicyProperties = new SecurityPolicyProperties();
-        securityPolicyProperties.withParameters(parameters);
         context = this.client.mergeContext(context);
         return service
             .patch(
@@ -976,22 +968,26 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
     }
 
     /**
-     * Updates an existing Secret within a profile.
+     * Updates an existing security policy within a profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
-     * @param parameters object which contains security policy parameters.
+     * @param securityPolicyProperties Security policy update properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return securityPolicy association for AzureFrontDoor profile.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<SecurityPolicyInner>, SecurityPolicyInner> beginPatchAsync(
-        String resourceGroupName, String profileName, String securityPolicyName, SecurityPolicyParameters parameters) {
+        String resourceGroupName,
+        String profileName,
+        String securityPolicyName,
+        SecurityPolicyProperties securityPolicyProperties) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            patchWithResponseAsync(resourceGroupName, profileName, securityPolicyName, parameters);
+            patchWithResponseAsync(resourceGroupName, profileName, securityPolicyName, securityPolicyProperties);
         return this
             .client
             .<SecurityPolicyInner, SecurityPolicyInner>getLroResult(
@@ -1003,28 +999,30 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
     }
 
     /**
-     * Updates an existing Secret within a profile.
+     * Updates an existing security policy within a profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
-     * @param parameters object which contains security policy parameters.
+     * @param securityPolicyProperties Security policy update properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return securityPolicy association for AzureFrontDoor profile.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SecurityPolicyInner>, SecurityPolicyInner> beginPatchAsync(
         String resourceGroupName,
         String profileName,
         String securityPolicyName,
-        SecurityPolicyParameters parameters,
+        SecurityPolicyProperties securityPolicyProperties,
         Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            patchWithResponseAsync(resourceGroupName, profileName, securityPolicyName, parameters, context);
+            patchWithResponseAsync(
+                resourceGroupName, profileName, securityPolicyName, securityPolicyProperties, context);
         return this
             .client
             .<SecurityPolicyInner, SecurityPolicyInner>getLroResult(
@@ -1032,53 +1030,61 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
     }
 
     /**
-     * Updates an existing Secret within a profile.
+     * Updates an existing security policy within a profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
-     * @param parameters object which contains security policy parameters.
+     * @param securityPolicyProperties Security policy update properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return securityPolicy association for AzureFrontDoor profile.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SecurityPolicyInner>, SecurityPolicyInner> beginPatch(
-        String resourceGroupName, String profileName, String securityPolicyName, SecurityPolicyParameters parameters) {
-        return beginPatchAsync(resourceGroupName, profileName, securityPolicyName, parameters).getSyncPoller();
+        String resourceGroupName,
+        String profileName,
+        String securityPolicyName,
+        SecurityPolicyProperties securityPolicyProperties) {
+        return beginPatchAsync(resourceGroupName, profileName, securityPolicyName, securityPolicyProperties)
+            .getSyncPoller();
     }
 
     /**
-     * Updates an existing Secret within a profile.
+     * Updates an existing security policy within a profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
-     * @param parameters object which contains security policy parameters.
+     * @param securityPolicyProperties Security policy update properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return securityPolicy association for AzureFrontDoor profile.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SecurityPolicyInner>, SecurityPolicyInner> beginPatch(
         String resourceGroupName,
         String profileName,
         String securityPolicyName,
-        SecurityPolicyParameters parameters,
+        SecurityPolicyProperties securityPolicyProperties,
         Context context) {
-        return beginPatchAsync(resourceGroupName, profileName, securityPolicyName, parameters, context).getSyncPoller();
+        return beginPatchAsync(resourceGroupName, profileName, securityPolicyName, securityPolicyProperties, context)
+            .getSyncPoller();
     }
 
     /**
-     * Updates an existing Secret within a profile.
+     * Updates an existing security policy within a profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
-     * @param parameters object which contains security policy parameters.
+     * @param securityPolicyProperties Security policy update properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1086,39 +1092,23 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SecurityPolicyInner> patchAsync(
-        String resourceGroupName, String profileName, String securityPolicyName, SecurityPolicyParameters parameters) {
-        return beginPatchAsync(resourceGroupName, profileName, securityPolicyName, parameters)
+        String resourceGroupName,
+        String profileName,
+        String securityPolicyName,
+        SecurityPolicyProperties securityPolicyProperties) {
+        return beginPatchAsync(resourceGroupName, profileName, securityPolicyName, securityPolicyProperties)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Updates an existing Secret within a profile.
+     * Updates an existing security policy within a profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return securityPolicy association for AzureFrontDoor profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SecurityPolicyInner> patchAsync(
-        String resourceGroupName, String profileName, String securityPolicyName) {
-        final SecurityPolicyParameters parameters = null;
-        return beginPatchAsync(resourceGroupName, profileName, securityPolicyName, parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Updates an existing Secret within a profile.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param securityPolicyName Name of the security policy under the profile.
-     * @param parameters object which contains security policy parameters.
+     * @param securityPolicyProperties Security policy update properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1130,20 +1120,21 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
         String resourceGroupName,
         String profileName,
         String securityPolicyName,
-        SecurityPolicyParameters parameters,
+        SecurityPolicyProperties securityPolicyProperties,
         Context context) {
-        return beginPatchAsync(resourceGroupName, profileName, securityPolicyName, parameters, context)
+        return beginPatchAsync(resourceGroupName, profileName, securityPolicyName, securityPolicyProperties, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Updates an existing Secret within a profile.
+     * Updates an existing security policy within a profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
-     * @param parameters object which contains security policy parameters.
+     * @param securityPolicyProperties Security policy update properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1151,34 +1142,21 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityPolicyInner patch(
-        String resourceGroupName, String profileName, String securityPolicyName, SecurityPolicyParameters parameters) {
-        return patchAsync(resourceGroupName, profileName, securityPolicyName, parameters).block();
+        String resourceGroupName,
+        String profileName,
+        String securityPolicyName,
+        SecurityPolicyProperties securityPolicyProperties) {
+        return patchAsync(resourceGroupName, profileName, securityPolicyName, securityPolicyProperties).block();
     }
 
     /**
-     * Updates an existing Secret within a profile.
+     * Updates an existing security policy within a profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param securityPolicyName Name of the security policy under the profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return securityPolicy association for AzureFrontDoor profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecurityPolicyInner patch(String resourceGroupName, String profileName, String securityPolicyName) {
-        final SecurityPolicyParameters parameters = null;
-        return patchAsync(resourceGroupName, profileName, securityPolicyName, parameters).block();
-    }
-
-    /**
-     * Updates an existing Secret within a profile.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param securityPolicyName Name of the security policy under the profile.
-     * @param parameters object which contains security policy parameters.
+     * @param securityPolicyProperties Security policy update properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1190,17 +1168,19 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
         String resourceGroupName,
         String profileName,
         String securityPolicyName,
-        SecurityPolicyParameters parameters,
+        SecurityPolicyProperties securityPolicyProperties,
         Context context) {
-        return patchAsync(resourceGroupName, profileName, securityPolicyName, parameters, context).block();
+        return patchAsync(resourceGroupName, profileName, securityPolicyName, securityPolicyProperties, context)
+            .block();
     }
 
     /**
      * Deletes an existing security policy within profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param securityPolicyName Name of the Secret under the profile.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
+     * @param securityPolicyName Name of the security policy under the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1246,15 +1226,16 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes an existing security policy within profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param securityPolicyName Name of the Secret under the profile.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
+     * @param securityPolicyName Name of the security policy under the profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1305,14 +1286,15 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
      * Deletes an existing security policy within profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param securityPolicyName Name of the Secret under the profile.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
+     * @param securityPolicyName Name of the security policy under the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String profileName, String securityPolicyName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1327,15 +1309,16 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
      * Deletes an existing security policy within profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param securityPolicyName Name of the Secret under the profile.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
+     * @param securityPolicyName Name of the security policy under the profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String profileName, String securityPolicyName, Context context) {
         context = this.client.mergeContext(context);
@@ -1350,14 +1333,15 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
      * Deletes an existing security policy within profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param securityPolicyName Name of the Secret under the profile.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
+     * @param securityPolicyName Name of the security policy under the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String securityPolicyName) {
         return beginDeleteAsync(resourceGroupName, profileName, securityPolicyName).getSyncPoller();
@@ -1367,15 +1351,16 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
      * Deletes an existing security policy within profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param securityPolicyName Name of the Secret under the profile.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
+     * @param securityPolicyName Name of the security policy under the profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String securityPolicyName, Context context) {
         return beginDeleteAsync(resourceGroupName, profileName, securityPolicyName, context).getSyncPoller();
@@ -1385,8 +1370,9 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
      * Deletes an existing security policy within profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param securityPolicyName Name of the Secret under the profile.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
+     * @param securityPolicyName Name of the security policy under the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1403,8 +1389,9 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
      * Deletes an existing security policy within profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param securityPolicyName Name of the Secret under the profile.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
+     * @param securityPolicyName Name of the security policy under the profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1423,8 +1410,9 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
      * Deletes an existing security policy within profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param securityPolicyName Name of the Secret under the profile.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
+     * @param securityPolicyName Name of the security policy under the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1438,8 +1426,9 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
      * Deletes an existing security policy within profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param securityPolicyName Name of the Secret under the profile.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
+     * @param securityPolicyName Name of the security policy under the profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1482,7 +1471,7 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

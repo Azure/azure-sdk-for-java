@@ -26,7 +26,9 @@ public final class UrlSigningKeyParameters extends SecretParameters {
     private String keyId;
 
     /*
-     * Resource reference to the KV secret
+     * Resource reference to the Azure Key Vault secret. Expected to be in
+     * format of
+     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
      */
     @JsonProperty(value = "secretSource", required = true)
     private ResourceReference secretSource;
@@ -60,7 +62,8 @@ public final class UrlSigningKeyParameters extends SecretParameters {
     }
 
     /**
-     * Get the secretSource property: Resource reference to the KV secret.
+     * Get the secretSource property: Resource reference to the Azure Key Vault secret. Expected to be in format of
+     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​.
      *
      * @return the secretSource value.
      */
@@ -69,7 +72,8 @@ public final class UrlSigningKeyParameters extends SecretParameters {
     }
 
     /**
-     * Set the secretSource property: Resource reference to the KV secret.
+     * Set the secretSource property: Resource reference to the Azure Key Vault secret. Expected to be in format of
+     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​.
      *
      * @param secretSource the secretSource value to set.
      * @return the UrlSigningKeyParameters object itself.

@@ -35,7 +35,8 @@ public interface LogAnalyticsClient {
      * Get log report for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param metrics Array of LogMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -68,7 +69,8 @@ public interface LogAnalyticsClient {
      * Get log report for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param metrics Array of LogMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -101,7 +103,8 @@ public interface LogAnalyticsClient {
      * Get log report for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param metrics Array of LogMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -128,7 +131,8 @@ public interface LogAnalyticsClient {
      * Get log report for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param metrics Array of LogMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -155,7 +159,8 @@ public interface LogAnalyticsClient {
      * Get log report for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param metrics Array of LogMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -190,7 +195,8 @@ public interface LogAnalyticsClient {
      * Get log analytics ranking report for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param rankings Array of LogRanking.
      * @param metrics Array of LogRankingMetric.
      * @param maxRanking The maxRanking parameter.
@@ -217,7 +223,8 @@ public interface LogAnalyticsClient {
      * Get log analytics ranking report for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param rankings Array of LogRanking.
      * @param metrics Array of LogRankingMetric.
      * @param maxRanking The maxRanking parameter.
@@ -244,7 +251,8 @@ public interface LogAnalyticsClient {
      * Get log analytics ranking report for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param rankings Array of LogRanking.
      * @param metrics Array of LogRankingMetric.
      * @param maxRanking The maxRanking parameter.
@@ -269,7 +277,8 @@ public interface LogAnalyticsClient {
      * Get log analytics ranking report for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param rankings Array of LogRanking.
      * @param metrics Array of LogRankingMetric.
      * @param maxRanking The maxRanking parameter.
@@ -294,7 +303,8 @@ public interface LogAnalyticsClient {
      * Get log analytics ranking report for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param rankings Array of LogRanking.
      * @param metrics Array of LogRankingMetric.
      * @param maxRanking The maxRanking parameter.
@@ -323,7 +333,8 @@ public interface LogAnalyticsClient {
      * Get all available location names for AFD log analytics report.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -337,7 +348,8 @@ public interface LogAnalyticsClient {
      * Get all available location names for AFD log analytics report.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -350,7 +362,8 @@ public interface LogAnalyticsClient {
      * Get all available location names for AFD log analytics report.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -363,7 +376,8 @@ public interface LogAnalyticsClient {
      * Get all available location names for AFD log analytics report.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -378,7 +392,8 @@ public interface LogAnalyticsClient {
      * Get all endpoints and custom domains available for AFD log report.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -392,7 +407,8 @@ public interface LogAnalyticsClient {
      * Get all endpoints and custom domains available for AFD log report.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -405,7 +421,8 @@ public interface LogAnalyticsClient {
      * Get all endpoints and custom domains available for AFD log report.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -418,7 +435,8 @@ public interface LogAnalyticsClient {
      * Get all endpoints and custom domains available for AFD log report.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -433,7 +451,8 @@ public interface LogAnalyticsClient {
      * Get Waf related log analytics report for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param metrics Array of WafMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -462,7 +481,8 @@ public interface LogAnalyticsClient {
      * Get Waf related log analytics report for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param metrics Array of WafMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -491,7 +511,8 @@ public interface LogAnalyticsClient {
      * Get Waf related log analytics report for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param metrics Array of WafMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -514,7 +535,8 @@ public interface LogAnalyticsClient {
      * Get Waf related log analytics report for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param metrics Array of WafMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -537,7 +559,8 @@ public interface LogAnalyticsClient {
      * Get Waf related log analytics report for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param metrics Array of WafMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -568,7 +591,8 @@ public interface LogAnalyticsClient {
      * Get WAF log analytics charts for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param metrics Array of WafMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -597,7 +621,8 @@ public interface LogAnalyticsClient {
      * Get WAF log analytics charts for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param metrics Array of WafMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -626,7 +651,8 @@ public interface LogAnalyticsClient {
      * Get WAF log analytics charts for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param metrics Array of WafMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -651,7 +677,8 @@ public interface LogAnalyticsClient {
      * Get WAF log analytics charts for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param metrics Array of WafMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -676,7 +703,8 @@ public interface LogAnalyticsClient {
      * Get WAF log analytics charts for AFD profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group. which is unique within the resource group.
      * @param metrics Array of WafMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.

@@ -24,7 +24,7 @@ public final class CheckNameAvailabilityInput {
      * The type of the resource whose name is to be validated.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "Microsoft.Cdn/Profiles/Endpoints";
 
     /** Creates an instance of CheckNameAvailabilityInput class. */
     public CheckNameAvailabilityInput() {

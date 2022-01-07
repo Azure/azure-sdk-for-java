@@ -141,7 +141,7 @@ public final class OriginsClientImpl implements OriginsClient {
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
                 + "/{profileName}/endpoints/{endpointName}/origins/{originName}")
-        @ExpectedResponses({202, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
@@ -224,7 +224,7 @@ public final class OriginsClientImpl implements OriginsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -416,7 +416,7 @@ public final class OriginsClientImpl implements OriginsClient {
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -599,7 +599,7 @@ public final class OriginsClientImpl implements OriginsClient {
                             origin,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -683,7 +683,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cDN origin is the source of the content being delivered via CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<OriginInner>, OriginInner> beginCreateAsync(
         String resourceGroupName, String profileName, String endpointName, String originName, OriginInner origin) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -708,7 +708,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cDN origin is the source of the content being delivered via CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OriginInner>, OriginInner> beginCreateAsync(
         String resourceGroupName,
         String profileName,
@@ -738,7 +738,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cDN origin is the source of the content being delivered via CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OriginInner>, OriginInner> beginCreate(
         String resourceGroupName, String profileName, String endpointName, String originName, OriginInner origin) {
         return beginCreateAsync(resourceGroupName, profileName, endpointName, originName, origin).getSyncPoller();
@@ -758,7 +758,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cDN origin is the source of the content being delivered via CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OriginInner>, OriginInner> beginCreate(
         String resourceGroupName,
         String profileName,
@@ -930,7 +930,7 @@ public final class OriginsClientImpl implements OriginsClient {
                             originUpdateProperties,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1016,7 +1016,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cDN origin is the source of the content being delivered via CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<OriginInner>, OriginInner> beginUpdateAsync(
         String resourceGroupName,
         String profileName,
@@ -1045,7 +1045,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cDN origin is the source of the content being delivered via CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OriginInner>, OriginInner> beginUpdateAsync(
         String resourceGroupName,
         String profileName,
@@ -1076,7 +1076,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cDN origin is the source of the content being delivered via CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OriginInner>, OriginInner> beginUpdate(
         String resourceGroupName,
         String profileName,
@@ -1101,7 +1101,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cDN origin is the source of the content being delivered via CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OriginInner>, OriginInner> beginUpdate(
         String resourceGroupName,
         String profileName,
@@ -1271,7 +1271,7 @@ public final class OriginsClientImpl implements OriginsClient {
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1342,7 +1342,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String profileName, String endpointName, String originName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1366,7 +1366,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String profileName, String endpointName, String originName, Context context) {
         context = this.client.mergeContext(context);
@@ -1389,7 +1389,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String endpointName, String originName) {
         return beginDeleteAsync(resourceGroupName, profileName, endpointName, originName).getSyncPoller();
@@ -1408,7 +1408,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String endpointName, String originName, Context context) {
         return beginDeleteAsync(resourceGroupName, profileName, endpointName, originName, context).getSyncPoller();
@@ -1521,7 +1521,7 @@ public final class OriginsClientImpl implements OriginsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

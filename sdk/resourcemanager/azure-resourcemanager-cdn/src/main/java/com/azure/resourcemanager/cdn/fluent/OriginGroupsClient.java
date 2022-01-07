@@ -165,7 +165,7 @@ public interface OriginGroupsClient {
      * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
      *     served from CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<OriginGroupInner>, OriginGroupInner> beginCreateAsync(
         String resourceGroupName,
         String profileName,
@@ -187,7 +187,7 @@ public interface OriginGroupsClient {
      * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
      *     served from CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OriginGroupInner>, OriginGroupInner> beginCreate(
         String resourceGroupName,
         String profileName,
@@ -210,7 +210,7 @@ public interface OriginGroupsClient {
      * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
      *     served from CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OriginGroupInner>, OriginGroupInner> beginCreate(
         String resourceGroupName,
         String profileName,
@@ -323,7 +323,7 @@ public interface OriginGroupsClient {
      * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
      *     served from CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<OriginGroupInner>, OriginGroupInner> beginUpdateAsync(
         String resourceGroupName,
         String profileName,
@@ -345,7 +345,7 @@ public interface OriginGroupsClient {
      * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
      *     served from CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OriginGroupInner>, OriginGroupInner> beginUpdate(
         String resourceGroupName,
         String profileName,
@@ -368,7 +368,7 @@ public interface OriginGroupsClient {
      * @return origin group comprising of origins is used for load balancing to origins when the content cannot be
      *     served from CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OriginGroupInner>, OriginGroupInner> beginUpdate(
         String resourceGroupName,
         String profileName,
@@ -473,7 +473,7 @@ public interface OriginGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String profileName, String endpointName, String originGroupName);
 
@@ -489,7 +489,7 @@ public interface OriginGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String endpointName, String originGroupName);
 
@@ -506,7 +506,7 @@ public interface OriginGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String endpointName, String originGroupName, Context context);
 
