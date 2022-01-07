@@ -21,16 +21,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(
         name = "Microsoft.MachineLearning/WebService",
-        value = AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionParameters.class),
-    @JsonSubTypes.Type(
-        name = "Microsoft.MachineLearningServices",
-        value = AzureMachineLearningServiceFunctionRetrieveDefaultDefinitionParameters.class),
+        value = AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters.class),
     @JsonSubTypes.Type(
         name = "Microsoft.StreamAnalytics/JavascriptUdf",
-        value = JavaScriptFunctionRetrieveDefaultDefinitionParameters.class),
-    @JsonSubTypes.Type(
-        name = "Microsoft.StreamAnalytics/CLRUdf",
-        value = CSharpFunctionRetrieveDefaultDefinitionParameters.class)
+        value = JavaScriptFunctionRetrieveDefaultDefinitionParameters.class)
 })
 @Immutable
 public class FunctionRetrieveDefaultDefinitionParameters {

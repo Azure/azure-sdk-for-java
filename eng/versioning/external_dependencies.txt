@@ -7,14 +7,14 @@
 
 # Format;
 # groupId:artifactId;dependency-version
-com.fasterxml.jackson.core:jackson-annotations;2.13.0
-com.fasterxml.jackson.core:jackson-core;2.13.0
-com.fasterxml.jackson.core:jackson-databind;2.13.0
-com.fasterxml.jackson.dataformat:jackson-dataformat-avro;2.13.0
-com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.13.0
-com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.13.0
-com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.13.0
-com.fasterxml.jackson.module:jackson-module-parameter-names;2.13.0
+com.fasterxml.jackson.core:jackson-annotations;2.13.1
+com.fasterxml.jackson.core:jackson-core;2.13.1
+com.fasterxml.jackson.core:jackson-databind;2.13.1
+com.fasterxml.jackson.dataformat:jackson-dataformat-avro;2.13.1
+com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.13.1
+com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.13.1
+com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.13.1
+com.fasterxml.jackson.module:jackson-module-parameter-names;2.13.1
 com.github.spotbugs:spotbugs;4.2.2
 com.github.spotbugs:spotbugs-annotations;4.2.2
 com.github.spotbugs:spotbugs-maven-plugin;4.2.2
@@ -252,6 +252,7 @@ org.apache.maven.plugins:maven-eclipse-plugin;2.8
 org.apache.maven.plugins:maven-enforcer-plugin;3.0.0-M3
 org.apache.maven.plugins:maven-failsafe-plugin;2.22.0
 org.apache.maven.plugins:maven-help-plugin;2.1.1
+org.apache.maven.plugins:maven-install-plugin;3.0.0-M1
 org.apache.maven.plugins:maven-jar-plugin;3.1.2
 org.apache.maven.plugins:maven-javadoc-plugin;3.3.1
 org.apache.maven.plugins:maven-jxr-plugin;3.0.0
@@ -276,8 +277,9 @@ org.jacoco:jacoco-maven-plugin;0.8.7
 org.jacoco:org.jacoco.agent;0.8.7
 org.mockito:mockito-core;4.0.0
 org.mockito:mockito-inline;4.0.0
-org.revapi:revapi-java;0.20.0
-org.revapi:revapi-maven-plugin;0.11.2
+org.revapi:revapi-java;0.26.1
+org.revapi:revapi-reporter-json;0.4.5
+org.revapi:revapi-maven-plugin;0.14.6
 org.moditect:moditect-maven-plugin;1.0.0.RC1
 org.ow2.asm:asm;9.1
 com.azure.tools:codesnippet-maven-plugin;1.0.0-beta.2

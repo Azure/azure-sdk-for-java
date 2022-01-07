@@ -11,10 +11,9 @@ import yaml
 from typing import List
 
 from parameters import *
-from utils import set_or_increase_version
+from utils import set_or_default_version
 from utils import update_service_ci_and_pom
 from utils import update_root_pom
-from utils import update_version
 from utils import ListIndentDumper
 
 
@@ -46,7 +45,7 @@ def sdk_automation(config: dict) -> List[dict]:
             credential_scopes = 'https://{0}.azure.com/.default'.format(service)
 
             succeeded = generate(sdk_root, input_file,
-                                 service, module, credential_types, credential_scopes,
+                                 service, module, credential_types, credential_scopes, '',
                                  AUTOREST_CORE_VERSION, AUTOREST_JAVA, '')
 
             generated_folder = 'sdk/{0}/{1}'.format(service, module)
@@ -141,10 +140,11 @@ def generate(
             logging.error('[GENERATE] Autorest fail')
             return False
 
-        set_or_increase_version(sdk_root, GROUP_ID, module)
+        set_or_default_version(sdk_root, GROUP_ID, module)
         update_service_ci_and_pom(sdk_root, service, GROUP_ID, module)
         update_root_pom(sdk_root, service)
-        update_version(sdk_root, output_dir)
+        # skip version update script, as current automation does not support automatic version increment
+        # update_version(sdk_root, output_dir)
 
     return True
 
