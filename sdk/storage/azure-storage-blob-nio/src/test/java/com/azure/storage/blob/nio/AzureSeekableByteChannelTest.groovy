@@ -250,6 +250,7 @@ class AzureSeekableByteChannelTest extends APISpec {
         writeByteChannel.size() == 0
 
         for (int i = 0; i < 10; i++) {
+            writeByteChannel.position(writeByteChannel.position()) // write-mode seek allowed iff new == old position
             writeByteChannel.write(src)
             assert writeByteChannel.position() == (i + 1) * bufferSize
             assert writeByteChannel.size() == writeByteChannel.position()
@@ -339,6 +340,12 @@ class AzureSeekableByteChannelTest extends APISpec {
         thrown(IllegalArgumentException)
 
         when:
+        writeByteChannel.position(-1) // usually throws NonReadableChannel when altering position
+
+        then:
+        thrown(IllegalArgumentException) // position < 0 violates API contract, so IAE takes precedence
+
+        when:
         readByteChannel.position(sourceFileSize) // position is 0-based, so seeking to size --> EOF
 
         then:
@@ -346,9 +353,18 @@ class AzureSeekableByteChannelTest extends APISpec {
     }
 
     def "Seek fs close"() {
-        when:
+        setup:
+        def initialWritePos = writeByteChannel.position()
         fs.close()
+
+        when:
         readByteChannel.position(0)
+
+        then:
+        thrown(ClosedFileSystemException)
+
+        when:
+        writeByteChannel.position(initialWritePos) // allowed iff new == old position
 
         then:
         thrown(ClosedFileSystemException)

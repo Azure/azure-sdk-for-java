@@ -10,6 +10,11 @@
 
 ### Other Changes
 
+- AzureSeekableByteChannel.position(long) on a writeable channel usually throws, but is now tolerant when the current
+  and new positions are equal (effectively a no-op).
+- AzureSeekableByteChannel.position(long) on any open channel throws IAE for a negative input per its API contract.
+  On writable channels, previously, it had caused NonReadableChannelException.
+
 ## 12.0.0-beta.13 (2021-12-07)
 
 ### Features Added

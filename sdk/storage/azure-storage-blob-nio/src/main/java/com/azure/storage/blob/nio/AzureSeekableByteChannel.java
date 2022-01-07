@@ -154,11 +154,22 @@ public final class AzureSeekableByteChannel implements SeekableByteChannel {
     public AzureSeekableByteChannel position(long newPosition) throws IOException {
         AzurePath.ensureFileSystemOpen(this.path);
         validateOpen();
-        validateReadMode();
 
         if (newPosition < 0) {
             throw LoggingUtility.logError(logger, new IllegalArgumentException("Seek position cannot be negative"));
+        } else if (newPosition == this.position && this.reader == null) {
+            // The requested position is unchanged from actual, so the external perspective should be a no-op.
+            // Currently, READ mode cannot short-circuit because of the required reset/mark/skip on the InputStream (below).
+            // This applies when the channel is in WRITE mode, for improved leniency and Java API compatibility.
+            // Some third-party libraries may unnecessarily, but unconditionally, call `position(0)` after opening the
+            // channel or set `position(long)` to the current write location before calling `write(ByteBuffer)`.
+            return this;
         }
+
+        // FUTURE: The Java API specification would permit forward-only seeking in write mode if this class fills the
+        // resulting gap with "unspecified" content (e.g. all zero bytes). Any filling should only be triggered upon a
+        // *subsequent* write operation -- the initial seek-past-EOF would need to succeed w/out throwing.
+        validateReadMode();
 
         /*
         The javadoc says seeking past the end for reading is legal and that it should indicate the end of the file on
