@@ -4,7 +4,7 @@
 
 ### Other Changes
 
-### Dependency Updates
+#### Dependency Updates
 
 - Updated `api-version` to `2021-03-01`.
 
