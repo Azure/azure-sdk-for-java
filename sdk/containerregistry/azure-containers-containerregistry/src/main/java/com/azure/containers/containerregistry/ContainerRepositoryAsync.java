@@ -13,6 +13,7 @@ import com.azure.containers.containerregistry.models.ArtifactManifestOrder;
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ContainerRepositoryProperties;
 import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
@@ -54,6 +55,7 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  * <!-- end com.azure.containers.containerregistry.ContainerRepositoryAsync.instantiation -->
  *
  */
+@ServiceClient(builder = ContainerRegistryClientBuilder.class, isAsync = true)
 public final class ContainerRepositoryAsync {
     private final ContainerRegistriesImpl serviceClient;
     private final String repositoryName;
