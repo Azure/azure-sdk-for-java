@@ -16,6 +16,8 @@ import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceType;
@@ -53,7 +55,6 @@ import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
@@ -67,9 +68,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -110,6 +109,8 @@ public class CosmosAsyncContainer {
     private final String batchSpanName;
     private final AtomicBoolean isInitialized;
     private CosmosAsyncScripts scripts;
+    private ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.CosmosItemRequestOptionsAccessor cosmosItemRequestOptionsAccessor;
+    private ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor cosmosItemResponseBuilderAccessor;
 
     CosmosAsyncContainer(String id, CosmosAsyncDatabase database) {
         this.id = id;
@@ -134,6 +135,8 @@ public class CosmosAsyncContainer {
         this.queryConflictsSpanName = "queryConflicts." + this.id;
         this.batchSpanName = "transactionalBatch." + this.id;
         this.isInitialized = new AtomicBoolean(false);
+        this.cosmosItemRequestOptionsAccessor = ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.getCosmosItemRequestOptionsAccessor();
+        this.cosmosItemResponseBuilderAccessor = ImplementationBridgeHelpers.CosmosItemResponseHelper.getCosmosItemResponseBuilderAccessor();
     }
 
     /**
@@ -457,28 +460,34 @@ public class CosmosAsyncContainer {
      */
     @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<Void> openConnectionsAndInitCaches() {
-        int retryCount = Configs.getOpenConnectionsRetriesCount();
-
         if(isInitialized.compareAndSet(false, true)) {
-            return this.getFeedRanges().flatMap(feedRanges -> {
-                List<Flux<FeedResponse<ObjectNode>>> fluxList = new ArrayList<>();
-                SqlQuerySpec querySpec = new SqlQuerySpec();
-                querySpec.setQueryText("select * from c where c.id = @id");
-                querySpec.setParameters(Collections.singletonList(new SqlParameter("@id",
-                    UUID.randomUUID().toString())));
+            return this.getPartitionKeyRanges().flatMap(partitionKeyRanges -> {
+                List<Mono<CosmosItemResponse<ObjectNode>>> monoList = new ArrayList<>();
+                for(PartitionKeyRange partitionKeyRange : partitionKeyRanges) {
+                    CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+                    cosmosItemRequestOptionsAccessor.setPartitionKeyRangeId(requestOptions, partitionKeyRange.getId());
+                    Mono<CosmosItemResponse<ObjectNode>> cosmosItemResponseMono = this.readItem("AnyId", new PartitionKey("AnyId"), requestOptions, ObjectNode.class).
+                        onErrorResume(throwable -> {
+                            CosmosException dce = Utils.as(throwable, CosmosException.class);
 
-                for (int i = 0; i < retryCount; i++) {
-                    for (FeedRange feedRange : feedRanges) {
-                        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-                        options.setFeedRange(feedRange);
-                        CosmosPagedFlux<ObjectNode> cosmosPagedFlux = this.queryItems(querySpec, options,
-                            ObjectNode.class);
-                        fluxList.add(cosmosPagedFlux.byPage());
-                    }
+                            // Only expecting 404 not found from one partition and 410/1002 PKRangeGone from others as
+                            // AnyId EPK on server maps only for one physical partition
+                            if (dce == null ||
+                                (dce.getStatusCode() != HttpConstants.StatusCodes.NOTFOUND &&
+                                !(dce instanceof PartitionKeyRangeGoneException))) {
+                                logger.warn("unexpected failure {} while opening connections on partition = {}", throwable.getMessage(), partitionKeyRange.getId());
+                            }
+
+                            return Mono.just(cosmosItemResponseBuilderAccessor.createCosmosItemResponse(null, null, ObjectNode.class, null));
+                        });
+
+                    monoList.add(cosmosItemResponseMono);
                 }
 
-                Mono<List<FeedResponse<ObjectNode>>> listMono = Flux.merge(fluxList).collectList();
-                return listMono.flatMap(objects -> Mono.empty());
+                Mono<List<CosmosItemResponse<ObjectNode>>> listMono = Flux.merge(monoList).collectList();
+                return listMono.then(
+                     Mono.empty()
+                );
             });
         } else {
             logger.warn("openConnectionsAndInitCaches is already called once on Container {}, no operation will take place in this call", this.getId());
@@ -1724,6 +1733,10 @@ public class CosmosAsyncContainer {
             ThroughputControlGroupFactory.createThroughputGlobalControlGroup(groupConfig, globalControlConfig, this);
 
         this.database.getClient().enableThroughputControlGroup(globalControlGroup);
+    }
+
+    private Mono<List<PartitionKeyRange>> getPartitionKeyRanges() {
+        return this.getDatabase().getDocClientWrapper().getPartitionKeyRanges(getLink());
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////

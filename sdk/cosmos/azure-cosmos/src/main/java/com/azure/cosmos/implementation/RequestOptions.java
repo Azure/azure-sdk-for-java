@@ -281,7 +281,7 @@ public class RequestOptions {
      *
      * @return the partition key range id value.
      */
-    String getPartitionKeyRangeId() {
+    public String getPartitionKeyRangeId() {
         return this.partitionKeyRangeId;
     }
 
@@ -290,7 +290,7 @@ public class RequestOptions {
      *
      * @param partitionKeyRangeId the partition key range id value.
      */
-    protected void setPartitionKeyRengeId(String partitionKeyRangeId) {
+    public void setPartitionKeyRangeId(String partitionKeyRangeId) {
         this.partitionKeyRangeId = partitionKeyRangeId;
     }
 

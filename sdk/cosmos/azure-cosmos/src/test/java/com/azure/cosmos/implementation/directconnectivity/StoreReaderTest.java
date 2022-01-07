@@ -113,7 +113,7 @@ public class StoreReaderTest {
     public void verifyCanContinueOnException(CosmosException dce, Boolean shouldVerify) {
         CosmosException capturedFailure = null;
         try {
-            StoreReader.verifyCanContinueOnException(dce);
+            StoreReader.verifyCanContinueOnException(dce, false);
         } catch (CosmosException e) {
             capturedFailure = e;
         }

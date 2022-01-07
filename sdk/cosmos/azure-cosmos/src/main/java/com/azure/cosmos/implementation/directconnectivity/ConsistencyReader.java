@@ -14,12 +14,14 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.ISessionToken;
+import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RequestChargeTracker;
 import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.SessionTokenMismatchRetryPolicy;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -207,6 +209,11 @@ public class ConsistencyReader {
         int maxReplicaCount = this.getMaxReplicaSetSize(entity);
         int readQuorumValue = maxReplicaCount - (maxReplicaCount / 2);
 
+        // This is for openConnection request created via CosmosAsyncContainer#openConnectionsAndInitCaches api
+        if(entity.requestContext.isOpenConnectionRequest) {
+            return this.readAllForOpenConnectionReq(entity, maxReplicaCount);
+        }
+
         switch (desiredReadMode) {
             case Primary:
                 return this.readPrimaryAsync(entity, useSessionToken.v);
@@ -282,6 +289,35 @@ public class ConsistencyReader {
                 return Mono.error(e);
             }
                 }
+        );
+    }
+
+    private Mono<StoreResponse> readAllForOpenConnectionReq(RxDocumentServiceRequest entity,
+                                                            int maxReplicaCount) {
+        Mono<List<StoreResult>> responsesObs = this.storeReader.readMultipleReplicaAsync(
+            entity,
+            /* includePrimary */ true,
+            /* replicaCountToRead */ maxReplicaCount,
+            /* requiresValidLSN */ false,
+            /* useSessionToken */ false,
+            /* readMode */ ReadMode.Any,
+            /* checkMinLsn */ false,
+            /* forceReadAll */ true);
+
+        return responsesObs.flatMap(
+            responses -> {
+
+                // This is not expected, expecting 404 and 410/1002 on responses
+                if (responses.size() == 0) {
+                    return Mono.error(new InternalServerErrorException(String.format("Unknown error while opening connections for pkRange = %s", entity.getPartitionKeyRangeIdentity().getPartitionKeyRangeId()), null));
+                }
+
+                try {
+                    return Mono.just(responses.get(0).toResponse());
+                } catch (CosmosException e) {
+                    return Mono.error(e);
+                }
+            }
         );
     }
 

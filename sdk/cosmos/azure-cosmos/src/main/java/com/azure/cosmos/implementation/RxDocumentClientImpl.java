@@ -12,15 +12,14 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.batch.BatchResponseParser;
 import com.azure.cosmos.implementation.batch.PartitionKeyRangeServerBatchRequest;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.batch.SinglePartitionKeyServerBatchRequest;
-import com.azure.cosmos.implementation.caches.SizeLimitingLRUCache;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.caches.SizeLimitingLRUCache;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
@@ -49,8 +48,8 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.spark.OperationContext;
-import com.azure.cosmos.implementation.spark.OperationListener;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
+import com.azure.cosmos.implementation.spark.OperationListener;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
@@ -1342,6 +1341,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         } else {
             throw new UnsupportedOperationException("PartitionKey value must be supplied for this operation.");
+        }
+
+        // this option cannot be set by user, only meant via CosmosAsyncContainer#openConnectionsAndInitCaches api
+        if (options.getPartitionKeyRangeId() != null) {
+            request.configureRequestForOpenConnections(new PartitionKeyRangeIdentity(collection.getResourceId(), options.getPartitionKeyRangeId()));
         }
 
         request.setPartitionKeyInternal(partitionKeyInternal);
@@ -4134,6 +4138,52 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return ObservableHelper.inlineIfPossibleAsObs(
             () -> getFeedRangesInternal(request, collectionLink),
             invalidPartitionExceptionRetryPolicy);
+    }
+
+    @Override
+    public Mono<List<PartitionKeyRange>> getPartitionKeyRanges(String collectionLink) {
+        InvalidPartitionExceptionRetryPolicy invalidPartitionExceptionRetryPolicy = new InvalidPartitionExceptionRetryPolicy(
+            this.collectionCache,
+            null,
+            collectionLink,
+            new HashMap<>());
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            this,
+            OperationType.Query,
+            ResourceType.Document,
+            collectionLink,
+            null);
+
+        invalidPartitionExceptionRetryPolicy.onBeforeSendRequest(request);
+
+        return ObservableHelper.inlineIfPossibleAsObs(
+            () -> getPartitionKeyRangeInternal(request, collectionLink),
+            invalidPartitionExceptionRetryPolicy);
+    }
+
+    private Mono<List<PartitionKeyRange>> getPartitionKeyRangeInternal(RxDocumentServiceRequest request,
+                                                                String collectionLink) {
+        logger.debug("getFeedRange collectionLink=[{}]", collectionLink);
+
+        if (StringUtils.isEmpty(collectionLink)) {
+            throw new IllegalArgumentException("collectionLink");
+        }
+
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(null,
+            request);
+
+        return collectionObs.flatMap(documentCollectionResourceResponse -> {
+            final DocumentCollection collection = documentCollectionResourceResponse.v;
+            if (collection == null) {
+                throw new IllegalStateException("Collection cannot be null");
+            }
+
+            return partitionKeyRangeCache
+                .tryGetOverlappingRangesAsync(
+                    BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
+                    collection.getResourceId(), RANGE_INCLUDING_ALL_PARTITION_KEY_RANGES, true, null).map(listValueHolder -> listValueHolder.v);
+        });
     }
 
     private Mono<List<FeedRange>> getFeedRangesInternal(RxDocumentServiceRequest request, String collectionLink) {

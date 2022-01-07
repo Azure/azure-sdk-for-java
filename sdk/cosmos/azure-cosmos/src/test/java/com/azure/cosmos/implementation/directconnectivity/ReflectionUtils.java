@@ -245,6 +245,18 @@ public class ReflectionUtils {
         return get(StoreReader.class, consistencyReader, "storeReader");
     }
 
+    public static AddressSelector getAddressSelector(StoreReader storeReader) {
+        return get(AddressSelector.class, storeReader, "addressSelector");
+    }
+
+    public static GlobalAddressResolver getGlobalAddressResolver(AddressSelector addressSelector) {
+        return get(GlobalAddressResolver.class, addressSelector, "addressResolver");
+    }
+
+    public static void setGatewayAddressCache(AddressResolver addressResolver, GatewayAddressCache gatewayAddressCache) {
+        set(addressResolver, gatewayAddressCache, "addressCache");
+    }
+
     public static void setStoreReader(ConsistencyReader consistencyReader, StoreReader storeReader) {
         set(consistencyReader, storeReader, "storeReader");
     }
@@ -308,7 +320,7 @@ public class ReflectionUtils {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> ConcurrentHashMap<String, ?> getValueMap(AsyncCache<String, T> asyncCache) {
+    public static <TKey, TValue> ConcurrentHashMap<TKey, TValue> getValueMap(AsyncCache<TKey, TValue> asyncCache) {
         return get(ConcurrentHashMap.class, asyncCache, "values");
     }
 
@@ -351,5 +363,9 @@ public class ReflectionUtils {
 
     public static LocationCache getLocationCache(GlobalEndpointManager globalEndpointManager) {
         return get(LocationCache.class, globalEndpointManager, "locationCache");
+    }
+
+    public static GlobalAddressResolver getGlobalAddressResolver(RxDocumentClientImpl rxDocumentClient) {
+        return get(GlobalAddressResolver.class, rxDocumentClient, "addressResolver");
     }
 }

@@ -269,9 +269,11 @@ public class StoreReader {
                 hasGoneException.v = hasGoneException.v || (srr.isGoneException && !srr.isInvalidPartitionException);
 
                 if (resultCollector.size() >= replicaCountToRead) {
-                    if (hasGoneException.v && !entity.requestContext.performedBackgroundAddressRefresh) {
-                        this.startBackgroundAddressRefresh(entity);
-                        entity.requestContext.performedBackgroundAddressRefresh = true;
+                    if(!entity.requestContext.isOpenConnectionRequest) { // We will not do address refresh if this is open connection req from CosmosAsyncContainer#openConnectionsAndInitCaches
+                        if (hasGoneException.v && !entity.requestContext.performedBackgroundAddressRefresh) {
+                            this.startBackgroundAddressRefresh(entity);
+                            entity.requestContext.performedBackgroundAddressRefresh = true;
+                        }
                     }
 
                     shortCircut.v = new ReadReplicaResult(false, resultCollector);
@@ -673,7 +675,7 @@ public class StoreReader {
         }
 
         if (responseException !=null) {
-            verifyCanContinueOnException(storeResult.getException());
+            verifyCanContinueOnException(storeResult.getException(), request.requestContext.isOpenConnectionRequest);
         }
 
         return storeResult;
@@ -900,8 +902,10 @@ public class StoreReader {
         return ThreadLocalRandom.current().nextInt(maxValue);
     }
 
-    static void verifyCanContinueOnException(CosmosException ex) {
-        if (ex instanceof PartitionKeyRangeGoneException) {
+    static void verifyCanContinueOnException(CosmosException ex, boolean isOpenConnectionRequest) {
+        // We will not throw on open connection req from CosmosAsyncContainer#openConnectionsAndInitCaches
+        // This is to avoid exception log getting printed on user's end
+        if (ex instanceof PartitionKeyRangeGoneException && !isOpenConnectionRequest) {
             throw ex;
         }
 

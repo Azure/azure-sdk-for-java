@@ -237,6 +237,7 @@ public class ImplementationBridgeHelpers {
             CosmosItemRequestOptions clone(CosmosItemRequestOptions options);
             CosmosItemRequestOptions setHeader(CosmosItemRequestOptions cosmosItemRequestOptions, String name, String value);
             Map<String, String> getHeader(CosmosItemRequestOptions cosmosItemRequestOptions);
+            CosmosItemRequestOptions setPartitionKeyRangeId(CosmosItemRequestOptions cosmosItemRequestOptions, String partitionKeyRangeId);
         }
     }
 

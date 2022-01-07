@@ -32,6 +32,7 @@ public class CosmosItemRequestOptions {
     private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
     private Duration thresholdForDiagnosticsOnTracer;
     private Map<String, String> customOptions;
+    private String partitionKeyRangeId;
 
     /**
      * copy constructor
@@ -319,6 +320,7 @@ public class CosmosItemRequestOptions {
         requestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
         requestOptions.setDedicatedGatewayRequestOptions(dedicatedGatewayRequestOptions);
         requestOptions.setThresholdForDiagnosticsOnTracer(thresholdForDiagnosticsOnTracer);
+        requestOptions.setPartitionKeyRangeId((partitionKeyRangeId));
         if(this.customOptions != null) {
             for(Map.Entry<String, String> entry : this.customOptions.entrySet()) {
                 requestOptions.setHeader(entry.getKey(), entry.getValue());
@@ -406,6 +408,25 @@ public class CosmosItemRequestOptions {
         return this.operationContextAndListenerTuple;
     }
 
+    /**
+     * Internal usage only: Gets the partition key range id used to identify the current request's target partition.
+     *
+     * @return the partition key range id value.
+     */
+    String getPartitionKeyRangeId() {
+        return this.partitionKeyRangeId;
+    }
+
+    /**
+     * Internal usage only: Sets the partition key range id used to identify the current request's target partition.
+     *
+     * @param partitionKeyRangeId the partition key range id value.
+     */
+    CosmosItemRequestOptions setPartitionKeyRangeId(String partitionKeyRangeId) {
+        this.partitionKeyRangeId = partitionKeyRangeId;
+        return this;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -439,6 +460,11 @@ public class CosmosItemRequestOptions {
                 @Override
                 public Map<String, String> getHeader(CosmosItemRequestOptions cosmosItemRequestOptions) {
                     return cosmosItemRequestOptions.getHeaders();
+                }
+
+                @Override
+                public CosmosItemRequestOptions setPartitionKeyRangeId(CosmosItemRequestOptions cosmosItemRequestOptions, String partitionKeyRangeId) {
+                    return cosmosItemRequestOptions.setPartitionKeyRangeId(partitionKeyRangeId);
                 }
             }
         );

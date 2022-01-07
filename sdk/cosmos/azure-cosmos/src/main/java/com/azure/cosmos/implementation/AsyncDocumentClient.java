@@ -726,6 +726,14 @@ public interface AsyncDocumentClient {
     Mono<List<FeedRange>> getFeedRanges(String collectionLink);
 
     /**
+     * Gets the partition key ranges of a container.
+     *
+     * @param collectionLink the link to the parent document collection.
+     * @return a {@link List} of @{link {@link PartitionKeyRange}} containing the partition key ranges of a container.
+     */
+    Mono<List<PartitionKeyRange>> getPartitionKeyRanges(String collectionLink);
+
+    /**
      * Creates a stored procedure.
      * <p>
      * After subscription the operation will be performed.

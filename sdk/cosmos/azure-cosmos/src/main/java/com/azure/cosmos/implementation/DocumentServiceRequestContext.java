@@ -39,6 +39,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile CosmosDiagnostics cosmosDiagnostics;
     public volatile String resourcePhysicalAddress;
     public volatile String throughputControlCycleId;
+    public volatile boolean isOpenConnectionRequest;
 
     public DocumentServiceRequestContext() {
     }

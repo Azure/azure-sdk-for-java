@@ -3,17 +3,18 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.implementation.directconnectivity.WFConstants;
-import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
@@ -842,6 +843,15 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     public void routeTo(PartitionKeyRangeIdentity partitionKeyRangeIdentity) {
         this.setPartitionKeyRangeIdentity(partitionKeyRangeIdentity);
+    }
+
+    /**
+     * This method used only for requests via {@link CosmosAsyncContainer#openConnectionsAndInitCaches()}
+     * @param partitionKeyRangeIdentity physical partition where we want to open connection
+     */
+    public void configureRequestForOpenConnections(PartitionKeyRangeIdentity partitionKeyRangeIdentity) {
+        requestContext.isOpenConnectionRequest = true;
+        this.partitionKeyRangeIdentity = partitionKeyRangeIdentity;
     }
 
     public FeedRangeInternal getFeedRange() {
