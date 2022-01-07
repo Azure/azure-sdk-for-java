@@ -562,7 +562,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             // they can set a higher prefetch number and allocate larger heap size accordingly.
             if (currentLinkCredits <= prefetch) {
                 logger.info("linkName[{}] entityPath[{}] creditsToAdd[{}] Link running low on credits. Adding more. "
-                                +"{}", linkName, entityPath, credits, message);
+                                + "{}", linkName, entityPath, credits, message);
 
                 link.addCredits(credits).subscribe(noop -> {
                 }, error -> {
