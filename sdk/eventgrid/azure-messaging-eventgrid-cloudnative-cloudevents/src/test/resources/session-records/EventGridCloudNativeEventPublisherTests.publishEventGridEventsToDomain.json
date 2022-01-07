@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.westus2-1.eventgrid.azure.net/api/events?api-version=2018-01-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "23f30f88-56b5-4dac-b7d7-51cfaa86c336",
+      "x-ms-client-request-id" : "09443493-6b1e-44ff-8265-53e206dadb77",
       "Content-Type" : "application/cloudevents-batch+json; charset=utf-8"
     },
     "Response" : {
@@ -14,8 +14,8 @@
       "api-supported-versions" : "2018-01-01",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "0edff970-06eb-4e76-bf5c-c84e6fe2040e",
-      "Date" : "Mon, 13 Dec 2021 18:37:23 GMT"
+      "x-ms-request-id" : "2278fc6e-4999-4f59-bb95-fb5710973916",
+      "Date" : "Thu, 06 Jan 2022 23:05:06 GMT"
     },
     "Exception" : null
   }, {
@@ -23,7 +23,7 @@
     "Uri" : "https://REDACTED.westus2-1.eventgrid.azure.net/api/events?api-version=2018-01-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "06445182-747a-45df-9229-a24bb367d599",
+      "x-ms-client-request-id" : "e33395c8-f5e8-4916-a84a-d8e4e0d5366d",
       "Content-Type" : "application/cloudevents-batch+json; charset=utf-8"
     },
     "Response" : {
@@ -33,8 +33,8 @@
       "api-supported-versions" : "2018-01-01",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "bd1d006d-5706-4c5d-abd2-1319ef51495b",
-      "Date" : "Mon, 13 Dec 2021 18:37:23 GMT"
+      "x-ms-request-id" : "f90f1843-2075-407a-ae34-a8a3e8dc4bd4",
+      "Date" : "Thu, 06 Jan 2022 23:05:06 GMT"
     },
     "Exception" : null
   }, {
@@ -42,7 +42,7 @@
     "Uri" : "https://REDACTED.westus2-1.eventgrid.azure.net/api/events?api-version=2018-01-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a319a05b-a2a8-47f5-bc98-b559583901af",
+      "x-ms-client-request-id" : "c0e037dc-0a81-4937-b1df-b83c88ec9e25",
       "Content-Type" : "application/cloudevents-batch+json; charset=utf-8"
     },
     "Response" : {
@@ -52,8 +52,8 @@
       "api-supported-versions" : "2018-01-01",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "d8dc84c8-dca9-4236-ab25-91ff347f1bf4",
-      "Date" : "Mon, 13 Dec 2021 18:37:23 GMT"
+      "x-ms-request-id" : "7259a262-087b-4aec-a1e1-669ef5be9c0c",
+      "Date" : "Thu, 06 Jan 2022 23:05:06 GMT"
     },
     "Exception" : null
   }, {
@@ -61,7 +61,7 @@
     "Uri" : "https://REDACTED.westus2-1.eventgrid.azure.net/api/events?api-version=2018-01-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "fc929f1e-d938-4e6e-a256-9bb64fa67a27",
+      "x-ms-client-request-id" : "1f8d1dcc-2344-4318-98c4-481b2f068d11",
       "Content-Type" : "application/cloudevents-batch+json; charset=utf-8"
     },
     "Response" : {
@@ -71,8 +71,8 @@
       "api-supported-versions" : "2018-01-01",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "b0acf40e-2e01-47db-b740-55e0992eb839",
-      "Date" : "Mon, 13 Dec 2021 18:37:23 GMT"
+      "x-ms-request-id" : "05b28be6-26da-4040-a5aa-8c14d1dcc493",
+      "Date" : "Thu, 06 Jan 2022 23:05:07 GMT"
     },
     "Exception" : null
   } ],
