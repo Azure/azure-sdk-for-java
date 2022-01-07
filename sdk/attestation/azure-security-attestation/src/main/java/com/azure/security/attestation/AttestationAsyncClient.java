@@ -368,8 +368,9 @@ public final class AttestationAsyncClient {
      * <p><strong>Attest an OpenEnclave enclave with attestation options.</strong></p>
      * <!-- src_embed com.azure.security.attestation.AttestationAsyncClient.attestOpenEnclaveWithResponse -->
      * <pre>
-     * Mono&lt;Response&lt;AttestationResult&gt;&gt; openEnclaveResponse = client.attestOpenEnclaveWithResponse&#40;new AttestationOptions&#40;openEnclaveReport&#41;
-     *     .setRunTimeData&#40;new AttestationData&#40;runtimeData, AttestationDataInterpretation.JSON&#41;&#41;, Context.NONE&#41;;
+     * Mono&lt;Response&lt;AttestationResult&gt;&gt; openEnclaveResponse = client.attestOpenEnclaveWithResponse&#40;
+     *     new AttestationOptions&#40;openEnclaveReport&#41;
+     *         .setRunTimeData&#40;new AttestationData&#40;runtimeData, AttestationDataInterpretation.JSON&#41;&#41;, Context.NONE&#41;;
      *
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationAsyncClient.attestOpenEnclaveWithResponse -->
@@ -501,8 +502,9 @@ public final class AttestationAsyncClient {
      * <p><strong>Attest an OpenEnclave enclave with attestation options.</strong></p>
      * <!-- src_embed com.azure.security.attestation.AttestationAsyncClient.attestSgxEnclaveWithResponse -->
      * <pre>
-     * Mono&lt;Response&lt;AttestationResult&gt;&gt; openEnclaveResponse = client.attestSgxEnclaveWithResponse&#40;new AttestationOptions&#40;sgxQuote&#41;
-     *     .setRunTimeData&#40;new AttestationData&#40;runtimeData, AttestationDataInterpretation.JSON&#41;&#41;, Context.NONE&#41;;
+     * Mono&lt;Response&lt;AttestationResult&gt;&gt; openEnclaveResponse = client.attestSgxEnclaveWithResponse&#40;
+     *     new AttestationOptions&#40;sgxQuote&#41;
+     *         .setRunTimeData&#40;new AttestationData&#40;runtimeData, AttestationDataInterpretation.JSON&#41;&#41;, Context.NONE&#41;;
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationAsyncClient.attestSgxEnclaveWithResponse -->
      *

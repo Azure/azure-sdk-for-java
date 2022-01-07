@@ -293,7 +293,8 @@ public final class AttestationClient {
      * It returns an {@link AttestationResult} containing the claims emitted by the attestation service.
      * <!-- src_embed com.azure.security.attestation.AttestationClient.attestOpenEnclaveWithResponseWithReport -->
      * <pre>
-     * Response&lt;AttestationResult&gt; responseWithReport = client.attestOpenEnclaveWithResponse&#40;openEnclaveReport, Context.NONE&#41;;
+     * Response&lt;AttestationResult&gt; responseWithReport = client.attestOpenEnclaveWithResponse&#40;openEnclaveReport,
+     *     Context.NONE&#41;;
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationClient.attestOpenEnclaveWithResponseWithReport -->
      *
@@ -356,8 +357,9 @@ public final class AttestationClient {
      * <p><strong>Attest an OpenEnclave enclave with attestation options.</strong></p>
      * <!-- src_embed com.azure.security.attestation.AttestationClient.attestOpenEnclaveWithResponse -->
      * <pre>
-     * Response&lt;AttestationResult&gt; openEnclaveResponse = client.attestOpenEnclaveWithResponse&#40;new AttestationOptions&#40;openEnclaveReport&#41;
-     *     .setRunTimeData&#40;new AttestationData&#40;runtimeData, AttestationDataInterpretation.JSON&#41;&#41;, Context.NONE&#41;;
+     * Response&lt;AttestationResult&gt; openEnclaveResponse = client.attestOpenEnclaveWithResponse&#40;
+     *     new AttestationOptions&#40;openEnclaveReport&#41;
+     *         .setRunTimeData&#40;new AttestationData&#40;runtimeData, AttestationDataInterpretation.JSON&#41;&#41;, Context.NONE&#41;;
      *
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationClient.attestOpenEnclaveWithResponse -->
@@ -469,8 +471,9 @@ public final class AttestationClient {
      * <p><strong>Attest an OpenEnclave enclave with attestation options.</strong></p>
      * <!-- src_embed com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithResponse -->
      * <pre>
-     * Response&lt;AttestationResult&gt; openEnclaveResponse = client.attestSgxEnclaveWithResponse&#40;new AttestationOptions&#40;sgxQuote&#41;
-     *     .setRunTimeData&#40;new AttestationData&#40;runtimeData, AttestationDataInterpretation.JSON&#41;&#41;, Context.NONE&#41;;
+     * Response&lt;AttestationResult&gt; openEnclaveResponse = client.attestSgxEnclaveWithResponse&#40;
+     *     new AttestationOptions&#40;sgxQuote&#41;
+     *         .setRunTimeData&#40;new AttestationData&#40;runtimeData, AttestationDataInterpretation.JSON&#41;&#41;, Context.NONE&#41;;
      *
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithResponse -->
