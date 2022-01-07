@@ -3,9 +3,10 @@
 
 package com.azure.communication.rooms;
 
-import java.time.OffsetDateTime;
-import java.util.Map;
+import java.util.Set;
+
 import com.azure.communication.rooms.models.CommunicationRoom;
+import com.azure.communication.rooms.models.RoomRequest;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -26,57 +27,49 @@ public class RoomsClient {
     /**
      * Create a new room.
      * 
-     * @param validFrom The valid starting time point of a room.
-     * @param validUntil The valid ending time point of a room.
-     * @param participants The participants of a room.
+     * @param request The room request.
      * @return response for a successful create room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationRoom createRoom(OffsetDateTime validFrom, OffsetDateTime validUntil, Map<String, Object> participants) {
-        return roomsAsyncClient.createRoom(validFrom, validUntil, participants).block();
+    public CommunicationRoom createRoom(RoomRequest request) {
+        return roomsAsyncClient.createRoom(request).block();
     }
 
     /**
      * Create a new Room with response.
      * 
-     * @param validFrom The valid starting time point of a room.
-     * @param validUntil The valid ending time point of a room.
-     * @param participants The participants of a room.
+     * @param request The room request.
      * @param context The context of key value pairs for http request.
      * @return response for a successful create room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CommunicationRoom> createRoomWithResponse(OffsetDateTime validFrom, OffsetDateTime validUntil, Map<String, Object> participants, Context context) {
-        return roomsAsyncClient.createRoomWithResponse(validFrom, validUntil, participants, context).block();
+    public Response<CommunicationRoom> createRoomWithResponse(RoomRequest request, Context context) {
+        return roomsAsyncClient.createRoomWithResponse(request, context).block();
     }
 
     /**
      * Update an existing Room.
      * 
      * @param roomId The room id.
-     * @param validFrom The valid starting time point of a room.
-     * @param validUntil The valid ending time point of a room.
-     * @param participants The participants of a room.
+     * @param request The room request.
      * @return response for a successful update room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationRoom updateRoom(String roomId, OffsetDateTime validFrom, OffsetDateTime validUntil, Map<String, Object> participants) {
-        return roomsAsyncClient.updateRoom(roomId, validFrom, validUntil, participants).block();
+    public CommunicationRoom updateRoom(String roomId, RoomRequest request) {
+        return roomsAsyncClient.updateRoom(roomId, request).block();
     }
 
     /**
      * Update an existing Room with response.
      * 
      * @param roomId The room id.
-     * @param validFrom The valid starting time point of a room.
-     * @param validUntil The valid ending time point of a room.
-     * @param participants The participants of a room.
+     * @param request The room request.
      * @param context The context of key value pairs for http request.
      * @return response for a successful update room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CommunicationRoom> updateRoomWithResponse(String roomId, OffsetDateTime validFrom, OffsetDateTime validUntil, Map<String, Object> participants, Context context) {
-        return roomsAsyncClient.updateRoomWithResponse(roomId, validFrom, validUntil, participants, context).block();
+    public Response<CommunicationRoom> updateRoomWithResponse(String roomId, RoomRequest request, Context context) {
+        return roomsAsyncClient.updateRoomWithResponse(roomId, request, context).block();
     }
 
     /**
@@ -113,5 +106,55 @@ public class RoomsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteRoomWithResponse(String roomId, Context context) {
         return roomsAsyncClient.deleteRoomWithResponse(roomId, context).block();
+    }
+
+    /**
+     * Add participants to an existing room.
+     * 
+     * @param roomId The room id.
+     * @param participants The participants to add.
+     * @return The existing room.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommunicationRoom addParticipants(String roomId, Set<String> participants) {
+        return roomsAsyncClient.addParticipants(roomId, participants).block();
+    }
+
+    /**
+     * Add participants to an existing room with response.
+     * 
+     * @param roomId The room id.
+     * @param participants The participants to add.
+     * @param context The context of key value pairs for http request.
+     * @return The existing room.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CommunicationRoom> addParticipantsWithResponse(String roomId, Set<String> participants, Context context) {
+        return roomsAsyncClient.addParticipantsWithResponse(roomId, participants, context).block();
+    }
+
+    /**
+     * Remove participants to an existing room.
+     * 
+     * @param roomId The room id.
+     * @param participants The participants to remove.
+     * @return The existing room.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommunicationRoom removeParticipants(String roomId, Set<String> participants) {
+        return roomsAsyncClient.removeParticipants(roomId, participants).block();
+    }
+
+    /**
+     * Remove participants to an existing room with response.
+     * 
+     * @param roomId The room id.
+     * @param participants The participants to remove.
+     * @param context The context of key value pairs for http request.
+     * @return The existing room.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CommunicationRoom> removeParticipantsWithResponse(String roomId, Set<String> participants, Context context) {
+        return roomsAsyncClient.removeParticipantsWithResponse(roomId, participants, context).block();
     }
 }

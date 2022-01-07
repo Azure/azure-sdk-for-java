@@ -53,7 +53,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-rooms</artifactId>
-  <version>1.0.0-beta.1</version>
+  <version>1.0.0-alpha.1</version>
 </dependency>
 ```
 
@@ -65,38 +65,18 @@ A `DefaultAzureCredential` object must be passed to the `RoomsClientBuilder` via
 `AZURE_CLIENT_SECRET`, `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables
 are needed to create a DefaultAzureCredential object.
 
-<!-- embedme src/samples/java/com/azure/communication/rooms/ReadmeSamples.java#L20-L26 -->
-```java
-
-
-
-
-
-
-
-```
-
-### Access Key Authentication
-Rooms uses HMAC authentication with the resource access key.
-The access key must be provided to the `RoomsClientBuilder` via the credential() function. Endpoint and httpClient must also be set via the endpoint() and httpClient() functions respectively.
-
-<!-- embedme src/samples/java/com/azure/communication/rooms/ReadmeSamples.java#L53-L58 -->
-```java
-
-
-
-
-
-
-```
-
 Alternatively, you can provide the entire connection string using the connectionString() function instead of providing the endpoint and access key.
-<!-- embedme src/samples/java/com/azure/communication/rooms/ReadmeSamples.java#L44-L47 -->
+<!-- embedme src/samples/java/com/azure/communication/rooms/ReadmeSamples.java#L45-L53 -->
 ```java
 
 public RoomsClient createRoomsClientWithConnectionString() {
     // You can find your connection string from your resource in the Azure Portal
     String connectionString = "https://<resource-name>.communication.azure.com/;<access-key>";
+
+    RoomsClient roomsClient = new RoomsClientBuilder().connectionString(connectionString).buildClient();
+
+    return roomsClient;
+}
 ```
 
 ## Key concepts
@@ -108,50 +88,69 @@ There are four operations to interact with the Azure Communication Rooms Service
 ### Create a new room
 Use the `createRoom`  function to create a new Room on Azure Communciation Service.
 
-<!-- embedme src/samples/java/com/azure/communication/rooms/ReadmeSamples.java#L74-L86 -->
+<!-- embedme src/samples/java/com/azure/communication/rooms/ReadmeSamples.java#L76-L91 -->
 ```java
-
 public void createRoomWithValidInput() {
+    RoomRequest request = new RoomRequest();
     OffsetDateTime validFrom = OffsetDateTime.of(2021, 8, 1, 5, 30, 20, 10, ZoneOffset.UTC);
     OffsetDateTime validUntil = OffsetDateTime.of(2021, 9, 1, 5, 30, 20, 10, ZoneOffset.UTC);
     Map<String, Object> participants = new HashMap<>();
     // Add two participants
     participants.put("<ACS User MRI identity 1>", new RoomParticipant());
     participants.put("<ACS User MRI identity 2>", new RoomParticipant());
+    request.setValidFrom(validFrom);
+    request.setValidUntil(validUntil);
+    request.setParticipants(participants);
 
     RoomsClient roomsClient = createRoomsClientWithConnectionString();
-    CommunicationRoom roomResult = roomsClient.createRoom(validFrom, validUntil, participants);
+    CommunicationRoom roomResult = roomsClient.createRoom(request);
     System.out.println("Room Id: " + roomResult.getRoomId());
 }
 ```
 ### Update an existing room
 Use the `updateRoom`  function to create a new Room on Azure Communciation Service.
 
-<!-- embedme src/samples/java/com/azure/communication/rooms/ReadmeSamples.java#L87-L95 -->
+<!-- embedme src/samples/java/com/azure/communication/rooms/ReadmeSamples.java#L93-L115 -->
 ```java
-
 public void updateRoomWithRoomId() {
+    RoomRequest request = new RoomRequest();
     OffsetDateTime validFrom = OffsetDateTime.of(2021, 8, 1, 5, 30, 20, 10, ZoneOffset.UTC);
     OffsetDateTime validUntil = OffsetDateTime.of(2021, 9, 1, 5, 30, 20, 10, ZoneOffset.UTC);
     Map<String, Object> participants = new HashMap<>();
     participants.put("<ACS User MRI identity 1>", new RoomParticipant());
     // Delete one participant
     participants.put("<ACS User MRI identity 2>", null);
+    request.setValidFrom(validFrom);
+    request.setValidUntil(validUntil);
+    request.setParticipants(participants);
+
     RoomsClient roomsClient = createRoomsClientWithConnectionString();
+
+    try {
+        CommunicationRoom roomResult = roomsClient.updateRoom("<Room Id in String>", request);
+        System.out.println("Room Id: " + roomResult.getRoomId());
+
+    } catch (RuntimeException ex) {
+        System.out.println(ex);
+    }
+
+}
 ```
 
 ### Get an existing room
 Use the `getRoom`  function to get an existing Room on Azure Communciation Service.
 
-
-<!-- embedme src/samples/java/com/azure/communication/rooms/ReadmeSamples.java#L108-L114 -->
+<!-- embedme src/samples/java/com/azure/communication/rooms/ReadmeSamples.java#L117-L126 -->
 ```java
-RoomsClient roomsClient = createRoomsClientWithConnectionString();
-try {
-    CommunicationRoom roomResult = roomsClient.getRoom("<Room Id in String>");
-    System.out.println("Room Id: " + roomResult.getRoomId());
-} catch (RuntimeException ex) {
-    System.out.println(ex);
+public void getRoomWithRoomId() {
+    RoomsClient roomsClient = createRoomsClientWithConnectionString();
+    try {
+        CommunicationRoom roomResult = roomsClient.getRoom("<Room Id in String>");
+        System.out.println("Room Id: " + roomResult.getRoomId());
+    } catch (RuntimeException ex) {
+        System.out.println(ex);
+    }
+
 }
 ```
 
@@ -159,7 +158,7 @@ try {
 Use the `deleteRoomWithResponse`  function to delete an existing Room on Azure Communciation Service.
 
 
-<!-- embedme src/samples/java/com/azure/communication/rooms/ReadmeSamples.java#L118-L125 -->
+<!-- embedme src/samples/java/com/azure/communication/rooms/ReadmeSamples.java#L128-L135 -->
 ```java
 public void deleteRoomWithRoomId() {
     RoomsClient roomsClient = createRoomsClientWithConnectionString();
@@ -176,26 +175,29 @@ public void deleteRoomWithRoomId() {
 Rooms operations will throw an exception if the request to the server fails.
 Exceptions will not be thrown if the error is caused by an individual message, only if something fails with the overall request.
 Please use the `getSuccessful()` flag to validate each individual result to verify if the message was sent.
-<!-- embedme src/samples/java/com/azure/communication/rooms/ReadmeSamples.java#L127-L145 -->
+<!-- embedme src/samples/java/com/azure/communication/rooms/ReadmeSamples.java#L137-L158 -->
 ```java
-ic void createRoomTroubleShooting() {
-RoomsClient roomsClient = createRoomsClientWithConnectionString();
+public void createRoomTroubleShooting() {
+    RoomsClient roomsClient = createRoomsClientWithConnectionString();
+    try {
+        RoomRequest request = new RoomRequest();
+        OffsetDateTime validFrom = OffsetDateTime.of(2021, 9, 1, 5, 30, 20, 10, ZoneOffset.UTC);
+        OffsetDateTime validUntil = OffsetDateTime.of(2021, 8, 1, 5, 30, 20, 10, ZoneOffset.UTC);
+        Map<String, Object> participants = new HashMap<>();
 
-try {
+        request.setValidFrom(validFrom);
+        request.setValidUntil(validUntil);
+        request.setParticipants(participants);
+        Response<CommunicationRoom> roomResult = roomsClient.createRoomWithResponse(request, null);
 
-    OffsetDateTime validFrom = OffsetDateTime.of(2021, 9, 1, 5, 30, 20, 10, ZoneOffset.UTC);
-    OffsetDateTime validUntil = OffsetDateTime.of(2021, 8, 1, 5, 30, 20, 10, ZoneOffset.UTC);
-    Map<String, Object> participants = new HashMap<>();
-
-    Response<CommunicationRoom> roomResult = roomsClient.createRoomWithResponse(validFrom, validUntil, participants, null);
-
-    if (roomResult.getStatusCode() == 201) {
-        System.out.println("Successfully create the room: " + roomResult.getValue().getRoomId());
-    } else {
-        System.out.println("Error Happened at create room request: " + roomResult.getStatusCode());
+        if (roomResult.getStatusCode() == 201) {
+            System.out.println("Successfully create the room: " + roomResult.getValue().getRoomId());
+        } else {
+            System.out.println("Error Happened at create room request: " + roomResult.getStatusCode());
+        }
+    } catch (RuntimeException ex) {
+        System.out.println(ex.getMessage());
     }
-} catch (RuntimeException ex) {
-    System.out.println(ex.getMessage());
 }
 ```
 

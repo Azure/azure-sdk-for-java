@@ -4,18 +4,18 @@
     "Uri" : "https://REDACTED.ppe.communication.azure.net/rooms/NotExistingRoomID?api-version=2021-04-07",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-rooms/1.0.0-beta.1 (11.0.12; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a0dadc4c-3c24-45f7-9de5-77b26cb9f821"
+      "x-ms-client-request-id" : "b2f5ba3e-0855-453c-8b84-35ba456e14d0"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
       "api-supported-versions" : "2021-04-07",
-      "MS-CV" : "Jj+ObpQzI06IZh9ZWpadDA.0",
+      "MS-CV" : "A53Prgb/KkGsYOwSD4lfRA.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0zzm9YQAAAABRKQIUbOMXRYYpUImSjp0HWVZSMzBFREdFMDQxOQBmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
+      "X-Azure-Ref" : "0RujXYQAAAAD7ny21OAufQ6JCZzFF+FB/U0cyRURHRTI3MDkAZjA5YTRjMTMtMjFmMS00OGVjLTljZjctNjY1NDU2ODRiNjQy",
       "StatusCode" : "500",
       "Body" : "{\"error\":{\"code\":\"InternalServerError\",\"message\":\"Unhandled exception\"}}",
-      "Date" : "Sat, 18 Dec 2021 01:30:55 GMT",
+      "Date" : "Fri, 07 Jan 2022 07:14:13 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -24,18 +24,18 @@
     "Uri" : "https://REDACTED.ppe.communication.azure.net/rooms/NotExistingRoomID?api-version=2021-04-07",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-rooms/1.0.0-beta.1 (11.0.12; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a0dadc4c-3c24-45f7-9de5-77b26cb9f821"
+      "x-ms-client-request-id" : "b2f5ba3e-0855-453c-8b84-35ba456e14d0"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
       "api-supported-versions" : "2021-04-07",
-      "MS-CV" : "M4gIwOGm6EyGVnt3JjDAGw.0",
+      "MS-CV" : "ABzgux1JOkmwysXUKeSqZg.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "00Dm9YQAAAADyW100xe1DQr07T6phQnDfWVZSMzBFREdFMDQxOQBmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
+      "X-Azure-Ref" : "0R+jXYQAAAABgGYNXKySuRq/xQ/4QgyR8U0cyRURHRTI3MTYAZjA5YTRjMTMtMjFmMS00OGVjLTljZjctNjY1NDU2ODRiNjQy",
       "StatusCode" : "500",
       "Body" : "{\"error\":{\"code\":\"InternalServerError\",\"message\":\"Unhandled exception\"}}",
-      "Date" : "Sat, 18 Dec 2021 01:30:56 GMT",
+      "Date" : "Fri, 07 Jan 2022 07:14:15 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -44,18 +44,18 @@
     "Uri" : "https://REDACTED.ppe.communication.azure.net/rooms/NotExistingRoomID?api-version=2021-04-07",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-rooms/1.0.0-beta.1 (11.0.12; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a0dadc4c-3c24-45f7-9de5-77b26cb9f821"
+      "x-ms-client-request-id" : "b2f5ba3e-0855-453c-8b84-35ba456e14d0"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
       "api-supported-versions" : "2021-04-07",
-      "MS-CV" : "V1a1+bWHEUqmVdp45lNM5w.0",
+      "MS-CV" : "2l2A4hWpq0y9mtl0L2sC9Q.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "00jm9YQAAAABRDzItq9hVSLKbLxKQ/vF3WVZSMzBFREdFMDQxOQBmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
+      "X-Azure-Ref" : "0SejXYQAAAABBRDLGdmSWQbykGUtU85T7U0cyRURHRTI3MDkAZjA5YTRjMTMtMjFmMS00OGVjLTljZjctNjY1NDU2ODRiNjQy",
       "StatusCode" : "500",
       "Body" : "{\"error\":{\"code\":\"InternalServerError\",\"message\":\"Unhandled exception\"}}",
-      "Date" : "Sat, 18 Dec 2021 01:30:58 GMT",
+      "Date" : "Fri, 07 Jan 2022 07:14:16 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -64,18 +64,18 @@
     "Uri" : "https://REDACTED.ppe.communication.azure.net/rooms/NotExistingRoomID?api-version=2021-04-07",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-rooms/1.0.0-beta.1 (11.0.12; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a0dadc4c-3c24-45f7-9de5-77b26cb9f821"
+      "x-ms-client-request-id" : "b2f5ba3e-0855-453c-8b84-35ba456e14d0"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
       "api-supported-versions" : "2021-04-07",
-      "MS-CV" : "87ci8/BFekmTzOyTeW6/Ow.0",
+      "MS-CV" : "pXgcY2lSg0a4z4GokfUMHw.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "01Tm9YQAAAABgID6JDmRBSKUuRiXqcAnUWVZSMzBFREdFMDQxOQBmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
+      "X-Azure-Ref" : "0TOjXYQAAAACFeRGSMnqHQaEV9pFDowoIU0cyRURHRTI3MTYAZjA5YTRjMTMtMjFmMS00OGVjLTljZjctNjY1NDU2ODRiNjQy",
       "StatusCode" : "500",
       "Body" : "{\"error\":{\"code\":\"InternalServerError\",\"message\":\"Unhandled exception\"}}",
-      "Date" : "Sat, 18 Dec 2021 01:31:01 GMT",
+      "Date" : "Fri, 07 Jan 2022 07:14:20 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

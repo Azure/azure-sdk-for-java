@@ -6,11 +6,13 @@ package com.azure.communication.rooms;
 import com.azure.communication.rooms.implementation.AzureCommunicationRoomServiceImpl;
 import com.azure.communication.rooms.implementation.RoomsImpl;
 import com.azure.communication.rooms.implementation.models.RoomModel;
+import com.azure.communication.rooms.implementation.models.UpdateRoomRequest;
 import com.azure.communication.rooms.implementation.models.CreateRoomRequest;
 import com.azure.communication.rooms.implementation.models.CreateRoomResponse;
-import com.azure.communication.rooms.implementation.models.UpdateRoomRequest;
 import com.azure.communication.rooms.implementation.models.UpdateRoomResponse;
 import com.azure.communication.rooms.models.CommunicationRoom;
+import com.azure.communication.rooms.models.RoomParticipant;
+import com.azure.communication.rooms.models.RoomRequest;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -18,10 +20,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import java.time.OffsetDateTime;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import reactor.core.publisher.Mono;
+
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
@@ -39,22 +43,19 @@ public class RoomsAsyncClient {
     /**
      * Create a new Room, input fields are nullable.
      * 
-     * @param validFrom The valid starting time point of a room.
-     * @param validUntil The valid ending time point of a room.
-     * @param participants The participants of a room.
+     * @param request the room request.
      * @return response for a successful create room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CommunicationRoom> createRoom(OffsetDateTime validFrom, OffsetDateTime validUntil, Map<String, Object> participants) {
-        return createRoom(validFrom, validUntil, participants, null);
+    public Mono<CommunicationRoom> createRoom(RoomRequest request) {
+        return createRoom(request, null);
     }
 
-    Mono<CommunicationRoom> createRoom(OffsetDateTime validFrom, OffsetDateTime validUntil, Map<String, Object> participants, Context context) {
-        CreateRoomRequest createRoomRequest = getCreateRoomRequest(validFrom, validUntil, participants);
+    Mono<CommunicationRoom> createRoom(RoomRequest request, Context context) {
         context = context == null ? Context.NONE : context;
         try {
             return this.roomsClient
-            .createRoomWithResponseAsync(createRoomRequest, context)
+            .createRoomWithResponseAsync(toCreateRoomRequest(request), context)
             .flatMap((Response<CreateRoomResponse> response) -> {
                 return Mono.just(getCommunicationRoomFromResponse(response.getValue().getRoom(), response.getValue().getInvalidParticipants()));
             });
@@ -66,22 +67,19 @@ public class RoomsAsyncClient {
         /**
      * Create a new Room, input fields are nullable.
      * 
-     * @param validFrom The valid starting time point of a room.
-     * @param validUntil The valid ending time point of a room.
-     * @param participants The participants of a room.
+     * @param request the room request.
      * @return response for a successful create room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CommunicationRoom>> createRoomWithResponse(OffsetDateTime validFrom, OffsetDateTime validUntil, Map<String, Object> participants) {
-        return createRoomWithResponse(validFrom, validUntil, participants, null);
+    public Mono<Response<CommunicationRoom>> createRoomWithResponse(RoomRequest request) {
+        return createRoomWithResponse(request, null);
     }
 
-    Mono<Response<CommunicationRoom>> createRoomWithResponse(OffsetDateTime validFrom, OffsetDateTime validUntil, Map<String, Object> participants, Context context) {
-        CreateRoomRequest createRoomRequest = getCreateRoomRequest(validFrom, validUntil, participants);
+    Mono<Response<CommunicationRoom>> createRoomWithResponse(RoomRequest request, Context context) {
         context = context == null ? Context.NONE : context;
         try {
             return this.roomsClient
-            .createRoomWithResponseAsync(createRoomRequest, context)
+            .createRoomWithResponseAsync(toCreateRoomRequest(request), context)
             .flatMap((Response<CreateRoomResponse> response) -> {
                 CommunicationRoom communicationRoom = getCommunicationRoomFromResponse(response.getValue().getRoom(), response.getValue().getInvalidParticipants());
                 return Mono.just(new SimpleResponse<CommunicationRoom>(response, communicationRoom));
@@ -95,22 +93,19 @@ public class RoomsAsyncClient {
      * Update an existing Room.
      * 
      * @param roomId The room id.
-     * @param validFrom The valid starting time point of a room.
-     * @param validUntil The valid ending time point of a room.
-     * @param participants The participants of a room.
+     * @param request The room request.
      * @return response for a successful update room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CommunicationRoom> updateRoom(String roomId, OffsetDateTime validFrom, OffsetDateTime validUntil, Map<String, Object> participants) {
-        return updateRoom(roomId, validFrom, validUntil, participants, null);
+    public Mono<CommunicationRoom> updateRoom(String roomId, RoomRequest request) {
+        return updateRoom(roomId, request, null);
     }
 
-    Mono<CommunicationRoom> updateRoom(String roomId, OffsetDateTime validFrom, OffsetDateTime validUntil, Map<String, Object> participants, Context context) {
-        UpdateRoomRequest updateRoomRequest = getUpdateRoomRequest(validFrom, validUntil, participants);
+    Mono<CommunicationRoom> updateRoom(String roomId, RoomRequest request, Context context) {
         context = context == null ? Context.NONE : context;
         try {
             return this.roomsClient
-            .updateRoomWithResponseAsync(roomId, updateRoomRequest, context)
+            .updateRoomWithResponseAsync(roomId, toUpdateRoomRequest(request), context)
             .flatMap((Response<UpdateRoomResponse> response) -> {
                 return Mono.just(getCommunicationRoomFromResponse(response.getValue().getRoom(), response.getValue().getInvalidParticipants()));
             });
@@ -124,22 +119,19 @@ public class RoomsAsyncClient {
      * Update an existing room with response.
      * 
      * @param roomId The room id.
-     * @param validFrom The valid starting time point of a room.
-     * @param validUntil The valid ending time point of a room.
-     * @param participants The participants of a room.
+     * @param request The room request.
      * @return response for a successful update room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CommunicationRoom>> updateRoomWithResponse(String roomId, OffsetDateTime validFrom, OffsetDateTime validUntil, Map<String, Object> participants) {
-        return updateRoomWithResponse(roomId, validFrom, validUntil, participants, null);
+    public Mono<Response<CommunicationRoom>> updateRoomWithResponse(String roomId, RoomRequest request) {
+        return updateRoomWithResponse(roomId, request, null);
     }
 
-    Mono<Response<CommunicationRoom>> updateRoomWithResponse(String roomId, OffsetDateTime validFrom, OffsetDateTime validUntil, Map<String, Object> participants, Context context) {
-        UpdateRoomRequest updateRoomRequest = getUpdateRoomRequest(validFrom, validUntil, participants);
+    Mono<Response<CommunicationRoom>> updateRoomWithResponse(String roomId, RoomRequest request, Context context) {
         context = context == null ? Context.NONE : context;
         try {
             return this.roomsClient
-            .updateRoomWithResponseAsync(roomId, updateRoomRequest, context)
+            .updateRoomWithResponseAsync(roomId, toUpdateRoomRequest(request), context)
             .flatMap((Response<UpdateRoomResponse> response) -> {
                 CommunicationRoom communicationRoom = getCommunicationRoomFromResponse(response.getValue().getRoom(), response.getValue().getInvalidParticipants());
                 return Mono.just(new SimpleResponse<CommunicationRoom>(response, communicationRoom));
@@ -229,20 +221,122 @@ public class RoomsAsyncClient {
         }
     }
 
-    private CreateRoomRequest getCreateRoomRequest(OffsetDateTime validFrom, OffsetDateTime validUntil, Map<String, Object> participants) {
-        CreateRoomRequest createRoomRequest = new CreateRoomRequest();
-        createRoomRequest.setValidFrom(validFrom)
-            .setValidUntil(validUntil)
-            .setParticipants(participants);
-        return createRoomRequest;
+    /**
+     * Add participants to an existing Room.
+     * 
+     * @param roomId The room id.
+     * @param participants The participants list.
+     * @return response for a successful update room request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CommunicationRoom> addParticipants(String roomId, Set<String> participants) {
+        return addParticipants(roomId, participants, null);
     }
 
-    private UpdateRoomRequest getUpdateRoomRequest(OffsetDateTime validFrom, OffsetDateTime validUntil, Map<String, Object> participants) {
-        UpdateRoomRequest updateRoomRequest = new UpdateRoomRequest();
-        updateRoomRequest.setValidFrom(validFrom)
-            .setValidUntil(validUntil)
-            .setParticipants(participants);
-        return updateRoomRequest;
+    Mono<CommunicationRoom> addParticipants(String roomId, Set<String> participants, Context context) {
+        context = context == null ? Context.NONE : context;
+        try {
+            RoomRequest request = getRoomRequest(participants, new RoomParticipant());
+            return this.roomsClient
+            .updateRoomWithResponseAsync(roomId, toUpdateRoomRequest(request), context)
+            .flatMap((Response<UpdateRoomResponse> response) -> {
+                return Mono.just(getCommunicationRoomFromResponse(response.getValue().getRoom(), response.getValue().getInvalidParticipants()));
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+
+    }
+
+    /**
+     * Add participants to an existing room with response.
+     * 
+     * @param roomId The room id.
+     * @param participants The participant list.
+     * @return response for a successful update room request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CommunicationRoom>> addParticipantsWithResponse(String roomId, Set<String> participants) {
+        return addParticipantsWithResponse(roomId, participants, null);
+    }
+
+    Mono<Response<CommunicationRoom>> addParticipantsWithResponse(String roomId, Set<String> participants, Context context) {
+        context = context == null ? Context.NONE : context;
+        try {
+            RoomRequest request = getRoomRequest(participants, new RoomParticipant());
+            return this.roomsClient
+            .updateRoomWithResponseAsync(roomId, toUpdateRoomRequest(request), context)
+            .flatMap((Response<UpdateRoomResponse> response) -> {
+                CommunicationRoom communicationRoom = getCommunicationRoomFromResponse(response.getValue().getRoom(), response.getValue().getInvalidParticipants());
+                return Mono.just(new SimpleResponse<CommunicationRoom>(response, communicationRoom));
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Remove participants to an existing Room.
+     * 
+     * @param roomId The room id.
+     * @param participants The participants list.
+     * @return response for a successful update room request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CommunicationRoom> removeParticipants(String roomId, Set<String> participants) {
+        return removeParticipants(roomId, participants, null);
+    }
+
+    Mono<CommunicationRoom> removeParticipants(String roomId, Set<String> participants, Context context) {
+        context = context == null ? Context.NONE : context;
+        try {
+            RoomRequest request = getRoomRequest(participants, null);
+            return this.roomsClient
+            .updateRoomWithResponseAsync(roomId, toUpdateRoomRequest(request), context)
+            .flatMap((Response<UpdateRoomResponse> response) -> {
+                return Mono.just(getCommunicationRoomFromResponse(response.getValue().getRoom(), response.getValue().getInvalidParticipants()));
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+
+    }
+
+    /**
+     * Remove participants to an existing room with response.
+     * 
+     * @param roomId The room id.
+     * @param participants The participant list.
+     * @return response for a successful update room request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CommunicationRoom>> removeParticipantsWithResponse(String roomId, Set<String> participants) {
+        return removeParticipantsWithResponse(roomId, participants, null);
+    }
+
+    Mono<Response<CommunicationRoom>> removeParticipantsWithResponse(String roomId, Set<String> participants, Context context) {
+        context = context == null ? Context.NONE : context;
+        try {
+            RoomRequest request = getRoomRequest(participants, null);
+            return this.roomsClient
+            .updateRoomWithResponseAsync(roomId, toUpdateRoomRequest(request), context)
+            .flatMap((Response<UpdateRoomResponse> response) -> {
+                CommunicationRoom communicationRoom = getCommunicationRoomFromResponse(response.getValue().getRoom(), response.getValue().getInvalidParticipants());
+                return Mono.just(new SimpleResponse<CommunicationRoom>(response, communicationRoom));
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    private RoomRequest getRoomRequest(Set<String> participants, RoomParticipant roomParticipant) {
+        Map<String, Object> participantMap = new HashMap<>();
+        for (String participant : participants) {
+            participantMap.put(participant, roomParticipant);
+        }
+        RoomRequest request = new RoomRequest();
+        request.setParticipants(participantMap);
+        return request;
     }
 
     private CommunicationRoom getCommunicationRoomFromResponse(RoomModel room, Map<String, Object> invalidParticipant) {
@@ -252,5 +346,45 @@ public class RoomsAsyncClient {
             room.getCreatedDateTime(),
             room.getParticipants(),
             invalidParticipant);
+    }
+
+    /**
+     * Translate to create room request.
+     *
+     * @return The create room request.
+     */
+    private CreateRoomRequest toCreateRoomRequest(RoomRequest request) {
+        
+        CreateRoomRequest createRoomRequest = new CreateRoomRequest();
+        if (request.getValidFrom() != null && request.getValidUntil() != null) {
+            createRoomRequest.setValidFrom(request.getValidFrom());
+            createRoomRequest.setValidUntil(request.getValidUntil());
+        }
+
+        if (request.getParticipants() != null) {
+            createRoomRequest.setParticipants(request.getParticipants());
+        }
+
+        return createRoomRequest;
+    }
+
+    /**
+     * Translate to update room request.
+     *
+     * @return The update room request.
+     */
+    private UpdateRoomRequest toUpdateRoomRequest(RoomRequest request) {
+
+        UpdateRoomRequest updateRoomRequest = new UpdateRoomRequest();
+        if (request.getValidFrom() != null && request.getValidUntil() != null) {
+            updateRoomRequest.setValidFrom(request.getValidFrom());
+            updateRoomRequest.setValidUntil(request.getValidUntil());
+        }
+
+        if (request.getParticipants() != null) {
+            updateRoomRequest.setParticipants(request.getParticipants());
+        }
+
+        return updateRoomRequest;
     }
 }

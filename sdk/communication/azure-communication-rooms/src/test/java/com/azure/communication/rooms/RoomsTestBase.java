@@ -19,10 +19,13 @@ import com.azure.core.util.logging.ClientLogger;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.StringJoiner;
 import java.util.function.Function;
 import java.util.regex.Matcher;
@@ -53,6 +56,8 @@ public class RoomsTestBase extends TestBase {
         }
     };
 
+    protected static final Map<String, Object> PARTICIPANTS7 = new HashMap<String, Object>();
+
     protected static final Map<String, Object> PARTICIPANTS2 = new HashMap<String, Object>() {{
             put(USER1, null);
             put(USER2, null);
@@ -70,6 +75,10 @@ public class RoomsTestBase extends TestBase {
         }
     };
 
+    protected static final Set<String> PARTICIPANTS5 = new HashSet<String>(Arrays.asList(USER1, USER2, USER3));
+
+    protected static final Set<String> PARTICIPANTS6 = new HashSet<String>(Arrays.asList(USER2, USER3));
+    
     protected static final String NONEXIST_ROOM_ID = "NotExistingRoomID";
 
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT = new StringJoiner("\":\"|\"", "\"", "\":\"").add("roomId");
