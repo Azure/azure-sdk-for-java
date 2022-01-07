@@ -12,8 +12,7 @@ steps to create an EventGrid client.
 ### Include the package
 
 #### Include direct dependency
-If you want to take dependency on a particular version of the library that is not present in the BOM,
-add the direct dependency to your project as follows.
+If you want to take dependency on a particular version of the library, add the direct dependency to your project as follows.
 
 [//]: # ({x-version-update-start;com.azure:azure-messaging-cloudnative-cloudevents;current})
 ```xml
