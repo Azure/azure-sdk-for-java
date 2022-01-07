@@ -7,6 +7,7 @@ import com.azure.containers.containerregistry.models.ArtifactManifestOrder;
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ContainerRepositoryProperties;
 import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
@@ -36,6 +37,7 @@ import com.azure.core.util.Context;
  *
  * @see ContainerRegistryClientBuilder
  */
+@ServiceClient(builder = ContainerRegistryClientBuilder.class)
 public final class ContainerRepository {
     private final ContainerRepositoryAsync asyncClient;
 
