@@ -48,9 +48,9 @@ final class AzureStorageUtils {
     /**
      * Get the location's path.
      *
-     * @param location
-     * @param storageType
-     * @return
+     * @param location the location represents the resource
+     * @param storageType the storageType
+     * @return the location's path
      */
     static String stripProtocol(String location, StorageType storageType) {
         Assert.notNull(location, "Location must not be null");
