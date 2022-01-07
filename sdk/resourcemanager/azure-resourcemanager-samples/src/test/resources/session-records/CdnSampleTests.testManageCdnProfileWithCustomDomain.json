@@ -28,7 +28,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv953463e239d/providers/Microsoft.Network/dnsZones/jsdkcdn298084.com?api-version=2018-03-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv953463e239d/providers/Microsoft.Network/dnsZones/jsdkcdn298084.com?api-version=2018-05-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.dns/2.1.0-beta.1 (14.0.2; Linux; 5.4.0-52-generic)",
       "x-ms-client-request-id" : "9c0105ab-3e9a-48c1-a60b-513e177c9abd",
@@ -172,7 +172,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv953463e239d/providers/Microsoft.Network/dnsZones/jsdkcdn298084.com?api-version=2018-03-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv953463e239d/providers/Microsoft.Network/dnsZones/jsdkcdn298084.com?api-version=2018-05-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.dns/2.1.0-beta.1 (14.0.2; Linux; 5.4.0-52-generic)",
       "x-ms-client-request-id" : "a712fa7e-c588-4fa0-93c5-adb45630770c",
@@ -200,7 +200,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv953463e239d/providers/Microsoft.Network/dnsZones/jsdkcdn298084.com?api-version=2018-03-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv953463e239d/providers/Microsoft.Network/dnsZones/jsdkcdn298084.com?api-version=2018-05-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.dns/2.1.0-beta.1 (14.0.2; Linux; 5.4.0-52-generic)",
       "x-ms-client-request-id" : "929e0249-b8d4-438d-86f1-e18c6f0701a7",
@@ -228,7 +228,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv953463e239d/providers/Microsoft.Network/dnsZones/jsdkcdn298084.com/CNAME/sample?api-version=2018-03-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv953463e239d/providers/Microsoft.Network/dnsZones/jsdkcdn298084.com/CNAME/sample?api-version=2018-05-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.dns/2.1.0-beta.1 (14.0.2; Linux; 5.4.0-52-generic)",
       "x-ms-client-request-id" : "3b70c1ee-b621-41a8-9778-5c77477c9f09",

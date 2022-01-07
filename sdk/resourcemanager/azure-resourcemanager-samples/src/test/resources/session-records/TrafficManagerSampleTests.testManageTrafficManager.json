@@ -27,7 +27,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_972013d55b6/providers/Microsoft.Network/dnsZones/jsdkdemo-50726f3d.com?api-version=2018-03-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgnemv_972013d55b6/providers/Microsoft.Network/dnsZones/jsdkdemo-50726f3d.com?api-version=2018-05-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.dns/2.0.0-beta.4 (14.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "679b41ba-bf29-456e-bdb9-83c5d37e62f4",
