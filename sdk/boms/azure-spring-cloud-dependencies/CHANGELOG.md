@@ -11,6 +11,7 @@ This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.1.
 - Upgrade to [Azure Event Hubs 5.10.3](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/CHANGELOG.md#5103-2021-11-16).
 - Upgrade to [Azure Event Hubs Checkpoint Store Blob 1.10.2](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/CHANGELOG.md#1102-2021-11-16).
 - Upgrade to [Spring Cloud Azure App Configuration 2.3.0](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-spring-cloud-appconfiguration-config/CHANGELOG.md).
+- Upgrade to [Spring Cloud Azure App Configuration Web 2.3.0](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-spring-cloud-appconfiguration-config-web/CHANGELOG.md).
 - Upgrade to [Spring Cloud Azure Feature Management 2.2.0](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-spring-cloud-feature-management/CHANGELOG.md).
 - Upgrade to [Spring Cloud Azure Feature Management Web 2.2.0](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-spring-cloud-feature-management-web/CHANGELOG.md).
 ### Breaking Changes
