@@ -64,12 +64,18 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
     protected abstract Stream<StorageContainerItem> listStorageContainers(String containerPrefix);
 
     /**
-     *  Get StorageContainerClient with specified container name.
+     * Get StorageContainerClient with specified container name.
+     *
      * @param name Container name
      * @return the storage container client.
      */
     protected abstract StorageContainerClient getStorageContainerClient(String name);
 
+    /**
+     * Set the ResourceLoader that this object runs in.
+     *
+     * @param resourceLoader the ResourceLoader object to be used by this object
+     */
     @Override
     public void setResourceLoader(ResourceLoader resourceLoader) {
         if (resourceLoader instanceof DefaultResourceLoader) {
@@ -199,6 +205,7 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
 
     /**
      * List all resources with specified container pattern and item pattern.
+     *
      * @param containerPattern An ant style string which represent containers.
      * @param itemPattern An ant style string which represent storage items.
      * @return All resources matching the provided patterns.
@@ -212,6 +219,7 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
 
     /**
      * List all containers with the provided pattern.
+     *
      * @param pattern An ant style string which represent containers.
      * @return All container clients matching the provided pattern.
      */
@@ -230,6 +238,7 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
 
     /**
      * List all storage items with specified container and item pattern.
+     *
      * @param containerClient The specified container where to get storage items.
      * @param itemPattern An ant style string represents StorageItems.
      * @return All matching items.
