@@ -23,7 +23,7 @@ final class AzureStorageUtils {
 
 
     /**
-     * Determine whether the given combination of location and storageType represents a valid Azure storage resource.
+     * Whether the given combination of location and storageType represents a valid Azure storage resource.
      *
      * @param location  the location
      * @param storageType the storagetype of current resource
