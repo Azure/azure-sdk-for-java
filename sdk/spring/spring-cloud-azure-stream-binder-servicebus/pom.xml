@@ -33,7 +33,28 @@
     <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
   </issueManagement>
 
-  <dependencies>
+  
+  <dependencyManagement>
+    <dependencies>
+
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>2.2.0.M4</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>Hoxton.SR9</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
+<dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-stream-binder-servicebus-core</artifactId>
@@ -69,7 +90,7 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-stream-binder-test</artifactId>
-      <version>3.2.1</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-stream-binder-test;external_dependency} -->
+      <version>3.0.9.RELEASE</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-stream-binder-test;external_dependency} -->
       <scope>test</scope>
       <exclusions>
         <exclusion>

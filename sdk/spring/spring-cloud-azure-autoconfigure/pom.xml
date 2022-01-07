@@ -33,7 +33,28 @@
     <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
   </issueManagement>
 
-  <dependencies>
+  
+  <dependencyManagement>
+    <dependencies>
+
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>2.2.0.M4</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>Hoxton.SR9</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
+<dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-service</artifactId>
@@ -315,7 +336,7 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-sleuth</artifactId>
-      <version>3.1.0</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-starter-sleuth;external_dependency} -->
+      <version>2.2.6.RELEASE</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-starter-sleuth;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

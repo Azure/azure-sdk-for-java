@@ -38,7 +38,28 @@
     <jacoco.min.branchcoverage>0.15</jacoco.min.branchcoverage>
   </properties>
 
-  <dependencies>
+  
+  <dependencyManagement>
+    <dependencies>
+
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>2.2.0.M4</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>Hoxton.SR9</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
+<dependencies>
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-stream</artifactId>
@@ -48,7 +69,7 @@
           <artifactId>spring-integration-core</artifactId>
         </exclusion>
       </exclusions>
-      <version>3.2.1</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-stream;external_dependency} -->
+      <version>3.0.9.RELEASE</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-stream;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -85,7 +106,7 @@
             <bannedDependencies>
               <includes>
                 <include>org.springframework.boot:spring-boot-configuration-processor:[2.6.1]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
-                <include>org.springframework.cloud:spring-cloud-stream:[3.2.1]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-stream;external_dependency} -->
+                <include>org.springframework.cloud:spring-cloud-stream:[3.0.9.RELEASE]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-stream;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
