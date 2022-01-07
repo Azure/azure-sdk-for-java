@@ -35,6 +35,7 @@ import java.util.Map;
         serviceClients = {
             KqlScriptsClient.class,
             KqlScriptClient.class,
+            MetastoreClient.class,
             SparkConfigurationClient.class,
             BigDataPoolsClient.class,
             DataFlowClient.class,
@@ -56,6 +57,7 @@ import java.util.Map;
             WorkspaceClient.class,
             KqlScriptsAsyncClient.class,
             KqlScriptAsyncClient.class,
+            MetastoreAsyncClient.class,
             SparkConfigurationAsyncClient.class,
             BigDataPoolsAsyncClient.class,
             DataFlowAsyncClient.class,
@@ -325,6 +327,15 @@ public final class ArtifactsClientBuilder {
     }
 
     /**
+     * Builds an instance of MetastoreAsyncClient async client.
+     *
+     * @return an instance of MetastoreAsyncClient.
+     */
+    public MetastoreAsyncClient buildMetastoreAsyncClient() {
+        return new MetastoreAsyncClient(buildInnerClient().getMetastores());
+    }
+
+    /**
      * Builds an instance of SparkConfigurationAsyncClient async client.
      *
      * @return an instance of SparkConfigurationAsyncClient.
@@ -511,6 +522,15 @@ public final class ArtifactsClientBuilder {
      */
     public KqlScriptClient buildKqlScriptClient() {
         return new KqlScriptClient(buildInnerClient().getKqlScriptsOperations());
+    }
+
+    /**
+     * Builds an instance of MetastoreClient sync client.
+     *
+     * @return an instance of MetastoreClient.
+     */
+    public MetastoreClient buildMetastoreClient() {
+        return new MetastoreClient(buildInnerClient().getMetastores());
     }
 
     /**
