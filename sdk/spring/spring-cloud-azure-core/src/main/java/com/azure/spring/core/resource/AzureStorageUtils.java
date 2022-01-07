@@ -25,7 +25,7 @@ final class AzureStorageUtils {
     /**
      * Whether the given combination of location and storageType represents a valid Azure storage resource.
      *
-     * @param location  the location
+     * @param location the location
      * @param storageType the storagetype of current resource
      * @return true - valid Azure storage resource<br>
      *         false - not valid Azure storage resource
@@ -92,7 +92,7 @@ final class AzureStorageUtils {
     /**
      * Assert the given combination of location and storageType represents a valid Azure storage resource.
      *
-     * @param location  the location
+     * @param location the location
      * @param storageType the storagetype of current resource
      */
     static void assertIsAzureStorageLocation(String location, StorageType storageType) {
@@ -106,7 +106,7 @@ final class AzureStorageUtils {
     /**
      * Assert the given combination of location and storageType contains a valid Azure storage container.
      *
-     * @param location  the location
+     * @param location the location
      * @param storageType the storagetype of current resource
      * @return the end index of container in the location
      */
