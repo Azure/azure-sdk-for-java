@@ -1,4 +1,6 @@
 ## Release History
+### 4.6.0-beta.1 (Unreleased)
+
 ### 4.5.3 (2022-01-06)
 #### Key Bug Fixes
 * Fixed an issue in the Java SDK that would result in NullPointerException when trying to bulk-ingest data into deleted and recreated container. - See [PR 26205](https://github.com/Azure/azure-sdk-for-java/pull/26205)
