@@ -207,6 +207,14 @@ public class DataLakeFileSystemClient {
         return dataLakeFileSystemAsyncClient.getServiceVersion();
     }
 
+    /**
+     * Gets the sas token string being used to authenticate this client
+     *
+     * @return The sas token string
+     */
+    public String getSasTokenString() {
+        return dataLakeFileSystemAsyncClient.getSasTokenString();
+    }
 
     /**
      * Gets the {@link HttpPipeline} powering this client.

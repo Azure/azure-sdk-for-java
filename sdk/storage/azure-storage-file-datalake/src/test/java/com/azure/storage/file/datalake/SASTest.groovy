@@ -4,6 +4,10 @@
 package com.azure.storage.file.datalake
 
 import com.azure.core.credential.AzureSasCredential
+import com.azure.storage.blob.sas.BlobContainerSasPermission
+import com.azure.storage.blob.sas.BlobSasPermission
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
+import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
@@ -942,5 +946,50 @@ class SASTest extends APISpec {
 
         then:
         noExceptionThrown()
+    }
+
+    def "service client get sas string"() {
+        setup:
+        def service = new AccountSasService()
+            .setBlobAccess(true)
+        def resourceType = new AccountSasResourceType()
+            .setContainer(true)
+        def permissions = new AccountSasPermission()
+            .setReadPermission(true)
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        when:
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+        def sas = primaryDataLakeServiceClient.generateAccountSas(sasValues)
+        def sc = getServiceClient(sas, primaryDataLakeServiceClient.getAccountUrl())
+
+        then:
+        sc.getSasTokenString() == sas
+    }
+
+    def "file system client get sas string"() {
+        setup:
+        def permissions = new FileSystemSasPermission()
+            .setReadPermission(true)
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        def sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions)
+        def sas = fsc.generateSas(sasValues)
+        def client = getFileSystemClient(sas, fsc.getFileSystemUrl())
+
+        expect:
+        client.getSasTokenString() == sas
+    }
+
+    def "path client get sas token"() {
+        setup:
+        def permissions = new PathSasPermission()
+            .setReadPermission(true)
+        def sasValues = generateValues(permissions)
+        def sas = sasClient.generateSas(sasValues)
+        def client = getFileClient(sas, fsc.getFileSystemUrl(), pathName)
+
+        expect:
+        client.getSasTokenString() == sas
     }
 }

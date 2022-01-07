@@ -96,6 +96,15 @@ public class ShareClient {
     }
 
     /**
+     * Gets the sas token string being used to authenticate this client
+     *
+     * @return The sas token string
+     */
+    public String getSasTokenString() {
+        return client.getSasTokenString();
+    }
+
+    /**
      * Constructs a {@link ShareDirectoryClient} that interacts with the root directory in the share.
      *
      * <p>If the directory doesn't exist in the share {@link ShareDirectoryClient#create() create} in the client will

@@ -20,6 +20,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImpl;
 import com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImplBuilder;
@@ -134,6 +135,15 @@ public class DataLakeServiceAsyncClient {
      */
     public DataLakeServiceVersion getServiceVersion() {
         return serviceVersion;
+    }
+
+    /**
+     * Gets the sas token string being used to authenticate this client
+     *
+     * @return The sas token string
+     */
+    public String getSasTokenString() {
+        return SasImplUtils.extractSasTokenFromPolicy(this.getHttpPipeline());
     }
 
     /**

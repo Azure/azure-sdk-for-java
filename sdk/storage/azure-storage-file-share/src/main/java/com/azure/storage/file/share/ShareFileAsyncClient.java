@@ -210,6 +210,15 @@ public class ShareFileAsyncClient {
     }
 
     /**
+     * Gets the sas token string being used to authenticate this client
+     *
+     * @return The sas token string
+     */
+    public String getSasTokenString() {
+        return SasImplUtils.extractSasTokenFromPolicy(this.getHttpPipeline());
+    }
+
+    /**
      * Determines if the file this client represents exists in the cloud.
      *
      * <p><strong>Code Samples</strong></p>

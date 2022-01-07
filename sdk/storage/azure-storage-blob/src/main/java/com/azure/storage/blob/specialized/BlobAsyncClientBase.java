@@ -482,7 +482,7 @@ public class BlobAsyncClientBase {
      * @return The sas token string
      */
     public String getSasTokenString() {
-
+        return SasImplUtils.extractSasTokenFromPolicy(this.getHttpPipeline());
     }
 
     /**

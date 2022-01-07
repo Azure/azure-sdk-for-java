@@ -254,6 +254,15 @@ public class DataLakePathAsyncClient {
     }
 
     /**
+     * Gets the sas token string being used to authenticate this client
+     *
+     * @return The sas token string
+     */
+    public String getSasTokenString() {
+        return SasImplUtils.extractSasTokenFromPolicy(this.getHttpPipeline());
+    }
+
+    /**
      * Creates a resource. By default this method will not overwrite an existing path.
      *
      * <p><strong>Code Samples</strong></p>

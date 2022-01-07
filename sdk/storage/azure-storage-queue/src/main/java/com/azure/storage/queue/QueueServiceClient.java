@@ -76,6 +76,15 @@ public final class QueueServiceClient {
     }
 
     /**
+     * Gets the sas token string being used to authenticate this client
+     *
+     * @return The sas token string
+     */
+    public String getSasTokenString() {
+        return client.getSasTokenString();
+    }
+
+    /**
      * Gets the message encoding the client is using.
      *
      * @return the message encoding the client is using.

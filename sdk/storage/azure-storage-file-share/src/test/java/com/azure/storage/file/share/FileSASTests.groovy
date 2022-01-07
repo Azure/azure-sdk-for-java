@@ -583,4 +583,72 @@ class FileSASTests extends APISpec {
         then:
         noExceptionThrown()
     }
+
+    def "service client get sas string"() {
+        setup:
+        def service = new AccountSasService()
+            .setBlobAccess(true)
+        def resourceType = new AccountSasResourceType()
+            .setContainer(true)
+        def permissions = new AccountSasPermission()
+            .setReadPermission(true)
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        when:
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+        def sas = primaryFileServiceClient.generateAccountSas(sasValues)
+        def sc = getServiceClient(sas, primaryFileServiceClient.getFileServiceUrl())
+
+        then:
+        sc.getSasTokenString() == sas
+    }
+
+    def "file system client get sas string"() {
+        setup:
+        def permissions = new ShareSasPermission()
+            .setReadPermission(true)
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        def sasValues = new ShareServiceSasSignatureValues(expiryTime, permissions)
+        def sas = primaryShareClient.generateSas(sasValues)
+        def client = getShareClient(sas, primaryShareClient.getFileSystemUrl())
+
+        expect:
+        client.getSasTokenString() == sas
+    }
+
+    def "directory client get sas token"() {
+        setup:
+        def permissions = new ShareSasPermission()
+            .setReadPermission(true)
+        def sasValues = generateValues(permissions)
+        def sas = primaryFileClient.generateSas(sasValues)
+        def client = getDirectoryClient(sas, primaryFileClient.getFilePath(), generatePathName())
+
+        expect:
+        client.getSasTokenString() == sas
+    }
+
+    def "file client get sas token"() {
+        setup:
+        def permissions = new ShareSasPermission()
+            .setReadPermission(true)
+        def sasValues = generateValues(permissions)
+        def sas = primaryFileClient.generateSas(sasValues)
+        def client = getFileClient(sas, primaryFileClient.getFilePath(), generatePathName())
+
+        expect:
+        client.getSasTokenString() == sas
+    }
+
+    ShareServiceSasSignatureValues generateValues(ShareSasPermission permission) {
+        return new ShareServiceSasSignatureValues(namer.getUtcNow().plusDays(1), permission)
+            .setStartTime(namer.getUtcNow().minusDays(1))
+            .setProtocol(SasProtocol.HTTPS_HTTP)
+            .setCacheControl("cache")
+            .setContentDisposition("disposition")
+            .setContentEncoding("encoding")
+            .setContentLanguage("language")
+            .setContentType("type")
+    }
 }

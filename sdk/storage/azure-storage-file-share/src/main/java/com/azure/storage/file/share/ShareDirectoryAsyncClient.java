@@ -144,6 +144,15 @@ public class ShareDirectoryAsyncClient {
     }
 
     /**
+     * Gets the sas token string being used to authenticate this client
+     *
+     * @return The sas token string
+     */
+    public String getSasTokenString() {
+        return SasImplUtils.extractSasTokenFromPolicy(this.getHttpPipeline());
+    }
+
+    /**
      * Constructs a ShareFileAsyncClient that interacts with the specified file.
      *
      * <p>If the file doesn't exist in this directory {@link ShareFileAsyncClient#create(long)} create} in the client

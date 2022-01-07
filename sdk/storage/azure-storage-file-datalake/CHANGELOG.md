@@ -3,6 +3,7 @@
 ## 12.8.0-beta.3 (Unreleased)
 
 ### Features Added
+- Added support for getting the sas token being used for authentication on a client.
 
 ### Breaking Changes
 

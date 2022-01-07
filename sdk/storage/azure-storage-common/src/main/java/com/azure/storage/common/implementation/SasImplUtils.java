@@ -4,6 +4,7 @@
 package com.azure.storage.common.implementation;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.AzureSasCredentialPolicy;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
@@ -30,6 +31,21 @@ public class SasImplUtils {
             if (pipeline.getPolicy(i) instanceof StorageSharedKeyCredentialPolicy) {
                 StorageSharedKeyCredentialPolicy policy = (StorageSharedKeyCredentialPolicy) pipeline.getPolicy(i);
                 return policy.sharedKeyCredential();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Extracts the {@link StorageSharedKeyCredential} from a {@link HttpPipeline}
+     * @param pipeline {@link HttpPipeline}
+     * @return a {@link StorageSharedKeyCredential}
+     */
+    public static String extractSasTokenFromPolicy(HttpPipeline pipeline) {
+        for (int i = 0; i < pipeline.getPolicyCount(); i++) {
+            if (pipeline.getPolicy(i) instanceof AzureSasCredentialPolicy) {
+                AzureSasCredentialPolicy policy = (AzureSasCredentialPolicy) pipeline.getPolicy(i);
+                return policy.getSasSignature();
             }
         }
         return null;

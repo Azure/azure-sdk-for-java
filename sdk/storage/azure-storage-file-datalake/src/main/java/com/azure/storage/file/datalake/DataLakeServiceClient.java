@@ -100,6 +100,15 @@ public class DataLakeServiceClient {
     }
 
     /**
+     * Gets the sas token string being used to authenticate this client
+     *
+     * @return The sas token string
+     */
+    public String getSasTokenString() {
+        return this.dataLakeServiceAsyncClient.getSasTokenString();
+    }
+
+    /**
      * Creates a new file system within a storage account. If a file system with the same name already exists, the
      * operation fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.

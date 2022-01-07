@@ -315,7 +315,7 @@ public final class BlobContainerAsyncClient {
      * @return The sas token string
      */
     public String getSasTokenString() {
-
+        return SasImplUtils.extractSasTokenFromPolicy(this.getHttpPipeline());
     }
 
     /**

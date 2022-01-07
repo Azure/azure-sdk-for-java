@@ -79,6 +79,15 @@ public final class ShareServiceClient {
     }
 
     /**
+     * Gets the sas token string being used to authenticate this client
+     *
+     * @return The sas token string
+     */
+    public String getSasTokenString() {
+        return shareServiceAsyncClient.getSasTokenString();
+    }
+
+    /**
      * Constructs a ShareClient that interacts with the specified share.
      *
      * <p>If the share doesn't exist in the storage account {@link ShareClient#create() create} in the

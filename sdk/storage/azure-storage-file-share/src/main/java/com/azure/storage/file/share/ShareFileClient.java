@@ -115,6 +115,15 @@ public class ShareFileClient {
     }
 
     /**
+     * Gets the sas token string being used to authenticate this client
+     *
+     * @return The sas token string
+     */
+    public String getSasTokenString() {
+        return shareFileAsyncClient.getSasTokenString();
+    }
+
+    /**
      * Opens a file input stream to download the file.
      *
      * @return An <code>InputStream</code> object that represents the stream to use for reading from the file.

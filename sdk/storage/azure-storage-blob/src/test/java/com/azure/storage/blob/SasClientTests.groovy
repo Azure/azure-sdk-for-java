@@ -1176,11 +1176,8 @@ class SasClientTests extends APISpec {
             .setBlobAccess(true)
         def resourceType = new AccountSasResourceType()
             .setContainer(true)
-            .setService(true)
-            .setObject(true)
         def permissions = new AccountSasPermission()
             .setReadPermission(true)
-            .setCreatePermission(false)
         def expiryTime = namer.getUtcNow().plusDays(1)
 
         when:
@@ -1196,15 +1193,8 @@ class SasClientTests extends APISpec {
         setup:
         def permissions = new BlobContainerSasPermission()
             .setReadPermission(true)
-            .setWritePermission(true)
-            .setCreatePermission(true)
-            .setDeletePermission(true)
-            .setAddPermission(true)
-            .setListPermission(true)
-            .setDeleteVersionPermission(true)
-            .setTagsPermission(true)
-
         def expiryTime = namer.getUtcNow().plusDays(1)
+
         def sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions)
         def sas = cc.generateSas(sasValues)
         def client = getContainerClient(sas, cc.getBlobContainerUrl())
@@ -1216,13 +1206,8 @@ class SasClientTests extends APISpec {
     def "blob client get sas token"() {
         setup:
         def snapshotBlob = new SpecializedBlobClientBuilder().blobClient(sasClient.createSnapshot()).buildBlockBlobClient()
-        def snapshotId = snapshotBlob.getSnapshotId()
         def permissions = new BlobSasPermission()
             .setReadPermission(true)
-            .setWritePermission(true)
-            .setCreatePermission(true)
-            .setDeletePermission(true)
-            .setAddPermission(true)
         def sasValues = generateValues(permissions)
         def sas = snapshotBlob.generateSas(sasValues)
         def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName)

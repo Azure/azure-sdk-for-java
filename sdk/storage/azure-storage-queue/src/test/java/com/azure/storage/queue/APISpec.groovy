@@ -53,6 +53,10 @@ class APISpec extends StorageSpec {
             .queueName(queueName)
     }
 
+    QueueServiceClient getServiceClient(String sasToken, String endpoint) {
+        return getServiceClientBuilder(null, endpoint, null).sasToken(sasToken).buildClient()
+    }
+
     QueueServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
         HttpPipelinePolicy... policies) {
         QueueServiceClientBuilder builder = new QueueServiceClientBuilder()
@@ -70,6 +74,13 @@ class APISpec extends StorageSpec {
         }
 
         return builder
+    }
+
+    QueueClient getQueueClient(String sasToken, String endpoint, String queueName) {
+        QueueClientBuilder builder = instrument(getQueueClientBuilder(endpoint)
+            .queueName(queueName))
+
+        return builder.sasToken(sasToken).buildClient()
     }
 
     QueueClientBuilder getQueueClientBuilder(String endpoint) {

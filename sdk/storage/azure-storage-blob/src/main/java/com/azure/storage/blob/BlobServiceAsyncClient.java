@@ -321,7 +321,7 @@ public final class BlobServiceAsyncClient {
      * @return The sas token string
      */
     public String getSasTokenString() {
-
+        return SasImplUtils.extractSasTokenFromPolicy(this.getHttpPipeline());
     }
 
     /**

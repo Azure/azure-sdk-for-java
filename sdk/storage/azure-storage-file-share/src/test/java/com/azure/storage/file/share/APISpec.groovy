@@ -114,6 +114,10 @@ class APISpec extends StorageSpec {
         return getServiceClientBuilder(credential, endpoint, policies).buildClient()
     }
 
+    ShareServiceClient getServiceClient(String sasToken, String endpoint) {
+        return getServiceClientBuilder(null, endpoint, null).sasToken(sasToken).buildClient()
+    }
+
     def fileServiceBuilderHelper() {
         ShareServiceClientBuilder shareServiceClientBuilder = instrument(new ShareServiceClientBuilder())
         return shareServiceClientBuilder
@@ -136,6 +140,10 @@ class APISpec extends StorageSpec {
         }
 
         return builder
+    }
+
+    ShareClient getShareClient(String sasToken, String endpoint) {
+        getShareClientBuilder(endpoint).sasToken(sasToken).buildClient()
     }
 
     ShareClientBuilder getShareClientBuilder(String endpoint) {
@@ -182,6 +190,14 @@ class APISpec extends StorageSpec {
         return builder.buildDirectoryClient()
     }
 
+    ShareDirectoryClient getDirectoryClient(String sasToken, String endpoint, String pathName) {
+        ShareFileClientBuilder builder = instrument(new ShareFileClientBuilder()
+            .endpoint(endpoint)
+            .resourcePath(pathName))
+
+        return builder.sasToken(sasToken).buildDirectoryClient()
+    }
+
     def fileBuilderHelper(final String shareName, final String filePath) {
         ShareFileClientBuilder builder = instrument(new ShareFileClientBuilder())
         return builder
@@ -205,6 +221,14 @@ class APISpec extends StorageSpec {
         }
 
         return builder.buildFileClient()
+    }
+
+    ShareFileClient getFileClient(String sasToken, String endpoint, String pathName) {
+        ShareFileClientBuilder builder = instrument(new ShareFileClientBuilder()
+            .endpoint(endpoint)
+            .resourcePath(pathName))
+
+        return builder.sasToken(sasToken).buildFileClient()
     }
 
     InputStream getInputStream(byte[] data) {

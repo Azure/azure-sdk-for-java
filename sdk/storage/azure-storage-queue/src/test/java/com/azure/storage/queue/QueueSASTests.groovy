@@ -455,4 +455,37 @@ class QueueSASTests extends APISpec {
         then:
         noExceptionThrown()
     }
+
+    def "service client get sas string"() {
+        setup:
+        def service = new AccountSasService()
+            .setBlobAccess(true)
+        def resourceType = new AccountSasResourceType()
+            .setContainer(true)
+        def permissions = new AccountSasPermission()
+            .setReadPermission(true)
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        when:
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+        def sas = primaryQueueServiceClient.generateAccountSas(sasValues)
+        def sc = getServiceClient(sas, primaryQueueServiceClient.getQueueServiceUrl())
+
+        then:
+        sc.getSasTokenString() == sas
+    }
+
+    def "queue client get sas string"() {
+        setup:
+        def permissions = new QueueSasPermission()
+            .setReadPermission(true)
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        def sasValues = new QueueServiceSasSignatureValues(expiryTime, permissions)
+        def sas = queueClient.generateSas(sasValues)
+        def client = getQueueClient(sas, queueClient.getQueueUrl(), queueClient.getQueueName())
+
+        expect:
+        client.getSasTokenString() == sas
+    }
 }
