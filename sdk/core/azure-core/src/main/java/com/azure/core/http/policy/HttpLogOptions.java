@@ -4,6 +4,7 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -56,6 +57,45 @@ public class HttpLogOptions {
         "Transfer-Encoding",
         "User-Agent"
     );
+
+    public static HttpLogOptions fromConfiguration(Configuration configuration) {
+        if (configuration == Configuration.NONE) {
+            return new HttpLogOptions();
+        }
+
+        Configuration loggingConfiguration = (configuration == null)
+            ? Configuration.getGlobalConfiguration()
+            : configuration;
+
+        return attemptToLoadHttpLogging(loggingConfiguration);
+    }
+
+    private static HttpLogOptions attemptToLoadHttpLogging(Configuration configuration) {
+        HttpLogOptions httpLogOptions = new HttpLogOptions();
+
+        // Only use system proxies when the prerequisite property is 'true'.
+        String applicationId = configuration.get("http.logging.application-id");
+        if (CoreUtils.isNullOrEmpty(applicationId)) {
+            httpLogOptions.setApplicationId(applicationId);
+        }
+
+        httpLogOptions.setLogLevel(HttpLogDetailLevel.fromConfiguration(configuration));
+
+        boolean prettyPrint = configuration.get("http.logging.pretty-print-body", false);
+        httpLogOptions.setPrettyPrintBody(prettyPrint);
+
+        String headers = configuration.get("http.logging.allowed-header-names");
+        if (!CoreUtils.isNullOrEmpty(headers)) {
+            httpLogOptions.setAllowedHeaderNames(new HashSet<>(Arrays.asList(headers.split(","))));
+        }
+
+        String queryParams = configuration.get("http.logging.allowed-query-param-names");
+        if (!CoreUtils.isNullOrEmpty(queryParams)) {
+            httpLogOptions.setAllowedQueryParamNames(new HashSet<>(Arrays.asList(queryParams.split(","))));
+        }
+
+        return httpLogOptions;
+    }
 
     /**
      * Creates a new instance that does not log any information about HTTP requests or responses.

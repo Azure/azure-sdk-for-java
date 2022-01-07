@@ -7,7 +7,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * General configuration options for clients.
@@ -23,6 +25,40 @@ public class ClientOptions {
     private Iterable<Header> headers;
 
     private String applicationId;
+
+    public static ClientOptions fromConfiguration(Configuration configuration) {
+        if (configuration == Configuration.NONE) {
+            return new ClientOptions();
+        }
+
+        Configuration clientConfiguration = (configuration == null)
+            ? Configuration.getGlobalConfiguration()
+            : configuration;
+
+        ClientOptions options = new ClientOptions();
+        loadClientOptions("client", options, clientConfiguration);
+
+        return options;
+    }
+
+    static void loadClientOptions(String prefix, ClientOptions clientOptions, Configuration configuration) {
+
+        // Only use system proxies when the prerequisite property is 'true'.
+        String applicationId = configuration.get(prefix + ".application-id");
+        if (!CoreUtils.isNullOrEmpty(applicationId)) {
+            clientOptions.setApplicationId(applicationId);
+        }
+
+        String headersStr = configuration.get(prefix + ".headers");
+        if (!CoreUtils.isNullOrEmpty(headersStr)) {
+            List<Header> headers = new ArrayList<>();
+            for (String header : headersStr.split(";")) {
+                String[] kvp = header.split("=");
+                headers.add(new Header(kvp[0], kvp[1]));
+            }
+            clientOptions.setHeaders(headers);
+        }
+    }
 
     /**
      * Gets the application ID.

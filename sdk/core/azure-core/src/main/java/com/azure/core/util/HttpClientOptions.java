@@ -56,6 +56,45 @@ public final class HttpClientOptions extends ClientOptions {
     private Integer maximumConnectionPoolSize;
     private Duration connectionIdleTimeout;
 
+    private void loadConfiguration(Configuration configuration) {
+
+        // TODO option inheritance is not great, needs more work
+        loadClientOptions("client", this, configuration);
+        loadClientOptions("http-client", this, configuration);
+
+        if (connectTimeout == null) {
+            setConnectTimeout(getDefaultTimeoutFromEnvironment(configuration, "http-client.connect-timeout", DEFAULT_CONNECT_TIMEOUT, logger));
+        }
+
+        if (writeTimeout == null) {
+            setWriteTimeout(getDefaultTimeoutFromEnvironment(configuration, "http-client.write-timeout", DEFAULT_WRITE_TIMEOUT, logger));
+        }
+
+        if (responseTimeout == null) {
+            setResponseTimeout(getDefaultTimeoutFromEnvironment(configuration, "http-client.response-timeout", DEFAULT_RESPONSE_TIMEOUT, logger));
+        }
+
+        if (readTimeout == null) {
+            setReadTimeout(getDefaultTimeoutFromEnvironment(configuration, "http-client.read-timeout", DEFAULT_READ_TIMEOUT, logger));
+        }
+
+        if (connectionIdleTimeout == null) {
+            setConnectionIdleTimeout(getDefaultTimeoutFromEnvironment(configuration, "http-client.connection-idle-timeout", DEFAULT_CONNECTION_IDLE_TIMEOUT, logger));
+        }
+
+        if (maximumConnectionPoolSize == null) {
+            Integer defaultPoolSize = null;
+            Integer maxPoolSize = configuration.get("http-client.maximum-connection-pool-size", defaultPoolSize);
+            if (maxPoolSize != null) {
+                setMaximumConnectionPoolSize(maxPoolSize);
+            }
+        }
+
+        if (proxyOptions == null) {
+            setProxyOptions(ProxyOptions.fromConfiguration(configuration));
+        }
+    }
+
     @Override
     public HttpClientOptions setApplicationId(String applicationId) {
         super.setApplicationId(applicationId);
@@ -98,6 +137,7 @@ public final class HttpClientOptions extends ClientOptions {
      */
     public HttpClientOptions setConfiguration(Configuration configuration) {
         this.configuration = configuration;
+        loadConfiguration(this.configuration);
         return this;
     }
 

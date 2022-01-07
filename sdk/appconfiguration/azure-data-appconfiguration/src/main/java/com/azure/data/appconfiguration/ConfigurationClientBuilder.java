@@ -25,7 +25,9 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationProperty;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy;
@@ -135,7 +137,6 @@ public final class ConfigurationClientBuilder {
      * ConfigurationAsyncClient ConfigurationAsyncClients}.
      */
     public ConfigurationClientBuilder() {
-        httpLogOptions = new HttpLogOptions();
     }
 
     /**
@@ -155,6 +156,18 @@ public final class ConfigurationClientBuilder {
         return new ConfigurationClient(buildAsyncClient());
     }
 
+    private ConfigurationServiceVersion getServiceVersion(Configuration configuration) {
+        if (version != null) {
+            return version;
+        }
+
+        String versionStr = configuration.get(new ConfigurationProperty("appconfiguration", "service-version", false));
+        if (!CoreUtils.isNullOrEmpty(versionStr)) {
+            return ConfigurationServiceVersion.valueOf(versionStr);
+        }
+
+        return ConfigurationServiceVersion.getLatest();
+    }
     /**
      * Creates a {@link ConfigurationAsyncClient} based on options set in the Builder. Every time {@code
      * buildAsyncClient()} is called a new instance of {@link ConfigurationAsyncClient} is created.
@@ -176,9 +189,7 @@ public final class ConfigurationClientBuilder {
             : configuration;
 
         // Service version
-        ConfigurationServiceVersion serviceVersion = (version != null)
-            ? version
-            : ConfigurationServiceVersion.getLatest();
+        ConfigurationServiceVersion serviceVersion = getServiceVersion(buildConfiguration);
 
         // Endpoint
         String buildEndpoint = endpoint;
@@ -238,6 +249,8 @@ public final class ConfigurationClientBuilder {
         // customized pipeline
         HttpPipeline pipeline = new HttpPipelineBuilder()
                                     .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                                    // TODO
+                                    .clientOptions(clientOptions)
                                     .httpClient(httpClient)
                                     .build();
 
@@ -402,6 +415,23 @@ public final class ConfigurationClientBuilder {
      */
     public ConfigurationClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
+
+        // TODO, what if there are http options in config?
+        // TODO pass client name
+        clientOptions = new HttpClientOptions().setConfiguration(this.configuration);
+
+        // TODO pass client name
+        httpLogOptions = HttpLogOptions.fromConfiguration(this.configuration);
+
+        String configEndpoint = this.configuration.get(new ConfigurationProperty("appconfiguration", "endpoint", true));
+        if (configEndpoint != null) {
+            this.endpoint = configEndpoint;
+        }
+
+        String connectionString =  this.configuration.get(new ConfigurationProperty("appconfiguration", "connection-string", true));
+        if (connectionString != null) {
+            connectionString(connectionString);
+        }
         return this;
     }
 
