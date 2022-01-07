@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.test;
+package com.azure.spring.cloud.config.app;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,33 +69,12 @@ public class AppRunner implements AutoCloseable {
         }
     }
 
-    public <T> T getBean(Class<T> type) {
-        return getApp().getBean(type);
-    }
-
     public ApplicationContext parent() {
         return getApp().getParent();
     }
 
-    public <T> Map<String, T> getParentBeans(Class<T> type) {
-        return parent().getBeansOfType(type);
-    }
-
     public String getProperty(String key) {
         return getApp().getEnvironment().getProperty(key);
-    }
-
-    public int port() {
-        return getApp().getEnvironment().getProperty("server.port", Integer.class, -1);
-    }
-
-    public String root() {
-        final String protocol = tlsEnabled() ? "https" : "http";
-        return String.format("%s://localhost:%d/", protocol, port());
-    }
-
-    private boolean tlsEnabled() {
-        return getApp().getEnvironment().getProperty("server.ssl.enabled", Boolean.class, false);
     }
 
     @Override
