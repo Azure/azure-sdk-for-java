@@ -317,7 +317,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *     plan/publisher and plan/name, identity and identity/principalId.
      * @param expand Comma-separated list of additional properties to be included in the response. Valid values include
      *     `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
-     * @param top The maximum number of results to return. If null is passed, returns all resources.
+     * @param top The number of results to return. If null is passed, returns all resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -388,7 +388,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *     plan/publisher and plan/name, identity and identity/principalId.
      * @param expand Comma-separated list of additional properties to be included in the response. Valid values include
      *     `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
-     * @param top The maximum number of results to return. If null is passed, returns all resources.
+     * @param top The number of results to return. If null is passed, returns all resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -457,7 +457,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *     plan/publisher and plan/name, identity and identity/principalId.
      * @param expand Comma-separated list of additional properties to be included in the response. Valid values include
      *     `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
-     * @param top The maximum number of results to return. If null is passed, returns all resources.
+     * @param top The number of results to return. If null is passed, returns all resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -509,7 +509,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *     plan/publisher and plan/name, identity and identity/principalId.
      * @param expand Comma-separated list of additional properties to be included in the response. Valid values include
      *     `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
-     * @param top The maximum number of results to return. If null is passed, returns all resources.
+     * @param top The number of results to return. If null is passed, returns all resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -560,7 +560,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *     plan/publisher and plan/name, identity and identity/principalId.
      * @param expand Comma-separated list of additional properties to be included in the response. Valid values include
      *     `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
-     * @param top The maximum number of results to return. If null is passed, returns all resources.
+     * @param top The number of results to return. If null is passed, returns all resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -689,7 +689,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginMoveResourcesAsync(
         String sourceResourceGroupName, ResourcesMoveInfo parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = moveResourcesWithResponseAsync(sourceResourceGroupName, parameters);
@@ -712,7 +712,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginMoveResourcesAsync(
         String sourceResourceGroupName, ResourcesMoveInfo parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -735,7 +735,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginMoveResources(
         String sourceResourceGroupName, ResourcesMoveInfo parameters) {
         return beginMoveResourcesAsync(sourceResourceGroupName, parameters).getSyncPoller();
@@ -754,7 +754,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginMoveResources(
         String sourceResourceGroupName, ResourcesMoveInfo parameters, Context context) {
         return beginMoveResourcesAsync(sourceResourceGroupName, parameters, context).getSyncPoller();
@@ -955,7 +955,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginValidateMoveResourcesAsync(
         String sourceResourceGroupName, ResourcesMoveInfo parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -981,7 +981,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginValidateMoveResourcesAsync(
         String sourceResourceGroupName, ResourcesMoveInfo parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -1006,7 +1006,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginValidateMoveResources(
         String sourceResourceGroupName, ResourcesMoveInfo parameters) {
         return beginValidateMoveResourcesAsync(sourceResourceGroupName, parameters).getSyncPoller();
@@ -1027,7 +1027,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginValidateMoveResources(
         String sourceResourceGroupName, ResourcesMoveInfo parameters, Context context) {
         return beginValidateMoveResourcesAsync(sourceResourceGroupName, parameters, context).getSyncPoller();
@@ -1132,7 +1132,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *     plan/publisher and plan/name, identity and identity/principalId.
      * @param expand Comma-separated list of additional properties to be included in the response. Valid values include
      *     `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
-     * @param top The maximum number of results to return. If null is passed, returns all resources.
+     * @param top The number of results to return. If null is passed, returns all resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1197,7 +1197,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *     plan/publisher and plan/name, identity and identity/principalId.
      * @param expand Comma-separated list of additional properties to be included in the response. Valid values include
      *     `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
-     * @param top The maximum number of results to return. If null is passed, returns all resources.
+     * @param top The number of results to return. If null is passed, returns all resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1260,7 +1260,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *     plan/publisher and plan/name, identity and identity/principalId.
      * @param expand Comma-separated list of additional properties to be included in the response. Valid values include
      *     `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
-     * @param top The maximum number of results to return. If null is passed, returns all resources.
+     * @param top The number of results to return. If null is passed, returns all resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1306,7 +1306,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *     plan/publisher and plan/name, identity and identity/principalId.
      * @param expand Comma-separated list of additional properties to be included in the response. Valid values include
      *     `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
-     * @param top The maximum number of results to return. If null is passed, returns all resources.
+     * @param top The number of results to return. If null is passed, returns all resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1354,7 +1354,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *     plan/publisher and plan/name, identity and identity/principalId.
      * @param expand Comma-separated list of additional properties to be included in the response. Valid values include
      *     `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
-     * @param top The maximum number of results to return. If null is passed, returns all resources.
+     * @param top The number of results to return. If null is passed, returns all resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1803,7 +1803,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
@@ -1841,7 +1841,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
@@ -1880,7 +1880,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName,
         String resourceProviderNamespace,
@@ -1914,7 +1914,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName,
         String resourceProviderNamespace,
@@ -2254,7 +2254,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
@@ -2298,7 +2298,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
@@ -2340,7 +2340,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GenericResourceInner>, GenericResourceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String resourceProviderNamespace,
@@ -2376,7 +2376,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GenericResourceInner>, GenericResourceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String resourceProviderNamespace,
@@ -2728,7 +2728,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginUpdateAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
@@ -2772,7 +2772,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginUpdateAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
@@ -2814,7 +2814,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GenericResourceInner>, GenericResourceInner> beginUpdate(
         String resourceGroupName,
         String resourceProviderNamespace,
@@ -2850,7 +2850,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GenericResourceInner>, GenericResourceInner> beginUpdate(
         String resourceGroupName,
         String resourceProviderNamespace,
@@ -3492,7 +3492,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteByIdAsync(String resourceId, String apiVersion) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteByIdWithResponseAsync(resourceId, apiVersion);
         return this
@@ -3514,7 +3514,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteByIdAsync(
         String resourceId, String apiVersion, Context context) {
         context = this.client.mergeContext(context);
@@ -3536,7 +3536,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteById(String resourceId, String apiVersion) {
         return beginDeleteByIdAsync(resourceId, apiVersion).getSyncPoller();
     }
@@ -3554,7 +3554,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteById(String resourceId, String apiVersion, Context context) {
         return beginDeleteByIdAsync(resourceId, apiVersion, context).getSyncPoller();
     }
@@ -3725,7 +3725,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginCreateOrUpdateByIdAsync(
         String resourceId, String apiVersion, GenericResourceInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateByIdWithResponseAsync(resourceId, apiVersion, parameters);
@@ -3753,7 +3753,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginCreateOrUpdateByIdAsync(
         String resourceId, String apiVersion, GenericResourceInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -3778,7 +3778,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GenericResourceInner>, GenericResourceInner> beginCreateOrUpdateById(
         String resourceId, String apiVersion, GenericResourceInner parameters) {
         return beginCreateOrUpdateByIdAsync(resourceId, apiVersion, parameters).getSyncPoller();
@@ -3798,7 +3798,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GenericResourceInner>, GenericResourceInner> beginCreateOrUpdateById(
         String resourceId, String apiVersion, GenericResourceInner parameters, Context context) {
         return beginCreateOrUpdateByIdAsync(resourceId, apiVersion, parameters, context).getSyncPoller();
@@ -3979,7 +3979,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginUpdateByIdAsync(
         String resourceId, String apiVersion, GenericResourceInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateByIdWithResponseAsync(resourceId, apiVersion, parameters);
@@ -4007,7 +4007,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginUpdateByIdAsync(
         String resourceId, String apiVersion, GenericResourceInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -4032,7 +4032,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GenericResourceInner>, GenericResourceInner> beginUpdateById(
         String resourceId, String apiVersion, GenericResourceInner parameters) {
         return beginUpdateByIdAsync(resourceId, apiVersion, parameters).getSyncPoller();
@@ -4052,7 +4052,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GenericResourceInner>, GenericResourceInner> beginUpdateById(
         String resourceId, String apiVersion, GenericResourceInner parameters, Context context) {
         return beginUpdateByIdAsync(resourceId, apiVersion, parameters, context).getSyncPoller();
