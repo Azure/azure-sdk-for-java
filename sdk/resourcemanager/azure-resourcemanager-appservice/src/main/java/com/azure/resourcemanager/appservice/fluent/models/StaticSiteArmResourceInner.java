@@ -7,6 +7,7 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.models.EnterpriseGradeCdnStatus;
 import com.azure.resourcemanager.appservice.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.appservice.models.ResponseMessageEnvelopeRemotePrivateEndpointConnection;
 import com.azure.resourcemanager.appservice.models.SkuDescription;
@@ -360,6 +361,46 @@ public final class StaticSiteArmResourceInner extends Resource {
      */
     public String provider() {
         return this.innerProperties() == null ? null : this.innerProperties().provider();
+    }
+
+    /**
+     * Set the provider property: The provider that submitted the last deployment to the primary environment of the
+     * static site.
+     *
+     * @param provider the provider value to set.
+     * @return the StaticSiteArmResourceInner object itself.
+     */
+    public StaticSiteArmResourceInner withProvider(String provider) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StaticSite();
+        }
+        this.innerProperties().withProvider(provider);
+        return this;
+    }
+
+    /**
+     * Get the enterpriseGradeCdnStatus property: State indicating the status of the enterprise grade CDN serving
+     * traffic to the static web app.
+     *
+     * @return the enterpriseGradeCdnStatus value.
+     */
+    public EnterpriseGradeCdnStatus enterpriseGradeCdnStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().enterpriseGradeCdnStatus();
+    }
+
+    /**
+     * Set the enterpriseGradeCdnStatus property: State indicating the status of the enterprise grade CDN serving
+     * traffic to the static web app.
+     *
+     * @param enterpriseGradeCdnStatus the enterpriseGradeCdnStatus value to set.
+     * @return the StaticSiteArmResourceInner object itself.
+     */
+    public StaticSiteArmResourceInner withEnterpriseGradeCdnStatus(EnterpriseGradeCdnStatus enterpriseGradeCdnStatus) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StaticSite();
+        }
+        this.innerProperties().withEnterpriseGradeCdnStatus(enterpriseGradeCdnStatus);
+        return this;
     }
 
     /**
