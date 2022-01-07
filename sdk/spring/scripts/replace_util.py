@@ -8,8 +8,7 @@ import time
 
 import in_place
 
-from log import log, Log
-from artifact_id_pair import ArtifactIdPair
+from log import log
 from version_update_item import VersionUpdateItem
 
 X_VERSION_UPDATE = 'x-version-update'
@@ -95,14 +94,7 @@ def get_args():
 
 
 def init_log(args):
-    log_dict = {
-        'debug': Log.DEBUG,
-        'info': Log.INFO,
-        'warn': Log.WARN,
-        'error': Log.ERROR,
-        'none': Log.NONE
-    }
-    log.set_log_level(log_dict[args.log])
+    log.set_log_level(args.log)
     color_dict = {
         'true': True,
         'false': False
