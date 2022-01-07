@@ -335,14 +335,14 @@ public final class RegistryArtifact {
      * </pre>
      * <!-- end com.azure.containers.containerregistry.RegistryArtifact.listTagPropertiesWithOptionsNoContext -->
      *
-     * @param orderBy The order in which the tags should be returned by the service.
+     * @param order The order in which the tags should be returned by the service.
      * @return {@link PagedIterable} of the artifacts for the given repository in the order specified by the options.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ArtifactTagProperties> listTagProperties(ArtifactTagOrder orderBy) {
-        return this.listTagProperties(orderBy, Context.NONE);
+    public PagedIterable<ArtifactTagProperties> listTagProperties(ArtifactTagOrder order) {
+        return this.listTagProperties(order, Context.NONE);
     }
 
     /**
@@ -369,15 +369,15 @@ public final class RegistryArtifact {
      * </pre>
      * <!-- end com.azure.containers.containerregistry.RegistryArtifact.listTagPropertiesWithOptions -->
      *
-     * @param orderBy The order in which the tags should be returned by the service.
+     * @param order The order in which the tags should be returned by the service.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link PagedIterable} of the artifacts for the given repository in the order specified by the options.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ArtifactTagProperties> listTagProperties(ArtifactTagOrder orderBy, Context context) {
-        return new PagedIterable<ArtifactTagProperties>(asyncClient.listTagProperties(orderBy, context));
+    public PagedIterable<ArtifactTagProperties> listTagProperties(ArtifactTagOrder order, Context context) {
+        return new PagedIterable<ArtifactTagProperties>(asyncClient.listTagProperties(order, context));
     }
 
     /**

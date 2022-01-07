@@ -236,15 +236,15 @@ public final class ContainerRepository {
      * </pre>
      * <!-- end com.azure.containers.containerregistry.ContainerRepository.listManifestPropertiesWithOptionsNoContext -->
      *
-     * @param orderBy the order in which the artifacts are returned by the service.
+     * @param order the order in which the artifacts are returned by the service.
      * @return {@link PagedIterable} of the artifacts for the given repository in the order specified by the options.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the
      * namespace.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ArtifactManifestProperties> listManifestProperties(ArtifactManifestOrder orderBy) {
-        return this.listManifestProperties(orderBy, Context.NONE);
+    public PagedIterable<ArtifactManifestProperties> listManifestProperties(ArtifactManifestOrder order) {
+        return this.listManifestProperties(order, Context.NONE);
     }
 
     /**
@@ -269,7 +269,7 @@ public final class ContainerRepository {
      * </pre>
      * <!-- end com.azure.containers.containerregistry.ContainerRepository.listManifestPropertiesWithOptions -->
      *
-     * @param orderBy the order in which the artifacts are returned by the service.
+     * @param order the order in which the artifacts are returned by the service.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link PagedIterable} of the artifacts for the given repository in the order specified by the options.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the
@@ -277,8 +277,8 @@ public final class ContainerRepository {
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ArtifactManifestProperties> listManifestProperties(ArtifactManifestOrder orderBy, Context context) {
-        return new PagedIterable<>(this.asyncClient.listManifestProperties(orderBy, context));
+    public PagedIterable<ArtifactManifestProperties> listManifestProperties(ArtifactManifestOrder order, Context context) {
+        return new PagedIterable<>(this.asyncClient.listManifestProperties(order, context));
     }
 
     /**

@@ -245,32 +245,32 @@ public final class ContainerRepositoryAsync {
      * </pre>
      * <!-- end com.azure.containers.containerregistry.ContainerRepositoryAsync.listManifestPropertiesWithOptions -->
      *
-     * @param orderBy The order in which the artifacts are returned by the service.
+     * @param order The order in which the artifacts are returned by the service.
      * @return {@link PagedFlux} of the artifacts for the given repository in the order specified by the options.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ArtifactManifestProperties> listManifestProperties(ArtifactManifestOrder orderBy) {
+    public PagedFlux<ArtifactManifestProperties> listManifestProperties(ArtifactManifestOrder order) {
         return new PagedFlux<>(
-            (pageSize) -> withContext(context -> listManifestPropertiesSinglePageAsync(pageSize, orderBy, context)),
+            (pageSize) -> withContext(context -> listManifestPropertiesSinglePageAsync(pageSize, order, context)),
             (token, pageSize) -> withContext(context -> listManifestPropertiesNextSinglePageAsync(token, context)));
     }
 
-    PagedFlux<ArtifactManifestProperties> listManifestProperties(ArtifactManifestOrder orderBy, Context context) {
+    PagedFlux<ArtifactManifestProperties> listManifestProperties(ArtifactManifestOrder order, Context context) {
         return new PagedFlux<>(
-            (pageSize) -> listManifestPropertiesSinglePageAsync(pageSize, orderBy, context),
+            (pageSize) -> listManifestPropertiesSinglePageAsync(pageSize, order, context),
             (token, pageSize) -> listManifestPropertiesNextSinglePageAsync(token, context));
     }
 
-    Mono<PagedResponse<ArtifactManifestProperties>> listManifestPropertiesSinglePageAsync(Integer pageSize, ArtifactManifestOrder orderBy, Context context) {
+    Mono<PagedResponse<ArtifactManifestProperties>> listManifestPropertiesSinglePageAsync(Integer pageSize, ArtifactManifestOrder order, Context context) {
         try {
             if (pageSize != null && pageSize < 0) {
                 return monoError(logger, new IllegalArgumentException("'pageSize' cannot be negative."));
             }
 
-            final String orderByString = orderBy == ArtifactManifestOrder.NONE ? null : orderBy.toString();
-            return this.serviceClient.getManifestsSinglePageAsync(repositoryName, null, pageSize, orderByString, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
+            final String orderString = order == ArtifactManifestOrder.NONE ? null : order.toString();
+            return this.serviceClient.getManifestsSinglePageAsync(repositoryName, null, pageSize, orderString, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
                 .map(res -> Utils.getPagedResponseWithContinuationToken(res, this::mapManifestsProperties))
                 .onErrorMap(Utils::mapException);
         } catch (RuntimeException e) {
