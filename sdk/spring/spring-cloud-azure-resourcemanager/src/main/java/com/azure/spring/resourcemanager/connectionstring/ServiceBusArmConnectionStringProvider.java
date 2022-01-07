@@ -6,9 +6,9 @@ package com.azure.spring.resourcemanager.connectionstring;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.servicebus.models.AuthorizationKeys;
 import com.azure.resourcemanager.servicebus.models.AuthorizationRule;
-import com.azure.spring.resourcemanager.implementation.crud.ServiceBusNamespaceCrud;
-import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 import com.azure.spring.core.service.AzureServiceType;
+import com.azure.spring.core.properties.resource.AzureResourceMetadata;
+import com.azure.spring.resourcemanager.implementation.crud.ServiceBusNamespaceCrud;
 
 /**
  * A connection string provider reads Service Bus connection string from Azure Resource Manager.

@@ -3,16 +3,16 @@
 
 package com.azure.spring.cloud.autoconfigure.storage.common;
 
-import com.azure.spring.cloud.autoconfigure.properties.core.AbstractAzureServiceCP;
-import com.azure.spring.cloud.autoconfigure.properties.core.client.HttpClientCP;
-import com.azure.spring.cloud.autoconfigure.properties.core.proxy.HttpProxyCP;
+import com.azure.spring.cloud.autoconfigure.properties.core.AbstractAzureServiceConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.core.client.HttpClientConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.core.proxy.HttpProxyConfigurationProperties;
 import com.azure.spring.service.storage.common.StorageProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
  * Common properties for all Azure Storage services.
  */
-public class AzureStorageProperties extends AbstractAzureServiceCP implements StorageProperties {
+public class AzureStorageProperties extends AbstractAzureServiceConfigurationProperties implements StorageProperties {
 
     protected String endpoint;
 
@@ -25,26 +25,26 @@ public class AzureStorageProperties extends AbstractAzureServiceCP implements St
     protected String accountName;
 
     @NestedConfigurationProperty
-    protected final StorageRetryCP retry = new StorageRetryCP();
+    protected final StorageRetryConfigurationProperties retry = new StorageRetryConfigurationProperties();
 
     @NestedConfigurationProperty
-    protected final HttpClientCP client = new HttpClientCP();
+    protected final HttpClientConfigurationProperties client = new HttpClientConfigurationProperties();
 
     @NestedConfigurationProperty
-    protected final HttpProxyCP proxy = new HttpProxyCP();
+    protected final HttpProxyConfigurationProperties proxy = new HttpProxyConfigurationProperties();
 
     @Override
-    public StorageRetryCP getRetry() {
+    public StorageRetryConfigurationProperties getRetry() {
         return retry;
     }
 
     @Override
-    public HttpClientCP getClient() {
+    public HttpClientConfigurationProperties getClient() {
         return client;
     }
 
     @Override
-    public HttpProxyCP getProxy() {
+    public HttpProxyConfigurationProperties getProxy() {
         return proxy;
     }
 

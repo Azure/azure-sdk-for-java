@@ -8,7 +8,7 @@ import com.azure.spring.core.aware.ProxyAware;
 /**
  * HTTP-based proxy properties for all Azure HTTP SDKs.
  */
-public class HttpProxyCP extends ProxyCP implements ProxyAware.HttpProxy {
+public class HttpProxyConfigurationProperties extends ProxyConfigurationProperties implements ProxyAware.HttpProxy {
 
     /**
      * A list of hosts or CIDR to not use proxy HTTP/HTTPS connections through.

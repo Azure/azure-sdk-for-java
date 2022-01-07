@@ -13,7 +13,7 @@ import java.util.Set;
  * Options related to http logging. For example, if you want to log the http request or response, you could set the
  *  * level to {@link HttpLogDetailLevel#BASIC} or some other levels.
  */
-public class HttpLoggingCP implements HttpLoggingAware.HttpLogging {
+public class HttpLoggingConfigurationProperties implements HttpLoggingAware.HttpLogging {
 
     /**
      * The level of detail to log on HTTP messages.

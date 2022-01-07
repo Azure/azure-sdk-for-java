@@ -27,8 +27,17 @@ public interface EventProcessorClientProperties extends EventHubConsumerProperti
      */
     class LoadBalancing {
 
+        /**
+         * The time interval between load balancing update cycles.
+         */
         private Duration updateInterval;
+        /**
+         * The load balancing strategy for claiming partition ownership.
+         */
         private LoadBalancingStrategy strategy = LoadBalancingStrategy.BALANCED;
+        /**
+         * The time duration after which the ownership of partition expires.
+         */
         private Duration partitionOwnershipExpirationInterval;
 
         public Duration getUpdateInterval() {
@@ -65,7 +74,13 @@ public interface EventProcessorClientProperties extends EventHubConsumerProperti
      */
     class EventBatch {
 
+        /**
+         * The max time duration to wait to receive an event before processing events.
+         */
         private Duration maxWaitTime;
+        /**
+         * The maximum number of events that will be in the batch.
+         */
         private Integer maxSize;
 
         public Duration getMaxWaitTime() {
