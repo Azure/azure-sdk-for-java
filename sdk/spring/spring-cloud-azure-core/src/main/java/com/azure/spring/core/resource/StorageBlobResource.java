@@ -104,6 +104,7 @@ public final class StorageBlobResource extends AzureStorageResource {
     /**
      * Creates and opens an output stream to write data to the block blob. If the blob already exists on the service, it
      * will be overwritten.
+     *
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @throws IOException If a storage service error occurred or blob not found.
      */
@@ -130,11 +131,21 @@ public final class StorageBlobResource extends AzureStorageResource {
         }
     }
 
+    /**
+     * Gets if the blob this client represents exists in the cloud.
+     *
+     * @return true if the blob exists, false if it doesn't
+     */
     @Override
     public boolean exists() {
         return this.blobContainerClient.exists() && blockBlobClient.exists();
     }
 
+    /**
+     * Gets the URL of the blob represented by this client.
+     *
+     * @return the URL.
+     */
     @Override
     public URL getURL() throws IOException {
         return new URL(this.blockBlobClient.getBlobUrl());
