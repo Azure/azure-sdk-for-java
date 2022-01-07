@@ -100,7 +100,11 @@ import java.util.Objects;
 @ServiceClientBuilder(
     serviceClients = {
         ContainerRegistryClient.class,
-        ContainerRegistryAsyncClient.class
+        ContainerRegistryAsyncClient.class,
+        ContainerRepositoryAsync.class,
+        ContainerRepository.class,
+        RegistryArtifactAsync.class,
+        RegistryArtifact.class
     })
 public final class ContainerRegistryClientBuilder {
     private final ClientLogger logger = new ClientLogger(ContainerRegistryClientBuilder.class);
