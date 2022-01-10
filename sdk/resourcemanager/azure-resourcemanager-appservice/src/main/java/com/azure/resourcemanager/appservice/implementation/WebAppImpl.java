@@ -8,6 +8,7 @@ import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.DeployOptions;
 import com.azure.resourcemanager.appservice.models.DeployType;
 import com.azure.resourcemanager.appservice.models.DeploymentSlots;
+import com.azure.resourcemanager.appservice.models.KuduDeploymentResult;
 import com.azure.resourcemanager.appservice.models.OperatingSystem;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.RuntimeStack;
@@ -20,6 +21,7 @@ import com.azure.resourcemanager.appservice.fluent.models.StringDictionaryInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -337,5 +339,26 @@ class WebAppImpl extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.Definitio
         }
         return kuduClient.deployAsync(type, file, length,
             deployOptions.path(), deployOptions.restartSite(), deployOptions.cleanDeployment());
+    }
+
+    @Override
+    public KuduDeploymentResult pushDeploy(DeployType type, File file, DeployOptions deployOptions) {
+        return pushDeployAsync(type, file, deployOptions).block();
+    }
+
+    @Override
+    public Mono<KuduDeploymentResult> pushDeployAsync(DeployType type, File file, DeployOptions deployOptions) {
+        Objects.requireNonNull(type);
+        Objects.requireNonNull(file);
+        if (deployOptions == null) {
+            deployOptions = new DeployOptions();
+        }
+        try {
+            return kuduClient.pushDeployAsync(type, file,
+                deployOptions.path(), deployOptions.restartSite(), deployOptions.cleanDeployment(),
+                deployOptions.trackDeployment());
+        } catch (IOException e) {
+            return Mono.error(e);
+        }
     }
 }
