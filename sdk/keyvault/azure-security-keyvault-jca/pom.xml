@@ -61,6 +61,12 @@
             <version>4.0.0</version> <!-- {x-version-update;org.mockito:mockito-inline;external_dependency} -->
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-core</artifactId>
+            <version>1.24.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+            <scope>test</scope>
+        </dependency>
         <!-- JUnit -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -104,7 +110,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <shadeTestJar>false</shadeTestJar>
+<!--                            <shadeTestJar>false</shadeTestJar>-->
                             <createSourcesJar>true</createSourcesJar>
                             <shadeSourcesContent>true</shadeSourcesContent>
                             <relocations>
