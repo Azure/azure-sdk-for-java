@@ -39,7 +39,7 @@
     <dependency>
       <groupId>io.projectreactor.netty</groupId>
       <artifactId>reactor-netty</artifactId>
-      <version>1.0.13</version> <!-- {x-version-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
+      <version>1.0.14</version> <!-- {x-version-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -84,7 +84,7 @@
               <includes>
                 <include>com.fasterxml.jackson.core:jackson-annotations:[2.13.1]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.13.1]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-                <include>io.projectreactor.netty:reactor-netty:[1.0.13]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
+                <include>io.projectreactor.netty:reactor-netty:[1.0.14]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter:[2.6.1]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
                 <include>org.springframework:spring-context:[5.3.13]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
               </includes>

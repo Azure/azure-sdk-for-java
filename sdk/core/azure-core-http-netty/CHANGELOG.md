@@ -1,14 +1,11 @@
 # Release History
 
-## 1.12.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.11.6 (2022-01-10)
 
 ### Other Changes
+
+- Upgraded Netty from `4.1.70.Final` to `4.1.72.Final`.
+- Upgraded Reactor Netty from `1.0.13` to `1.0.14`.
 
 ## 1.11.5 (2022-01-06)
 
