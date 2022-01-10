@@ -69,7 +69,7 @@ public class OneDeployTests extends AppServiceTest {
     @SuppressWarnings("unchecked")
     @Test
     @DoNotRecord(skipInPlayback = true)
-    public void canPushDeployZip() throws Exception {
+    public void canPushDeployJar() throws Exception {
         String webAppName1 = generateRandomResourceName("webapp", 10);
 
         WebApp webApp1 =
