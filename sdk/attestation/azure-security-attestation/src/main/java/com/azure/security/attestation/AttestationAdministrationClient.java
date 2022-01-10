@@ -125,7 +125,8 @@ public final class AttestationAdministrationClient {
      * <p><strong>Retrieve the current attestation policy for SGX enclaves.</strong></p>
      * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClient.getPolicyWithResponse -->
      * <pre>
-     * Response&lt;String&gt; response = client.getAttestationPolicyWithResponse&#40;AttestationType.SGX_ENCLAVE, null, Context.NONE&#41;;
+     * Response&lt;String&gt; response = client.getAttestationPolicyWithResponse&#40;AttestationType.SGX_ENCLAVE, null,
+     *     Context.NONE&#41;;
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationAdministrationClient.getPolicyWithResponse -->
      *
@@ -406,8 +407,8 @@ public final class AttestationAdministrationClient {
      * <p><strong>Retrieve the set of policy management certificates for this instance.</strong></p>
      * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClient.listPolicyManagementCertificatesWithResponse -->
      * <pre>
-     * Response&lt;List&lt;AttestationSigner&gt;&gt; signersResponse = client.listPolicyManagementCertificatesWithResponse&#40;new AttestationTokenValidationOptions&#40;&#41;
-     *     .setValidationSlack&#40;Duration.ofSeconds&#40;10&#41;&#41;, Context.NONE&#41;;
+     * Response&lt;List&lt;AttestationSigner&gt;&gt; signersResponse = client.listPolicyManagementCertificatesWithResponse&#40;
+     *     new AttestationTokenValidationOptions&#40;&#41;.setValidationSlack&#40;Duration.ofSeconds&#40;10&#41;&#41;, Context.NONE&#41;;
      * System.out.printf&#40;&quot;There are %d signers on the instance&#92;n&quot;, signersResponse.getValue&#40;&#41;.size&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationAdministrationClient.listPolicyManagementCertificatesWithResponse -->
