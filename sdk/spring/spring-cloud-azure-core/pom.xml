@@ -52,7 +52,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>5.3.13</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
+      <version>5.3.14</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -112,13 +112,13 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>5.8.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
+      <version>5.8.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>5.3.13</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
+      <version>5.3.14</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -144,7 +144,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework:spring-context:[5.3.13]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
+                <include>org.springframework:spring-context:[5.3.14]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
