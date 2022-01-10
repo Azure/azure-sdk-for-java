@@ -13,7 +13,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-test</artifactId>
   <packaging>jar</packaging>
-  <version>1.7.6</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
+  <version>1.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
 
   <name>Microsoft Azure Java Core Test Library</name>
   <description>This package contains core test types for Azure Java clients.</description>
@@ -44,13 +44,16 @@
     <codesnippet.skip>false</codesnippet.skip>
     <javadocDoclet></javadocDoclet>
     <javadocDocletOptions></javadocDocletOptions>
+
+    <!-- This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
+    <revapi.skip>true</revapi.skip>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.24.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.25.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <dependency>
@@ -107,16 +110,6 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
-
-      <!-- This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
-      <plugin>
-        <groupId>org.revapi</groupId>
-        <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
-        <configuration>
-          <skip>true</skip>
-        </configuration>
       </plugin>
 
       <plugin>
