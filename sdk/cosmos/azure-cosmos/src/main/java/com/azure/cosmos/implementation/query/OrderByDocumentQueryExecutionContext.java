@@ -525,10 +525,6 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
         }
     }
 
-    private String getFilterString(String s1, String s2, String s3) {
-        return String.format("%s %s %s", s1, s2, s3);
-    }
-
     @Override
     protected OrderByDocumentProducer<T> createDocumentProducer(
             String collectionRid,

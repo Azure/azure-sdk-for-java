@@ -161,6 +161,24 @@ public interface FeedResponseListValidator<T> {
             return this;
         }
 
+        public Builder<T> exactlyTopIdsInAnyOrder(List<String> expectedTopIds) {
+            validators.add(new FeedResponseListValidator<T>() {
+                @Override
+                public void validate(List<FeedResponse<T>> feedList) {
+                    List<String> actualIds = feedList
+                        .stream()
+                        .flatMap(f -> f.getResults().stream())
+                        .limit(expectedTopIds.size())
+                        .map(r -> getResource(r).getId())
+                        .collect(Collectors.toList());
+                    assertThat(actualIds)
+                        .describedAs("Top IDs of results")
+                        .containsOnlyElementsOf(expectedTopIds);
+                }
+            });
+            return this;
+        }
+
         public Builder<T> numberOfPages(int expectedNumberOfPages) {
             validators.add(new FeedResponseListValidator<T>() {
                 @Override
