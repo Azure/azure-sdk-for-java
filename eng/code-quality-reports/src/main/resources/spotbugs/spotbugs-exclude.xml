@@ -1122,6 +1122,13 @@
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9077 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.StoreClientFactory"/>
+    <Field name="clientTelemetry"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9078 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestHeaders"/>
