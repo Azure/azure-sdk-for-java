@@ -119,8 +119,7 @@ public class RemoteRenderingTestBase extends TestBase {
     String getRandomId(String playback) {
         if (!interceptorManager.isPlaybackMode()) {
             return UUID.randomUUID().toString();
-        }
-        else {
+        } else {
             return playback;
         }
     }

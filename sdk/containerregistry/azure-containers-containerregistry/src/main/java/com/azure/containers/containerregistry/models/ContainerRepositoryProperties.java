@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
 /** Properties of this repository. */
 @JsonFlatten
 @Fluent
-public class ContainerRepositoryProperties {
+public final class ContainerRepositoryProperties {
     /*
      * Registry login server name. This is likely to be similar to
      * {registry-name}.azurecr.io.
