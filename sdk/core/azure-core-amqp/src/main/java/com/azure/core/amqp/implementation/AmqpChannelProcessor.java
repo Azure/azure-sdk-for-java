@@ -73,7 +73,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         this.endpointStatesFunction = Objects.requireNonNull(endpointStatesFunction,
             "'endpointStates' cannot be null.");
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
-        this.logger = new ClientLogger(AmqpChannelProcessor.class, Objects.requireNonNull(loggingContext, "'loggingContext' cannot be null."));
+        this.logger = new ClientLogger(getClass(), Objects.requireNonNull(loggingContext, "'loggingContext' cannot be null."));
         this.errorContext = new AmqpErrorContext(fullyQualifiedNamespace);
     }
 

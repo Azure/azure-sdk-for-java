@@ -122,7 +122,7 @@ public class ActiveClientTokenManager implements TokenManager {
     private Disposable scheduleRefreshTokenTask(Duration initialRefresh) {
         // EmitterProcessor can queue up an initial refresh interval before any subscribers are received.
         durationSource.emitNext(initialRefresh, (signalType, emitResult) -> {
-            addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult).log(" Could not emit initial refresh interval.");
+            addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult).log("Could not emit initial refresh interval.");
 
             return false;
         });
