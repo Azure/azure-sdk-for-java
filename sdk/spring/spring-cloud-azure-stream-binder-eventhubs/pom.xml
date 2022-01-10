@@ -53,7 +53,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
-      <version>2.6.1</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
+      <version>2.6.2</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -78,7 +78,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.6.1</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>2.6.2</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -113,8 +113,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-starter-actuator:[2.6.1]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
-                <!--<include>com.fasterxml.jackson.core:jackson-core:[2.13.0]</include> &lt;!&ndash; {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} &ndash;&gt;-->
+                <include>org.springframework.boot:spring-boot-starter-actuator:[2.6.2]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
+                <!--<include>com.fasterxml.jackson.core:jackson-core:[2.13.1]</include> &lt;!&ndash; {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} &ndash;&gt;-->
               </includes>
             </bannedDependencies>
           </rules>
