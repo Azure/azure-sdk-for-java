@@ -12,7 +12,7 @@ import com.azure.core.util.BinaryData;
 
 /** The transfer call result event. */
 @Immutable
-public final class TransferCallResultEvent {
+public final class TransferCallResultEvent extends CallingServerEventBase{
     /*
      * The result details.
      */
