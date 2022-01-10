@@ -8,7 +8,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -52,9 +51,9 @@ public abstract class AbstractProcessorInstrumentationTests<T> {
         AbstractProcessorInstrumentation<T> instrumentation = getProcessorInstrumentation(type, window);
         instrumentation.markError(errorContext);
         assertTrue(instrumentation.isDown());
-        sleep(1);
+        sleepSeconds(1);
         assertTrue(instrumentation.isDown());
-        sleep(1);
+        sleepSeconds(1);
         assertFalse(instrumentation.isDown());
     }
 
@@ -68,9 +67,9 @@ public abstract class AbstractProcessorInstrumentationTests<T> {
         assertNull(instrumentation.getException());
     }
 
-    private void sleep(long sleep) {
+    private void sleepSeconds(long sleep) {
         try {
-            TimeUnit.of(ChronoUnit.SECONDS).sleep(sleep);
+            TimeUnit.SECONDS.sleep(sleep);
         } catch (InterruptedException e) {
 
         }
