@@ -1,4 +1,4 @@
-# Azure Cloud Native Cloud Event support for Java
+# Azure Cloud Native Cloud Event support for Event Grid library for Java
 
 This library can be used to enable publishing the Cloud Native Computing Foundation(CNCF) [CloudEvents][CNCFCloudEvents]
 using the Azure Event Grid library. 
