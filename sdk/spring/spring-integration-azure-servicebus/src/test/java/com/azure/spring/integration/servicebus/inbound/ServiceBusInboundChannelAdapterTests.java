@@ -13,6 +13,7 @@ import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.messaging.converter.AbstractAzureMessageConverter;
 import com.azure.spring.servicebus.core.ServiceBusProcessorContainer;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,21 +48,19 @@ class ServiceBusInboundChannelAdapterTests {
                                               .collect(Collectors.toList());
 
     private AutoCloseable closeable;
-    private ServiceBusProcessorContainer processorsContainer;
 
     @BeforeEach
     public void setUp() {
-        processorsContainer = mock(ServiceBusProcessorContainer.class);
         this.closeable = MockitoAnnotations.openMocks(this);
-        this.adapter = new TestServiceBusInboundChannelAdapter(processorsContainer, destination, subscription,
-            new CheckpointConfig(CheckpointMode.RECORD));
+        this.adapter = new TestServiceBusInboundChannelAdapter(mock(ServiceBusProcessorContainer.class),
+            destination, subscription, new CheckpointConfig(CheckpointMode.RECORD));
     }
 
     @Test
-    void subscriptionCannotEmptyWhenEntityTypeIsTopic() {
+    void destinationCannotEmptyWhenEntityTypeIsTopic() {
         assertThrows(IllegalArgumentException.class,
-            () -> new TestServiceBusInboundChannelAdapter(processorsContainer, destination, null,
-                new CheckpointConfig(CheckpointMode.RECORD)));
+            () -> new TestServiceBusInboundChannelAdapter(mock(ServiceBusProcessorContainer.class),
+                null, null, new CheckpointConfig(CheckpointMode.RECORD)));
     }
 
     @Test
@@ -152,6 +151,11 @@ class ServiceBusInboundChannelAdapterTests {
     }
 
     static class TestServiceBusMessageConverter extends AbstractAzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> {
+
+        @Override
+        protected ObjectMapper getObjectMapper() {
+            return null;
+        }
 
         @Override
         protected Object getPayload(ServiceBusReceivedMessage azureMessage) {

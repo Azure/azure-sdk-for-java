@@ -14,7 +14,7 @@ import com.azure.spring.eventhubs.core.EventHubsProcessorContainer;
 import com.azure.spring.eventhubs.support.EventHubsHeaders;
 import com.azure.spring.eventhubs.support.converter.EventHubBatchMessageConverter;
 import com.azure.spring.eventhubs.support.converter.EventHubsMessageConverter;
-import com.azure.spring.integration.eventhubs.inbound.health.EventHusProcessorInstrumentation;
+import com.azure.spring.integration.eventhubs.inbound.health.EventHubsProcessorInstrumentation;
 import com.azure.spring.integration.instrumentation.Instrumentation;
 import com.azure.spring.integration.instrumentation.InstrumentationManager;
 import com.azure.spring.messaging.AzureHeaders;
@@ -223,8 +223,8 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
 
             Instrumentation instrumentation = instrumentationManager.getHealthInstrumentation(instrumentationId);
             if (instrumentation != null) {
-                if (instrumentation instanceof EventHusProcessorInstrumentation) {
-                    ((EventHusProcessorInstrumentation) instrumentation).markError(errorContext);
+                if (instrumentation instanceof EventHubsProcessorInstrumentation) {
+                    ((EventHubsProcessorInstrumentation) instrumentation).markError(errorContext);
                 } else {
                     instrumentation.markDown(errorContext.getThrowable());
                 }

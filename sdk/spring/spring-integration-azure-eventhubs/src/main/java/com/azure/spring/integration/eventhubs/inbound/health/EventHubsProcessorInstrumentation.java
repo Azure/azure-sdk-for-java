@@ -9,18 +9,18 @@ import com.azure.spring.integration.instrumentation.AbstractProcessorInstrumenta
 import java.time.Duration;
 
 /**
- * EventHus health details entity class.
+ * EventHubs health details entity class.
  */
-public class EventHusProcessorInstrumentation extends AbstractProcessorInstrumentation<ErrorContext> {
+public class EventHubsProcessorInstrumentation extends AbstractProcessorInstrumentation<ErrorContext> {
 
     /**
-     * Construct a {@link EventHusProcessorInstrumentation} with the specified name, {@link Type} and the period of a none error window.
+     * Construct a {@link EventHubsProcessorInstrumentation} with the specified name, {@link Type} and the period of a none error window.
      *
      * @param name the name
      * @param type the type
      * @param noneErrorWindow the period of a none error window
      */
-    public EventHusProcessorInstrumentation(String name, Type type, Duration noneErrorWindow) {
+    public EventHubsProcessorInstrumentation(String name, Type type, Duration noneErrorWindow) {
         super(name, type, noneErrorWindow);
     }
 

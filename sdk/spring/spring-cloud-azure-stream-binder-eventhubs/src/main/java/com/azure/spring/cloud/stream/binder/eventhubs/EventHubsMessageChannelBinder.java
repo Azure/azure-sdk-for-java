@@ -16,7 +16,7 @@ import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.eventhubs.core.properties.ProcessorProperties;
 import com.azure.spring.eventhubs.core.properties.ProducerProperties;
 import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
-import com.azure.spring.integration.eventhubs.inbound.health.EventHusProcessorInstrumentation;
+import com.azure.spring.integration.eventhubs.inbound.health.EventHubsProcessorInstrumentation;
 import com.azure.spring.integration.handler.DefaultMessageHandler;
 import com.azure.spring.integration.instrumentation.DefaultInstrumentation;
 import com.azure.spring.integration.instrumentation.DefaultInstrumentationManager;
@@ -222,7 +222,7 @@ public class EventHubsMessageChannelBinder extends
                 this.checkpointStore, this.namespaceProperties, getProcessorPropertiesSupplier());
             factory.addListener((name, consumerGroup, processorClient) -> {
                 String instrumentationName = name + "/" + consumerGroup;
-                Instrumentation instrumentation = new EventHusProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));
+                Instrumentation instrumentation = new EventHubsProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));
                 instrumentation.markUp();
                 instrumentationManager.addHealthInstrumentation(instrumentation.getId(), instrumentation);
             });

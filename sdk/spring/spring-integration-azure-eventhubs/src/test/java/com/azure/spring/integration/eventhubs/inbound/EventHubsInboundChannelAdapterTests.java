@@ -9,6 +9,7 @@ import com.azure.spring.eventhubs.core.EventHubsProcessorContainer;
 import com.azure.spring.integration.instrumentation.DefaultInstrumentationManager;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.converter.AbstractAzureMessageConverter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,13 +38,10 @@ class EventHubsInboundChannelAdapterTests {
     private final List<Message<?>> messages = Arrays.stream(payloads)
                                                     .map(p -> MessageBuilder.withPayload(p).build())
                                                     .collect(Collectors.toList());
-    private EventHubsProcessorContainer processorsContainer;
-
     @BeforeEach
     void setUp() {
-        processorsContainer = mock(EventHubsProcessorContainer.class);
-        this.adapter = new TestEventHubsInboundChannelAdapter(processorsContainer, this.eventHub, this.consumerGroup,
-            new CheckpointConfig());
+        this.adapter = new TestEventHubsInboundChannelAdapter(mock(EventHubsProcessorContainer.class),
+            this.eventHub, this.consumerGroup, new CheckpointConfig());
     }
 
     @Test
@@ -133,6 +131,11 @@ class EventHubsInboundChannelAdapterTests {
 
 
         @Override
+        protected ObjectMapper getObjectMapper() {
+            return null;
+        }
+
+        @Override
         protected Object getPayload(EventData azureMessage) {
             return azureMessage.getBody();
         }
@@ -150,6 +153,11 @@ class EventHubsInboundChannelAdapterTests {
 
     static class TestBatchAzureMessageConverter extends AbstractAzureMessageConverter<EventBatchContext, EventData> {
 
+
+        @Override
+        protected ObjectMapper getObjectMapper() {
+            return null;
+        }
 
         @Override
         protected Object getPayload(EventBatchContext azureMessage) {
