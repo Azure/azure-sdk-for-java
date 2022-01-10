@@ -25,6 +25,7 @@
         <codesnippet.skip>false</codesnippet.skip>
         <javadocDoclet></javadocDoclet>
         <javadocDocletOptions></javadocDocletOptions>
+        <createSourcesJar>true</createSourcesJar>
     </properties>
 
     <dependencies>
@@ -111,7 +112,7 @@
                         </goals>
                         <configuration>
                             <shadeTestJar>false</shadeTestJar>
-                            <createSourcesJar>true</createSourcesJar>
+                            <createSourcesJar>${createSourcesJar}</createSourcesJar>
                             <shadeSourcesContent>true</shadeSourcesContent>
                             <relocations>
                                 <relocation>
