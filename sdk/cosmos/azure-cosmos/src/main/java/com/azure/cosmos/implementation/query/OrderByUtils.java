@@ -111,8 +111,8 @@ class OrderByUtils {
 
                     String queryInfoExecution = documentProducerFeedResponse.pageResult.getResponseHeaders().getOrDefault(
                         HttpConstants.HttpHeaders.QUERY_EXECUTION_INFO, null);
-
                     QueryExecutionInfo queryExecutionInfo = Utils.parse(queryInfoExecution, QueryExecutionInfo.class);
+
                     results = results.stream()
                             .filter(tOrderByRowResult -> {
                                 // When we resume a query on a partition there is a possibility that we only read a partial page from the backend
@@ -147,6 +147,8 @@ class OrderByUtils {
                                     if ((queryExecutionInfo == null) || queryExecutionInfo.getReverseRidEnabled())
                                     {
                                         // If reverse rid is enabled on the backend then fallback to the old way of doing it.
+                                        // So if it's ORDER BY c.age ASC, c.name DESC the _rids are ASC
+                                        // If ti's ORDER BY c.age DESC, c.name DESC the _rids are DESC
                                         if (sortOrders.get(0) == SortOrder.Descending)
                                         {
                                             cmp = -cmp;

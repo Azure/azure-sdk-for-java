@@ -877,7 +877,6 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             options.setMaxDegreeOfParallelism(2);
             CosmosPagedFlux<T> queryObservable = container.queryItems(query, options, classType);
 
-            //Observable<FeedResponse<Document>> firstPageObservable = queryObservable.byPage().first();
             TestSubscriber<FeedResponse<T>> testSubscriber = new TestSubscriber<>();
             queryObservable.byPage(requestContinuation, pageSize).subscribe(testSubscriber);
             testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
