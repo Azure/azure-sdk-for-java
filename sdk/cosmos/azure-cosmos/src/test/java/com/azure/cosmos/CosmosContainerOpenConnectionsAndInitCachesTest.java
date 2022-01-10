@@ -56,7 +56,7 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
     private final static String CONTAINER_ID = "InitializedTestContainer";
 
     @BeforeClass(groups = {"simple"})
-    public void beforeClass() throws InterruptedException {
+    public void beforeClass() {
         directCosmosAsyncClient = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
@@ -113,6 +113,7 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         ConcurrentHashMap<String, ?> routingMap = getRoutingMap(rxDocumentClient);
         ConcurrentHashMap<String, ?> collectionInfoByNameMap = getCollectionInfoByNameMap(rxDocumentClient);
         GatewayAddressCache spyGatewayAddressCache = createAndSetSpyGatewayAddressCacheOnConsistencyReader(rxDocumentClient);
+        RxPartitionKeyRangeCache spyPartitionKeyRangeCache = createAndSetSpyPartitionKeyRangeCacheOnConsistencyReader(rxDocumentClient);
 
         assertThat(provider.count()).isEqualTo(0);
         assertThat(collectionInfoByNameMap.size()).isEqualTo(0);
@@ -148,6 +149,13 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         // Verifying we are not doing any extra address refresh call to gateway
         Mockito.verify(spyGatewayAddressCache, Mockito.times(feedRanges.size())).getServerAddressesViaGatewayAsync(ArgumentMatchers.any(), ArgumentMatchers.any(),
             ArgumentMatchers.any(), ArgumentMatchers.anyBoolean());
+        // Verifying we are not doing any extra partition key range refresh call to gateway.
+        // getPartitionKeyRange method in PartitionKeyRangeCache is private , so verifying indirectly that there was no cache refresh
+        // with help of below two verifies
+        Mockito.verify(spyPartitionKeyRangeCache, Mockito.times(feedRanges.size())).tryLookupAsync(ArgumentMatchers.any(), ArgumentMatchers.anyString(),
+            ArgumentMatchers.nullable(CollectionRoutingMap.class), ArgumentMatchers.any());
+        Mockito.verify(spyPartitionKeyRangeCache, Mockito.times(feedRanges.size())).tryLookupAsync(ArgumentMatchers.any(), ArgumentMatchers.anyString(),
+            ArgumentMatchers.any(CollectionRoutingMap.class), ArgumentMatchers.any());
         // Verifying isInitialized is true
         assertThat(ReflectionUtils.isInitialized(cosmosAsyncContainer).get()).isTrue();
 
@@ -288,6 +296,7 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
 
     @SuppressWarnings("unchecked")
     private ConcurrentHashMap<PartitionKeyRangeIdentity, AddressInformation[]> getServerPartitionAddressCache(RxDocumentClientImpl rxDocumentClient) throws Exception {
+        @SuppressWarnings("rawtypes")
         Map getAddressCacheByEndpoint = (Map) FieldUtils.readField(ReflectionUtils.getGlobalAddressResolver(rxDocumentClient), "addressCacheByEndpoint", true);
         Object endpointCache = getAddressCacheByEndpoint.values().toArray()[0];
         GatewayAddressCache gatewayAddressCache = (GatewayAddressCache) FieldUtils.readField(endpointCache, "addressCache", true);
@@ -301,9 +310,11 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         return addressCache;
     }
 
+    @SuppressWarnings("unchecked")
     private GatewayAddressCache createAndSetSpyGatewayAddressCacheOnConsistencyReader(RxDocumentClientImpl rxDocumentClient) throws Exception {
         // Get the existing GatewayAddressCache which was created on client creation and create the spy on it
         GlobalAddressResolver globalAddressResolver = ReflectionUtils.getGlobalAddressResolver(rxDocumentClient);
+        @SuppressWarnings("rawtypes")
         Map getAddressCacheByEndpoint = (Map) FieldUtils.readField(globalAddressResolver, "addressCacheByEndpoint", true);
         Object endpointCache = getAddressCacheByEndpoint.values().toArray()[0];
         Class<?>  EndpointCacheClass = Class.forName("com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver$EndpointCache");
@@ -322,6 +333,7 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
 
         // Set the new spy gatewayAddressCache which will be used on every call of ConsistencyReader
         GlobalAddressResolver globalAddressResolverNew = ReflectionUtils.getGlobalAddressResolver(addressSelector);
+        @SuppressWarnings("rawtypes")
         Map getAddressCacheByEndpointNew = (Map) FieldUtils.readField(globalAddressResolverNew, "addressCacheByEndpoint", true);
         Object endpointCacheNew = getAddressCacheByEndpointNew.values().toArray()[0];
         Field addressResolverField = EndpointCacheClass.getDeclaredField("addressResolver");
@@ -332,6 +344,33 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         return spyGatewayAddressCache;
     }
 
+    @SuppressWarnings("unchecked")
+    private RxPartitionKeyRangeCache createAndSetSpyPartitionKeyRangeCacheOnConsistencyReader(RxDocumentClientImpl rxDocumentClient) throws Exception {
+        // Get the address selector used during ConsistencyReader creation
+        StoreClient storeClient = ReflectionUtils.getStoreClient(rxDocumentClient);
+        ReplicatedResourceClient replicatedResourceClient =
+            ReflectionUtils.getReplicatedResourceClient(storeClient);
+        ConsistencyReader consistencyReader = ReflectionUtils.getConsistencyReader(replicatedResourceClient);
+        StoreReader storeReader = ReflectionUtils.getStoreReader(consistencyReader);
+        AddressSelector addressSelector = ReflectionUtils.getAddressSelector(storeReader);
+
+        // Set the new spy gatewayAddressCache which will be used on every call of ConsistencyReader
+        GlobalAddressResolver globalAddressResolver = ReflectionUtils.getGlobalAddressResolver(addressSelector);
+        RxPartitionKeyRangeCache rxPartitionKeyRangeCache = (RxPartitionKeyRangeCache) FieldUtils.readField(globalAddressResolver, "routingMapProvider", true);
+        RxPartitionKeyRangeCache spyPartitionKeyRangeCache = Mockito.spy(rxPartitionKeyRangeCache);
+
+        Class<?>  EndpointCacheClass = Class.forName("com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver$EndpointCache");
+        @SuppressWarnings("rawtypes")
+        Map getAddressCacheByEndpointNew = (Map) FieldUtils.readField(globalAddressResolver, "addressCacheByEndpoint", true);
+        Object endpointCacheNew = getAddressCacheByEndpointNew.values().toArray()[0];
+        Field addressResolverField = EndpointCacheClass.getDeclaredField("addressResolver");
+        addressResolverField.setAccessible(true);
+        AddressResolver addressResolver = (AddressResolver) addressResolverField.get(endpointCacheNew);
+        ReflectionUtils.setPartitionKeyRangeCache(addressResolver, spyPartitionKeyRangeCache);
+        return spyPartitionKeyRangeCache;
+    }
+
+    @SuppressWarnings("unchecked")
     private AddressInformation[] getAddressInformationFromAsyncLazy(Object asyncLazyValue) throws Exception {
         Class<?>  AsyncLazyClass = Class.forName("com.azure.cosmos.implementation.caches.AsyncLazy");
         Field addressInformationMonoSingle = AsyncLazyClass.getDeclaredField("single");

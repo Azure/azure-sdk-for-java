@@ -257,6 +257,10 @@ public class ReflectionUtils {
         set(addressResolver, gatewayAddressCache, "addressCache");
     }
 
+    public static void setPartitionKeyRangeCache(AddressResolver addressResolver, RxPartitionKeyRangeCache partitionKeyRangeCache) {
+        set(addressResolver, partitionKeyRangeCache, "collectionRoutingMapCache");
+    }
+
     public static void setStoreReader(ConsistencyReader consistencyReader, StoreReader storeReader) {
         set(consistencyReader, storeReader, "storeReader");
     }
