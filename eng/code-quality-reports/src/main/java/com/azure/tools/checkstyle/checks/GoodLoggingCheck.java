@@ -13,6 +13,7 @@ import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.Set;
 
@@ -162,7 +163,7 @@ public class GoodLoggingCheck extends AbstractCheck {
             final String containerClassName = FullIdent.createFullIdent(exprToken.getFirstChild()).getText();
             // Add suffix of '.class' at the end of class name
             final String className = classNameDeque.peek();
-            if (!(className + ".class").equals(containerClassName)) {
+            if (!Objects.equals(className + ".class", containerClassName)) {
                 log(exprToken, String.format(LOGGER_NAME_MISMATCH_ERROR, className, containerClassName));
             }
             return true;
