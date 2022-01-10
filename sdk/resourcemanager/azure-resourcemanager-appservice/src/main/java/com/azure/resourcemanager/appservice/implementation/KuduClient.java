@@ -341,7 +341,7 @@ class KuduClient {
                     throw logger.logExceptionAsError(
                         new AzureException("Deployment ID not found in response header 'SCM-DEPLOYMENT-ID'"));
                 }
-                return new KuduDeploymentResult(deploymentIdHeader.getValue());
+                return new KuduDeploymentResult(deploymentIdHeader == null ? null : deploymentIdHeader.getValue());
             })
             .doFinally(ignored -> {
                 try {
