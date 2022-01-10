@@ -5,8 +5,10 @@ package com.azure.resourcemanager.appservice;
 
 import com.azure.core.management.Region;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.resourcemanager.appservice.models.DeployOptions;
 import com.azure.resourcemanager.appservice.models.DeployType;
 import com.azure.resourcemanager.appservice.models.JavaVersion;
+import com.azure.resourcemanager.appservice.models.KuduDeploymentResult;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebContainer;
@@ -20,14 +22,38 @@ import java.time.Duration;
 public class OneDeployTests extends AppServiceTest {
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void canDeployZip() throws Exception {
-        if (skipInPlayback()) {
-            return;
-        }
-
         String webAppName1 = generateRandomResourceName("webapp", 10);
+        WebApp webApp1 = createWebApp(webAppName1);
 
+        File zipFile = new File(OneDeployTests.class.getResource("/webapps.zip").getPath());
+        webApp1.deploy(DeployType.ZIP, zipFile);
+
+        // wait a bit
+        ResourceManagerUtils.sleep(Duration.ofSeconds(10));
+
+        String response = curl("https://" + webAppName1 + ".azurewebsites.net/" + "helloworld/").getValue();
+        Assertions.assertTrue(response.contains("Hello"));
+    }
+
+    @Test
+    @DoNotRecord(skipInPlayback = true)
+    public void canPushDeployZip() throws Exception {
+        String webAppName1 = generateRandomResourceName("webapp", 10);
+        WebApp webApp1 = createWebApp(webAppName1);
+
+        File zipFile = new File(OneDeployTests.class.getResource("/webapps.zip").getPath());
+        KuduDeploymentResult deployResult =
+            webApp1.pushDeploy(DeployType.ZIP, zipFile, new DeployOptions().withTrackDeployment(true));
+
+        Assertions.assertNotNull(deployResult.deploymentId());
+
+//        String response = curl("https://" + webAppName1 + ".azurewebsites.net/" + "helloworld/").getValue();
+//        Assertions.assertTrue(response.contains("Hello"));
+    }
+
+    private WebApp createWebApp(String webAppName1) {
         WebApp webApp1 =
             appServiceManager
                 .webApps()
@@ -39,14 +65,6 @@ public class OneDeployTests extends AppServiceTest {
                 .withWebContainer(WebContainer.TOMCAT_8_5_NEWEST)
                 .withHttpsOnly(true)
                 .create();
-
-        File zipFile = new File(OneDeployTests.class.getResource("/webapps.zip").getPath());
-        webApp1.deploy(DeployType.ZIP, zipFile);
-
-        // wait a bit
-        ResourceManagerUtils.sleep(Duration.ofSeconds(10));
-
-        String response = curl("https://" + webAppName1 + ".azurewebsites.net/" + "helloworld/").getValue();
-        Assertions.assertTrue(response.contains("Hello"));
+        return webApp1;
     }
 }
