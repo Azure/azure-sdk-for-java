@@ -1344,7 +1344,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         // this option cannot be set by user, only meant via CosmosAsyncContainer#openConnectionsAndInitCaches api
-        if (options.getPartitionKeyRangeId() != null) {
+        if (options != null && options.getPartitionKeyRangeId() != null) {
             request.configureRequestForOpenConnections(new PartitionKeyRangeIdentity(collection.getResourceId(), options.getPartitionKeyRangeId()));
         }
 
