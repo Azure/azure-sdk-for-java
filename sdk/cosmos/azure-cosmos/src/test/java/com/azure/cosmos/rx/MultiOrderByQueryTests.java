@@ -187,7 +187,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         return document;
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT * 5)
+    @Test(groups = { "simple" }, timeOut = TIMEOUT * 10)
     public void queryDocumentsWithMultiOrder() throws InterruptedException {
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
@@ -261,7 +261,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT * 5)
+    @Test(groups = { "simple" }, timeOut = TIMEOUT * 10)
     public void queryDocumentsWithUndefinedValueAndMultiOrderby() {
         // CREATE document with numberField not set.
         // This query should be valid too as we now support mixed null values
