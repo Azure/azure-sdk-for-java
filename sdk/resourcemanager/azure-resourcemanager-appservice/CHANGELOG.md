@@ -2,6 +2,10 @@
 
 ## 2.11.0-beta.1 (Unreleased)
 
+### Features Added
+
+- Supported having deployment ID returned from `pushDeploy` in `WebApp` and `DeploymentSlot`.
+
 ### Other Changes
 
 #### Dependency Updates
