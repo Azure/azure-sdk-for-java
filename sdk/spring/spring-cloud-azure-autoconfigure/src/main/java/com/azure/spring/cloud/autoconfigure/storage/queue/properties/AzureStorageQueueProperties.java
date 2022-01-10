@@ -17,6 +17,10 @@ public class AzureStorageQueueProperties extends AzureStorageProperties implemen
 
     private QueueServiceVersion serviceVersion;
     private String messageEncoding;
+    /**
+     * Name of the storage queue.
+     */
+    private String queueName;
 
 
     public String getEndpoint() {
@@ -41,5 +45,13 @@ public class AzureStorageQueueProperties extends AzureStorageProperties implemen
 
     public void setMessageEncoding(String messageEncoding) {
         this.messageEncoding = messageEncoding;
+    }
+
+    public String getQueueName() {
+        return queueName;
+    }
+
+    public void setQueueName(String queueName) {
+        this.queueName = queueName;
     }
 }
