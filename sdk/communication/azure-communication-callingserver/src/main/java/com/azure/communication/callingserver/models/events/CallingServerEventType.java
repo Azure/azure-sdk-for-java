@@ -31,6 +31,9 @@ public final class CallingServerEventType extends ExpandableStringEnum<CallingSe
     /** The subscribe to tone event type. */
     public static final CallingServerEventType TONE_RECEIVED_EVENT = fromString("Microsoft.Communication.ToneReceived");
 
+    /** The subscribe to transfer call event type */
+    public static final CallingServerEventType TRANSFER_CALL_RESULT_EVENT = fromString("Microsoft.Communication.TransferCallResult");
+
     /**
      * Creates or finds a CallingServerEventType from its string representation.
      *
