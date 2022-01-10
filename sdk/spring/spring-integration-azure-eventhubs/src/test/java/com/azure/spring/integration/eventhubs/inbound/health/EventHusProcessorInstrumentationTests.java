@@ -23,6 +23,6 @@ class EventHusProcessorInstrumentationTests extends AbstractProcessorInstrumenta
     @Override
     public AbstractProcessorInstrumentation<ErrorContext> getProcessorInstrumentation(Instrumentation.Type type,
                                                                                       Duration window) {
-        return new EventHusProcessorInstrumentation("test", type, window);
+        return new EventHubsProcessorInstrumentation("test", type, window);
     }
 }
