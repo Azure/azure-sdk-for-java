@@ -13,7 +13,6 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryImpl;
 import com.azure.data.schemaregistry.implementation.models.ErrorException;
 import com.azure.data.schemaregistry.implementation.models.SchemasQueryIdByContentHeaders;
@@ -23,8 +22,6 @@ import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
 import reactor.core.publisher.Mono;
 
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 

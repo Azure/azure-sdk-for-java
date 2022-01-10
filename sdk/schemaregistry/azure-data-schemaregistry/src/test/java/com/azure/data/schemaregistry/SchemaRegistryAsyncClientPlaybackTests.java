@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.data.schemaregistry;
 
 import com.azure.core.credential.AccessToken;
@@ -27,7 +30,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests that can only be played-back because they use a recording from the Portal or a back-compat issue.
+ * Tests that can only be played-back because they use a recording from the Portal or a back-compat issue that cannot
+ * be reproduced with the latest client.
  */
 public class SchemaRegistryAsyncClientPlaybackTests {
     private TokenCredential tokenCredential;
@@ -37,7 +41,7 @@ public class SchemaRegistryAsyncClientPlaybackTests {
 
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
-        if (testInfo.getTestMethod().isEmpty()) {
+        if (!testInfo.getTestMethod().isPresent()) {
             throw new IllegalStateException(
                 "Expected testInfo.getTestMethod() not be empty since we need a method for TestContextManager.");
         }
