@@ -472,10 +472,11 @@ public class CosmosAsyncContainer {
 
                             // Only expecting 404 not found from one partition and 410/1002 PKRangeGone from others as
                             // AnyId EPK on server maps only for one physical partition
+                            // Note:  If partition split happens during this time (corner case), we will not open connection for newly created partitions
                             if (dce == null ||
                                 (dce.getStatusCode() != HttpConstants.StatusCodes.NOTFOUND &&
                                 !(dce instanceof PartitionKeyRangeGoneException))) {
-                                logger.warn("unexpected failure {} while opening connections on partition = {}", throwable.getMessage(), partitionKeyRange.getId());
+                                logger.info("unexpected failure {} while opening connections on partition = {}", throwable.getMessage(), partitionKeyRange.getId());
                             }
 
                             return Mono.just(cosmosItemResponseBuilderAccessor.createCosmosItemResponse(null, null, ObjectNode.class, null));
