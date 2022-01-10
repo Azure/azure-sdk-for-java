@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.6 (2022-1-10)
+## 1.0.0 (2022-01-11)
 
 ### Breaking Changes
  - Renamed `ArtifactTagOrderBy` to `ArtifactTagOrder`.
