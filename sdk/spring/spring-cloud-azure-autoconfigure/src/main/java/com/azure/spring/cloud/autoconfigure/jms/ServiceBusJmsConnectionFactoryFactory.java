@@ -3,24 +3,50 @@
 
 package com.azure.spring.cloud.autoconfigure.jms;
 
-import com.azure.spring.cloud.autoconfigure.jms.properties.ServiceBusJmsProperties;
+import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * A factory for ServiceBusJmsConnectionFactory.
  */
 public class ServiceBusJmsConnectionFactoryFactory {
-    private final ServiceBusJmsProperties properties;
+    private final AzureServiceBusJmsProperties properties;
+    private final List<ServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers;
 
-    ServiceBusJmsConnectionFactoryFactory(ServiceBusJmsProperties properties) {
+    ServiceBusJmsConnectionFactoryFactory(AzureServiceBusJmsProperties properties,
+                                          List<ServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
         Assert.notNull(properties, "Properties must not be null");
         this.properties = properties;
+        this.factoryCustomizers = (factoryCustomizers != null) ? factoryCustomizers : Collections.emptyList();
+
     }
 
-    <T extends ServiceBusJmsConnectionFactory> T createConnectionFactory(Class<T> factoryClass) throws IllegalStateException {
+    <T extends ServiceBusJmsConnectionFactory> T createConnectionFactory(Class<T> factoryClass) {
+        try {
+            return doCreateConnectionFactory(factoryClass);
+        } catch (Exception ex) {
+            throw new IllegalStateException("Unable to create ActiveMQConnectionFactory", ex);
+        }
+    }
+
+
+    private <T extends ServiceBusJmsConnectionFactory> T doCreateConnectionFactory(Class<T> factoryClass) throws IllegalStateException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+        T factory = createConnectionFactoryInstance(factoryClass);
+        if (StringUtils.hasText(this.properties.getTopicClientId())) {
+            factory.setClientID(this.properties.getTopicClientId());
+        }
+        customize(factory);
+        return factory;
+
+    }
+
+    private <T extends ServiceBusJmsConnectionFactory> T createConnectionFactoryInstance(Class<T> factoryClass)
+        throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         try {
             T factory;
             String remoteUrl = this.properties.getRemoteUrl();
@@ -33,12 +59,16 @@ public class ServiceBusJmsConnectionFactoryFactory {
             } else {
                 factory = factoryClass.getConstructor(String.class).newInstance(remoteUrl);
             }
-            if (StringUtils.hasText(this.properties.getTopicClientId())) {
-                factory.setClientID(this.properties.getTopicClientId());
-            }
+
             return factory;
         } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             throw new IllegalStateException("Unable to create JmsConnectionFactory", ex);
+        }
+    }
+
+    private void customize(ServiceBusJmsConnectionFactory connectionFactory) {
+        for (ServiceBusJmsConnectionFactoryCustomizer factoryCustomizer : this.factoryCustomizers) {
+            factoryCustomizer.customize(connectionFactory);
         }
     }
 }

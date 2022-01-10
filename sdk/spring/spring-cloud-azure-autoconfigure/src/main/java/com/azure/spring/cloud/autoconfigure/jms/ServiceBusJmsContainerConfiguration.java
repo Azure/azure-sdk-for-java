@@ -4,6 +4,8 @@
 package com.azure.spring.cloud.autoconfigure.jms;
 
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
@@ -12,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
+import org.springframework.util.ErrorHandler;
 
 import javax.jms.ConnectionFactory;
 
@@ -21,6 +24,8 @@ import javax.jms.ConnectionFactory;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(EnableJms.class)
 public class ServiceBusJmsContainerConfiguration {
+
+    private static final Logger logger = LoggerFactory.getLogger(ServiceBusJmsContainerConfiguration.class);
 
     /**
      * The Azure ServiceBus JMS properties
@@ -43,6 +48,7 @@ public class ServiceBusJmsContainerConfiguration {
         DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
         configurer.configure(jmsListenerContainerFactory, connectionFactory);
         jmsListenerContainerFactory.setPubSubDomain(Boolean.FALSE);
+        jmsListenerContainerFactory.setErrorHandler(new DefaultErrorHandler());
         configureCommonListenerContainerFactory(jmsListenerContainerFactory);
         return jmsListenerContainerFactory;
     }
@@ -54,6 +60,7 @@ public class ServiceBusJmsContainerConfiguration {
         DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
         configurer.configure(jmsListenerContainerFactory, connectionFactory);
         jmsListenerContainerFactory.setPubSubDomain(Boolean.TRUE);
+        jmsListenerContainerFactory.setErrorHandler(new DefaultErrorHandler());
         configureCommonListenerContainerFactory(jmsListenerContainerFactory);
         configureTopicListenerContainerFactory(jmsListenerContainerFactory);
         return jmsListenerContainerFactory;
@@ -79,6 +86,14 @@ public class ServiceBusJmsContainerConfiguration {
         }
         if (listener.isSubscriptionShared() != null) {
             jmsListenerContainerFactory.setSubscriptionShared(listener.isSubscriptionShared());
+        }
+    }
+
+    static class DefaultErrorHandler implements ErrorHandler {
+
+        @Override
+        public void handleError(Throwable t) {
+            logger.error(t.getCause().getMessage());
         }
     }
 }

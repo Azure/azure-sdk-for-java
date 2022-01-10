@@ -4,12 +4,9 @@
 package com.azure.spring.cloud.autoconfigure.jms;
 
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
-import com.azure.spring.cloud.autoconfigure.jms.properties.ServiceBusJmsProperties;
-import com.azure.spring.core.implementation.connectionstring.ServiceBusConnectionString;
 import org.apache.qpid.jms.JmsConnectionExtensions;
 import org.apache.qpid.jms.JmsConnectionFactory;
 import org.apache.qpid.jms.policy.JmsDefaultPrefetchPolicy;
-import org.messaginghub.pooled.jms.JmsPoolConnectionFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -35,25 +32,25 @@ import static com.azure.spring.core.AzureSpringIdentifier.AZURE_SPRING_SERVICE_B
 @AutoConfigureBefore(JmsAutoConfiguration.class)
 @AutoConfigureAfter({ JndiConnectionFactoryAutoConfiguration.class })
 @ConditionalOnClass({ ConnectionFactory.class, JmsConnectionFactory.class,
-    JmsPoolConnectionFactory.class, JmsTemplate.class })
-@EnableConfigurationProperties({ ServiceBusJmsProperties.class,
+    JmsTemplate.class })
+@EnableConfigurationProperties({ AzureServiceBusJmsProperties.class,
     JmsProperties.class })
 @Import({ ServiceBusJmsConnectionFactoryConfiguration.class, ServiceBusJmsContainerConfiguration.class })
 public class ServiceBusJmsAutoConfiguration {
-    private static final String AMQP_URI_FORMAT = "amqps://%s?amqp.idleTimeout=%d";
-
     @Bean
-    ServiceBusJmsConnectionFactoryCustomizer customizer(ServiceBusJmsProperties serviceBusJMSProperties) {
+    ServiceBusJmsConnectionFactoryCustomizer customizer(AzureServiceBusJmsProperties serviceBusJmsProperties) {
         return new ServiceBusJmsConnectionFactoryCustomizer() {
 
             @Override
             public void customize(ServiceBusJmsConnectionFactory factory) {
-                initializeConnection(factory, serviceBusJMSProperties);
+                factory.setRemoteURI(serviceBusJmsProperties.getRemoteUrl());
+                factory.setUsername(serviceBusJmsProperties.getUsername());
+                factory.setPassword(serviceBusJmsProperties.getPassword());
 
-                AzureServiceBusJmsProperties.PrefetchPolicy prefetchProperties = serviceBusJMSProperties
+                AzureServiceBusJmsProperties.PrefetchPolicy prefetchProperties = serviceBusJmsProperties
                     .getPrefetchPolicy();
                 updatePrefetchPolicy(factory, prefetchProperties);
-                if(serviceBusJMSProperties.getPricingTier().equalsIgnoreCase("premium")) {
+                if (serviceBusJmsProperties.getPricingTier().equalsIgnoreCase("premium")) {
                     setupUserAgent(factory);
                 }
             }
@@ -71,26 +68,10 @@ public class ServiceBusJmsAutoConfiguration {
         factory.setPrefetchPolicy(prefetchPolicy);
     }
 
-    private void initializeConnection(ServiceBusJmsConnectionFactory jmsConnectionFactory,
-                                      ServiceBusJmsProperties serviceBusJMSProperties) {
-        final String connectionString = serviceBusJMSProperties.getConnectionString();
-        final int idleTimeout = serviceBusJMSProperties.getIdleTimeout();
-
-        ServiceBusConnectionString serviceBusConnectionString = new ServiceBusConnectionString(connectionString);
-        String host = serviceBusConnectionString.getEndpointUri().getHost();
-        String sasKeyName = serviceBusConnectionString.getSharedAccessKeyName();
-        String sasKey = serviceBusConnectionString.getSharedAccessKey();
-
-        String remoteUri = String.format(AMQP_URI_FORMAT, host, idleTimeout);
-        jmsConnectionFactory.setRemoteURI(remoteUri);
-        jmsConnectionFactory.setUsername(sasKeyName);
-        jmsConnectionFactory.setPassword(sasKey);
-    }
-
     private void setupUserAgent(ServiceBusJmsConnectionFactory jmsConnectionFactory) {
         final Map<String, Object> properties = new HashMap<>();
         properties.put("com.microsoft:is-client-provider", true);
-        String userAgent = "ServiceBusJms-unknown/" + AZURE_SPRING_SERVICE_BUS;
+        String userAgent = AZURE_SPRING_SERVICE_BUS;
         properties.put("user-agent", userAgent);
         //set user agent
         jmsConnectionFactory.setExtension(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES.toString(),
