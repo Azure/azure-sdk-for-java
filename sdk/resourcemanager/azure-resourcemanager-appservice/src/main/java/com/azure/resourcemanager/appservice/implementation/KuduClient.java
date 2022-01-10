@@ -306,7 +306,7 @@ class KuduClient {
                            String path, Boolean restart, Boolean clean) {
         Flux<ByteBuffer> flux = FluxUtil.toFluxByteBuffer(file);
         return retryOnError(service.deploy(host, flux, length, type, path, restart, clean, false, false))
-            .map(Response::getValue);
+            .then();
     }
 
     Mono<Void> deployAsync(DeployType type,
@@ -315,7 +315,7 @@ class KuduClient {
         AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ);
         return retryOnError(service.deploy(host, FluxUtil.readFile(fileChannel), fileChannel.size(),
             type, path, restart, clean, false, false))
-            .map(Response::getValue)
+            .then()
             .doFinally(ignored -> {
                 try {
                     fileChannel.close();
