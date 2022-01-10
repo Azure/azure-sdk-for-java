@@ -282,7 +282,7 @@ org.revapi:revapi-reporter-json;0.4.5
 org.revapi:revapi-maven-plugin;0.14.6
 org.moditect:moditect-maven-plugin;1.0.0.RC1
 org.ow2.asm:asm;9.1
-com.azure.tools:codesnippet-maven-plugin;1.0.0-beta.2
+com.azure.tools:codesnippet-maven-plugin;1.0.0-beta.4
 
 # External Dependency Exceptions
 # This section is for external dependencies whose versions were different than

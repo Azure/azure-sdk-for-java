@@ -310,8 +310,8 @@ public final class AttestationAdministrationAsyncClient {
      *
      * <!-- src_embed com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicyWithResponse -->
      * <pre>
-     * Mono&lt;Response&lt;PolicyResult&gt;&gt; resultWithResponseMono = client.setAttestationPolicyWithResponse&#40;AttestationType.OPEN_ENCLAVE,
-     *     new AttestationPolicySetOptions&#40;&#41;
+     * Mono&lt;Response&lt;PolicyResult&gt;&gt; resultWithResponseMono = client.setAttestationPolicyWithResponse&#40;
+     *     AttestationType.OPEN_ENCLAVE, new AttestationPolicySetOptions&#40;&#41;
      *         .setAttestationPolicy&#40;policyToSet&#41;
      *         .setAttestationSigner&#40;new AttestationSigningKey&#40;certificate, privateKey&#41;&#41;&#41;;
      * resultWithResponseMono.subscribe&#40;response -&gt; &#123;
@@ -526,10 +526,11 @@ public final class AttestationAdministrationAsyncClient {
      * <p><strong>Reset an attestation policy to its defaults</strong></p>
      * <!-- src_embed com.azure.security.attestation.AttestationAdministrationAsyncClient.resetPolicyWithResponse -->
      * <pre>
-     * Mono&lt;Response&lt;PolicyResult&gt;&gt; resultWithResponseMono = client.resetAttestationPolicyWithResponse&#40;AttestationType.OPEN_ENCLAVE,
-     *     new AttestationPolicySetOptions&#40;&#41;
+     * Mono&lt;Response&lt;PolicyResult&gt;&gt; resultWithResponseMono = client.resetAttestationPolicyWithResponse&#40;
+     *     AttestationType.OPEN_ENCLAVE, new AttestationPolicySetOptions&#40;&#41;
      *         .setAttestationSigner&#40;new AttestationSigningKey&#40;certificate, privateKey&#41;&#41;&#41;;
-     * resultWithResponseMono.subscribe&#40;resultWithResponse -&gt; System.out.printf&#40;&quot;Reset result: %s&#92;n&quot;, resultWithResponse.getValue&#40;&#41;.getPolicyResolution&#40;&#41;.toString&#40;&#41;&#41;&#41;;
+     * resultWithResponseMono.subscribe&#40;resultWithResponse -&gt; System.out.printf&#40;&quot;Reset result: %s&#92;n&quot;,
+     *     resultWithResponse.getValue&#40;&#41;.getPolicyResolution&#40;&#41;.toString&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationAdministrationAsyncClient.resetPolicyWithResponse -->
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
@@ -644,9 +645,10 @@ public final class AttestationAdministrationAsyncClient {
      * <p><strong>Retrieve the set of policy management certificates for this instance.</strong></p>
      * <!-- src_embed com.azure.security.attestation.AttestationAdministrationAsyncClient.listPolicyManagementCertificatesWithResponse -->
      * <pre>
-     * Mono&lt;Response&lt;List&lt;AttestationSigner&gt;&gt;&gt; signersResponseMono = client.listPolicyManagementCertificatesWithResponse&#40;new AttestationTokenValidationOptions&#40;&#41;
-     *     .setValidationSlack&#40;Duration.ofSeconds&#40;10&#41;&#41;&#41;;
-     * signersResponseMono.subscribe&#40;response -&gt; System.out.printf&#40;&quot;There are %d signers on the instance&#92;n&quot;, response.getValue&#40;&#41;.size&#40;&#41;&#41;&#41;;
+     * Mono&lt;Response&lt;List&lt;AttestationSigner&gt;&gt;&gt; signersResponseMono = client.listPolicyManagementCertificatesWithResponse&#40;
+     *     new AttestationTokenValidationOptions&#40;&#41;.setValidationSlack&#40;Duration.ofSeconds&#40;10&#41;&#41;&#41;;
+     * signersResponseMono.subscribe&#40;response -&gt; System.out.printf&#40;&quot;There are %d signers on the instance&#92;n&quot;,
+     *     response.getValue&#40;&#41;.size&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationAdministrationAsyncClient.listPolicyManagementCertificatesWithResponse -->
      * @param options Options used to validate the response from the attestation service.
@@ -717,7 +719,8 @@ public final class AttestationAdministrationAsyncClient {
      * <pre>
      * Mono&lt;PolicyCertificatesModificationResult&gt; addResultMono = client.addPolicyManagementCertificate&#40;
      *     new PolicyManagementCertificateOptions&#40;certificateToAdd, new AttestationSigningKey&#40;certificate, privateKey&#41;&#41;&#41;;
-     * addResultMono.subscribe&#40;addResult -&gt; System.out.printf&#40;&quot;Result: %s&#92;n&quot;, addResult.getCertificateResolution&#40;&#41;.toString&#40;&#41;&#41;&#41;;
+     * addResultMono.subscribe&#40;addResult -&gt; System.out.printf&#40;&quot;Result: %s&#92;n&quot;,
+     *     addResult.getCertificateResolution&#40;&#41;.toString&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationAdministrationAsyncClient.addPolicyManagementCertificate -->
      *
@@ -752,10 +755,11 @@ public final class AttestationAdministrationAsyncClient {
      * <p><strong>Add a new certificate to the set of policy management certificates for this instance.</strong></p>
      * <!-- src_embed com.azure.security.attestation.AttestationAdministrationAsyncClient.addPolicyManagementCertificateWithResponse -->
      * <pre>
-     * Mono&lt;Response&lt;PolicyCertificatesModificationResult&gt;&gt; addResponseMono = client.addPolicyManagementCertificateWithResponse&#40;
-     *     new PolicyManagementCertificateOptions&#40;certificateToAdd, new AttestationSigningKey&#40;certificate, privateKey&#41;&#41;,
-     *     Context.NONE&#41;;
-     * addResponseMono.subscribe&#40;addResponse -&gt; System.out.printf&#40;&quot;Result: %s&#92;n&quot;, addResponse.getValue&#40;&#41;.getCertificateResolution&#40;&#41;.toString&#40;&#41;&#41;&#41;;
+     * Mono&lt;Response&lt;PolicyCertificatesModificationResult&gt;&gt; addResponseMono = client
+     *     .addPolicyManagementCertificateWithResponse&#40;new PolicyManagementCertificateOptions&#40;certificateToAdd,
+     *         new AttestationSigningKey&#40;certificate, privateKey&#41;&#41;, Context.NONE&#41;;
+     * addResponseMono.subscribe&#40;addResponse -&gt; System.out.printf&#40;&quot;Result: %s&#92;n&quot;,
+     *     addResponse.getValue&#40;&#41;.getCertificateResolution&#40;&#41;.toString&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationAdministrationAsyncClient.addPolicyManagementCertificateWithResponse -->
      * <p><strong><i>Note:</i></strong> It is not considered an error to add the same certificate twice. If
@@ -847,7 +851,8 @@ public final class AttestationAdministrationAsyncClient {
      * <pre>
      * Mono&lt;PolicyCertificatesModificationResult&gt; removeResultMono = client.removePolicyManagementCertificate&#40;
      *     new PolicyManagementCertificateOptions&#40;certificateToAdd, new AttestationSigningKey&#40;certificate, privateKey&#41;&#41;&#41;;
-     * removeResultMono.subscribe&#40;removeResult -&gt; System.out.printf&#40;&quot;Result: %s&#92;n&quot;, removeResult.getCertificateResolution&#40;&#41;.toString&#40;&#41;&#41;&#41;;
+     * removeResultMono.subscribe&#40;removeResult -&gt; System.out.printf&#40;&quot;Result: %s&#92;n&quot;,
+     *     removeResult.getCertificateResolution&#40;&#41;.toString&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationAdministrationAsyncClient.removePolicyManagementCertificate -->
      *
@@ -887,10 +892,11 @@ public final class AttestationAdministrationAsyncClient {
      * <p><strong>Add a new certificate to the set of policy management certificates for this instance.</strong></p>
      * <!-- src_embed com.azure.security.attestation.AttestationAdministrationAsyncClient.removePolicyManagementCertificateWithResponse -->
      * <pre>
-     * Mono&lt;Response&lt;PolicyCertificatesModificationResult&gt;&gt; removeResponseMono = client.addPolicyManagementCertificateWithResponse&#40;
-     *     new PolicyManagementCertificateOptions&#40;certificateToAdd, new AttestationSigningKey&#40;certificate, privateKey&#41;&#41;,
-     *     Context.NONE&#41;;
-     * removeResponseMono.subscribe&#40;removeResponse -&gt; System.out.printf&#40;&quot;Result: %s&#92;n&quot;, removeResponse.getValue&#40;&#41;.getCertificateResolution&#40;&#41;.toString&#40;&#41;&#41;&#41;;
+     * Mono&lt;Response&lt;PolicyCertificatesModificationResult&gt;&gt; removeResponseMono = client
+     *     .addPolicyManagementCertificateWithResponse&#40;new PolicyManagementCertificateOptions&#40;certificateToAdd,
+     *         new AttestationSigningKey&#40;certificate, privateKey&#41;&#41;, Context.NONE&#41;;
+     * removeResponseMono.subscribe&#40;removeResponse -&gt; System.out.printf&#40;&quot;Result: %s&#92;n&quot;,
+     *     removeResponse.getValue&#40;&#41;.getCertificateResolution&#40;&#41;.toString&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationAdministrationAsyncClient.removePolicyManagementCertificateWithResponse -->
      *
