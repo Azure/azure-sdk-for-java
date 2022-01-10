@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Supported having deployment ID returned from `pushDeploy` in `WebApp` and `DeploymentSlot`.
+- Supported option for tracking deployment status via `pushDeploy` in `WebApp` and `DeploymentSlot`.
 
 ### Other Changes
 
