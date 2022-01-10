@@ -26,7 +26,7 @@ Use the client library for Azure Container Registry to:
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-containers-containerregistry</artifactId>
-  <version>1.0.0-beta.4</version>
+  <version>1.0.0-beta.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -189,7 +189,7 @@ for (String repositoryName : client.listRepositoryNames()) {
     // Obtain the images ordered from newest to oldest
     PagedIterable<ArtifactManifestProperties> imageManifests =
         repository.listManifestProperties(
-            ArtifactManifestOrderBy.LAST_UPDATED_ON_DESCENDING,
+            ArtifactManifestOrder.LAST_UPDATED_ON_DESCENDING,
             Context.NONE);
 
     imageManifests.stream().skip(imagesCountToKeep)

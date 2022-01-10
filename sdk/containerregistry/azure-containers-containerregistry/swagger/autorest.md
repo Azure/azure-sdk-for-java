@@ -50,6 +50,7 @@ directive:
 - from: swagger-document
   where: $.definitions.TagOrderBy
   transform: >
+    $["x-ms-enum"].name = ArtifactTagOrder
     $["x-ms-enum"].modelAsString = true;
 ```
 
@@ -59,6 +60,7 @@ directive:
 - from: swagger-document
   where: $.definitions.ManifestOrderBy
   transform: >
+    $["x-ms-enum"].name = ArtifactManifestOrder
     $["x-ms-enum"].modelAsString = true;
 ```
 

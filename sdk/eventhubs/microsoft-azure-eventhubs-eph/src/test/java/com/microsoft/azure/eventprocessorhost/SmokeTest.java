@@ -145,7 +145,7 @@ public class SmokeTest extends TestBase {
     }
 
     private PerTestSettings receiveFromCheckpointIteration(int iteration, int expectedEvents, String containerName,
-                                                           PrefabEventProcessor.CheckpointChoices checkpointCallType) throws Exception {
+        PrefabEventProcessor.CheckpointChoices checkpointCallType) throws Exception {
         String distinguisher = "e";
         if (checkpointCallType == PrefabEventProcessor.CheckpointChoices.CKP_NOARGS) {
             distinguisher = "n";

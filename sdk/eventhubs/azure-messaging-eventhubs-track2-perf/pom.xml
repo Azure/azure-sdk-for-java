@@ -17,6 +17,7 @@
 
   <properties>
     <perf.test.mainClass>com.azure.messaging.eventhubs.perf.App</perf.test.mainClass>
+    <jacoco.skip>true</jacoco.skip>
   </properties>
 
   <dependencies>

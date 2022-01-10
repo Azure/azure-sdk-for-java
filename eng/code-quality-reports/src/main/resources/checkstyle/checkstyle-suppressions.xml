@@ -108,7 +108,13 @@ the main ServiceBusClientBuilder. -->
   <!-- Suppress method name "acceptNextSession" and "acceptSession" for ServiceBusSessionReceiverAsyncClient and ServiceBusSessionReceiverClient-->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="ServiceBusSessionReceiverAsyncClient.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="ServiceBusSessionReceiverClient.java"/>
-
+  
+  <!-- Suppress warning for ServiceClients to have Client in its name as Azure Container Registry has Clientlets which do not follow the same convention. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="ContainerRepository.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="ContainerRepositoryAsync.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="RegistryArtifact.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="RegistryArtifactAsync.java"/>
+  
   <!-- Some classes are named *Builder but are not @ServiceClientBuilder -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.core.http.netty.NettyAsyncHttpClientBuilder"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder"/>
