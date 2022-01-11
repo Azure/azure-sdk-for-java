@@ -12,7 +12,7 @@ import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.service.AzureServiceType;
-import com.azure.spring.service.storage.queue.QueueServiceClientBuilderFactory;
+import com.azure.spring.service.implementation.storage.queue.QueueServiceClientBuilderFactory;
 import com.azure.storage.queue.QueueServiceAsyncClient;
 import com.azure.storage.queue.QueueServiceClient;
 import com.azure.storage.queue.QueueServiceClientBuilder;
@@ -55,7 +55,7 @@ public class AzureStorageQueueAutoConfiguration extends AzureServiceConfiguratio
 
     @Bean
     @ConditionalOnMissingBean
-    public QueueServiceClientBuilderFactory queueServiceClientBuilderFactory(
+    QueueServiceClientBuilderFactory queueServiceClientBuilderFactory(
         AzureStorageQueueProperties properties,
         ObjectProvider<ConnectionStringProvider<AzureServiceType.StorageQueue>> connectionStringProviders,
         ObjectProvider<AzureServiceClientBuilderCustomizer<QueueServiceClientBuilder>> customizers) {
@@ -70,7 +70,7 @@ public class AzureStorageQueueAutoConfiguration extends AzureServiceConfiguratio
 
     @Bean
     @ConditionalOnMissingBean
-    public QueueServiceClientBuilder queueServiceClientBuilder(QueueServiceClientBuilderFactory factory) {
+    QueueServiceClientBuilder queueServiceClientBuilder(QueueServiceClientBuilderFactory factory) {
         return factory.build();
     }
 

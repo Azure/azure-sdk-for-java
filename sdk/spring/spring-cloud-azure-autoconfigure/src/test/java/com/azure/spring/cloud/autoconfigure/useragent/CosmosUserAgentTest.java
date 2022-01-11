@@ -11,7 +11,7 @@ import com.azure.spring.cloud.autoconfigure.cosmos.properties.AzureCosmosPropert
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.useragent.util.UserAgentTestUtil;
 import com.azure.spring.core.AzureSpringIdentifier;
-import com.azure.spring.service.cosmos.CosmosClientBuilderFactory;
+import com.azure.spring.service.implementation.cosmos.CosmosClientBuilderFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;

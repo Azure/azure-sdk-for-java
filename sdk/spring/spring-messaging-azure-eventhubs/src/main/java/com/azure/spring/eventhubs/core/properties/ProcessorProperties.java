@@ -4,7 +4,7 @@
 package com.azure.spring.eventhubs.core.properties;
 
 import com.azure.spring.service.eventhubs.properties.EventBatchProperties;
-import com.azure.spring.service.eventhubs.properties.EventProcessorClientProperties;
+import com.azure.spring.service.implementation.eventhubs.properties.EventProcessorClientProperties;
 import com.azure.spring.service.eventhubs.properties.LoadBalancingProperties;
 
 import java.util.HashMap;

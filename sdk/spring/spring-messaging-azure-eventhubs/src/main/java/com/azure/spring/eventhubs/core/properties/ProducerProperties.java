@@ -3,7 +3,7 @@
 
 package com.azure.spring.eventhubs.core.properties;
 
-import com.azure.spring.service.eventhubs.properties.EventHubProducerProperties;
+import com.azure.spring.service.implementation.eventhubs.properties.EventHubProducerProperties;
 
 /**
  * An event hub producer related properties.

@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.storage.common;
 
 import com.azure.spring.cloud.autoconfigure.properties.core.retry.HttpRetryConfigurationProperties;
-import com.azure.spring.service.storage.common.StorageRetry;
+import com.azure.spring.service.implementation.storage.common.StorageRetry;
 
 /**
  *

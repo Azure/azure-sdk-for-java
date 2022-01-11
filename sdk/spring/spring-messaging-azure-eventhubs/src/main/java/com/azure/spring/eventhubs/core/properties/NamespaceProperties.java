@@ -3,7 +3,7 @@
 
 package com.azure.spring.eventhubs.core.properties;
 
-import com.azure.spring.service.eventhubs.properties.EventHubsNamespaceProperties;
+import com.azure.spring.service.implementation.eventhubs.properties.EventHubsNamespaceProperties;
 
 /**
  * An event hub namespace related properties.
