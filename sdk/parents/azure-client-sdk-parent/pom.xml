@@ -954,7 +954,6 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
-              <testRelease>${java.vm.specification.version}</testRelease>
               <compilerArgs combine.children="append">
                 <arg>-Xlint:-module</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
                 <arg>-Xlint:-requires-transitive-automatic</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
@@ -979,6 +978,23 @@
                   <excludes>
                     <exclude>module-info.java</exclude>
                   </excludes>
+                </configuration>
+              </execution>
+              <!-- compile tests fir with Java 9+ -->
+              <execution>
+                <id>default-testCompile</id>
+                <configuration>
+                  <testRelease>${java.vm.specification.version}</testRelease>
+                </configuration>
+              </execution>
+              <!-- then compile with Java 8 -->
+              <execution>
+                <id>base-testCompile</id>
+                <goals>
+                  <goal>testCompile</goal>
+                </goals>
+                <configuration>
+                  <testRelease>8</testRelease>
                 </configuration>
               </execution>
             </executions>
