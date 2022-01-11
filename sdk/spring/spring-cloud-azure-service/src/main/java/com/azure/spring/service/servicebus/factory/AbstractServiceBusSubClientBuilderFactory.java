@@ -60,10 +60,14 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
         }
     }
 
+    protected boolean isShareServiceBusClientBuilder() {
+        return shareServiceBusClientBuilder;
+    }
+
     @Override
     protected BiConsumer<T, ProxyOptions> consumeProxyOptions() {
         return (builder, proxy) -> {
-            if (!this.shareServiceBusClientBuilder) {
+            if (!isShareServiceBusClientBuilder()) {
                 this.serviceBusClientBuilder.proxyOptions(proxy);
             }
         };
@@ -72,7 +76,7 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
     @Override
     protected BiConsumer<T, AmqpTransportType> consumeAmqpTransportType() {
         return (builder, t) -> {
-            if (!this.shareServiceBusClientBuilder) {
+            if (!isShareServiceBusClientBuilder()) {
                 this.serviceBusClientBuilder.transportType(t);
             }
         };
@@ -81,7 +85,7 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
     @Override
     protected BiConsumer<T, AmqpRetryOptions> consumeAmqpRetryOptions() {
         return (builder, retry) -> {
-            if (!this.shareServiceBusClientBuilder) {
+            if (!isShareServiceBusClientBuilder()) {
                 this.serviceBusClientBuilder.retryOptions(retry);
             }
         };
@@ -90,7 +94,7 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
     @Override
     protected BiConsumer<T, ClientOptions> consumeClientOptions() {
         return (builder, client) -> {
-            if (!this.shareServiceBusClientBuilder) {
+            if (!isShareServiceBusClientBuilder()) {
                 this.serviceBusClientBuilder.clientOptions(client);
             }
         };
@@ -105,19 +109,19 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(T builder) {
         return Arrays.asList(
             new NamedKeyAuthenticationDescriptor(provider -> {
-                if (!this.shareServiceBusClientBuilder) {
+                if (!isShareServiceBusClientBuilder()) {
                     this.serviceBusClientBuilder.credential(properties.getFullyQualifiedNamespace(),
                         provider.getCredential());
                 }
             }),
             new SasAuthenticationDescriptor(provider -> {
-                if (!this.shareServiceBusClientBuilder) {
+                if (!isShareServiceBusClientBuilder()) {
                     this.serviceBusClientBuilder.credential(properties.getFullyQualifiedNamespace(),
                         provider.getCredential());
                 }
             }),
             new TokenAuthenticationDescriptor(provider -> {
-                if (!this.shareServiceBusClientBuilder) {
+                if (!isShareServiceBusClientBuilder()) {
                     this.serviceBusClientBuilder.credential(properties.getFullyQualifiedNamespace(),
                         provider.getCredential());
                 }
@@ -128,7 +132,7 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
     @Override
     protected BiConsumer<T, Configuration> consumeConfiguration() {
         return (builder, configuration) -> {
-            if (!this.shareServiceBusClientBuilder) {
+            if (!isShareServiceBusClientBuilder()) {
                 this.serviceBusClientBuilder.configuration(configuration);
             }
         };
@@ -137,7 +141,7 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
     @Override
     protected BiConsumer<T, TokenCredential> consumeDefaultTokenCredential() {
         return (builder, credential) -> {
-            if (!this.shareServiceBusClientBuilder) {
+            if (!isShareServiceBusClientBuilder()) {
                 this.serviceBusClientBuilder.credential(this.properties.getFullyQualifiedNamespace(), credential);
             }
         };
@@ -146,7 +150,7 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
     @Override
     protected BiConsumer<T, String> consumeConnectionString() {
         return (builder, connectionString) -> {
-            if (!this.shareServiceBusClientBuilder) {
+            if (!isShareServiceBusClientBuilder()) {
                 this.serviceBusClientBuilder.connectionString(connectionString);
             }
         };

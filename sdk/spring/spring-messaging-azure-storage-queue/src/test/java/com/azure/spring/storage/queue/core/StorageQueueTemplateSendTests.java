@@ -20,7 +20,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class StorageQueueTemplateSendTest extends SendOperationTest<StorageQueueOperation> {
+public class StorageQueueTemplateSendTests extends SendOperationTest<StorageQueueOperation> {
 
     @Mock
     private StorageQueueClientFactory mockClientFactory;

@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.verification.VerificationMode;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -32,9 +33,23 @@ class AzureStorageFileShareClientBuilderFactoryTest extends AzureHttpClientBuild
     TestAzureStorageFileShareProperties, ShareServiceClientBuilderFactory> {
 
     private static final String ENDPOINT = "https://abc.file.core.windows.net/";
+    private static final String CONNECTION_STRING = "BlobEndpoint=https://test.blob.core.windows.net/;"
+        + "QueueEndpoint=https://test.queue.core.windows.net/;FileEndpoint=https://test.file.core.windows.net/;"
+        + "TableEndpoint=https://test.table.core.windows.net/;SharedAccessSignature=sv=2020-08-04"
+        + "&ss=bfqt&srt=sco&sp=rwdlacupitfx&se=2023-06-08T15:17:21Z&st=2021-12-27T07:17:21Z&sip=192.168.0.1"
+        + "&spr=https,http&sig=test";
 
     @Test
-    void testStorageSharedKeyCredentialConfigured() {
+    void connectionStringConfigured() {
+        TestAzureStorageFileShareProperties properties = createMinimalServiceProperties();
+        properties.setConnectionString(CONNECTION_STRING);
+        final ShareServiceClientBuilder builder = new ShareServiceClientBuilderFactoryExt(properties).build();
+        final ShareServiceClient client = builder.buildClient();
+        verify(builder, times(1)).connectionString(anyString());
+    }
+    
+    @Test
+    void storageSharedKeyCredentialConfigured() {
         TestAzureStorageFileShareProperties properties = createMinimalServiceProperties();
         properties.setAccountName("test_account_name");
         properties.setAccountKey("test_account_key");
@@ -44,7 +59,7 @@ class AzureStorageFileShareClientBuilderFactoryTest extends AzureHttpClientBuild
     }
 
     @Test
-    void testAzureSasCredentialConfigured() {
+    void azureSasCredentialConfigured() {
         TestAzureStorageFileShareProperties properties = createMinimalServiceProperties();
         properties.setSasToken("test");
         final ShareServiceClientBuilder builder = new ShareServiceClientBuilderFactoryExt(properties).build();
@@ -52,9 +67,8 @@ class AzureStorageFileShareClientBuilderFactoryTest extends AzureHttpClientBuild
         verify(builder, times(1)).credential(any(AzureSasCredential.class));
     }
 
-
     @Test
-    void testProxyPropertiesConfigured() {
+    void proxyPropertiesConfigured() {
         TestAzureStorageFileShareProperties properties = createMinimalServiceProperties();
         ProxyProperties proxyProperties = properties.getProxy();
         proxyProperties.setHostname("localhost");
@@ -71,7 +85,7 @@ class AzureStorageFileShareClientBuilderFactoryTest extends AzureHttpClientBuild
     }
 
     @Test
-    void testRetryOptionsConfigured() {
+    void retryOptionsConfigured() {
         TestAzureStorageFileShareProperties properties = createMinimalServiceProperties();
         final ShareServiceClientBuilderFactoryExt builderFactory = new ShareServiceClientBuilderFactoryExt(properties);
         final ShareServiceClientBuilder builder = builderFactory.build();

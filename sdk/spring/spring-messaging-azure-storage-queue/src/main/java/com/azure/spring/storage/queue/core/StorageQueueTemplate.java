@@ -58,7 +58,7 @@ public class StorageQueueTemplate implements StorageQueueOperation {
         QueueMessageItem queueMessageItem = messageConverter.fromMessage(message, QueueMessageItem.class);
         QueueAsyncClient queueClient = storageQueueClientFactory.getOrCreateQueueClient(queueName);
         Assert.notNull(queueMessageItem, "queueMessageItem can't be null");
-        return queueClient.sendMessage(queueMessageItem.getMessageText()).then();
+        return queueClient.sendMessage(queueMessageItem.getBody().toString()).then();
     }
 
     @Override
