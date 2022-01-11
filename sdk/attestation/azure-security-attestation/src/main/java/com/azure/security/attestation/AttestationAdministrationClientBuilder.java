@@ -132,7 +132,7 @@ public final class AttestationAdministrationClientBuilder {
         try {
             new URL(endpoint);
         } catch (MalformedURLException ex) {
-            logger.logExceptionAsError(new IllegalArgumentException(ex));
+            throw logger.logExceptionAsError(new IllegalArgumentException(ex));
         }
         clientImplBuilder.instanceUrl(endpoint);
         return this;
@@ -306,11 +306,6 @@ public final class AttestationAdministrationClientBuilder {
     public AttestationAdministrationAsyncClient buildAsyncClient() {
         return new AttestationAdministrationAsyncClient(buildInnerClient(), this.tokenValidationOptions);
     }
-
-    /**
-     * Legacy API surface which will be removed shortly.
-     */
-
 
     /**
      * Builds an instance of AttestationClientImpl with the provided parameters.
