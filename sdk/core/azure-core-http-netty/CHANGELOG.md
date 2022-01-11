@@ -1,5 +1,15 @@
 # Release History
 
+## 1.11.6 (2022-01-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.0` to `1.24.1`.
+- Upgraded Netty from `4.1.70.Final` to `4.1.72.Final`.
+- Upgraded Reactor Netty from `1.0.13` to `1.0.14`.
+
 ## 1.11.5 (2022-01-06)
 
 ### Bugs Fixed
