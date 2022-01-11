@@ -142,6 +142,11 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
     }
 
     @Override
+    public String condition() {
+        return innerModel().condition();
+    }
+
+    @Override
     public RoleAssignmentImpl forObjectId(String objectId) {
         this.objectId = objectId;
         return this;

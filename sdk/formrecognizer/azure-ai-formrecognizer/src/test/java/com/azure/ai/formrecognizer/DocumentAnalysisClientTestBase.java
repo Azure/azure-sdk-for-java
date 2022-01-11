@@ -57,8 +57,8 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
     }
 
     DocumentAnalysisClientBuilder getDocumentAnalysisBuilder(HttpClient httpClient,
-                                                             DocumentAnalysisServiceVersion serviceVersion,
-                                                             boolean useKeyCredential) {
+        DocumentAnalysisServiceVersion serviceVersion,
+        boolean useKeyCredential) {
         DocumentAnalysisClientBuilder builder = new DocumentAnalysisClientBuilder()
             .endpoint(getEndpoint())
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
@@ -80,8 +80,8 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
     }
 
     DocumentModelAdministrationClientBuilder getDocumentModelAdminClientBuilder(HttpClient httpClient,
-                                                                                DocumentAnalysisServiceVersion serviceVersion,
-                                                                                boolean useKeyCredential) {
+        DocumentAnalysisServiceVersion serviceVersion,
+        boolean useKeyCredential) {
         DocumentModelAdministrationClientBuilder builder = new DocumentModelAdministrationClientBuilder()
             .endpoint(getEndpoint())
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)

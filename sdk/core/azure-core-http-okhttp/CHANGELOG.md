@@ -1,6 +1,16 @@
 # Release History
 
-## 1.7.7 (2022-01-05)
+## 1.8.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.7.7 (2022-01-06)
 
 ### Other Changes
 
