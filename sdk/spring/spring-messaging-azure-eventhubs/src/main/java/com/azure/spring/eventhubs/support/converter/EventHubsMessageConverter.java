@@ -28,7 +28,7 @@ public class EventHubsMessageConverter extends AbstractAzureMessageConverter<Eve
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsMessageConverter.class);
 
-    private static final Set<String> IGNORED_HEADERS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+    private static final Set<String> IGNORED_SPRING_MESSAGE_HEADERS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
         EventHubsHeaders.PARTITION_KEY,
         EventHubsHeaders.BATCH_CONVERTED_PARTITION_KEY,
         EventHubsHeaders.ENQUEUED_TIME,
@@ -83,7 +83,7 @@ public class EventHubsMessageConverter extends AbstractAzureMessageConverter<Eve
         super.setCustomHeaders(headers, azureMessage);
         Set<String> ignoredHeaders = new HashSet<>();
         headers.forEach((key, value) -> {
-            if (IGNORED_HEADERS.contains(key)) {
+            if (IGNORED_SPRING_MESSAGE_HEADERS.contains(key)) {
                 ignoredHeaders.add(key);
             } else {
                 azureMessage.getProperties().put(key, value.toString());
