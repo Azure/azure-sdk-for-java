@@ -4,7 +4,7 @@
 
 ### Other Changes
 #### Dependency Updates
-- Upgraded `azure-core` dependency to 1.24.0
+- Upgraded `azure-core` dependency to 1.24.1
 
 
 ## 1.4.2 (2021-11-24)
