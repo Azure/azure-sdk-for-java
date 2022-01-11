@@ -3,12 +3,9 @@
 
 package com.azure.spring.core.properties.profile;
 
+import com.azure.core.management.AzureEnvironment;
 import com.azure.spring.core.aware.AzureProfileAware;
 
-import static com.azure.spring.core.aware.AzureProfileAware.CloudType.AZURE;
-import static com.azure.spring.core.aware.AzureProfileAware.CloudType.AZURE_CHINA;
-import static com.azure.spring.core.aware.AzureProfileAware.CloudType.AZURE_GERMANY;
-import static com.azure.spring.core.aware.AzureProfileAware.CloudType.AZURE_US_GOVERNMENT;
 import static com.azure.spring.core.util.AzurePropertiesUtils.copyPropertiesIgnoreNull;
 
 /**
@@ -20,7 +17,7 @@ public abstract class AzureProfileAdapter implements AzureProfileAware.Profile {
      * Change the environment according to the cloud type set.
      */
     protected void changeEnvironmentAccordingToCloud() {
-        AzureEnvironment defaultEnvironment = decideAzureEnvironment(this.getCloud());
+        AzureProfileAware.AzureEnvironment defaultEnvironment = decideAzureEnvironment(this.getCloud());
         copyPropertiesIgnoreNull(defaultEnvironment, this.getEnvironment());
     }
 
@@ -28,20 +25,32 @@ public abstract class AzureProfileAdapter implements AzureProfileAware.Profile {
      * Get the Azure environment.
      * @return The Azure environment.
      */
-    public abstract AzureEnvironment getEnvironment();
+    public abstract AzureProfileAware.AzureEnvironment getEnvironment();
 
-    private AzureEnvironment decideAzureEnvironment(AzureProfileAware.CloudType cloud) {
-        switch (cloud) {
+    private AzureProfileAware.AzureEnvironment decideAzureEnvironment(AzureProfileAware.CloudType cloud) {
+        AzureEnvironment managementAzureEnvironment = decideManagementAzureEnvironment(cloud, null);
+        return getEnvironment().fromManagementAzureEnvironment(managementAzureEnvironment);
+    }
+
+    /**
+     * Decide the corresponding {@link AzureEnvironment} by the {@link com.azure.spring.core.aware.AzureProfileAware.CloudType}.
+     * @param cloudType The provided cloud type.
+     * @param defaultManagementEnvironment The default management {@link AzureEnvironment}.
+     * @return The corresponding {@link AzureEnvironment}.
+     */
+    public static AzureEnvironment decideManagementAzureEnvironment(AzureProfileAware.CloudType cloudType,
+                                                                     AzureEnvironment defaultManagementEnvironment) {
+        switch (cloudType) {
             case AZURE_CHINA:
-                return new KnownAzureEnvironment(AZURE_CHINA);
+                return AzureEnvironment.AZURE_CHINA;
             case AZURE_US_GOVERNMENT:
-                return new KnownAzureEnvironment(AZURE_US_GOVERNMENT);
+                return AzureEnvironment.AZURE_US_GOVERNMENT;
             case AZURE_GERMANY:
-                return new KnownAzureEnvironment(AZURE_GERMANY);
+                return AzureEnvironment.AZURE_GERMANY;
             case AZURE:
-                return new KnownAzureEnvironment(AZURE);
+                return AzureEnvironment.AZURE;
             default:
-                return new AzureEnvironment();
+                return defaultManagementEnvironment;
         }
     }
 

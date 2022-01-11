@@ -4,6 +4,7 @@
 package com.azure.spring.service.storage.queue;
 
 import com.azure.spring.service.storage.TestAzureStorageProperties;
+import com.azure.storage.queue.QueueMessageEncoding;
 import com.azure.storage.queue.QueueServiceVersion;
 
 /**
@@ -12,7 +13,7 @@ import com.azure.storage.queue.QueueServiceVersion;
 class TestAzureStorageQueueProperties extends TestAzureStorageProperties implements QueueServiceClientProperties {
 
     private QueueServiceVersion serviceVersion;
-    private String messageEncoding;
+    private QueueMessageEncoding messageEncoding;
 
     @Override
     public QueueServiceVersion getServiceVersion() {
@@ -24,11 +25,11 @@ class TestAzureStorageQueueProperties extends TestAzureStorageProperties impleme
     }
 
     @Override
-    public String getMessageEncoding() {
+    public QueueMessageEncoding getMessageEncoding() {
         return messageEncoding;
     }
 
-    public void setMessageEncoding(String messageEncoding) {
+    public void setMessageEncoding(QueueMessageEncoding messageEncoding) {
         this.messageEncoding = messageEncoding;
     }
 }

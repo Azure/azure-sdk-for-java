@@ -3,7 +3,9 @@
 
 package com.azure.spring.eventhubs.core.properties;
 
+import com.azure.spring.service.eventhubs.properties.EventBatchProperties;
 import com.azure.spring.service.eventhubs.properties.EventProcessorClientProperties;
+import com.azure.spring.service.eventhubs.properties.LoadBalancingProperties;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,8 +16,8 @@ import java.util.Map;
 public class ProcessorProperties extends ConsumerProperties implements EventProcessorClientProperties {
 
     private final Map<String, EventProcessorClientProperties.StartPosition> initialPartitionEventPosition = new HashMap<>();
-    private final LoadBalancing loadBalancing = new LoadBalancing();
-    private final EventBatch batch = new EventBatch();
+    private final LoadBalancingProperties loadBalancing = new LoadBalancingProperties();
+    private final EventBatchProperties batch = new EventBatchProperties();
     private Boolean trackLastEnqueuedEventProperties;
 
     @Override
@@ -24,12 +26,12 @@ public class ProcessorProperties extends ConsumerProperties implements EventProc
     }
 
     @Override
-    public LoadBalancing getLoadBalancing() {
+    public LoadBalancingProperties getLoadBalancing() {
         return loadBalancing;
     }
 
     @Override
-    public EventBatch getBatch() {
+    public EventBatchProperties getBatch() {
         return batch;
     }
 

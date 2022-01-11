@@ -24,7 +24,7 @@ public class AzureAppConfigurationProperties extends AbstractAzureHttpConfigurat
      */
     private String connectionString;
     /**
-     * Version of the service to be used when making request.
+     * Version of the app configuration service to be used when making request.
      */
     private ConfigurationServiceVersion serviceVersion;
 

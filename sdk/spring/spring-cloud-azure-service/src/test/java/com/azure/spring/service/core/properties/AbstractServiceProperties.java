@@ -6,7 +6,7 @@ package com.azure.spring.service.core.properties;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.authentication.TokenCredentialProperties;
 import com.azure.spring.core.properties.client.ClientProperties;
-import com.azure.spring.core.properties.profile.AzureProfile;
+import com.azure.spring.core.properties.profile.AzureProfileProperties;
 import com.azure.spring.core.properties.proxy.ProxyProperties;
 import com.azure.spring.core.properties.retry.RetryProperties;
 
@@ -17,7 +17,7 @@ abstract class AbstractServiceProperties implements AzureProperties {
 
     protected final TokenCredentialProperties credential = new TokenCredentialProperties();
 
-    protected final AzureProfile profile = new AzureProfile();
+    protected final AzureProfileProperties profile = new AzureProfileProperties();
 
     protected RetryProperties retry;
 
@@ -31,7 +31,7 @@ abstract class AbstractServiceProperties implements AzureProperties {
     }
 
     @Override
-    public AzureProfile getProfile() {
+    public AzureProfileProperties getProfile() {
         return profile;
     }
 
