@@ -14,7 +14,7 @@
 
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>2.4.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
+    <version>2.5.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
     <name>JCA Provider for Azure Key Vault</name>
     <description>The Java Crypto Architecture (JCA) Provider for Azure Key Vault</description>
 
@@ -25,6 +25,7 @@
         <codesnippet.skip>false</codesnippet.skip>
         <javadocDoclet></javadocDoclet>
         <javadocDocletOptions></javadocDocletOptions>
+        <createSourcesJar>true</createSourcesJar>
     </properties>
 
     <dependencies>
@@ -63,8 +64,8 @@
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
-            <artifactId>azure-core-test</artifactId>
-            <version>1.7.6</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+            <artifactId>azure-core</artifactId>
+            <version>1.24.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
             <scope>test</scope>
         </dependency>
         <!-- JUnit -->
@@ -110,7 +111,8 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <createSourcesJar>true</createSourcesJar>
+                            <shadeTestJar>false</shadeTestJar>
+                            <createSourcesJar>${createSourcesJar}</createSourcesJar>
                             <shadeSourcesContent>true</shadeSourcesContent>
                             <relocations>
                                 <relocation>
