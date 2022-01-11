@@ -501,9 +501,12 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             }
         }
 
-        if (numberRequested > 0L && isEmpty) {
-            addCreditsToLink("Adding more credits in drain loop.");
-        }
+        // In the drain loop, add credits only when the queue is empty, link has no credits and there are still
+        // outstanding requests to be fulfilled.
+        // AmqpReceiveLink link = this.currentLink;
+        // if (numberRequested > 0L && isEmpty && link != null && link.getCredits() <= 0) {
+        //     addCreditsToLink("Adding more credits in drain loop.");
+        // }
     }
 
     private boolean checkAndSetTerminated() {
@@ -560,7 +563,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             // Add more credits if the link has fewer credits than prefetch value. This allows users to control how
             // many events to buffer on the client and also control the throughput. If users need higher throughput,
             // they can set a higher prefetch number and allocate larger heap size accordingly.
-            if (currentLinkCredits <= prefetch) {
+            if (currentLinkCredits < prefetch) {
                 logger.info("linkName[{}] entityPath[{}] creditsToAdd[{}] Link running low on credits. Adding more. "
                                 + "{}", linkName, entityPath, credits, message);
 
