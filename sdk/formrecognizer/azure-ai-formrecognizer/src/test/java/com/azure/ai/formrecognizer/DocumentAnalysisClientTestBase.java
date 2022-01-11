@@ -118,12 +118,18 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
     }
 
     static TokenCredential getCredentialByAuthority(String endpoint) {
+        System.out.printf("endpoint %s%n", endpoint);
         String authority = TestUtils.getAuthority(endpoint);
+        System.out.printf("authority %s%n", authority);
         if (authority == AzureAuthorityHosts.AZURE_PUBLIC_CLOUD) {
             return new DefaultAzureCredentialBuilder()
                 .authorityHost(TestUtils.getAuthority(endpoint))
                 .build();
         } else {
+            System.out.println("client secret builder");
+            System.out.printf("tenant id %s%n", AZURE_TENANT_ID);
+            System.out.printf("client id %s%n", AZURE_CLIENT_ID);
+            System.out.printf("client secret %s%n", AZURE_FORM_RECOGNIZER_CLIENT_SECRET);
             return new ClientSecretCredentialBuilder()
                 .tenantId(AZURE_TENANT_ID)
                 .clientId(AZURE_CLIENT_ID)
