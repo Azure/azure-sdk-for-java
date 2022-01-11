@@ -1,5 +1,14 @@
 # Release History
 
+## 2.3.7 (2022-01-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.0` to `1.24.1`.
+- Upgraded Reactor from `3.4.12` to `3.4.13`.
+
 ## 2.3.6 (2022-01-07)
 
 ### Other Changes
