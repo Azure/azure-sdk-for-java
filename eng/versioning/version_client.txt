@@ -69,7 +69,7 @@ com.azure:azure-core-amqp;2.3.7;2.4.0-beta.1
 com.azure:azure-core-amqp-experimental;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core-experimental;1.0.0-beta.23;1.0.0-beta.24
 com.azure:azure-core-http-jdk-httpclient;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-core-http-netty;1.11.4;1.11.6
+com.azure:azure-core-http-netty;1.11.6;1.12.0-beta.1
 com.azure:azure-core-http-okhttp;1.7.6;1.7.8
 com.azure:azure-core-management;1.4.4;1.5.1
 com.azure:azure-core-serializer-avro-apache;1.0.0-beta.17;1.0.0-beta.19
