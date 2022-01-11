@@ -6,9 +6,9 @@ package com.azure.spring.cloud.autoconfigure.servicebus.properties;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
 import com.azure.spring.core.util.AzurePropertiesUtils;
-import com.azure.spring.service.servicebus.properties.ServiceBusReceiverClientProperties;
 import com.azure.spring.service.servicebus.properties.ServiceBusNamespaceProperties;
 import com.azure.spring.service.servicebus.properties.ServiceBusProcessorClientProperties;
+import com.azure.spring.service.servicebus.properties.ServiceBusReceiverClientProperties;
 import com.azure.spring.service.servicebus.properties.ServiceBusSenderClientProperties;
 import org.springframework.boot.context.properties.PropertyMapper;
 
@@ -21,6 +21,9 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties i
 
     public static final String PREFIX = "spring.cloud.azure.servicebus";
 
+    /**
+     * Whether to enable cross entity transaction on the connection to Service bus.
+     */
     private Boolean crossEntityTransactions;
     private final Producer producer = new Producer();
     private final Consumer consumer = new Consumer();
@@ -141,13 +144,33 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties i
      * Properties of a Service Bus consumer.
      */
     public static class Consumer extends AzureServiceBusCommonProperties implements ServiceBusReceiverClientProperties {
-
+        /**
+         * Whether to enable session for the consumer.
+         */
         private Boolean sessionEnabled;
+        /**
+         * Whether to enable auto-complete.
+         */
         private Boolean autoComplete;
+        /**
+         * Prefetch count of the consumer.
+         */
         private Integer prefetchCount;
+        /**
+         * Type of the SubQueue to connect to.
+         */
         private SubQueue subQueue;
+        /**
+         * Mode for receiving messages.
+         */
         private ServiceBusReceiveMode receiveMode = ServiceBusReceiveMode.PEEK_LOCK;
+        /**
+         * Name for a topic subscription.
+         */
         private String subscriptionName;
+        /**
+         * Amount of time to continue auto-renewing the lock.
+         */
         private Duration maxAutoLockRenewDuration;
 
         @Override
@@ -218,7 +241,13 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties i
      * Properties of a Service Bus processor.
      */
     public static class Processor extends Consumer implements ServiceBusProcessorClientProperties {
+        /**
+         * Max concurrent messages to process.
+         */
         private Integer maxConcurrentCalls;
+        /**
+         * Maximum number of concurrent sessions to process at any given time.
+         */
         private Integer maxConcurrentSessions;
 
         public Integer getMaxConcurrentCalls() {

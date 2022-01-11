@@ -4,18 +4,11 @@
 package com.azure.spring.core.properties.profile;
 
 import com.azure.spring.core.aware.AzureProfileAware;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * The AzureEnvironment defines all properties to Azure services, such as endpoints, resource ids, etc.
  */
-public class AzureEnvironment implements AzureProfileAware.Environment {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(AzureEnvironment.class);
+public class AzureEnvironmentProperties implements AzureProfileAware.AzureEnvironment {
 
     /**
      * The management portal URL.
@@ -29,38 +22,86 @@ public class AzureEnvironment implements AzureProfileAware.Environment {
      * The management service endpoint.
      */
     private String managementEndpoint;
+    /**
+     * The resource management endpoint.
+     */
     private String resourceManagerEndpoint;
+    /**
+     * The SQL management endpoint.
+     */
     private String sqlManagementEndpoint;
+    /**
+     * The SQL Server hostname suffix.
+     */
     private String sqlServerHostnameSuffix;
+    /**
+     * The gallery endpoint.
+     */
     private String galleryEndpoint;
     /**
      * The Azure Active Directory endpoint to connect to.
      */
     private String activeDirectoryEndpoint;
+    /**
+     * The Azure Active Directory resource id.
+     */
     private String activeDirectoryResourceId;
+    /**
+     * The Azure Active Directory Graph endpoint.
+     */
     private String activeDirectoryGraphEndpoint;
+    /**
+     * The Azure Active Directory Graph API version.
+     */
     private String activeDirectoryGraphApiVersion;
+    /**
+     * The Microsoft Graph endpoint.
+     */
     private String microsoftGraphEndpoint;
+    /**
+     * The Data Lake endpoint.
+     */
     private String dataLakeEndpointResourceId;
+    /**
+     * The Storage endpoint suffix.
+     */
     private String storageEndpointSuffix;
+    /**
+     * The Key Vault DNS suffix.
+     */
     private String keyVaultDnsSuffix;
+    /**
+     * The Data Lake storage file system endpoint suffix.
+     */
     private String azureDataLakeStoreFileSystemEndpointSuffix;
+    /**
+     * The Data Lake analytics catalog and job endpoint suffix.
+     */
     private String azureDataLakeAnalyticsCatalogAndJobEndpointSuffix;
+    /**
+     * The Azure Log Analytics endpoint.
+     */
     private String azureLogAnalyticsEndpoint;
+    /**
+     * The Azure Application Insights endpoint.
+     */
     private String azureApplicationInsightsEndpoint;
 
     /**
-     * Create an {@link AzureEnvironment} instance with default value.
+     * Create an {@link AzureEnvironmentProperties} instance with default value.
      */
-    public AzureEnvironment() {
+    public AzureEnvironmentProperties() {
 
     }
 
     /**
-     * Create an {@link AzureEnvironment} instance with environment value from {@link com.azure.core.management.AzureEnvironment}.
+     * Create an {@link AzureEnvironmentProperties} instance with environment value from {@link com.azure.core.management.AzureEnvironment}.
      * @param azureEnvironment The {@link com.azure.core.management.AzureEnvironment} instance.
      */
-    public AzureEnvironment(com.azure.core.management.AzureEnvironment azureEnvironment) {
+    private AzureEnvironmentProperties(com.azure.core.management.AzureEnvironment azureEnvironment) {
+        if (azureEnvironment == null) {
+            return;
+        }
         this.portal = azureEnvironment.getPortal();
         this.publishingProfile = azureEnvironment.getPublishingProfile();
         this.managementEndpoint = azureEnvironment.getManagementEndpoint();
@@ -82,43 +123,11 @@ public class AzureEnvironment implements AzureProfileAware.Environment {
         this.azureApplicationInsightsEndpoint = azureEnvironment.getApplicationInsightsEndpoint();
     }
 
-    /**
-     * Convert to a {@link com.azure.core.management.AzureEnvironment} instance.
-     * @return The {@link com.azure.core.management.AzureEnvironment} instance.
-     */
-    public com.azure.core.management.AzureEnvironment toManagementAzureEnvironment() {
-        return new com.azure.core.management.AzureEnvironment(exportEndpointsMap());
+    @Override
+    public AzureEnvironmentProperties fromManagementAzureEnvironment(com.azure.core.management.AzureEnvironment environment) {
+        return new AzureEnvironmentProperties(environment);
     }
 
-    private Map<String, String> exportEndpointsMap() {
-        return new HashMap<String, String>() {
-            {
-                put("portalUrl", portal);
-                put("publishingProfileUrl", publishingProfile);
-                put("managementEndpointUrl", managementEndpoint);
-                put("resourceManagerEndpointUrl", resourceManagerEndpoint);
-                put("sqlManagementEndpointUrl", sqlManagementEndpoint);
-                put("sqlServerHostnameSuffix", sqlServerHostnameSuffix);
-                put("galleryEndpointUrl", galleryEndpoint);
-                put("activeDirectoryEndpointUrl", activeDirectoryEndpoint);
-                put("activeDirectoryResourceId", activeDirectoryResourceId);
-                put("activeDirectoryGraphResourceId", activeDirectoryGraphEndpoint);
-                put("microsoftGraphResourceId", microsoftGraphEndpoint);
-                put("dataLakeEndpointResourceId", dataLakeEndpointResourceId);
-                put("activeDirectoryGraphApiVersion", activeDirectoryGraphApiVersion);
-                put("storageEndpointSuffix", storageEndpointSuffix);
-                put("keyVaultDnsSuffix", keyVaultDnsSuffix);
-                put("azureDataLakeStoreFileSystemEndpointSuffix", azureDataLakeStoreFileSystemEndpointSuffix);
-                put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", azureDataLakeAnalyticsCatalogAndJobEndpointSuffix);
-                put("azureLogAnalyticsResourceId", azureLogAnalyticsEndpoint);
-                put("azureApplicationInsightsResourceId", azureApplicationInsightsEndpoint);
-            }
-        };
-    }
-
-    /**
-     * @return The management portal URL.
-     */
     public String getPortal() {
         return portal;
     }
@@ -131,9 +140,6 @@ public class AzureEnvironment implements AzureProfileAware.Environment {
         this.portal = portal;
     }
 
-    /**
-     * @return the publishing settings file URL.
-     */
     public String getPublishingProfile() {
         return publishingProfile;
     }
@@ -146,9 +152,6 @@ public class AzureEnvironment implements AzureProfileAware.Environment {
         this.publishingProfile = publishingProfile;
     }
 
-    /**
-     * @return the management service endpoint.
-     */
     public String getManagementEndpoint() {
         return managementEndpoint;
     }
@@ -161,9 +164,6 @@ public class AzureEnvironment implements AzureProfileAware.Environment {
         this.managementEndpoint = managementEndpoint;
     }
 
-    /**
-     * @return the resource management endpoint.
-     */
     public String getResourceManagerEndpoint() {
         return resourceManagerEndpoint;
     }
@@ -176,9 +176,6 @@ public class AzureEnvironment implements AzureProfileAware.Environment {
         this.resourceManagerEndpoint = resourceManagerEndpoint;
     }
 
-    /**
-     * @return the sql server management endpoint for mobile commands.
-     */
     public String getSqlManagementEndpoint() {
         return sqlManagementEndpoint;
     }
@@ -191,9 +188,6 @@ public class AzureEnvironment implements AzureProfileAware.Environment {
         this.sqlManagementEndpoint = sqlManagementEndpoint;
     }
 
-    /**
-     * @return the dns suffix for sql servers.
-     */
     public String getSqlServerHostnameSuffix() {
         return sqlServerHostnameSuffix;
     }
@@ -206,9 +200,6 @@ public class AzureEnvironment implements AzureProfileAware.Environment {
         this.sqlServerHostnameSuffix = sqlServerHostnameSuffix;
     }
 
-    /**
-     * @return the template gallery endpoint.
-     */
     public String getGalleryEndpoint() {
         return galleryEndpoint;
     }
@@ -221,9 +212,6 @@ public class AzureEnvironment implements AzureProfileAware.Environment {
         this.galleryEndpoint = galleryEndpoint;
     }
 
-    /**
-     * @return the Active Directory login endpoint.
-     */
     public String getActiveDirectoryEndpoint() {
         return activeDirectoryEndpoint;
     }
@@ -236,9 +224,6 @@ public class AzureEnvironment implements AzureProfileAware.Environment {
         this.activeDirectoryEndpoint = activeDirectoryEndpoint;
     }
 
-    /**
-     * @return The resource ID to obtain AD tokens for.
-     */
     public String getActiveDirectoryResourceId() {
         return activeDirectoryResourceId;
     }
@@ -251,9 +236,6 @@ public class AzureEnvironment implements AzureProfileAware.Environment {
         this.activeDirectoryResourceId = activeDirectoryResourceId;
     }
 
-    /**
-     * @return the Active Directory Graph endpoint.
-     */
     public String getActiveDirectoryGraphEndpoint() {
         return activeDirectoryGraphEndpoint;
     }
@@ -266,9 +248,6 @@ public class AzureEnvironment implements AzureProfileAware.Environment {
         this.activeDirectoryGraphEndpoint = activeDirectoryGraphEndpoint;
     }
 
-    /**
-     * @return the Microsoft Graph endpoint.
-     */
     public String getMicrosoftGraphEndpoint() {
         return microsoftGraphEndpoint;
     }
@@ -281,9 +260,6 @@ public class AzureEnvironment implements AzureProfileAware.Environment {
         this.microsoftGraphEndpoint = microsoftGraphEndpoint;
     }
 
-    /**
-     * @return the Data Lake resource ID.
-     */
     public String getDataLakeEndpointResourceId() {
         return dataLakeEndpointResourceId;
     }
@@ -296,9 +272,6 @@ public class AzureEnvironment implements AzureProfileAware.Environment {
         this.dataLakeEndpointResourceId = dataLakeEndpointResourceId;
     }
 
-    /**
-     * @return the Active Directory api version.
-     */
     public String getActiveDirectoryGraphApiVersion() {
         return activeDirectoryGraphApiVersion;
     }
@@ -311,10 +284,6 @@ public class AzureEnvironment implements AzureProfileAware.Environment {
         this.activeDirectoryGraphApiVersion = activeDirectoryGraphApiVersion;
     }
 
-    /**
-     * The endpoint suffix for storage accounts.
-     * @return the endpoint suffix for storage accounts.
-     */
     public String getStorageEndpointSuffix() {
         return storageEndpointSuffix;
     }
@@ -327,9 +296,6 @@ public class AzureEnvironment implements AzureProfileAware.Environment {
         this.storageEndpointSuffix = storageEndpointSuffix;
     }
 
-    /**
-     * @return the key vault service dns suffix.
-     */
     public String getKeyVaultDnsSuffix() {
         return keyVaultDnsSuffix;
     }
@@ -342,9 +308,6 @@ public class AzureEnvironment implements AzureProfileAware.Environment {
         this.keyVaultDnsSuffix = keyVaultDnsSuffix;
     }
 
-    /**
-     * @return the data lake store filesystem service dns suffix.
-     */
     public String getAzureDataLakeStoreFileSystemEndpointSuffix() {
         return azureDataLakeStoreFileSystemEndpointSuffix;
     }
@@ -357,9 +320,6 @@ public class AzureEnvironment implements AzureProfileAware.Environment {
         this.azureDataLakeStoreFileSystemEndpointSuffix = azureDataLakeStoreFileSystemEndpointSuffix;
     }
 
-    /**
-     * @return the data lake analytics job and catalog service dns suffix.
-     */
     public String getAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix() {
         return azureDataLakeAnalyticsCatalogAndJobEndpointSuffix;
     }
@@ -372,9 +332,6 @@ public class AzureEnvironment implements AzureProfileAware.Environment {
         this.azureDataLakeAnalyticsCatalogAndJobEndpointSuffix = azureDataLakeAnalyticsCatalogAndJobEndpointSuffix;
     }
 
-    /**
-     * @return the log analytics endpoint.
-     */
     public String getAzureLogAnalyticsEndpoint() {
         return azureLogAnalyticsEndpoint;
     }
@@ -387,9 +344,6 @@ public class AzureEnvironment implements AzureProfileAware.Environment {
         this.azureLogAnalyticsEndpoint = azureLogAnalyticsEndpoint;
     }
 
-    /**
-     * @return the application insights endpoint.
-     */
     public String getAzureApplicationInsightsEndpoint() {
         return azureApplicationInsightsEndpoint;
     }
