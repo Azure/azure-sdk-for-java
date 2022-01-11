@@ -20,7 +20,7 @@ public final class GetOperationResponse extends OperationInfo {
      * Operation result upon success.
      */
     @JsonProperty(value = "result")
-    private ModelInfo result;
+    private Object result;
 
     /**
      * Get the error property: Encountered error.
@@ -47,7 +47,7 @@ public final class GetOperationResponse extends OperationInfo {
      *
      * @return the result value.
      */
-    public ModelInfo getResult() {
+    public Object getResult() {
         return this.result;
     }
 
@@ -57,7 +57,7 @@ public final class GetOperationResponse extends OperationInfo {
      * @param result the result value to set.
      * @return the GetOperationResponse object itself.
      */
-    public GetOperationResponse setResult(ModelInfo result) {
+    public GetOperationResponse setResult(Object result) {
         this.result = result;
         return this;
     }
