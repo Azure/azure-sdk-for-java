@@ -1069,7 +1069,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 return operation.thenReturn(m);
 
             })
-            .block(TIMEOUT);
+            .block();
 
         assertNotNull(receivedDeferredMessage);
         assertEquals(receivedMessage.getSequenceNumber(), receivedDeferredMessage.getSequenceNumber());
