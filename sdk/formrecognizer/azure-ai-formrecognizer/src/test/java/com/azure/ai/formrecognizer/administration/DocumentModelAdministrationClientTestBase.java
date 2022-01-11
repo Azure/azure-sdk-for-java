@@ -76,12 +76,18 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestBase
     }
 
     static TokenCredential getCredentialByAuthority(String endpoint) {
+        System.out.printf("endpoint %s%n", endpoint);
         String authority = TestUtils.getAuthority(endpoint);
+        System.out.printf("authority %s%n", authority);
         if (authority == AzureAuthorityHosts.AZURE_PUBLIC_CLOUD) {
             return new DefaultAzureCredentialBuilder()
                 .authorityHost(TestUtils.getAuthority(endpoint))
                 .build();
         } else {
+            System.out.println("in client credential %s%n");
+            System.out.printf("AZURE_TENANT_ID %s%n", AZURE_TENANT_ID);
+            System.out.printf("AZURE_CLIENT_ID %s%n", AZURE_CLIENT_ID);
+            System.out.printf("AZURE_FORM_RECOGNIZER_CLIENT_SECRET %s%n", AZURE_FORM_RECOGNIZER_CLIENT_SECRET);
             return new ClientSecretCredentialBuilder()
                 .tenantId(AZURE_TENANT_ID)
                 .clientId(AZURE_CLIENT_ID)
