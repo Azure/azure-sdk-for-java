@@ -24,6 +24,7 @@ import org.apache.qpid.proton.message.Message;
 import org.apache.qpid.proton.reactor.Reactor;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
@@ -50,7 +51,6 @@ import static com.azure.core.amqp.implementation.ClientConstants.HOSTNAME_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.SESSION_NAME_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.SIGNAL_TYPE_KEY;
-import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * An AMQP connection backed by proton-j.
@@ -192,7 +192,12 @@ public class ReactorConnection implements AmqpConnection {
     public Mono<AmqpManagementNode> getManagementNode(String entityPath) {
         return Mono.defer(() -> {
             if (isDisposed()) {
-                return monoError(logger.atError().addKeyValue(ENTITY_PATH_KEY, entityPath), new IllegalStateException("Connection is disposed. Cannot get management instance."));
+                // TODO(limolkova) this can be simplified with FluxUtil.monoError(LoggingEventBuilder), not using it for now
+                // to allow using azure-core-amqp with stable azure-core 1.24.0 to simplify dependency management
+                // we should switch to it once monoError(LoggingEventBuilder) ships in stable azure-core
+                return Mono.error(logger.atError()
+                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                    .log(Exceptions.propagate(new IllegalStateException("Connection is disposed. Cannot get management instance."))));
             }
 
             final AmqpManagementNode existing = managementNodes.get(entityPath);
