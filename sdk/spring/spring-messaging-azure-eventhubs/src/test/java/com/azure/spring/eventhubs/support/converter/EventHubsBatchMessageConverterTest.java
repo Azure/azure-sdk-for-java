@@ -20,6 +20,7 @@ import org.springframework.messaging.Message;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -60,7 +61,7 @@ public class EventHubsBatchMessageConverterTest {
 
     @Test
     public void receivePayloadAsByte() throws JsonProcessingException {
-        List<EventData> events = setupEventDataListByPayload(List.of(payloadBytes1, payloadBytes2));
+        List<EventData> events = setupEventDataListByPayload(Arrays.asList(payloadBytes1, payloadBytes2));
         EventBatchContext eventBatchContext = new EventBatchContext(partitionContext, events, checkpointStore,
             lastEnqueuedEventProperties);
         Message<?> message = this.batchConverter.toMessage(eventBatchContext, byte[].class);
@@ -70,7 +71,7 @@ public class EventHubsBatchMessageConverterTest {
 
     @Test
     public void receivePayloadAsString() throws JsonProcessingException {
-        List<EventData> events = setupEventDataListByPayload(List.of(payload1.getBytes(UTF_8), payload2.getBytes(UTF_8)));
+        List<EventData> events = setupEventDataListByPayload(Arrays.asList(payload1.getBytes(UTF_8), payload2.getBytes(UTF_8)));
         EventBatchContext eventBatchContext = new EventBatchContext(partitionContext, events, checkpointStore,
             lastEnqueuedEventProperties);
         Message<?> message = this.batchConverter.toMessage(eventBatchContext, String.class);
@@ -80,7 +81,7 @@ public class EventHubsBatchMessageConverterTest {
 
     @Test
     public void receivePayloadAsPojo() throws JsonProcessingException {
-        List<EventData> events = setupEventDataListByPayload(List.of(objectMapper.writeValueAsBytes(payloadPojo1), objectMapper.writeValueAsBytes(payloadPojo2)));
+        List<EventData> events = setupEventDataListByPayload(Arrays.asList(objectMapper.writeValueAsBytes(payloadPojo1), objectMapper.writeValueAsBytes(payloadPojo2)));
         EventBatchContext eventBatchContext = new EventBatchContext(partitionContext, events, checkpointStore,
             lastEnqueuedEventProperties);
         Message<?> message = this.batchConverter.toMessage(eventBatchContext, User.class);
@@ -95,7 +96,7 @@ public class EventHubsBatchMessageConverterTest {
 
     @Test
     public void testNativeHeadersFromEventBatchContext() throws JsonProcessingException {
-        List<EventData> events = setupEventDataListByPayload(List.of(payloadBytes1, payloadBytes2));
+        List<EventData> events = setupEventDataListByPayload(Arrays.asList(payloadBytes1, payloadBytes2));
         String nativeHeadersString = "{\"spanId\":[\"spanId-1\", \"spanId-2\"],\"spanTraceId\":[\"spanTraceId-1\", \"spanTraceId-2\"]}";
         events.forEach(eventData -> eventData.getProperties().put(NATIVE_HEADERS, nativeHeadersString));
         EventBatchContext eventBatchContext = new EventBatchContext(partitionContext, events, checkpointStore,
@@ -109,7 +110,7 @@ public class EventHubsBatchMessageConverterTest {
 
     @Test
     public void testEventBatchContextHeaders() throws JsonProcessingException {
-        List<EventData> events = setupEventDataListByPayload(List.of(payloadBytes1, payloadBytes2));
+        List<EventData> events = setupEventDataListByPayload(Arrays.asList(payloadBytes1, payloadBytes2));
         EventBatchContext eventBatchContext = new EventBatchContext(partitionContext, events, checkpointStore,
             lastEnqueuedEventProperties);
         Map<String, Object> headerHeadersMap = batchConverter.buildCustomHeaders(eventBatchContext);
