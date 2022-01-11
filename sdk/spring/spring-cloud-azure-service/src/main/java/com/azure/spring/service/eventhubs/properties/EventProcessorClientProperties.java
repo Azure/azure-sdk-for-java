@@ -25,64 +25,45 @@ public interface EventProcessorClientProperties extends EventHubConsumerProperti
     /**
      * Event processor load balancing properties.
      */
-    class LoadBalancing {
-
-        private Duration updateInterval;
-        private LoadBalancingStrategy strategy = LoadBalancingStrategy.BALANCED;
-        private Duration partitionOwnershipExpirationInterval;
-
-        public Duration getUpdateInterval() {
-            return updateInterval;
-        }
-
-        public void setUpdateInterval(Duration updateInterval) {
-            this.updateInterval = updateInterval;
-        }
-
-        public LoadBalancingStrategy getStrategy() {
-            return strategy;
-        }
-
-        public void setStrategy(LoadBalancingStrategy strategy) {
-            this.strategy = strategy;
-        }
-
-        public Duration getPartitionOwnershipExpirationInterval() {
-            return partitionOwnershipExpirationInterval;
-        }
+    interface LoadBalancing {
 
         /**
-         * Set the partition ownership expiration interval.
-         * @param partitionOwnershipExpirationInterval the partition ownership expiration interval.
+         * Get the time interval between load balancing update cycles.
+         * @return the update interval.
          */
-        public void setPartitionOwnershipExpirationInterval(Duration partitionOwnershipExpirationInterval) {
-            this.partitionOwnershipExpirationInterval = partitionOwnershipExpirationInterval;
-        }
+        Duration getUpdateInterval();
+
+        /**
+         * Get the load balancing strategy for claiming partition ownership.
+         * @return the load balancing strategy.
+         */
+        LoadBalancingStrategy getStrategy();
+
+        /**
+         * Get the time duration after which the ownership of partition expires.
+         * @return the expiration interval.
+         */
+        Duration getPartitionOwnershipExpirationInterval();
+
     }
 
     /**
      * Event processor batch properties.
      */
-    class EventBatch {
+    interface EventBatch {
 
-        private Duration maxWaitTime;
-        private Integer maxSize;
+        /**
+         * Get the max time duration to wait to receive an event before processing events.
+         * @return the max wait time.
+         */
+        Duration getMaxWaitTime();
 
-        public Duration getMaxWaitTime() {
-            return maxWaitTime;
-        }
+        /**
+         * Get the maximum number of events that will be in the batch.
+         * @return the max size.
+         */
+        Integer getMaxSize();
 
-        public void setMaxWaitTime(Duration maxWaitTime) {
-            this.maxWaitTime = maxWaitTime;
-        }
-
-        public Integer getMaxSize() {
-            return maxSize;
-        }
-
-        public void setMaxSize(Integer maxSize) {
-            this.maxSize = maxSize;
-        }
     }
 
     /**

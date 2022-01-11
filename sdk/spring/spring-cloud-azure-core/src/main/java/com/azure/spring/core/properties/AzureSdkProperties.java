@@ -4,7 +4,7 @@
 package com.azure.spring.core.properties;
 
 import com.azure.spring.core.properties.authentication.TokenCredentialProperties;
-import com.azure.spring.core.properties.profile.AzureProfile;
+import com.azure.spring.core.properties.profile.AzureProfileProperties;
 
 /**
  * Unified properties for Azure SDK clients.
@@ -12,7 +12,7 @@ import com.azure.spring.core.properties.profile.AzureProfile;
 public abstract class AzureSdkProperties implements AzureProperties {
 
     protected final TokenCredentialProperties credential = new TokenCredentialProperties();
-    protected final AzureProfile profile = new AzureProfile();
+    protected final AzureProfileProperties profile = new AzureProfileProperties();
 
     @Override
     public TokenCredentialProperties getCredential() {
@@ -20,7 +20,7 @@ public abstract class AzureSdkProperties implements AzureProperties {
     }
 
     @Override
-    public AzureProfile getProfile() {
+    public AzureProfileProperties getProfile() {
         return profile;
     }
 }

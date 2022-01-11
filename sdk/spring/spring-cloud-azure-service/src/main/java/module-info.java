@@ -30,5 +30,4 @@ module com.azure.spring.service {
     exports com.azure.spring.service.storage.common.credential;
     exports com.azure.spring.service.storage.fileshare;
     exports com.azure.spring.service.storage.queue;
-
 }

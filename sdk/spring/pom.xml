@@ -150,15 +150,6 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
-        <module>azure-spring-boot-test-application</module>
-        <module>azure-spring-boot-test-core</module>
-        <module>azure-spring-boot-test-cosmos</module>
-        <module>azure-spring-boot-test-keyvault-certificate</module>
-        <module>azure-spring-boot-test-keyvault/pom-reactive.xml</module>
-        <module>azure-spring-boot-test-keyvault/pom.xml</module>
-        <module>azure-spring-boot-test-parent</module>
-        <module>azure-spring-boot-test-servicebus-jms</module>
-        <module>azure-spring-boot-test-storage</module>
         <module>spring-messaging-azure</module>
         <module>spring-messaging-azure-eventhubs</module>
         <module>spring-messaging-azure-servicebus</module>

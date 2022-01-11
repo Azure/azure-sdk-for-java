@@ -19,7 +19,7 @@ import urllib.request as request
 import xml.etree.ElementTree as elementTree
 from urllib.error import HTTPError
 
-from log import log, Log
+from log import log
 from pom import Pom
 
 SPRING_BOOT_VERSION = '2.6.1'
@@ -177,14 +177,7 @@ def init():
         help='Set log level.'
     )
     args = parser.parse_args()
-    log_dict = {
-        'debug': Log.DEBUG,
-        'info': Log.INFO,
-        'warn': Log.WARN,
-        'error': Log.ERROR,
-        'none': Log.NONE
-    }
-    log.set_log_level(log_dict[args.log])
+    log.set_log_level(args.log)
     # log.log_level_test()
 
 

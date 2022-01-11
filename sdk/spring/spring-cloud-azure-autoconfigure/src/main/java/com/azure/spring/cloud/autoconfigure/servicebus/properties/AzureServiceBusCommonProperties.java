@@ -14,14 +14,25 @@ public abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpC
 
     // https://help.boomi.com/bundle/connectors/page/r-atm-Microsoft_Azure_Service_Bus_connection.html
     // https://docs.microsoft.com/en-us/rest/api/servicebus/addressing-and-protocol
+    /**
+     * The domain name of a Service Bus namespace.
+     */
     protected String domainName = "servicebus.windows.net";
-
+    /**
+     * The namespace of a service bus.
+     */
     protected String namespace;
-
+    /**
+     * Connection string to connect to a service bus.
+     */
     protected String connectionString;
-
+    /**
+     * The name of a Service Bus Queue or Topic.
+     */
     private String entityName;
-
+    /**
+     * The type of Service Bus entity, which is a Queue or a Topic.
+     */
     private ServiceBusEntityType entityType;
 
     private String extractFqdnFromConnectionString() {

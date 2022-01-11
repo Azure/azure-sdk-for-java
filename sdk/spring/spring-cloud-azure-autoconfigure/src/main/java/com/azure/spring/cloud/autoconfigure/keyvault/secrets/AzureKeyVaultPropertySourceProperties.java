@@ -20,15 +20,29 @@ public class AzureKeyVaultPropertySourceProperties extends AbstractAzureHttpConf
 
     public static final Duration DEFAULT_REFRESH_INTERVAL = Duration.ofMinutes(30);
 
+    /**
+     * Azure Key Vault endpoint.
+     */
     private String endpoint;
+    /**
+     * Secret service version used when making API requests.
+     */
     private SecretServiceVersion serviceVersion;
-
+    /**
+     * Name of this property source.
+     */
     private String name = DEFAULT_AZURE_KEYVAULT_PROPERTYSOURCE_NAME;
     /**
      * Defines the constant for the property that enables/disables case-sensitive keys.
      */
     private Boolean caseSensitive;
+    /**
+     * The secret keys supported for this property source.
+     */
     private List<String> secretKeys;
+    /**
+     * Time interval to refresh all Key Vault secrets.
+     */
     private Duration refreshInterval = DEFAULT_REFRESH_INTERVAL;
 
     /**
