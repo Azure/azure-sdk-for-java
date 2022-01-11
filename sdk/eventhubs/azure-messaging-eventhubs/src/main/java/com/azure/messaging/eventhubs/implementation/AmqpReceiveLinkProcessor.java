@@ -503,10 +503,10 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
         // In the drain loop, add credits only when the queue is empty, link has no credits and there are still
         // outstanding requests to be fulfilled.
-        // AmqpReceiveLink link = this.currentLink;
-        // if (numberRequested > 0L && isEmpty && link != null && link.getCredits() <= 0) {
-        //     addCreditsToLink("Adding more credits in drain loop.");
-        // }
+        AmqpReceiveLink link = this.currentLink;
+        if (numberRequested > 0L && isEmpty && link != null && link.getCredits() <= 0) {
+            addCreditsToLink("Adding more credits in drain loop.");
+        }
     }
 
     private boolean checkAndSetTerminated() {
