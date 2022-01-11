@@ -3,22 +3,17 @@
 package com.azure.communication.common;
 
 import reactor.core.publisher.Mono;
-import java.time.Duration;
+
 import java.util.function.Supplier;
 
 /**
  * Options for refreshing CommunicationTokenCredential
  */
 public final class CommunicationTokenRefreshOptions {
-    /**
-     * This is a constant defined to represent the default time span before token expiry that causes the tokenRefresher
-     * to be called if refreshProactively is true. The default value is 4.5 minutes to avoid MSAL compatibility issues.
-     */
-    private static final int DEFAULT_EXPIRING_OFFSET_SECONDS = 270;
+
     private final Supplier<Mono<String>> tokenRefresher;
     private boolean refreshProactively;
     private String initialToken;
-    private Duration refreshIntervalBeforeTokenExpiry;
 
     /**
      * Creates a CommunicationTokenRefreshOptions object
@@ -46,7 +41,6 @@ public final class CommunicationTokenRefreshOptions {
         this.tokenRefresher = tokenRefresher;
         this.refreshProactively = refreshProactively;
         this.initialToken = initialToken;
-        this.refreshIntervalBeforeTokenExpiry = getDefaultRefreshIntervalBeforeTokenExpiry();
     }
 
     /**
@@ -58,7 +52,6 @@ public final class CommunicationTokenRefreshOptions {
         this.tokenRefresher = tokenRefresher;
         this.refreshProactively = false;
         this.initialToken = null;
-        this.refreshIntervalBeforeTokenExpiry = getDefaultRefreshIntervalBeforeTokenExpiry();
     }
 
     /**
@@ -102,33 +95,6 @@ public final class CommunicationTokenRefreshOptions {
     public CommunicationTokenRefreshOptions setInitialToken(String initialToken) {
         this.initialToken = initialToken;
         return this;
-    }
-
-    /**
-     * @return The time span before token expiry that causes the tokenRefresher to be called if refreshProactively is true
-     */
-    public Duration getRefreshIntervalBeforeTokenExpiry() {
-        return refreshIntervalBeforeTokenExpiry;
-    }
-
-    /**
-     * Set the time span before token expiry that causes the tokenRefresher to be called if refreshProactively is true.
-     * For example, setting it to 5 minutes means that 5 minutes before the cached token expires, the proactive refresh will request a new token.
-     * The default value is 4.5 minutes.
-     *
-     * @param  refreshIntervalBeforeTokenExpiry the refreshIntervalBeforeTokenExpiry value to set.
-     * @return the CommunicationTokenRefreshOptions object itself.
-     */
-    public CommunicationTokenRefreshOptions setRefreshIntervalBeforeTokenExpiry(Duration refreshIntervalBeforeTokenExpiry) {
-        this.refreshIntervalBeforeTokenExpiry = refreshIntervalBeforeTokenExpiry;
-        return this;
-    }
-
-    /**
-     * @return The default time span before token expiry that causes the tokenRefresher to be called if refreshProactively is true
-     */
-    private static Duration getDefaultRefreshIntervalBeforeTokenExpiry() {
-        return Duration.ofSeconds(DEFAULT_EXPIRING_OFFSET_SECONDS);
     }
 
 }

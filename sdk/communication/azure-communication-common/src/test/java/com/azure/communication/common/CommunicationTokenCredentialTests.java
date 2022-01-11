@@ -17,14 +17,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Supplier;
 
 public class CommunicationTokenCredentialTests {
     private final JwtTokenMocker tokenMocker = new JwtTokenMocker();
-    private static final int DEFAULT_EXPIRING_OFFSET_SECONDS = 271;
+    private static final int DEFAULT_EXPIRING_OFFSET_SECONDS = 601;
 
     @Test
     public void constructWithValidTokenWithoutFresher() throws InterruptedException, ExecutionException, IOException {
@@ -114,28 +113,6 @@ public class CommunicationTokenCredentialTests {
         CommunicationTokenRefreshOptions tokenRefreshOptions = new CommunicationTokenRefreshOptions(immediateFresher)
             .setRefreshProactively(true)
             .setInitialToken(tokenStr);
-        CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions);
-        countDownLatch.await();
-        assertEquals(1, immediateFresher.numCalls());
-        StepVerifier.create(tokenCredential.getToken())
-            .assertNext(token -> {
-                assertFalse(token.isExpired(), "Refreshable AccessToken should not expire after refresh");
-            })
-            .verifyComplete();
-        tokenCredential.close();
-    }
-
-    @Test
-    public void fresherShouldBeCalledAfterUserDefinedInterval() throws InterruptedException, ExecutionException, IOException {
-        String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", 181);
-        immediateFresher.resetCallCount();
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-        immediateFresher.setOnCallReturn(countDownLatch::countDown);
-        Duration refreshIntervalBeforeTokenExpiry = Duration.ofMinutes(3);
-        CommunicationTokenRefreshOptions tokenRefreshOptions = new CommunicationTokenRefreshOptions(immediateFresher)
-            .setRefreshProactively(true)
-            .setInitialToken(tokenStr)
-            .setRefreshIntervalBeforeTokenExpiry(refreshIntervalBeforeTokenExpiry);
         CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions);
         countDownLatch.await();
         assertEquals(1, immediateFresher.numCalls());
@@ -258,7 +235,7 @@ public class CommunicationTokenCredentialTests {
         CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions);
         StepVerifier.create(tokenCredential.getToken())
             .assertNext(token -> {
-                assertEquals(1, immediateFresher.numCalls());
+                assertEquals(2, immediateFresher.numCalls());
                 assertFalse(token.isExpired(), "On demand fetching case, should be still valid");
             })
             .verifyComplete();
