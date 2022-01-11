@@ -731,8 +731,8 @@ org.eclipse.jgit:org.eclipse.jgit;5.1.3.201810200350-r
 org.eclipse.jgit:org.eclipse.jgit.http.apache;5.1.3.201810200350-r
 org.eclipse.jgit:org.eclipse.jgit.junit.http;5.1.3.201810200350-r
 org.jboss.arquillian.junit:arquillian-junit-standalone;1.4.0.Final
-org.springframework.boot:spring-boot-dependencies;2.2.0.M4
-org.springframework.boot:spring-boot-starter-parent;2.2.0.M4
+org.springframework.boot:spring-boot-dependencies;2.2.0.RELEASE
+org.springframework.boot:spring-boot-starter-parent;2.2.0.RELEASE
 org.springframework.cloud:spring-cloud-aws-actuator;2.2.5.RELEASE
 org.springframework.cloud:spring-cloud-aws-autoconfigure;2.2.5.RELEASE
 org.springframework.cloud:spring-cloud-aws-context;2.2.5.RELEASE
