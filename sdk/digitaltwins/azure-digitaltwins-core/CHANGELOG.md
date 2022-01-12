@@ -4,8 +4,10 @@
 
 ### Other Changes
 #### Dependency updates
-- Upgraded `azure-core` dependency from `1.21.0` to `<pending>`.
-- Upgraded `azure-core-http-netty` dependency from `1.11.1 to `<pending>`.
+- Upgraded `azure-core` dependency from `1.22.0` to `1.24.1`.
+- Upgraded `azure-core-http-netty` dependency from `1.11.2 to `1.11.6`.
+- Upgraded `azure-core-serializer-json-jackson` dependency from `1.2.7` to `1.2.12`.
+- Upgraded `jackson-annotations` dependency from `2.12.5` to `2.13.1`.
 
 ## 1.1.4 (2021-11-19)
 
