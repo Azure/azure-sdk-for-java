@@ -99,11 +99,7 @@ public final class BlobBatchClientBuilder {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.batch.BlobBatchClientBuilder#buildClient -->
-     * <pre>
-     * BlobBatchClient batchClient = new BlobBatchClientBuilder&#40;blobServiceClient&#41;.buildClient&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.batch.BlobBatchClientBuilder#buildClient -->
+     * {@codesnippet com.azure.storage.blob.batch.BlobBatchClientBuilder#buildClient}
      *
      * @return a {@link BlobBatchClient} created from the configurations in this builder.
      */
@@ -116,11 +112,7 @@ public final class BlobBatchClientBuilder {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.batch.BlobBatchClientBuilder#buildAsyncClient -->
-     * <pre>
-     * BlobBatchAsyncClient batchClient = new BlobBatchClientBuilder&#40;blobServiceAsyncClient&#41;.buildAsyncClient&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.batch.BlobBatchClientBuilder#buildAsyncClient -->
+     * {@codesnippet com.azure.storage.blob.batch.BlobBatchClientBuilder#buildAsyncClient}
      *
      * @return a {@link BlobBatchAsyncClient} created from the configurations in this builder.
      */
