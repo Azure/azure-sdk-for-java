@@ -108,7 +108,7 @@ public class FeatureHandlerTest {
     @Test
     public void preHandleNoDisabledFeatures() throws NoSuchMethodException, SecurityException, IOException {
         featureHandler2 = new FeatureHandler(featureManager, featureManagerSnapshot, null);
-        Method method = TestClass.class.getMethod("featureOnAnnotaitonRedirected");
+        Method method = TestClass.class.getMethod("featureOnAnnotation");
         when(handlerMethod.getMethod()).thenReturn(method);
         when(featureManager.isEnabledAsync(Mockito.matches("test"))).thenReturn(Mono.just(false));
 
@@ -119,7 +119,7 @@ public class FeatureHandlerTest {
     @Test
     public void preHandleNoDisabledFeaturesError() throws NoSuchMethodException, SecurityException, IOException {
         featureHandler2 = new FeatureHandler(featureManager, featureManagerSnapshot, null);
-        Method method = TestClass.class.getMethod("featureOnAnnotaitonRedirected");
+        Method method = TestClass.class.getMethod("featureOnAnnotation");
         when(handlerMethod.getMethod()).thenReturn(method);
         when(featureManager.isEnabledAsync(Mockito.matches("test"))).thenReturn(Mono.just(false));
 
