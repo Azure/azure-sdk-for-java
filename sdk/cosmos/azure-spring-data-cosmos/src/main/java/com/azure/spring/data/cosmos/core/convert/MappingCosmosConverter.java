@@ -37,8 +37,14 @@ public class MappingCosmosConverter
     JsonNode>,
     ApplicationContextAware {
 
-    protected final MappingContext<? extends CosmosPersistentEntity<?>,
-        CosmosPersistentProperty> mappingContext;
+    /**
+     * Mapping context
+     */
+    protected final MappingContext<? extends CosmosPersistentEntity<?>, CosmosPersistentProperty> mappingContext;
+
+    /**
+     * Generic conversion service
+     */
     protected GenericConversionService conversionService;
     private ApplicationContext applicationContext;
     private final ObjectMapper objectMapper;

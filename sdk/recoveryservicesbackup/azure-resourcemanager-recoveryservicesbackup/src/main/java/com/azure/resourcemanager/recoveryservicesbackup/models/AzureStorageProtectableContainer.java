@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** Azure Storage-specific protectable containers. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectableContainerType")
 @JsonTypeName("StorageContainer")
-@Immutable
+@Fluent
 public final class AzureStorageProtectableContainer extends ProtectableContainer {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureStorageProtectableContainer.class);
 

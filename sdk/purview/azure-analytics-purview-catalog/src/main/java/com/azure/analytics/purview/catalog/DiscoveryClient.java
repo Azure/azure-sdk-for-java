@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.catalog;
 
 import com.azure.analytics.purview.catalog.implementation.DiscoveriesImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -12,18 +13,18 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
 
 /** Initializes a new instance of the synchronous PurviewCatalogClient type. */
 @ServiceClient(builder = PurviewCatalogClientBuilder.class)
 public final class DiscoveryClient {
-    private final DiscoveriesImpl serviceClient;
+    @Generated private final DiscoveriesImpl serviceClient;
 
     /**
      * Initializes an instance of Discoveries client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     DiscoveryClient(DiscoveriesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -151,15 +152,13 @@ public final class DiscoveryClient {
      *
      * @param searchRequest An object specifying the search criteria.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return data using search.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> queryWithResponse(
-            BinaryData searchRequest, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.queryWithResponse(searchRequest, requestOptions, context);
+    public Response<BinaryData> queryWithResponse(BinaryData searchRequest, RequestOptions requestOptions) {
+        return this.serviceClient.queryWithResponse(searchRequest, requestOptions);
     }
 
     /**
@@ -227,15 +226,13 @@ public final class DiscoveryClient {
      *
      * @param suggestRequest An object specifying the suggest criteria.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return search suggestions by query criteria.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> suggestWithResponse(
-            BinaryData suggestRequest, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.suggestWithResponse(suggestRequest, requestOptions, context);
+    public Response<BinaryData> suggestWithResponse(BinaryData suggestRequest, RequestOptions requestOptions) {
+        return this.serviceClient.suggestWithResponse(suggestRequest, requestOptions);
     }
 
     /**
@@ -288,15 +285,13 @@ public final class DiscoveryClient {
      *
      * @param browseRequest An object specifying the browse criteria.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return browseResult.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> browseWithResponse(
-            BinaryData browseRequest, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.browseWithResponse(browseRequest, requestOptions, context);
+    public Response<BinaryData> browseWithResponse(BinaryData browseRequest, RequestOptions requestOptions) {
+        return this.serviceClient.browseWithResponse(browseRequest, requestOptions);
     }
 
     /**
@@ -335,14 +330,13 @@ public final class DiscoveryClient {
      *
      * @param autoCompleteRequest An object specifying the autocomplete criteria.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return auto complete options.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> autoCompleteWithResponse(
-            BinaryData autoCompleteRequest, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.autoCompleteWithResponse(autoCompleteRequest, requestOptions, context);
+            BinaryData autoCompleteRequest, RequestOptions requestOptions) {
+        return this.serviceClient.autoCompleteWithResponse(autoCompleteRequest, requestOptions);
     }
 }

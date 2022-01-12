@@ -27,7 +27,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr42124/providers/Microsoft.ContainerRegistry/registries/acr169710?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr42124/providers/Microsoft.ContainerRegistry/registries/acr169710?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.10.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "a6205eaf-d464-42f5-a53d-2d4881d38ae4",
@@ -77,7 +77,7 @@
       "Vary" : "Accept-Encoding",
       "Expires" : "-1",
       "x-ms-request-id" : "29fc0611-cab5-4266-adc9-87bc869565f0",
-      "Body" : "{\"uploadUrl\":\"https://wcusmanaged74.blob.core.windows.net/4b113df0a24e4995b8643b0601c458bf-omlsjbmw4c/source/202111080000/0808bd41-d7f1-4916-a5f9-640f0f04a72c.tar.gz?sv=2018-03-28&sr=b&sig=Uu%2B9hvTOoWNt3UTh40TQMBb5fVS%2Fp1vyWxM48X9dI74%3D&se=2021-11-08T05%3A40%3A31Z&sp=cw\",\"relativePath\":\"source/202111080000/0808bd41-d7f1-4916-a5f9-640f0f04a72c.tar.gz\"}",
+      "Body" : "{\"uploadUrl\":\"https://wcusmanaged74.blob.core.windows.net/4b113df0a24e4995b8643b0601c458bf-omlsjbmw4c/source/202111080000/0808bd41-d7f1-4916-a5f9-640f0f04a72c.tar.gz?sv=2018-03-28&sr=b&sig=***REMOVED***&se=2021-11-08T05%3A40%3A31Z&sp=cw\",\"relativePath\":\"source/202111080000/0808bd41-d7f1-4916-a5f9-640f0f04a72c.tar.gz\"}",
       "x-ms-client-request-id" : "5ceb5f7f-cdc5-4df0-b432-424858f671c0",
       "Content-Type" : "application/json; charset=utf-8"
     },
@@ -106,7 +106,7 @@
       "Vary" : "Accept-Encoding",
       "Expires" : "-1",
       "x-ms-request-id" : "c9c8e4a4-1e8f-4ef4-9d68-79fa6d81c611",
-      "Body" : "{\"uploadUrl\":\"https://wcusmanaged74.blob.core.windows.net/4b113df0a24e4995b8643b0601c458bf-omlsjbmw4c/source/202111080000/e3fcddbd-722a-4cc9-9c2a-05a0e7f15de6.tar.gz?sv=2018-03-28&sr=b&sig=6in2P3Lu6sem0NxrMGfc0sXOGB21Nfb%2FfIpQQHMUDqI%3D&se=2021-11-08T05%3A40%3A31Z&sp=cw\",\"relativePath\":\"source/202111080000/e3fcddbd-722a-4cc9-9c2a-05a0e7f15de6.tar.gz\"}",
+      "Body" : "{\"uploadUrl\":\"https://wcusmanaged74.blob.core.windows.net/4b113df0a24e4995b8643b0601c458bf-omlsjbmw4c/source/202111080000/e3fcddbd-722a-4cc9-9c2a-05a0e7f15de6.tar.gz?sv=2018-03-28&sr=b&sig=***REMOVED***&se=2021-11-08T05%3A40%3A31Z&sp=cw\",\"relativePath\":\"source/202111080000/e3fcddbd-722a-4cc9-9c2a-05a0e7f15de6.tar.gz\"}",
       "x-ms-client-request-id" : "f39a495a-7122-41f4-8ed7-98ed9c09afdc",
       "Content-Type" : "application/json; charset=utf-8"
     },

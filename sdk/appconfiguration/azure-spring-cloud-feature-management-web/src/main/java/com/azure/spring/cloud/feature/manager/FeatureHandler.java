@@ -5,16 +5,16 @@ package com.azure.spring.cloud.feature.manager;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Optional;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-
-import com.azure.spring.cloud.feature.manager.FeatureManager;
 
 import reactor.core.publisher.Mono;
 
@@ -32,6 +32,12 @@ public class FeatureHandler extends HandlerInterceptorAdapter {
 
     private IDisabledFeaturesHandler disabledFeaturesHandler;
 
+    /**
+     * Intercepter for Requests to check if they should be run.
+     * @param featureManager App Configuration Feature Manager
+     * @param featureManagerSnapshot App Configuraiton Feature Manager snapshot version
+     * @param disabledFeaturesHandler optional handler for dealing with disabled endpoints.
+     */
     public FeatureHandler(FeatureManager featureManager, FeatureManagerSnapshot featureManagerSnapshot,
         IDisabledFeaturesHandler disabledFeaturesHandler) {
         this.featureManager = featureManager;

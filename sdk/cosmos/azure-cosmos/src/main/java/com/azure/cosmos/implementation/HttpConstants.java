@@ -335,6 +335,8 @@ public class HttpConstants {
         public static final int READ_SESSION_NOT_AVAILABLE = 1002;
         public static final int OWNER_RESOURCE_NOT_EXISTS = 1003;
 
+        public static final int INCORRECT_CONTAINER_RID_SUB_STATUS = 1024;
+
         // Client generated gateway network error substatus
         public static final int GATEWAY_ENDPOINT_UNAVAILABLE = 10001;
 

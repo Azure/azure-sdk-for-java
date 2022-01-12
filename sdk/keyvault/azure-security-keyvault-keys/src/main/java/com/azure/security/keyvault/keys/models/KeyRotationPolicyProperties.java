@@ -17,7 +17,14 @@ import java.util.List;
  */
 @Fluent
 public class KeyRotationPolicyProperties {
+    /**
+     * The expiry time in ISO-8601 format.
+     */
     protected String expiryTime;
+
+    /**
+     * The {@link KeyRotationLifetimeAction}.
+     */
     protected List<KeyRotationLifetimeAction> keyRotationLifetimeActions;
 
     /**

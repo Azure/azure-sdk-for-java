@@ -62,8 +62,6 @@ import static com.azure.spring.data.cosmos.common.TestConstants.HOBBIES;
 import static com.azure.spring.data.cosmos.common.TestConstants.LAST_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.PASSPORT_IDS_BY_COUNTRY;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
@@ -150,8 +148,11 @@ public class ReactiveCosmosTemplateIT {
         final Mono<Person> insertMono = cosmosTemplate.insert(TEST_PERSON,
             new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
         StepVerifier.create(insertMono)
-                    .expectErrorMatches(ex -> ex instanceof CosmosAccessException && ((CosmosAccessException) ex).getCosmosException() instanceof ConflictException)
+                    .expectErrorMatches(ex -> ex instanceof CosmosAccessException &&
+                        ((CosmosAccessException) ex).getCosmosException() instanceof ConflictException)
                     .verify();
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
     }
 
     @Test
@@ -174,8 +175,8 @@ public class ReactiveCosmosTemplateIT {
             TEST_PERSON.getId(),
             Person.class);
         StepVerifier.create(findById).consumeNextWith(actual -> {
-            Assert.assertThat(actual.getFirstName(), is(equalTo(TEST_PERSON.getFirstName())));
-            Assert.assertThat(actual.getLastName(), is(equalTo(TEST_PERSON.getLastName())));
+            Assert.assertEquals(actual.getFirstName(), TEST_PERSON.getFirstName());
+            Assert.assertEquals(actual.getLastName(), TEST_PERSON.getLastName());
         }).verifyComplete();
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
@@ -247,6 +248,7 @@ public class ReactiveCosmosTemplateIT {
             person, new PartitionKey(person.getLastName()));
         StepVerifier.create(entityMono).verifyError(CosmosAccessException.class);
 
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
     }
 
     @Test
@@ -479,6 +481,7 @@ public class ReactiveCosmosTemplateIT {
         StepVerifier.create(findById)
                     .expectError(CosmosAccessException.class)
                     .verify();
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
     }
 
     @Test

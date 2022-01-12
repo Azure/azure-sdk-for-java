@@ -157,8 +157,8 @@ public final class ManageStorageAccountCustomerManagedKey {
             //============================================================
             // Download blob will now fail
 
-            // wait a bit
-            ResourceManagerUtils.sleep(Duration.ofMinutes(1));
+            // wait some minutes
+            ResourceManagerUtils.sleep(Duration.ofMinutes(10));
             try {
                 data = blobClient.downloadContent();
                 // line above should throw exception

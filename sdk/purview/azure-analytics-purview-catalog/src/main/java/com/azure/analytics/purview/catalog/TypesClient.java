@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.catalog;
 
 import com.azure.analytics.purview.catalog.implementation.TypesImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -12,18 +13,18 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
 
 /** Initializes a new instance of the synchronous PurviewCatalogClient type. */
 @ServiceClient(builder = PurviewCatalogClientBuilder.class)
 public final class TypesClient {
-    private final TypesImpl serviceClient;
+    @Generated private final TypesImpl serviceClient;
 
     /**
      * Initializes an instance of Types client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     TypesClient(TypesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -129,15 +130,13 @@ public final class TypesClient {
      *
      * @param guid The globally unique identifier of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the classification definition for the given GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getClassificationDefByGuidWithResponse(
-            String guid, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getClassificationDefByGuidWithResponse(guid, requestOptions, context);
+    public Response<BinaryData> getClassificationDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.getClassificationDefByGuidWithResponse(guid, requestOptions);
     }
 
     /**
@@ -241,15 +240,13 @@ public final class TypesClient {
      *
      * @param name The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the classification definition by its name (unique).
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getClassificationDefByNameWithResponse(
-            String name, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getClassificationDefByNameWithResponse(name, requestOptions, context);
+    public Response<BinaryData> getClassificationDefByNameWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getClassificationDefByNameWithResponse(name, requestOptions);
     }
 
     /**
@@ -373,15 +370,13 @@ public final class TypesClient {
      *
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the Entity definition for the given GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getEntityDefinitionByGuidWithResponse(
-            String guid, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getEntityDefinitionByGuidWithResponse(guid, requestOptions, context);
+    public Response<BinaryData> getEntityDefinitionByGuidWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.getEntityDefinitionByGuidWithResponse(guid, requestOptions);
     }
 
     /**
@@ -505,15 +500,13 @@ public final class TypesClient {
      *
      * @param name The name of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the entity definition by its name (unique).
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getEntityDefinitionByNameWithResponse(
-            String name, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getEntityDefinitionByNameWithResponse(name, requestOptions, context);
+    public Response<BinaryData> getEntityDefinitionByNameWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getEntityDefinitionByNameWithResponse(name, requestOptions);
     }
 
     /**
@@ -590,15 +583,13 @@ public final class TypesClient {
      *
      * @param guid The globally unique identifier of the enum.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the enum definition for the given GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getEnumDefByGuidWithResponse(
-            String guid, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getEnumDefByGuidWithResponse(guid, requestOptions, context);
+    public Response<BinaryData> getEnumDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.getEnumDefByGuidWithResponse(guid, requestOptions);
     }
 
     /**
@@ -675,15 +666,13 @@ public final class TypesClient {
      *
      * @param name The name of the enum.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the enum definition by its name (unique).
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getEnumDefByNameWithResponse(
-            String name, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getEnumDefByNameWithResponse(name, requestOptions, context);
+    public Response<BinaryData> getEnumDefByNameWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getEnumDefByNameWithResponse(name, requestOptions);
     }
 
     /**
@@ -789,15 +778,13 @@ public final class TypesClient {
      *
      * @param guid The globally unique identifier of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the relationship definition for the given GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getRelationshipDefByGuidWithResponse(
-            String guid, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getRelationshipDefByGuidWithResponse(guid, requestOptions, context);
+    public Response<BinaryData> getRelationshipDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.getRelationshipDefByGuidWithResponse(guid, requestOptions);
     }
 
     /**
@@ -903,15 +890,13 @@ public final class TypesClient {
      *
      * @param name The name of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the relationship definition by its name (unique).
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getRelationshipDefByNameWithResponse(
-            String name, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getRelationshipDefByNameWithResponse(name, requestOptions, context);
+    public Response<BinaryData> getRelationshipDefByNameWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getRelationshipDefByNameWithResponse(name, requestOptions);
     }
 
     /**
@@ -1006,15 +991,13 @@ public final class TypesClient {
      *
      * @param guid The globally unique identifier of the struct.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the struct definition for the given GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getStructDefByGuidWithResponse(
-            String guid, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getStructDefByGuidWithResponse(guid, requestOptions, context);
+    public Response<BinaryData> getStructDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.getStructDefByGuidWithResponse(guid, requestOptions);
     }
 
     /**
@@ -1109,15 +1092,13 @@ public final class TypesClient {
      *
      * @param name The name of the struct.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the struct definition by its name (unique).
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getStructDefByNameWithResponse(
-            String name, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getStructDefByNameWithResponse(name, requestOptions, context);
+    public Response<BinaryData> getStructDefByNameWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getStructDefByNameWithResponse(name, requestOptions);
     }
 
     /**
@@ -1263,15 +1244,13 @@ public final class TypesClient {
      *
      * @param guid The globally unique identifier of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the type definition for the given GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTypeDefinitionByGuidWithResponse(
-            String guid, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getTypeDefinitionByGuidWithResponse(guid, requestOptions, context);
+    public Response<BinaryData> getTypeDefinitionByGuidWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.getTypeDefinitionByGuidWithResponse(guid, requestOptions);
     }
 
     /**
@@ -1417,15 +1396,13 @@ public final class TypesClient {
      *
      * @param name The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the type definition by its name (unique).
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTypeDefinitionByNameWithResponse(
-            String name, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getTypeDefinitionByNameWithResponse(name, requestOptions, context);
+    public Response<BinaryData> getTypeDefinitionByNameWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getTypeDefinitionByNameWithResponse(name, requestOptions);
     }
 
     /**
@@ -1433,14 +1410,13 @@ public final class TypesClient {
      *
      * @param name The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteTypeByNameWithResponse(String name, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.deleteTypeByNameWithResponse(name, requestOptions, context);
+    public Response<Void> deleteTypeByNameWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.deleteTypeByNameWithResponse(name, requestOptions);
     }
 
     /**
@@ -1717,14 +1693,13 @@ public final class TypesClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return all type definitions in Atlas in bulk.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAllTypeDefinitionsWithResponse(RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getAllTypeDefinitionsWithResponse(requestOptions, context);
+    public Response<BinaryData> getAllTypeDefinitionsWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.getAllTypeDefinitionsWithResponse(requestOptions);
     }
 
     /**
@@ -2253,15 +2228,13 @@ public final class TypesClient {
      *
      * @param typesDef A composite wrapper object with corresponding lists of the type definition.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasTypesDef.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createTypeDefinitionsWithResponse(
-            BinaryData typesDef, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.createTypeDefinitionsWithResponse(typesDef, requestOptions, context);
+    public Response<BinaryData> createTypeDefinitionsWithResponse(BinaryData typesDef, RequestOptions requestOptions) {
+        return this.serviceClient.createTypeDefinitionsWithResponse(typesDef, requestOptions);
     }
 
     /**
@@ -2789,15 +2762,14 @@ public final class TypesClient {
      *
      * @param typesDef A composite object that captures all type definition changes.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasTypesDef.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateAtlasTypeDefinitionsWithResponse(
-            BinaryData typesDef, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.updateAtlasTypeDefinitionsWithResponse(typesDef, requestOptions, context);
+            BinaryData typesDef, RequestOptions requestOptions) {
+        return this.serviceClient.updateAtlasTypeDefinitionsWithResponse(typesDef, requestOptions);
     }
 
     /**
@@ -3065,15 +3037,13 @@ public final class TypesClient {
      *
      * @param typesDef A composite object that captures all types to be deleted.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteTypeDefinitionsWithResponse(
-            BinaryData typesDef, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.deleteTypeDefinitionsWithResponse(typesDef, requestOptions, context);
+    public Response<Void> deleteTypeDefinitionsWithResponse(BinaryData typesDef, RequestOptions requestOptions) {
+        return this.serviceClient.deleteTypeDefinitionsWithResponse(typesDef, requestOptions);
     }
 
     /**
@@ -3102,14 +3072,13 @@ public final class TypesClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return an array of AtlasTypeDefHeader matching the search criteria or an empty list if no match.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listTypeDefinitionHeadersWithResponse(RequestOptions requestOptions, Context context) {
-        return this.serviceClient.listTypeDefinitionHeadersWithResponse(requestOptions, context);
+    public Response<BinaryData> listTypeDefinitionHeadersWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.listTypeDefinitionHeadersWithResponse(requestOptions);
     }
 
     /**
@@ -3212,15 +3181,13 @@ public final class TypesClient {
      *
      * @param guid The globally unique identifier of the term template.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the term template definition for the given GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTermTemplateDefByGuidWithResponse(
-            String guid, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getTermTemplateDefByGuidWithResponse(guid, requestOptions, context);
+    public Response<BinaryData> getTermTemplateDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.getTermTemplateDefByGuidWithResponse(guid, requestOptions);
     }
 
     /**
@@ -3323,14 +3290,12 @@ public final class TypesClient {
      *
      * @param name The name of the term template.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the term template definition by its name (unique).
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTermTemplateDefByNameWithResponse(
-            String name, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getTermTemplateDefByNameWithResponse(name, requestOptions, context);
+    public Response<BinaryData> getTermTemplateDefByNameWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getTermTemplateDefByNameWithResponse(name, requestOptions);
     }
 }

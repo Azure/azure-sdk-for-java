@@ -21,7 +21,7 @@ public class GlossaryClientTests extends PurviewCatalogClientTestBase {
 
     @Test
     public void testListGlossaries() {
-        BinaryData binaryData = client.listGlossariesWithResponse(null, null).getValue();
+        BinaryData binaryData = client.listGlossariesWithResponse(null).getValue();
         List<?> list = binaryData.toObject(List.class);
         System.out.println(list);
     }

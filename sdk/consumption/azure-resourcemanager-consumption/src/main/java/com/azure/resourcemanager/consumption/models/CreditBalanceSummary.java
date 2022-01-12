@@ -27,16 +27,10 @@ public final class CreditBalanceSummary {
     private Amount currentBalance;
 
     /*
-     * Current balance.
+     * Estimated balance in billing currency.
      */
     @JsonProperty(value = "estimatedBalanceInBillingCurrency", access = JsonProperty.Access.WRITE_ONLY)
     private AmountWithExchangeRate estimatedBalanceInBillingCurrency;
-
-    /*
-     * Current balance.
-     */
-    @JsonProperty(value = "currentBalanceInBillingCurrency", access = JsonProperty.Access.WRITE_ONLY)
-    private AmountWithExchangeRate currentBalanceInBillingCurrency;
 
     /**
      * Get the estimatedBalance property: Estimated balance.
@@ -57,21 +51,12 @@ public final class CreditBalanceSummary {
     }
 
     /**
-     * Get the estimatedBalanceInBillingCurrency property: Current balance.
+     * Get the estimatedBalanceInBillingCurrency property: Estimated balance in billing currency.
      *
      * @return the estimatedBalanceInBillingCurrency value.
      */
     public AmountWithExchangeRate estimatedBalanceInBillingCurrency() {
         return this.estimatedBalanceInBillingCurrency;
-    }
-
-    /**
-     * Get the currentBalanceInBillingCurrency property: Current balance.
-     *
-     * @return the currentBalanceInBillingCurrency value.
-     */
-    public AmountWithExchangeRate currentBalanceInBillingCurrency() {
-        return this.currentBalanceInBillingCurrency;
     }
 
     /**
@@ -88,9 +73,6 @@ public final class CreditBalanceSummary {
         }
         if (estimatedBalanceInBillingCurrency() != null) {
             estimatedBalanceInBillingCurrency().validate();
-        }
-        if (currentBalanceInBillingCurrency() != null) {
-            currentBalanceInBillingCurrency().validate();
         }
     }
 }

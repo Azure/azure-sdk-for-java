@@ -1,14 +1,18 @@
 # Release History
 
-## 2.10.0-beta.1 (Unreleased)
+## 2.11.0-beta.1 (Unreleased)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-10-01`.
+
+## 2.10.0 (2021-11-22)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported `tags` in `KubernetesClusterAgentPool` during create and update.
 
 ## 2.9.0 (2021-10-21)
 

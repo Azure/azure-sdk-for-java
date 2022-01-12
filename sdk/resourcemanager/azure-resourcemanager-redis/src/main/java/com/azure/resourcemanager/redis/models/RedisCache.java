@@ -557,6 +557,11 @@ public interface RedisCache
             this.value = value;
         }
 
+        /**
+         * Gets the string representation of the version.
+         *
+         * @return The string representation of the version.
+         */
         public String getValue() {
             return value;
         }

@@ -9,7 +9,6 @@ import com.azure.core.util.logging.ClientLogger;
 import java.security.InvalidKeyException;
 import java.security.InvalidParameterException;
 import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.Signature;
 import java.security.SignatureException;
 import java.security.cert.X509Certificate;
@@ -26,25 +25,19 @@ public final class AttestationSigningKey {
 
     /**
      * Creates a new instance of an AttestationSigningKey.
+     *
+     * @param privateKey The asymmetric key used to sign the request to be sent to the server.
+     * @param certificate An X.509 Certificate wrapping the public key associated with `privateKey`.
+     *                    This certificate will be sent to the attestation service to allow the service
+     *                    to validate the certificate.
      */
-    public AttestationSigningKey() {
-        this.certificate = null;
-        this.privateKey = null;
+    public AttestationSigningKey(X509Certificate certificate, PrivateKey privateKey) {
+        this.certificate = certificate;
+        this.privateKey = privateKey;
         this.allowWeakKey = false;
     }
 
     /**
-     * Sets the certificate in the signing key.
-     * @param certificate Certificate to sign.
-     * @return AttestationSigningKey
-     */
-    public AttestationSigningKey setCertificate(X509Certificate certificate) {
-        this.certificate = certificate;
-        return this;
-    }
-
-    /**
-     *
      * @return Returns the X.509 certificate associated with this Signing Key.
      */
     public X509Certificate getCertificate() {
@@ -52,17 +45,6 @@ public final class AttestationSigningKey {
     }
 
     /**
-     * Sets the private key for the signing key.
-     * @param privateKey Private key to sign the certificate.
-     * @return AttestationSigningKey.
-     */
-    public AttestationSigningKey setPrivateKey(PrivateKey privateKey) {
-        this.privateKey = privateKey;
-        return this;
-    }
-
-    /**
-     *
      * @return Returns the private key associated with this signing key.
      */
     public PrivateKey getPrivateKey() {
@@ -70,7 +52,8 @@ public final class AttestationSigningKey {
     }
 
     /**
-     * Sets whether the privateKey is allowed to be a weak key (less than 1024 bits).
+     * Sets whether the privateKey is allowed to be a weak key (less than or equal to 1024 bits).
+     *
      * @param allowWeakKey - boolean indicating if weak keys should be allowed (default False).
      * @return Returns the AttestationSigningKey.
      */
@@ -93,10 +76,9 @@ public final class AttestationSigningKey {
      * @throws InvalidKeyException - Thrown if the PrivateKey provided is from an API family different from the certificate.
      * @throws SignatureException - Thrown if the digital signature cannot be verified or created.
      * @throws NoSuchAlgorithmException - Thrown if the signature algorithm is not supported.
-     * @throws NoSuchProviderException - Thrown if the specified provider is incorrect.
      * @throws InvalidParameterException - Thrown if the certificate could not validate a buffer signed with the signing key.
      */
-    public void verify() throws InvalidKeyException, SignatureException, NoSuchAlgorithmException, NoSuchProviderException {
+    public void verify() throws InvalidKeyException, SignatureException, NoSuchAlgorithmException {
         Objects.requireNonNull(certificate);
         Objects.requireNonNull(privateKey);
 
@@ -131,6 +113,6 @@ public final class AttestationSigningKey {
     }
 
     private boolean allowWeakKey;
-    private X509Certificate certificate;
-    private PrivateKey privateKey;
+    private final X509Certificate certificate;
+    private final PrivateKey privateKey;
 }

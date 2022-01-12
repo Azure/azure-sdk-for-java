@@ -429,7 +429,6 @@ public class CosmosContainer {
 
     /**
      * Reads all the items of a logical partition returning the results as {@link CosmosPagedIterable}.
-     * <p>
      *
      * @param <T> the type parameter.
      * @param partitionKey the partition key value of the documents that need to be read
@@ -742,7 +741,17 @@ public class CosmosContainer {
     /**
      * Enable the throughput control group with local control mode.
      *
-     * {@codesnippet com.azure.cosmos.throughputControl.localControl}
+     * <!-- src_embed com.azure.cosmos.throughputControl.localControl -->
+     * <pre>
+     * ThroughputControlGroupConfig groupConfig =
+     *     new ThroughputControlGroupConfigBuilder&#40;&#41;
+     *         .setGroupName&#40;&quot;localControlGroup&quot;&#41;
+     *         .setTargetThroughputThreshold&#40;0.1&#41;
+     *         .build&#40;&#41;;
+     *
+     * container.enableLocalThroughputControlGroup&#40;groupConfig&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.throughputControl.localControl -->
      *
      * @param groupConfig A {@link GlobalThroughputControlConfig}.
      */
@@ -755,7 +764,23 @@ public class CosmosContainer {
      * Enable the throughput control group with global control mode.
      * The defined throughput limit will be shared across different clients.
      *
-     * {@codesnippet com.azure.cosmos.throughputControl.globalControl}
+     * <!-- src_embed com.azure.cosmos.throughputControl.globalControl -->
+     * <pre>
+     * ThroughputControlGroupConfig groupConfig =
+     *     new ThroughputControlGroupConfigBuilder&#40;&#41;
+     *         .setGroupName&#40;&quot;localControlGroup&quot;&#41;
+     *         .setTargetThroughputThreshold&#40;0.1&#41;
+     *         .build&#40;&#41;;
+     *
+     * GlobalThroughputControlConfig globalControlConfig =
+     *     this.client.createGlobalThroughputControlConfigBuilder&#40;database.getId&#40;&#41;, container.getId&#40;&#41;&#41;
+     *         .setControlItemRenewInterval&#40;Duration.ofSeconds&#40;5&#41;&#41;
+     *         .setControlItemExpireInterval&#40;Duration.ofSeconds&#40;10&#41;&#41;
+     *         .build&#40;&#41;;
+     *
+     * container.enableGlobalThroughputControlGroup&#40;groupConfig, globalControlConfig&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.throughputControl.globalControl -->
      *
      * @param groupConfig The throughput control group configuration, see {@link GlobalThroughputControlGroup}.
      * @param globalControlConfig The global throughput control configuration, see {@link GlobalThroughputControlConfig}.

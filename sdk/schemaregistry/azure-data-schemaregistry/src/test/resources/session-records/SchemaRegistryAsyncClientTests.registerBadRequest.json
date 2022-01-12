@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/testgroup001/schemas/sch199059275?api-version=2021-10",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/mygroup/schemas/sch7670427d1?api-version=2021-10",
     "Headers" : {
-      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "24c84f98-8394-4ce9-95c3-f86eab07f775",
+      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.0.0-beta.7 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ac8c16d5-8001-4a49-beb0-7c883cbe29e2",
       "Content-Type" : "application/json; serialization=avro"
     },
     "Response" : {
@@ -13,11 +13,11 @@
       "Server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "Body" : "{\"Code\":400,\"Detail\":\"Schema validation failed: Error reading JObject from JsonReader. Current JsonReader item is not an object: String. Path '', line 1, position 3. TrackingId:850dbc5e-b67f-401b-b58e-38fcf37eaffa_G25, SystemTracker:hmlam-sr-test-01.servicebus.windows.net:$schemaGroups\\/testgroup001\\/schemas\\/sch199059275, Timestamp:2021-11-02T21:05:09\"}",
-      "Date" : "Tue, 02 Nov 2021 21:05:08 GMT",
+      "Body" : "{\"Code\":400,\"Detail\":\"Schema validation failed: Error reading JObject from JsonReader. Current JsonReader item is not an object: String. Path '', line 1, position 3. TrackingId:e58eab9a-680e-4b8d-ad3e-0272b6f6dcc2_G29, SystemTracker:conniey.servicebus.windows.net:$schemaGroups\\/mygroup\\/schemas\\/sch7670427d1, Timestamp:2021-11-11T02:50:18\"}",
+      "Date" : "Thu, 11 Nov 2021 02:50:18 GMT",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   } ],
-  "variables" : [ "sch199059275" ]
+  "variables" : [ "sch7670427d1" ]
 }

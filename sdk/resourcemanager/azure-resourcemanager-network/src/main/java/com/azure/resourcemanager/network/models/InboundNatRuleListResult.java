@@ -17,7 +17,7 @@ public final class InboundNatRuleListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(InboundNatRuleListResult.class);
 
     /*
-     * A list of inbound nat rules in a load balancer.
+     * A list of inbound NAT rules in a load balancer.
      */
     @JsonProperty(value = "value")
     private List<InboundNatRuleInner> value;
@@ -29,7 +29,7 @@ public final class InboundNatRuleListResult {
     private String nextLink;
 
     /**
-     * Get the value property: A list of inbound nat rules in a load balancer.
+     * Get the value property: A list of inbound NAT rules in a load balancer.
      *
      * @return the value value.
      */
@@ -38,7 +38,7 @@ public final class InboundNatRuleListResult {
     }
 
     /**
-     * Set the value property: A list of inbound nat rules in a load balancer.
+     * Set the value property: A list of inbound NAT rules in a load balancer.
      *
      * @param value the value value to set.
      * @return the InboundNatRuleListResult object itself.

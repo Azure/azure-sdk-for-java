@@ -274,7 +274,6 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * overwriting existing files.
      * <p>
      * This type is not threadsafe to prevent having to hold locks across network calls.
-     * <p>
      *
      * @param path the path of the file to open
      * @param set options specifying how the file should be opened

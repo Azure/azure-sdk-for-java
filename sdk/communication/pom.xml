@@ -104,6 +104,7 @@
         <module>azure-communication-phonenumbers</module>
         <module>azure-communication-sms</module>
         <module>azure-resourcemanager-communication</module>
+        <module>azure-communication-common-perf</module>
       </modules>
     </profile>
   </profiles>

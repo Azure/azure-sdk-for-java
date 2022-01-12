@@ -25,18 +25,45 @@ public class AADOAuth2AuthenticatedPrincipal implements OAuth2AuthenticatedPrinc
 
     private static final String PERSONAL_ACCOUNT_TENANT_ID = "9188040d-6c67-4c5b-b112-36a304b66dad";
 
+    /**
+     * The authorities
+     */
     private final Collection<GrantedAuthority> authorities;
 
+    /**
+     * The headers
+     */
     private final Map<String, Object> headers;
 
+    /**
+     * The attributes
+     */
     private final Map<String, Object> attributes;
 
+    /**
+     * The token value
+     */
     private final String tokenValue;
 
+    /**
+     * The JWT claims set
+     */
     private JWTClaimsSet jwtClaimsSet;
 
+    /**
+     * The name
+     */
     private final String name;
 
+    /**
+     * Creates a new instance of {@link AADOAuth2AuthenticatedPrincipal}.
+     *
+     * @param headers the headers
+     * @param attributes the attributes
+     * @param authorities the authorities
+     * @param tokenValue the token value
+     * @param name the name
+     */
     public AADOAuth2AuthenticatedPrincipal(Map<String, Object> headers,
                                            Map<String, Object> attributes,
                                            Collection<GrantedAuthority> authorities,
@@ -75,38 +102,84 @@ public class AADOAuth2AuthenticatedPrincipal implements OAuth2AuthenticatedPrinc
         return this.name;
     }
 
+    /**
+     * Gets the token value.
+     *
+     * @return the token value
+     */
     public String getTokenValue() {
         return tokenValue;
     }
 
+    /**
+     * Gets the headers.
+     *
+     * @return the headers
+     */
     public Map<String, Object> getHeaders() {
         return headers;
     }
 
+    /**
+     * Gets the JWT claims set.
+     *
+     * @return the JWT claims set
+     */
     public JWTClaimsSet getJwtClaimsSet() {
         return jwtClaimsSet;
     }
 
+    /**
+     * Gets the issuer.
+     *
+     * @return the issuer
+     */
     public String getIssuer() {
         return jwtClaimsSet == null ? null : jwtClaimsSet.getIssuer();
     }
 
+    /**
+     * Gets the subject.
+     *
+     * @return the subject
+     */
     public String getSubject() {
         return jwtClaimsSet == null ? null : jwtClaimsSet.getSubject();
     }
 
+    /**
+     * Gets the claims.
+     *
+     * @return the claims
+     */
     public Map<String, Object> getClaims() {
         return jwtClaimsSet == null ? null : jwtClaimsSet.getClaims();
     }
 
+    /**
+     * Gets a claim.
+     *
+     * @param name the name of the claim
+     * @return a claim
+     */
     public Object getClaim(String name) {
         return jwtClaimsSet == null ? null : jwtClaimsSet.getClaim(name);
     }
 
+    /**
+     * Gets the tenant ID.
+     *
+     * @return the tenant ID
+     */
     public String getTenantId() {
         return jwtClaimsSet == null ? null : (String) jwtClaimsSet.getClaim("tid");
     }
 
+    /**
+     * Whether the principal is a personal account.
+     *
+     * @return whether the principal is a personal account
+     */
     public boolean isPersonalAccount() {
         return PERSONAL_ACCOUNT_TENANT_ID.equals(getTenantId());
     }

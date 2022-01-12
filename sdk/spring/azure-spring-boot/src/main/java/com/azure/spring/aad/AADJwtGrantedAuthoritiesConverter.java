@@ -28,10 +28,18 @@ public class AADJwtGrantedAuthoritiesConverter implements Converter<Jwt, Collect
 
     private final Map<String, String> claimToAuthorityPrefixMap;
 
+    /**
+     * Creates a new instance of {@link AADJwtGrantedAuthoritiesConverter}.
+     */
     public AADJwtGrantedAuthoritiesConverter() {
         claimToAuthorityPrefixMap = DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP;
     }
 
+    /**
+     * Creates a new instance of {@link AADJwtGrantedAuthoritiesConverter}.
+     *
+     * @param claimToAuthorityPrefixMap the claim to authority prefix map
+     */
     public AADJwtGrantedAuthoritiesConverter(Map<String, String> claimToAuthorityPrefixMap) {
         this.claimToAuthorityPrefixMap = claimToAuthorityPrefixMap;
     }

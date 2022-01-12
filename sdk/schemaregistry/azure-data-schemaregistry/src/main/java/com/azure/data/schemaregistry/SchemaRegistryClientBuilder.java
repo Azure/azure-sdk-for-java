@@ -28,6 +28,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryImpl;
 import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryImplBuilder;
 
@@ -45,20 +46,57 @@ import java.util.Objects;
  * and an Azure AD credential.
  *
  * <p><strong>Instantiating the client</strong></p>
- * {@codesnippet com.azure.data.schemaregistry.schemaregistryclient.instantiation}
+ * <!-- src_embed com.azure.data.schemaregistry.schemaregistryclient.instantiation -->
+ * <pre>
+ * &#47;&#47; AAD credential to authorize with Schema Registry service.
+ * DefaultAzureCredential azureCredential = new DefaultAzureCredentialBuilder&#40;&#41;
+ *     .build&#40;&#41;;
+ * SchemaRegistryClient client = new SchemaRegistryClientBuilder&#40;&#41;
+ *     .fullyQualifiedNamespace&#40;&quot;https:&#47;&#47;&lt;your-schema-registry-endpoint&gt;.servicebus.windows.net&quot;&#41;
+ *     .credential&#40;azureCredential&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.schemaregistry.schemaregistryclient.instantiation -->
  *
  * <p><strong>Instantiating the async client</strong></p>
- * {@codesnippet com.azure.data.schemaregistry.schemaregistryasyncclient.instantiation}
+ * <!-- src_embed com.azure.data.schemaregistry.schemaregistryasyncclient.instantiation -->
+ * <pre>
+ * &#47;&#47; AAD credential to authorize with Schema Registry service.
+ * DefaultAzureCredential azureCredential = new DefaultAzureCredentialBuilder&#40;&#41;
+ *     .build&#40;&#41;;
+ * SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder&#40;&#41;
+ *     .fullyQualifiedNamespace&#40;&quot;https:&#47;&#47;&lt;your-schema-registry-endpoint&gt;.servicebus.windows.net&quot;&#41;
+ *     .credential&#40;azureCredential&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.schemaregistry.schemaregistryasyncclient.instantiation -->
  *
  * <p><strong>Instantiating with custom retry policy and HTTP log options</strong></p>
- * {@codesnippet com.azure.data.schemaregistry.schemaregistryasyncclient.retrypolicy.instantiation}
+ * <!-- src_embed com.azure.data.schemaregistry.schemaregistryasyncclient.retrypolicy.instantiation -->
+ * <pre>
+ * DefaultAzureCredential azureCredential = new DefaultAzureCredentialBuilder&#40;&#41;
+ *     .build&#40;&#41;;
+ *
+ * HttpLogOptions httpLogOptions = new HttpLogOptions&#40;&#41;
+ *     .setLogLevel&#40;HttpLogDetailLevel.BODY&#41;
+ *     .setPrettyPrintBody&#40;true&#41;;
+ *
+ * RetryPolicy retryPolicy = new RetryPolicy&#40;new FixedDelay&#40;5, Duration.ofSeconds&#40;30&#41;&#41;&#41;;
+ * SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder&#40;&#41;
+ *     .fullyQualifiedNamespace&#40;&quot;https:&#47;&#47;&lt;your-schema-registry-endpoint&gt;.servicebus.windows.net&quot;&#41;
+ *     .httpLogOptions&#40;httpLogOptions&#41;
+ *     .retryPolicy&#40;retryPolicy&#41;
+ *     .credential&#40;azureCredential&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.schemaregistry.schemaregistryasyncclient.retrypolicy.instantiation -->
  */
 @ServiceClientBuilder(serviceClients = {SchemaRegistryAsyncClient.class, SchemaRegistryClient.class})
 public class SchemaRegistryClientBuilder {
     private final ClientLogger logger = new ClientLogger(SchemaRegistryClientBuilder.class);
 
     private static final String DEFAULT_SCOPE = "https://eventhubs.azure.net/.default";
-    private static final String CLIENT_PROPERTIES = "azure-data-schemaregistry-client.properties";
+    private static final String CLIENT_PROPERTIES = "azure-data-schemaregistry.properties";
     private static final String NAME = "name";
     private static final String VERSION = "version";
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
@@ -312,8 +350,10 @@ public class SchemaRegistryClientBuilder {
         }
 
         ServiceVersion version = (serviceVersion == null) ? SchemaRegistryVersion.getLatest() : serviceVersion;
+        SerializerAdapter serializerAdapter = new SchemaRegistryJsonSerializer();
 
         AzureSchemaRegistryImpl restService = new AzureSchemaRegistryImplBuilder()
+            .serializerAdapter(serializerAdapter)
             .endpoint(fullyQualifiedNamespace)
             .apiVersion(version.getVersion())
             .pipeline(buildPipeline)

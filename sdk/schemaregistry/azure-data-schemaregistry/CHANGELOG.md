@@ -1,8 +1,18 @@
 # Release History
 
-## 1.0.0-beta.7 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+- Fixed double serialization of JSON when publishing/reading schemas. #25789
+
+### Other Changes
+
+## 1.0.0 (2021-11-12)
 
 ### Breaking Changes
 
@@ -11,9 +21,12 @@
 
 ### Bugs Fixed
 
+- Added correct User Agent string for client.
+
 ### Other Changes
 
 - Regenerated REST API based off 2021-10 swagger.
+- An `HttpResponseException` with status code 415 is returned if an invalid `SchemaFormat` is passed for `registerSchema` or `getSchemaById` calls.
 
 ## 1.0.0-beta.6 (2021-10-08)
 

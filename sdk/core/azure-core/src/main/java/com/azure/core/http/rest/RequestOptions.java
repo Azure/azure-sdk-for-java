@@ -255,7 +255,7 @@ public final class RequestOptions {
      * @throws IllegalArgumentException If both {@link ErrorOptions#THROW} and {@link ErrorOptions#NO_THROW} are
      * included in {@code errorOptions}.
      */
-    public RequestOptions setErrorOptions(EnumSet<ErrorOptions> errorOptions) {
+    RequestOptions setErrorOptions(EnumSet<ErrorOptions> errorOptions) {
         Objects.requireNonNull(errorOptions, "'errorOptions' cannot be null.");
 
         if (errorOptions.contains(ErrorOptions.THROW) && errorOptions.contains(ErrorOptions.NO_THROW)) {

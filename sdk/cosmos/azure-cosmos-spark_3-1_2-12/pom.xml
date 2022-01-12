@@ -12,7 +12,7 @@
 
   <groupId>com.azure.cosmos.spark</groupId>
   <artifactId>azure-cosmos-spark_3-1_2-12</artifactId>
-  <version>4.5.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12;current} -->
+  <version>4.6.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12;current} -->
   <packaging>jar</packaging>
   <name>OLTP Spark Connector for Azure Cosmos DB SQL API</name>
   <description>OLTP Spark Connector for Azure Cosmos DB SQL API</description>
@@ -29,6 +29,10 @@
     <legal>
       <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]>
     </legal>
+    <codesnippet.skip>true</codesnippet.skip>
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
+    <revapi.skip>true</revapi.skip>
   </properties>
 
   <developers>
@@ -61,7 +65,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.21.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.25.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>org.scala-lang.modules</groupId>
@@ -84,13 +88,13 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>3.12.4</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>4.0.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.10</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.13</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -102,7 +106,7 @@
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.19.0</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
+      <version>3.21.0</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -304,15 +308,6 @@
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
         <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.revapi</groupId>
-        <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
         <configuration>
           <skip>true</skip>
         </configuration>
@@ -643,15 +638,6 @@
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-maven-plugin</artifactId>
             <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
-            <configuration>
-              <skip>true</skip>
-            </configuration>
-          </plugin>
-
-          <plugin>
-            <groupId>org.revapi</groupId>
-            <artifactId>revapi-maven-plugin</artifactId>
-            <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
             <configuration>
               <skip>true</skip>
             </configuration>

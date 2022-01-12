@@ -356,14 +356,23 @@ public abstract class SearchTestBase extends TestBase {
     }
 
     protected SearchIndexerDataSourceConnection createTestSqlDataSourceObject() {
-        return createTestSqlDataSourceObject(null, null);
+        return createTestSqlDataSourceObject(null, null, null);
     }
 
     protected SearchIndexerDataSourceConnection createTestSqlDataSourceObject(
         DataDeletionDetectionPolicy dataDeletionDetectionPolicy, DataChangeDetectionPolicy dataChangeDetectionPolicy) {
-        return SearchIndexerDataSources.createFromAzureSql(testResourceNamer.randomName(SQL_DATASOURCE_NAME, 32),
-            FAKE_AZURE_SQL_CONNECTION_STRING, "GeoNamesRI", FAKE_DESCRIPTION, dataChangeDetectionPolicy,
-            dataDeletionDetectionPolicy);
+        return createTestSqlDataSourceObject(testResourceNamer.randomName(SQL_DATASOURCE_NAME, 32),
+            dataDeletionDetectionPolicy, dataChangeDetectionPolicy);
+    }
+
+    protected SearchIndexerDataSourceConnection createTestSqlDataSourceObject(String name,
+        DataDeletionDetectionPolicy dataDeletionDetectionPolicy, DataChangeDetectionPolicy dataChangeDetectionPolicy) {
+        if (name == null) {
+            name = testResourceNamer.randomName(SQL_DATASOURCE_NAME, 32);
+        }
+
+        return SearchIndexerDataSources.createFromAzureSql(name, FAKE_AZURE_SQL_CONNECTION_STRING, "GeoNamesRI",
+            FAKE_DESCRIPTION, dataChangeDetectionPolicy, dataDeletionDetectionPolicy);
     }
 
     protected SearchIndexerDataSourceConnection createBlobDataSource() {

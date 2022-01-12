@@ -34,6 +34,11 @@ public class PropertyLoader {
         return "unknown";
     }
 
+    /**
+     * Gets the project version.
+     *
+     * @return the project version
+     */
     public static String getProjectVersion() {
         return getProperty(PROJECT_PROPERTY_FILE, "project.version");
     }

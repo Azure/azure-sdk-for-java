@@ -35,7 +35,14 @@ import java.util.stream.Collectors;
 public class VcapProcessor implements EnvironmentPostProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(VcapProcessor.class);
 
+    /**
+     * VCAP services
+     */
     public static final String VCAP_SERVICES = "VCAP_SERVICES";
+
+    /**
+     * Log variable
+     */
     public static final String LOG_VARIABLE = "COM_MICROSOFT_AZURE_CLOUDFOUNDRY_SERVICE_LOG";
     private static final String AZURE = "azure-";
     private static final String USER_PROVIDED = "user-provided";
@@ -96,6 +103,12 @@ public class VcapProcessor implements EnvironmentPostProcessor {
         return configs.stream().map(this::getVcapServiceConfig).collect(Collectors.toList());
     }
 
+    /**
+     * Parses the VCap service.
+     *
+     * @param vcapServices the VCap service
+     * @return the list of Vcap POJOs
+     */
     public List<VcapPojo> parseVcapService(String vcapServices) {
         final List<VcapPojo> results = new ArrayList<>();
 

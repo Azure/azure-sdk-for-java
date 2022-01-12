@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.administration;
 
 import com.azure.analytics.purview.administration.implementation.MetadataRolesImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -12,18 +13,18 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
 
 /** Initializes a new instance of the synchronous PurviewMetadataClient type. */
 @ServiceClient(builder = PurviewMetadataClientBuilder.class)
 public final class MetadataRolesClient {
-    private final MetadataRolesImpl serviceClient;
+    @Generated private final MetadataRolesImpl serviceClient;
 
     /**
      * Initializes an instance of MetadataRoles client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     MetadataRolesClient(MetadataRolesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -82,13 +83,12 @@ public final class MetadataRolesClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return list of Metadata roles.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> list(RequestOptions requestOptions, Context context) {
-        return this.serviceClient.list(requestOptions, context);
+    public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
+        return this.serviceClient.list(requestOptions);
     }
 }

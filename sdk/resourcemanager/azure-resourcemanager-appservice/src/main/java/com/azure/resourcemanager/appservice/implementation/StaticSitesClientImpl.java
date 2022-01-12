@@ -1705,7 +1705,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return static Site ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<StaticSiteArmResourceInner>, StaticSiteArmResourceInner>
         beginCreateOrUpdateStaticSiteAsync(
             String resourceGroupName, String name, StaticSiteArmResourceInner staticSiteEnvelope) {
@@ -1718,7 +1718,7 @@ public final class StaticSitesClientImpl
                 this.client.getHttpPipeline(),
                 StaticSiteArmResourceInner.class,
                 StaticSiteArmResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1733,7 +1733,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return static Site ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StaticSiteArmResourceInner>, StaticSiteArmResourceInner>
         beginCreateOrUpdateStaticSiteAsync(
             String resourceGroupName, String name, StaticSiteArmResourceInner staticSiteEnvelope, Context context) {
@@ -1761,7 +1761,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return static Site ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StaticSiteArmResourceInner>, StaticSiteArmResourceInner> beginCreateOrUpdateStaticSite(
         String resourceGroupName, String name, StaticSiteArmResourceInner staticSiteEnvelope) {
         return beginCreateOrUpdateStaticSiteAsync(resourceGroupName, name, staticSiteEnvelope).getSyncPoller();
@@ -1779,7 +1779,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return static Site ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StaticSiteArmResourceInner>, StaticSiteArmResourceInner> beginCreateOrUpdateStaticSite(
         String resourceGroupName, String name, StaticSiteArmResourceInner staticSiteEnvelope, Context context) {
         return beginCreateOrUpdateStaticSiteAsync(resourceGroupName, name, staticSiteEnvelope, context).getSyncPoller();
@@ -1962,12 +1962,13 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, name);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1981,7 +1982,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String name, Context context) {
         context = this.client.mergeContext(context);
@@ -2001,7 +2002,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name) {
         return beginDeleteAsync(resourceGroupName, name).getSyncPoller();
     }
@@ -2017,7 +2018,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, Context context) {
         return beginDeleteAsync(resourceGroupName, name, context).getSyncPoller();
     }
@@ -3302,14 +3303,15 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteStaticSiteBuildAsync(
         String resourceGroupName, String name, String environmentName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteStaticSiteBuildWithResponseAsync(resourceGroupName, name, environmentName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -3324,7 +3326,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteStaticSiteBuildAsync(
         String resourceGroupName, String name, String environmentName, Context context) {
         context = this.client.mergeContext(context);
@@ -3346,7 +3348,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteStaticSiteBuild(
         String resourceGroupName, String name, String environmentName) {
         return beginDeleteStaticSiteBuildAsync(resourceGroupName, name, environmentName).getSyncPoller();
@@ -3364,7 +3366,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteStaticSiteBuild(
         String resourceGroupName, String name, String environmentName, Context context) {
         return beginDeleteStaticSiteBuildAsync(resourceGroupName, name, environmentName, context).getSyncPoller();
@@ -4937,7 +4939,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return static Site User Provided Function App ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<
             PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>,
             StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -4964,7 +4966,7 @@ public final class StaticSitesClientImpl
                     this.client.getHttpPipeline(),
                     StaticSiteUserProvidedFunctionAppArmResourceInner.class,
                     StaticSiteUserProvidedFunctionAppArmResourceInner.class,
-                    Context.NONE);
+                    this.client.getContext());
     }
 
     /**
@@ -4985,7 +4987,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return static Site User Provided Function App ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<
             PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>,
             StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -5035,7 +5037,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return static Site User Provided Function App ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>,
             StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -5074,7 +5076,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return static Site User Provided Function App ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>,
             StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -5638,7 +5640,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSiteBuildAsync(
         String resourceGroupName,
         String name,
@@ -5649,7 +5651,8 @@ public final class StaticSitesClientImpl
                 resourceGroupName, name, environmentName, staticSiteZipDeploymentEnvelope);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -5666,7 +5669,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSiteBuildAsync(
         String resourceGroupName,
         String name,
@@ -5695,7 +5698,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSiteBuild(
         String resourceGroupName,
         String name,
@@ -5720,7 +5723,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSiteBuild(
         String resourceGroupName,
         String name,
@@ -6854,7 +6857,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return static Site Custom Domain Overview ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<
             PollResult<StaticSiteCustomDomainOverviewArmResourceInner>, StaticSiteCustomDomainOverviewArmResourceInner>
         beginCreateOrUpdateStaticSiteCustomDomainAsync(
@@ -6873,7 +6876,7 @@ public final class StaticSitesClientImpl
                     this.client.getHttpPipeline(),
                     StaticSiteCustomDomainOverviewArmResourceInner.class,
                     StaticSiteCustomDomainOverviewArmResourceInner.class,
-                    Context.NONE);
+                    this.client.getContext());
     }
 
     /**
@@ -6890,7 +6893,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return static Site Custom Domain Overview ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<
             PollResult<StaticSiteCustomDomainOverviewArmResourceInner>, StaticSiteCustomDomainOverviewArmResourceInner>
         beginCreateOrUpdateStaticSiteCustomDomainAsync(
@@ -6927,7 +6930,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return static Site Custom Domain Overview ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<StaticSiteCustomDomainOverviewArmResourceInner>, StaticSiteCustomDomainOverviewArmResourceInner>
         beginCreateOrUpdateStaticSiteCustomDomain(
@@ -6954,7 +6957,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return static Site Custom Domain Overview ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<StaticSiteCustomDomainOverviewArmResourceInner>, StaticSiteCustomDomainOverviewArmResourceInner>
         beginCreateOrUpdateStaticSiteCustomDomain(
@@ -7185,14 +7188,15 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteStaticSiteCustomDomainAsync(
         String resourceGroupName, String name, String domainName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteStaticSiteCustomDomainWithResponseAsync(resourceGroupName, name, domainName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -7207,7 +7211,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteStaticSiteCustomDomainAsync(
         String resourceGroupName, String name, String domainName, Context context) {
         context = this.client.mergeContext(context);
@@ -7229,7 +7233,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteStaticSiteCustomDomain(
         String resourceGroupName, String name, String domainName) {
         return beginDeleteStaticSiteCustomDomainAsync(resourceGroupName, name, domainName).getSyncPoller();
@@ -7247,7 +7251,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteStaticSiteCustomDomain(
         String resourceGroupName, String name, String domainName, Context context) {
         return beginDeleteStaticSiteCustomDomainAsync(resourceGroupName, name, domainName, context).getSyncPoller();
@@ -7469,7 +7473,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginValidateCustomDomainCanBeAddedToStaticSiteAsync(
         String resourceGroupName,
         String name,
@@ -7480,7 +7484,8 @@ public final class StaticSitesClientImpl
                 resourceGroupName, name, domainName, staticSiteCustomDomainRequestPropertiesEnvelope);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -7497,7 +7502,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginValidateCustomDomainCanBeAddedToStaticSiteAsync(
         String resourceGroupName,
         String name,
@@ -7526,7 +7531,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginValidateCustomDomainCanBeAddedToStaticSite(
         String resourceGroupName,
         String name,
@@ -7551,7 +7556,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginValidateCustomDomainCanBeAddedToStaticSite(
         String resourceGroupName,
         String name,
@@ -7766,12 +7771,13 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDetachStaticSiteAsync(String resourceGroupName, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = detachStaticSiteWithResponseAsync(resourceGroupName, name);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -7785,7 +7791,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDetachStaticSiteAsync(
         String resourceGroupName, String name, Context context) {
         context = this.client.mergeContext(context);
@@ -7805,7 +7811,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDetachStaticSite(String resourceGroupName, String name) {
         return beginDetachStaticSiteAsync(resourceGroupName, name).getSyncPoller();
     }
@@ -7821,7 +7827,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDetachStaticSite(
         String resourceGroupName, String name, Context context) {
         return beginDetachStaticSiteAsync(resourceGroupName, name, context).getSyncPoller();
@@ -9172,7 +9178,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return remote Private Endpoint Connection ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<
             PollResult<RemotePrivateEndpointConnectionArmResourceInner>,
             RemotePrivateEndpointConnectionArmResourceInner>
@@ -9192,7 +9198,7 @@ public final class StaticSitesClientImpl
                     this.client.getHttpPipeline(),
                     RemotePrivateEndpointConnectionArmResourceInner.class,
                     RemotePrivateEndpointConnectionArmResourceInner.class,
-                    Context.NONE);
+                    this.client.getContext());
     }
 
     /**
@@ -9208,7 +9214,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return remote Private Endpoint Connection ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<
             PollResult<RemotePrivateEndpointConnectionArmResourceInner>,
             RemotePrivateEndpointConnectionArmResourceInner>
@@ -9245,7 +9251,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return remote Private Endpoint Connection ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<RemotePrivateEndpointConnectionArmResourceInner>,
             RemotePrivateEndpointConnectionArmResourceInner>
@@ -9272,7 +9278,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return remote Private Endpoint Connection ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<RemotePrivateEndpointConnectionArmResourceInner>,
             RemotePrivateEndpointConnectionArmResourceInner>
@@ -9506,7 +9512,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Object>, Object> beginDeletePrivateEndpointConnectionAsync(
         String resourceGroupName, String name, String privateEndpointConnectionName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -9514,7 +9520,7 @@ public final class StaticSitesClientImpl
         return this
             .client
             .<Object, Object>getLroResult(
-                mono, this.client.getHttpPipeline(), Object.class, Object.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), Object.class, Object.class, this.client.getContext());
     }
 
     /**
@@ -9529,7 +9535,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Object>, Object> beginDeletePrivateEndpointConnectionAsync(
         String resourceGroupName, String name, String privateEndpointConnectionName, Context context) {
         context = this.client.mergeContext(context);
@@ -9552,7 +9558,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Object>, Object> beginDeletePrivateEndpointConnection(
         String resourceGroupName, String name, String privateEndpointConnectionName) {
         return beginDeletePrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName)
@@ -9571,7 +9577,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Object>, Object> beginDeletePrivateEndpointConnection(
         String resourceGroupName, String name, String privateEndpointConnectionName, Context context) {
         return beginDeletePrivateEndpointConnectionAsync(
@@ -10490,7 +10496,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return static Site User Provided Function App ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<
             PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>,
             StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -10511,7 +10517,7 @@ public final class StaticSitesClientImpl
                     this.client.getHttpPipeline(),
                     StaticSiteUserProvidedFunctionAppArmResourceInner.class,
                     StaticSiteUserProvidedFunctionAppArmResourceInner.class,
-                    Context.NONE);
+                    this.client.getContext());
     }
 
     /**
@@ -10531,7 +10537,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return static Site User Provided Function App ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<
             PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>,
             StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -10573,7 +10579,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return static Site User Provided Function App ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>,
             StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -10605,7 +10611,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return static Site User Provided Function App ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>,
             StaticSiteUserProvidedFunctionAppArmResourceInner>
@@ -11081,14 +11087,15 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSiteAsync(
         String resourceGroupName, String name, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createZipDeploymentForStaticSiteWithResponseAsync(resourceGroupName, name, staticSiteZipDeploymentEnvelope);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -11104,7 +11111,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSiteAsync(
         String resourceGroupName,
         String name,
@@ -11131,7 +11138,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSite(
         String resourceGroupName, String name, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope) {
         return beginCreateZipDeploymentForStaticSiteAsync(resourceGroupName, name, staticSiteZipDeploymentEnvelope)
@@ -11151,7 +11158,7 @@ public final class StaticSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSite(
         String resourceGroupName,
         String name,

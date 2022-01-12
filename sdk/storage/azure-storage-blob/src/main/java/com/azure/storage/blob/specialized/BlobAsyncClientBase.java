@@ -26,11 +26,12 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.ProgressReporter;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
+import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesConstructorProxy;
+import com.azure.storage.blob.implementation.models.BlobPropertiesInternalGetProperties;
 import com.azure.storage.blob.implementation.models.BlobTag;
 import com.azure.storage.blob.implementation.models.BlobTags;
 import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.models.BlobsGetAccountInfoHeaders;
-import com.azure.storage.blob.implementation.models.BlobsGetPropertiesHeaders;
 import com.azure.storage.blob.implementation.models.BlobsSetImmutabilityPolicyHeaders;
 import com.azure.storage.blob.implementation.models.BlobsStartCopyFromURLHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
@@ -43,7 +44,6 @@ import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.implementation.util.ChunkedDownloadUtils;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.ArchiveStatus;
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
@@ -132,14 +132,38 @@ public class BlobAsyncClientBase {
     private final ClientLogger logger = new ClientLogger(BlobAsyncClientBase.class);
     private static final Duration TIMEOUT_VALUE = Duration.ofSeconds(60);
 
+    /**
+     * Backing REST client for the blob client.
+     */
     protected final AzureBlobStorageImpl azureBlobStorage;
+
     private final String snapshot;
     private final String versionId;
     private final CpkInfo customerProvidedKey;
+
+    /**
+     * Encryption scope of the blob.
+     */
     protected final EncryptionScope encryptionScope;
+
+    /**
+     * Storage account name that contains the blob.
+     */
     protected final String accountName;
+
+    /**
+     * Container name that contains the blob.
+     */
     protected final String containerName;
+
+    /**
+     * Name of the blob.
+     */
     protected final String blobName;
+
+    /**
+     * Storage REST API version used in requests to the Storage service.
+     */
     protected final BlobServiceVersion serviceVersion;
 
     /**
@@ -329,7 +353,12 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.getContainerName}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.getContainerName -->
+     * <pre>
+     * String containerName = client.getContainerName&#40;&#41;;
+     * System.out.println&#40;&quot;The name of the container is &quot; + containerName&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.getContainerName -->
      *
      * @return The name of the container.
      */
@@ -342,7 +371,12 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.getContainerAsyncClient}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.getContainerAsyncClient -->
+     * <pre>
+     * BlobContainerAsyncClient containerClient = client.getContainerAsyncClient&#40;&#41;;
+     * System.out.println&#40;&quot;The name of the container is &quot; + containerClient.getBlobContainerName&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.getContainerAsyncClient -->
      *
      * @return {@link BlobContainerAsyncClient}
      */
@@ -366,7 +400,12 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.getBlobName}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.getBlobName -->
+     * <pre>
+     * String blobName = client.getBlobName&#40;&#41;;
+     * System.out.println&#40;&quot;The name of the blob is &quot; + blobName&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.getBlobName -->
      *
      * @return The decoded name of the blob.
      */
@@ -442,7 +481,11 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.exists}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.exists -->
+     * <pre>
+     * client.exists&#40;&#41;.subscribe&#40;response -&gt; System.out.printf&#40;&quot;Exists? %b%n&quot;, response&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.exists -->
      *
      * @return true if the blob exists, false if it doesn't
      */
@@ -460,7 +503,11 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.existsWithResponse}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.existsWithResponse -->
+     * <pre>
+     * client.existsWithResponse&#40;&#41;.subscribe&#40;response -&gt; System.out.printf&#40;&quot;Exists? %b%n&quot;, response.getValue&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.existsWithResponse -->
      *
      * @return true if the blob exists, false if it doesn't
      */
@@ -502,7 +549,12 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopy#String-Duration}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopy#String-Duration -->
+     * <pre>
+     * client.beginCopy&#40;url, Duration.ofSeconds&#40;3&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Copy identifier: %s%n&quot;, response&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopy#String-Duration -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
@@ -529,7 +581,21 @@ public class BlobAsyncClientBase {
      * <p><strong>Starting a copy operation</strong></p>
      * Starting a copy operation and polling on the responses.
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopy#String-Map-AccessTier-RehydratePriority-RequestConditions-BlobRequestConditions-Duration}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopy#String-Map-AccessTier-RehydratePriority-RequestConditions-BlobRequestConditions-Duration -->
+     * <pre>
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * RequestConditions modifiedRequestConditions = new RequestConditions&#40;&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;7&#41;&#41;;
+     * BlobRequestConditions blobRequestConditions = new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     *
+     * client.beginCopy&#40;url, metadata, AccessTier.HOT, RehydratePriority.STANDARD,
+     *     modifiedRequestConditions, blobRequestConditions, Duration.ofSeconds&#40;2&#41;&#41;
+     *     .subscribe&#40;response -&gt; &#123;
+     *         BlobCopyInfo info = response.getValue&#40;&#41;;
+     *         System.out.printf&#40;&quot;CopyId: %s. Status: %s%n&quot;, info.getCopyId&#40;&#41;, info.getCopyStatus&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopy#String-Map-AccessTier-RehydratePriority-RequestConditions-BlobRequestConditions-Duration -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
@@ -570,11 +636,52 @@ public class BlobAsyncClientBase {
      * <p><strong>Starting a copy operation</strong></p>
      * Starting a copy operation and polling on the responses.
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopy#BlobBeginCopyOptions}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopy#BlobBeginCopyOptions -->
+     * <pre>
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * Map&lt;String, String&gt; tags = Collections.singletonMap&#40;&quot;tag&quot;, &quot;value&quot;&#41;;
+     * BlobBeginCopySourceRequestConditions modifiedRequestConditions = new BlobBeginCopySourceRequestConditions&#40;&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;7&#41;&#41;;
+     * BlobRequestConditions blobRequestConditions = new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     *
+     * client.beginCopy&#40;new BlobBeginCopyOptions&#40;url&#41;.setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;.setTier&#40;AccessTier.HOT&#41;
+     *     .setRehydratePriority&#40;RehydratePriority.STANDARD&#41;.setSourceRequestConditions&#40;modifiedRequestConditions&#41;
+     *     .setDestinationRequestConditions&#40;blobRequestConditions&#41;.setPollInterval&#40;Duration.ofSeconds&#40;2&#41;&#41;&#41;
+     *     .subscribe&#40;response -&gt; &#123;
+     *         BlobCopyInfo info = response.getValue&#40;&#41;;
+     *         System.out.printf&#40;&quot;CopyId: %s. Status: %s%n&quot;, info.getCopyId&#40;&#41;, info.getCopyStatus&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopy#BlobBeginCopyOptions -->
      *
      * <p><strong>Cancelling a copy operation</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrlCancel#BlobBeginCopyOptions}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrlCancel#BlobBeginCopyOptions -->
+     * <pre>
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * Map&lt;String, String&gt; tags = Collections.singletonMap&#40;&quot;tag&quot;, &quot;value&quot;&#41;;
+     * BlobBeginCopySourceRequestConditions modifiedRequestConditions = new BlobBeginCopySourceRequestConditions&#40;&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;7&#41;&#41;;
+     * BlobRequestConditions blobRequestConditions = new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     *
+     * PollerFlux&lt;BlobCopyInfo, Void&gt; poller = client.beginCopy&#40;new BlobBeginCopyOptions&#40;url&#41;
+     *     .setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;.setTier&#40;AccessTier.HOT&#41;
+     *     .setRehydratePriority&#40;RehydratePriority.STANDARD&#41;.setSourceRequestConditions&#40;modifiedRequestConditions&#41;
+     *     .setDestinationRequestConditions&#40;blobRequestConditions&#41;.setPollInterval&#40;Duration.ofSeconds&#40;2&#41;&#41;&#41;;
+     *
+     * poller.take&#40;Duration.ofMinutes&#40;30&#41;&#41;
+     *         .last&#40;&#41;
+     *         .flatMap&#40;asyncPollResponse -&gt; &#123;
+     *             if &#40;!asyncPollResponse.getStatus&#40;&#41;.isComplete&#40;&#41;&#41; &#123;
+     *                 return asyncPollResponse
+     *                         .cancelOperation&#40;&#41;
+     *                         .then&#40;Mono.error&#40;new RuntimeException&#40;&quot;Blob copy taking long time, &quot;
+     *                                 + &quot;operation is cancelled!&quot;&#41;&#41;&#41;;
+     *             &#125;
+     *             return Mono.just&#40;asyncPollResponse&#41;;
+     *         &#125;&#41;.block&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrlCancel#BlobBeginCopyOptions -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
@@ -733,7 +840,11 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromUrl#String}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromUrl#String -->
+     * <pre>
+     * client.abortCopyFromUrl&#40;copyId&#41;.doOnSuccess&#40;response -&gt; System.out.println&#40;&quot;Aborted copy from URL&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromUrl#String -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
@@ -758,7 +869,12 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromUrlWithResponse#String-String}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromUrlWithResponse#String-String -->
+     * <pre>
+     * client.abortCopyFromUrlWithResponse&#40;copyId, leaseId&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Aborted copy completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.abortCopyFromUrlWithResponse#String-String -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
@@ -793,7 +909,11 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromUrl#String}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromUrl#String -->
+     * <pre>
+     * client.copyFromUrl&#40;url&#41;.subscribe&#40;response -&gt; System.out.printf&#40;&quot;Copy identifier: %s%n&quot;, response&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromUrl#String -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob-from-url">Azure Docs</a></p>
@@ -818,7 +938,17 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromUrlWithResponse#String-Map-AccessTier-RequestConditions-BlobRequestConditions}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromUrlWithResponse#String-Map-AccessTier-RequestConditions-BlobRequestConditions -->
+     * <pre>
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * RequestConditions modifiedRequestConditions = new RequestConditions&#40;&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;7&#41;&#41;;
+     * BlobRequestConditions blobRequestConditions = new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     *
+     * client.copyFromUrlWithResponse&#40;url, metadata, AccessTier.HOT, modifiedRequestConditions, blobRequestConditions&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Copy identifier: %s%n&quot;, response&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromUrlWithResponse#String-Map-AccessTier-RequestConditions-BlobRequestConditions -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob-from-url">Azure Docs</a></p>
@@ -851,7 +981,20 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromUrlWithResponse#BlobCopyFromUrlOptions}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromUrlWithResponse#BlobCopyFromUrlOptions -->
+     * <pre>
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * Map&lt;String, String&gt; tags = Collections.singletonMap&#40;&quot;tag&quot;, &quot;value&quot;&#41;;
+     * RequestConditions modifiedRequestConditions = new RequestConditions&#40;&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;7&#41;&#41;;
+     * BlobRequestConditions blobRequestConditions = new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     *
+     * client.copyFromUrlWithResponse&#40;new BlobCopyFromUrlOptions&#40;url&#41;.setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;
+     *     .setTier&#40;AccessTier.HOT&#41;.setSourceRequestConditions&#40;modifiedRequestConditions&#41;
+     *     .setDestinationRequestConditions&#40;blobRequestConditions&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Copy identifier: %s%n&quot;, response&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromUrlWithResponse#BlobCopyFromUrlOptions -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob-from-url">Azure Docs</a></p>
@@ -904,7 +1047,18 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.download}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.download -->
+     * <pre>
+     * ByteArrayOutputStream downloadData = new ByteArrayOutputStream&#40;&#41;;
+     * client.download&#40;&#41;.subscribe&#40;piece -&gt; &#123;
+     *     try &#123;
+     *         downloadData.write&#40;piece.array&#40;&#41;&#41;;
+     *     &#125; catch &#40;IOException ex&#41; &#123;
+     *         throw new UncheckedIOException&#40;ex&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.download -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -924,7 +1078,18 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadStream}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadStream -->
+     * <pre>
+     * ByteArrayOutputStream downloadData = new ByteArrayOutputStream&#40;&#41;;
+     * client.downloadStream&#40;&#41;.subscribe&#40;piece -&gt; &#123;
+     *     try &#123;
+     *         downloadData.write&#40;piece.array&#40;&#41;&#41;;
+     *     &#125; catch &#40;IOException ex&#41; &#123;
+     *         throw new UncheckedIOException&#40;ex&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadStream -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -947,7 +1112,13 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.downloadContent}
+     * <!-- src_embed com.azure.storage.blob.BlobAsyncClient.downloadContent -->
+     * <pre>
+     * client.downloadContent&#40;&#41;.subscribe&#40;data -&gt; &#123;
+     *     System.out.printf&#40;&quot;Downloaded %s&quot;, data.toString&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobAsyncClient.downloadContent -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -973,7 +1144,23 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadWithResponse#BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadWithResponse#BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean -->
+     * <pre>
+     * BlobRange range = new BlobRange&#40;1024, &#40;long&#41; 2048&#41;;
+     * DownloadRetryOptions options = new DownloadRetryOptions&#40;&#41;.setMaxRetryRequests&#40;5&#41;;
+     *
+     * client.downloadWithResponse&#40;range, options, null, false&#41;.subscribe&#40;response -&gt; &#123;
+     *     ByteArrayOutputStream downloadData = new ByteArrayOutputStream&#40;&#41;;
+     *     response.getValue&#40;&#41;.subscribe&#40;piece -&gt; &#123;
+     *         try &#123;
+     *             downloadData.write&#40;piece.array&#40;&#41;&#41;;
+     *         &#125; catch &#40;IOException ex&#41; &#123;
+     *             throw new UncheckedIOException&#40;ex&#41;;
+     *         &#125;
+     *     &#125;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadWithResponse#BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -999,7 +1186,23 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadStreamWithResponse#BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadStreamWithResponse#BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean -->
+     * <pre>
+     * BlobRange range = new BlobRange&#40;1024, &#40;long&#41; 2048&#41;;
+     * DownloadRetryOptions options = new DownloadRetryOptions&#40;&#41;.setMaxRetryRequests&#40;5&#41;;
+     *
+     * client.downloadStreamWithResponse&#40;range, options, null, false&#41;.subscribe&#40;response -&gt; &#123;
+     *     ByteArrayOutputStream downloadData = new ByteArrayOutputStream&#40;&#41;;
+     *     response.getValue&#40;&#41;.subscribe&#40;piece -&gt; &#123;
+     *         try &#123;
+     *             downloadData.write&#40;piece.array&#40;&#41;&#41;;
+     *         &#125; catch &#40;IOException ex&#41; &#123;
+     *             throw new UncheckedIOException&#40;ex&#41;;
+     *         &#125;
+     *     &#125;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadStreamWithResponse#BlobRange-DownloadRetryOptions-BlobRequestConditions-boolean -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -1028,7 +1231,16 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadContentWithResponse#DownloadRetryOptions-BlobRequestConditions}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadContentWithResponse#DownloadRetryOptions-BlobRequestConditions -->
+     * <pre>
+     * DownloadRetryOptions options = new DownloadRetryOptions&#40;&#41;.setMaxRetryRequests&#40;5&#41;;
+     *
+     * client.downloadContentWithResponse&#40;options, null&#41;.subscribe&#40;response -&gt; &#123;
+     *     BinaryData content = response.getValue&#40;&#41;;
+     *     System.out.println&#40;content.toString&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadContentWithResponse#DownloadRetryOptions-BlobRequestConditions -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -1084,7 +1296,7 @@ public class BlobAsyncClientBase {
                 */
                 long finalCount;
                 if (finalRange.getCount() == null) {
-                    long blobLength = BlobAsyncClientBase.getBlobLength(blobDownloadHeaders);
+                    long blobLength = ModelHelper.getBlobLength(blobDownloadHeaders);
                     finalCount = blobLength - finalRange.getOffset();
                 } else {
                     finalCount = finalRange.getCount();
@@ -1146,7 +1358,11 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFile#String}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFile#String -->
+     * <pre>
+     * client.downloadToFile&#40;file&#41;.subscribe&#40;response -&gt; System.out.println&#40;&quot;Completed download to file&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFile#String -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -1167,7 +1383,12 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFile#String-boolean}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFile#String-boolean -->
+     * <pre>
+     * boolean overwrite = false; &#47;&#47; Default value
+     * client.downloadToFile&#40;file, overwrite&#41;.subscribe&#40;response -&gt; System.out.println&#40;&quot;Completed download to file&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFile#String-boolean -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -1203,7 +1424,15 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean -->
+     * <pre>
+     * BlobRange range = new BlobRange&#40;1024, 2048L&#41;;
+     * DownloadRetryOptions options = new DownloadRetryOptions&#40;&#41;.setMaxRetryRequests&#40;5&#41;;
+     *
+     * client.downloadToFileWithResponse&#40;file, range, null, options, null, false&#41;
+     *     .subscribe&#40;response -&gt; System.out.println&#40;&quot;Completed download to file&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -1236,7 +1465,17 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean-Set}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean-Set -->
+     * <pre>
+     * BlobRange blobRange = new BlobRange&#40;1024, 2048L&#41;;
+     * DownloadRetryOptions downloadRetryOptions = new DownloadRetryOptions&#40;&#41;.setMaxRetryRequests&#40;5&#41;;
+     * Set&lt;OpenOption&gt; openOptions = new HashSet&lt;&gt;&#40;Arrays.asList&#40;StandardOpenOption.CREATE_NEW,
+     *     StandardOpenOption.WRITE, StandardOpenOption.READ&#41;&#41;; &#47;&#47; Default options
+     *
+     * client.downloadToFileWithResponse&#40;file, blobRange, null, downloadRetryOptions, null, false, openOptions&#41;
+     *     .subscribe&#40;response -&gt; System.out.println&#40;&quot;Completed download to file&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean-Set -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -1279,7 +1518,16 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#BlobDownloadToFileOptions}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#BlobDownloadToFileOptions -->
+     * <pre>
+     * client.downloadToFileWithResponse&#40;new BlobDownloadToFileOptions&#40;file&#41;
+     *     .setRange&#40;new BlobRange&#40;1024, 2018L&#41;&#41;
+     *     .setDownloadRetryOptions&#40;new DownloadRetryOptions&#40;&#41;.setMaxRetryRequests&#40;5&#41;&#41;
+     *     .setOpenOptions&#40;new HashSet&lt;&gt;&#40;Arrays.asList&#40;StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE,
+     *         StandardOpenOption.READ&#41;&#41;&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.println&#40;&quot;Completed download to file&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#BlobDownloadToFileOptions -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -1366,7 +1614,7 @@ public class BlobAsyncClientBase {
                             progressLock, totalProgress).flux()), finalParallelTransferOptions.getMaxConcurrency())
 
                     // Only the first download call returns a value.
-                    .then(Mono.just(buildBlobPropertiesResponse(initialResponse)));
+                    .then(Mono.just(ModelHelper.buildBlobPropertiesResponse(initialResponse)));
             });
     }
 
@@ -1384,28 +1632,6 @@ public class BlobAsyncClientBase {
 
         // Write to the file.
         return FluxUtil.writeFile(data, file, chunkNum * finalParallelTransferOptions.getBlockSizeLong());
-    }
-
-    private static Response<BlobProperties> buildBlobPropertiesResponse(BlobDownloadAsyncResponse response) {
-        // blobSize determination - contentLength only returns blobSize if the download is not chunked.
-        BlobDownloadHeaders hd = response.getDeserializedHeaders();
-        long blobSize = getBlobLength(hd);
-        BlobProperties properties = new BlobProperties(null, hd.getLastModified(), hd.getETag(), blobSize,
-            hd.getContentType(), hd.getContentMd5(), hd.getContentEncoding(), hd.getContentDisposition(),
-            hd.getContentLanguage(), hd.getCacheControl(), hd.getBlobSequenceNumber(), hd.getBlobType(),
-            hd.getLeaseStatus(), hd.getLeaseState(), hd.getLeaseDuration(), hd.getCopyId(), hd.getCopyStatus(),
-            hd.getCopySource(), hd.getCopyProgress(), hd.getCopyCompletionTime(), hd.getCopyStatusDescription(),
-            hd.isServerEncrypted(), null, null, null, null, null,
-            hd.getEncryptionKeySha256(), hd.getEncryptionScope(), null, hd.getMetadata(),
-            hd.getBlobCommittedBlockCount(), hd.getTagCount(), hd.getVersionId(), null,
-            hd.getObjectReplicationSourcePolicies(), hd.getObjectReplicationDestinationPolicyId(), null,
-            hd.isSealed(), hd.getLastAccessedTime(), null, hd.getImmutabilityPolicy(), hd.hasLegalHold());
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), properties);
-    }
-
-    static long getBlobLength(BlobDownloadHeaders headers) {
-        return headers.getContentRange() == null ? headers.getContentLength()
-            : ChunkedDownloadUtils.extractTotalBlobLength(headers.getContentRange());
     }
 
     private void downloadToFileCleanup(AsynchronousFileChannel channel, String filePath, SignalType signalType) {
@@ -1427,7 +1653,11 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.delete}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.delete -->
+     * <pre>
+     * client.delete&#40;&#41;.doOnSuccess&#40;response -&gt; System.out.println&#40;&quot;Completed delete&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.delete -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-blob">Azure Docs</a></p>
@@ -1444,13 +1674,17 @@ public class BlobAsyncClientBase {
     }
 
     /**
-     * Deletes the specified blob or snapshot. To delete a blob with its snapshots use
-     * {@link #deleteWithResponse(DeleteSnapshotsOptionType, BlobRequestConditions)} and set
-     * {@code DeleteSnapshotsOptionType} to INCLUDE.
+     * Deletes the specified blob or snapshot. To delete a blob with its snapshots set {@code DeleteSnapshotsOptionType}
+     * to INCLUDE.
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions -->
+     * <pre>
+     * client.deleteWithResponse&#40;DeleteSnapshotsOptionType.INCLUDE, null&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-blob">Azure Docs</a></p>
@@ -1488,7 +1722,12 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.getProperties}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.getProperties -->
+     * <pre>
+     * client.getProperties&#40;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Type: %s, Size: %d%n&quot;, response.getBlobType&#40;&#41;, response.getBlobSize&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.getProperties -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
@@ -1509,7 +1748,15 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.getPropertiesWithResponse#BlobRequestConditions}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.getPropertiesWithResponse#BlobRequestConditions -->
+     * <pre>
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     *
+     * client.getPropertiesWithResponse&#40;requestConditions&#41;.subscribe&#40;
+     *     response -&gt; System.out.printf&#40;&quot;Type: %s, Size: %d%n&quot;, response.getValue&#40;&#41;.getBlobType&#40;&#41;,
+     *         response.getValue&#40;&#41;.getBlobSize&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.getPropertiesWithResponse#BlobRequestConditions -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
@@ -1536,28 +1783,8 @@ public class BlobAsyncClientBase {
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, customerProvidedKey,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(rb -> {
-                BlobsGetPropertiesHeaders hd = rb.getDeserializedHeaders();
-                BlobProperties properties = new BlobProperties(hd.getXMsCreationTime(), hd.getLastModified(),
-                    hd.getETag(), hd.getContentLength() == null ? 0 : hd.getContentLength(), hd.getContentType(),
-                    hd.getContentMD5(), hd.getContentEncoding(), hd.getContentDisposition(), hd.getContentLanguage(),
-                    hd.getCacheControl(), hd.getXMsBlobSequenceNumber(), hd.getXMsBlobType(), hd.getXMsLeaseStatus(),
-                    hd.getXMsLeaseState(), hd.getXMsLeaseDuration(), hd.getXMsCopyId(), hd.getXMsCopyStatus(),
-                    hd.getXMsCopySource(), hd.getXMsCopyProgress(), hd.getXMsCopyCompletionTime(),
-                    hd.getXMsCopyStatusDescription(), hd.isXMsServerEncrypted(), hd.isXMsIncrementalCopy(),
-                    hd.getXMsCopyDestinationSnapshot(), AccessTier.fromString(hd.getXMsAccessTier()),
-                    hd.isXMsAccessTierInferred(), ArchiveStatus.fromString(hd.getXMsArchiveStatus()),
-                    hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(), hd.getXMsAccessTierChangeTime(),
-                    hd.getXMsMeta(), hd.getXMsBlobCommittedBlockCount(), hd.getXMsTagCount(), hd.getXMsVersionId(),
-                    hd.isXMsIsCurrentVersion(),
-                    ModelHelper.getObjectReplicationSourcePolicies(hd.getXMsOr()),
-                    ModelHelper.getObjectReplicationDestinationPolicyId(hd.getXMsOr()),
-                    RehydratePriority.fromString(hd.getXMsRehydratePriority()), hd.isXMsBlobSealed(),
-                    hd.getXMsLastAccessTime(), hd.getXMsExpiryTime(), new BlobImmutabilityPolicy()
-                    .setExpiryTime(hd.getXMsImmutabilityPolicyUntilDate())
-                    .setPolicyMode(hd.getXMsImmutabilityPolicyMode()), hd.isXMsLegalHold());
-                return new SimpleResponse<>(rb, properties);
-            });
+            .map(rb -> new SimpleResponse<>(rb, BlobPropertiesConstructorProxy
+                .create(new BlobPropertiesInternalGetProperties(rb.getDeserializedHeaders()))));
     }
 
     /**
@@ -1566,7 +1793,13 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setHttpHeaders#BlobHttpHeaders}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.setHttpHeaders#BlobHttpHeaders -->
+     * <pre>
+     * client.setHttpHeaders&#40;new BlobHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.setHttpHeaders#BlobHttpHeaders -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
@@ -1589,7 +1822,18 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setHttpHeadersWithResponse#BlobHttpHeaders-BlobRequestConditions}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.setHttpHeadersWithResponse#BlobHttpHeaders-BlobRequestConditions -->
+     * <pre>
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     *
+     * client.setHttpHeadersWithResponse&#40;new BlobHttpHeaders&#40;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;, requestConditions&#41;.subscribe&#40;
+     *         response -&gt;
+     *             System.out.printf&#40;&quot;Set HTTP headers completed with status %d%n&quot;,
+     *                 response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.setHttpHeadersWithResponse#BlobHttpHeaders-BlobRequestConditions -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
@@ -1625,7 +1869,11 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setMetadata#Map}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.setMetadata#Map -->
+     * <pre>
+     * client.setMetadata&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.setMetadata#Map -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata">Azure Docs</a></p>
@@ -1649,7 +1897,14 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setMetadataWithResponse#Map-BlobRequestConditions}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.setMetadataWithResponse#Map-BlobRequestConditions -->
+     * <pre>
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     *
+     * client.setMetadataWithResponse&#40;Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;, requestConditions&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Set metadata completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.setMetadataWithResponse#Map-BlobRequestConditions -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata">Azure Docs</a></p>
@@ -1687,7 +1942,12 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.getTags}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.getTags -->
+     * <pre>
+     * client.getTags&#40;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Num tags: %d%n&quot;, response.size&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.getTags -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-tags">Azure Docs</a></p>
@@ -1704,7 +1964,12 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.getTagsWithResponse#BlobGetTagsOptions}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.getTagsWithResponse#BlobGetTagsOptions -->
+     * <pre>
+     * client.getTagsWithResponse&#40;new BlobGetTagsOptions&#40;&#41;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Status code: %d. Num tags: %d%n&quot;, response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.size&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.getTagsWithResponse#BlobGetTagsOptions -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-tags">Azure Docs</a></p>
@@ -1742,7 +2007,11 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setTags#Map}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.setTags#Map -->
+     * <pre>
+     * client.setTags&#40;Collections.singletonMap&#40;&quot;tag&quot;, &quot;value&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.setTags#Map -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-tags">Azure Docs</a></p>
@@ -1761,7 +2030,12 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setTagsWithResponse#BlobSetTagsOptions}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.setTagsWithResponse#BlobSetTagsOptions -->
+     * <pre>
+     * client.setTagsWithResponse&#40;new BlobSetTagsOptions&#40;Collections.singletonMap&#40;&quot;tag&quot;, &quot;value&quot;&#41;&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Set tags completed with stats %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.setTagsWithResponse#BlobSetTagsOptions -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-tags">Azure Docs</a></p>
@@ -1800,7 +2074,13 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.createSnapshot}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.createSnapshot -->
+     * <pre>
+     * client.createSnapshot&#40;&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Identifier for the snapshot is %s%n&quot;,
+     *         response.getSnapshotId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.createSnapshot -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/snapshot-blob">Azure Docs</a></p>
@@ -1822,7 +2102,15 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.createSnapshotWithResponse#Map-BlobRequestConditions}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.createSnapshotWithResponse#Map-BlobRequestConditions -->
+     * <pre>
+     * Map&lt;String, String&gt; snapshotMetadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     *
+     * client.createSnapshotWithResponse&#40;snapshotMetadata, requestConditions&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Identifier for the snapshot is %s%n&quot;, response.getValue&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.createSnapshotWithResponse#Map-BlobRequestConditions -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/snapshot-blob">Azure Docs</a></p>
@@ -1863,7 +2151,11 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setAccessTier#AccessTier}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.setAccessTier#AccessTier -->
+     * <pre>
+     * client.setAccessTier&#40;AccessTier.HOT&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.setAccessTier#AccessTier -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>
@@ -1889,7 +2181,13 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setAccessTierWithResponse#AccessTier-RehydratePriority-String}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.setAccessTierWithResponse#AccessTier-RehydratePriority-String -->
+     * <pre>
+     * client.setAccessTierWithResponse&#40;AccessTier.HOT, RehydratePriority.STANDARD, leaseId&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Set tier completed with status code %d%n&quot;,
+     *         response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.setAccessTierWithResponse#AccessTier-RehydratePriority-String -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>
@@ -1918,7 +2216,16 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setAccessTierWithResponse#BlobSetAccessTierOptions}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.setAccessTierWithResponse#BlobSetAccessTierOptions -->
+     * <pre>
+     * client.setAccessTierWithResponse&#40;new BlobSetAccessTierOptions&#40;AccessTier.HOT&#41;
+     *     .setPriority&#40;RehydratePriority.STANDARD&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setTagsConditions&#40;tags&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Set tier completed with status code %d%n&quot;,
+     *         response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.setAccessTierWithResponse#BlobSetAccessTierOptions -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>
@@ -1950,7 +2257,11 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.undelete}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.undelete -->
+     * <pre>
+     * client.undelete&#40;&#41;.doOnSuccess&#40;response -&gt; System.out.println&#40;&quot;Completed undelete&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.undelete -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/undelete-blob">Azure Docs</a></p>
@@ -1971,7 +2282,12 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.undeleteWithResponse}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.undeleteWithResponse -->
+     * <pre>
+     * client.undeleteWithResponse&#40;&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Undelete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.undeleteWithResponse -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/undelete-blob">Azure Docs</a></p>
@@ -1997,7 +2313,12 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.getAccountInfo}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.getAccountInfo -->
+     * <pre>
+     * client.getAccountInfo&#40;&#41;.subscribe&#40;response -&gt; System.out.printf&#40;&quot;Account Kind: %s, SKU: %s%n&quot;,
+     *     response.getAccountKind&#40;&#41;, response.getSkuName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.getAccountInfo -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-account-information">Azure Docs</a></p>
@@ -2018,7 +2339,12 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.getAccountInfoWithResponse}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.getAccountInfoWithResponse -->
+     * <pre>
+     * client.getAccountInfoWithResponse&#40;&#41;.subscribe&#40;response -&gt; System.out.printf&#40;&quot;Account Kind: %s, SKU: %s%n&quot;,
+     *     response.getValue&#40;&#41;.getAccountKind&#40;&#41;, response.getValue&#40;&#41;.getSkuName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.getAccountInfoWithResponse -->
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-account-information">Azure Docs</a></p>
@@ -2048,7 +2374,17 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey -->
+     * <pre>
+     * OffsetDateTime myExpiryTime = OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;;
+     * BlobSasPermission myPermission = new BlobSasPermission&#40;&#41;.setReadPermission&#40;true&#41;;
+     *
+     * BlobServiceSasSignatureValues myValues = new BlobServiceSasSignatureValues&#40;expiryTime, permission&#41;
+     *     .setStartTime&#40;OffsetDateTime.now&#40;&#41;&#41;;
+     *
+     * client.generateUserDelegationSas&#40;values, userDelegationKey&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey -->
      *
      * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
      * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
@@ -2069,7 +2405,17 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey-String-Context}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey-String-Context -->
+     * <pre>
+     * OffsetDateTime myExpiryTime = OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;;
+     * BlobSasPermission myPermission = new BlobSasPermission&#40;&#41;.setReadPermission&#40;true&#41;;
+     *
+     * BlobServiceSasSignatureValues myValues = new BlobServiceSasSignatureValues&#40;expiryTime, permission&#41;
+     *     .setStartTime&#40;OffsetDateTime.now&#40;&#41;&#41;;
+     *
+     * client.generateUserDelegationSas&#40;values, userDelegationKey, accountName, new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey-String-Context -->
      *
      * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
      * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
@@ -2094,7 +2440,17 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.generateSas#BlobServiceSasSignatureValues}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.generateSas#BlobServiceSasSignatureValues -->
+     * <pre>
+     * OffsetDateTime expiryTime = OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;;
+     * BlobSasPermission permission = new BlobSasPermission&#40;&#41;.setReadPermission&#40;true&#41;;
+     *
+     * BlobServiceSasSignatureValues values = new BlobServiceSasSignatureValues&#40;expiryTime, permission&#41;
+     *     .setStartTime&#40;OffsetDateTime.now&#40;&#41;&#41;;
+     *
+     * client.generateSas&#40;values&#41;; &#47;&#47; Client must be authenticated via StorageSharedKeyCredential
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.generateSas#BlobServiceSasSignatureValues -->
      *
      * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
      *
@@ -2111,7 +2467,18 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.generateSas#BlobServiceSasSignatureValues-Context}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.generateSas#BlobServiceSasSignatureValues-Context -->
+     * <pre>
+     * OffsetDateTime expiryTime = OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;;
+     * BlobSasPermission permission = new BlobSasPermission&#40;&#41;.setReadPermission&#40;true&#41;;
+     *
+     * BlobServiceSasSignatureValues values = new BlobServiceSasSignatureValues&#40;expiryTime, permission&#41;
+     *     .setStartTime&#40;OffsetDateTime.now&#40;&#41;&#41;;
+     *
+     * &#47;&#47; Client must be authenticated via StorageSharedKeyCredential
+     * client.generateSas&#40;values, new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.generateSas#BlobServiceSasSignatureValues-Context -->
      *
      * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
      * @param context Additional context that is passed through the code when generating a SAS.
@@ -2132,7 +2499,19 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.query#String}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.query#String -->
+     * <pre>
+     * ByteArrayOutputStream queryData = new ByteArrayOutputStream&#40;&#41;;
+     * String expression = &quot;SELECT * from BlobStorage&quot;;
+     * client.query&#40;expression&#41;.subscribe&#40;piece -&gt; &#123;
+     *     try &#123;
+     *         queryData.write&#40;piece.array&#40;&#41;&#41;;
+     *     &#125; catch &#40;IOException ex&#41; &#123;
+     *         throw new UncheckedIOException&#40;ex&#41;;
+     *     &#125;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.query#String -->
      *
      * @param expression The query expression.
      * @return A reactive response containing the queried data.
@@ -2151,7 +2530,41 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.queryWithResponse#BlobQueryOptions}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.queryWithResponse#BlobQueryOptions -->
+     * <pre>
+     * String expression = &quot;SELECT * from BlobStorage&quot;;
+     * BlobQueryJsonSerialization input = new BlobQueryJsonSerialization&#40;&#41;
+     *     .setRecordSeparator&#40;'&#92;n'&#41;;
+     * BlobQueryDelimitedSerialization output = new BlobQueryDelimitedSerialization&#40;&#41;
+     *     .setEscapeChar&#40;'&#92;0'&#41;
+     *     .setColumnSeparator&#40;','&#41;
+     *     .setRecordSeparator&#40;'&#92;n'&#41;
+     *     .setFieldQuote&#40;'&#92;''&#41;
+     *     .setHeadersPresent&#40;true&#41;;
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     * Consumer&lt;BlobQueryError&gt; errorConsumer = System.out::println;
+     * Consumer&lt;BlobQueryProgress&gt; progressConsumer = progress -&gt; System.out.println&#40;&quot;total blob bytes read: &quot;
+     *     + progress.getBytesScanned&#40;&#41;&#41;;
+     * BlobQueryOptions queryOptions = new BlobQueryOptions&#40;expression&#41;
+     *     .setInputSerialization&#40;input&#41;
+     *     .setOutputSerialization&#40;output&#41;
+     *     .setRequestConditions&#40;requestConditions&#41;
+     *     .setErrorConsumer&#40;errorConsumer&#41;
+     *     .setProgressConsumer&#40;progressConsumer&#41;;
+     *
+     * client.queryWithResponse&#40;queryOptions&#41;
+     *     .subscribe&#40;response -&gt; &#123;
+     *         ByteArrayOutputStream queryData = new ByteArrayOutputStream&#40;&#41;;
+     *         response.getValue&#40;&#41;.subscribe&#40;piece -&gt; &#123;
+     *             try &#123;
+     *                 queryData.write&#40;piece.array&#40;&#41;&#41;;
+     *             &#125; catch &#40;IOException ex&#41; &#123;
+     *                 throw new UncheckedIOException&#40;ex&#41;;
+     *             &#125;
+     *         &#125;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.queryWithResponse#BlobQueryOptions -->
      *
      * @param queryOptions {@link BlobQueryOptions The query options}.
      * @return A reactive response containing the queried data.
@@ -2201,7 +2614,15 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setImmutabilityPolicy#BlobImmutabilityPolicy}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.setImmutabilityPolicy#BlobImmutabilityPolicy -->
+     * <pre>
+     * BlobImmutabilityPolicy policy = new BlobImmutabilityPolicy&#40;&#41;
+     *     .setPolicyMode&#40;BlobImmutabilityPolicyMode.LOCKED&#41;
+     *     .setExpiryTime&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;&#41;;
+     * client.setImmutabilityPolicy&#40;policy&#41;.subscribe&#40;response -&gt; System.out.println&#40;&quot;Completed. Set immutability &quot;
+     *     + &quot;policy to &quot; + response.getPolicyMode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.setImmutabilityPolicy#BlobImmutabilityPolicy -->
      *
      * @param immutabilityPolicy {@link BlobImmutabilityPolicy The immutability policy}.
      * @return A reactive response containing the immutability policy.
@@ -2222,7 +2643,17 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setImmutabilityPolicyWithResponse#BlobImmutabilityPolicy-BlobRequestConditions}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.setImmutabilityPolicyWithResponse#BlobImmutabilityPolicy-BlobRequestConditions -->
+     * <pre>
+     * BlobImmutabilityPolicy immutabilityPolicy = new BlobImmutabilityPolicy&#40;&#41;
+     *     .setPolicyMode&#40;BlobImmutabilityPolicyMode.LOCKED&#41;
+     *     .setExpiryTime&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;&#41;;
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;1&#41;&#41;;
+     * client.setImmutabilityPolicyWithResponse&#40;immutabilityPolicy, requestConditions&#41;.subscribe&#40;response -&gt;
+     *     System.out.println&#40;&quot;Completed. Set immutability policy to &quot; + response.getValue&#40;&#41;.getPolicyMode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.setImmutabilityPolicyWithResponse#BlobImmutabilityPolicy-BlobRequestConditions -->
      *
      * @param immutabilityPolicy {@link BlobImmutabilityPolicy The immutability policy}.
      * @param requestConditions {@link BlobRequestConditions}
@@ -2279,7 +2710,12 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteImmutabilityPolicy}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteImmutabilityPolicy -->
+     * <pre>
+     * client.deleteImmutabilityPolicy&#40;&#41;.subscribe&#40;response -&gt; System.out.println&#40;&quot;Completed immutability policy&quot;
+     *     + &quot; deletion.&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteImmutabilityPolicy -->
      *
      * @return A reactive response signalling completion.
      */
@@ -2299,7 +2735,12 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteImmutabilityPolicyWithResponse}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteImmutabilityPolicyWithResponse -->
+     * <pre>
+     * client.deleteImmutabilityPolicyWithResponse&#40;&#41;.subscribe&#40;response -&gt;
+     *     System.out.println&#40;&quot;Delete immutability policy completed with status: &quot; + response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.deleteImmutabilityPolicyWithResponse -->
      *
      * @return A reactive response signalling completion.
      */
@@ -2326,7 +2767,12 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setLegalHold#boolean}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.setLegalHold#boolean -->
+     * <pre>
+     * client.setLegalHold&#40;true&#41;.subscribe&#40;response -&gt; System.out.println&#40;&quot;Legal hold status: &quot;
+     *     + response.hasLegalHold&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.setLegalHold#boolean -->
      *
      * @param legalHold Whether or not you want a legal hold on the blob.
      * @return A reactive response containing the legal hold result.
@@ -2347,7 +2793,12 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setLegalHoldWithResponse#boolean}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobAsyncClientBase.setLegalHoldWithResponse#boolean -->
+     * <pre>
+     * client.setLegalHoldWithResponse&#40;true&#41;.subscribe&#40;response -&gt;
+     *     System.out.println&#40;&quot;Legal hold status: &quot; + response.getValue&#40;&#41;.hasLegalHold&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobAsyncClientBase.setLegalHoldWithResponse#boolean -->
      *
      * @param legalHold Whether or not you want a legal hold on the blob.
      * @return A reactive response containing the legal hold result.

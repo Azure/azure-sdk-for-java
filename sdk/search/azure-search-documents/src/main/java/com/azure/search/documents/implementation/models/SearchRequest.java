@@ -132,6 +132,13 @@ public final class SearchRequest {
     private String scoringProfile;
 
     /*
+     * The name of a semantic configuration that will be used when processing
+     * documents for queries of type semantic.
+     */
+    @JsonProperty(value = "semanticConfiguration")
+    private String semanticConfiguration;
+
+    /*
      * A full-text search query expression; Use "*" or omit this parameter to
      * match all documents.
      */
@@ -524,6 +531,28 @@ public final class SearchRequest {
      */
     public SearchRequest setScoringProfile(String scoringProfile) {
         this.scoringProfile = scoringProfile;
+        return this;
+    }
+
+    /**
+     * Get the semanticConfiguration property: The name of a semantic configuration that will be used when processing
+     * documents for queries of type semantic.
+     *
+     * @return the semanticConfiguration value.
+     */
+    public String getSemanticConfiguration() {
+        return this.semanticConfiguration;
+    }
+
+    /**
+     * Set the semanticConfiguration property: The name of a semantic configuration that will be used when processing
+     * documents for queries of type semantic.
+     *
+     * @param semanticConfiguration the semanticConfiguration value to set.
+     * @return the SearchRequest object itself.
+     */
+    public SearchRequest setSemanticConfiguration(String semanticConfiguration) {
+        this.semanticConfiguration = semanticConfiguration;
         return this;
     }
 

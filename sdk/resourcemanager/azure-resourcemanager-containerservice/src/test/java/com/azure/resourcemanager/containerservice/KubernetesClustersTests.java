@@ -94,10 +94,12 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
                     .withKubeletDiskType(KubeletDiskType.TEMPORARY)
                     .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
                     .withAgentPoolMode(AgentPoolMode.SYSTEM)
+                    .withTag("pool.name", agentPoolName)
                     .attach()
                 .defineAgentPool(agentPoolName1)
                     .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
                     .withAgentPoolVirtualMachineCount(1)
+                    .withTag("pool.name", agentPoolName1)
                     .attach()
                 .withDnsPrefix("mp1" + dnsPrefix)
                 .withTag("tag1", "value1")
@@ -117,12 +119,14 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         Assertions.assertEquals(OSDiskType.EPHEMERAL, agentPool.osDiskType());
         Assertions.assertEquals(30, agentPool.osDiskSizeInGB());
         Assertions.assertEquals(KubeletDiskType.TEMPORARY, agentPool.kubeletDiskType());
+        Assertions.assertEquals(Collections.singletonMap("pool.name", agentPoolName), agentPool.tags());
 
         agentPool = kubernetesCluster.agentPools().get(agentPoolName1);
         Assertions.assertNotNull(agentPool);
         Assertions.assertEquals(1, agentPool.count());
         Assertions.assertEquals(ContainerServiceVMSizeTypes.STANDARD_A2_V2, agentPool.vmSize());
         Assertions.assertEquals(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS, agentPool.type());
+        Assertions.assertEquals(Collections.singletonMap("pool.name", agentPoolName1), agentPool.tags());
 
         Assertions.assertNotNull(kubernetesCluster.tags().get("tag1"));
 
@@ -144,10 +148,13 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
                     .withAgentPoolMode(AgentPoolMode.SYSTEM)
                     .withAgentPoolVirtualMachineCount(2)
                     .withKubeletDiskType(KubeletDiskType.OS)
+                    .withoutTag("pool.name")
+                    .withTags(Collections.singletonMap("state", "updated"))
                     .parent()
                 .defineAgentPool(agentPoolName2)
                     .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
                     .withAgentPoolVirtualMachineCount(1)
+                    .withTags(Collections.singletonMap("state", "created"))
                     .attach()
                 .withTag("tag2", "value2")
                 .withTag("tag3", "value3")
@@ -160,11 +167,13 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         Assertions.assertEquals(2, agentPool.count());
         Assertions.assertEquals(AgentPoolMode.SYSTEM, agentPool.mode());
         Assertions.assertEquals(KubeletDiskType.OS, agentPool.kubeletDiskType());
+        Assertions.assertEquals(Collections.singletonMap("state", "updated"), agentPool.tags());
 
         agentPool = kubernetesCluster.agentPools().get(agentPoolName2);
         Assertions.assertNotNull(agentPool);
         Assertions.assertEquals(ContainerServiceVMSizeTypes.STANDARD_A2_V2, agentPool.vmSize());
         Assertions.assertEquals(1, agentPool.count());
+        Assertions.assertEquals(Collections.singletonMap("state", "created"), agentPool.tags());
 
         Assertions.assertEquals("value2", kubernetesCluster.tags().get("tag2"));
         Assertions.assertFalse(kubernetesCluster.tags().containsKey("tag1"));

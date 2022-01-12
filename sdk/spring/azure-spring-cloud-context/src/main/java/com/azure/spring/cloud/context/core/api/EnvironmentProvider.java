@@ -12,6 +12,11 @@ import com.azure.core.management.AzureEnvironment;
  */
 public interface EnvironmentProvider {
 
+    /**
+     * Gets the Azure environment.
+     *
+     * @return The Azure environment.
+     */
     AzureEnvironment getEnvironment();
 
 }
