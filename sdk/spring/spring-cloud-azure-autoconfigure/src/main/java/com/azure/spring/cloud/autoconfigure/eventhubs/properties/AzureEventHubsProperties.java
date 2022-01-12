@@ -14,6 +14,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.boot.context.properties.PropertyMapper;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -226,6 +227,65 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties imp
 
         public BlobCheckpointStore getCheckpointStore() {
             return checkpointStore;
+        }
+
+        /**
+         * The starting position from which to consume events.
+         */
+        public static class StartPosition implements EventProcessorClientProperties.StartPosition {
+
+            /**
+             * The offset of the event within that partition. String keyword, "earliest" and "latest" (case-insensitive),
+             * are reserved for specifying the start and end of the partition. Other provided value will be cast to Long.
+             */
+            private String offset;
+            /**
+             * The sequence number of the event within that partition.
+             */
+            private Long sequenceNumber;
+            /**
+             * The event enqueued after the requested enqueuedDateTime becomes the current position.
+             */
+            private Instant enqueuedDateTime;
+            /**
+             * Whether the event of the specified sequence number is included.
+             */
+            private boolean inclusive;
+
+            @Override
+            public String getOffset() {
+                return offset;
+            }
+
+            public void setOffset(String offset) {
+                this.offset = offset;
+            }
+
+            @Override
+            public Long getSequenceNumber() {
+                return sequenceNumber;
+            }
+
+            public void setSequenceNumber(Long sequenceNumber) {
+                this.sequenceNumber = sequenceNumber;
+            }
+
+            @Override
+            public Instant getEnqueuedDateTime() {
+                return enqueuedDateTime;
+            }
+
+            public void setEnqueuedDateTime(Instant enqueuedDateTime) {
+                this.enqueuedDateTime = enqueuedDateTime;
+            }
+
+            public boolean isInclusive() {
+                return inclusive;
+            }
+
+            public void setInclusive(boolean inclusive) {
+                this.inclusive = inclusive;
+            }
         }
 
         /**
