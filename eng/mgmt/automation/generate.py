@@ -92,7 +92,7 @@ def generate(
 def compile_package(sdk_root, service) -> bool:
     module = ARTIFACT_FORMAT.format(service)
     if os.system(
-            'mvn --no-transfer-progress clean verify package -f {0}/pom.xml -pl {1}:{2} -am'.format(
+            'mvn --no-transfer-progress clean verify package -f {0}/pom.xml -Dgpg.skip -Drevapi.skip -pl {1}:{2} -am'.format(
                 sdk_root, GROUP_ID, module)) != 0:
         logging.error('[COMPILE] Maven build fail')
         return False
