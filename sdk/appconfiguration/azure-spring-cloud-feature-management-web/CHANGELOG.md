@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed redirect to fallback endpoint in FeatureGate annotation
 
 ### Other Changes
 
