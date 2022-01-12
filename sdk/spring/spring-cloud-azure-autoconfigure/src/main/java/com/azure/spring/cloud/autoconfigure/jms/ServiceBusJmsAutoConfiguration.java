@@ -71,8 +71,7 @@ public class ServiceBusJmsAutoConfiguration {
     private void setupUserAgent(ServiceBusJmsConnectionFactory jmsConnectionFactory) {
         final Map<String, Object> properties = new HashMap<>();
         properties.put("com.microsoft:is-client-provider", true);
-        String userAgent = AZURE_SPRING_SERVICE_BUS;
-        properties.put("user-agent", userAgent);
+        properties.put("user-agent", AZURE_SPRING_SERVICE_BUS);
         //set user agent
         jmsConnectionFactory.setExtension(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES.toString(),
             (connection, uri) -> properties);
