@@ -57,7 +57,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-cryptography</artifactId>
-  <version>12.14.2</version>
+  <version>12.14.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -156,7 +156,8 @@ The following sections provide several code snippets covering some of the most c
 
 Create an `EncryptedBlobClient` using a `BlobClient`. `BlobClient` construction is explained in the `azure-storage-blob` README.
 
-```java readme-sample-getEncryptedBlobClientBlobClient
+<!-- embedme ./src/samples/java/com/azure/storage/blob/specialized/cryptography/ReadmeSamples.java#L44-L48 -->
+```java
 EncryptedBlobClient client = new EncryptedBlobClientBuilder()
     .key(key, keyWrapAlgorithm)
     .keyResolver(keyResolver)
@@ -168,7 +169,8 @@ EncryptedBlobClient client = new EncryptedBlobClientBuilder()
 
 Create a `BlobServiceClient` using a connection string.
 
-```java readme-sample-getEncryptedBlobClient
+<!-- embedme ./src/samples/java/com/azure/storage/blob/specialized/cryptography/ReadmeSamples.java#L52-L58 -->
+```java
 EncryptedBlobClient client = new EncryptedBlobClientBuilder()
     .key(key, keyWrapAlgorithm)
     .keyResolver(keyResolver)
@@ -180,7 +182,8 @@ EncryptedBlobClient client = new EncryptedBlobClientBuilder()
 
 ### Use a local `KeyEncryptionKey`
 
-```java readme-sample-getClientLocalKey
+<!-- embedme ./src/samples/java/com/azure/storage/blob/specialized/cryptography/ReadmeSamples.java#L62-L73 -->
+```java
 JsonWebKey localKey = JsonWebKey.fromAes(new SecretKeySpec(keyBytes, secretKeyAlgorithm),
     Arrays.asList(KeyOperation.WRAP_KEY, KeyOperation.UNWRAP_KEY))
     .setId("my-id");
@@ -189,6 +192,7 @@ AsyncKeyEncryptionKey akek = new KeyEncryptionKeyClientBuilder()
 
 EncryptedBlobClient client = new EncryptedBlobClientBuilder()
     .key(akek, keyWrapAlgorithm)
+    .keyResolver(keyResolver)
     .connectionString(connectionString)
     .containerName(containerName)
     .blobName(blobName)
@@ -197,7 +201,8 @@ EncryptedBlobClient client = new EncryptedBlobClientBuilder()
 
 ### Use a `KeyVaultKey`
 
-```java readme-sample-getClientKeyVaultKey
+<!-- embedme ./src/samples/java/com/azure/storage/blob/specialized/cryptography/ReadmeSamples.java#L77-L94 -->
+```java
 KeyClient keyClient = new KeyClientBuilder()
     .vaultUrl(keyVaultUrl)
     .credential(tokenCredential)
@@ -212,6 +217,7 @@ AsyncKeyEncryptionKey akek = new KeyEncryptionKeyClientBuilder()
 
 EncryptedBlobClient client = new EncryptedBlobClientBuilder()
     .key(akek, keyWrapAlgorithm)
+    .keyResolver(keyResolver)
     .connectionString(connectionString)
     .containerName(containerName)
     .blobName(blobName)
