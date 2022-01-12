@@ -235,7 +235,7 @@ public class CommunicationTokenCredentialTests {
         CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions);
         StepVerifier.create(tokenCredential.getToken())
             .assertNext(token -> {
-                assertEquals(2, immediateFresher.numCalls());
+                assertEquals(1, immediateFresher.numCalls());
                 assertFalse(token.isExpired(), "On demand fetching case, should be still valid");
             })
             .verifyComplete();
