@@ -18,9 +18,6 @@
 
   <properties>
     <src.dir>src/main/java</src.dir>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <distributionManagement>

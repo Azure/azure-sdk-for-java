@@ -168,6 +168,12 @@
           "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
         },
         {
+          "regex": true,
+          "code": "java\\.annotation\\.(added|attributeValueChanged|attributeAdded)",
+          "new": "(class|method void|parameter void) com\\.azure\\.search\\.documents\\.indexes\\.models\\..*",
+          "justification": "Generated classes were moved into public API, these annotations were already being used in implementation used during serialization and deserialization."
+        },
+        {
           "code": "java.method.added",
           "new": "method boolean com.google.gson.JsonArray::isEmpty()",
           "justification": "com.google.code.gson:gson:jar:2.8.7 added this new method."

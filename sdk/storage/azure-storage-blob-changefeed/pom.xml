@@ -55,9 +55,6 @@
       --add-reads com.azure.storage.blob=ALL-UNNAMED
       --add-reads com.azure.storage.internal.avro=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <pluginRepositories>
