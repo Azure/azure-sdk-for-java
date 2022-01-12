@@ -28,6 +28,9 @@ public interface RoleAssignment
     /** @return the principal ID */
     String principalId();
 
+    /** @return the condition */
+    String condition();
+
     /**************************************************************
      * Fluent interfaces to provision an role assignment
      **************************************************************/

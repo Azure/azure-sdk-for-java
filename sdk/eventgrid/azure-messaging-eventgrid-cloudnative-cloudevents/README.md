@@ -1,4 +1,4 @@
-# Azure Cloud Native Cloud Event support for Event Grid
+# Azure Cloud Native Cloud Event client library for Java
 
 This library can be used to enable publishing the Cloud Native Computing Foundation(CNCF) [CloudEvents][CNCFCloudEvents]
 using the Azure Event Grid library. 
@@ -10,39 +10,9 @@ You should have an EventGrid client before using this bridge library. Follow [Az
 steps to create an EventGrid client.
 
 ### Include the package
-#### Include the BOM file
-
-Please include the azure-sdk-bom to your project to take dependency on GA version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
-To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
-
-```xml
-<dependencyManagement>
-    <dependencies>
-        <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>azure-sdk-bom</artifactId>
-            <version>{bom_version_to_target}</version>
-            <type>pom</type>
-            <scope>import</scope>
-        </dependency>
-    </dependencies>
-</dependencyManagement>
-```
-and then include the direct dependency in the dependencies section without the version tag.
-
-```xml
-<dependencies>
-  <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-messaging-eventgrid-cloudnative-cloudevents</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventgrid-cloudnative-cloudevents;current} -->
-  </dependency>
-</dependencies>
-```
 
 #### Include direct dependency
-If you want to take dependency on a particular version of the library that is not present in the BOM,
-add the direct dependency to your project as follows.
+If you want to take dependency on a particular version of the library, add the direct dependency to your project as follows.
 
 [//]: # ({x-version-update-start;com.azure:azure-messaging-cloudnative-cloudevents;current})
 ```xml
@@ -53,6 +23,11 @@ add the direct dependency to your project as follows.
 </dependency>
 ```
 [//]: # ({x-version-update-end})
+
+## Key concepts
+For information about general Event Grid concepts: [Concepts in Azure Event Grid][eventgridConcept].
+
+For detailed information about the Event Grid client library concepts: [Event Grid Client Library][eventgridClientConcept].
 
 ## Examples
 
@@ -139,8 +114,10 @@ If you would like to become an active contributor to this project please refer t
 Contribution Guidelines for more information.
 
 <!-- LINKS -->
+[eventgridGettingStarted]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventgrid/azure-messaging-eventgrid#getting-started
+[eventgridConcept]: https://docs.microsoft.com/azure/event-grid/concepts
+[eventgridClientConcept]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventgrid/azure-messaging-eventgrid#key-concepts
 [javadocs]: https://azure.github.io/azure-sdk-for-java/eventgrid.html
-[eventgridGettingStarted]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventgrid/azure-messaging-eventgrid#getting-started 
 [CNCFCloudEvents]: https://cloudevents.github.io/sdk-java/
 [HttpResponseException]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java
 

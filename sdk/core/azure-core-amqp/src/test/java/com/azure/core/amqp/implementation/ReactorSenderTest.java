@@ -128,6 +128,7 @@ public class ReactorSenderTest {
         when(handler.getLinkCredits()).thenReturn(Flux.just(100));
 
         when(handler.getEndpointStates()).thenReturn(endpointStatePublisher.flux());
+        when(handler.getConnectionId()).thenReturn("connectionId");
         endpointStatePublisher.next(EndpointState.ACTIVE);
 
         when(tokenManager.getAuthorizationResults()).thenReturn(authorizationResults.flux());

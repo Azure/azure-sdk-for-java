@@ -45,7 +45,7 @@ def sdk_automation(config: dict) -> List[dict]:
             credential_scopes = 'https://{0}.azure.com/.default'.format(service)
 
             succeeded = generate(sdk_root, input_file,
-                                 service, module, credential_types, credential_scopes,
+                                 service, module, credential_types, credential_scopes, '',
                                  AUTOREST_CORE_VERSION, AUTOREST_JAVA, '')
 
             generated_folder = 'sdk/{0}/{1}'.format(service, module)
@@ -86,7 +86,7 @@ def generate(
     use: str,
     autorest_options: str = '',
     **kwargs,
-):
+) -> bool:
     namespace = 'com.{0}'.format(module.replace('-', '.'))
     output_dir = os.path.join(
         sdk_root,
@@ -149,8 +149,8 @@ def generate(
     return True
 
 
-def compile_package(sdk_root: str, group_id: str, module: str):
-    command = 'mvn --no-transfer-progress clean verify package -f {0}/pom.xml -pl {1}:{2} -am'.format(
+def compile_package(sdk_root: str, group_id: str, module: str) -> bool:
+    command = 'mvn --no-transfer-progress clean verify package -f {0}/pom.xml -Dgpg.skip -Drevapi.skip -pl {1}:{2} -am'.format(
         sdk_root, group_id, module)
     logging.info(command)
     if os.system(command) != 0:
@@ -273,7 +273,10 @@ def main():
 
     succeeded = generate(sdk_root, **args)
     if succeeded:
-        compile_package(sdk_root, GROUP_ID, args['module'])
+        succeeded = compile_package(sdk_root, GROUP_ID, args['module'])
+
+    if not succeeded:
+        raise RuntimeError('Failed to generate code or compile the package')
 
 
 if __name__ == '__main__':

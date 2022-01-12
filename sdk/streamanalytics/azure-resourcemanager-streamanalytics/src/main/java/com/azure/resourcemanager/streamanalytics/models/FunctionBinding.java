@@ -24,12 +24,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(
         name = "Microsoft.MachineLearning/WebService",
-        value = AzureMachineLearningStudioFunctionBinding.class),
-    @JsonSubTypes.Type(name = "Microsoft.StreamAnalytics/JavascriptUdf", value = JavaScriptFunctionBinding.class),
-    @JsonSubTypes.Type(name = "Microsoft.StreamAnalytics/CLRUdf", value = CSharpFunctionBinding.class),
-    @JsonSubTypes.Type(
-        name = "Microsoft.MachineLearningServices",
-        value = AzureMachineLearningServiceFunctionBinding.class)
+        value = AzureMachineLearningWebServiceFunctionBinding.class),
+    @JsonSubTypes.Type(name = "Microsoft.StreamAnalytics/JavascriptUdf", value = JavaScriptFunctionBinding.class)
 })
 @Immutable
 public class FunctionBinding {
