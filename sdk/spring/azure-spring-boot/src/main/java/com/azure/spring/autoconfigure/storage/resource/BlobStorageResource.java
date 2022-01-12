@@ -41,14 +41,35 @@ public class BlobStorageResource extends AzureStorageResource {
     private final boolean autoCreateFiles;
     private final String contentType;
 
+    /**
+     * Creates a new instance of {@link BlobStorageResource}.
+     *
+     * @param blobServiceClient the BlobServiceClient
+     * @param location the location
+     */
     public BlobStorageResource(BlobServiceClient blobServiceClient, String location) {
         this(blobServiceClient, location, false);
     }
 
+    /**
+     * Creates a new instance of {@link BlobStorageResource}.
+     *
+     * @param blobServiceClient the BlobServiceClient
+     * @param location the location
+     * @param autoCreateFiles whether to automatically create files
+     */
     public BlobStorageResource(BlobServiceClient blobServiceClient, String location, Boolean autoCreateFiles) {
         this(blobServiceClient, location, autoCreateFiles, null);
     }
 
+    /**
+     * Creates a new instance of {@link BlobStorageResource}.
+     *
+     * @param blobServiceClient the BlobServiceClient
+     * @param location the location
+     * @param autoCreateFiles whether to automatically create files
+     * @param contentType the content type
+     */
     public BlobStorageResource(BlobServiceClient blobServiceClient, String location, Boolean autoCreateFiles,
                                String contentType) {
         assertIsAzureStorageLocation(location);

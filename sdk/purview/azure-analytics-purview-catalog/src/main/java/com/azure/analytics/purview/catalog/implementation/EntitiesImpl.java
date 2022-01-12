@@ -6,6 +6,7 @@ package com.azure.analytics.purview.catalog.implementation;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
+import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -50,6 +51,7 @@ public final class EntitiesImpl {
     @ServiceInterface(name = "PurviewCatalogClient")
     private interface EntitiesService {
         @Post("/atlas/v2/entity")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> createOrUpdate(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData entity,
@@ -57,10 +59,12 @@ public final class EntitiesImpl {
                 Context context);
 
         @Get("/atlas/v2/entity/bulk")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> listByGuids(
                 @HostParam("Endpoint") String endpoint, RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/entity/bulk")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> createOrUpdateEntities(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData entities,
@@ -68,10 +72,12 @@ public final class EntitiesImpl {
                 Context context);
 
         @Delete("/atlas/v2/entity/bulk")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> deleteByGuids(
                 @HostParam("Endpoint") String endpoint, RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/entity/bulk/classification")
+        @ExpectedResponses({204})
         Mono<Response<Void>> addClassification(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData request,
@@ -79,6 +85,7 @@ public final class EntitiesImpl {
                 Context context);
 
         @Get("/atlas/v2/entity/guid/{guid}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getByGuid(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
@@ -86,6 +93,7 @@ public final class EntitiesImpl {
                 Context context);
 
         @Put("/atlas/v2/entity/guid/{guid}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> partialUpdateEntityAttributeByGuid(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
@@ -94,6 +102,7 @@ public final class EntitiesImpl {
                 Context context);
 
         @Delete("/atlas/v2/entity/guid/{guid}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> deleteByGuid(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
@@ -101,6 +110,7 @@ public final class EntitiesImpl {
                 Context context);
 
         @Get("/atlas/v2/entity/guid/{guid}/classification/{classificationName}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getClassification(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
@@ -109,6 +119,7 @@ public final class EntitiesImpl {
                 Context context);
 
         @Delete("/atlas/v2/entity/guid/{guid}/classification/{classificationName}")
+        @ExpectedResponses({204})
         Mono<Response<Void>> deleteClassification(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
@@ -117,6 +128,7 @@ public final class EntitiesImpl {
                 Context context);
 
         @Get("/atlas/v2/entity/guid/{guid}/classifications")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getClassifications(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
@@ -124,6 +136,7 @@ public final class EntitiesImpl {
                 Context context);
 
         @Post("/atlas/v2/entity/guid/{guid}/classifications")
+        @ExpectedResponses({204})
         Mono<Response<Void>> addClassifications(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
@@ -132,6 +145,7 @@ public final class EntitiesImpl {
                 Context context);
 
         @Put("/atlas/v2/entity/guid/{guid}/classifications")
+        @ExpectedResponses({204})
         Mono<Response<Void>> updateClassifications(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
@@ -140,6 +154,7 @@ public final class EntitiesImpl {
                 Context context);
 
         @Get("/atlas/v2/entity/uniqueAttribute/type/{typeName}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getByUniqueAttributes(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("typeName") String typeName,
@@ -147,6 +162,7 @@ public final class EntitiesImpl {
                 Context context);
 
         @Put("/atlas/v2/entity/uniqueAttribute/type/{typeName}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> partialUpdateEntityByUniqueAttributes(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("typeName") String typeName,
@@ -155,6 +171,7 @@ public final class EntitiesImpl {
                 Context context);
 
         @Delete("/atlas/v2/entity/uniqueAttribute/type/{typeName}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> deleteByUniqueAttribute(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("typeName") String typeName,
@@ -162,6 +179,7 @@ public final class EntitiesImpl {
                 Context context);
 
         @Delete("/atlas/v2/entity/uniqueAttribute/type/{typeName}/classification/{classificationName}")
+        @ExpectedResponses({204})
         Mono<Response<Void>> deleteClassificationByUniqueAttribute(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("typeName") String typeName,
@@ -170,6 +188,7 @@ public final class EntitiesImpl {
                 Context context);
 
         @Post("/atlas/v2/entity/uniqueAttribute/type/{typeName}/classifications")
+        @ExpectedResponses({204})
         Mono<Response<Void>> addClassificationsByUniqueAttribute(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("typeName") String typeName,
@@ -178,6 +197,7 @@ public final class EntitiesImpl {
                 Context context);
 
         @Put("/atlas/v2/entity/uniqueAttribute/type/{typeName}/classifications")
+        @ExpectedResponses({204})
         Mono<Response<Void>> updateClassificationsByUniqueAttribute(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("typeName") String typeName,
@@ -186,6 +206,7 @@ public final class EntitiesImpl {
                 Context context);
 
         @Post("/atlas/v2/entity/bulk/setClassifications")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> setClassifications(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData entityHeaders,
@@ -193,6 +214,7 @@ public final class EntitiesImpl {
                 Context context);
 
         @Get("/atlas/v2/entity/bulk/uniqueAttribute/type/{typeName}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getEntitiesByUniqueAttributes(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("typeName") String typeName,
@@ -200,6 +222,7 @@ public final class EntitiesImpl {
                 Context context);
 
         @Get("/atlas/v2/entity/guid/{guid}/header")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getHeader(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
@@ -363,12 +386,11 @@ public final class EntitiesImpl {
      *
      * @param entity Atlas entity with extended information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> upsertWithResponseAsync(
+    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
             BinaryData entity, RequestOptions requestOptions) {
         return FluxUtil.withContext(
                 context -> service.createOrUpdate(this.client.getEndpoint(), entity, requestOptions, context));
@@ -531,12 +553,11 @@ public final class EntitiesImpl {
      * @param entity Atlas entity with extended information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> upsertWithResponseAsync(
+    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
             BinaryData entity, RequestOptions requestOptions, Context context) {
         return service.createOrUpdate(this.client.getEndpoint(), entity, requestOptions, context);
     }
@@ -697,15 +718,12 @@ public final class EntitiesImpl {
      *
      * @param entity Atlas entity with extended information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> upsertWithResponse(
-            BinaryData entity, RequestOptions requestOptions, Context context) {
-        return upsertWithResponseAsync(entity, requestOptions, context).block();
+    public Response<BinaryData> createOrUpdateWithResponse(BinaryData entity, RequestOptions requestOptions) {
+        return createOrUpdateWithResponseAsync(entity, requestOptions).block();
     }
 
     /**
@@ -804,8 +822,7 @@ public final class EntitiesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasEntitiesWithExtInfo.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -910,8 +927,7 @@ public final class EntitiesImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasEntitiesWithExtInfo.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1015,14 +1031,12 @@ public final class EntitiesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasEntitiesWithExtInfo.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listByGuidsWithResponse(RequestOptions requestOptions, Context context) {
-        return listByGuidsWithResponseAsync(requestOptions, context).block();
+    public Response<BinaryData> listByGuidsWithResponse(RequestOptions requestOptions) {
+        return listByGuidsWithResponseAsync(requestOptions).block();
     }
 
     /**
@@ -1183,12 +1197,11 @@ public final class EntitiesImpl {
      *
      * @param entities An array of entities to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> upsertEntitiesWithResponseAsync(
+    public Mono<Response<BinaryData>> createOrUpdateEntitiesWithResponseAsync(
             BinaryData entities, RequestOptions requestOptions) {
         return FluxUtil.withContext(
                 context ->
@@ -1354,12 +1367,11 @@ public final class EntitiesImpl {
      * @param entities An array of entities to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> upsertEntitiesWithResponseAsync(
+    public Mono<Response<BinaryData>> createOrUpdateEntitiesWithResponseAsync(
             BinaryData entities, RequestOptions requestOptions, Context context) {
         return service.createOrUpdateEntities(this.client.getEndpoint(), entities, requestOptions, context);
     }
@@ -1522,15 +1534,12 @@ public final class EntitiesImpl {
      *
      * @param entities An array of entities to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> upsertEntitiesWithResponse(
-            BinaryData entities, RequestOptions requestOptions, Context context) {
-        return upsertEntitiesWithResponseAsync(entities, requestOptions, context).block();
+    public Response<BinaryData> createOrUpdateEntitiesWithResponse(BinaryData entities, RequestOptions requestOptions) {
+        return createOrUpdateEntitiesWithResponseAsync(entities, requestOptions).block();
     }
 
     /**
@@ -1615,8 +1624,7 @@ public final class EntitiesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1708,8 +1716,7 @@ public final class EntitiesImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1799,14 +1806,12 @@ public final class EntitiesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteByGuidsWithResponse(RequestOptions requestOptions, Context context) {
-        return deleteByGuidsWithResponseAsync(requestOptions, context).block();
+    public Response<BinaryData> deleteByGuidsWithResponse(RequestOptions requestOptions) {
+        return deleteByGuidsWithResponseAsync(requestOptions).block();
     }
 
     /**
@@ -1845,8 +1850,7 @@ public final class EntitiesImpl {
      *
      * @param request The request to associate a classification to multiple entities.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1892,8 +1896,7 @@ public final class EntitiesImpl {
      * @param request The request to associate a classification to multiple entities.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1938,15 +1941,12 @@ public final class EntitiesImpl {
      *
      * @param request The request to associate a classification to multiple entities.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addClassificationWithResponse(
-            BinaryData request, RequestOptions requestOptions, Context context) {
-        return addClassificationWithResponseAsync(request, requestOptions, context).block();
+    public Response<Void> addClassificationWithResponse(BinaryData request, RequestOptions requestOptions) {
+        return addClassificationWithResponseAsync(request, requestOptions).block();
     }
 
     /**
@@ -2042,8 +2042,7 @@ public final class EntitiesImpl {
      *
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return complete definition of an entity given its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2146,8 +2145,7 @@ public final class EntitiesImpl {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return complete definition of an entity given its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2249,14 +2247,12 @@ public final class EntitiesImpl {
      *
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return complete definition of an entity given its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getByGuidWithResponse(String guid, RequestOptions requestOptions, Context context) {
-        return getByGuidWithResponseAsync(guid, requestOptions, context).block();
+    public Response<BinaryData> getByGuidWithResponse(String guid, RequestOptions requestOptions) {
+        return getByGuidWithResponseAsync(guid, requestOptions).block();
     }
 
     /**
@@ -2351,8 +2347,7 @@ public final class EntitiesImpl {
      * @param guid The globally unique identifier of the entity.
      * @param body The value of the attribute.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2457,8 +2452,7 @@ public final class EntitiesImpl {
      * @param body The value of the attribute.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2560,15 +2554,13 @@ public final class EntitiesImpl {
      * @param guid The globally unique identifier of the entity.
      * @param body The value of the attribute.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateEntityAttributeByGuidWithResponse(
-            String guid, BinaryData body, RequestOptions requestOptions, Context context) {
-        return partialUpdateEntityAttributeByGuidWithResponseAsync(guid, body, requestOptions, context).block();
+            String guid, BinaryData body, RequestOptions requestOptions) {
+        return partialUpdateEntityAttributeByGuidWithResponseAsync(guid, body, requestOptions).block();
     }
 
     /**
@@ -2646,8 +2638,7 @@ public final class EntitiesImpl {
      *
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2732,8 +2723,7 @@ public final class EntitiesImpl {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2817,14 +2807,12 @@ public final class EntitiesImpl {
      *
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteByGuidWithResponse(String guid, RequestOptions requestOptions, Context context) {
-        return deleteByGuidWithResponseAsync(guid, requestOptions, context).block();
+    public Response<BinaryData> deleteByGuidWithResponse(String guid, RequestOptions requestOptions) {
+        return deleteByGuidWithResponseAsync(guid, requestOptions).block();
     }
 
     /**
@@ -2859,8 +2847,7 @@ public final class EntitiesImpl {
      * @param guid The globally unique identifier of the entity.
      * @param classificationName The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasClassification.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2905,8 +2892,7 @@ public final class EntitiesImpl {
      * @param classificationName The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasClassification.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2947,15 +2933,13 @@ public final class EntitiesImpl {
      * @param guid The globally unique identifier of the entity.
      * @param classificationName The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasClassification.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getClassificationWithResponse(
-            String guid, String classificationName, RequestOptions requestOptions, Context context) {
-        return getClassificationWithResponseAsync(guid, classificationName, requestOptions, context).block();
+            String guid, String classificationName, RequestOptions requestOptions) {
+        return getClassificationWithResponseAsync(guid, classificationName, requestOptions).block();
     }
 
     /**
@@ -2964,8 +2948,7 @@ public final class EntitiesImpl {
      * @param guid The globally unique identifier of the entity.
      * @param classificationName The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2984,8 +2967,7 @@ public final class EntitiesImpl {
      * @param classificationName The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3001,15 +2983,13 @@ public final class EntitiesImpl {
      * @param guid The globally unique identifier of the entity.
      * @param classificationName The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteClassificationWithResponse(
-            String guid, String classificationName, RequestOptions requestOptions, Context context) {
-        return deleteClassificationWithResponseAsync(guid, classificationName, requestOptions, context).block();
+            String guid, String classificationName, RequestOptions requestOptions) {
+        return deleteClassificationWithResponseAsync(guid, classificationName, requestOptions).block();
     }
 
     /**
@@ -3032,8 +3012,7 @@ public final class EntitiesImpl {
      *
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasClassifications.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3063,8 +3042,7 @@ public final class EntitiesImpl {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasClassifications.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3093,15 +3071,12 @@ public final class EntitiesImpl {
      *
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasClassifications.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getClassificationsWithResponse(
-            String guid, RequestOptions requestOptions, Context context) {
-        return getClassificationsWithResponseAsync(guid, requestOptions, context).block();
+    public Response<BinaryData> getClassificationsWithResponse(String guid, RequestOptions requestOptions) {
+        return getClassificationsWithResponseAsync(guid, requestOptions).block();
     }
 
     /**
@@ -3138,8 +3113,7 @@ public final class EntitiesImpl {
      * @param guid The globally unique identifier of the entity.
      * @param classifications An array of classifications to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3186,8 +3160,7 @@ public final class EntitiesImpl {
      * @param classifications An array of classifications to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3230,15 +3203,13 @@ public final class EntitiesImpl {
      * @param guid The globally unique identifier of the entity.
      * @param classifications An array of classifications to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> addClassificationsWithResponse(
-            String guid, BinaryData classifications, RequestOptions requestOptions, Context context) {
-        return addClassificationsWithResponseAsync(guid, classifications, requestOptions, context).block();
+            String guid, BinaryData classifications, RequestOptions requestOptions) {
+        return addClassificationsWithResponseAsync(guid, classifications, requestOptions).block();
     }
 
     /**
@@ -3275,8 +3246,7 @@ public final class EntitiesImpl {
      * @param guid The globally unique identifier of the entity.
      * @param classifications An array of classifications to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3323,8 +3293,7 @@ public final class EntitiesImpl {
      * @param classifications An array of classifications to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3367,15 +3336,13 @@ public final class EntitiesImpl {
      * @param guid The globally unique identifier of the entity.
      * @param classifications An array of classifications to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateClassificationsWithResponse(
-            String guid, BinaryData classifications, RequestOptions requestOptions, Context context) {
-        return updateClassificationsWithResponseAsync(guid, classifications, requestOptions, context).block();
+            String guid, BinaryData classifications, RequestOptions requestOptions) {
+        return updateClassificationsWithResponseAsync(guid, classifications, requestOptions).block();
     }
 
     /**
@@ -3476,8 +3443,7 @@ public final class EntitiesImpl {
      *
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return complete definition of an entity given its type and unique attribute. In addition to the typeName path
      *     parameter, attribute key-value pair(s) can be provided in the following format:
      *     attr:\&lt;attrName&gt;=&lt;attrValue&gt;.
@@ -3588,8 +3554,7 @@ public final class EntitiesImpl {
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return complete definition of an entity given its type and unique attribute. In addition to the typeName path
      *     parameter, attribute key-value pair(s) can be provided in the following format:
      *     attr:\&lt;attrName&gt;=&lt;attrValue&gt;.
@@ -3698,17 +3663,14 @@ public final class EntitiesImpl {
      *
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return complete definition of an entity given its type and unique attribute. In addition to the typeName path
      *     parameter, attribute key-value pair(s) can be provided in the following format:
      *     attr:\&lt;attrName&gt;=&lt;attrValue&gt;.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getByUniqueAttributesWithResponse(
-            String typeName, RequestOptions requestOptions, Context context) {
-        return getByUniqueAttributesWithResponseAsync(typeName, requestOptions, context).block();
+    public Response<BinaryData> getByUniqueAttributesWithResponse(String typeName, RequestOptions requestOptions) {
+        return getByUniqueAttributesWithResponseAsync(typeName, requestOptions).block();
     }
 
     /**
@@ -3879,8 +3841,7 @@ public final class EntitiesImpl {
      * @param typeName The name of the type.
      * @param atlasEntityWithExtInfo Atlas entity with extended information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4061,8 +4022,7 @@ public final class EntitiesImpl {
      * @param atlasEntityWithExtInfo Atlas entity with extended information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4240,16 +4200,13 @@ public final class EntitiesImpl {
      * @param typeName The name of the type.
      * @param atlasEntityWithExtInfo Atlas entity with extended information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateEntityByUniqueAttributesWithResponse(
-            String typeName, BinaryData atlasEntityWithExtInfo, RequestOptions requestOptions, Context context) {
-        return partialUpdateEntityByUniqueAttributesWithResponseAsync(
-                        typeName, atlasEntityWithExtInfo, requestOptions, context)
+            String typeName, BinaryData atlasEntityWithExtInfo, RequestOptions requestOptions) {
+        return partialUpdateEntityByUniqueAttributesWithResponseAsync(typeName, atlasEntityWithExtInfo, requestOptions)
                 .block();
     }
 
@@ -4339,8 +4296,7 @@ public final class EntitiesImpl {
      *
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4438,8 +4394,7 @@ public final class EntitiesImpl {
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4534,15 +4489,12 @@ public final class EntitiesImpl {
      *
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteByUniqueAttributeWithResponse(
-            String typeName, RequestOptions requestOptions, Context context) {
-        return deleteByUniqueAttributeWithResponseAsync(typeName, requestOptions, context).block();
+    public Response<BinaryData> deleteByUniqueAttributeWithResponse(String typeName, RequestOptions requestOptions) {
+        return deleteByUniqueAttributeWithResponseAsync(typeName, requestOptions).block();
     }
 
     /**
@@ -4559,8 +4511,7 @@ public final class EntitiesImpl {
      * @param typeName The name of the type.
      * @param classificationName The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4587,8 +4538,7 @@ public final class EntitiesImpl {
      * @param classificationName The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4612,16 +4562,13 @@ public final class EntitiesImpl {
      * @param typeName The name of the type.
      * @param classificationName The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteClassificationByUniqueAttributeWithResponse(
-            String typeName, String classificationName, RequestOptions requestOptions, Context context) {
-        return deleteClassificationByUniqueAttributeWithResponseAsync(
-                        typeName, classificationName, requestOptions, context)
+            String typeName, String classificationName, RequestOptions requestOptions) {
+        return deleteClassificationByUniqueAttributeWithResponseAsync(typeName, classificationName, requestOptions)
                 .block();
     }
 
@@ -4667,8 +4614,7 @@ public final class EntitiesImpl {
      * @param typeName The name of the type.
      * @param atlasClassificationArray An array of classification to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4727,8 +4673,7 @@ public final class EntitiesImpl {
      * @param atlasClassificationArray An array of classification to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4780,16 +4725,13 @@ public final class EntitiesImpl {
      * @param typeName The name of the type.
      * @param atlasClassificationArray An array of classification to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> addClassificationsByUniqueAttributeWithResponse(
-            String typeName, BinaryData atlasClassificationArray, RequestOptions requestOptions, Context context) {
-        return addClassificationsByUniqueAttributeWithResponseAsync(
-                        typeName, atlasClassificationArray, requestOptions, context)
+            String typeName, BinaryData atlasClassificationArray, RequestOptions requestOptions) {
+        return addClassificationsByUniqueAttributeWithResponseAsync(typeName, atlasClassificationArray, requestOptions)
                 .block();
     }
 
@@ -4835,8 +4777,7 @@ public final class EntitiesImpl {
      * @param typeName The name of the type.
      * @param atlasClassificationArray An array of classification to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4895,8 +4836,7 @@ public final class EntitiesImpl {
      * @param atlasClassificationArray An array of classification to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4948,16 +4888,14 @@ public final class EntitiesImpl {
      * @param typeName The name of the type.
      * @param atlasClassificationArray An array of classification to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateClassificationsByUniqueAttributeWithResponse(
-            String typeName, BinaryData atlasClassificationArray, RequestOptions requestOptions, Context context) {
+            String typeName, BinaryData atlasClassificationArray, RequestOptions requestOptions) {
         return updateClassificationsByUniqueAttributeWithResponseAsync(
-                        typeName, atlasClassificationArray, requestOptions, context)
+                        typeName, atlasClassificationArray, requestOptions)
                 .block();
     }
 
@@ -5036,8 +4974,7 @@ public final class EntitiesImpl {
      *
      * @param entityHeaders Atlas entity headers.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return response that indicates each classification mutation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5124,8 +5061,7 @@ public final class EntitiesImpl {
      * @param entityHeaders Atlas entity headers.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return response that indicates each classification mutation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5209,15 +5145,13 @@ public final class EntitiesImpl {
      *
      * @param entityHeaders Atlas entity headers.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return response that indicates each classification mutation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> setClassificationsWithResponse(
-            BinaryData entityHeaders, RequestOptions requestOptions, Context context) {
-        return setClassificationsWithResponseAsync(entityHeaders, requestOptions, context).block();
+            BinaryData entityHeaders, RequestOptions requestOptions) {
+        return setClassificationsWithResponseAsync(entityHeaders, requestOptions).block();
     }
 
     /**
@@ -5328,8 +5262,7 @@ public final class EntitiesImpl {
      *
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasEntitiesWithExtInfo.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5450,8 +5383,7 @@ public final class EntitiesImpl {
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasEntitiesWithExtInfo.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5568,15 +5500,13 @@ public final class EntitiesImpl {
      *
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasEntitiesWithExtInfo.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEntitiesByUniqueAttributesWithResponse(
-            String typeName, RequestOptions requestOptions, Context context) {
-        return getEntitiesByUniqueAttributesWithResponseAsync(typeName, requestOptions, context).block();
+            String typeName, RequestOptions requestOptions) {
+        return getEntitiesByUniqueAttributesWithResponseAsync(typeName, requestOptions).block();
     }
 
     /**
@@ -5642,8 +5572,7 @@ public final class EntitiesImpl {
      *
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entity header given its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5716,8 +5645,7 @@ public final class EntitiesImpl {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entity header given its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5789,13 +5717,11 @@ public final class EntitiesImpl {
      *
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return entity header given its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getHeaderWithResponse(String guid, RequestOptions requestOptions, Context context) {
-        return getHeaderWithResponseAsync(guid, requestOptions, context).block();
+    public Response<BinaryData> getHeaderWithResponse(String guid, RequestOptions requestOptions) {
+        return getHeaderWithResponseAsync(guid, requestOptions).block();
     }
 }

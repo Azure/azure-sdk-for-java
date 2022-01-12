@@ -13,8 +13,10 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.network.fluent.models.BackendAddressInboundNatRulePortMappingsInner;
 import com.azure.resourcemanager.network.fluent.models.LoadBalancerInner;
 import com.azure.resourcemanager.network.models.LoadBalancerVipSwapRequest;
+import com.azure.resourcemanager.network.models.QueryInboundNatRulePortMappingRequest;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -516,4 +518,144 @@ public interface LoadBalancersClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void swapPublicIpAddresses(String location, LoadBalancerVipSwapRequest parameters, Context context);
+
+    /**
+     * List of inbound NAT rule port mappings.
+     *
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param backendPoolName The name of the load balancer backend address pool.
+     * @param parameters Query inbound NAT rule port mapping request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response for a QueryInboundNatRulePortMapping API.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> listInboundNatRulePortMappingsWithResponseAsync(
+        String groupName,
+        String loadBalancerName,
+        String backendPoolName,
+        QueryInboundNatRulePortMappingRequest parameters);
+
+    /**
+     * List of inbound NAT rule port mappings.
+     *
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param backendPoolName The name of the load balancer backend address pool.
+     * @param parameters Query inbound NAT rule port mapping request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response for a QueryInboundNatRulePortMapping API.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<BackendAddressInboundNatRulePortMappingsInner>, BackendAddressInboundNatRulePortMappingsInner>
+        beginListInboundNatRulePortMappingsAsync(
+            String groupName,
+            String loadBalancerName,
+            String backendPoolName,
+            QueryInboundNatRulePortMappingRequest parameters);
+
+    /**
+     * List of inbound NAT rule port mappings.
+     *
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param backendPoolName The name of the load balancer backend address pool.
+     * @param parameters Query inbound NAT rule port mapping request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response for a QueryInboundNatRulePortMapping API.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<BackendAddressInboundNatRulePortMappingsInner>, BackendAddressInboundNatRulePortMappingsInner>
+        beginListInboundNatRulePortMappings(
+            String groupName,
+            String loadBalancerName,
+            String backendPoolName,
+            QueryInboundNatRulePortMappingRequest parameters);
+
+    /**
+     * List of inbound NAT rule port mappings.
+     *
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param backendPoolName The name of the load balancer backend address pool.
+     * @param parameters Query inbound NAT rule port mapping request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response for a QueryInboundNatRulePortMapping API.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<BackendAddressInboundNatRulePortMappingsInner>, BackendAddressInboundNatRulePortMappingsInner>
+        beginListInboundNatRulePortMappings(
+            String groupName,
+            String loadBalancerName,
+            String backendPoolName,
+            QueryInboundNatRulePortMappingRequest parameters,
+            Context context);
+
+    /**
+     * List of inbound NAT rule port mappings.
+     *
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param backendPoolName The name of the load balancer backend address pool.
+     * @param parameters Query inbound NAT rule port mapping request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response for a QueryInboundNatRulePortMapping API.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<BackendAddressInboundNatRulePortMappingsInner> listInboundNatRulePortMappingsAsync(
+        String groupName,
+        String loadBalancerName,
+        String backendPoolName,
+        QueryInboundNatRulePortMappingRequest parameters);
+
+    /**
+     * List of inbound NAT rule port mappings.
+     *
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param backendPoolName The name of the load balancer backend address pool.
+     * @param parameters Query inbound NAT rule port mapping request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response for a QueryInboundNatRulePortMapping API.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BackendAddressInboundNatRulePortMappingsInner listInboundNatRulePortMappings(
+        String groupName,
+        String loadBalancerName,
+        String backendPoolName,
+        QueryInboundNatRulePortMappingRequest parameters);
+
+    /**
+     * List of inbound NAT rule port mappings.
+     *
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param backendPoolName The name of the load balancer backend address pool.
+     * @param parameters Query inbound NAT rule port mapping request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response for a QueryInboundNatRulePortMapping API.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BackendAddressInboundNatRulePortMappingsInner listInboundNatRulePortMappings(
+        String groupName,
+        String loadBalancerName,
+        String backendPoolName,
+        QueryInboundNatRulePortMappingRequest parameters,
+        Context context);
 }

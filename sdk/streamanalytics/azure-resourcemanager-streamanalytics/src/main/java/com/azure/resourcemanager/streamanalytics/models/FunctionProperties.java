@@ -4,15 +4,13 @@
 
 package com.azure.resourcemanager.streamanalytics.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.List;
 
 /** The properties that are associated with a function. */
 @JsonTypeInfo(
@@ -21,12 +19,8 @@ import java.util.List;
     property = "type",
     defaultImpl = FunctionProperties.class)
 @JsonTypeName("FunctionProperties")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Scalar", value = ScalarFunctionProperties.class),
-    @JsonSubTypes.Type(name = "Aggregate", value = AggregateFunctionProperties.class)
-})
-@JsonFlatten
-@Fluent
+@JsonSubTypes({@JsonSubTypes.Type(name = "Scalar", value = ScalarFunctionProperties.class)})
+@Immutable
 public class FunctionProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FunctionProperties.class);
 
@@ -38,25 +32,6 @@ public class FunctionProperties {
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
-
-    /*
-     * The inputs property.
-     */
-    @JsonProperty(value = "properties.inputs")
-    private List<FunctionInput> inputs;
-
-    /*
-     * Describes the output of a function.
-     */
-    @JsonProperty(value = "properties.output")
-    private FunctionOutput output;
-
-    /*
-     * The physical binding of the function. For example, in the Azure Machine
-     * Learning web service’s case, this describes the endpoint.
-     */
-    @JsonProperty(value = "properties.binding")
-    private FunctionBinding binding;
 
     /**
      * Get the etag property: The current entity tag for the function. This is an opaque string. You can use it to
@@ -70,81 +45,10 @@ public class FunctionProperties {
     }
 
     /**
-     * Get the inputs property: The inputs property.
-     *
-     * @return the inputs value.
-     */
-    public List<FunctionInput> inputs() {
-        return this.inputs;
-    }
-
-    /**
-     * Set the inputs property: The inputs property.
-     *
-     * @param inputs the inputs value to set.
-     * @return the FunctionProperties object itself.
-     */
-    public FunctionProperties withInputs(List<FunctionInput> inputs) {
-        this.inputs = inputs;
-        return this;
-    }
-
-    /**
-     * Get the output property: Describes the output of a function.
-     *
-     * @return the output value.
-     */
-    public FunctionOutput output() {
-        return this.output;
-    }
-
-    /**
-     * Set the output property: Describes the output of a function.
-     *
-     * @param output the output value to set.
-     * @return the FunctionProperties object itself.
-     */
-    public FunctionProperties withOutput(FunctionOutput output) {
-        this.output = output;
-        return this;
-    }
-
-    /**
-     * Get the binding property: The physical binding of the function. For example, in the Azure Machine Learning web
-     * service’s case, this describes the endpoint.
-     *
-     * @return the binding value.
-     */
-    public FunctionBinding binding() {
-        return this.binding;
-    }
-
-    /**
-     * Set the binding property: The physical binding of the function. For example, in the Azure Machine Learning web
-     * service’s case, this describes the endpoint.
-     *
-     * @param binding the binding value to set.
-     * @return the FunctionProperties object itself.
-     */
-    public FunctionProperties withBinding(FunctionBinding binding) {
-        this.binding = binding;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (inputs() != null) {
-            inputs().forEach(e -> e.validate());
-        }
-        if (output() != null) {
-            output().validate();
-        }
-        if (binding() != null) {
-            binding().validate();
-        }
     }
 }

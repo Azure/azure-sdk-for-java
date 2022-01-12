@@ -299,7 +299,7 @@ public interface Factory {
     Factory.Update update();
 
     /** The template for Factory update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithPublicNetworkAccess {
         /**
          * Executes the update request.
          *
@@ -336,6 +336,17 @@ public interface Factory {
              * @return the next definition stage.
              */
             Update withIdentity(FactoryIdentity identity);
+        }
+        /** The stage of the Factory update allowing to specify publicNetworkAccess. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Whether or not public network access is allowed for the data
+             * factory..
+             *
+             * @param publicNetworkAccess Whether or not public network access is allowed for the data factory.
+             * @return the next definition stage.
+             */
+            Update withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
         }
     }
     /**

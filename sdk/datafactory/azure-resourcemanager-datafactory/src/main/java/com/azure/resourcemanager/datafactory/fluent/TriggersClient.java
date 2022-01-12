@@ -188,7 +188,7 @@ public interface TriggersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the response of a trigger subscription operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
         beginSubscribeToEvents(String resourceGroupName, String factoryName, String triggerName);
 
@@ -204,7 +204,7 @@ public interface TriggersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the response of a trigger subscription operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
         beginSubscribeToEvents(String resourceGroupName, String factoryName, String triggerName, Context context);
 
@@ -281,7 +281,7 @@ public interface TriggersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the response of a trigger subscription operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
         beginUnsubscribeFromEvents(String resourceGroupName, String factoryName, String triggerName);
 
@@ -297,7 +297,7 @@ public interface TriggersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the response of a trigger subscription operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
         beginUnsubscribeFromEvents(String resourceGroupName, String factoryName, String triggerName, Context context);
 
@@ -343,7 +343,7 @@ public interface TriggersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String factoryName, String triggerName);
 
     /**
@@ -358,7 +358,7 @@ public interface TriggersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String factoryName, String triggerName, Context context);
 
@@ -400,7 +400,7 @@ public interface TriggersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String factoryName, String triggerName);
 
     /**
@@ -415,7 +415,7 @@ public interface TriggersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String factoryName, String triggerName, Context context);
 

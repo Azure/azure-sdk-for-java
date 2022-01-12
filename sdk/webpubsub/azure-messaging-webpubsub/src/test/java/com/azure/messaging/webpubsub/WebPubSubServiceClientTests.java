@@ -6,7 +6,6 @@ package com.azure.messaging.webpubsub;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.rest.ErrorOptions;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
@@ -25,11 +24,11 @@ import com.nimbusds.jwt.JWTParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
-import java.util.EnumSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -173,7 +172,7 @@ public class WebPubSubServiceClientTests extends TestBase {
         // TODO (jogiles) can we determine if this user exists anywhere in the current hub?
         Response<Void> removeUserResponse =
             client.removeUserFromAllGroupsWithResponse("testRemoveNonExistentUserFromHub", new RequestOptions());
-        assertEquals(200, removeUserResponse.getStatusCode());
+        assertEquals(204, removeUserResponse.getStatusCode());
     }
 
     @Test
@@ -205,7 +204,7 @@ public class WebPubSubServiceClientTests extends TestBase {
     @Test
     public void testRemoveNonExistentUserFromGroup() {
         assertResponse(client.removeUserFromGroupWithResponse("java",
-                "testRemoveNonExistentUserFromGroup", new RequestOptions()), 200);
+                "testRemoveNonExistentUserFromGroup", new RequestOptions()), 204);
     }
 
     @Test
@@ -243,12 +242,14 @@ public class WebPubSubServiceClientTests extends TestBase {
     }
 
     @Test
+    @DisabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE", disabledReason = "This requires real "
+            + "connection id that is created when a client connects to Web PubSub service. So, run this in PLAYBACK "
+            + "mode only.")
     public void testCheckPermission() {
         RequestOptions requestOptions = new RequestOptions()
-            .addQueryParam("targetName", "group_name")
-            .setErrorOptions(EnumSet.of(ErrorOptions.NO_THROW));
-        boolean permission = client.checkPermissionWithResponse(WebPubSubPermission.JOIN_LEAVE_GROUP, "connection_id",
+            .addQueryParam("targetName", "java");
+        boolean permission = client.checkPermissionWithResponse(WebPubSubPermission.SEND_TO_GROUP, "71xtjgThROOJ6DsVY3xbBw2ef45fd11",
             requestOptions).getValue();
-        Assertions.assertFalse(permission);
+        Assertions.assertTrue(permission);
     }
 }

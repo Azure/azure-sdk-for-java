@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.catalog;
 
 import com.azure.analytics.purview.catalog.implementation.TypesImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -17,13 +18,14 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewCatalogClient type. */
 @ServiceClient(builder = PurviewCatalogClientBuilder.class, isAsync = true)
 public final class TypesAsyncClient {
-    private final TypesImpl serviceClient;
+    @Generated private final TypesImpl serviceClient;
 
     /**
      * Initializes an instance of Types client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     TypesAsyncClient(TypesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -129,10 +131,10 @@ public final class TypesAsyncClient {
      *
      * @param guid The globally unique identifier of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the classification definition for the given GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getClassificationDefByGuidWithResponse(
             String guid, RequestOptions requestOptions) {
@@ -240,10 +242,10 @@ public final class TypesAsyncClient {
      *
      * @param name The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the classification definition by its name (unique).
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getClassificationDefByNameWithResponse(
             String name, RequestOptions requestOptions) {
@@ -371,10 +373,10 @@ public final class TypesAsyncClient {
      *
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the Entity definition for the given GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEntityDefinitionByGuidWithResponse(
             String guid, RequestOptions requestOptions) {
@@ -502,10 +504,10 @@ public final class TypesAsyncClient {
      *
      * @param name The name of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the entity definition by its name (unique).
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEntityDefinitionByNameWithResponse(
             String name, RequestOptions requestOptions) {
@@ -586,10 +588,10 @@ public final class TypesAsyncClient {
      *
      * @param guid The globally unique identifier of the enum.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the enum definition for the given GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEnumDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
         return this.serviceClient.getEnumDefByGuidWithResponseAsync(guid, requestOptions);
@@ -669,10 +671,10 @@ public final class TypesAsyncClient {
      *
      * @param name The name of the enum.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the enum definition by its name (unique).
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEnumDefByNameWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getEnumDefByNameWithResponseAsync(name, requestOptions);
@@ -781,10 +783,10 @@ public final class TypesAsyncClient {
      *
      * @param guid The globally unique identifier of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the relationship definition for the given GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getRelationshipDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
         return this.serviceClient.getRelationshipDefByGuidWithResponseAsync(guid, requestOptions);
@@ -893,10 +895,10 @@ public final class TypesAsyncClient {
      *
      * @param name The name of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the relationship definition by its name (unique).
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getRelationshipDefByNameWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getRelationshipDefByNameWithResponseAsync(name, requestOptions);
@@ -994,10 +996,10 @@ public final class TypesAsyncClient {
      *
      * @param guid The globally unique identifier of the struct.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the struct definition for the given GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getStructDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
         return this.serviceClient.getStructDefByGuidWithResponseAsync(guid, requestOptions);
@@ -1095,10 +1097,10 @@ public final class TypesAsyncClient {
      *
      * @param name The name of the struct.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the struct definition by its name (unique).
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getStructDefByNameWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getStructDefByNameWithResponseAsync(name, requestOptions);
@@ -1247,10 +1249,10 @@ public final class TypesAsyncClient {
      *
      * @param guid The globally unique identifier of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the type definition for the given GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTypeDefinitionByGuidWithResponse(String guid, RequestOptions requestOptions) {
         return this.serviceClient.getTypeDefinitionByGuidWithResponseAsync(guid, requestOptions);
@@ -1399,10 +1401,10 @@ public final class TypesAsyncClient {
      *
      * @param name The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the type definition by its name (unique).
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTypeDefinitionByNameWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getTypeDefinitionByNameWithResponseAsync(name, requestOptions);
@@ -1413,10 +1415,10 @@ public final class TypesAsyncClient {
      *
      * @param name The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTypeByNameWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.deleteTypeByNameWithResponseAsync(name, requestOptions);
@@ -1696,10 +1698,10 @@ public final class TypesAsyncClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return all type definitions in Atlas in bulk.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAllTypeDefinitionsWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.getAllTypeDefinitionsWithResponseAsync(requestOptions);
@@ -2231,10 +2233,10 @@ public final class TypesAsyncClient {
      *
      * @param typesDef A composite wrapper object with corresponding lists of the type definition.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasTypesDef.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createTypeDefinitionsWithResponse(
             BinaryData typesDef, RequestOptions requestOptions) {
@@ -2766,10 +2768,10 @@ public final class TypesAsyncClient {
      *
      * @param typesDef A composite object that captures all type definition changes.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return atlasTypesDef.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateAtlasTypeDefinitionsWithResponse(
             BinaryData typesDef, RequestOptions requestOptions) {
@@ -3041,10 +3043,10 @@ public final class TypesAsyncClient {
      *
      * @param typesDef A composite object that captures all types to be deleted.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTypeDefinitionsWithResponse(BinaryData typesDef, RequestOptions requestOptions) {
         return this.serviceClient.deleteTypeDefinitionsWithResponseAsync(typesDef, requestOptions);
@@ -3076,10 +3078,10 @@ public final class TypesAsyncClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return an array of AtlasTypeDefHeader matching the search criteria or an empty list if no match.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listTypeDefinitionHeadersWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.listTypeDefinitionHeadersWithResponseAsync(requestOptions);
@@ -3185,10 +3187,10 @@ public final class TypesAsyncClient {
      *
      * @param guid The globally unique identifier of the term template.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the term template definition for the given GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTermTemplateDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
         return this.serviceClient.getTermTemplateDefByGuidWithResponseAsync(guid, requestOptions);
@@ -3294,10 +3296,10 @@ public final class TypesAsyncClient {
      *
      * @param name The name of the term template.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the term template definition by its name (unique).
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTermTemplateDefByNameWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getTermTemplateDefByNameWithResponseAsync(name, requestOptions);

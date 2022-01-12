@@ -34,6 +34,12 @@ private object SparkUtils {
   }
 
   def safeOpenConnectionInitCaches(container: CosmosAsyncContainer, logger: (String, Exception) => Unit): Unit = {
+
+    // TODO @fabianm - uncomment and fix or completely remove this code
+    // the version below can cause perf problems whenever there is data available in
+    // a container already and when the container does not index all properties
+    // because the query below will result in a full table scan (vs. index lookup only)
+    /*
     try {
 
       // this results in a cross partition query with one single query plan request
@@ -54,6 +60,7 @@ private object SparkUtils {
         logger("ignoring openConnectionsAndInitCaches failure", e)
       }
     }
+    */
   }
 
   private object DaemonThreadFactory {

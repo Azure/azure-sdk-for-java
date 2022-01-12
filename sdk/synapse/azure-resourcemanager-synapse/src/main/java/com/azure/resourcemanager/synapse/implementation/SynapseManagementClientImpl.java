@@ -45,7 +45,6 @@ import com.azure.resourcemanager.synapse.fluent.KustoPoolDatabasePrincipalAssign
 import com.azure.resourcemanager.synapse.fluent.KustoPoolDatabasesClient;
 import com.azure.resourcemanager.synapse.fluent.KustoPoolPrincipalAssignmentsClient;
 import com.azure.resourcemanager.synapse.fluent.KustoPoolsClient;
-import com.azure.resourcemanager.synapse.fluent.KustoPoolsOperationsClient;
 import com.azure.resourcemanager.synapse.fluent.LibrariesClient;
 import com.azure.resourcemanager.synapse.fluent.LibrariesOperationsClient;
 import com.azure.resourcemanager.synapse.fluent.OperationsClient;
@@ -966,18 +965,6 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
         return this.kustoPools;
     }
 
-    /** The KustoPoolsOperationsClient object to access its operations. */
-    private final KustoPoolsOperationsClient kustoPoolsOperations;
-
-    /**
-     * Gets the KustoPoolsOperationsClient object to access its operations.
-     *
-     * @return the KustoPoolsOperationsClient object.
-     */
-    public KustoPoolsOperationsClient getKustoPoolsOperations() {
-        return this.kustoPoolsOperations;
-    }
-
     /** The KustoPoolChildResourcesClient object to access its operations. */
     private final KustoPoolChildResourcesClient kustoPoolChildResources;
 
@@ -1146,7 +1133,6 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
         this.sparkConfigurationsOperations = new SparkConfigurationsOperationsClientImpl(this);
         this.kustoOperations = new KustoOperationsClientImpl(this);
         this.kustoPools = new KustoPoolsClientImpl(this);
-        this.kustoPoolsOperations = new KustoPoolsOperationsClientImpl(this);
         this.kustoPoolChildResources = new KustoPoolChildResourcesClientImpl(this);
         this.kustoPoolAttachedDatabaseConfigurations = new KustoPoolAttachedDatabaseConfigurationsClientImpl(this);
         this.kustoPoolDatabases = new KustoPoolDatabasesClientImpl(this);

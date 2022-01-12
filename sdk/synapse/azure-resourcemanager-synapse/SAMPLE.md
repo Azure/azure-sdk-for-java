@@ -101,10 +101,6 @@
 
 - [List](#kustooperations_list)
 
-## KustoPool
-
-- [List](#kustopool_list)
-
 ## KustoPoolAttachedDatabaseConfigurations
 
 - [CreateOrUpdate](#kustopoolattacheddatabaseconfigurations_createorupdate)
@@ -150,22 +146,23 @@
 - [Get](#kustopoolprincipalassignments_get)
 - [List](#kustopoolprincipalassignments_list)
 
-## KustoPoolsOperation
+## KustoPools
 
-- [AddLanguageExtensions](#kustopoolsoperation_addlanguageextensions)
-- [CheckNameAvailability](#kustopoolsoperation_checknameavailability)
-- [CreateOrUpdate](#kustopoolsoperation_createorupdate)
-- [Delete](#kustopoolsoperation_delete)
-- [DetachFollowerDatabases](#kustopoolsoperation_detachfollowerdatabases)
-- [Get](#kustopoolsoperation_get)
-- [ListByWorkspace](#kustopoolsoperation_listbyworkspace)
-- [ListFollowerDatabases](#kustopoolsoperation_listfollowerdatabases)
-- [ListLanguageExtensions](#kustopoolsoperation_listlanguageextensions)
-- [ListSkusByResource](#kustopoolsoperation_listskusbyresource)
-- [RemoveLanguageExtensions](#kustopoolsoperation_removelanguageextensions)
-- [Start](#kustopoolsoperation_start)
-- [Stop](#kustopoolsoperation_stop)
-- [Update](#kustopoolsoperation_update)
+- [AddLanguageExtensions](#kustopools_addlanguageextensions)
+- [CheckNameAvailability](#kustopools_checknameavailability)
+- [CreateOrUpdate](#kustopools_createorupdate)
+- [Delete](#kustopools_delete)
+- [DetachFollowerDatabases](#kustopools_detachfollowerdatabases)
+- [Get](#kustopools_get)
+- [List](#kustopools_list)
+- [ListByWorkspace](#kustopools_listbyworkspace)
+- [ListFollowerDatabases](#kustopools_listfollowerdatabases)
+- [ListLanguageExtensions](#kustopools_listlanguageextensions)
+- [ListSkusByResource](#kustopools_listskusbyresource)
+- [RemoveLanguageExtensions](#kustopools_removelanguageextensions)
+- [Start](#kustopools_start)
+- [Stop](#kustopools_stop)
+- [Update](#kustopools_update)
 
 ## LibrariesOperation
 
@@ -1828,27 +1825,6 @@ public final class KustoOperationsListSamples {
 }
 ```
 
-### KustoPool_List
-
-```java
-import com.azure.core.util.Context;
-
-/** Samples for KustoPool List. */
-public final class KustoPoolListSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsListSkus.json
-     */
-    /**
-     * Sample code: KustoPoolsListSkus.
-     *
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoPoolsListSkus(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPools().list(Context.NONE);
-    }
-}
-```
-
 ### KustoPoolAttachedDatabaseConfigurations_CreateOrUpdate
 
 ```java
@@ -2646,7 +2622,7 @@ public final class KustoPoolPrincipalAssignmentsListSamples {
 }
 ```
 
-### KustoPoolsOperation_AddLanguageExtensions
+### KustoPools_AddLanguageExtensions
 
 ```java
 import com.azure.core.util.Context;
@@ -2655,8 +2631,8 @@ import com.azure.resourcemanager.synapse.models.LanguageExtensionName;
 import com.azure.resourcemanager.synapse.models.LanguageExtensionsList;
 import java.util.Arrays;
 
-/** Samples for KustoPoolsOperation AddLanguageExtensions. */
-public final class KustoPoolsOperationAddLanguageExtensionsSamples {
+/** Samples for KustoPools AddLanguageExtensions. */
+public final class KustoPoolsAddLanguageExtensionsSamples {
     /*
      * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolLanguageExtensionsAdd.json
      */
@@ -2667,7 +2643,7 @@ public final class KustoPoolsOperationAddLanguageExtensionsSamples {
      */
     public static void kustoPoolAddLanguageExtensions(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
-            .kustoPoolsOperations()
+            .kustoPools()
             .addLanguageExtensions(
                 "kustorptest",
                 "kustoclusterrptest4",
@@ -2683,14 +2659,14 @@ public final class KustoPoolsOperationAddLanguageExtensionsSamples {
 }
 ```
 
-### KustoPoolsOperation_CheckNameAvailability
+### KustoPools_CheckNameAvailability
 
 ```java
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.KustoPoolCheckNameRequest;
 
-/** Samples for KustoPoolsOperation CheckNameAvailability. */
-public final class KustoPoolsOperationCheckNameAvailabilitySamples {
+/** Samples for KustoPools CheckNameAvailability. */
+public final class KustoPoolsCheckNameAvailabilitySamples {
     /*
      * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsCheckNameAvailability.json
      */
@@ -2701,22 +2677,22 @@ public final class KustoPoolsOperationCheckNameAvailabilitySamples {
      */
     public static void kustoPoolsCheckNameAvailability(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
-            .kustoPoolsOperations()
+            .kustoPools()
             .checkNameAvailabilityWithResponse(
                 "westus", new KustoPoolCheckNameRequest().withName("kustoclusterrptest4"), Context.NONE);
     }
 }
 ```
 
-### KustoPoolsOperation_CreateOrUpdate
+### KustoPools_CreateOrUpdate
 
 ```java
 import com.azure.resourcemanager.synapse.models.AzureSku;
 import com.azure.resourcemanager.synapse.models.SkuName;
 import com.azure.resourcemanager.synapse.models.SkuSize;
 
-/** Samples for KustoPoolsOperation CreateOrUpdate. */
-public final class KustoPoolsOperationCreateOrUpdateSamples {
+/** Samples for KustoPools CreateOrUpdate. */
+public final class KustoPoolsCreateOrUpdateSamples {
     /*
      * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsCreateOrUpdate.json
      */
@@ -2727,7 +2703,7 @@ public final class KustoPoolsOperationCreateOrUpdateSamples {
      */
     public static void kustoPoolsCreateOrUpdate(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
-            .kustoPoolsOperations()
+            .kustoPools()
             .define("kustoclusterrptest4")
             .withRegion("westus")
             .withExistingWorkspace("synapseWorkspaceName", "kustorptest")
@@ -2740,13 +2716,13 @@ public final class KustoPoolsOperationCreateOrUpdateSamples {
 }
 ```
 
-### KustoPoolsOperation_Delete
+### KustoPools_Delete
 
 ```java
 import com.azure.core.util.Context;
 
-/** Samples for KustoPoolsOperation Delete. */
-public final class KustoPoolsOperationDeleteSamples {
+/** Samples for KustoPools Delete. */
+public final class KustoPoolsDeleteSamples {
     /*
      * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsDelete.json
      */
@@ -2756,19 +2732,19 @@ public final class KustoPoolsOperationDeleteSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void kustoPoolsDelete(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolsOperations().delete("kustorptest", "kustorptest", "kustoclusterrptest4", Context.NONE);
+        manager.kustoPools().delete("kustorptest", "kustorptest", "kustoclusterrptest4", Context.NONE);
     }
 }
 ```
 
-### KustoPoolsOperation_DetachFollowerDatabases
+### KustoPools_DetachFollowerDatabases
 
 ```java
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.FollowerDatabaseDefinitionInner;
 
-/** Samples for KustoPoolsOperation DetachFollowerDatabases. */
-public final class KustoPoolsOperationDetachFollowerDatabasesSamples {
+/** Samples for KustoPools DetachFollowerDatabases. */
+public final class KustoPoolsDetachFollowerDatabasesSamples {
     /*
      * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolFollowerDatabasesDetach.json
      */
@@ -2779,7 +2755,7 @@ public final class KustoPoolsOperationDetachFollowerDatabasesSamples {
      */
     public static void kustoPoolDetachFollowerDatabases(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
-            .kustoPoolsOperations()
+            .kustoPools()
             .detachFollowerDatabases(
                 "kustorptest",
                 "kustoclusterrptest4",
@@ -2793,13 +2769,13 @@ public final class KustoPoolsOperationDetachFollowerDatabasesSamples {
 }
 ```
 
-### KustoPoolsOperation_Get
+### KustoPools_Get
 
 ```java
 import com.azure.core.util.Context;
 
-/** Samples for KustoPoolsOperation Get. */
-public final class KustoPoolsOperationGetSamples {
+/** Samples for KustoPools Get. */
+public final class KustoPoolsGetSamples {
     /*
      * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsGet.json
      */
@@ -2810,19 +2786,40 @@ public final class KustoPoolsOperationGetSamples {
      */
     public static void kustoPoolsGet(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
-            .kustoPoolsOperations()
+            .kustoPools()
             .getWithResponse("synapseWorkspaceName", "kustoclusterrptest4", "kustorptest", Context.NONE);
     }
 }
 ```
 
-### KustoPoolsOperation_ListByWorkspace
+### KustoPools_List
 
 ```java
 import com.azure.core.util.Context;
 
-/** Samples for KustoPoolsOperation ListByWorkspace. */
-public final class KustoPoolsOperationListByWorkspaceSamples {
+/** Samples for KustoPools List. */
+public final class KustoPoolsListSamples {
+    /*
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsListSkus.json
+     */
+    /**
+     * Sample code: KustoPoolsListSkus.
+     *
+     * @param manager Entry point to SynapseManager.
+     */
+    public static void kustoPoolsListSkus(com.azure.resourcemanager.synapse.SynapseManager manager) {
+        manager.kustoPools().list(Context.NONE);
+    }
+}
+```
+
+### KustoPools_ListByWorkspace
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for KustoPools ListByWorkspace. */
+public final class KustoPoolsListByWorkspaceSamples {
     /*
      * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsListByWorkspace.json
      */
@@ -2832,18 +2829,18 @@ public final class KustoPoolsOperationListByWorkspaceSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void listKustoPoolsInAWorkspace(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolsOperations().listByWorkspaceWithResponse("kustorptest", "kustorptest", Context.NONE);
+        manager.kustoPools().listByWorkspaceWithResponse("kustorptest", "kustorptest", Context.NONE);
     }
 }
 ```
 
-### KustoPoolsOperation_ListFollowerDatabases
+### KustoPools_ListFollowerDatabases
 
 ```java
 import com.azure.core.util.Context;
 
-/** Samples for KustoPoolsOperation ListFollowerDatabases. */
-public final class KustoPoolsOperationListFollowerDatabasesSamples {
+/** Samples for KustoPools ListFollowerDatabases. */
+public final class KustoPoolsListFollowerDatabasesSamples {
     /*
      * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolFollowerDatabasesList.json
      */
@@ -2853,20 +2850,18 @@ public final class KustoPoolsOperationListFollowerDatabasesSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void kustoPoolListFollowerDatabases(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .kustoPoolsOperations()
-            .listFollowerDatabases("kustorptest", "kustoclusterrptest4", "kustorptest", Context.NONE);
+        manager.kustoPools().listFollowerDatabases("kustorptest", "kustoclusterrptest4", "kustorptest", Context.NONE);
     }
 }
 ```
 
-### KustoPoolsOperation_ListLanguageExtensions
+### KustoPools_ListLanguageExtensions
 
 ```java
 import com.azure.core.util.Context;
 
-/** Samples for KustoPoolsOperation ListLanguageExtensions. */
-public final class KustoPoolsOperationListLanguageExtensionsSamples {
+/** Samples for KustoPools ListLanguageExtensions. */
+public final class KustoPoolsListLanguageExtensionsSamples {
     /*
      * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolLanguageExtensionsList.json
      */
@@ -2876,20 +2871,18 @@ public final class KustoPoolsOperationListLanguageExtensionsSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void kustoPoolListLanguageExtensions(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .kustoPoolsOperations()
-            .listLanguageExtensions("kustorptest", "kustoclusterrptest4", "kustorptest", Context.NONE);
+        manager.kustoPools().listLanguageExtensions("kustorptest", "kustoclusterrptest4", "kustorptest", Context.NONE);
     }
 }
 ```
 
-### KustoPoolsOperation_ListSkusByResource
+### KustoPools_ListSkusByResource
 
 ```java
 import com.azure.core.util.Context;
 
-/** Samples for KustoPoolsOperation ListSkusByResource. */
-public final class KustoPoolsOperationListSkusByResourceSamples {
+/** Samples for KustoPools ListSkusByResource. */
+public final class KustoPoolsListSkusByResourceSamples {
     /*
      * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsListResourceSkus.json
      */
@@ -2900,13 +2893,13 @@ public final class KustoPoolsOperationListSkusByResourceSamples {
      */
     public static void kustoPoolsListResourceSkus(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
-            .kustoPoolsOperations()
+            .kustoPools()
             .listSkusByResource("synapseWorkspaceName", "kustoclusterrptest4", "kustorptest", Context.NONE);
     }
 }
 ```
 
-### KustoPoolsOperation_RemoveLanguageExtensions
+### KustoPools_RemoveLanguageExtensions
 
 ```java
 import com.azure.core.util.Context;
@@ -2915,8 +2908,8 @@ import com.azure.resourcemanager.synapse.models.LanguageExtensionName;
 import com.azure.resourcemanager.synapse.models.LanguageExtensionsList;
 import java.util.Arrays;
 
-/** Samples for KustoPoolsOperation RemoveLanguageExtensions. */
-public final class KustoPoolsOperationRemoveLanguageExtensionsSamples {
+/** Samples for KustoPools RemoveLanguageExtensions. */
+public final class KustoPoolsRemoveLanguageExtensionsSamples {
     /*
      * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolLanguageExtensionsRemove.json
      */
@@ -2927,7 +2920,7 @@ public final class KustoPoolsOperationRemoveLanguageExtensionsSamples {
      */
     public static void kustoPoolRemoveLanguageExtensions(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
-            .kustoPoolsOperations()
+            .kustoPools()
             .removeLanguageExtensions(
                 "kustorptest",
                 "kustoclusterrptest4",
@@ -2943,13 +2936,13 @@ public final class KustoPoolsOperationRemoveLanguageExtensionsSamples {
 }
 ```
 
-### KustoPoolsOperation_Start
+### KustoPools_Start
 
 ```java
 import com.azure.core.util.Context;
 
-/** Samples for KustoPoolsOperation Start. */
-public final class KustoPoolsOperationStartSamples {
+/** Samples for KustoPools Start. */
+public final class KustoPoolsStartSamples {
     /*
      * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsStart.json
      */
@@ -2959,18 +2952,18 @@ public final class KustoPoolsOperationStartSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void kustoPoolsStop(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolsOperations().start("kustorptest", "kustoclusterrptest4", "kustorptest", Context.NONE);
+        manager.kustoPools().start("kustorptest", "kustoclusterrptest4", "kustorptest", Context.NONE);
     }
 }
 ```
 
-### KustoPoolsOperation_Stop
+### KustoPools_Stop
 
 ```java
 import com.azure.core.util.Context;
 
-/** Samples for KustoPoolsOperation Stop. */
-public final class KustoPoolsOperationStopSamples {
+/** Samples for KustoPools Stop. */
+public final class KustoPoolsStopSamples {
     /*
      * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsStop.json
      */
@@ -2980,12 +2973,12 @@ public final class KustoPoolsOperationStopSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void kustoPoolsStop(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolsOperations().stop("kustorptest", "kustoclusterrptest4", "kustorptest", Context.NONE);
+        manager.kustoPools().stop("kustorptest", "kustoclusterrptest4", "kustorptest", Context.NONE);
     }
 }
 ```
 
-### KustoPoolsOperation_Update
+### KustoPools_Update
 
 ```java
 import com.azure.core.util.Context;
@@ -2994,8 +2987,8 @@ import com.azure.resourcemanager.synapse.models.KustoPool;
 import com.azure.resourcemanager.synapse.models.SkuName;
 import com.azure.resourcemanager.synapse.models.SkuSize;
 
-/** Samples for KustoPoolsOperation Update. */
-public final class KustoPoolsOperationUpdateSamples {
+/** Samples for KustoPools Update. */
+public final class KustoPoolsUpdateSamples {
     /*
      * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsUpdate.json
      */
@@ -3007,7 +3000,7 @@ public final class KustoPoolsOperationUpdateSamples {
     public static void kustoPoolsUpdate(com.azure.resourcemanager.synapse.SynapseManager manager) {
         KustoPool resource =
             manager
-                .kustoPoolsOperations()
+                .kustoPools()
                 .getWithResponse("synapseWorkspaceName", "kustoclusterrptest4", "kustorptest", Context.NONE)
                 .getValue();
         resource
@@ -5501,6 +5494,7 @@ public final class SqlPoolWorkloadGroupListSamples {
 ### SqlPools_Create
 
 ```java
+import com.azure.resourcemanager.synapse.models.CreateMode;
 import com.azure.resourcemanager.synapse.models.Sku;
 import com.azure.resourcemanager.synapse.models.StorageAccountType;
 import java.util.HashMap;
@@ -5528,7 +5522,7 @@ public final class SqlPoolsCreateSamples {
             .withCollation("")
             .withSourceDatabaseId("")
             .withRecoverableDatabaseId("")
-            .withCreateMode("")
+            .withCreateMode(CreateMode.fromString(""))
             .withStorageAccountType(StorageAccountType.LRS)
             .create();
     }
@@ -5699,6 +5693,7 @@ public final class SqlPoolsResumeSamples {
 
 ```java
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.synapse.models.CreateMode;
 import com.azure.resourcemanager.synapse.models.Sku;
 import com.azure.resourcemanager.synapse.models.SqlPool;
 import java.time.OffsetDateTime;
@@ -5730,7 +5725,7 @@ public final class SqlPoolsUpdateSamples {
             .withSourceDatabaseId("")
             .withRecoverableDatabaseId("")
             .withRestorePointInTime(OffsetDateTime.parse("1970-01-01T00:00:00.000Z"))
-            .withCreateMode("")
+            .withCreateMode(CreateMode.fromString(""))
             .withCreationDate(OffsetDateTime.parse("1970-01-01T00:00:00.000Z"))
             .apply();
     }

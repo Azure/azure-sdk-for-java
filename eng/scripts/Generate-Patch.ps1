@@ -17,6 +17,8 @@
 #                             The script pushes the branch to remote URL https://github.com/Azure/azure-sdk-for-java.git
 # 6. PushToRemote           - Whether the commited changes should be pushed to the remote branch or not. This is not a required parameter. The default value is false.
 #
+# 7. CreateNewBranch        - Whether to create a new branch or use an existing branch. You would want to use an existing branch if you are using the same release tag for multiple libraries.
+#
 # Example:  .\eng\scripts\Generate-Patch.ps1 -ArtifactName azure-mixedreality-remoterendering -ServiceDirectory remoterendering -ReleaseVersion 1.0.0 -PatchVersion 1.0.1
 # This creates a remote branch "release/azure-mixedreality-remoterendering" with all the necessary changes.
 
@@ -26,7 +28,8 @@ param(
   [Parameter(Mandatory=$true)][string]$ReleaseVersion,
   [Parameter(Mandatory=$false)][string]$PatchVersion,
   [Parameter(Mandatory=$false)][string]$BranchName,
-  [Parameter(Mandatory=$false)][boolean]$PushToRemote
+  [Parameter(Mandatory=$false)][boolean]$PushToRemote,
+  [Parameter(Mandatory=$false)][boolean]$CreateNewBranch = $true
 )
 
 function TestPathThrow($Path, $PathName) {
@@ -41,7 +44,7 @@ Write-Information "ArtifactName is: $ArtifactName"
 Write-Information "ReleaseVersion is: $ReleaseVersion"
 Write-Information "ServiceDirectoryName is: $ServiceDirectoryName"
 
-$MainRemoteUrl = 'git@github.com:Azure/azure-sdk-for-java.git'
+$MainRemoteUrl = 'https://github.com/Azure/azure-sdk-for-java.git'
 $RepoRoot = Resolve-Path "${PSScriptRoot}..\..\.."
 $EngDir = Join-Path $RepoRoot "eng"
 $EngCommonScriptsDir = Join-Path $EngDir "common" "scripts"
@@ -88,16 +91,16 @@ function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $Release
 
   $ArtifactDirPath = Join-Path $ServiceDirPath $ArtifactName
   TestPathThrow -Path $ArtifactDirPath -PathName 'ArtifactDirPath'
-
+  
   $pkgProperties = Get-PkgProperties -PackageName $ArtifactName -ServiceDirectory $ServiceDirectoryName
   $currentPackageVersion = $pkgProperties.Version
   if($currentPackageVersion -eq $ReleaseVersion) {
      Write-Information "We do not have to reset the sources."
      return;
   }
-
+  
   $TestResourcesFilePath = Join-Path $ServiceDirPath "test-resources.json"
-  $EngDir = Join-Path $RepoRoot "eng"
+  $EngDir = Join-Path $RepoRoot "eng"  
   $CodeQualityReports = Join-Path $EngDir "code-quality-reports" "src" "main" "resources"
   $CheckStyleSuppressionFilePath = Join-Path $CodeQualityReports "checkstyle" "checkstyle-suppressions.xml"
   $CheckStyleFilePath = Join-Path $CodeQualityReports "checkstyle" "checkstyle.xml"
@@ -109,7 +112,7 @@ function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $Release
     LogError "Could not restore the tags for release tag $ReleaseTag"
     exit 1
   }
-
+  
   $cmdOutput = git restore --source $ReleaseTag -W -S $ArtifactDirPath
   if($LASTEXITCODE -ne 0) {
     LogError "Could not restore the changes for release tag $ReleaseTag"
@@ -120,6 +123,8 @@ function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $Release
     $cmdOutput = git restore --source $ReleaseTag -W -S $TestResourcesFilePath
   }
 
+<# // Disabling the resetting of the sources for the common files as this may accidently remove other things. 
+    We may need this in future when we do patch releases from a single pipeline. 
   if(Test-Path $CheckStyleSuppressionFilePath) {
     $cmdOutput = git restore --source $ReleaseTag -W -S $CheckStyleSuppressionFilePath
   }
@@ -131,6 +136,7 @@ function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $Release
   if(Test-Path $SpotBugsFilePath) {
     $cmdOutput = git restore --source $ReleaseTag -W -S $SpotBugsFilePath
   }
+#>
 
    ## Commit these changes.
   $cmdOutput = git commit -a -m "Reset changes to the patch version."
@@ -160,15 +166,15 @@ function CreatePatchRelease($ArtifactName, $ServiceDirectoryName, $PatchVersion,
   $pkgProperties = Get-PkgProperties -PackageName $ArtifactName -ServiceDirectory $ServiceDirectoryName
   $ChangelogPath = $pkgProperties.ChangeLogPath
   $PomFilePath = Join-Path $pkgProperties.DirectoryPath "pom.xml"
-
+  
   TestPathThrow -Path $SetVersionFilePath -PathName 'SetVersionFilePath'
   TestPathThrow -Path $UpdateVersionFilePath -PathName 'UpdateVersionFilePath'
   TestPathThrow -Path $ChangelogPath -PathName 'ChangelogPath'
   TestPathThrow -Path $PomFilePath -PathName 'PomFilePath'
-
+  
   $oldDependenciesToVersion = New-Object "System.Collections.Generic.Dictionary``2[System.String,System.String]"
   parsePomFileDependencies -PomFilePath $PomFilePath -DependencyToVersion $oldDependenciesToVersion
-
+  
   ## Create the patch release
   $cmdOutput = python $SetVersionFilePath --bt client --new-version $PatchVersion --ar $ArtifactName --gi $GroupId
   if($LASTEXITCODE -ne 0) {
@@ -181,11 +187,11 @@ function CreatePatchRelease($ArtifactName, $ServiceDirectoryName, $PatchVersion,
     LogError "Could not update the versions in the pom files.. Exiting..."
     exit 1
   }
-
+  
   $newDependenciesToVersion = New-Object "System.Collections.Generic.Dictionary``2[System.String,System.String]"
   parsePomFileDependencies -PomFilePath $PomFilePath -DependencyToVersion $newDependenciesToVersion
-
-
+  
+  
   $releaseStatus = "$(Get-Date -Format $CHANGELOG_DATE_FORMAT)"
   $releaseStatus = "($releaseStatus)"
   $changeLogEntries = Get-ChangeLogEntries -ChangeLogLocation $ChangelogPath
@@ -196,7 +202,7 @@ function CreatePatchRelease($ArtifactName, $ServiceDirectoryName, $PatchVersion,
   $Content += ""
   $Content += "#### Dependency Updates"
   $Content += ""
-
+  
   foreach($key in $oldDependenciesToVersion.Keys) {
     $oldVersion = $($oldDependenciesToVersion[$key]).Trim()
     $newVersion = $($newDependenciesToVersion[$key]).Trim()
@@ -204,7 +210,7 @@ function CreatePatchRelease($ArtifactName, $ServiceDirectoryName, $PatchVersion,
       $Content += "- Upgraded ``$key`` from ``$oldVersion`` to version ``$newVersion``."
     }
   }
-
+  
   $Content += ""
   $newChangeLogEntry = New-ChangeLogEntry -Version $PatchVersion -Status $releaseStatus -Content $Content
   if ($newChangeLogEntry) {
@@ -214,9 +220,9 @@ function CreatePatchRelease($ArtifactName, $ServiceDirectoryName, $PatchVersion,
     LogError "Failed to create new changelog entry"
     exit 1
     }
-
-
-  Set-ChangeLogContent -ChangeLogLocation $ChangelogPath -ChangeLogEntries $ChangeLogEntries
+	
+	
+  $cmdOutput = Set-ChangeLogContent -ChangeLogLocation $ChangelogPath -ChangeLogEntries $ChangeLogEntries
   if($LASTEXITCODE -ne 0) {
     LogError "Could not update the changelog.. Exiting..."
     exit 1
@@ -246,12 +252,17 @@ if(!$BranchName) {
 
 try {
   ## Creating a new branch
-  $cmdOutput = git checkout $BranchName
+  if($CreateNewBranch) {
+    $cmdOutput = git checkout -b $BranchName $RemoteName/main
+  }
+  else {
+    $cmdOutput = git checkout $BranchName
+  }
   if($LASTEXITCODE -ne 0) {
     LogError "Could not checkout branch $BranchName, please check if it already exists and delete as necessary. Exiting..."
     exit 1
   }
-
+  
   ## Hard reseting it to the contents of the release tag.
   ## Fetching all the tags from the remote branch
   ResetSourcesToReleaseTag -ArtifactName $ArtifactName -ServiceDirectoryName $ServiceDirectoryName -ReleaseVersion $ReleaseVersion -RepoRoot $RepoRoot -RemoteName $RemoteName
@@ -261,7 +272,7 @@ try {
     LogError "Could not add the changes. Exiting..."
     exit 1
   }
-
+  
   $cmdOutput = git commit -a -m "Updating the SDK dependencies for $ArtifactName"
   if($LASTEXITCODE -ne 0) {
     LogError "Could not commit changes to $BranchName locally. Exiting..."
@@ -269,7 +280,7 @@ try {
   }
 
   if($PushToRemote) {
-    $cmdOutput = git push -f $RemoteName $BranchName
+    $cmdOutput = git push $RemoteName $BranchName
     if($LASTEXITCODE -ne 0) {
       LogError "Could not push the changes to $RemoteName\$BranchName. Exiting..."
       exit 1

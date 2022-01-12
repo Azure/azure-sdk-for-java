@@ -27,7 +27,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr48742/providers/Microsoft.ContainerRegistry/registries/acr90524e?api-version=2019-12-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr48742/providers/Microsoft.ContainerRegistry/registries/acr90524e?api-version=2021-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.10.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "5d1a1cf7-0f58-4df4-99be-bd541dc7ef4a",
@@ -105,7 +105,7 @@
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20211108T044030Z:6af85a00-f419-4f47-bf7a-42c73a5cc3e3",
       "Expires" : "-1",
       "x-ms-request-id" : "0dcbba18-3f3a-4a04-b079-7cb3b230e05a",
-      "Body" : "{\"logLink\":\"https://wcusmanaged119.blob.core.windows.net/29ca176ced2b4f2b91d7bdac1d201439-at5qegdpoi/logs/da1/rawtext.log?sv=2018-03-28&sr=b&sig=7L%2Bg329j%2ByY13W1W86m5yQPHB7Ymmfqv%2FUw%2B%2B8%2BLdTk%3D&se=2021-11-08T05%3A50%3A29Z&sp=r\"}",
+      "Body" : "{\"logLink\":\"https://wcusmanaged119.blob.core.windows.net/29ca176ced2b4f2b91d7bdac1d201439-at5qegdpoi/logs/da1/rawtext.log?sv=2018-03-28&sr=b&sig=***REMOVED***&se=2021-11-08T05%3A50%3A29Z&sp=r\"}",
       "x-ms-client-request-id" : "8e1c830c-7be5-4d2d-8946-d95766735c7b",
       "Content-Type" : "application/json; charset=utf-8"
     },

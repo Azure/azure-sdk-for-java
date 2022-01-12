@@ -19,6 +19,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.function.Function;
@@ -41,6 +42,14 @@ public class NetworkInterfacesImpl
         VirtualMachineScaleSetNetworkInterfacesImpl scaleSetNetworkInterfaces =
             new VirtualMachineScaleSetNetworkInterfacesImpl(resourceGroupName, scaleSetName, this.manager());
         return scaleSetNetworkInterfaces.getByVirtualMachineInstanceId(instanceId, name);
+    }
+
+    @Override
+    public Mono<VirtualMachineScaleSetNetworkInterface> getByVirtualMachineScaleSetInstanceIdAsync(
+        String resourceGroupName, String scaleSetName, String instanceId, String name) {
+        VirtualMachineScaleSetNetworkInterfacesImpl scaleSetNetworkInterfaces =
+            new VirtualMachineScaleSetNetworkInterfacesImpl(resourceGroupName, scaleSetName, this.manager());
+        return scaleSetNetworkInterfaces.getByVirtualMachineInstanceIdAsync(instanceId, name);
     }
 
     @Override

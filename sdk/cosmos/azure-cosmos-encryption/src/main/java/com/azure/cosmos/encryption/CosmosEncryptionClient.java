@@ -32,10 +32,16 @@ public class CosmosEncryptionClient {
         this.cosmosEncryptionAsyncClient = new CosmosEncryptionAsyncClient(cosmosAsyncClient, encryptionKeyStoreProvider);
     }
 
+    /**
+     * @return the encryption key store provider
+     */
     public EncryptionKeyStoreProvider getEncryptionKeyStoreProvider() {
         return encryptionKeyStoreProvider;
     }
 
+    /**
+     * @return the Cosmos client
+     */
     public CosmosClient getCosmosClient() {
         return cosmosClient;
     }

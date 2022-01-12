@@ -41,10 +41,19 @@ public class AADB2COAuth2ClientConfiguration {
     private static final Logger LOGGER = LoggerFactory.getLogger(AADB2COAuth2ClientConfiguration.class);
     private final AADB2CProperties properties;
 
+    /**
+     * Creates a new instance of {@link AADB2COAuth2ClientConfiguration}.
+     *
+     * @param properties the AAD B2C properties
+     */
     public AADB2COAuth2ClientConfiguration(@NonNull AADB2CProperties properties) {
         this.properties = properties;
     }
 
+    /**
+     * Declare ClientRegistrationRepository bean.
+     * @return ClientRegistrationRepository bean
+     */
     @Bean
     @ConditionalOnMissingBean
     public ClientRegistrationRepository clientRegistrationRepository() {
@@ -109,6 +118,13 @@ public class AADB2COAuth2ClientConfiguration {
                                  .build();
     }
 
+    /**
+     * Declare OAuth2AuthorizedClientManager bean.
+     *
+     * @param clients the client registration repository
+     * @param authorizedClients the OAuth2 authorized client repository
+     * @return OAuth2AuthorizedClientManager bean
+     */
     @Bean
     @ConditionalOnMissingBean
     public OAuth2AuthorizedClientManager authorizedClientManager(ClientRegistrationRepository clients,

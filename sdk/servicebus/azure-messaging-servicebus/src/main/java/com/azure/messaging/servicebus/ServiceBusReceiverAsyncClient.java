@@ -51,38 +51,159 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
  * queue or topic subscription.
  *
  * <p><strong>Create an instance of receiver</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation}
+ * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation -->
+ * <pre>
+ * &#47;&#47; The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
+ * &#47;&#47; The connectionString&#47;queueName must be set by the application. The 'connectionString' format is shown below.
+ * &#47;&#47; &quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;SharedAccessKey=&#123;key&#125;&quot;
+ *
+ * ServiceBusReceiverAsyncClient consumer = new ServiceBusClientBuilder&#40;&#41;
+ *     .connectionString&#40;connectionString&#41;
+ *     .receiver&#40;&#41;
+ *     .queueName&#40;queueName&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation -->
  *
  * <p><strong>Create an instance of receiver using default credential</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiateWithDefaultCredential}
+ * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiateWithDefaultCredential -->
+ * <pre>
+ * &#47;&#47; The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
+ * ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder&#40;&#41;
+ *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;,
+ *         new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .receiver&#40;&#41;
+ *     .queueName&#40;&quot;&lt;&lt; QUEUE NAME &gt;&gt;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiateWithDefaultCredential -->
  *
  * <p><strong>Receive all messages from Service Bus resource</strong></p>
  * <p>This returns an infinite stream of messages from Service Bus. The stream ends when the subscription is disposed
  * or other terminal scenarios. See {@link #receiveMessages()} for more information.</p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.receive#all}
+ * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.receive#all -->
+ * <pre>
+ * Disposable subscription = receiver.receiveMessages&#40;&#41;
+ *     .subscribe&#40;message -&gt; &#123;
+ *         System.out.printf&#40;&quot;Received Seq #: %s%n&quot;, message.getSequenceNumber&#40;&#41;&#41;;
+ *         System.out.printf&#40;&quot;Contents of message as string: %s%n&quot;, message.getBody&#40;&#41;&#41;;
+ *     &#125;,
+ *         error -&gt; System.out.println&#40;&quot;Error occurred: &quot; + error&#41;,
+ *         &#40;&#41; -&gt; System.out.println&#40;&quot;Receiving complete.&quot;&#41;&#41;;
+ *
+ * &#47;&#47; When program ends, or you're done receiving all messages.
+ * subscription.dispose&#40;&#41;;
+ * receiver.close&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.receive#all -->
  *
  * <p><strong>Receive messages in {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode from a Service Bus
  * entity</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.receiveWithReceiveAndDeleteMode}
+ * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.receiveWithReceiveAndDeleteMode -->
+ * <pre>
+ * &#47;&#47; Keep a reference to `subscription`. When the program is finished receiving messages, call
+ * &#47;&#47; subscription.dispose&#40;&#41;. This will stop fetching messages from the Service Bus.
+ * Disposable subscription = receiver.receiveMessages&#40;&#41;
+ *     .subscribe&#40;message -&gt; &#123;
+ *         System.out.printf&#40;&quot;Received Seq #: %s%n&quot;, message.getSequenceNumber&#40;&#41;&#41;;
+ *         System.out.printf&#40;&quot;Contents of message as string: %s%n&quot;, message.getBody&#40;&#41;.toString&#40;&#41;&#41;;
+ *     &#125;, error -&gt; System.err.print&#40;error&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.receiveWithReceiveAndDeleteMode -->
  *
  * <p><strong>Receive messages from a specific session</strong></p>
  * <p>To fetch messages from a specific session, switch to {@link ServiceBusSessionReceiverClientBuilder} and
  * build the session receiver client. Use {@link ServiceBusSessionReceiverAsyncClient#acceptSession(String)} to create
  * a session-bound {@link ServiceBusReceiverAsyncClient}.
  * </p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#sessionId}
+ * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#sessionId -->
+ * <pre>
+ * &#47;&#47; The connectionString&#47;queueName must be set by the application. The 'connectionString' format is shown below.
+ * &#47;&#47; &quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;SharedAccessKey=&#123;key&#125;&quot;
+ * ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder&#40;&#41;
+ *     .connectionString&#40;connectionString&#41;
+ *     .sessionReceiver&#40;&#41;
+ *     .queueName&#40;queueName&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ *
+ * &#47;&#47; acceptSession&#40;String&#41; completes successfully with a receiver when &quot;&lt;&lt; my-session-id &gt;&gt;&quot; session is
+ * &#47;&#47; successfully locked.
+ * &#47;&#47; `Flux.usingWhen` is used so we dispose of the receiver resource after `receiveMessages&#40;&#41;` completes.
+ * &#47;&#47; `Mono.usingWhen` can also be used if the resource closure only returns a single item.
+ * Flux&lt;ServiceBusReceivedMessage&gt; sessionMessages = Flux.usingWhen&#40;
+ *     sessionReceiver.acceptSession&#40;&quot;&lt;&lt; my-session-id &gt;&gt;&quot;&#41;,
+ *     receiver -&gt; receiver.receiveMessages&#40;&#41;,
+ *     receiver -&gt; Mono.fromRunnable&#40;&#40;&#41; -&gt; receiver.close&#40;&#41;&#41;&#41;;
+ *
+ * &#47;&#47; When program ends, or you're done receiving all messages, the `subscription` can be disposed of. This code
+ * &#47;&#47; is non-blocking and kicks off the operation.
+ * Disposable subscription = sessionMessages.subscribe&#40;
+ *     message -&gt; System.out.printf&#40;&quot;Received Sequence #: %s. Contents: %s%n&quot;,
+ *         message.getSequenceNumber&#40;&#41;, message.getBody&#40;&#41;&#41;,
+ *     error -&gt; System.err.print&#40;error&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#sessionId -->
  *
  * <p><strong>Receive messages from the first available session</strong></p>
  * <p>To process messages from the first available session, switch to {@link ServiceBusSessionReceiverClientBuilder}
  * and build the session receiver client. Use
  * {@link ServiceBusSessionReceiverAsyncClient#acceptNextSession() acceptNextSession()} to find the first available
  * session to process messages from.</p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession}
+ * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession -->
+ * <pre>
+ * &#47;&#47; The connectionString&#47;queueName must be set by the application. The 'connectionString' format is shown below.
+ * &#47;&#47; &quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;SharedAccessKey=&#123;key&#125;&quot;
+ * ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder&#40;&#41;
+ *     .connectionString&#40;connectionString&#41;
+ *     .sessionReceiver&#40;&#41;
+ *     .queueName&#40;queueName&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ *
+ * &#47;&#47; acceptNextSession&#40;&#41; completes successfully with a receiver when it acquires the next available session.
+ * &#47;&#47; `Flux.usingWhen` is used so we dispose of the receiver resource after `receiveMessages&#40;&#41;` completes.
+ * &#47;&#47; `Mono.usingWhen` can also be used if the resource closure only returns a single item.
+ * Flux&lt;ServiceBusReceivedMessage&gt; sessionMessages = Flux.usingWhen&#40;
+ *     sessionReceiver.acceptNextSession&#40;&#41;,
+ *     receiver -&gt; receiver.receiveMessages&#40;&#41;,
+ *     receiver -&gt; Mono.fromRunnable&#40;&#40;&#41; -&gt; receiver.close&#40;&#41;&#41;&#41;;
+ *
+ * &#47;&#47; When program ends, or you're done receiving all messages, the `subscription` can be disposed of. This code
+ * &#47;&#47; is non-blocking and kicks off the operation.
+ * Disposable subscription = sessionMessages.subscribe&#40;
+ *     message -&gt; System.out.printf&#40;&quot;Received Sequence #: %s. Contents: %s%n&quot;,
+ *         message.getSequenceNumber&#40;&#41;, message.getBody&#40;&#41;&#41;,
+ *     error -&gt; System.err.print&#40;error&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession -->
  *
  * <p><strong>Rate limiting consumption of messages from a Service Bus entity</strong></p>
  * <p>For message receivers that need to limit the number of messages they receive at a given time, they can use
  * {@link BaseSubscriber#request(long)}.</p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.receive#basesubscriber}
+ * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.receive#basesubscriber -->
+ * <pre>
+ * receiver.receiveMessages&#40;&#41;.subscribe&#40;new BaseSubscriber&lt;ServiceBusReceivedMessage&gt;&#40;&#41; &#123;
+ *     private static final int NUMBER_OF_MESSAGES = 5;
+ *     private final AtomicInteger currentNumberOfMessages = new AtomicInteger&#40;&#41;;
+ *
+ *     &#64;Override
+ *     protected void hookOnSubscribe&#40;Subscription subscription&#41; &#123;
+ *         &#47;&#47; Tell the Publisher we only want 5 message at a time.
+ *         request&#40;NUMBER_OF_MESSAGES&#41;;
+ *     &#125;
+ *
+ *     &#64;Override
+ *     protected void hookOnNext&#40;ServiceBusReceivedMessage message&#41; &#123;
+ *         &#47;&#47; Process the ServiceBusReceivedMessage
+ *         &#47;&#47; If the number of messages we have currently received is a multiple of 5, that means we have reached
+ *         &#47;&#47; the last message the Subscriber will provide to us. Invoking request&#40;long&#41; here, tells the Publisher
+ *         &#47;&#47; that the subscriber is ready to get more messages from upstream.
+ *         if &#40;currentNumberOfMessages.incrementAndGet&#40;&#41; % 5 == 0&#41; &#123;
+ *             request&#40;NUMBER_OF_MESSAGES&#41;;
+ *         &#125;
+ *     &#125;
+ * &#125;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.receive#basesubscriber -->
  *
  * @see ServiceBusClientBuilder
  * @see ServiceBusReceiverClient To communicate with a Service Bus resource using a synchronous client.
@@ -926,7 +1047,28 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * passed to all operations that needs to be in this transaction.
      *
      * <p><strong>Creating and using a transaction</strong></p>
-     * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext}
+     * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext -->
+     * <pre>
+     * &#47;&#47; This mono creates a transaction and caches the output value, so we can associate operations with the
+     * &#47;&#47; transaction. It does not cache the value if it is an error or completes with no items, effectively retrying
+     * &#47;&#47; the operation.
+     * Mono&lt;ServiceBusTransactionContext&gt; transactionContext = receiver.createTransaction&#40;&#41;
+     *     .cache&#40;value -&gt; Duration.ofMillis&#40;Long.MAX_VALUE&#41;,
+     *         error -&gt; Duration.ZERO,
+     *         &#40;&#41; -&gt; Duration.ZERO&#41;;
+     *
+     * transactionContext.flatMap&#40;transaction -&gt; &#123;
+     *     &#47;&#47; Process messages and associate operations with the transaction.
+     *     Mono&lt;Void&gt; operations = Mono.when&#40;
+     *         receiver.receiveDeferredMessage&#40;sequenceNumber&#41;.flatMap&#40;message -&gt;
+     *             receiver.complete&#40;message, new CompleteOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;&#41;,
+     *         receiver.abandon&#40;receivedMessage, new AbandonOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;&#41;;
+     *
+     *     &#47;&#47; Finally, either commit or rollback the transaction once all the operations are associated with it.
+     *     return operations.flatMap&#40;transactionOperations -&gt; receiver.commitTransaction&#40;transaction&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext -->
      *
      * @return The {@link Mono} that finishes this operation on service bus resource.
      * @throws IllegalStateException if receiver is already disposed.
@@ -948,7 +1090,28 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * Commits the transaction and all the operations associated with it.
      *
      * <p><strong>Creating and using a transaction</strong></p>
-     * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext}
+     * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext -->
+     * <pre>
+     * &#47;&#47; This mono creates a transaction and caches the output value, so we can associate operations with the
+     * &#47;&#47; transaction. It does not cache the value if it is an error or completes with no items, effectively retrying
+     * &#47;&#47; the operation.
+     * Mono&lt;ServiceBusTransactionContext&gt; transactionContext = receiver.createTransaction&#40;&#41;
+     *     .cache&#40;value -&gt; Duration.ofMillis&#40;Long.MAX_VALUE&#41;,
+     *         error -&gt; Duration.ZERO,
+     *         &#40;&#41; -&gt; Duration.ZERO&#41;;
+     *
+     * transactionContext.flatMap&#40;transaction -&gt; &#123;
+     *     &#47;&#47; Process messages and associate operations with the transaction.
+     *     Mono&lt;Void&gt; operations = Mono.when&#40;
+     *         receiver.receiveDeferredMessage&#40;sequenceNumber&#41;.flatMap&#40;message -&gt;
+     *             receiver.complete&#40;message, new CompleteOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;&#41;,
+     *         receiver.abandon&#40;receivedMessage, new AbandonOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;&#41;;
+     *
+     *     &#47;&#47; Finally, either commit or rollback the transaction once all the operations are associated with it.
+     *     return operations.flatMap&#40;transactionOperations -&gt; receiver.commitTransaction&#40;transaction&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext -->
      *
      * @param transactionContext The transaction to be commit.
      *
@@ -979,7 +1142,28 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * Rollbacks the transaction given and all operations associated with it.
      *
      * <p><strong>Creating and using a transaction</strong></p>
-     * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext}
+     * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext -->
+     * <pre>
+     * &#47;&#47; This mono creates a transaction and caches the output value, so we can associate operations with the
+     * &#47;&#47; transaction. It does not cache the value if it is an error or completes with no items, effectively retrying
+     * &#47;&#47; the operation.
+     * Mono&lt;ServiceBusTransactionContext&gt; transactionContext = receiver.createTransaction&#40;&#41;
+     *     .cache&#40;value -&gt; Duration.ofMillis&#40;Long.MAX_VALUE&#41;,
+     *         error -&gt; Duration.ZERO,
+     *         &#40;&#41; -&gt; Duration.ZERO&#41;;
+     *
+     * transactionContext.flatMap&#40;transaction -&gt; &#123;
+     *     &#47;&#47; Process messages and associate operations with the transaction.
+     *     Mono&lt;Void&gt; operations = Mono.when&#40;
+     *         receiver.receiveDeferredMessage&#40;sequenceNumber&#41;.flatMap&#40;message -&gt;
+     *             receiver.complete&#40;message, new CompleteOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;&#41;,
+     *         receiver.abandon&#40;receivedMessage, new AbandonOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;&#41;;
+     *
+     *     &#47;&#47; Finally, either commit or rollback the transaction once all the operations are associated with it.
+     *     return operations.flatMap&#40;transactionOperations -&gt; receiver.commitTransaction&#40;transaction&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext -->
      *
      * @param transactionContext The transaction to rollback.
      *

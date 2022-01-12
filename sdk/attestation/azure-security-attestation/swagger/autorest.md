@@ -28,7 +28,7 @@ license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.security.attestation
 generate-client-as-impl: true
 generate-client-interfaces: false
-custom-types: AttestationType
+custom-types: AttestationType,PolicyModification,CertificateModification
 custom-types-subpackage: models
 #implementation-subpackage: implementation
 models-subpackage: implementation.models

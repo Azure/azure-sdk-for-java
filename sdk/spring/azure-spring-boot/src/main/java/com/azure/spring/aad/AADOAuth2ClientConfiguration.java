@@ -29,18 +29,36 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepo
 @Conditional(ClientRegistrationCondition.class)
 public class AADOAuth2ClientConfiguration {
 
+    /**
+     * Declare ClientRegistrationRepository bean.
+     *
+     * @param properties the AAD authentication properties
+     * @return ClientRegistrationRepository bean
+     */
     @Bean
     @ConditionalOnMissingBean
     public ClientRegistrationRepository clientRegistrationRepository(AADAuthenticationProperties properties) {
         return new AADClientRegistrationRepository(properties);
     }
 
+    /**
+     * Declare OAuth2AuthorizedClientRepository bean.
+     *
+     * @return OAuth2AuthorizedClientRepository bean
+     */
     @Bean
     @ConditionalOnMissingBean
     public OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository() {
         return new JacksonHttpSessionOAuth2AuthorizedClientRepository();
     }
 
+    /**
+     * Declare OAuth2AuthorizedClientManager bean.
+     *
+     * @param clientRegistrations the client registration repository
+     * @param authorizedClients the OAuth2 authorized client repository
+     * @return OAuth2AuthorizedClientManager bean
+     */
     @Bean
     @ConditionalOnMissingBean
     public OAuth2AuthorizedClientManager authorizedClientManager(ClientRegistrationRepository clientRegistrations,

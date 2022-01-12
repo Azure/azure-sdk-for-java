@@ -35,7 +35,7 @@ public final class AttestationResultImpl implements com.azure.security.attestati
     private Instant exp;
 
     /*
-     * The not before time before which the token cannot be considered valid,
+     * The "not before" time before which the token cannot be considered valid,
      * in the number of seconds since 1970-01-0T00:00:00Z UTC
      */
     private Instant nbf;
@@ -107,7 +107,7 @@ public final class AttestationResultImpl implements com.azure.security.attestati
     private Float svn;
 
     /*
-     * A copy of the RuntimeData specified as an input to the attest call.
+     * A copy of the RuntimeData specified as an input to the Attest call.
      */
     private byte[] enclaveHeldData;
 
@@ -156,7 +156,7 @@ public final class AttestationResultImpl implements com.azure.security.attestati
 
 
     /**
-     * Get the nbf property: The not before time before which the token cannot be considered valid, in the number of
+     * Get the nbf property: The "not before" time before which the token cannot be considered valid, in the number of
      * seconds since 1970-01-0T00:00:00Z UTC.
      *
      * @return the nbf value.
@@ -283,7 +283,7 @@ public final class AttestationResultImpl implements com.azure.security.attestati
     }
 
     /**
-     * Get the enclaveHeldData property: A copy of the RuntimeData specified as an input to the attest call.
+     * Get the enclaveHeldData property: A copy of the RuntimeData specified as an input to the Attest API call.
      *
      * @return the enclaveHeldData value.
      */

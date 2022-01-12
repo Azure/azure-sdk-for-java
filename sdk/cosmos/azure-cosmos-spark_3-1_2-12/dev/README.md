@@ -4,7 +4,7 @@
 
 To run the tests of Spark connector without running the SDK tests you need to install azure-cosmos first
 ```bash
-mvn -e -DskipTests  -Dgpg.skip -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl ,azure-cosmos -am clean install
+mvn -e -DskipTests  -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl ,azure-cosmos -am clean install
 ```
 
 To run unit tests:
@@ -25,12 +25,12 @@ Integration tests are expected to have ITest suffix.
 run the following command to run all tests including end to end integration tests:
 
 ```bash
-mvn -e -Dgpg.skip -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl ,azure-cosmos-spark_3-1_2-12 test package -PsparkE2E
+mvn -e -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl ,azure-cosmos-spark_3-1_2-12 test package -PsparkE2E
 ```
 
 How to run style check:
 ```bash
-mvn -e -Dgpg.skip -DskipTests -Dmaven.javadoc.skip=true -Dspotbugs.skip=false -Dcheckstyle.skip=false -Drevapi.skip=true -pl ,azure-cosmos-spark_3-1_2-12 -am clean package
+mvn -e -Dgpg.skip -DskipTests -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=false -Dcheckstyle.skip=false -Drevapi.skip=true -pl ,azure-cosmos-spark_3-1_2-12 -am clean package
 ```
 
 
@@ -42,8 +42,8 @@ The release process is currently manual.
 
 Download the spark artifacts or build locally:
 ```bash
-mvn -e -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl ,azure-cosmos -am clean install
-mvn -e -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl ,azure-cosmos-spark_3-1_2-12 clean install
+mvn -e -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl ,azure-cosmos -am clean install
+mvn -e -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl ,azure-cosmos-spark_3-1_2-12 clean install
 ```
 
 Take these files:

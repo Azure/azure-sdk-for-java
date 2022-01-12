@@ -102,7 +102,7 @@ public final class ScriptPackagesClientImpl implements ScriptPackagesClient {
     }
 
     /**
-     * Return script packages available for a private cloud to run on their Private Cloud.
+     * List script packages available to run on the private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -160,7 +160,7 @@ public final class ScriptPackagesClientImpl implements ScriptPackagesClient {
     }
 
     /**
-     * Return script packages available for a private cloud to run on their Private Cloud.
+     * List script packages available to run on the private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -216,7 +216,7 @@ public final class ScriptPackagesClientImpl implements ScriptPackagesClient {
     }
 
     /**
-     * Return script packages available for a private cloud to run on their Private Cloud.
+     * List script packages available to run on the private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -233,7 +233,7 @@ public final class ScriptPackagesClientImpl implements ScriptPackagesClient {
     }
 
     /**
-     * Return script packages available for a private cloud to run on their Private Cloud.
+     * List script packages available to run on the private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -252,7 +252,7 @@ public final class ScriptPackagesClientImpl implements ScriptPackagesClient {
     }
 
     /**
-     * Return script packages available for a private cloud to run on their Private Cloud.
+     * List script packages available to run on the private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -267,7 +267,7 @@ public final class ScriptPackagesClientImpl implements ScriptPackagesClient {
     }
 
     /**
-     * Return script packages available for a private cloud to run on their Private Cloud.
+     * List script packages available to run on the private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -283,7 +283,7 @@ public final class ScriptPackagesClientImpl implements ScriptPackagesClient {
     }
 
     /**
-     * Return script package available to run on an Private Cloud.
+     * Get a script package available to run on a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -291,7 +291,7 @@ public final class ScriptPackagesClientImpl implements ScriptPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return script Package resources available for execution.
+     * @return a script package available to run on a private cloud.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ScriptPackageInner>> getWithResponseAsync(
@@ -338,7 +338,7 @@ public final class ScriptPackagesClientImpl implements ScriptPackagesClient {
     }
 
     /**
-     * Return script package available to run on an Private Cloud.
+     * Get a script package available to run on a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -347,7 +347,7 @@ public final class ScriptPackagesClientImpl implements ScriptPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return script Package resources available for execution.
+     * @return a script package available to run on a private cloud.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ScriptPackageInner>> getWithResponseAsync(
@@ -391,7 +391,7 @@ public final class ScriptPackagesClientImpl implements ScriptPackagesClient {
     }
 
     /**
-     * Return script package available to run on an Private Cloud.
+     * Get a script package available to run on a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -399,7 +399,7 @@ public final class ScriptPackagesClientImpl implements ScriptPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return script Package resources available for execution.
+     * @return a script package available to run on a private cloud.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ScriptPackageInner> getAsync(
@@ -416,7 +416,7 @@ public final class ScriptPackagesClientImpl implements ScriptPackagesClient {
     }
 
     /**
-     * Return script package available to run on an Private Cloud.
+     * Get a script package available to run on a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -424,7 +424,7 @@ public final class ScriptPackagesClientImpl implements ScriptPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return script Package resources available for execution.
+     * @return a script package available to run on a private cloud.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ScriptPackageInner get(String resourceGroupName, String privateCloudName, String scriptPackageName) {
@@ -432,7 +432,7 @@ public final class ScriptPackagesClientImpl implements ScriptPackagesClient {
     }
 
     /**
-     * Return script package available to run on an Private Cloud.
+     * Get a script package available to run on a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -441,7 +441,7 @@ public final class ScriptPackagesClientImpl implements ScriptPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return script Package resources available for execution.
+     * @return a script package available to run on a private cloud.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ScriptPackageInner> getWithResponse(

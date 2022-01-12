@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.administration;
 
 import com.azure.analytics.purview.administration.implementation.MetadataRolesImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -16,13 +17,14 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the asynchronous PurviewMetadataClient type. */
 @ServiceClient(builder = PurviewMetadataClientBuilder.class, isAsync = true)
 public final class MetadataRolesAsyncClient {
-    private final MetadataRolesImpl serviceClient;
+    @Generated private final MetadataRolesImpl serviceClient;
 
     /**
      * Initializes an instance of MetadataRoles client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     MetadataRolesAsyncClient(MetadataRolesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -81,10 +83,10 @@ public final class MetadataRolesAsyncClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return list of Metadata roles.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> list(RequestOptions requestOptions) {
         return this.serviceClient.listAsync(requestOptions);

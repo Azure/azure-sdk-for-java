@@ -300,7 +300,7 @@ public final class P2SVpnGatewaysClientImpl
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -350,7 +350,7 @@ public final class P2SVpnGatewaysClientImpl
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -459,7 +459,7 @@ public final class P2SVpnGatewaysClientImpl
         } else {
             p2SVpnGatewayParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -518,7 +518,7 @@ public final class P2SVpnGatewaysClientImpl
         } else {
             p2SVpnGatewayParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -552,7 +552,11 @@ public final class P2SVpnGatewaysClientImpl
         return this
             .client
             .<P2SVpnGatewayInner, P2SVpnGatewayInner>getLroResult(
-                mono, this.client.getHttpPipeline(), P2SVpnGatewayInner.class, P2SVpnGatewayInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                P2SVpnGatewayInner.class,
+                P2SVpnGatewayInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -729,7 +733,7 @@ public final class P2SVpnGatewaysClientImpl
         } else {
             p2SVpnGatewayParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -788,7 +792,7 @@ public final class P2SVpnGatewaysClientImpl
         } else {
             p2SVpnGatewayParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -822,7 +826,11 @@ public final class P2SVpnGatewaysClientImpl
         return this
             .client
             .<P2SVpnGatewayInner, P2SVpnGatewayInner>getLroResult(
-                mono, this.client.getHttpPipeline(), P2SVpnGatewayInner.class, P2SVpnGatewayInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                P2SVpnGatewayInner.class,
+                P2SVpnGatewayInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -989,7 +997,7 @@ public final class P2SVpnGatewaysClientImpl
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1039,7 +1047,7 @@ public final class P2SVpnGatewaysClientImpl
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1068,7 +1076,8 @@ public final class P2SVpnGatewaysClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, gatewayName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1213,7 +1222,7 @@ public final class P2SVpnGatewaysClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1267,7 +1276,7 @@ public final class P2SVpnGatewaysClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1372,7 +1381,7 @@ public final class P2SVpnGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1414,7 +1423,7 @@ public final class P2SVpnGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1514,7 +1523,7 @@ public final class P2SVpnGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1564,7 +1573,7 @@ public final class P2SVpnGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1595,7 +1604,11 @@ public final class P2SVpnGatewaysClientImpl
         return this
             .client
             .<P2SVpnGatewayInner, P2SVpnGatewayInner>getLroResult(
-                mono, this.client.getHttpPipeline(), P2SVpnGatewayInner.class, P2SVpnGatewayInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                P2SVpnGatewayInner.class,
+                P2SVpnGatewayInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1755,7 +1768,7 @@ public final class P2SVpnGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1812,7 +1825,7 @@ public final class P2SVpnGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1850,7 +1863,7 @@ public final class P2SVpnGatewaysClientImpl
                 this.client.getHttpPipeline(),
                 VpnProfileResponseInner.class,
                 VpnProfileResponseInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2022,7 +2035,7 @@ public final class P2SVpnGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2072,7 +2085,7 @@ public final class P2SVpnGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2104,7 +2117,11 @@ public final class P2SVpnGatewaysClientImpl
         return this
             .client
             .<P2SVpnGatewayInner, P2SVpnGatewayInner>getLroResult(
-                mono, this.client.getHttpPipeline(), P2SVpnGatewayInner.class, P2SVpnGatewayInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                P2SVpnGatewayInner.class,
+                P2SVpnGatewayInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -2270,7 +2287,7 @@ public final class P2SVpnGatewaysClientImpl
         } else {
             request.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2329,7 +2346,7 @@ public final class P2SVpnGatewaysClientImpl
         } else {
             request.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2370,7 +2387,7 @@ public final class P2SVpnGatewaysClientImpl
                 this.client.getHttpPipeline(),
                 P2SVpnConnectionHealthInner.class,
                 P2SVpnConnectionHealthInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2567,7 +2584,7 @@ public final class P2SVpnGatewaysClientImpl
         } else {
             request.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2625,7 +2642,7 @@ public final class P2SVpnGatewaysClientImpl
         } else {
             request.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2658,7 +2675,8 @@ public final class P2SVpnGatewaysClientImpl
             disconnectP2SVpnConnectionsWithResponseAsync(resourceGroupName, p2SVpnGatewayName, request);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

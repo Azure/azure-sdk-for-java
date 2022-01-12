@@ -15,7 +15,6 @@ import com.azure.resourcemanager.streamanalytics.models.ClusterInfo;
 import com.azure.resourcemanager.streamanalytics.models.CompatibilityLevel;
 import com.azure.resourcemanager.streamanalytics.models.ContentStoragePolicy;
 import com.azure.resourcemanager.streamanalytics.models.EventsOutOfOrderPolicy;
-import com.azure.resourcemanager.streamanalytics.models.External;
 import com.azure.resourcemanager.streamanalytics.models.Function;
 import com.azure.resourcemanager.streamanalytics.models.Identity;
 import com.azure.resourcemanager.streamanalytics.models.Input;
@@ -24,8 +23,10 @@ import com.azure.resourcemanager.streamanalytics.models.JobType;
 import com.azure.resourcemanager.streamanalytics.models.Output;
 import com.azure.resourcemanager.streamanalytics.models.OutputErrorPolicy;
 import com.azure.resourcemanager.streamanalytics.models.OutputStartMode;
+import com.azure.resourcemanager.streamanalytics.models.ScaleStreamingJobParameters;
+import com.azure.resourcemanager.streamanalytics.models.Sku;
+import com.azure.resourcemanager.streamanalytics.models.StartStreamingJobParameters;
 import com.azure.resourcemanager.streamanalytics.models.StreamingJob;
-import com.azure.resourcemanager.streamanalytics.models.StreamingJobSku;
 import com.azure.resourcemanager.streamanalytics.models.Transformation;
 import java.time.OffsetDateTime;
 import java.util.Collections;
@@ -67,7 +68,7 @@ public final class StreamingJobImpl implements StreamingJob, StreamingJob.Defini
         return this.innerModel().identity();
     }
 
-    public StreamingJobSku sku() {
+    public Sku sku() {
         return this.innerModel().sku();
     }
 
@@ -182,10 +183,6 @@ public final class StreamingJobImpl implements StreamingJob, StreamingJob.Defini
 
     public ContentStoragePolicy contentStoragePolicy() {
         return this.innerModel().contentStoragePolicy();
-    }
-
-    public External externals() {
-        return this.innerModel().externals();
     }
 
     public ClusterInfo cluster() {
@@ -307,6 +304,38 @@ public final class StreamingJobImpl implements StreamingJob, StreamingJob.Defini
         return this;
     }
 
+    public void start(StartStreamingJobParameters startJobParameters) {
+        serviceManager.streamingJobs().start(resourceGroupName, jobName, startJobParameters);
+    }
+
+    public void start() {
+        serviceManager.streamingJobs().start(resourceGroupName, jobName);
+    }
+
+    public void start(StartStreamingJobParameters startJobParameters, Context context) {
+        serviceManager.streamingJobs().start(resourceGroupName, jobName, startJobParameters, context);
+    }
+
+    public void stop() {
+        serviceManager.streamingJobs().stop(resourceGroupName, jobName);
+    }
+
+    public void stop(Context context) {
+        serviceManager.streamingJobs().stop(resourceGroupName, jobName, context);
+    }
+
+    public void scale(ScaleStreamingJobParameters scaleJobParameters) {
+        serviceManager.streamingJobs().scale(resourceGroupName, jobName, scaleJobParameters);
+    }
+
+    public void scale() {
+        serviceManager.streamingJobs().scale(resourceGroupName, jobName);
+    }
+
+    public void scale(ScaleStreamingJobParameters scaleJobParameters, Context context) {
+        serviceManager.streamingJobs().scale(resourceGroupName, jobName, scaleJobParameters, context);
+    }
+
     public StreamingJobImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;
@@ -327,7 +356,7 @@ public final class StreamingJobImpl implements StreamingJob, StreamingJob.Defini
         return this;
     }
 
-    public StreamingJobImpl withSku(StreamingJobSku sku) {
+    public StreamingJobImpl withSku(Sku sku) {
         this.innerModel().withSku(sku);
         return this;
     }
@@ -407,19 +436,19 @@ public final class StreamingJobImpl implements StreamingJob, StreamingJob.Defini
         return this;
     }
 
-    public StreamingJobImpl withExternals(External externals) {
-        this.innerModel().withExternals(externals);
-        return this;
-    }
-
     public StreamingJobImpl withCluster(ClusterInfo cluster) {
         this.innerModel().withCluster(cluster);
         return this;
     }
 
     public StreamingJobImpl withIfMatch(String ifMatch) {
-        this.createIfMatch = ifMatch;
-        return this;
+        if (isInCreateMode()) {
+            this.createIfMatch = ifMatch;
+            return this;
+        } else {
+            this.updateIfMatch = ifMatch;
+            return this;
+        }
     }
 
     public StreamingJobImpl withIfNoneMatch(String ifNoneMatch) {
@@ -427,8 +456,7 @@ public final class StreamingJobImpl implements StreamingJob, StreamingJob.Defini
         return this;
     }
 
-    public StreamingJobImpl ifMatch(String ifMatch) {
-        this.updateIfMatch = ifMatch;
-        return this;
+    private boolean isInCreateMode() {
+        return this.innerModel().id() == null;
     }
 }

@@ -188,6 +188,8 @@ private class CosmosRowConverter(
       value match {
         case stringValue: String => stringValue.isEmpty
         case intValue: Int => intValue == 0
+        case shortValue: Short => shortValue == 0
+        case byteValue: Byte => byteValue == 0
         case longValue: Long => longValue == 0
         case arrayValue: Array[_] => arrayValue.isEmpty
         case booleanValue: Boolean => !booleanValue
@@ -234,6 +236,8 @@ private class CosmosRowConverter(
         case BooleanType => convertToJsonNodeConditionally(rowData.asInstanceOf[Boolean])
         case DoubleType => convertToJsonNodeConditionally(rowData.asInstanceOf[Double])
         case IntegerType => convertToJsonNodeConditionally(rowData.asInstanceOf[Int])
+        case ShortType => convertToJsonNodeConditionally(rowData.asInstanceOf[Short])
+        case ByteType => convertToJsonNodeConditionally(rowData.asInstanceOf[Byte])
         case LongType => convertToJsonNodeConditionally(rowData.asInstanceOf[Long])
         case FloatType => convertToJsonNodeConditionally(rowData.asInstanceOf[Float])
         case DecimalType() if rowData.isInstanceOf[Decimal] =>
@@ -307,6 +311,8 @@ private class CosmosRowConverter(
             case BinaryType => objectMapper.convertValue(rowData.asInstanceOf[Array[Byte]], classOf[JsonNode])
             case BooleanType => objectMapper.convertValue(rowData.asInstanceOf[Boolean], classOf[JsonNode])
             case DoubleType => objectMapper.convertValue(rowData.asInstanceOf[Double], classOf[JsonNode])
+            case ShortType => objectMapper.convertValue(rowData.asInstanceOf[Short], classOf[JsonNode])
+            case ByteType => objectMapper.convertValue(rowData.asInstanceOf[Byte], classOf[JsonNode])
             case IntegerType => objectMapper.convertValue(rowData.asInstanceOf[Int], classOf[JsonNode])
             case LongType => objectMapper.convertValue(rowData.asInstanceOf[Long], classOf[JsonNode])
             case FloatType => objectMapper.convertValue(rowData.asInstanceOf[Float], classOf[JsonNode])

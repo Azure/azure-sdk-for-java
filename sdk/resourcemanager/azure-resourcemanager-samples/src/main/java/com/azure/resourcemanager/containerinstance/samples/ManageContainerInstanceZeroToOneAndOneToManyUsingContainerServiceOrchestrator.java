@@ -96,7 +96,7 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOr
         final String acrName = Utils.randomResourceName(azureResourceManager, "acr", 20);
 
         final String aciName = Utils.randomResourceName(azureResourceManager, "acisample", 20);
-        final String containerImageName = "microsoft/aci-helloworld";
+        final String containerImageName = "mcr.microsoft.com/azuredocs/aci-helloworld";
         final String containerImageTag = "latest";
         final String dockerContainerName = "sample-hello";
 

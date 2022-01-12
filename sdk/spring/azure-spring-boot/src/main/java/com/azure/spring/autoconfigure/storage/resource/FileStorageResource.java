@@ -40,13 +40,36 @@ public class FileStorageResource extends AzureStorageResource {
     private final String location;
     private final boolean autoCreateFiles;
     private final String contentType;
+
+    /**
+     * Creates a new instance of {@link FileStorageResource}.
+     *
+     * @param shareServiceClient the ShareServiceClient
+     * @param location the location
+     */
     public FileStorageResource(ShareServiceClient shareServiceClient, String location) {
         this(shareServiceClient, location, false);
     }
+
+    /**
+     * Creates a new instance of {@link FileStorageResource}.
+     *
+     * @param shareServiceClient the ShareServiceClient
+     * @param location the location
+     * @param autoCreateFiles whether to automatically create files
+     */
     public FileStorageResource(ShareServiceClient shareServiceClient, String location, Boolean autoCreateFiles) {
         this(shareServiceClient, location, autoCreateFiles, null);
     }
 
+    /**
+     * Creates a new instance of {@link FileStorageResource}.
+     *
+     * @param shareServiceClient the ShareServiceClient
+     * @param location the location
+     * @param autoCreateFiles whether to automatically create files
+     * @param contentType the content type
+     */
     public FileStorageResource(ShareServiceClient shareServiceClient, String location, Boolean autoCreateFiles,
                                String contentType) {
 

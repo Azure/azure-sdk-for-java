@@ -1299,7 +1299,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the response of a trigger subscription operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
         beginSubscribeToEventsAsync(String resourceGroupName, String factoryName, String triggerName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1311,7 +1311,7 @@ public final class TriggersClientImpl implements TriggersClient {
                 this.client.getHttpPipeline(),
                 TriggerSubscriptionOperationStatusInner.class,
                 TriggerSubscriptionOperationStatusInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1326,7 +1326,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the response of a trigger subscription operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
         beginSubscribeToEventsAsync(String resourceGroupName, String factoryName, String triggerName, Context context) {
         context = this.client.mergeContext(context);
@@ -1353,7 +1353,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the response of a trigger subscription operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
         beginSubscribeToEvents(String resourceGroupName, String factoryName, String triggerName) {
         return beginSubscribeToEventsAsync(resourceGroupName, factoryName, triggerName).getSyncPoller();
@@ -1371,7 +1371,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the response of a trigger subscription operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
         beginSubscribeToEvents(String resourceGroupName, String factoryName, String triggerName, Context context) {
         return beginSubscribeToEventsAsync(resourceGroupName, factoryName, triggerName, context).getSyncPoller();
@@ -1731,7 +1731,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the response of a trigger subscription operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
         beginUnsubscribeFromEventsAsync(String resourceGroupName, String factoryName, String triggerName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1743,7 +1743,7 @@ public final class TriggersClientImpl implements TriggersClient {
                 this.client.getHttpPipeline(),
                 TriggerSubscriptionOperationStatusInner.class,
                 TriggerSubscriptionOperationStatusInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1758,7 +1758,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the response of a trigger subscription operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
         beginUnsubscribeFromEventsAsync(
             String resourceGroupName, String factoryName, String triggerName, Context context) {
@@ -1786,7 +1786,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the response of a trigger subscription operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
         beginUnsubscribeFromEvents(String resourceGroupName, String factoryName, String triggerName) {
         return beginUnsubscribeFromEventsAsync(resourceGroupName, factoryName, triggerName).getSyncPoller();
@@ -1804,7 +1804,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the response of a trigger subscription operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
         beginUnsubscribeFromEvents(String resourceGroupName, String factoryName, String triggerName, Context context) {
         return beginUnsubscribeFromEventsAsync(resourceGroupName, factoryName, triggerName, context).getSyncPoller();
@@ -1999,13 +1999,14 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String factoryName, String triggerName) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, factoryName, triggerName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2020,7 +2021,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String factoryName, String triggerName, Context context) {
         context = this.client.mergeContext(context);
@@ -2042,7 +2043,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String factoryName, String triggerName) {
         return beginStartAsync(resourceGroupName, factoryName, triggerName).getSyncPoller();
@@ -2060,7 +2061,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String factoryName, String triggerName, Context context) {
         return beginStartAsync(resourceGroupName, factoryName, triggerName, context).getSyncPoller();
@@ -2249,13 +2250,14 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String factoryName, String triggerName) {
         Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(resourceGroupName, factoryName, triggerName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2270,7 +2272,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String factoryName, String triggerName, Context context) {
         context = this.client.mergeContext(context);
@@ -2292,7 +2294,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String factoryName, String triggerName) {
         return beginStopAsync(resourceGroupName, factoryName, triggerName).getSyncPoller();
@@ -2310,7 +2312,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String factoryName, String triggerName, Context context) {
         return beginStopAsync(resourceGroupName, factoryName, triggerName, context).getSyncPoller();

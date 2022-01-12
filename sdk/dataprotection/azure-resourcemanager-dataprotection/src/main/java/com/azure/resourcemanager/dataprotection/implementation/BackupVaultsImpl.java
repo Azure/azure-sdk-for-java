@@ -164,7 +164,7 @@ public final class BackupVaultsImpl implements BackupVaults {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'backupVaults'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, vaultName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, vaultName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {

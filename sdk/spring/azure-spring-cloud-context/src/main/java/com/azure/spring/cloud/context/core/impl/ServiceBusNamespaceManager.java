@@ -15,6 +15,12 @@ public class ServiceBusNamespaceManager extends AzureManager<ServiceBusNamespace
 
     private final AzureResourceManager azureResourceManager;
 
+    /**
+     * Creates a new instance of {@link ServiceBusNamespaceManager}.
+     *
+     * @param azureResourceManager The Azure resource manager.
+     * @param azureProperties The Azure properties.
+     */
     public ServiceBusNamespaceManager(AzureResourceManager azureResourceManager, AzureProperties azureProperties) {
         super(azureProperties);
         this.azureResourceManager = azureResourceManager;

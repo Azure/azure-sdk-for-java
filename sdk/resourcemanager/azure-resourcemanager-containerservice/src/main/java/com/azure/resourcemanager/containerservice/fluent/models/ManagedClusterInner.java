@@ -763,8 +763,8 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the publicNetworkAccess property: Whether the cluster can be accessed through public network or not Default
-     * value is 'Enabled' (case insensitive). Could be set to 'Disabled' to enable private cluster.
+     * Get the publicNetworkAccess property: PublicNetworkAccess of the managedCluster Allow or deny public network
+     * access for AKS.
      *
      * @return the publicNetworkAccess value.
      */
@@ -773,8 +773,8 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the publicNetworkAccess property: Whether the cluster can be accessed through public network or not Default
-     * value is 'Enabled' (case insensitive). Could be set to 'Disabled' to enable private cluster.
+     * Set the publicNetworkAccess property: PublicNetworkAccess of the managedCluster Allow or deny public network
+     * access for AKS.
      *
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ManagedClusterInner object itself.

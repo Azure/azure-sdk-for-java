@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.streamanalytics.fluent.models.AzureDataLakeStoreOutputDataSourceProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -15,79 +15,174 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** Describes an Azure Data Lake Store output data source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Microsoft.DataLake/Accounts")
-@JsonFlatten
 @Fluent
-public class AzureDataLakeStoreOutputDataSource extends OutputDataSource {
+public final class AzureDataLakeStoreOutputDataSource extends OutputDataSource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureDataLakeStoreOutputDataSource.class);
 
     /*
-     * A refresh token that can be used to obtain a valid access token that can
-     * then be used to authenticate with the data source. A valid refresh token
-     * is currently only obtainable via the Azure Portal. It is recommended to
-     * put a dummy string value here when creating the data source and then
-     * going to the Azure Portal to authenticate the data source which will
-     * update this property with a valid refresh token. Required on PUT
-     * (CreateOrReplace) requests.
-     */
-    @JsonProperty(value = "properties.refreshToken")
-    private String refreshToken;
-
-    /*
-     * The user principal name (UPN) of the user that was used to obtain the
-     * refresh token. Use this property to help remember which user was used to
-     * obtain the refresh token.
-     */
-    @JsonProperty(value = "properties.tokenUserPrincipalName")
-    private String tokenUserPrincipalName;
-
-    /*
-     * The user display name of the user that was used to obtain the refresh
-     * token. Use this property to help remember which user was used to obtain
-     * the refresh token.
-     */
-    @JsonProperty(value = "properties.tokenUserDisplayName")
-    private String tokenUserDisplayName;
-
-    /*
-     * The name of the Azure Data Lake Store account. Required on PUT
-     * (CreateOrReplace) requests.
-     */
-    @JsonProperty(value = "properties.accountName")
-    private String accountName;
-
-    /*
-     * The tenant id of the user used to obtain the refresh token. Required on
-     * PUT (CreateOrReplace) requests.
-     */
-    @JsonProperty(value = "properties.tenantId")
-    private String tenantId;
-
-    /*
-     * The location of the file to which the output should be written to.
+     * The properties that are associated with an Azure Data Lake Store output.
      * Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "properties.filePathPrefix")
-    private String filePathPrefix;
+    @JsonProperty(value = "properties")
+    private AzureDataLakeStoreOutputDataSourceProperties innerProperties;
 
-    /*
-     * The date format. Wherever {date} appears in filePathPrefix, the value of
-     * this property is used as the date format instead.
+    /**
+     * Get the innerProperties property: The properties that are associated with an Azure Data Lake Store output.
+     * Required on PUT (CreateOrReplace) requests.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.dateFormat")
-    private String dateFormat;
+    private AzureDataLakeStoreOutputDataSourceProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * The time format. Wherever {time} appears in filePathPrefix, the value of
-     * this property is used as the time format instead.
+    /**
+     * Get the accountName property: The name of the Azure Data Lake Store account. Required on PUT (CreateOrReplace)
+     * requests.
+     *
+     * @return the accountName value.
      */
-    @JsonProperty(value = "properties.timeFormat")
-    private String timeFormat;
+    public String accountName() {
+        return this.innerProperties() == null ? null : this.innerProperties().accountName();
+    }
 
-    /*
-     * Authentication Mode.
+    /**
+     * Set the accountName property: The name of the Azure Data Lake Store account. Required on PUT (CreateOrReplace)
+     * requests.
+     *
+     * @param accountName the accountName value to set.
+     * @return the AzureDataLakeStoreOutputDataSource object itself.
      */
-    @JsonProperty(value = "properties.authenticationMode")
-    private AuthenticationMode authenticationMode;
+    public AzureDataLakeStoreOutputDataSource withAccountName(String accountName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureDataLakeStoreOutputDataSourceProperties();
+        }
+        this.innerProperties().withAccountName(accountName);
+        return this;
+    }
+
+    /**
+     * Get the tenantId property: The tenant id of the user used to obtain the refresh token. Required on PUT
+     * (CreateOrReplace) requests.
+     *
+     * @return the tenantId value.
+     */
+    public String tenantId() {
+        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
+    }
+
+    /**
+     * Set the tenantId property: The tenant id of the user used to obtain the refresh token. Required on PUT
+     * (CreateOrReplace) requests.
+     *
+     * @param tenantId the tenantId value to set.
+     * @return the AzureDataLakeStoreOutputDataSource object itself.
+     */
+    public AzureDataLakeStoreOutputDataSource withTenantId(String tenantId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureDataLakeStoreOutputDataSourceProperties();
+        }
+        this.innerProperties().withTenantId(tenantId);
+        return this;
+    }
+
+    /**
+     * Get the filePathPrefix property: The location of the file to which the output should be written to. Required on
+     * PUT (CreateOrReplace) requests.
+     *
+     * @return the filePathPrefix value.
+     */
+    public String filePathPrefix() {
+        return this.innerProperties() == null ? null : this.innerProperties().filePathPrefix();
+    }
+
+    /**
+     * Set the filePathPrefix property: The location of the file to which the output should be written to. Required on
+     * PUT (CreateOrReplace) requests.
+     *
+     * @param filePathPrefix the filePathPrefix value to set.
+     * @return the AzureDataLakeStoreOutputDataSource object itself.
+     */
+    public AzureDataLakeStoreOutputDataSource withFilePathPrefix(String filePathPrefix) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureDataLakeStoreOutputDataSourceProperties();
+        }
+        this.innerProperties().withFilePathPrefix(filePathPrefix);
+        return this;
+    }
+
+    /**
+     * Get the dateFormat property: The date format. Wherever {date} appears in filePathPrefix, the value of this
+     * property is used as the date format instead.
+     *
+     * @return the dateFormat value.
+     */
+    public String dateFormat() {
+        return this.innerProperties() == null ? null : this.innerProperties().dateFormat();
+    }
+
+    /**
+     * Set the dateFormat property: The date format. Wherever {date} appears in filePathPrefix, the value of this
+     * property is used as the date format instead.
+     *
+     * @param dateFormat the dateFormat value to set.
+     * @return the AzureDataLakeStoreOutputDataSource object itself.
+     */
+    public AzureDataLakeStoreOutputDataSource withDateFormat(String dateFormat) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureDataLakeStoreOutputDataSourceProperties();
+        }
+        this.innerProperties().withDateFormat(dateFormat);
+        return this;
+    }
+
+    /**
+     * Get the timeFormat property: The time format. Wherever {time} appears in filePathPrefix, the value of this
+     * property is used as the time format instead.
+     *
+     * @return the timeFormat value.
+     */
+    public String timeFormat() {
+        return this.innerProperties() == null ? null : this.innerProperties().timeFormat();
+    }
+
+    /**
+     * Set the timeFormat property: The time format. Wherever {time} appears in filePathPrefix, the value of this
+     * property is used as the time format instead.
+     *
+     * @param timeFormat the timeFormat value to set.
+     * @return the AzureDataLakeStoreOutputDataSource object itself.
+     */
+    public AzureDataLakeStoreOutputDataSource withTimeFormat(String timeFormat) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureDataLakeStoreOutputDataSourceProperties();
+        }
+        this.innerProperties().withTimeFormat(timeFormat);
+        return this;
+    }
+
+    /**
+     * Get the authenticationMode property: Authentication Mode.
+     *
+     * @return the authenticationMode value.
+     */
+    public AuthenticationMode authenticationMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().authenticationMode();
+    }
+
+    /**
+     * Set the authenticationMode property: Authentication Mode.
+     *
+     * @param authenticationMode the authenticationMode value to set.
+     * @return the AzureDataLakeStoreOutputDataSource object itself.
+     */
+    public AzureDataLakeStoreOutputDataSource withAuthenticationMode(AuthenticationMode authenticationMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureDataLakeStoreOutputDataSourceProperties();
+        }
+        this.innerProperties().withAuthenticationMode(authenticationMode);
+        return this;
+    }
 
     /**
      * Get the refreshToken property: A refresh token that can be used to obtain a valid access token that can then be
@@ -99,7 +194,7 @@ public class AzureDataLakeStoreOutputDataSource extends OutputDataSource {
      * @return the refreshToken value.
      */
     public String refreshToken() {
-        return this.refreshToken;
+        return this.innerProperties() == null ? null : this.innerProperties().refreshToken();
     }
 
     /**
@@ -113,7 +208,10 @@ public class AzureDataLakeStoreOutputDataSource extends OutputDataSource {
      * @return the AzureDataLakeStoreOutputDataSource object itself.
      */
     public AzureDataLakeStoreOutputDataSource withRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureDataLakeStoreOutputDataSourceProperties();
+        }
+        this.innerProperties().withRefreshToken(refreshToken);
         return this;
     }
 
@@ -124,7 +222,7 @@ public class AzureDataLakeStoreOutputDataSource extends OutputDataSource {
      * @return the tokenUserPrincipalName value.
      */
     public String tokenUserPrincipalName() {
-        return this.tokenUserPrincipalName;
+        return this.innerProperties() == null ? null : this.innerProperties().tokenUserPrincipalName();
     }
 
     /**
@@ -135,7 +233,10 @@ public class AzureDataLakeStoreOutputDataSource extends OutputDataSource {
      * @return the AzureDataLakeStoreOutputDataSource object itself.
      */
     public AzureDataLakeStoreOutputDataSource withTokenUserPrincipalName(String tokenUserPrincipalName) {
-        this.tokenUserPrincipalName = tokenUserPrincipalName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureDataLakeStoreOutputDataSourceProperties();
+        }
+        this.innerProperties().withTokenUserPrincipalName(tokenUserPrincipalName);
         return this;
     }
 
@@ -146,7 +247,7 @@ public class AzureDataLakeStoreOutputDataSource extends OutputDataSource {
      * @return the tokenUserDisplayName value.
      */
     public String tokenUserDisplayName() {
-        return this.tokenUserDisplayName;
+        return this.innerProperties() == null ? null : this.innerProperties().tokenUserDisplayName();
     }
 
     /**
@@ -157,137 +258,10 @@ public class AzureDataLakeStoreOutputDataSource extends OutputDataSource {
      * @return the AzureDataLakeStoreOutputDataSource object itself.
      */
     public AzureDataLakeStoreOutputDataSource withTokenUserDisplayName(String tokenUserDisplayName) {
-        this.tokenUserDisplayName = tokenUserDisplayName;
-        return this;
-    }
-
-    /**
-     * Get the accountName property: The name of the Azure Data Lake Store account. Required on PUT (CreateOrReplace)
-     * requests.
-     *
-     * @return the accountName value.
-     */
-    public String accountName() {
-        return this.accountName;
-    }
-
-    /**
-     * Set the accountName property: The name of the Azure Data Lake Store account. Required on PUT (CreateOrReplace)
-     * requests.
-     *
-     * @param accountName the accountName value to set.
-     * @return the AzureDataLakeStoreOutputDataSource object itself.
-     */
-    public AzureDataLakeStoreOutputDataSource withAccountName(String accountName) {
-        this.accountName = accountName;
-        return this;
-    }
-
-    /**
-     * Get the tenantId property: The tenant id of the user used to obtain the refresh token. Required on PUT
-     * (CreateOrReplace) requests.
-     *
-     * @return the tenantId value.
-     */
-    public String tenantId() {
-        return this.tenantId;
-    }
-
-    /**
-     * Set the tenantId property: The tenant id of the user used to obtain the refresh token. Required on PUT
-     * (CreateOrReplace) requests.
-     *
-     * @param tenantId the tenantId value to set.
-     * @return the AzureDataLakeStoreOutputDataSource object itself.
-     */
-    public AzureDataLakeStoreOutputDataSource withTenantId(String tenantId) {
-        this.tenantId = tenantId;
-        return this;
-    }
-
-    /**
-     * Get the filePathPrefix property: The location of the file to which the output should be written to. Required on
-     * PUT (CreateOrReplace) requests.
-     *
-     * @return the filePathPrefix value.
-     */
-    public String filePathPrefix() {
-        return this.filePathPrefix;
-    }
-
-    /**
-     * Set the filePathPrefix property: The location of the file to which the output should be written to. Required on
-     * PUT (CreateOrReplace) requests.
-     *
-     * @param filePathPrefix the filePathPrefix value to set.
-     * @return the AzureDataLakeStoreOutputDataSource object itself.
-     */
-    public AzureDataLakeStoreOutputDataSource withFilePathPrefix(String filePathPrefix) {
-        this.filePathPrefix = filePathPrefix;
-        return this;
-    }
-
-    /**
-     * Get the dateFormat property: The date format. Wherever {date} appears in filePathPrefix, the value of this
-     * property is used as the date format instead.
-     *
-     * @return the dateFormat value.
-     */
-    public String dateFormat() {
-        return this.dateFormat;
-    }
-
-    /**
-     * Set the dateFormat property: The date format. Wherever {date} appears in filePathPrefix, the value of this
-     * property is used as the date format instead.
-     *
-     * @param dateFormat the dateFormat value to set.
-     * @return the AzureDataLakeStoreOutputDataSource object itself.
-     */
-    public AzureDataLakeStoreOutputDataSource withDateFormat(String dateFormat) {
-        this.dateFormat = dateFormat;
-        return this;
-    }
-
-    /**
-     * Get the timeFormat property: The time format. Wherever {time} appears in filePathPrefix, the value of this
-     * property is used as the time format instead.
-     *
-     * @return the timeFormat value.
-     */
-    public String timeFormat() {
-        return this.timeFormat;
-    }
-
-    /**
-     * Set the timeFormat property: The time format. Wherever {time} appears in filePathPrefix, the value of this
-     * property is used as the time format instead.
-     *
-     * @param timeFormat the timeFormat value to set.
-     * @return the AzureDataLakeStoreOutputDataSource object itself.
-     */
-    public AzureDataLakeStoreOutputDataSource withTimeFormat(String timeFormat) {
-        this.timeFormat = timeFormat;
-        return this;
-    }
-
-    /**
-     * Get the authenticationMode property: Authentication Mode.
-     *
-     * @return the authenticationMode value.
-     */
-    public AuthenticationMode authenticationMode() {
-        return this.authenticationMode;
-    }
-
-    /**
-     * Set the authenticationMode property: Authentication Mode.
-     *
-     * @param authenticationMode the authenticationMode value to set.
-     * @return the AzureDataLakeStoreOutputDataSource object itself.
-     */
-    public AzureDataLakeStoreOutputDataSource withAuthenticationMode(AuthenticationMode authenticationMode) {
-        this.authenticationMode = authenticationMode;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureDataLakeStoreOutputDataSourceProperties();
+        }
+        this.innerProperties().withTokenUserDisplayName(tokenUserDisplayName);
         return this;
     }
 
@@ -299,5 +273,8 @@ public class AzureDataLakeStoreOutputDataSource extends OutputDataSource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }
