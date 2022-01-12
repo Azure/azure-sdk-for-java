@@ -5,8 +5,11 @@ package com.azure.communication.rooms;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import com.azure.communication.rooms.models.CommunicationRoom;
 import com.azure.communication.rooms.models.RoomParticipant;
@@ -16,6 +19,8 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+
+import reactor.core.publisher.Mono;
 
 public class ReadmeSamples {
 
@@ -129,6 +134,41 @@ public class ReadmeSamples {
         RoomsClient roomsClient = createRoomsClientWithConnectionString();
         try {
             roomsClient.deleteRoomWithResponse("<Room Id in String>", Context.NONE);
+        } catch (RuntimeException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    public void AddRoomWithRoomId() {
+        String user1 = "8:acs:b6372803-0c35-4ec0-833b-c19b798cef1d_0000000e-3240-55cf-9806-113a0d001dd9";
+        String user2 = "8:acs:b6372803-0c35-4ec0-833b-c19b798cef1d_0000001e-322a-f9f7-740a-113a0d00ee19";
+        String user3 = "8:acs:b6372803-0c35-4ec0-833b-c19b798cef1d_0000002e-5609-f66d-defd-8b3a0d002749";
+    
+        Set<String> participants = new HashSet<String>(Arrays.asList(user1, user2, user3));
+
+        RoomsClient roomsClient = createRoomsClientWithConnectionString();
+
+        try {
+            CommunicationRoom addedParticipantRoom =  roomsClient.addParticipants("<Room Id>", participants);
+            System.out.println("Room Id: " + addedParticipantRoom.getRoomId());
+
+        } catch (RuntimeException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    public void RemoveRoomWithRoomId() {
+        String user1 = "8:acs:b6372803-0c35-4ec0-833b-c19b798cef1d_0000000e-3240-55cf-9806-113a0d001dd9";
+        String user2 = "8:acs:b6372803-0c35-4ec0-833b-c19b798cef1d_0000001e-322a-f9f7-740a-113a0d00ee19";
+    
+        Set<String> participants = new HashSet<String>(Arrays.asList(user1, user2));
+
+        RoomsClient roomsClient = createRoomsClientWithConnectionString();
+
+        try {
+            CommunicationRoom removedParticipantRoom =  roomsClient.removeParticipants("<Room Id>", participants);
+            System.out.println("Room Id: " + removedParticipantRoom.getRoomId());
+
         } catch (RuntimeException ex) {
             System.out.println(ex);
         }
