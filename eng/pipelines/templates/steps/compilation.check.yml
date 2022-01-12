@@ -25,19 +25,13 @@ steps:
         Write-Error "Got $pomf.Count packages, expecting 1."
         exit 1
       }
-      foreach ($retry in 0..${{ parameters.RetryLimit }}) {
-        if($env:AGENT_JOBSTATUS -eq "Canceled") {
-          Write-Host "Job canceled, halting verification"
-          exit 1
-        }
-        Write-Host "mvn --no-transfer-progress -f $pomf compile"
-        mvn --no-transfer-progress -f $pomf compile
-        if (!$LASTEXITCODE) { exit 0 }
-        Write-Host "Install failed, retrying in 1 minute..."
-        sleep 60
-      }
-      Write-Error "All retry attempts exhausted, unable to verify dependencies in Maven central."
+      Write-Host "mvn --no-transfer-progress -f $pomf clean compile"
+      mvn --no-transfer-progress -f $pomf clean compile
+      if (!$LASTEXITCODE) { exit 0 }
+      Write-Host "Install failed, retrying in 1 minute..."
+      sleep 60
       exit 1
 
     workingDirectory: ${{parameters.ArtifactDirectory}}
     displayName: "Verify Package Compilation"
+    retryCountOnTaskFailure: ${{ parameters.RetryLimit }}
