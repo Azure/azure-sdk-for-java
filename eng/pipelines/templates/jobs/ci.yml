@@ -173,15 +173,21 @@ jobs:
         parameters:
           Artifacts: ${{parameters.Artifacts}}
 
-      - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
-        displayName: 'Upload Package SBOM'
-        inputs:
-          BuildDropPath: $(Build.ArtifactStagingDirectory)
-
       - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
         parameters:
           ArtifactPath: $(Build.ArtifactStagingDirectory)
           ArtifactName: '$(ArtifactName)'
+
+      - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
+        displayName: 'Generate SBOM'
+        inputs:
+          BuildDropPath: $(Build.ArtifactStagingDirectory)
+
+      - task: PublishPipelineArtifact@1
+        displayName: 'Publish BOM'
+        inputs:
+          artifact: 'manifest'
+          path: $(Build.ArtifactStagingDirectory)/_manifest
 
       - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml
         parameters:
