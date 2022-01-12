@@ -60,6 +60,7 @@ try {
 } catch (HttpResponseException e) {
     if (e.getResponse().getStatusCode() == 404) {
         // update does not exist
+        System.out.println("update does not exist");
     }
 }
 ```

@@ -25,11 +25,11 @@ let you access the other clients - Updates and Management. In the sample `ListDe
 
 ```java com.azure.iot.deviceupdate.ManagementAsyncClient.instantiate
 ManagementAsyncClient client = new DeviceUpdateClientBuilder()
-            .endpoint(Configuration.getGlobalConfiguration().get("AZURE_ACCOUNT_ENDPOINT"))
-            .instanceId(Configuration.getGlobalConfiguration().get("AZURE_INSTANCE_ID"))
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .buildManagementAsyncClient();
+    .endpoint(Configuration.getGlobalConfiguration().get("AZURE_ACCOUNT_ENDPOINT"))
+    .instanceId(Configuration.getGlobalConfiguration().get("AZURE_INSTANCE_ID"))
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+    .buildManagementAsyncClient();
 ```
 
 ## List Devices
