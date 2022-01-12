@@ -70,14 +70,7 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  *
  * <p><strong>Instantiating an Asynchronous Share Client</strong></p>
  *
- * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.instantiation -->
- * <pre>
- * ShareAsyncClient client = new ShareClientBuilder&#40;&#41;
- *     .connectionString&#40;&quot;$&#123;connectionString&#125;&quot;&#41;
- *     .endpoint&#40;&quot;$&#123;endpoint&#125;&quot;&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.storage.file.share.ShareAsyncClient.instantiation -->
+ * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.instantiation}
  *
  * <p>View {@link ShareClientBuilder this} for additional ways to construct the azureFileStorageClient.</p>
  *
@@ -203,11 +196,7 @@ public class ShareAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.exists -->
-     * <pre>
-     * client.exists&#40;&#41;.subscribe&#40;response -&gt; System.out.printf&#40;&quot;Exists? %b%n&quot;, response&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.exists -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.exists}
      *
      * @return Flag indicating existence of the share.
      */
@@ -221,11 +210,7 @@ public class ShareAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.existsWithResponse -->
-     * <pre>
-     * client.existsWithResponse&#40;&#41;.subscribe&#40;response -&gt; System.out.printf&#40;&quot;Exists? %b%n&quot;, response.getValue&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.existsWithResponse -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.existsWithResponse}
      *
      * @return Flag indicating existence of the share.
      */
@@ -258,16 +243,7 @@ public class ShareAsyncClient {
      *
      * <p>Create the share</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.create -->
-     * <pre>
-     * shareAsyncClient.create&#40;&#41;.subscribe&#40;
-     *     response -&gt; &#123;
-     *     &#125;,
-     *     error -&gt; System.err.print&#40;error.toString&#40;&#41;&#41;,
-     *     &#40;&#41; -&gt; System.out.println&#40;&quot;Complete creating the share!&quot;&#41;
-     * &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.create -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.create}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-share">Azure Docs</a>.</p>
@@ -291,27 +267,11 @@ public class ShareAsyncClient {
      *
      * <p>Create the share with metadata "share:metadata"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.createWithResponse#map-integer.metadata -->
-     * <pre>
-     * shareAsyncClient.createWithResponse&#40;Collections.singletonMap&#40;&quot;share&quot;, &quot;metadata&quot;&#41;, null&#41;.subscribe&#40;
-     *     response -&gt; System.out.printf&#40;&quot;Creating the share completed with status code %d&quot;, response.getStatusCode&#40;&#41;&#41;,
-     *     error -&gt; System.err.print&#40;error.toString&#40;&#41;&#41;,
-     *     &#40;&#41; -&gt; System.out.println&#40;&quot;Complete creating the share!&quot;&#41;
-     * &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.createWithResponse#map-integer.metadata -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.createWithResponse#map-integer.metadata}
      *
      * <p>Create the share with a quota of 10 GB</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.createWithResponse#map-integer.quota -->
-     * <pre>
-     * shareAsyncClient.createWithResponse&#40;null, 10&#41;.subscribe&#40;
-     *     response -&gt; System.out.printf&#40;&quot;Creating the share completed with status code %d&quot;, response.getStatusCode&#40;&#41;&#41;,
-     *     error -&gt; System.err.print&#40;error.toString&#40;&#41;&#41;,
-     *     &#40;&#41; -&gt; System.out.println&#40;&quot;Complete creating the share!&quot;&#41;
-     * &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.createWithResponse#map-integer.quota -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.createWithResponse#map-integer.quota}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-share">Azure Docs</a>.</p>
@@ -340,18 +300,7 @@ public class ShareAsyncClient {
      *
      * <p>Create the share with optional parameters</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.createWithResponse#ShareCreateOptions -->
-     * <pre>
-     * shareAsyncClient.createWithResponse&#40;new ShareCreateOptions&#40;&#41;
-     *     .setMetadata&#40;Collections.singletonMap&#40;&quot;share&quot;, &quot;metadata&quot;&#41;&#41;.setQuotaInGb&#40;1&#41;
-     *     .setAccessTier&#40;ShareAccessTier.HOT&#41;&#41;.subscribe&#40;
-     *         response -&gt; System.out.printf&#40;&quot;Creating the share completed with status code %d&quot;,
-     *             response.getStatusCode&#40;&#41;&#41;,
-     *         error -&gt; System.err.print&#40;error.toString&#40;&#41;&#41;,
-     *         &#40;&#41; -&gt; System.out.println&#40;&quot;Complete creating the share!&quot;&#41;
-     * &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.createWithResponse#ShareCreateOptions -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.createWithResponse#ShareCreateOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-share">Azure Docs</a>.</p>
@@ -389,16 +338,7 @@ public class ShareAsyncClient {
      *
      * <p>Create a snapshot</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.createSnapshot -->
-     * <pre>
-     * shareAsyncClient.createSnapshot&#40;&#41;.subscribe&#40;
-     *     response -&gt; System.out.println&#40;&quot;Successfully creating the share snapshot with snapshot id: &quot;
-     *         + response.getSnapshot&#40;&#41;&#41;,
-     *     error -&gt; System.err.println&#40;error.toString&#40;&#41;&#41;,
-     *     &#40;&#41; -&gt; System.out.println&#40;&quot;Complete creating the share snapshot.&quot;&#41;
-     * &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.createSnapshot -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.createSnapshot}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/snapshot-share">Azure Docs</a>.</p>
@@ -423,16 +363,7 @@ public class ShareAsyncClient {
      *
      * <p>Create a snapshot with metadata "snapshot:metadata"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.createSnapshotWithResponse#map -->
-     * <pre>
-     * shareAsyncClient.createSnapshotWithResponse&#40;Collections.singletonMap&#40;&quot;snapshot&quot;, &quot;metadata&quot;&#41;&#41;.subscribe&#40;
-     *     response -&gt; System.out.println&#40;&quot;Successfully creating the share snapshot with snapshot id: &quot;
-     *         + response.getValue&#40;&#41;.getSnapshot&#40;&#41;&#41;,
-     *     error -&gt; System.err.println&#40;error.toString&#40;&#41;&#41;,
-     *     &#40;&#41; -&gt; System.out.println&#40;&quot;Complete creating the share snapshot.&quot;&#41;
-     * &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.createSnapshotWithResponse#map -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.createSnapshotWithResponse#map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/snapshot-share">Azure Docs</a>.</p>
@@ -466,15 +397,7 @@ public class ShareAsyncClient {
      *
      * <p>Delete the share</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.delete -->
-     * <pre>
-     * shareAsyncClient.delete&#40;&#41;.subscribe&#40;
-     *     response -&gt; System.out.println&#40;&quot;Deleting the shareAsyncClient completed.&quot;&#41;,
-     *     error -&gt; System.err.println&#40;error.toString&#40;&#41;&#41;,
-     *     &#40;&#41; -&gt; System.out.println&#40;&quot;Complete deleting the share.&quot;&#41;
-     * &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.delete -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.delete}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
@@ -498,16 +421,7 @@ public class ShareAsyncClient {
      *
      * <p>Delete the share</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.deleteWithResponse -->
-     * <pre>
-     * shareAsyncClient.deleteWithResponse&#40;&#41;.subscribe&#40;
-     *     response -&gt; System.out.println&#40;&quot;Deleting the shareAsyncClient completed with status code: &quot;
-     *         + response.getStatusCode&#40;&#41;&#41;,
-     *     error -&gt; System.err.println&#40;error.toString&#40;&#41;&#41;,
-     *     &#40;&#41; -&gt; System.out.println&#40;&quot;Complete deleting the share.&quot;&#41;
-     * &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.deleteWithResponse -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.deleteWithResponse}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
@@ -531,16 +445,7 @@ public class ShareAsyncClient {
      *
      * <p>Delete the share</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.deleteWithResponse#ShareDeleteOptions -->
-     * <pre>
-     * shareAsyncClient.deleteWithResponse&#40;new ShareDeleteOptions&#40;&#41;
-     *     .setRequestConditions&#40;new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;&#41;.subscribe&#40;
-     *         response -&gt; System.out.println&#40;&quot;Deleting the shareAsyncClient completed with status code: &quot;
-     *             + response.getStatusCode&#40;&#41;&#41;, error -&gt; System.err.println&#40;error.toString&#40;&#41;&#41;,
-     *         &#40;&#41; -&gt; System.out.println&#40;&quot;Complete deleting the share.&quot;&#41;
-     * &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.deleteWithResponse#ShareDeleteOptions -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.deleteWithResponse#ShareDeleteOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
@@ -579,14 +484,7 @@ public class ShareAsyncClient {
      *
      * <p>Retrieve the share properties</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.getProperties -->
-     * <pre>
-     * shareAsyncClient.getProperties&#40;&#41;
-     *     .subscribe&#40;properties -&gt; &#123;
-     *         System.out.printf&#40;&quot;Share quota: %d, Metadata: %s&quot;, properties.getQuota&#40;&#41;, properties.getMetadata&#40;&#41;&#41;;
-     *     &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.getProperties -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.getProperties}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
@@ -611,15 +509,7 @@ public class ShareAsyncClient {
      *
      * <p>Retrieve the share properties</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.getPropertiesWithResponse -->
-     * <pre>
-     * shareAsyncClient.getPropertiesWithResponse&#40;&#41;
-     *     .subscribe&#40;properties -&gt; &#123;
-     *         System.out.printf&#40;&quot;Share quota: %d, Metadata: %s&quot;, properties.getValue&#40;&#41;.getQuota&#40;&#41;,
-     *             properties.getValue&#40;&#41;.getMetadata&#40;&#41;&#41;;
-     *     &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.getPropertiesWithResponse -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.getPropertiesWithResponse}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
@@ -645,16 +535,7 @@ public class ShareAsyncClient {
      *
      * <p>Retrieve the share properties</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.getPropertiesWithResponse#ShareGetPropertiesOptions -->
-     * <pre>
-     * shareAsyncClient.getPropertiesWithResponse&#40;new ShareGetPropertiesOptions&#40;&#41;
-     *     .setRequestConditions&#40;new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;&#41;
-     *     .subscribe&#40;properties -&gt; &#123;
-     *         System.out.printf&#40;&quot;Share quota: %d, Metadata: %s&quot;, properties.getValue&#40;&#41;.getQuota&#40;&#41;,
-     *             properties.getValue&#40;&#41;.getMetadata&#40;&#41;&#41;;
-     *     &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.getPropertiesWithResponse#ShareGetPropertiesOptions -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.getPropertiesWithResponse#ShareGetPropertiesOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
@@ -691,13 +572,7 @@ public class ShareAsyncClient {
      *
      * <p>Set the quota to 1024 GB</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.setQuota#int -->
-     * <pre>
-     * shareAsyncClient.setQuota&#40;1024&#41;.doOnSuccess&#40;response -&gt;
-     *     System.out.println&#40;&quot;Setting the share quota completed.&quot;&#41;
-     * &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.setQuota#int -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.setQuota#int}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
@@ -724,14 +599,7 @@ public class ShareAsyncClient {
      *
      * <p>Set the quota to 1024 GB</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.setQuotaWithResponse#int -->
-     * <pre>
-     * shareAsyncClient.setQuotaWithResponse&#40;1024&#41;
-     *     .subscribe&#40;response -&gt;
-     *         System.out.printf&#40;&quot;Setting the share quota completed with status code %d&quot;, response.getStatusCode&#40;&#41;&#41;
-     *     &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.setQuotaWithResponse#int -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.setQuotaWithResponse#int}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
@@ -757,13 +625,7 @@ public class ShareAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.setProperties#ShareSetPropertiesOptions -->
-     * <pre>
-     * shareAsyncClient.setProperties&#40;new ShareSetPropertiesOptions&#40;&#41;.setAccessTier&#40;ShareAccessTier.HOT&#41;
-     *     .setQuotaInGb&#40;2014&#41;&#41;
-     *     .doOnSuccess&#40;response -&gt; System.out.println&#40;&quot;Setting the share access tier completed.&quot;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.setProperties#ShareSetPropertiesOptions -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.setProperties#ShareSetPropertiesOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-share-properties">Azure Docs</a>.</p>
@@ -785,15 +647,7 @@ public class ShareAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.setPropertiesWithResponse#ShareSetPropertiesOptions -->
-     * <pre>
-     * shareAsyncClient.setPropertiesWithResponse&#40;new ShareSetPropertiesOptions&#40;&#41;.setAccessTier&#40;ShareAccessTier.HOT&#41;
-     *     .setQuotaInGb&#40;1024&#41;.setRequestConditions&#40;new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;&#41;
-     *     .subscribe&#40;response -&gt;
-     *         System.out.printf&#40;&quot;Setting the share quota completed with status code %d&quot;, response.getStatusCode&#40;&#41;&#41;
-     *     &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.setPropertiesWithResponse#ShareSetPropertiesOptions -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.setPropertiesWithResponse#ShareSetPropertiesOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-share-properties">Azure Docs</a>.</p>
@@ -831,23 +685,11 @@ public class ShareAsyncClient {
      *
      * <p>Set the metadata to "share:updatedMetadata"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.setMetadata#map -->
-     * <pre>
-     * shareAsyncClient.setMetadata&#40;Collections.singletonMap&#40;&quot;share&quot;, &quot;updatedMetadata&quot;&#41;&#41;.doOnSuccess&#40;response -&gt;
-     *     System.out.println&#40;&quot;Setting the share metadata completed.&quot;&#41;
-     * &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.setMetadata#map -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.setMetadata#map}
      *
      * <p>Clear the metadata of the share</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.clearMetadata#map -->
-     * <pre>
-     * shareAsyncClient.setMetadata&#40;null&#41;.doOnSuccess&#40;response -&gt;
-     *     System.out.println&#40;&quot;Setting the share metadata completed.&quot;&#41;
-     * &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.clearMetadata#map -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.clearMetadata#map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-share-metadata">Azure Docs</a>.</p>
@@ -874,23 +716,11 @@ public class ShareAsyncClient {
      *
      * <p>Set the metadata to "share:updatedMetadata"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.setMetadata#map -->
-     * <pre>
-     * shareAsyncClient.setMetadata&#40;Collections.singletonMap&#40;&quot;share&quot;, &quot;updatedMetadata&quot;&#41;&#41;.doOnSuccess&#40;response -&gt;
-     *     System.out.println&#40;&quot;Setting the share metadata completed.&quot;&#41;
-     * &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.setMetadata#map -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.setMetadata#map}
      *
      * <p>Clear the metadata of the share</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.clearMetadata#map -->
-     * <pre>
-     * shareAsyncClient.setMetadata&#40;null&#41;.doOnSuccess&#40;response -&gt;
-     *     System.out.println&#40;&quot;Setting the share metadata completed.&quot;&#41;
-     * &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.clearMetadata#map -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.clearMetadata#map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-share-metadata">Azure Docs</a>.</p>
@@ -916,16 +746,7 @@ public class ShareAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.setMetadataWithResponse#ShareSetMetadataOptions -->
-     * <pre>
-     * shareAsyncClient.setMetadataWithResponse&#40;new ShareSetMetadataOptions&#40;&#41;
-     *     .setMetadata&#40;Collections.singletonMap&#40;&quot;share&quot;, &quot;updatedMetadata&quot;&#41;&#41;
-     *     .setRequestConditions&#40;new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;&#41;
-     *     .subscribe&#40;response -&gt;
-     *         System.out.printf&#40;&quot;Setting the share metadata completed with status code %d&quot;, response.getStatusCode&#40;&#41;&#41;
-     *     &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.setMetadataWithResponse#ShareSetMetadataOptions -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.setMetadataWithResponse#ShareSetMetadataOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-share-metadata">Azure Docs</a>.</p>
@@ -962,14 +783,7 @@ public class ShareAsyncClient {
      *
      * <p>List the stored access policies</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.getAccessPolicy -->
-     * <pre>
-     * shareAsyncClient.getAccessPolicy&#40;&#41;
-     *     .subscribe&#40;result -&gt; System.out.printf&#40;&quot;Access policy %s allows these permissions: %s&quot;, result.getId&#40;&#41;,
-     *         result.getAccessPolicy&#40;&#41;.getPermissions&#40;&#41;&#41;
-     *     &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.getAccessPolicy -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.getAccessPolicy}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-acl">Azure Docs</a>.</p>
@@ -993,15 +807,7 @@ public class ShareAsyncClient {
      *
      * <p>List the stored access policies</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.getAccessPolicy#ShareGetAccessPolicyOptions -->
-     * <pre>
-     * shareAsyncClient.getAccessPolicy&#40;new ShareGetAccessPolicyOptions&#40;&#41;
-     *     .setRequestConditions&#40;new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;&#41;
-     *     .subscribe&#40;result -&gt; System.out.printf&#40;&quot;Access policy %s allows these permissions: %s&quot;, result.getId&#40;&#41;,
-     *         result.getAccessPolicy&#40;&#41;.getPermissions&#40;&#41;&#41;
-     *     &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.getAccessPolicy#ShareGetAccessPolicyOptions -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.getAccessPolicy#ShareGetAccessPolicyOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-acl">Azure Docs</a>.</p>
@@ -1040,17 +846,7 @@ public class ShareAsyncClient {
      *
      * <p>Set a read only stored access policy</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.setAccessPolicy#List -->
-     * <pre>
-     * ShareAccessPolicy accessPolicy = new ShareAccessPolicy&#40;&#41;.setPermissions&#40;&quot;r&quot;&#41;
-     *     .setStartsOn&#40;OffsetDateTime.now&#40;ZoneOffset.UTC&#41;&#41;
-     *     .setExpiresOn&#40;OffsetDateTime.now&#40;ZoneOffset.UTC&#41;.plusDays&#40;10&#41;&#41;;
-     *
-     * ShareSignedIdentifier permission = new ShareSignedIdentifier&#40;&#41;.setId&#40;&quot;mypolicy&quot;&#41;.setAccessPolicy&#40;accessPolicy&#41;;
-     * shareAsyncClient.setAccessPolicy&#40;Collections.singletonList&#40;permission&#41;&#41;.doOnSuccess&#40;
-     *     response -&gt; System.out.println&#40;&quot;Setting access policies completed.&quot;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.setAccessPolicy#List -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.setAccessPolicy#List}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-share-acl">Azure Docs</a>.</p>
@@ -1076,18 +872,7 @@ public class ShareAsyncClient {
      *
      * <p>Set a read only stored access policy</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.setAccessPolicyWithResponse#List -->
-     * <pre>
-     * ShareAccessPolicy accessPolicy = new ShareAccessPolicy&#40;&#41;.setPermissions&#40;&quot;r&quot;&#41;
-     *     .setStartsOn&#40;OffsetDateTime.now&#40;ZoneOffset.UTC&#41;&#41;
-     *     .setExpiresOn&#40;OffsetDateTime.now&#40;ZoneOffset.UTC&#41;.plusDays&#40;10&#41;&#41;;
-     *
-     * ShareSignedIdentifier permission = new ShareSignedIdentifier&#40;&#41;.setId&#40;&quot;mypolicy&quot;&#41;.setAccessPolicy&#40;accessPolicy&#41;;
-     * shareAsyncClient.setAccessPolicyWithResponse&#40;Collections.singletonList&#40;permission&#41;&#41;
-     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Setting access policies completed completed with status code %d&quot;,
-     *         response.getStatusCode&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.setAccessPolicyWithResponse#List -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.setAccessPolicyWithResponse#List}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-share-acl">Azure Docs</a>.</p>
@@ -1115,20 +900,7 @@ public class ShareAsyncClient {
      *
      * <p>Set a read only stored access policy</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.setAccessPolicyWithResponse#ShareSetAccessPolicyOptions -->
-     * <pre>
-     * ShareAccessPolicy accessPolicy = new ShareAccessPolicy&#40;&#41;.setPermissions&#40;&quot;r&quot;&#41;
-     *     .setStartsOn&#40;OffsetDateTime.now&#40;ZoneOffset.UTC&#41;&#41;
-     *     .setExpiresOn&#40;OffsetDateTime.now&#40;ZoneOffset.UTC&#41;.plusDays&#40;10&#41;&#41;;
-     *
-     * ShareSignedIdentifier permission = new ShareSignedIdentifier&#40;&#41;.setId&#40;&quot;mypolicy&quot;&#41;.setAccessPolicy&#40;accessPolicy&#41;;
-     * shareAsyncClient.setAccessPolicyWithResponse&#40;new ShareSetAccessPolicyOptions&#40;&#41;
-     *     .setPermissions&#40;Collections.singletonList&#40;permission&#41;&#41;
-     *     .setRequestConditions&#40;new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;&#41;
-     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Setting access policies completed completed with status code %d&quot;,
-     *         response.getStatusCode&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.setAccessPolicyWithResponse#ShareSetAccessPolicyOptions -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.setAccessPolicyWithResponse#ShareSetAccessPolicyOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-share-acl">Azure Docs</a>.</p>
@@ -1186,12 +958,7 @@ public class ShareAsyncClient {
      *
      * <p>Retrieve the storage statistics</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.getStatistics -->
-     * <pre>
-     * shareAsyncClient.getStatistics&#40;&#41;.doOnSuccess&#40;response -&gt; System.out.printf&#40;&quot;The share is using %d GB&quot;,
-     *     response.getShareUsageInGB&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.getStatistics -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.getStatistics}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-stats">Azure Docs</a>.</p>
@@ -1214,12 +981,7 @@ public class ShareAsyncClient {
      *
      * <p>Retrieve the storage statistics</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.getStatisticsWithResponse -->
-     * <pre>
-     * shareAsyncClient.getStatisticsWithResponse&#40;&#41;.subscribe&#40;response -&gt; System.out.printf&#40;&quot;The share is using %d GB&quot;,
-     *     response.getValue&#40;&#41;.getShareUsageInGB&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.getStatisticsWithResponse -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.getStatisticsWithResponse}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-stats">Azure Docs</a>.</p>
@@ -1243,14 +1005,7 @@ public class ShareAsyncClient {
      *
      * <p>Retrieve the storage statistics</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.getStatisticsWithResponse#ShareGetStatisticsOptions -->
-     * <pre>
-     * shareAsyncClient.getStatisticsWithResponse&#40;new ShareGetStatisticsOptions&#40;&#41;
-     *     .setRequestConditions&#40;new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;&#41;
-     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;The share is using %d GB&quot;,
-     *     response.getValue&#40;&#41;.getShareUsageInGB&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.getStatisticsWithResponse#ShareGetStatisticsOptions -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.getStatisticsWithResponse#ShareGetStatisticsOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-stats">Azure Docs</a>.</p>
@@ -1285,16 +1040,7 @@ public class ShareAsyncClient {
      *
      * <p>Create the directory "mydirectory"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.createDirectory#string -->
-     * <pre>
-     * shareAsyncClient.createDirectory&#40;&quot;mydirectory&quot;&#41;.subscribe&#40;
-     *     response -&gt; &#123;
-     *     &#125;,
-     *     error -&gt; System.err.print&#40;error.toString&#40;&#41;&#41;,
-     *     &#40;&#41; -&gt; System.out.println&#40;&quot;Complete creating the directory!&quot;&#41;
-     * &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.createDirectory#string -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.createDirectory#string}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
@@ -1320,16 +1066,7 @@ public class ShareAsyncClient {
      *
      * <p>Create the directory "documents" with metadata "directory:metadata"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.createDirectoryWithResponse#String-FileSmbProperties-String-Map -->
-     * <pre>
-     * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;;
-     * String filePermission = &quot;filePermission&quot;;
-     * shareAsyncClient.createDirectoryWithResponse&#40;&quot;documents&quot;, smbProperties, filePermission,
-     *     Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;&#41;
-     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Creating the directory completed with status code %d&quot;,
-     *         response.getStatusCode&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.createDirectoryWithResponse#String-FileSmbProperties-String-Map -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.createDirectoryWithResponse#String-FileSmbProperties-String-Map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
@@ -1369,16 +1106,7 @@ public class ShareAsyncClient {
      *
      * <p>Create the file "myfile" with size of 1024 bytes.</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.createFile#string-long -->
-     * <pre>
-     * shareAsyncClient.createFile&#40;&quot;myfile&quot;, 1024&#41;.subscribe&#40;
-     *     response -&gt; &#123;
-     *     &#125;,
-     *     error -&gt; System.err.print&#40;error.toString&#40;&#41;&#41;,
-     *     &#40;&#41; -&gt; System.out.println&#40;&quot;Complete creating the directory!&quot;&#41;
-     * &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.createFile#string-long -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.createFile#string-long}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-file">Azure Docs</a>.</p>
@@ -1412,27 +1140,7 @@ public class ShareAsyncClient {
      *
      * <p>Create the file "myfile" with length of 1024 bytes, some headers, file smb properties and metadata</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map -->
-     * <pre>
-     * ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders&#40;&#41;
-     *     .setContentType&#40;&quot;text&#47;html&quot;&#41;
-     *     .setContentEncoding&#40;&quot;gzip&quot;&#41;
-     *     .setContentLanguage&#40;&quot;en&quot;&#41;
-     *     .setCacheControl&#40;&quot;no-transform&quot;&#41;
-     *     .setContentDisposition&#40;&quot;attachment&quot;&#41;;
-     * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;
-     *     .setNtfsFileAttributes&#40;EnumSet.of&#40;NtfsFileAttributes.READ_ONLY&#41;&#41;
-     *     .setFileCreationTime&#40;OffsetDateTime.now&#40;&#41;&#41;
-     *     .setFileLastWriteTime&#40;OffsetDateTime.now&#40;&#41;&#41;
-     *     .setFilePermissionKey&#40;&quot;filePermissionKey&quot;&#41;;
-     * String filePermission = &quot;filePermission&quot;;
-     * &#47;&#47; NOTE: filePermission and filePermissionKey should never be both set
-     * shareAsyncClient.createFileWithResponse&#40;&quot;myfile&quot;, 1024, httpHeaders, smbProperties,
-     *     filePermission, Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;&#41;
-     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Creating the file completed with status code %d&quot;,
-     *         response.getStatusCode&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-file">Azure Docs</a>.</p>
@@ -1470,30 +1178,7 @@ public class ShareAsyncClient {
      *
      * <p>Create the file "myfile" with length of 1024 bytes, some headers, file smb properties and metadata</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions -->
-     * <pre>
-     * ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders&#40;&#41;
-     *     .setContentType&#40;&quot;text&#47;html&quot;&#41;
-     *     .setContentEncoding&#40;&quot;gzip&quot;&#41;
-     *     .setContentLanguage&#40;&quot;en&quot;&#41;
-     *     .setCacheControl&#40;&quot;no-transform&quot;&#41;
-     *     .setContentDisposition&#40;&quot;attachment&quot;&#41;;
-     * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;
-     *     .setNtfsFileAttributes&#40;EnumSet.of&#40;NtfsFileAttributes.READ_ONLY&#41;&#41;
-     *     .setFileCreationTime&#40;OffsetDateTime.now&#40;&#41;&#41;
-     *     .setFileLastWriteTime&#40;OffsetDateTime.now&#40;&#41;&#41;
-     *     .setFilePermissionKey&#40;&quot;filePermissionKey&quot;&#41;;
-     * String filePermission = &quot;filePermission&quot;;
-     * &#47;&#47; NOTE: filePermission and filePermissionKey should never be both set
-     *
-     * ShareRequestConditions requestConditions = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
-     *
-     * shareAsyncClient.createFileWithResponse&#40;&quot;myfile&quot;, 1024, httpHeaders, smbProperties,
-     *     filePermission, Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;, requestConditions&#41;
-     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Creating the file completed with status code %d&quot;,
-     *         response.getStatusCode&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-file">Azure Docs</a>.</p>
@@ -1546,16 +1231,7 @@ public class ShareAsyncClient {
      *
      * <p>Delete the directory "mydirectory"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.deleteDirectory#string -->
-     * <pre>
-     * shareAsyncClient.deleteDirectory&#40;&quot;mydirectory&quot;&#41;.subscribe&#40;
-     *     response -&gt; &#123;
-     *     &#125;,
-     *     error -&gt; System.err.println&#40;error.toString&#40;&#41;&#41;,
-     *     &#40;&#41; -&gt; System.out.println&#40;&quot;Complete deleting the directory.&quot;&#41;
-     * &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.deleteDirectory#string -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.deleteDirectory#string}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
@@ -1580,16 +1256,7 @@ public class ShareAsyncClient {
      *
      * <p>Delete the directory "mydirectory"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.deleteDirectory#string -->
-     * <pre>
-     * shareAsyncClient.deleteDirectory&#40;&quot;mydirectory&quot;&#41;.subscribe&#40;
-     *     response -&gt; &#123;
-     *     &#125;,
-     *     error -&gt; System.err.println&#40;error.toString&#40;&#41;&#41;,
-     *     &#40;&#41; -&gt; System.out.println&#40;&quot;Complete deleting the directory.&quot;&#41;
-     * &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.deleteDirectory#string -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.deleteDirectory#string}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
@@ -1618,16 +1285,7 @@ public class ShareAsyncClient {
      *
      * <p>Delete the file "myfile"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.deleteFile#string -->
-     * <pre>
-     * shareAsyncClient.deleteFile&#40;&quot;myfile&quot;&#41;.subscribe&#40;
-     *     response -&gt; &#123;
-     *     &#125;,
-     *     error -&gt; System.err.println&#40;error.toString&#40;&#41;&#41;,
-     *     &#40;&#41; -&gt; System.out.println&#40;&quot;Complete deleting the file.&quot;&#41;
-     * &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.deleteFile#string -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.deleteFile#string}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
@@ -1652,16 +1310,7 @@ public class ShareAsyncClient {
      *
      * <p>Delete the file "myfile"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.deleteFile#string -->
-     * <pre>
-     * shareAsyncClient.deleteFile&#40;&quot;myfile&quot;&#41;.subscribe&#40;
-     *     response -&gt; &#123;
-     *     &#125;,
-     *     error -&gt; System.err.println&#40;error.toString&#40;&#41;&#41;,
-     *     &#40;&#41; -&gt; System.out.println&#40;&quot;Complete deleting the file.&quot;&#41;
-     * &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.deleteFile#string -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.deleteFile#string}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
@@ -1682,17 +1331,7 @@ public class ShareAsyncClient {
      *
      * <p>Delete the file "myfile"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.deleteFile#string-ShareRequestConditions -->
-     * <pre>
-     * ShareRequestConditions requestConditions = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
-     * shareAsyncClient.deleteFileWithResponse&#40;&quot;myfile&quot;, requestConditions&#41;.subscribe&#40;
-     *     response -&gt; &#123;
-     *     &#125;,
-     *     error -&gt; System.err.println&#40;error.toString&#40;&#41;&#41;,
-     *     &#40;&#41; -&gt; System.out.println&#40;&quot;Complete deleting the file.&quot;&#41;
-     * &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.deleteFile#string-ShareRequestConditions -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.deleteFile#string-ShareRequestConditions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
@@ -1723,12 +1362,7 @@ public class ShareAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.createPermission#string -->
-     * <pre>
-     * shareAsyncClient.createPermission&#40;&quot;filePermission&quot;&#41;.subscribe&#40;
-     *     response -&gt; System.out.printf&#40;&quot;The file permission key is %s&quot;, response&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.createPermission#string -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.createPermission#string}
      *
      * @param filePermission The file permission to get/create.
      * @return The file permission key associated with the file permission.
@@ -1748,12 +1382,7 @@ public class ShareAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.createPermissionWithResponse#string -->
-     * <pre>
-     * shareAsyncClient.createPermissionWithResponse&#40;&quot;filePermission&quot;&#41;.subscribe&#40;
-     *     response -&gt; System.out.printf&#40;&quot;The file permission key is %s&quot;, response.getValue&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.createPermissionWithResponse#string -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.createPermissionWithResponse#string}
      *
      * @param filePermission The file permission to get/create.
      * @return A response that contains the file permission key associated with the file permission.
@@ -1781,12 +1410,7 @@ public class ShareAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.getPermission#string -->
-     * <pre>
-     * shareAsyncClient.getPermission&#40;&quot;filePermissionKey&quot;&#41;.subscribe&#40;
-     *     response -&gt; System.out.printf&#40;&quot;The file permission is %s&quot;, response&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.getPermission#string -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.getPermission#string}
      *
      * @param filePermissionKey The file permission key.
      * @return The file permission associated with the file permission key.
@@ -1805,12 +1429,7 @@ public class ShareAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.getPermissionWithResponse#string -->
-     * <pre>
-     * shareAsyncClient.getPermissionWithResponse&#40;&quot;filePermissionKey&quot;&#41;.subscribe&#40;
-     *     response -&gt; System.out.printf&#40;&quot;The file permission is %s&quot;, response.getValue&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.getPermissionWithResponse#string -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.getPermissionWithResponse#string}
      *
      * @param filePermissionKey The file permission key.
      * @return A response that contains th file permission associated with the file permission key.
@@ -1837,19 +1456,7 @@ public class ShareAsyncClient {
      *
      * <p>Get the share snapshot id. </p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.getSnapshotId -->
-     * <pre>
-     * OffsetDateTime currentTime = OffsetDateTime.of&#40;LocalDateTime.now&#40;&#41;, ZoneOffset.UTC&#41;;
-     * ShareAsyncClient shareAsyncClient = new ShareClientBuilder&#40;&#41;
-     *     .endpoint&#40;&quot;https:&#47;&#47;$&#123;accountName&#125;.file.core.windows.net&quot;&#41;
-     *     .sasToken&#40;&quot;$&#123;SASToken&#125;&quot;&#41;
-     *     .shareName&#40;&quot;myshare&quot;&#41;
-     *     .snapshot&#40;currentTime.toString&#40;&#41;&#41;
-     *     .buildAsyncClient&#40;&#41;;
-     *
-     * System.out.printf&#40;&quot;Snapshot ID: %s%n&quot;, shareAsyncClient.getSnapshotId&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.getSnapshotId -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.getSnapshotId}
      *
      * @return The snapshot id which is a unique {@code DateTime} value that identifies the share snapshot to its base
      * share.
@@ -1863,12 +1470,7 @@ public class ShareAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.getShareName -->
-     * <pre>
-     * String shareName = shareAsyncClient.getShareName&#40;&#41;;
-     * System.out.println&#40;&quot;The name of the share is &quot; + shareName&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.getShareName -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.getShareName}
      *
      * @return The name of the share.
      */
@@ -1901,17 +1503,7 @@ public class ShareAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.generateSas#ShareServiceSasSignatureValues -->
-     * <pre>
-     * OffsetDateTime expiryTime = OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;;
-     * ShareSasPermission permission = new ShareSasPermission&#40;&#41;.setReadPermission&#40;true&#41;;
-     *
-     * ShareServiceSasSignatureValues values = new ShareServiceSasSignatureValues&#40;expiryTime, permission&#41;
-     *     .setStartTime&#40;OffsetDateTime.now&#40;&#41;&#41;;
-     *
-     * shareAsyncClient.generateSas&#40;values&#41;; &#47;&#47; Client must be authenticated via StorageSharedKeyCredential
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.generateSas#ShareServiceSasSignatureValues -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.generateSas#ShareServiceSasSignatureValues}
      *
      * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
      *
@@ -1928,18 +1520,7 @@ public class ShareAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.generateSas#ShareServiceSasSignatureValues-Context -->
-     * <pre>
-     * OffsetDateTime expiryTime = OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;;
-     * ShareSasPermission permission = new ShareSasPermission&#40;&#41;.setReadPermission&#40;true&#41;;
-     *
-     * ShareServiceSasSignatureValues values = new ShareServiceSasSignatureValues&#40;expiryTime, permission&#41;
-     *     .setStartTime&#40;OffsetDateTime.now&#40;&#41;&#41;;
-     *
-     * &#47;&#47; Client must be authenticated via StorageSharedKeyCredential
-     * shareAsyncClient.generateSas&#40;values, new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.generateSas#ShareServiceSasSignatureValues-Context -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.generateSas#ShareServiceSasSignatureValues-Context}
      *
      * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
      * @param context Additional context that is passed through the code when generating a SAS.
@@ -1978,7 +1559,6 @@ public class ShareAsyncClient {
             .setNextAllowedQuotaDowngradeTime(headers.getXMsShareNextAllowedQuotaDowngradeTime())
             .setProvisionedEgressMBps(headers.getXMsShareProvisionedEgressMbps())
             .setProvisionedIngressMBps(headers.getXMsShareProvisionedIngressMbps())
-            .setProvisionedBandwidthMiBps(headers.getXMsShareProvisionedBandwidthMibps())
             .setProvisionedIops(headers.getXMsShareProvisionedIops())
             .setLeaseDuration(headers.getXMsLeaseDuration())
             .setLeaseState(headers.getXMsLeaseState())

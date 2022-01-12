@@ -39,14 +39,7 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
  *
  * <p><strong>Instantiating an Synchronous Directory Client</strong></p>
  *
- * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.instantiation -->
- * <pre>
- * ShareDirectoryClient client = new ShareFileClientBuilder&#40;&#41;
- *     .connectionString&#40;&quot;$&#123;connectionString&#125;&quot;&#41;
- *     .endpoint&#40;&quot;$&#123;endpoint&#125;&quot;&#41;
- *     .buildDirectoryClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.storage.file.share.ShareDirectoryClient.instantiation -->
+ * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.instantiation}
  *
  * <p>View {@link ShareFileClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -117,11 +110,7 @@ public class ShareDirectoryClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.exists -->
-     * <pre>
-     * System.out.printf&#40;&quot;Exists? %b%n&quot;, client.exists&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.exists -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.exists}
      *
      * @return Flag indicating existence of the directory.
      */
@@ -135,12 +124,7 @@ public class ShareDirectoryClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.existsWithResponse#Duration-Context -->
-     * <pre>
-     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
-     * System.out.printf&#40;&quot;Exists? %b%n&quot;, client.existsWithResponse&#40;timeout, context&#41;.getValue&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.existsWithResponse#Duration-Context -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.existsWithResponse#Duration-Context}
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -160,12 +144,7 @@ public class ShareDirectoryClient {
      *
      * <p>Create the directory</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.createDirectory -->
-     * <pre>
-     * shareDirectoryClient.create&#40;&#41;;
-     * System.out.println&#40;&quot;Completed creating the directory. &quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.createDirectory -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.createDirectory}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
@@ -186,15 +165,7 @@ public class ShareDirectoryClient {
      *
      * <p>Create the directory</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.createWithResponse#FileSmbProperties-String-Map-Duration-Context -->
-     * <pre>
-     * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;;
-     * String filePermission = &quot;filePermission&quot;;
-     * Response&lt;ShareDirectoryInfo&gt; response = shareDirectoryClient.createWithResponse&#40;smbProperties, filePermission,
-     *     Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;, Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.println&#40;&quot;Completed creating the directory with status code: &quot; + response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.createWithResponse#FileSmbProperties-String-Map-Duration-Context -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.createWithResponse#FileSmbProperties-String-Map-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
@@ -225,12 +196,7 @@ public class ShareDirectoryClient {
      *
      * <p>Delete the directory</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.delete -->
-     * <pre>
-     * shareDirectoryClient.delete&#40;&#41;;
-     * System.out.println&#40;&quot;Completed deleting the file.&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.delete -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.delete}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
@@ -249,12 +215,7 @@ public class ShareDirectoryClient {
      *
      * <p>Delete the directory</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.deleteWithResponse#duration-context -->
-     * <pre>
-     * Response&lt;Void&gt; response = shareDirectoryClient.deleteWithResponse&#40;Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.println&#40;&quot;Completed deleting the file with status code: &quot; + response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.deleteWithResponse#duration-context -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.deleteWithResponse#duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
@@ -280,12 +241,7 @@ public class ShareDirectoryClient {
      *
      * <p>Retrieve directory properties</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.getProperties -->
-     * <pre>
-     * ShareDirectoryProperties response = shareDirectoryClient.getProperties&#40;&#41;;
-     * System.out.printf&#40;&quot;Directory latest modified date is %s.&quot;, response.getLastModified&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.getProperties -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.getProperties}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-directory-properties">Azure Docs</a>.</p>
@@ -305,13 +261,7 @@ public class ShareDirectoryClient {
      *
      * <p>Retrieve directory properties</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.getPropertiesWithResponse#duration-Context -->
-     * <pre>
-     * Response&lt;ShareDirectoryProperties&gt; response = shareDirectoryClient.getPropertiesWithResponse&#40;
-     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.printf&#40;&quot;Directory latest modified date is %s.&quot;, response.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.getPropertiesWithResponse#duration-Context -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.getPropertiesWithResponse#duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-directory-properties">Azure Docs</a>.</p>
@@ -336,14 +286,7 @@ public class ShareDirectoryClient {
      *
      * <p>Set directory properties</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.setProperties#FileSmbProperties-String -->
-     * <pre>
-     * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;;
-     * String filePermission = &quot;filePermission&quot;;
-     * ShareDirectoryInfo response = shareDirectoryClient.setProperties&#40;smbProperties, filePermission&#41;;
-     * System.out.printf&#40;&quot;Directory latest modified date is %s.&quot;, response.getLastModified&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.setProperties#FileSmbProperties-String -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.setProperties#FileSmbProperties-String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-directory-properties">Azure Docs</a>.</p>
@@ -364,15 +307,7 @@ public class ShareDirectoryClient {
      *
      * <p>Set directory properties</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.setPropertiesWithResponse#FileSmbProperties-String-Duration-Context -->
-     * <pre>
-     * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;;
-     * String filePermission = &quot;filePermission&quot;;
-     * Response&lt;ShareDirectoryInfo&gt; response = shareDirectoryClient.setPropertiesWithResponse&#40;smbProperties, filePermission,
-     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.printf&#40;&quot;Directory latest modified date is %s.&quot;, response.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.setPropertiesWithResponse#FileSmbProperties-String-Duration-Context -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.setPropertiesWithResponse#FileSmbProperties-String-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-directory-properties">Azure Docs</a>.</p>
@@ -402,22 +337,11 @@ public class ShareDirectoryClient {
      *
      * <p>Set the metadata to "directory:updatedMetadata"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.setMetadata#map -->
-     * <pre>
-     * ShareDirectorySetMetadataInfo response =
-     *     shareDirectoryClient.setMetadata&#40;Collections.singletonMap&#40;&quot;directory&quot;, &quot;updatedMetadata&quot;&#41;&#41;;
-     * System.out.printf&#40;&quot;Setting the directory metadata completed with updated etag %s&quot;, response.getETag&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.setMetadata#map -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.setMetadata#map}
      *
      * <p>Clear the metadata of the directory</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.setMetadata#map.clearMetadata -->
-     * <pre>
-     * ShareDirectorySetMetadataInfo response = shareDirectoryClient.setMetadata&#40;null&#41;;
-     * System.out.printf&#40;&quot;Cleared metadata.&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.setMetadata#map.clearMetadata -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.setMetadata#map.clearMetadata}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-directory-metadata">Azure Docs</a>.</p>
@@ -441,24 +365,11 @@ public class ShareDirectoryClient {
      *
      * <p>Set the metadata to "directory:updatedMetadata"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.setMetadataWithResponse#map-duration-context -->
-     * <pre>
-     * Response&lt;ShareDirectorySetMetadataInfo&gt; response =
-     *     shareDirectoryClient.setMetadataWithResponse&#40;Collections.singletonMap&#40;&quot;directory&quot;, &quot;updatedMetadata&quot;&#41;,
-     *         Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.printf&#40;&quot;Setting the directory metadata completed with updated etag %d&quot;, response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.setMetadataWithResponse#map-duration-context -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.setMetadataWithResponse#map-duration-context}
      *
      * <p>Clear the metadata of the directory</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.setMetadataWithResponse#map-duration-context.clearMetadata -->
-     * <pre>
-     * Response&lt;ShareDirectorySetMetadataInfo&gt; response = shareDirectoryClient.setMetadataWithResponse&#40;null,
-     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.printf&#40;&quot;Directory latest modified date is %s.&quot;, response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.setMetadataWithResponse#map-duration-context.clearMetadata -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.setMetadataWithResponse#map-duration-context.clearMetadata}
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-directory-metadata">Azure Docs</a>.</p>
      *
@@ -486,14 +397,7 @@ public class ShareDirectoryClient {
      *
      * <p>List all sub-directories and files in the account</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.listFilesAndDirectories -->
-     * <pre>
-     * shareDirectoryClient.listFilesAndDirectories&#40;&#41;.forEach&#40;
-     *     fileRef -&gt; System.out.printf&#40;&quot;Is the resource a directory? %b. The resource name is: %s.&quot;,
-     *         fileRef.isDirectory&#40;&#41;, fileRef.getName&#40;&#41;&#41;
-     * &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.listFilesAndDirectories -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.listFilesAndDirectories}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-directories-and-files">Azure
@@ -514,15 +418,7 @@ public class ShareDirectoryClient {
      * <p>List all sub-directories and files in this directory with "subdir" prefix and return 10 results in the
      * account</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.listFilesAndDirectories#string-integer-duration-context -->
-     * <pre>
-     * shareDirectoryClient.listFilesAndDirectories&#40;&quot;subdir&quot;, 10, Duration.ofSeconds&#40;1&#41;,
-     *     new Context&#40;key1, value1&#41;&#41;.forEach&#40;
-     *         fileRef -&gt; System.out.printf&#40;&quot;Is the resource a directory? %b. The resource name is: %s.&quot;,
-     *             fileRef.isDirectory&#40;&#41;, fileRef.getName&#40;&#41;&#41;
-     * &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.listFilesAndDirectories#string-integer-duration-context -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.listFilesAndDirectories#string-integer-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-directories-and-files">Azure
@@ -555,14 +451,7 @@ public class ShareDirectoryClient {
      * <p>List all sub-directories and files in this directory with "subdir" prefix and return 10 results in the
      * account</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.listFilesAndDirectories#ShareListFilesAndDirectoriesOptions-duration-context -->
-     * <pre>
-     * shareDirectoryClient.listFilesAndDirectories&#40;new ShareListFilesAndDirectoriesOptions&#40;&#41;
-     *         .setPrefix&#40;&quot;subdir&quot;&#41;.setMaxResultsPerPage&#40;10&#41;, Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;
-     *     .forEach&#40;fileRef -&gt; System.out.printf&#40;&quot;Is the resource a directory? %b. The resource name is: %s.&quot;,
-     *         fileRef.isDirectory&#40;&#41;, fileRef.getName&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.listFilesAndDirectories#ShareListFilesAndDirectoriesOptions-duration-context -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.listFilesAndDirectories#ShareListFilesAndDirectoriesOptions-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-directories-and-files">Azure
@@ -589,13 +478,7 @@ public class ShareDirectoryClient {
      *
      * <p>Get 10 handles with recursive call.</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.listHandles#Integer-boolean-duration-context -->
-     * <pre>
-     * Iterable&lt;HandleItem&gt; result = shareDirectoryClient.listHandles&#40;10, true, Duration.ofSeconds&#40;1&#41;,
-     *     new Context&#40;key1, value1&#41;&#41;;
-     * System.out.printf&#40;&quot;Get handles completed with handle id %s&quot;, result.iterator&#40;&#41;.next&#40;&#41;.getHandleId&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.listHandles#Integer-boolean-duration-context -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.listHandles#Integer-boolean-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-handles">Azure Docs</a>.</p>
@@ -624,14 +507,7 @@ public class ShareDirectoryClient {
      *
      * <p>Force close handles returned by list handles.</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.forceCloseHandle#String -->
-     * <pre>
-     * shareDirectoryClient.listHandles&#40;null, true, Duration.ofSeconds&#40;30&#41;, Context.NONE&#41;.forEach&#40;handleItem -&gt; &#123;
-     *     shareDirectoryClient.forceCloseHandle&#40;handleItem.getHandleId&#40;&#41;&#41;;
-     *     System.out.printf&#40;&quot;Closed handle %s on resource %s%n&quot;, handleItem.getHandleId&#40;&#41;, handleItem.getPath&#40;&#41;&#41;;
-     * &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.forceCloseHandle#String -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.forceCloseHandle#String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
@@ -652,16 +528,7 @@ public class ShareDirectoryClient {
      *
      * <p>Force close handles returned by list handles.</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.forceCloseHandleWithResponse#String-Duration-Context -->
-     * <pre>
-     * shareDirectoryClient.listHandles&#40;null, true, Duration.ofSeconds&#40;30&#41;, Context.NONE&#41;.forEach&#40;handleItem -&gt; &#123;
-     *     Response&lt;CloseHandlesInfo&gt; closeResponse = shareDirectoryClient.forceCloseHandleWithResponse&#40;
-     *         handleItem.getHandleId&#40;&#41;, Duration.ofSeconds&#40;30&#41;, Context.NONE&#41;;
-     *     System.out.printf&#40;&quot;Closing handle %s on resource %s completed with status code %d%n&quot;,
-     *         handleItem.getHandleId&#40;&#41;, handleItem.getPath&#40;&#41;, closeResponse.getStatusCode&#40;&#41;&#41;;
-     * &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.forceCloseHandleWithResponse#String-Duration-Context -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.forceCloseHandleWithResponse#String-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
@@ -686,14 +553,7 @@ public class ShareDirectoryClient {
      *
      * <p>Force close all handles recursively.</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.forceCloseAllHandles#boolean-Duration-Context -->
-     * <pre>
-     * CloseHandlesInfo closeHandlesInfo = shareDirectoryClient.forceCloseAllHandles&#40;true, Duration.ofSeconds&#40;30&#41;,
-     *     Context.NONE&#41;;
-     * System.out.printf&#40;&quot;Closed %d open handles on the directory%n&quot;, closeHandlesInfo.getClosedHandles&#40;&#41;&#41;;
-     * System.out.printf&#40;&quot;Failed to close %d open handles on the directory%n&quot;, closeHandlesInfo.getFailedHandles&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.forceCloseAllHandles#boolean-Duration-Context -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.forceCloseAllHandles#boolean-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/force-close-handles">Azure Docs</a>.</p>
@@ -721,12 +581,7 @@ public class ShareDirectoryClient {
      *
      * <p>Create the sub directory "subdir" </p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.createSubdirectory#string -->
-     * <pre>
-     * shareDirectoryClient.createSubdirectory&#40;&quot;subdir&quot;&#41;;
-     * System.out.println&#40;&quot;Completed creating the subdirectory.&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.createSubdirectory#string -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.createSubdirectory#string}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
@@ -750,16 +605,7 @@ public class ShareDirectoryClient {
      *
      * <p>Create the subdirectory named "subdir", with metadata</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.createSubdirectoryWithResponse#String-FileSmbProperties-String-Map-Duration-Context -->
-     * <pre>
-     * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;;
-     * String filePermission = &quot;filePermission&quot;;
-     * Response&lt;ShareDirectoryClient&gt; response = shareDirectoryClient.createSubdirectoryWithResponse&#40;&quot;subdir&quot;,
-     *     smbProperties, filePermission, Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;,
-     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.printf&#40;&quot;Creating the sub directory completed with status code %d&quot;, response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.createSubdirectoryWithResponse#String-FileSmbProperties-String-Map-Duration-Context -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.createSubdirectoryWithResponse#String-FileSmbProperties-String-Map-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
@@ -793,12 +639,7 @@ public class ShareDirectoryClient {
      *
      * <p>Delete the subdirectory named "subdir"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.deleteSubdirectory#string -->
-     * <pre>
-     * shareDirectoryClient.deleteSubdirectory&#40;&quot;mysubdirectory&quot;&#41;;
-     * System.out.println&#40;&quot;Complete deleting the subdirectory.&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.deleteSubdirectory#string -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.deleteSubdirectory#string}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
@@ -820,13 +661,7 @@ public class ShareDirectoryClient {
      *
      * <p>Delete the subdirectory named "subdir"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.deleteSubdirectoryWithResponse#string-duration-context -->
-     * <pre>
-     * Response&lt;Void&gt; response = shareDirectoryClient.deleteSubdirectoryWithResponse&#40;&quot;mysubdirectory&quot;,
-     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.println&#40;&quot;Completed deleting the subdirectory with status code: &quot; + response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.deleteSubdirectoryWithResponse#string-duration-context -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.deleteSubdirectoryWithResponse#string-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
@@ -855,12 +690,7 @@ public class ShareDirectoryClient {
      *
      * <p>Create 1k file with named "myFile"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.createFile#string-long -->
-     * <pre>
-     * ShareFileClient response = shareDirectoryClient.createFile&#40;&quot;myfile&quot;, 1024&#41;;
-     * System.out.println&#40;&quot;Completed creating the file: &quot; + response&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.createFile#string-long -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.createFile#string-long}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-file">Azure Docs</a>.</p>
@@ -885,27 +715,7 @@ public class ShareDirectoryClient {
      *
      * <p>Create the file named "myFile"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.createFile#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-duration-context -->
-     * <pre>
-     * ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders&#40;&#41;
-     *     .setContentType&#40;&quot;text&#47;html&quot;&#41;
-     *     .setContentEncoding&#40;&quot;gzip&quot;&#41;
-     *     .setContentLanguage&#40;&quot;en&quot;&#41;
-     *     .setCacheControl&#40;&quot;no-transform&quot;&#41;
-     *     .setContentDisposition&#40;&quot;attachment&quot;&#41;;
-     * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;
-     *     .setNtfsFileAttributes&#40;EnumSet.of&#40;NtfsFileAttributes.READ_ONLY&#41;&#41;
-     *     .setFileCreationTime&#40;OffsetDateTime.now&#40;&#41;&#41;
-     *     .setFileLastWriteTime&#40;OffsetDateTime.now&#40;&#41;&#41;
-     *     .setFilePermissionKey&#40;&quot;filePermissionKey&quot;&#41;;
-     * String filePermission = &quot;filePermission&quot;;
-     * &#47;&#47; NOTE: filePermission and filePermissionKey should never be both set
-     * Response&lt;ShareFileClient&gt; response = shareDirectoryClient.createFileWithResponse&#40;&quot;myFile&quot;, 1024,
-     *     httpHeaders, smbProperties, filePermission, Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;,
-     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.println&#40;&quot;Completed creating the file with status code: &quot; + response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.createFile#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-duration-context -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.createFile#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-file">Azure Docs</a>.</p>
@@ -940,30 +750,7 @@ public class ShareDirectoryClient {
      *
      * <p>Create the file named "myFile"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.createFile#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions-duration-context -->
-     * <pre>
-     * ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders&#40;&#41;
-     *     .setContentType&#40;&quot;text&#47;html&quot;&#41;
-     *     .setContentEncoding&#40;&quot;gzip&quot;&#41;
-     *     .setContentLanguage&#40;&quot;en&quot;&#41;
-     *     .setCacheControl&#40;&quot;no-transform&quot;&#41;
-     *     .setContentDisposition&#40;&quot;attachment&quot;&#41;;
-     * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;
-     *     .setNtfsFileAttributes&#40;EnumSet.of&#40;NtfsFileAttributes.READ_ONLY&#41;&#41;
-     *     .setFileCreationTime&#40;OffsetDateTime.now&#40;&#41;&#41;
-     *     .setFileLastWriteTime&#40;OffsetDateTime.now&#40;&#41;&#41;
-     *     .setFilePermissionKey&#40;&quot;filePermissionKey&quot;&#41;;
-     * String filePermission = &quot;filePermission&quot;;
-     * &#47;&#47; NOTE: filePermission and filePermissionKey should never be both set
-     *
-     * ShareRequestConditions requestConditions = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
-     *
-     * Response&lt;ShareFileClient&gt; response = shareDirectoryClient.createFileWithResponse&#40;&quot;myFile&quot;, 1024,
-     *     httpHeaders, smbProperties, filePermission, Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;,
-     *     requestConditions, Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.println&#40;&quot;Completed creating the file with status code: &quot; + response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.createFile#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions-duration-context -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.createFile#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-file">Azure Docs</a>.</p>
@@ -1000,12 +787,7 @@ public class ShareDirectoryClient {
      *
      * <p>Delete the file "filetest"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.deleteFile#string -->
-     * <pre>
-     * shareDirectoryClient.deleteFile&#40;&quot;myfile&quot;&#41;;
-     * System.out.println&#40;&quot;Completed deleting the file.&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.deleteFile#string -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.deleteFile#string}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
@@ -1026,13 +808,7 @@ public class ShareDirectoryClient {
      *
      * <p>Delete the file "filetest"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.deleteFileWithResponse#string-duration-context -->
-     * <pre>
-     * Response&lt;Void&gt; response = shareDirectoryClient.deleteFileWithResponse&#40;&quot;myfile&quot;,
-     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.println&#40;&quot;Completed deleting the file with status code: &quot; + response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.deleteFileWithResponse#string-duration-context -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.deleteFileWithResponse#string-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
@@ -1058,14 +834,7 @@ public class ShareDirectoryClient {
      *
      * <p>Delete the file "filetest"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.deleteFileWithResponse#string-ShareRequestConditions-duration-context -->
-     * <pre>
-     * ShareRequestConditions requestConditions = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
-     * Response&lt;Void&gt; response = shareDirectoryClient.deleteFileWithResponse&#40;&quot;myfile&quot;, requestConditions,
-     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.println&#40;&quot;Completed deleting the file with status code: &quot; + response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.deleteFileWithResponse#string-ShareRequestConditions-duration-context -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.deleteFileWithResponse#string-ShareRequestConditions-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
@@ -1095,20 +864,7 @@ public class ShareDirectoryClient {
      *
      * <p>Get the share snapshot id. </p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.getShareSnapshotId -->
-     * <pre>
-     * OffsetDateTime currentTime = OffsetDateTime.of&#40;LocalDateTime.now&#40;&#41;, ZoneOffset.UTC&#41;;
-     * ShareDirectoryClient shareDirectoryClient = new ShareFileClientBuilder&#40;&#41;
-     *     .endpoint&#40;&quot;https:&#47;&#47;$&#123;accountName&#125;.file.core.windows.net&quot;&#41;
-     *     .sasToken&#40;&quot;$&#123;SASToken&#125;&quot;&#41;
-     *     .shareName&#40;&quot;myshare&quot;&#41;
-     *     .resourcePath&#40;&quot;mydirectory&quot;&#41;
-     *     .snapshot&#40;currentTime.toString&#40;&#41;&#41;
-     *     .buildDirectoryClient&#40;&#41;;
-     *
-     * System.out.printf&#40;&quot;Snapshot ID: %s%n&quot;, shareDirectoryClient.getShareSnapshotId&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.getShareSnapshotId -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.getShareSnapshotId}
      *
      * @return The snapshot id which is a unique {@code DateTime} value that identifies the share snapshot to its base
      * share.
@@ -1122,12 +878,7 @@ public class ShareDirectoryClient {
      *
      * <p>Get the share name. </p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.getShareName -->
-     * <pre>
-     * String shareName = directoryAsyncClient.getShareName&#40;&#41;;
-     * System.out.println&#40;&quot;The share name of the directory is &quot; + shareName&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.getShareName -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.getShareName}
      *
      * @return The share name of the directory.
      */
@@ -1140,12 +891,7 @@ public class ShareDirectoryClient {
      *
      * <p>Get directory path. </p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.getDirectoryPath -->
-     * <pre>
-     * String directoryPath = shareDirectoryClient.getDirectoryPath&#40;&#41;;
-     * System.out.println&#40;&quot;The name of the directory is &quot; + directoryPath&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.getDirectoryPath -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.getDirectoryPath}
      *
      * @return The path of the directory.
      */
@@ -1178,17 +924,7 @@ public class ShareDirectoryClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.generateSas#ShareServiceSasSignatureValues -->
-     * <pre>
-     * OffsetDateTime expiryTime = OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;;
-     * ShareFileSasPermission permission = new ShareFileSasPermission&#40;&#41;.setReadPermission&#40;true&#41;;
-     *
-     * ShareServiceSasSignatureValues values = new ShareServiceSasSignatureValues&#40;expiryTime, permission&#41;
-     *     .setStartTime&#40;OffsetDateTime.now&#40;&#41;&#41;;
-     *
-     * shareDirectoryClient.generateSas&#40;values&#41;; &#47;&#47; Client must be authenticated via StorageSharedKeyCredential
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.generateSas#ShareServiceSasSignatureValues -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.generateSas#ShareServiceSasSignatureValues}
      *
      * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
      *
@@ -1205,18 +941,7 @@ public class ShareDirectoryClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.generateSas#ShareServiceSasSignatureValues-Context -->
-     * <pre>
-     * OffsetDateTime expiryTime = OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;;
-     * ShareFileSasPermission permission = new ShareFileSasPermission&#40;&#41;.setReadPermission&#40;true&#41;;
-     *
-     * ShareServiceSasSignatureValues values = new ShareServiceSasSignatureValues&#40;expiryTime, permission&#41;
-     *     .setStartTime&#40;OffsetDateTime.now&#40;&#41;&#41;;
-     *
-     * &#47;&#47; Client must be authenticated via StorageSharedKeyCredential
-     * shareDirectoryClient.generateSas&#40;values, new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.generateSas#ShareServiceSasSignatureValues-Context -->
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.generateSas#ShareServiceSasSignatureValues-Context}
      *
      * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
      * @param context Additional context that is passed through the code when generating a SAS.

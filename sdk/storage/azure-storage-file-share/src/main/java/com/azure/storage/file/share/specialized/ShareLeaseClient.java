@@ -22,13 +22,7 @@ import java.time.Duration;
  *
  * <p><strong>Instantiating a ShareLeaseClient</strong></p>
  *
- * <!-- src_embed com.azure.storage.file.share.specialized.ShareLeaseClientBuilder.syncInstantiation -->
- * <pre>
- * ShareLeaseClient fileLeaseClient = new ShareLeaseClientBuilder&#40;&#41;
- *     .fileClient&#40;shareFileClient&#41;
- *     .buildClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.storage.file.share.specialized.ShareLeaseClientBuilder.syncInstantiation -->
+ * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseClientBuilder.syncInstantiation}
  *
  * <p>View {@link ShareLeaseClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -79,11 +73,7 @@ public final class ShareLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.specialized.ShareLeaseClient.acquireLease -->
-     * <pre>
-     * System.out.printf&#40;&quot;Lease ID is %s%n&quot;, client.acquireLease&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.specialized.ShareLeaseClient.acquireLease -->
+     * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseClient.acquireLease}
      *
      * @return The lease ID.
      */
@@ -97,13 +87,7 @@ public final class ShareLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.specialized.ShareLeaseClient.acquireLeaseWithResponse#Duration-Context -->
-     * <pre>
-     * System.out.printf&#40;&quot;Lease ID is %s%n&quot;, client
-     *     .acquireLeaseWithResponse&#40;timeout, new Context&#40;key, value&#41;&#41;
-     *     .getValue&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.specialized.ShareLeaseClient.acquireLeaseWithResponse#Duration-Context -->
+     * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseClient.acquireLeaseWithResponse#Duration-Context}
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -119,13 +103,7 @@ public final class ShareLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.specialized.ShareLeaseClient.acquireLeaseWithResponse#ShareAcquireLeaseOptions-Duration-Context -->
-     * <pre>
-     * System.out.printf&#40;&quot;Lease ID is %s%n&quot;, client
-     *     .acquireLeaseWithResponse&#40;new ShareAcquireLeaseOptions&#40;&#41;.setDuration&#40;10&#41;, timeout, new Context&#40;key, value&#41;&#41;
-     *     .getValue&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.specialized.ShareLeaseClient.acquireLeaseWithResponse#ShareAcquireLeaseOptions-Duration-Context -->
+     * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseClient.acquireLeaseWithResponse#ShareAcquireLeaseOptions-Duration-Context}
      *
      * @param options {@link ShareAcquireLeaseOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -144,12 +122,7 @@ public final class ShareLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.specialized.ShareLeaseClient.releaseLease -->
-     * <pre>
-     * client.releaseLease&#40;&#41;;
-     * System.out.println&#40;&quot;Release lease completed&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.specialized.ShareLeaseClient.releaseLease -->
+     * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseClient.releaseLease}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void releaseLease() {
@@ -161,13 +134,7 @@ public final class ShareLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.specialized.ShareLeaseClient.releaseLeaseWithResponse#Duration-Context -->
-     * <pre>
-     * System.out.printf&#40;&quot;Release lease completed with status %d%n&quot;,
-     *     client.releaseLeaseWithResponse&#40;timeout, new Context&#40;key, value&#41;&#41;
-     *         .getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.specialized.ShareLeaseClient.releaseLeaseWithResponse#Duration-Context -->
+     * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseClient.releaseLeaseWithResponse#Duration-Context}
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -183,12 +150,7 @@ public final class ShareLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.specialized.ShareLeaseClient.breakLease -->
-     * <pre>
-     * client.breakLease&#40;&#41;;
-     * System.out.println&#40;&quot;The lease has been successfully broken&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.specialized.ShareLeaseClient.breakLease -->
+     * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseClient.breakLease}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void breakLease() {
@@ -200,12 +162,7 @@ public final class ShareLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.specialized.ShareLeaseClient.breakLeaseWithResponse#Duration-Context -->
-     * <pre>
-     * client.breakLeaseWithResponse&#40;timeout, new Context&#40;key, value&#41;&#41;;
-     * System.out.println&#40;&quot;The lease has been successfully broken&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.specialized.ShareLeaseClient.breakLeaseWithResponse#Duration-Context -->
+     * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseClient.breakLeaseWithResponse#Duration-Context}
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -221,13 +178,7 @@ public final class ShareLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.specialized.ShareLeaseClient.breakLeaseWithResponse#ShareBreakLeaseOptions-Duration-Context -->
-     * <pre>
-     * client.breakLeaseWithResponse&#40;new ShareBreakLeaseOptions&#40;&#41;.setBreakPeriod&#40;Duration.ofSeconds&#40;25&#41;&#41;,
-     *     timeout, new Context&#40;key, value&#41;&#41;;
-     * System.out.println&#40;&quot;The lease has been successfully broken&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.specialized.ShareLeaseClient.breakLeaseWithResponse#ShareBreakLeaseOptions-Duration-Context -->
+     * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseClient.breakLeaseWithResponse#ShareBreakLeaseOptions-Duration-Context}
      *
      * @param options {@link ShareBreakLeaseOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -244,11 +195,7 @@ public final class ShareLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.specialized.ShareLeaseClient.changeLease#String -->
-     * <pre>
-     * System.out.printf&#40;&quot;Changed lease ID is %s%n&quot;, client.changeLease&#40;&quot;proposedId&quot;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.specialized.ShareLeaseClient.changeLease#String -->
+     * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseClient.changeLease#String}
      *
      * @param proposedId A new lease ID in a valid GUID format.
      * @return The new lease ID.
@@ -263,13 +210,7 @@ public final class ShareLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.specialized.ShareLeaseClient.changeLeaseWithResponse#String-Duration-Context -->
-     * <pre>
-     * System.out.printf&#40;&quot;Changed lease ID is %s%n&quot;,
-     *     client.changeLeaseWithResponse&#40;&quot;proposedId&quot;, timeout, new Context&#40;key, value&#41;&#41;
-     *         .getValue&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.specialized.ShareLeaseClient.changeLeaseWithResponse#String-Duration-Context -->
+     * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseClient.changeLeaseWithResponse#String-Duration-Context}
      *
      * @param proposedId A new lease ID in a valid GUID format.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -287,11 +228,7 @@ public final class ShareLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.specialized.ShareLeaseClient.renewLease -->
-     * <pre>
-     * System.out.printf&#40;&quot;Renewed lease ID is %s%n&quot;, client.renewLease&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.specialized.ShareLeaseClient.renewLease -->
+     * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseClient.renewLease}
      *
      * @return A response containing the renewed lease ID.
      */
@@ -305,13 +242,7 @@ public final class ShareLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.specialized.ShareLeaseClient.renewLeaseWithResponse#Duration-Context -->
-     * <pre>
-     * System.out.printf&#40;&quot;Renewed lease ID is %s%n&quot;,
-     *     client.releaseLeaseWithResponse&#40;timeout, new Context&#40;key, value&#41;&#41;
-     *         .getValue&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.specialized.ShareLeaseClient.renewLeaseWithResponse#Duration-Context -->
+     * {@codesnippet com.azure.storage.file.share.specialized.ShareLeaseClient.renewLeaseWithResponse#Duration-Context}
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.

@@ -45,14 +45,7 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
  *
  * <p><strong>Instantiating a Synchronous Share Client</strong></p>
  *
- * <!-- src_embed com.azure.storage.file.share.ShareClient.instantiation -->
- * <pre>
- * ShareClient client = new ShareClientBuilder&#40;&#41;
- *     .connectionString&#40;&quot;$&#123;connectionString&#125;&quot;&#41;
- *     .endpoint&#40;&quot;$&#123;endpoint&#125;&quot;&#41;
- *     .buildClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.storage.file.share.ShareClient.instantiation -->
+ * {@codesnippet com.azure.storage.file.share.ShareClient.instantiation}
  *
  * <p>View {@link ShareClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -149,11 +142,7 @@ public class ShareClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.exists -->
-     * <pre>
-     * System.out.printf&#40;&quot;Exists? %b%n&quot;, client.exists&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.exists -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.exists}
      *
      * @return Flag indicating existence of the share.
      */
@@ -167,12 +156,7 @@ public class ShareClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.existsWithResponse#Duration-Context -->
-     * <pre>
-     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
-     * System.out.printf&#40;&quot;Exists? %b%n&quot;, client.existsWithResponse&#40;timeout, context&#41;.getValue&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.existsWithResponse#Duration-Context -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.existsWithResponse#Duration-Context}
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -192,12 +176,7 @@ public class ShareClient {
      *
      * <p>Create the share</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.create -->
-     * <pre>
-     * ShareInfo response = shareClient.create&#40;&#41;;
-     * System.out.println&#40;&quot;Complete creating the shares with status code: &quot; + response&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.create -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.create}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-share">Azure Docs</a>.</p>
@@ -217,23 +196,11 @@ public class ShareClient {
      *
      * <p>Create the share with metadata "share:metadata"</p>
      *
-     * <!-- src_embed ShareClient.createWithResponse#map-integer-duration-context.metadata -->
-     * <pre>
-     * Response&lt;ShareInfo&gt; response = shareClient.createWithResponse&#40;Collections.singletonMap&#40;&quot;share&quot;, &quot;metadata&quot;&#41;,
-     *     null, Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.println&#40;&quot;Complete creating the shares with status code: &quot; + response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end ShareClient.createWithResponse#map-integer-duration-context.metadata -->
+     * {@codesnippet ShareClient.createWithResponse#map-integer-duration-context.metadata}
      *
      * <p>Create the share with a quota of 10 GB</p>
      *
-     * <!-- src_embed ShareClient.createWithResponse#map-integer-duration-context.quota -->
-     * <pre>
-     * Response&lt;ShareInfo&gt; response = shareClient.createWithResponse&#40;null, 10,
-     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.println&#40;&quot;Complete creating the shares with status code: &quot; + response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end ShareClient.createWithResponse#map-integer-duration-context.quota -->
+     * {@codesnippet ShareClient.createWithResponse#map-integer-duration-context.quota}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-share">Azure Docs</a>.</p>
@@ -262,14 +229,7 @@ public class ShareClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed ShareClient.createWithResponse#ShareCreateOptions-Duration-Context -->
-     * <pre>
-     * Response&lt;ShareInfo&gt; response = shareClient.createWithResponse&#40;new ShareCreateOptions&#40;&#41;
-     *         .setMetadata&#40;Collections.singletonMap&#40;&quot;share&quot;, &quot;metadata&quot;&#41;&#41;.setQuotaInGb&#40;1&#41;
-     *         .setAccessTier&#40;ShareAccessTier.HOT&#41;, Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.println&#40;&quot;Complete creating the shares with status code: &quot; + response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end ShareClient.createWithResponse#ShareCreateOptions-Duration-Context -->
+     * {@codesnippet ShareClient.createWithResponse#ShareCreateOptions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-share">Azure Docs</a>.</p>
@@ -297,12 +257,7 @@ public class ShareClient {
      *
      * <p>Create a snapshot</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.createSnapshot -->
-     * <pre>
-     * ShareSnapshotInfo response = shareClient.createSnapshot&#40;&#41;;
-     * System.out.println&#40;&quot;Complete creating the share snpashot with snapshot id: &quot; + response.getSnapshot&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.createSnapshot -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.createSnapshot}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/snapshot-share">Azure Docs</a>.</p>
@@ -323,14 +278,7 @@ public class ShareClient {
      *
      * <p>Create a snapshot with metadata "snapshot:metadata"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.createSnapshotWithResponse#map-duration-context -->
-     * <pre>
-     * Response&lt;ShareSnapshotInfo&gt; response =
-     *     shareClient.createSnapshotWithResponse&#40;Collections.singletonMap&#40;&quot;snpashot&quot;, &quot;metadata&quot;&#41;,
-     *         Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.println&#40;&quot;Complete creating the share snpashot with snapshot id: &quot; + response.getValue&#40;&#41;.getSnapshot&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.createSnapshotWithResponse#map-duration-context -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.createSnapshotWithResponse#map-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/snapshot-share">Azure Docs</a>.</p>
@@ -360,12 +308,7 @@ public class ShareClient {
      *
      * <p>Delete the share</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.delete -->
-     * <pre>
-     * shareClient.delete&#40;&#41;;
-     * System.out.println&#40;&quot;Completed deleting the share.&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.delete -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.delete}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
@@ -384,12 +327,7 @@ public class ShareClient {
      *
      * <p>Delete the share</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.deleteWithResponse#duration-context -->
-     * <pre>
-     * Response&lt;Void&gt; response = shareClient.deleteWithResponse&#40;Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.println&#40;&quot;Complete deleting the share with status code: &quot; + response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.deleteWithResponse#duration-context -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.deleteWithResponse#duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
@@ -413,14 +351,7 @@ public class ShareClient {
      *
      * <p>Delete the share</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.deleteWithResponse#ShareDeleteOptions-Duration-Context -->
-     * <pre>
-     * Response&lt;Void&gt; response = shareClient.deleteWithResponse&#40;new ShareDeleteOptions&#40;&#41;
-     *         .setRequestConditions&#40;new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;,
-     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.println&#40;&quot;Complete deleting the share with status code: &quot; + response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.deleteWithResponse#ShareDeleteOptions-Duration-Context -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.deleteWithResponse#ShareDeleteOptions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-share">Azure Docs</a>.</p>
@@ -447,12 +378,7 @@ public class ShareClient {
      *
      * <p>Retrieve the share properties</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.getProperties -->
-     * <pre>
-     * ShareProperties properties = shareClient.getProperties&#40;&#41;;
-     * System.out.printf&#40;&quot;Share quota: %d, Metadata: %s&quot;, properties.getQuota&#40;&#41;, properties.getMetadata&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.getProperties -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.getProperties}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
@@ -473,13 +399,7 @@ public class ShareClient {
      *
      * <p>Retrieve the share properties</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.getPropertiesWithResponse#duration-context -->
-     * <pre>
-     * ShareProperties properties = shareClient.getPropertiesWithResponse&#40;
-     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;.getValue&#40;&#41;;
-     * System.out.printf&#40;&quot;Share quota: %d, Metadata: %s&quot;, properties.getQuota&#40;&#41;, properties.getMetadata&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.getPropertiesWithResponse#duration-context -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.getPropertiesWithResponse#duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
@@ -504,14 +424,7 @@ public class ShareClient {
      *
      * <p>Retrieve the share properties</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.getPropertiesWithResponse#ShareGetPropertiesOptions-Duration-Context -->
-     * <pre>
-     * ShareProperties properties = shareClient.getPropertiesWithResponse&#40;new ShareGetPropertiesOptions&#40;&#41;
-     *     .setRequestConditions&#40;new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;,
-     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;.getValue&#40;&#41;;
-     * System.out.printf&#40;&quot;Share quota: %d, Metadata: %s&quot;, properties.getQuota&#40;&#41;, properties.getMetadata&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.getPropertiesWithResponse#ShareGetPropertiesOptions-Duration-Context -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.getPropertiesWithResponse#ShareGetPropertiesOptions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
@@ -538,11 +451,7 @@ public class ShareClient {
      *
      * <p>Set the quota to 1024 GB</p>
      *
-     * <!-- src_embed ShareClient.setQuota#int -->
-     * <pre>
-     * System.out.println&#40;&quot;Setting the share quota completed.&quot; + shareClient.setQuota&#40;1024&#41;&#41;;
-     * </pre>
-     * <!-- end ShareClient.setQuota#int -->
+     * {@codesnippet ShareClient.setQuota#int}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
@@ -565,13 +474,7 @@ public class ShareClient {
      *
      * <p>Set the quota to 1024 GB</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.setQuotaWithResponse#int-duration-context -->
-     * <pre>
-     * Response&lt;ShareInfo&gt; response = shareClient.setQuotaWithResponse&#40;1024,
-     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.printf&#40;&quot;Setting the share quota completed with status code %d&quot;, response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.setQuotaWithResponse#int-duration-context -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.setQuotaWithResponse#int-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
@@ -596,12 +499,7 @@ public class ShareClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed ShareClient.setProperties#ShareSetPropertiesOptions -->
-     * <pre>
-     * System.out.println&#40;&quot;Setting the share access tier completed.&quot; + shareClient.setProperties&#40;
-     *     new ShareSetPropertiesOptions&#40;&#41;.setAccessTier&#40;ShareAccessTier.HOT&#41;.setQuotaInGb&#40;1024&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end ShareClient.setProperties#ShareSetPropertiesOptions -->
+     * {@codesnippet ShareClient.setProperties#ShareSetPropertiesOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
@@ -619,14 +517,7 @@ public class ShareClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.setPropertiesWithResponse#ShareSetPropertiesOptions-Duration-Context -->
-     * <pre>
-     * Response&lt;ShareInfo&gt; response = shareClient.setPropertiesWithResponse&#40;
-     *     new ShareSetPropertiesOptions&#40;&#41;.setAccessTier&#40;ShareAccessTier.HOT&#41;.setQuotaInGb&#40;1024&#41;,
-     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.printf&#40;&quot;Setting the share access tier completed with status code %d&quot;, response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.setPropertiesWithResponse#ShareSetPropertiesOptions-Duration-Context -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.setPropertiesWithResponse#ShareSetPropertiesOptions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-properties">Azure Docs</a>.</p>
@@ -653,21 +544,11 @@ public class ShareClient {
      *
      * <p>Set the metadata to "share:updatedMetadata"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.setMetadata#map -->
-     * <pre>
-     * shareClient.setMetadata&#40;Collections.singletonMap&#40;&quot;share&quot;, &quot;updatedMetadata&quot;&#41;&#41;;
-     * System.out.println&#40;&quot;Setting the share metadata.&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.setMetadata#map -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.setMetadata#map}
      *
      * <p>Clear the metadata of the share</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.clearMetadata#map -->
-     * <pre>
-     * shareClient.setMetadata&#40;null&#41;;
-     * System.out.println&#40;&quot;Clear metadata completed.&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.clearMetadata#map -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.clearMetadata#map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-share-metadata">Azure Docs</a>.</p>
@@ -690,14 +571,7 @@ public class ShareClient {
      *
      * <p>Set the metadata to "share:updatedMetadata"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.setMetadataWithResponse#map-duration-context -->
-     * <pre>
-     * Response&lt;ShareInfo&gt; response = shareClient.setMetadataWithResponse&#40;
-     *     Collections.singletonMap&#40;&quot;share&quot;, &quot;updatedMetadata&quot;&#41;, Duration.ofSeconds&#40;1&#41;,
-     *     new Context&#40;key1, value1&#41;&#41;;
-     * System.out.printf&#40;&quot;Setting the share metadata completed with status code %d&quot;, response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.setMetadataWithResponse#map-duration-context -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.setMetadataWithResponse#map-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-share-metadata">Azure Docs</a>.</p>
@@ -725,16 +599,7 @@ public class ShareClient {
      *
      * <p>Set the metadata to "share:updatedMetadata"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.setMetadataWithResponse#ShareSetMetadataOptions-Duration-Context -->
-     * <pre>
-     * Response&lt;ShareInfo&gt; response = shareClient.setMetadataWithResponse&#40;new ShareSetMetadataOptions&#40;&#41;
-     *         .setMetadata&#40;Collections.singletonMap&#40;&quot;share&quot;, &quot;updatedMetadata&quot;&#41;&#41;
-     *         .setRequestConditions&#40;new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;,
-     *     Duration.ofSeconds&#40;1&#41;,
-     *     new Context&#40;key1, value1&#41;&#41;;
-     * System.out.printf&#40;&quot;Setting the share metadata completed with status code %d&quot;, response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.setMetadataWithResponse#ShareSetMetadataOptions-Duration-Context -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.setMetadataWithResponse#ShareSetMetadataOptions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-share-metadata">Azure Docs</a>.</p>
@@ -761,14 +626,7 @@ public class ShareClient {
      *
      * <p>List the stored access policies</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.getAccessPolicy -->
-     * <pre>
-     * for &#40;ShareSignedIdentifier result : shareClient.getAccessPolicy&#40;&#41;&#41; &#123;
-     *     System.out.printf&#40;&quot;Access policy %s allows these permissions: %s&quot;,
-     *         result.getId&#40;&#41;, result.getAccessPolicy&#40;&#41;.getPermissions&#40;&#41;&#41;;
-     * &#125;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.getAccessPolicy -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.getAccessPolicy}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-acl">Azure Docs</a>.</p>
@@ -788,16 +646,7 @@ public class ShareClient {
      *
      * <p>List the stored access policies</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.getAccessPolicy#ShareGetAccessPolicyOptions -->
-     * <pre>
-     * for &#40;ShareSignedIdentifier result : shareClient
-     *     .getAccessPolicy&#40;new ShareGetAccessPolicyOptions&#40;&#41;
-     *         .setRequestConditions&#40;new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;&#41;&#41; &#123;
-     *     System.out.printf&#40;&quot;Access policy %s allows these permissions: %s&quot;,
-     *         result.getId&#40;&#41;, result.getAccessPolicy&#40;&#41;.getPermissions&#40;&#41;&#41;;
-     * &#125;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.getAccessPolicy#ShareGetAccessPolicyOptions -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.getAccessPolicy#ShareGetAccessPolicyOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-acl">Azure Docs</a>.</p>
@@ -818,18 +667,7 @@ public class ShareClient {
      *
      * <p>Set a read only stored access policy</p>
      *
-     * <!-- src_embed ShareClient.setAccessPolicy#List -->
-     * <pre>
-     * ShareAccessPolicy accessPolicy = new ShareAccessPolicy&#40;&#41;.setPermissions&#40;&quot;r&quot;&#41;
-     *     .setStartsOn&#40;OffsetDateTime.now&#40;ZoneOffset.UTC&#41;&#41;
-     *     .setExpiresOn&#40;OffsetDateTime.now&#40;ZoneOffset.UTC&#41;.plusDays&#40;10&#41;&#41;;
-     *
-     * ShareSignedIdentifier permission = new ShareSignedIdentifier&#40;&#41;.setId&#40;&quot;mypolicy&quot;&#41;.setAccessPolicy&#40;accessPolicy&#41;;
-     *
-     * shareClient.setAccessPolicy&#40;Collections.singletonList&#40;permission&#41;&#41;;
-     * System.out.println&#40;&quot;Setting access policies completed.&quot;&#41;;
-     * </pre>
-     * <!-- end ShareClient.setAccessPolicy#List -->
+     * {@codesnippet ShareClient.setAccessPolicy#List}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-share-acl">Azure Docs</a>.</p>
@@ -851,19 +689,7 @@ public class ShareClient {
      *
      * <p>Set a read only stored access policy</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.setAccessPolicyWithResponse#list-duration-context -->
-     * <pre>
-     * ShareAccessPolicy accessPolicy = new ShareAccessPolicy&#40;&#41;.setPermissions&#40;&quot;r&quot;&#41;
-     *     .setStartsOn&#40;OffsetDateTime.now&#40;ZoneOffset.UTC&#41;&#41;
-     *     .setExpiresOn&#40;OffsetDateTime.now&#40;ZoneOffset.UTC&#41;.plusDays&#40;10&#41;&#41;;
-     *
-     * ShareSignedIdentifier permission = new ShareSignedIdentifier&#40;&#41;.setId&#40;&quot;mypolicy&quot;&#41;.setAccessPolicy&#40;accessPolicy&#41;;
-     *
-     * Response&lt;ShareInfo&gt; response = shareClient.setAccessPolicyWithResponse&#40;Collections.singletonList&#40;permission&#41;,
-     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.printf&#40;&quot;Setting access policies completed with status code %d&quot;, response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.setAccessPolicyWithResponse#list-duration-context -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.setAccessPolicyWithResponse#list-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-share-acl">Azure Docs</a>.</p>
@@ -892,21 +718,7 @@ public class ShareClient {
      *
      * <p>Set a read only stored access policy</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.setAccessPolicyWithResponse#ShareSetAccessPolicyOptions-Duration-Context -->
-     * <pre>
-     * ShareAccessPolicy accessPolicy = new ShareAccessPolicy&#40;&#41;.setPermissions&#40;&quot;r&quot;&#41;
-     *     .setStartsOn&#40;OffsetDateTime.now&#40;ZoneOffset.UTC&#41;&#41;
-     *     .setExpiresOn&#40;OffsetDateTime.now&#40;ZoneOffset.UTC&#41;.plusDays&#40;10&#41;&#41;;
-     *
-     * ShareSignedIdentifier permission = new ShareSignedIdentifier&#40;&#41;.setId&#40;&quot;mypolicy&quot;&#41;.setAccessPolicy&#40;accessPolicy&#41;;
-     *
-     * Response&lt;ShareInfo&gt; response = shareClient.setAccessPolicyWithResponse&#40;
-     *     new ShareSetAccessPolicyOptions&#40;&#41;.setPermissions&#40;Collections.singletonList&#40;permission&#41;&#41;
-     *         .setRequestConditions&#40;new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;,
-     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.printf&#40;&quot;Setting access policies completed with status code %d&quot;, response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.setAccessPolicyWithResponse#ShareSetAccessPolicyOptions-Duration-Context -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.setAccessPolicyWithResponse#ShareSetAccessPolicyOptions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-share-acl">Azure Docs</a>.</p>
@@ -935,12 +747,7 @@ public class ShareClient {
      *
      * <p>Retrieve the storage statistics</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.getStatistics -->
-     * <pre>
-     * ShareStatistics response = shareClient.getStatistics&#40;&#41;;
-     * System.out.printf&#40;&quot;The share is using %d GB&quot;, response.getShareUsageInGB&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.getStatistics -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.getStatistics}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-stats">Azure Docs</a>.</p>
@@ -959,13 +766,7 @@ public class ShareClient {
      *
      * <p>Retrieve the storage statistics</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.getStatisticsWithResponse#duration-context -->
-     * <pre>
-     * Response&lt;ShareStatistics&gt; response = shareClient.getStatisticsWithResponse&#40;
-     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.printf&#40;&quot;The share is using %d GB&quot;, response.getValue&#40;&#41;.getShareUsageInGB&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.getStatisticsWithResponse#duration-context -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.getStatisticsWithResponse#duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-stats">Azure Docs</a>.</p>
@@ -988,14 +789,7 @@ public class ShareClient {
      *
      * <p>Retrieve the storage statistics</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.getStatisticsWithResponse#ShareGetStatisticsOptions-Duration-Context -->
-     * <pre>
-     * Response&lt;ShareStatistics&gt; response = shareClient.getStatisticsWithResponse&#40;
-     *     new ShareGetStatisticsOptions&#40;&#41;.setRequestConditions&#40;new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;,
-     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.printf&#40;&quot;The share is using %d GB&quot;, response.getValue&#40;&#41;.getShareUsageInGB&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.getStatisticsWithResponse#ShareGetStatisticsOptions-Duration-Context -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.getStatisticsWithResponse#ShareGetStatisticsOptions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-stats">Azure Docs</a>.</p>
@@ -1021,12 +815,7 @@ public class ShareClient {
      *
      * <p>Create the directory "documents"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.createDirectory#string -->
-     * <pre>
-     * ShareDirectoryClient response = shareClient.createDirectory&#40;&quot;mydirectory&quot;&#41;;
-     * System.out.println&#40;&quot;Complete creating the directory.&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.createDirectory#string -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.createDirectory#string}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
@@ -1049,16 +838,7 @@ public class ShareClient {
      *
      * <p>Create the directory "documents" with metadata "directory:metadata"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.createDirectoryWithResponse#String-FileSmbProperties-String-Map-Duration-Context -->
-     * <pre>
-     * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;;
-     * String filePermission = &quot;filePermission&quot;;
-     * Response&lt;ShareDirectoryClient&gt; response = shareClient.createDirectoryWithResponse&#40;&quot;documents&quot;,
-     *     smbProperties, filePermission, Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;,
-     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.printf&#40;&quot;Creating the directory completed with status code %d&quot;, response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.createDirectoryWithResponse#String-FileSmbProperties-String-Map-Duration-Context -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.createDirectoryWithResponse#String-FileSmbProperties-String-Map-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
@@ -1093,12 +873,7 @@ public class ShareClient {
      *
      * <p>Create the file "myfile" with size of 1024 bytes.</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.createFile#string-long -->
-     * <pre>
-     * ShareFileClient response = shareClient.createFile&#40;&quot;myfile&quot;, 1024&#41;;
-     * System.out.println&#40;&quot;Complete creating the file with snapshot Id:&quot; + response.getShareSnapshotId&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.createFile#string-long -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.createFile#string-long}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-file">Azure Docs</a>.</p>
@@ -1129,27 +904,7 @@ public class ShareClient {
      *
      * <p>Create the file "myfile" with length of 1024 bytes, some headers, file smb properties and metadata</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-Duration-Context -->
-     * <pre>
-     * ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders&#40;&#41;
-     *     .setContentType&#40;&quot;text&#47;html&quot;&#41;
-     *     .setContentEncoding&#40;&quot;gzip&quot;&#41;
-     *     .setContentLanguage&#40;&quot;en&quot;&#41;
-     *     .setCacheControl&#40;&quot;no-transform&quot;&#41;
-     *     .setContentDisposition&#40;&quot;attachment&quot;&#41;;
-     * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;
-     *     .setNtfsFileAttributes&#40;EnumSet.of&#40;NtfsFileAttributes.READ_ONLY&#41;&#41;
-     *     .setFileCreationTime&#40;OffsetDateTime.now&#40;&#41;&#41;
-     *     .setFileLastWriteTime&#40;OffsetDateTime.now&#40;&#41;&#41;
-     *     .setFilePermissionKey&#40;&quot;filePermissionKey&quot;&#41;;
-     * String filePermission = &quot;filePermission&quot;;
-     * &#47;&#47; NOTE: filePermission and filePermissionKey should never be both set
-     * Response&lt;ShareFileClient&gt; response = shareClient.createFileWithResponse&#40;&quot;myfile&quot;, 1024,
-     *     httpHeaders, smbProperties, filePermission, Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;,
-     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.printf&#40;&quot;Creating the file completed with status code %d&quot;, response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-Duration-Context -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-file">Azure Docs</a>.</p>
@@ -1191,30 +946,7 @@ public class ShareClient {
      *
      * <p>Create the file "myfile" with length of 1024 bytes, some headers, file smb properties and metadata</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions-Duration-Context -->
-     * <pre>
-     * ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders&#40;&#41;
-     *     .setContentType&#40;&quot;text&#47;html&quot;&#41;
-     *     .setContentEncoding&#40;&quot;gzip&quot;&#41;
-     *     .setContentLanguage&#40;&quot;en&quot;&#41;
-     *     .setCacheControl&#40;&quot;no-transform&quot;&#41;
-     *     .setContentDisposition&#40;&quot;attachment&quot;&#41;;
-     * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;
-     *     .setNtfsFileAttributes&#40;EnumSet.of&#40;NtfsFileAttributes.READ_ONLY&#41;&#41;
-     *     .setFileCreationTime&#40;OffsetDateTime.now&#40;&#41;&#41;
-     *     .setFileLastWriteTime&#40;OffsetDateTime.now&#40;&#41;&#41;
-     *     .setFilePermissionKey&#40;&quot;filePermissionKey&quot;&#41;;
-     * String filePermission = &quot;filePermission&quot;;
-     * &#47;&#47; NOTE: filePermission and filePermissionKey should never be both set
-     *
-     * ShareRequestConditions requestConditions = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
-     *
-     * Response&lt;ShareFileClient&gt; response = shareClient.createFileWithResponse&#40;&quot;myfile&quot;, 1024,
-     *     httpHeaders, smbProperties, filePermission, Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;,
-     *     requestConditions, Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.printf&#40;&quot;Creating the file completed with status code %d&quot;, response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions-Duration-Context -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-file">Azure Docs</a>.</p>
@@ -1258,12 +990,7 @@ public class ShareClient {
      *
      * <p>Delete the directory "mydirectory"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.deleteDirectory#string -->
-     * <pre>
-     * shareClient.deleteDirectory&#40;&quot;mydirectory&quot;&#41;;
-     * System.out.println&#40;&quot;Completed deleting the directory.&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.deleteDirectory#string -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.deleteDirectory#string}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
@@ -1284,13 +1011,7 @@ public class ShareClient {
      *
      * <p>Delete the directory "mydirectory"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.deleteDirectoryWithResponse#string-duration-context -->
-     * <pre>
-     * Response&lt;Void&gt; response = shareClient.deleteDirectoryWithResponse&#40;&quot;mydirectory&quot;,
-     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.println&#40;&quot;Complete deleting the directory with status code: &quot; + response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.deleteDirectoryWithResponse#string-duration-context -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.deleteDirectoryWithResponse#string-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
@@ -1316,12 +1037,7 @@ public class ShareClient {
      *
      * <p>Delete the file "myfile"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.deleteFile#string -->
-     * <pre>
-     * shareClient.deleteFile&#40;&quot;myfile&quot;&#41;;
-     * System.out.println&#40;&quot;Complete deleting the file.&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.deleteFile#string -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.deleteFile#string}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
@@ -1341,13 +1057,7 @@ public class ShareClient {
      *
      * <p>Delete the file "myfile"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.deleteFileWithResponse#string-duration-context -->
-     * <pre>
-     * Response&lt;Void&gt; response = shareClient.deleteFileWithResponse&#40;&quot;myfile&quot;,
-     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.println&#40;&quot;Complete deleting the file with status code: &quot; + response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.deleteFileWithResponse#string-duration-context -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.deleteFileWithResponse#string-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
@@ -1372,14 +1082,7 @@ public class ShareClient {
      *
      * <p>Delete the file "myfile"</p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.deleteFileWithResponse#string-ShareRequestConditions-duration-context -->
-     * <pre>
-     * ShareRequestConditions requestConditions = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
-     * Response&lt;Void&gt; response = shareClient.deleteFileWithResponse&#40;&quot;myfile&quot;, requestConditions,
-     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.println&#40;&quot;Complete deleting the file with status code: &quot; + response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.deleteFileWithResponse#string-ShareRequestConditions-duration-context -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.deleteFileWithResponse#string-ShareRequestConditions-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
@@ -1406,12 +1109,7 @@ public class ShareClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.createPermission#string -->
-     * <pre>
-     * String response = shareClient.createPermission&#40;&quot;filePermission&quot;&#41;;
-     * System.out.printf&#40;&quot;The file permission key is %s&quot;, response&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.createPermission#string -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.createPermission#string}
      *
      * @param filePermission The file permission to get/create.
      * @return The file permission key associated with the file permission.
@@ -1427,12 +1125,7 @@ public class ShareClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.createPermissionWithResponse#string-context -->
-     * <pre>
-     * Response&lt;String&gt; response = shareClient.createPermissionWithResponse&#40;&quot;filePermission&quot;, Context.NONE&#41;;
-     * System.out.printf&#40;&quot;The file permission key is %s&quot;, response.getValue&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.createPermissionWithResponse#string-context -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.createPermissionWithResponse#string-context}
      *
      * @param filePermission The file permission to get/create.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -1448,12 +1141,7 @@ public class ShareClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.getPermission#string -->
-     * <pre>
-     * String response = shareClient.getPermission&#40;&quot;filePermissionKey&quot;&#41;;
-     * System.out.printf&#40;&quot;The file permission is %s&quot;, response&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.getPermission#string -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.getPermission#string}
      *
      * @param filePermissionKey The file permission key.
      * @return The file permission associated with the file permission key.
@@ -1468,12 +1156,7 @@ public class ShareClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.getPermissionWithResponse#string-context -->
-     * <pre>
-     * Response&lt;String&gt; response = shareClient.getPermissionWithResponse&#40;&quot;filePermissionKey&quot;, Context.NONE&#41;;
-     * System.out.printf&#40;&quot;The file permission is %s&quot;, response.getValue&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.getPermissionWithResponse#string-context -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.getPermissionWithResponse#string-context}
      *
      * @param filePermissionKey The file permission key.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -1491,18 +1174,7 @@ public class ShareClient {
      *
      * <p>Get the share snapshot id. </p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.getSnapshotId -->
-     * <pre>
-     * OffsetDateTime currentTime = OffsetDateTime.of&#40;LocalDateTime.now&#40;&#41;, ZoneOffset.UTC&#41;;
-     * ShareClient shareClient = new ShareClientBuilder&#40;&#41;.endpoint&#40;&quot;https:&#47;&#47;$&#123;accountName&#125;.file.core.windows.net&quot;&#41;
-     *     .sasToken&#40;&quot;$&#123;SASToken&#125;&quot;&#41;
-     *     .shareName&#40;&quot;myshare&quot;&#41;
-     *     .snapshot&#40;currentTime.toString&#40;&#41;&#41;
-     *     .buildClient&#40;&#41;;
-     *
-     * System.out.printf&#40;&quot;Snapshot ID: %s%n&quot;, shareClient.getSnapshotId&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.getSnapshotId -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.getSnapshotId}
      *
      * @return The snapshot id which is a unique {@code DateTime} value that identifies the share snapshot to its base
      * share.
@@ -1516,12 +1188,7 @@ public class ShareClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareClient.getShareName -->
-     * <pre>
-     * String shareName = shareClient.getShareName&#40;&#41;;
-     * System.out.println&#40;&quot;The name of the share is &quot; + shareName&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareClient.getShareName -->
+     * {@codesnippet com.azure.storage.file.share.ShareClient.getShareName}
      *
      * @return The name of the share.
      */
@@ -1554,17 +1221,7 @@ public class ShareClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.generateSas#ShareServiceSasSignatureValues -->
-     * <pre>
-     * OffsetDateTime expiryTime = OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;;
-     * ShareSasPermission permission = new ShareSasPermission&#40;&#41;.setReadPermission&#40;true&#41;;
-     *
-     * ShareServiceSasSignatureValues values = new ShareServiceSasSignatureValues&#40;expiryTime, permission&#41;
-     *     .setStartTime&#40;OffsetDateTime.now&#40;&#41;&#41;;
-     *
-     * shareAsyncClient.generateSas&#40;values&#41;; &#47;&#47; Client must be authenticated via StorageSharedKeyCredential
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.generateSas#ShareServiceSasSignatureValues -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.generateSas#ShareServiceSasSignatureValues}
      *
      * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
      *
@@ -1581,18 +1238,7 @@ public class ShareClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.generateSas#ShareServiceSasSignatureValues-Context -->
-     * <pre>
-     * OffsetDateTime expiryTime = OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;;
-     * ShareSasPermission permission = new ShareSasPermission&#40;&#41;.setReadPermission&#40;true&#41;;
-     *
-     * ShareServiceSasSignatureValues values = new ShareServiceSasSignatureValues&#40;expiryTime, permission&#41;
-     *     .setStartTime&#40;OffsetDateTime.now&#40;&#41;&#41;;
-     *
-     * &#47;&#47; Client must be authenticated via StorageSharedKeyCredential
-     * shareAsyncClient.generateSas&#40;values, new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareAsyncClient.generateSas#ShareServiceSasSignatureValues-Context -->
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.generateSas#ShareServiceSasSignatureValues-Context}
      *
      * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
      * @param context Additional context that is passed through the code when generating a SAS.
