@@ -94,7 +94,7 @@ public class FeatureHandlerTest {
 
     @Test
     public void preHandleFeatureOnRedirect() throws NoSuchMethodException, SecurityException, IOException {
-        Method method = TestClass.class.getMethod("featureOnAnnotaitonRedirected");
+        Method method = TestClass.class.getMethod("featureOnAnnotationRedirected");
         when(handlerMethod.getMethod()).thenReturn(method);
         when(featureManager.isEnabledAsync(Mockito.matches("test"))).thenReturn(Mono.just(false));
 
@@ -129,7 +129,7 @@ public class FeatureHandlerTest {
         verify(response, times(1)).sendError(Mockito.eq(HttpServletResponse.SC_NOT_FOUND));
     }
 
-    protected class TestClass {
+    protected static class TestClass {
 
         public void noAnnotation() {
         }
@@ -143,7 +143,7 @@ public class FeatureHandlerTest {
         }
 
         @FeatureGate(feature = "test", fallback = "/redirected")
-        public void featureOnAnnotaitonRedirected() {
+        public void featureOnAnnotationRedirected() {
         }
 
     }
