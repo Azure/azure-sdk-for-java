@@ -39,13 +39,6 @@
         <module>azure-resourcemanager-storage</module>
         <module>azure-resourcemanager-trafficmanager</module>
       </modules>
-      <dependencies>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-sdk-template</artifactId>
-          <version>1.2.1-beta.16</version> <!-- {x-version-update;com.azure:azure-sdk-template;current} -->
-        </dependency>
-      </dependencies>
       <build>
         <plugins>
           <plugin>
