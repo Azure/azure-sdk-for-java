@@ -16,7 +16,6 @@ import java.time.Duration;
 /**
  * {@link ConfigurationProperties} for configuring Azure Service Bus JMS.
  */
-// TODO(xiada): does this need to implement AzureProperties?
 @ConfigurationProperties(prefix = AzureServiceBusJmsProperties.PREFIX)
 public class AzureServiceBusJmsProperties implements InitializingBean {
 
