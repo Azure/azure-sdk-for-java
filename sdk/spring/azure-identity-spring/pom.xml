@@ -19,12 +19,6 @@
   <description>Azure Identity Spring Integration Library</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
-  <properties>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>

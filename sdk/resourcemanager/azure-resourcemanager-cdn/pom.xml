@@ -43,9 +43,6 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.resourcemanager.cdn/com.azure.resourcemanager.cdn=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <developers>

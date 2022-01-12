@@ -22,9 +22,6 @@
 
   <properties>
     <jacoco.min.branchcoverage>0.22</jacoco.min.branchcoverage>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <dependencies>

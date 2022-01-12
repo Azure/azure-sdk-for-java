@@ -41,9 +41,6 @@
       --add-opens com.azure.core.test/com.azure.core.test.models=ALL-UNNAMED
       --add-opens com.azure.core.test/com.azure.core.test.implementation=org.junit.platform.commons
     </javaModulesSurefireArgLine>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
 
     <!-- This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
     <revapi.skip>true</revapi.skip>

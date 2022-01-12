@@ -30,12 +30,6 @@
     <url>https://github.com/Azure/azure-sdk-for-java</url>
   </scm>
 
-  <properties>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>

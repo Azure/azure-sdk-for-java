@@ -40,9 +40,6 @@ Licensed under the MIT License.
       --add-opens com.azure.data.tables/com.azure.data.tables.implementation.models=ALL-UNNAMED
       --add-opens com.azure.data.tables/com.azure.data.tables.models=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <dependencies>

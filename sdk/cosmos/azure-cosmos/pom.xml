@@ -53,9 +53,6 @@ Licensed under the MIT License.
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.throughputControl.controller.request=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.clienttelemetry=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
 
     <!-- Prevents Checkstyle validating implementation files. -->
     <checkstyle.excludes>**/implementation/**/*.java</checkstyle.excludes>

@@ -41,9 +41,6 @@
       --add-opens com.azure.data.schemaregistry.apacheavro/com.azure.data.schemaregistry.apacheavro=ALL-UNNAMED
       --add-opens com.azure.data.schemaregistry.apacheavro/com.azure.data.schemaregistry.apacheavro.generatedtestsources=org.apache.avro,ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <dependencies>

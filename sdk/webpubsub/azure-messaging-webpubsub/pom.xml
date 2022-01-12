@@ -40,9 +40,6 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.messaging.webpubsub/com.azure.messaging.webpubsub=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <dependencies>
