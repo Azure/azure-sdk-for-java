@@ -4,10 +4,7 @@ package com.azure.spring.cloud.feature.manager;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -100,12 +97,16 @@ public class FeatureHandlerTest {
     }
 
     @Test
-    public void preHandleFeatureOnRedirect() throws NoSuchMethodException, SecurityException {
+    public void preHandleFeatureOnRedirect() throws NoSuchMethodException, SecurityException, IOException {
         Method method = TestClass.class.getMethod("featureOnAnnotaitonRedirected");
         when(handlerMethod.getMethod()).thenReturn(method);
         when(featureManager.isEnabledAsync(Mockito.matches("test"))).thenReturn(Mono.just(false));
 
         assertFalse(featureHandler.preHandle(request, response, handlerMethod));
+
+        verify(response).sendRedirect("/redirected");
+        verifyNoMoreInteractions(response);
+        verifyNoInteractions(disabledFeaturesHandler);
     }
 
     @Test

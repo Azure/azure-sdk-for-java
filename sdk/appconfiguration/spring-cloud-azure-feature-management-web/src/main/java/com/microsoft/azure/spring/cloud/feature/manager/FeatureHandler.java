@@ -73,6 +73,7 @@ public class FeatureHandler extends HandlerInterceptorAdapter {
 
                     if (!isEnabled && !featureOn.fallback().isEmpty()) {
                         response.sendRedirect(featureOn.fallback());
+                        return false;
                     }
                 } catch (IOException e) {
                     LOGGER.info("Unable to send redirect.");
