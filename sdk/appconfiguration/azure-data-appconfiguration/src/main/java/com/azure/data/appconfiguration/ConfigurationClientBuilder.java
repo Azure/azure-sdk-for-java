@@ -155,13 +155,6 @@ public final class ConfigurationClientBuilder {
         return new ConfigurationClient(buildAsyncClient());
     }
 
-    private ConfigurationServiceVersion getServiceVersion() {
-        if (version != null) {
-            return version;
-        }
-
-        return ConfigurationServiceVersion.getLatest();
-    }
     /**
      * Creates a {@link ConfigurationAsyncClient} based on options set in the Builder. Every time {@code
      * buildAsyncClient()} is called a new instance of {@link ConfigurationAsyncClient} is created.
@@ -243,7 +236,6 @@ public final class ConfigurationClientBuilder {
         // customized pipeline
         HttpPipeline pipeline = new HttpPipelineBuilder()
                                     .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                                    // TODO
                                     .clientOptions(clientOptions)
                                     .httpClient(httpClient)
                                     .build();
@@ -423,7 +415,7 @@ public final class ConfigurationClientBuilder {
         }
 
         retryPolicy(RetryPolicy.fromConfigurationOrDefault(this.configuration, null));
-        serviceVersion(this.configuration.get("appconfiguration.service-version", getServiceVersion()));
+        serviceVersion(this.configuration.get("appconfiguration.service-version", this.version));
 
         // TODO(configuration) credential
         return this;
