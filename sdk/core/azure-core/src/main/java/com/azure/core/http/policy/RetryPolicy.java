@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.ImplUtils;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -20,6 +21,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.function.Supplier;
 
+import static com.azure.core.util.Configuration.NONE;
 import static com.azure.core.util.CoreUtils.isNullOrEmpty;
 
 /**
@@ -88,6 +90,46 @@ public class RetryPolicy implements HttpPipelinePolicy {
         this(retryStrategy, null, null);
     }
 
+    public static RetryPolicy fromConfigurationOrDefault(Configuration configuration, RetryPolicy defaultPolicy) {
+        if (configuration == null || configuration == NONE) {
+            return defaultPolicy;
+        }
+
+        String retryHeader = configuration.get("http.retry.retry-after-header");
+        String retryAfterTimeUnitStr = configuration.get("http.retry.retry-after-time-unit");
+        String retryStrategyStr = configuration.get("http.retry.strategy");
+
+        if (retryStrategyStr == null && retryHeader == null && retryAfterTimeUnitStr == null) {
+            return defaultPolicy;
+        }
+
+        if (retryStrategyStr == null) {
+            // TODO(configuration): log error and fail
+        }
+
+        RetryStrategy retryStrategy;
+        if ("fixed".equals(retryStrategyStr)) {
+            retryStrategy = FixedDelay.fromConfigurationOrDefault(configuration, null);
+            // throw if null
+        } else {
+            retryStrategy = ExponentialBackoff.fromConfigurationOrDefault(configuration, new ExponentialBackoff());
+        }
+
+        ChronoUnit retryAfterUnit = null;
+        if (retryAfterTimeUnitStr != null) {
+            retryAfterUnit = ChronoUnit.valueOf(retryAfterTimeUnitStr);
+            // TODO(configuration) fail on error
+        }
+
+        return  new RetryPolicy(retryStrategy, retryHeader, retryAfterUnit);
+    }
+
+    /**
+     *
+      * @param context The request context.
+     * @param next The next policy to invoke.
+     * @return
+     */
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return attemptAsync(context, next, context.getHttpRequest(), 0);

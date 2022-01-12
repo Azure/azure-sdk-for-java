@@ -11,6 +11,7 @@ import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static com.azure.core.util.Configuration.NONE;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RETRY_COUNT;
 
 /**
@@ -55,6 +56,43 @@ public class ExponentialBackoff implements RetryStrategy {
      */
     public ExponentialBackoff() {
         this(DEFAULT_MAX_RETRIES, DEFAULT_BASE_DELAY, DEFAULT_MAX_DELAY);
+    }
+
+    /**
+     * Caller must only call this method if they are sure that user specified retry policy options
+     */
+    static RetryStrategy fromConfigurationOrDefault(Configuration configuration, RetryStrategy defaultStrategy) {
+        if (configuration == null || configuration == NONE) {
+            return defaultStrategy;
+        }
+
+        String maxRetriesStr = configuration.get("http.retry.strategy.exponential.max-retries");
+        String baseDelayStr = configuration.get( "http.retry.strategy.exponential.base-delay");
+        String maxDelayStr = configuration.get("http.retry.strategy.exponential.max-delay");
+
+        if (maxRetriesStr == null && maxDelayStr == null && baseDelayStr == null) {
+            return defaultStrategy;
+        }
+
+        int maxRetries = DEFAULT_MAX_RETRIES;
+        if (maxRetriesStr != null) {
+            maxRetries = Integer.parseInt(maxRetriesStr);
+            // TODO(configuration) fail on error
+        }
+
+        Duration baseDelay = DEFAULT_BASE_DELAY;
+        if (baseDelayStr != null) {
+            baseDelay = Duration.parse(baseDelayStr);
+            // TODO(configuration) fail on error
+        }
+
+        Duration maxDelay = DEFAULT_MAX_DELAY;
+        if (maxDelayStr != null) {
+            maxDelay = Duration.parse(maxDelayStr);
+            // TODO(configuration) fail on error
+        }
+
+        return new ExponentialBackoff(maxRetries, baseDelay, maxDelay);
     }
 
     /**

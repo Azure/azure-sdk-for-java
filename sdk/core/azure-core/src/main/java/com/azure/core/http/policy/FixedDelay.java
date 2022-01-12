@@ -3,9 +3,12 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import java.time.Duration;
 import java.util.Objects;
+
+import static com.azure.core.util.Configuration.NONE;
 
 /**
  * A fixed-delay implementation of {@link RetryStrategy} that has a fixed delay duration between each retry attempt.
@@ -37,5 +40,26 @@ public class FixedDelay implements RetryStrategy {
     @Override
     public Duration calculateRetryDelay(int retryAttempts) {
         return delay;
+    }
+
+    static RetryStrategy fromConfigurationOrDefault(Configuration configuration, RetryStrategy defaultStrategy) {
+        if (configuration == null || configuration == NONE) {
+            return defaultStrategy;
+        }
+
+        String maxRetriesStr = configuration.get("http.retry.strategy.fixed.max-retries");
+        String delayStr = configuration.get( "http.retry.strategy.fixed.delay");
+
+        if (maxRetriesStr == null || delayStr == null) {
+            // TODO(configuration) log error and fail
+        }
+
+        int maxRetries = Integer.parseInt(maxRetriesStr);
+        // TODO(configuration) fail on error
+
+        Duration delay = Duration.parse(delayStr);
+        // TODO(configuration) fail on error
+
+        return new FixedDelay(maxRetries, delay);
     }
 }

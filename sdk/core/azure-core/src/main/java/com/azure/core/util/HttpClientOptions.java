@@ -56,11 +56,71 @@ public final class HttpClientOptions extends ClientOptions {
     private Integer maximumConnectionPoolSize;
     private Duration connectionIdleTimeout;
 
+    public static ClientOptions fromConfigurationOrDefault(Configuration configuration, ClientOptions defaultOptions) {
+        // TODO(configuration): copy-paste with loadconfig
+
+        String appId = configuration.get("http-client.application-id");
+        String headerStr = configuration.get("http-client.headers");
+        String connectTimeoutStr = configuration.get("http-client.connect-timeout");
+        String writeTimeoutStr = configuration.get("http-client.write-timeout");
+        String responseTimeoutStr = configuration.get("http-client.response-timeout");
+        String readTimeoutStr = configuration.get("http-client.read-timeout");
+        String connectIdleStr = configuration.get("http-client.connection-idle-timeout");
+        String maxPoolSizeStr = configuration.get("http-client.maximum-connection-pool-size");
+
+        boolean anyHttpClientSettingOn = appId != null ||
+            headerStr != null ||
+            connectTimeoutStr != null ||
+            writeTimeoutStr != null ||
+            responseTimeoutStr != null ||
+            readTimeoutStr != null ||
+            connectIdleStr != null ||
+            maxPoolSizeStr != null;
+
+        if (!anyHttpClientSettingOn) {
+            return ClientOptions.fromConfigurationOrDefault(configuration.get("client.application-id"),
+                configuration.get("client.headers"),
+                () -> new ClientOptions(),
+                defaultOptions);
+        }
+
+        HttpClientOptions options = new HttpClientOptions();
+        ClientOptions.fromConfigurationOrDefault(appId, headerStr, () -> options, defaultOptions);
+
+        // TODO (configuration) formats, copy-paste
+        if (connectTimeoutStr != null) {
+            options.setConnectTimeout(Duration.parse(connectTimeoutStr));
+        }
+
+        if (writeTimeoutStr != null) {
+            options.setWriteTimeout(Duration.parse(writeTimeoutStr));
+        }
+
+        if (responseTimeoutStr != null) {
+            options.setResponseTimeout(Duration.parse(responseTimeoutStr));
+        }
+
+        if (readTimeoutStr != null) {
+            options.setReadTimeout(Duration.parse(readTimeoutStr));
+        }
+
+        if (connectIdleStr != null) {
+            options.setConnectionIdleTimeout(Duration.parse(connectIdleStr));
+        }
+
+        if (maxPoolSizeStr != null) {
+            options.setMaximumConnectionPoolSize(Integer.valueOf(maxPoolSizeStr));
+        }
+
+        return options;
+    }
+
     private void loadConfiguration(Configuration configuration) {
 
-        // TODO option inheritance is not great, needs more work
-        loadClientOptions("client", this, configuration);
-        loadClientOptions("http-client", this, configuration);
+        String appId = configuration.get("http-client.application-id", configuration.get("client.application-id"));
+        String headerStr = configuration.get("http-client.headers", configuration.get("client.headers"));
+
+        ClientOptions.fromConfigurationOrDefault(appId, headerStr, () -> this, this);
 
         if (connectTimeout == null) {
             setConnectTimeout(getDefaultTimeoutFromEnvironment(configuration, "http-client.connect-timeout", DEFAULT_CONNECT_TIMEOUT, logger));
@@ -90,9 +150,8 @@ public final class HttpClientOptions extends ClientOptions {
             }
         }
 
-        if (proxyOptions == null) {
-            setProxyOptions(ProxyOptions.fromConfiguration(configuration));
-        }
+        // TODO(configuration) should we move createUnresolved to config property instead of control flag?
+        setProxyOptions(ProxyOptions.fromConfigurationOrDefault(configuration, false, this.proxyOptions));
     }
 
     @Override
@@ -134,6 +193,9 @@ public final class HttpClientOptions extends ClientOptions {
      *
      * @param configuration The configuration store to use.
      * @return The updated HttpClientOptions object.
+     *
+     * TODO(configuration) we should avoid API like this - options should have factory method and be fully defined in Configuration
+     * thisn promotes mixed code and no-code configuration and hard to manage.
      */
     public HttpClientOptions setConfiguration(Configuration configuration) {
         this.configuration = configuration;

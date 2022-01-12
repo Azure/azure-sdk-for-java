@@ -58,44 +58,43 @@ public class HttpLogOptions {
         "User-Agent"
     );
 
-    public static HttpLogOptions fromConfiguration(Configuration configuration) {
-        if (configuration == Configuration.NONE) {
-            return new HttpLogOptions();
+    public static HttpLogOptions fromConfigurationOrDefault(Configuration configuration, HttpLogOptions defaultOptions) {
+        if (configuration == Configuration.NONE || configuration == null) {
+            return defaultOptions;
         }
-
-        Configuration loggingConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
-
-        return attemptToLoadHttpLogging(loggingConfiguration);
-    }
-
-    private static HttpLogOptions attemptToLoadHttpLogging(Configuration configuration) {
-        HttpLogOptions httpLogOptions = new HttpLogOptions();
 
         // Only use system proxies when the prerequisite property is 'true'.
         String applicationId = configuration.get("http.logging.application-id");
+        boolean prettyPrint = configuration.get("http.logging.pretty-print-body", false);
+        String headers = configuration.get("http.logging.allowed-header-names");
+        String queryParams = configuration.get("http.logging.allowed-query-param-names");
+        HttpLogDetailLevel logLevel = HttpLogDetailLevel.fromConfiguration(configuration);
+
+        if (applicationId == null && !prettyPrint && headers == null && queryParams == null && logLevel == HttpLogDetailLevel.NONE) {
+            // nothing about http log options is defined
+            return defaultOptions;
+        }
+
+        // TODO(configuration): validate and fail on error
+        HttpLogOptions httpLogOptions = new HttpLogOptions();
         if (CoreUtils.isNullOrEmpty(applicationId)) {
             httpLogOptions.setApplicationId(applicationId);
         }
 
-        httpLogOptions.setLogLevel(HttpLogDetailLevel.fromConfiguration(configuration));
-
-        boolean prettyPrint = configuration.get("http.logging.pretty-print-body", false);
+        httpLogOptions.setLogLevel(logLevel);
         httpLogOptions.setPrettyPrintBody(prettyPrint);
 
-        String headers = configuration.get("http.logging.allowed-header-names");
         if (!CoreUtils.isNullOrEmpty(headers)) {
             httpLogOptions.setAllowedHeaderNames(new HashSet<>(Arrays.asList(headers.split(","))));
         }
 
-        String queryParams = configuration.get("http.logging.allowed-query-param-names");
         if (!CoreUtils.isNullOrEmpty(queryParams)) {
             httpLogOptions.setAllowedQueryParamNames(new HashSet<>(Arrays.asList(queryParams.split(","))));
         }
 
         return httpLogOptions;
     }
+
 
     /**
      * Creates a new instance that does not log any information about HTTP requests or responses.

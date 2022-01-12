@@ -10,6 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * General configuration options for clients.
@@ -26,30 +27,18 @@ public class ClientOptions {
 
     private String applicationId;
 
-    public static ClientOptions fromConfiguration(Configuration configuration) {
-        if (configuration == Configuration.NONE) {
-            return new ClientOptions();
+    // TODO(configuration) maybe can simplify it further
+    static ClientOptions fromConfigurationOrDefault(String applicationId, String headersStr, Supplier<ClientOptions> implementationSupplier, ClientOptions defaultOptions) {
+        if (applicationId == null && headersStr == null) {
+            // no client options - return null to indicate it
+            return defaultOptions;
         }
 
-        Configuration clientConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
-
-        ClientOptions options = new ClientOptions();
-        loadClientOptions("client", options, clientConfiguration);
-
-        return options;
-    }
-
-    static void loadClientOptions(String prefix, ClientOptions clientOptions, Configuration configuration) {
-
-        // Only use system proxies when the prerequisite property is 'true'.
-        String applicationId = configuration.get(prefix + ".application-id");
+        ClientOptions clientOptions = implementationSupplier.get();
         if (!CoreUtils.isNullOrEmpty(applicationId)) {
             clientOptions.setApplicationId(applicationId);
         }
 
-        String headersStr = configuration.get(prefix + ".headers");
         if (!CoreUtils.isNullOrEmpty(headersStr)) {
             List<Header> headers = new ArrayList<>();
             for (String header : headersStr.split(";")) {
@@ -58,6 +47,8 @@ public class ClientOptions {
             }
             clientOptions.setHeaders(headers);
         }
+
+        return clientOptions;
     }
 
     /**

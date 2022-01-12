@@ -3,17 +3,12 @@
 
 package com.azure.core.util;
 
-import com.azure.core.http.policy.ExponentialBackoff;
-import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.RetryStrategy;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -189,103 +184,46 @@ public class ConfigurationTests {
     }
 
     @Test
-    public void getLocalProperty() {
+    public void getPropertySanityTODO() {
         Configuration configuration = new Configuration()
             .put("appconfiguration.connection-string", "connection-string-value")
-            .put("connection-string", "not-azure-sdk-config");
+            .put("connection-string", "some-value");
 
-        ConfigurationProperty appConfigCs = new ConfigurationProperty("appconfiguration", "connection-string", true);
+        Configuration appconfigSection = configuration.getSection("appconfiguration");
 
         assertEquals("connection-string-value", configuration.get("appconfiguration.connection-string"));
-        assertEquals("connection-string-value", configuration.get(appConfigCs));
+        assertEquals("some-value", configuration.get("connection-string"));
 
         configuration.remove("appconfiguration.connection-string");
+        appconfigSection.remove("appconfiguration.connection-string");
 
         assertNull(configuration.get("appconfiguration.connection-string"));
-        assertNull(configuration.get(appConfigCs));
+        assertEquals("some-value", configuration.get("connection-string"));
+
+        assertNull(configuration.get("appconfiguration.connection-string"));
+        assertEquals("some-value", configuration.get("connection-string"));
+
     }
 
     @Test
-    public void getGlobalProperty() {
-        Configuration configuration = new Configuration()
-            .put("appconfiguration.http-client.application-id", "appconfig-app-id")
-            .put("http-client.application-id", "http-app-id");
-
-        assertEquals("appconfig-app-id", configuration.get(new ConfigurationProperty("appconfiguration", "http-client.application-id", false)));
-        assertEquals("http-app-id", configuration.get(new ConfigurationProperty(null, "http-client.application-id", false)));
-
-        configuration.remove("appconfiguration.http-client.application-id");
-        assertEquals("http-app-id", configuration.get(new ConfigurationProperty("appconfiguration", "http-client.application-id", false)));
-        assertEquals("http-app-id", configuration.get(new ConfigurationProperty(null, "http-client.application-id", false)));
-    }
-
-
-    @Test
-    public void readComplexObject() throws Exception {
+    public void readComplexObjectSanityCheck() throws Exception {
         Configuration configuration = new Configuration()
             .put("http.retry.strategy", "exponential")
             .put("http.retry.strategy.exponential.max-retries", "7")
             .put("http.retry.strategy.exponential.base-delay", "PT1S")
-            .put("http.retry.strategy.exponential.max-delay", "PT2S")
             .put("http.retry.retry-after-header", "retry-after")
             .put("http.retry.retry-after-time-unit", "MILLIS");
 
-        RetryPolicy retryPolicy = configureRetryPolicy(configuration);
-    }
+        RetryPolicy retryPolicy = RetryPolicy.fromConfigurationOrDefault(configuration, null);
 
-    private static RetryPolicy configureRetryPolicy(Configuration configuration) throws Exception {
-        // belong to RetryPolicy
-        ConfigurationProperty retryHeaderProp = new ConfigurationProperty(null, "http.retry.retry-after-header", false);
-        ConfigurationProperty retryTimeUnitProp = new ConfigurationProperty(null, "http.retry.retry-after-time-unit", true);
+        Configuration appConfig = new Configuration()
+            .put("http.retry.strategy", "fixed")
+            .put("appconfiguration.http.retry.strategy.fixed.max-retries", "1")
+            .put("appconfiguration.http.retry.strategy.fixed.delay", "PT1S")
+            .getSection("appconfiguration");
 
-        String retryHeader = configuration.get(retryHeaderProp);
-        ChronoUnit baseDelay = configuration.get(retryTimeUnitProp, timeUnitStr -> ChronoUnit.valueOf(timeUnitStr));
+        RetryPolicy retryPolicyAppConfig = RetryPolicy.fromConfigurationOrDefault(appConfig, null);
 
-        ConfigurationProperty retryStrategyProp = new ConfigurationProperty(null, "http.retry.strategy", false);
-        String strategyString = configuration.get(retryStrategyProp);
-
-        RetryStrategy retryStrategy;
-        if ("fixed".equals(strategyString)) {
-            retryStrategy = configureFixedRetryStrategy(configuration);
-        } else {
-            retryStrategy = configureExponentialRetryStrategy(configuration);
-        }
-
-        return  new RetryPolicy(retryStrategy, retryHeader, baseDelay);
-    }
-
-    private static RetryStrategy configureFixedRetryStrategy(Configuration configuration) throws Exception {
-        ConfigurationProperty fixedMaxRetriesProp = new ConfigurationProperty(null, "http.retry.strategy.fixed.max-retries", false);
-        ConfigurationProperty fixedDelayProp = new ConfigurationProperty(null, "http.retry.strategy.fixed.delay", false);
-
-        Integer maxRetries = configuration.get(fixedMaxRetriesProp, (Integer)null);
-        Duration maxDelay = configuration.get(fixedDelayProp, maxDelayStr -> Duration.parse(maxDelayStr)); // parse exceptions TODO
-        if (maxRetries != null && maxDelay != null) {
-            return new FixedDelay(maxRetries, maxDelay);
-        }
-
-        // log
-        throw new Exception("bad configuration");
-    }
-
-    private static RetryStrategy configureExponentialRetryStrategy(Configuration configuration) throws Exception {
-        ConfigurationProperty exponentialMaxRetriesProp = new ConfigurationProperty(null, "http.retry.strategy.exponential.max-retries", false);
-        ConfigurationProperty exponentialBaseDelayProp = new ConfigurationProperty(null, "http.retry.strategy.exponential.base-delay", false);
-        ConfigurationProperty exponentialMaxDelayProp = new ConfigurationProperty(null, "http.retry.strategy.exponential.max-delay", true);
-
-        // pass it over to ExponentialBackoff to read
-        Integer maxRetries = configuration.get(exponentialMaxRetriesProp, -1);
-        Duration baseDelay = configuration.get(exponentialBaseDelayProp, baseDelayStr -> Duration.parse(baseDelayStr));
-        Duration maxDelay = configuration.get(exponentialMaxDelayProp, maxDelayStr -> Duration.parse(maxDelayStr));
-
-        if (maxRetries > 0 && maxDelay != null && baseDelay != null) {
-            return new ExponentialBackoff(maxRetries, baseDelay, maxDelay);
-        } else if (maxRetries < 0 && maxDelay == null && baseDelay == null) {
-            return new ExponentialBackoff();
-        } else {
-            // support all possible defaults ?
-            // log error?
-            return new ExponentialBackoff();
-        }
+        // compare in debug
     }
 }

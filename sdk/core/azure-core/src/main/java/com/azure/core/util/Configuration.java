@@ -222,6 +222,8 @@ public class Configuration implements Cloneable {
 
     private final ConcurrentMap<String, String> configurations;
     private final ConfigurationSource[] configurationSources;
+    private final String sectionName;
+    private final Configuration base;
 
     /**
      * Constructs a configuration containing the known Azure properties constants.
@@ -229,6 +231,8 @@ public class Configuration implements Cloneable {
     public Configuration() {
         this.configurations = new ConcurrentHashMap<>();
         this.configurationSources = CONFIG_SOURCES;
+        this.sectionName = null;
+        this.base = null;
         loadBaseConfiguration(this);
     }
 
@@ -237,20 +241,31 @@ public class Configuration implements Cloneable {
 
         // TODO(configuration): priority, should we add env var sources by default
         this.configurationSources = new ConfigurationSource[CONFIG_SOURCES.length + additionalSources.length];
-        for (int i = 0; i < CONFIG_SOURCES.length; i ++) {
-            this.configurationSources[i] = CONFIG_SOURCES[i];
+
+        // reverse order, so last config is requested first to ensure priority
+
+        int i = 0;
+        for (int j = additionalSources.length - 1; j >= 0; j--, i ++) {
+            this.configurationSources[i] = additionalSources[j];
         }
 
-        for (int j = 0; j < additionalSources.length; j ++) {
-            this.configurationSources[CONFIG_SOURCES.length + j] = additionalSources[j];
+        for (int j = CONFIG_SOURCES.length - 1; j >= 0; j --, i++) {
+            this.configurationSources[i] = CONFIG_SOURCES[j];
         }
 
-        loadBaseConfiguration(this);
+        this.sectionName = null;
+        this.base = getGlobalConfiguration();
     }
 
-    private Configuration(ConcurrentMap<String, String> configurations) {
-        this.configurationSources = CONFIG_SOURCES;
+    public Configuration getSection(String sectionName) {
+        return new Configuration(sectionName, this.configurations, this.configurationSources, this);
+    }
+
+    private Configuration(String sectionName, ConcurrentMap<String, String> configurations, ConfigurationSource[] configurationSources, Configuration base) {
+        this.sectionName = sectionName;
+        this.configurationSources = configurationSources;
         this.configurations = new ConcurrentHashMap<>(configurations);
+        this.base = base;
     }
 
     /**
@@ -272,12 +287,7 @@ public class Configuration implements Cloneable {
      * @return Value of the configuration if found, otherwise null.
      */
     public String get(String name) {
-        return getOrLoad(new ConfigurationProperty(name));
-    }
-
-
-    public String get(ConfigurationProperty property) {
-        return getOrLoad(property);
+        return getOrLoad(name);
     }
 
     /**
@@ -295,11 +305,7 @@ public class Configuration implements Cloneable {
      */
     public <T> T get(String name, T defaultValue) {
         // TODO(configuration): can avoid allocation - optimize
-        return convertOrDefault(getOrLoad(new ConfigurationProperty(name)), defaultValue);
-    }
-
-    public <T> T get(ConfigurationProperty property, T defaultValue) {
-        return convertOrDefault(getOrLoad(property), defaultValue);
+        return convertOrDefault(getOrLoad(name), defaultValue);
     }
 
     /**
@@ -317,16 +323,7 @@ public class Configuration implements Cloneable {
      */
     public <T> T get(String name, Function<String, T> converter) {
         // TODO(configuration): can avoid allocation - optimize
-        String value = getOrLoad(new ConfigurationProperty(name));
-        if (CoreUtils.isNullOrEmpty(value)) {
-            return null;
-        }
-
-        return converter.apply(value);
-    }
-
-    public <T> T get(ConfigurationProperty property, Function<String, T> converter) {
-        String value = getOrLoad(property);
+        String value = getOrLoad(name);
         if (CoreUtils.isNullOrEmpty(value)) {
             return null;
         }
@@ -344,15 +341,15 @@ public class Configuration implements Cloneable {
      * @return The configuration value from either the configuration store, runtime parameters, or environment
      * variable, in that order, if found, otherwise null.
      */
-    private String getOrLoad(ConfigurationProperty property) {
-        String value = configurations.get(property.getFullName());
+    private String getOrLoad(String name) {
+        String value = configurations.get(name);
         if (value != null) {
             return value;
         }
 
-        value = load(property);
+        value = load(name);
         if (value != null) {
-            configurations.put(property.getFullName(), value);
+            configurations.put(name, value);
             return value;
         }
 
@@ -367,23 +364,30 @@ public class Configuration implements Cloneable {
      * @param name Name of the configuration.
      * @return If found the loaded configuration, otherwise null.
      */
-    private String load(ConfigurationProperty property) {
-        for (ConfigurationSource source : configurationSources) {
-            String value = source.getValue(property.getFullName());
-            if (value != null) {
-                return value;
+    private String load(String name) {
+        if (sectionName == null) {
+            for (ConfigurationSource source : configurationSources) {
+                String value = source.getValue(name);
+                if (value != null) {
+                    return value;
+                }
             }
+
+            return null;
         }
 
-        if (!property.isLocal()) {
-            // some settings can be global (e.g. http retries can be set on multiple levels of config,
-            //  others like connection-string should only be available with given client prefix.
-            // need some indication which property is it
-
-            return getOrLoad(property.getBase());
+        // TODO(configration): this is too hard, confusing and relies on property names conventions
+        // need API or other hint for it. making clients do global lookup is even harder
+        if (name.startsWith(sectionName) && name.charAt(sectionName.length()) == '.') {
+            // things that are requested with client name prefix should not be looked up in global config
+            return base.getOrLoad(name);
         }
 
-        return null;
+        String prefixedName = sectionName + "." + name;
+        // check local property
+        String value = base.getOrLoad(prefixedName);
+        // if not found - global property
+        return value == null ? base.getOrLoad(name) : value;
     }
 
     /**
@@ -432,7 +436,7 @@ public class Configuration implements Cloneable {
      */
     @SuppressWarnings("CloneDoesntCallSuperClone")
     public Configuration clone() {
-        return new Configuration(configurations);
+        return new Configuration(sectionName, configurations, configurationSources, base);
     }
 
     /*
@@ -477,7 +481,7 @@ public class Configuration implements Cloneable {
 
     private void loadBaseConfiguration(Configuration configuration) {
         for (String config : DEFAULT_CONFIGURATIONS) {
-            String value = load(new ConfigurationProperty(config));
+            String value = load(config);
             if (value != null) {
                 configuration.put(config, value);
             }

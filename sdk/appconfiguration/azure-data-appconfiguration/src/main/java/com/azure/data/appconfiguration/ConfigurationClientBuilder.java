@@ -25,7 +25,6 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.ConfigurationProperty;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
@@ -156,14 +155,9 @@ public final class ConfigurationClientBuilder {
         return new ConfigurationClient(buildAsyncClient());
     }
 
-    private ConfigurationServiceVersion getServiceVersion(Configuration configuration) {
+    private ConfigurationServiceVersion getServiceVersion() {
         if (version != null) {
             return version;
-        }
-
-        String versionStr = configuration.get(new ConfigurationProperty("appconfiguration", "service-version", false));
-        if (!CoreUtils.isNullOrEmpty(versionStr)) {
-            return ConfigurationServiceVersion.valueOf(versionStr);
         }
 
         return ConfigurationServiceVersion.getLatest();
@@ -189,7 +183,7 @@ public final class ConfigurationClientBuilder {
             : configuration;
 
         // Service version
-        ConfigurationServiceVersion serviceVersion = getServiceVersion(buildConfiguration);
+        ConfigurationServiceVersion serviceVersion = getServiceVersion();
 
         // Endpoint
         String buildEndpoint = endpoint;
@@ -414,24 +408,24 @@ public final class ConfigurationClientBuilder {
      * @return The updated ConfigurationClientBuilder object.
      */
     public ConfigurationClientBuilder configuration(Configuration configuration) {
-        this.configuration = configuration;
+        this.configuration = configuration.getSection("appconfiguration");
 
-        // TODO, what if there are http options in config?
-        // TODO pass client name
-        clientOptions = new HttpClientOptions().setConfiguration(this.configuration);
+        // will populate ClientOptions or HttpClientOptions depending on config
+        clientOptions(HttpClientOptions.fromConfigurationOrDefault(this.configuration, this.clientOptions));
 
-        // TODO pass client name
-        httpLogOptions = HttpLogOptions.fromConfiguration(this.configuration);
+        httpLogOptions(HttpLogOptions.fromConfigurationOrDefault(this.configuration, this.httpLogOptions));
 
-        String configEndpoint = this.configuration.get(new ConfigurationProperty("appconfiguration", "endpoint", true));
-        if (configEndpoint != null) {
-            this.endpoint = configEndpoint;
-        }
+        endpoint(this.configuration.get("appconfiguration.endpoint", this.endpoint));
 
-        String connectionString =  this.configuration.get(new ConfigurationProperty("appconfiguration", "connection-string", true));
+        String connectionString =  this.configuration.get("appconfiguration.connection-string");
         if (connectionString != null) {
             connectionString(connectionString);
         }
+
+        retryPolicy(RetryPolicy.fromConfigurationOrDefault(this.configuration, null));
+        serviceVersion(this.configuration.get("appconfiguration.service-version", getServiceVersion()));
+
+        // TODO(configuration) credential
         return this;
     }
 
