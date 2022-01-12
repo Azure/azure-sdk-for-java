@@ -86,7 +86,7 @@ def generate(
     use: str,
     autorest_options: str = '',
     **kwargs,
-):
+) -> bool:
     namespace = 'com.{0}'.format(module.replace('-', '.'))
     output_dir = os.path.join(
         sdk_root,
@@ -149,7 +149,7 @@ def generate(
     return True
 
 
-def compile_package(sdk_root: str, group_id: str, module: str):
+def compile_package(sdk_root: str, group_id: str, module: str) -> bool:
     command = 'mvn --no-transfer-progress clean verify package -f {0}/pom.xml -pl {1}:{2} -am'.format(
         sdk_root, group_id, module)
     logging.info(command)
@@ -273,7 +273,10 @@ def main():
 
     succeeded = generate(sdk_root, **args)
     if succeeded:
-        compile_package(sdk_root, GROUP_ID, args['module'])
+        succeeded = compile_package(sdk_root, GROUP_ID, args['module'])
+
+    if not succeeded:
+        raise RuntimeError('Failed to generate code or compile the package')
 
 
 if __name__ == '__main__':

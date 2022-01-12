@@ -43,7 +43,7 @@ def generate(
     version: str = None,
     autorest_options: str = '',
     **kwargs,
-):
+) -> bool:
     module = ARTIFACT_FORMAT.format(service)
     namespace = NAMESPACE_FORMAT.format(service)
     output_dir = os.path.join(
@@ -89,7 +89,7 @@ def generate(
     return True
 
 
-def compile_package(sdk_root, service):
+def compile_package(sdk_root, service) -> bool:
     module = ARTIFACT_FORMAT.format(service)
     if os.system(
             'mvn --no-transfer-progress clean verify package -f {0}/pom.xml -pl {1}:{2} -am'.format(
@@ -476,25 +476,30 @@ def main():
     module = ARTIFACT_FORMAT.format(service)
     stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module, **args)
     args['version'] = current_version
-    generate(sdk_root, **args)
+    succeeded = generate(sdk_root, **args)
 
-    compile_package(sdk_root, service)
-    compare_with_maven_package(sdk_root, service, stable_version,
-                               current_version)
+    if succeeded:
+        succeeded = compile_package(sdk_root, service)
+        if succeeded:
+            compare_with_maven_package(sdk_root, service, stable_version,
+                                    current_version)
 
-    if args.get('auto_commit_external_change') and args.get(
-            'user_name') and args.get('user_email'):
-        pwd = os.getcwd()
-        try:
-            os.chdir(sdk_root)
-            os.system('git add eng/versioning eng/mgmt pom.xml {0} {1}'.format(
-                CI_FILE_FORMAT.format(service),
-                POM_FILE_FORMAT.format(service)))
-            os.system(
-                'git -c user.name={0} -c user.email={1} commit -m "[Automation] External Change"'
-                .format(args['user_name'], args['user_email']))
-        finally:
-            os.chdir(pwd)
+            if args.get('auto_commit_external_change') and args.get(
+                    'user_name') and args.get('user_email'):
+                pwd = os.getcwd()
+                try:
+                    os.chdir(sdk_root)
+                    os.system('git add eng/versioning eng/mgmt pom.xml {0} {1}'.format(
+                        CI_FILE_FORMAT.format(service),
+                        POM_FILE_FORMAT.format(service)))
+                    os.system(
+                        'git -c user.name={0} -c user.email={1} commit -m "[Automation] External Change"'
+                        .format(args['user_name'], args['user_email']))
+                finally:
+                    os.chdir(pwd)
+
+    if not succeeded:
+        raise RuntimeError('Failed to generate code or compile the package')
 
 
 if __name__ == '__main__':
