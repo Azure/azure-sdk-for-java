@@ -71,7 +71,7 @@ stages:
           displayName: 'Generate Aggregate JavaDocs'
           inputs:
             mavenPomFile: pom.xml
-            options: '$(DefaultOptions) -T 2C -Dinclude-non-shipping-modules -DskipTests -Dgpg.skip -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -Pjavadoc'
+            options: '$(DefaultOptions) -T 2C -Dinclude-non-shipping-modules -DskipTests -Dgpg.skip -Dmaven.main.skip=true -Dmaven.test.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -Pjavadoc'
             mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
             javaHomeOption: 'JDKVersion'
             jdkVersionOption: $(JavaBuildVersion)
@@ -83,7 +83,7 @@ stages:
           displayName: 'Generate Aggregate JaCoCo coverage report'
           inputs:
             mavenPomFile: pom.xml
-            options: '$(DefaultOptions) -T 2C -Dinclude-non-shipping-modules -Dgpg.skip=true -Drevapi.skip=true -Pjacoco -Dcheckstyle.skip=true -Dmaven.javadoc.skip=true -Dspotbugs.skip=true'
+            options: '$(DefaultOptions) -T 2C -Dinclude-non-shipping-modules -Dgpg.skip=true -Drevapi.skip=true -Pjacoco -Dcheckstyle.skip=true -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dmaven.main.skip=true -Dmaven.test.skip=true'
             mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
             javaHomeOption: 'JDKVersion'
             jdkVersionOption: $(JavaBuildVersion)
@@ -128,7 +128,7 @@ stages:
           displayName: 'Copy reports to artifact staging'
 
         - pwsh: |
-            Copy-Item eng/bomgenerator/target/dependency_conflictlist.html $(Build.ArtifactStagingDirectory)/staging
+            Copy-Item eng/bomgenerator/outputdir/dependency_conflictlist.html $(Build.ArtifactStagingDirectory)/staging
 
           displayName: 'Copy BOM report to artifact staging'
           condition: succeededOrFailed()
