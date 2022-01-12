@@ -51,6 +51,7 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
+        <module>azure-messaging-newwebpubsub</module>
         <module>azure-messaging-webpubsub</module>
         <module>azure-resourcemanager-webpubsub</module>
       </modules>
