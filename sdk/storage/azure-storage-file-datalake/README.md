@@ -56,7 +56,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-file-datalake</artifactId>
-    <version>12.7.2</version>
+    <version>12.7.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -72,8 +72,8 @@ az extension add --name storage-preview
 az storage account create -n my-storage-account-name -g my-resource-group --sku Standard_LRS --kind StorageV2 --hierarchical-namespace true
 ```
 
-Your storage account URL, subsequently identified as `<your-storage-account-url>`, would be formatted as follows
-`http(s)://<storage-account-name>.dfs.core.windows.net`
+Your storage account URL, subsequently identified as <your-storage-account-url>, would be formatted as follows
+http(s)://<storage-account-name>.dfs.core.windows.net
 
 ### Authenticate the client
 
@@ -212,7 +212,8 @@ The following sections provide several code snippets covering some of the most c
 
 Create a `DataLakeServiceClient` using the [`sasToken`](#get-credentials) generated above.
 
-```java readme-sample-getDataLakeServiceClient1
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L25-L28 -->
+```java
 DataLakeServiceClient dataLakeServiceClient = new DataLakeServiceClientBuilder()
     .endpoint("<your-storage-account-url>")
     .sasToken("<your-sasToken>")
@@ -221,7 +222,8 @@ DataLakeServiceClient dataLakeServiceClient = new DataLakeServiceClientBuilder()
 
 or
 
-```java readme-sample-getDataLakeServiceClient2
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L32-L35 -->
+```java
 // Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
 DataLakeServiceClient dataLakeServiceClient = new DataLakeServiceClientBuilder()
     .endpoint("<your-storage-account-url>" + "?" + "<your-sasToken>")
@@ -232,7 +234,8 @@ DataLakeServiceClient dataLakeServiceClient = new DataLakeServiceClientBuilder()
 
 Create a `DataLakeFileSystemClient` using a `DataLakeServiceClient`.
 
-```java readme-sample-getDataLakeFileSystemClient1
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L39-L39 -->
+```java
 DataLakeFileSystemClient dataLakeFileSystemClient = dataLakeServiceClient.getFileSystemClient("myfilesystem");
 ```
 
@@ -240,7 +243,8 @@ or
 
 Create a `DataLakeFileSystemClient` from the builder [`sasToken`](#get-credentials) generated above.
 
-```java readme-sample-getDataLakeFileSystemClient2
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L43-L47 -->
+```java
 DataLakeFileSystemClient dataLakeFileSystemClient = new DataLakeFileSystemClientBuilder()
     .endpoint("<your-storage-account-url>")
     .sasToken("<your-sasToken>")
@@ -250,7 +254,8 @@ DataLakeFileSystemClient dataLakeFileSystemClient = new DataLakeFileSystemClient
 
 or
 
-```java readme-sample-getDataLakeFileSystemClient3
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L51-L54 -->
+```java
 // Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
 DataLakeFileSystemClient dataLakeFileSystemClient = new DataLakeFileSystemClientBuilder()
     .endpoint("<your-storage-account-url>" + "/" + "myfilesystem" + "?" + "<your-sasToken>")
@@ -261,7 +266,8 @@ DataLakeFileSystemClient dataLakeFileSystemClient = new DataLakeFileSystemClient
 
 Create a `DataLakeFileClient` using a `DataLakeFileSystemClient`.
 
-```java readme-sample-getFileClient1
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L58-L58 -->
+```java
 DataLakeFileClient fileClient = dataLakeFileSystemClient.getFileClient("myfile");
 ```
 
@@ -269,7 +275,8 @@ or
 
 Create a `FileClient` from the builder [`sasToken`](#get-credentials) generated above.
 
-```java readme-sample-getFileClient2
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L62-L67 -->
+```java
 DataLakeFileClient fileClient = new DataLakePathClientBuilder()
     .endpoint("<your-storage-account-url>")
     .sasToken("<your-sasToken>")
@@ -280,7 +287,8 @@ DataLakeFileClient fileClient = new DataLakePathClientBuilder()
 
 or
 
-```java readme-sample-getFileClient3
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L71-L74 -->
+```java
 // Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
 DataLakeFileClient fileClient = new DataLakePathClientBuilder()
     .endpoint("<your-storage-account-url>" + "/" + "myfilesystem" + "/" + "myfile" + "?" + "<your-sasToken>")
@@ -291,7 +299,8 @@ DataLakeFileClient fileClient = new DataLakePathClientBuilder()
 
 Get a `DataLakeDirectoryClient` using a `DataLakeFileSystemClient`.
 
-```java readme-sample-getDirClient1
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L78-L78 -->
+```java
 DataLakeDirectoryClient directoryClient = dataLakeFileSystemClient.getDirectoryClient("mydir");
 ```
 
@@ -299,7 +308,8 @@ or
 
 Create a `DirectoryClient` from the builder [`sasToken`](#get-credentials) generated above.
 
-```java readme-sample-getDirClient2
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L82-L87 -->
+```java
 DataLakeDirectoryClient directoryClient = new DataLakePathClientBuilder()
     .endpoint("<your-storage-account-url>")
     .sasToken("<your-sasToken>")
@@ -310,7 +320,8 @@ DataLakeDirectoryClient directoryClient = new DataLakePathClientBuilder()
 
 or
 
-```java readme-sample-getDirClient3
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L91-L94 -->
+```java
 // Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
 DataLakeDirectoryClient directoryClient = new DataLakePathClientBuilder()
     .endpoint("<your-storage-account-url>" + "/" + "myfilesystem" + "/" + "mydir" + "?" + "<your-sasToken>")
@@ -321,7 +332,8 @@ DataLakeDirectoryClient directoryClient = new DataLakePathClientBuilder()
 
 Create a file system using a `DataLakeServiceClient`.
 
-```java readme-sample-createDataLakeFileSystemClient1
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L98-L98 -->
+```java
 dataLakeServiceClient.createFileSystem("myfilesystem");
 ```
 
@@ -329,7 +341,8 @@ or
 
 Create a file system using a `DataLakeFileSystemClient`.
 
-```java readme-sample-createDataLakeFileSystemClient2
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L102-L102 -->
+```java
 dataLakeFileSystemClient.create();
 ```
 
@@ -337,7 +350,8 @@ dataLakeFileSystemClient.create();
 
 Enumerating all paths using a `DataLakeFileSystemClient`.
 
-```java readme-sample-enumeratePaths
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L106-L108 -->
+```java
 for (PathItem pathItem : dataLakeFileSystemClient.listPaths()) {
     System.out.println("This is the path name: " + pathItem.getName());
 }
@@ -347,7 +361,8 @@ for (PathItem pathItem : dataLakeFileSystemClient.listPaths()) {
 
 Rename a file using a `DataLakeFileClient`.
 
-```java readme-sample-renameFile
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L112-L115 -->
+```java
 //Need to authenticate with azure identity and add role assignment "Storage Blob Data Contributor" to do the following operation.
 DataLakeFileClient fileClient = dataLakeFileSystemClient.getFileClient("myfile");
 fileClient.create();
@@ -358,7 +373,8 @@ fileClient.rename("new-file-system-name", "new-file-name");
 
 Rename a directory using a `DataLakeDirectoryClient`.
 
-```java readme-sample-renameDirectory
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L119-L122 -->
+```java
 //Need to authenticate with azure identity and add role assignment "Storage Blob Data Contributor" to do the following operation.
 DataLakeDirectoryClient directoryClient = dataLakeFileSystemClient.getDirectoryClient("mydir");
 directoryClient.create();
@@ -369,7 +385,8 @@ directoryClient.rename("new-file-system-name", "new-directory-name");
 
 Get properties from a file using a `DataLakeFileClient`.
 
-```java readme-sample-getPropertiesFile
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L126-L128 -->
+```java
 DataLakeFileClient fileClient = dataLakeFileSystemClient.getFileClient("myfile");
 fileClient.create();
 PathProperties properties = fileClient.getProperties();
@@ -379,7 +396,8 @@ PathProperties properties = fileClient.getProperties();
 
 Get properties from a directory using a `DataLakeDirectoryClient`.
 
-```java readme-sample-getPropertiesDirectory
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L132-L134 -->
+```java
 DataLakeDirectoryClient directoryClient = dataLakeFileSystemClient.getDirectoryClient("mydir");
 directoryClient.create();
 PathProperties properties = directoryClient.getProperties();
@@ -389,7 +407,8 @@ PathProperties properties = directoryClient.getProperties();
 
 The [Azure Identity library][identity] provides Azure Active Directory support for authenticating with Azure Storage.
 
-```java readme-sample-authWithIdentity
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L138-L141 -->
+```java
 DataLakeServiceClient storageClient = new DataLakeServiceClientBuilder()
     .endpoint("<your-storage-account-url>")
     .credential(new DefaultAzureCredentialBuilder().build())

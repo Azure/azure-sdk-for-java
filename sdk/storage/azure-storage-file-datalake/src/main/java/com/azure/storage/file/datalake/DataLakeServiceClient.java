@@ -67,11 +67,7 @@ public class DataLakeServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeServiceClient.getFileSystemClient#String -->
-     * <pre>
-     * DataLakeFileSystemClient dataLakeFileSystemClient = client.getFileSystemClient&#40;&quot;fileSystemName&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeServiceClient.getFileSystemClient#String -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.getFileSystemClient#String}
      *
      * @param fileSystemName The name of the file system to point to.
      * @return A {@link DataLakeFileSystemClient} object pointing to the specified file system
@@ -106,11 +102,7 @@ public class DataLakeServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeServiceClient.createFileSystem#String -->
-     * <pre>
-     * DataLakeFileSystemClient dataLakeFileSystemClient = client.createFileSystem&#40;&quot;fileSystemName&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeServiceClient.createFileSystem#String -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.createFileSystem#String}
      *
      * @param fileSystemName Name of the file system to create
      * @return The {@link DataLakeFileSystemClient} used to interact with the file system created.
@@ -127,18 +119,7 @@ public class DataLakeServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeServiceClient.createFileSystemWithResponse#String-Map-PublicAccessType-Context -->
-     * <pre>
-     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
-     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
-     *
-     * DataLakeFileSystemClient dataLakeFileSystemClient = client.createFileSystemWithResponse&#40;
-     *     &quot;fileSystemName&quot;,
-     *     metadata,
-     *     PublicAccessType.CONTAINER,
-     *     context&#41;.getValue&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeServiceClient.createFileSystemWithResponse#String-Map-PublicAccessType-Context -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.createFileSystemWithResponse#String-Map-PublicAccessType-Context}
      *
      * @param fileSystemName Name of the file system to create
      * @param metadata Metadata to associate with the file system. If there is leading or trailing whitespace in any
@@ -164,16 +145,7 @@ public class DataLakeServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeServiceClient.deleteFileSystem#String -->
-     * <pre>
-     * try &#123;
-     *     client.deleteFileSystem&#40;&quot;fileSystemName&quot;&#41;;
-     *     System.out.printf&#40;&quot;Delete file system completed with status %n&quot;&#41;;
-     * &#125; catch &#40;UnsupportedOperationException error&#41; &#123;
-     *     System.out.printf&#40;&quot;Delete file system failed: %s%n&quot;, error&#41;;
-     * &#125;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeServiceClient.deleteFileSystem#String -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.deleteFileSystem#String}
      *
      * @param fileSystemName Name of the file system to delete
      */
@@ -189,14 +161,7 @@ public class DataLakeServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeServiceClient.deleteFileSystemWithResponse#String-DataLakeRequestConditions-Context -->
-     * <pre>
-     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
-     * System.out.printf&#40;&quot;Delete file system completed with status %d%n&quot;,
-     *     client.deleteFileSystemWithResponse&#40;&quot;fileSystemName&quot;, new DataLakeRequestConditions&#40;&#41;, context&#41;
-     *         .getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeServiceClient.deleteFileSystemWithResponse#String-DataLakeRequestConditions-Context -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.deleteFileSystemWithResponse#String-DataLakeRequestConditions-Context}
      *
      * @param fileSystemName Name of the file system to delete
      * @param requestConditions {@link DataLakeRequestConditions}
@@ -225,11 +190,7 @@ public class DataLakeServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeServiceClient.listFileSystems -->
-     * <pre>
-     * client.listFileSystems&#40;&#41;.forEach&#40;fileSystem -&gt; System.out.printf&#40;&quot;Name: %s%n&quot;, fileSystem.getName&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeServiceClient.listFileSystems -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.listFileSystems}
      *
      * @return The list of file systems.
      */
@@ -245,16 +206,7 @@ public class DataLakeServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeServiceClient.listFileSystems#ListFileSystemsOptions-Duration -->
-     * <pre>
-     * ListFileSystemsOptions options = new ListFileSystemsOptions&#40;&#41;
-     *     .setPrefix&#40;&quot;filSystemNamePrefixToMatch&quot;&#41;
-     *     .setDetails&#40;new FileSystemListDetails&#40;&#41;.setRetrieveMetadata&#40;true&#41;&#41;;
-     *
-     * client.listFileSystems&#40;options, timeout&#41;.forEach&#40;fileSystem -&gt; System.out.printf&#40;&quot;Name: %s%n&quot;,
-     *     fileSystem.getName&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeServiceClient.listFileSystems#ListFileSystemsOptions-Duration -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.listFileSystems#ListFileSystemsOptions-Duration}
      *
      * @param options A {@link ListFileSystemsOptions} which specifies what data should be returned by the service.
      * If iterating by page, the page size passed to byPage methods such as
@@ -272,15 +224,7 @@ public class DataLakeServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeServiceClient.getProperties -->
-     * <pre>
-     * DataLakeServiceProperties properties = client.getProperties&#40;&#41;;
-     *
-     * System.out.printf&#40;&quot;Hour metrics enabled: %b, Minute metrics enabled: %b%n&quot;,
-     *     properties.getHourMetrics&#40;&#41;.isEnabled&#40;&#41;,
-     *     properties.getMinuteMetrics&#40;&#41;.isEnabled&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeServiceClient.getProperties -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.getProperties}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
@@ -297,16 +241,7 @@ public class DataLakeServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeServiceClient.getPropertiesWithResponse#Duration-Context -->
-     * <pre>
-     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
-     * properties = client.getPropertiesWithResponse&#40;timeout, context&#41;.getValue&#40;&#41;;
-     *
-     * System.out.printf&#40;&quot;Hour metrics enabled: %b, Minute metrics enabled: %b%n&quot;,
-     *     properties.getHourMetrics&#40;&#41;.isEnabled&#40;&#41;,
-     *     properties.getMinuteMetrics&#40;&#41;.isEnabled&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeServiceClient.getPropertiesWithResponse#Duration-Context -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.getPropertiesWithResponse#Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
@@ -333,31 +268,7 @@ public class DataLakeServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeServiceClient.setProperties#DataLakeServiceProperties -->
-     * <pre>
-     * DataLakeRetentionPolicy loggingRetentionPolicy = new DataLakeRetentionPolicy&#40;&#41;.setEnabled&#40;true&#41;.setDays&#40;3&#41;;
-     * DataLakeRetentionPolicy metricsRetentionPolicy = new DataLakeRetentionPolicy&#40;&#41;.setEnabled&#40;true&#41;.setDays&#40;1&#41;;
-     *
-     * DataLakeServiceProperties properties = new DataLakeServiceProperties&#40;&#41;
-     *     .setLogging&#40;new DataLakeAnalyticsLogging&#40;&#41;
-     *         .setWrite&#40;true&#41;
-     *         .setDelete&#40;true&#41;
-     *         .setRetentionPolicy&#40;loggingRetentionPolicy&#41;&#41;
-     *     .setHourMetrics&#40;new DataLakeMetrics&#40;&#41;
-     *         .setEnabled&#40;true&#41;
-     *         .setRetentionPolicy&#40;metricsRetentionPolicy&#41;&#41;
-     *     .setMinuteMetrics&#40;new DataLakeMetrics&#40;&#41;
-     *         .setEnabled&#40;true&#41;
-     *         .setRetentionPolicy&#40;metricsRetentionPolicy&#41;&#41;;
-     *
-     * try &#123;
-     *     client.setProperties&#40;properties&#41;;
-     *     System.out.printf&#40;&quot;Setting properties completed%n&quot;&#41;;
-     * &#125; catch &#40;UnsupportedOperationException error&#41; &#123;
-     *     System.out.printf&#40;&quot;Setting properties failed: %s%n&quot;, error&#41;;
-     * &#125;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeServiceClient.setProperties#DataLakeServiceProperties -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.setProperties#DataLakeServiceProperties}
      *
      * @param properties Configures the service.
      */
@@ -376,29 +287,7 @@ public class DataLakeServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeServiceClient.setPropertiesWithResponse#DataLakeServiceProperties-Duration-Context -->
-     * <pre>
-     * loggingRetentionPolicy = new DataLakeRetentionPolicy&#40;&#41;.setEnabled&#40;true&#41;.setDays&#40;3&#41;;
-     * metricsRetentionPolicy = new DataLakeRetentionPolicy&#40;&#41;.setEnabled&#40;true&#41;.setDays&#40;1&#41;;
-     *
-     * properties = new DataLakeServiceProperties&#40;&#41;
-     *     .setLogging&#40;new DataLakeAnalyticsLogging&#40;&#41;
-     *         .setWrite&#40;true&#41;
-     *         .setDelete&#40;true&#41;
-     *         .setRetentionPolicy&#40;loggingRetentionPolicy&#41;&#41;
-     *     .setHourMetrics&#40;new DataLakeMetrics&#40;&#41;
-     *         .setEnabled&#40;true&#41;
-     *         .setRetentionPolicy&#40;metricsRetentionPolicy&#41;&#41;
-     *     .setMinuteMetrics&#40;new DataLakeMetrics&#40;&#41;
-     *         .setEnabled&#40;true&#41;
-     *         .setRetentionPolicy&#40;metricsRetentionPolicy&#41;&#41;;
-     *
-     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
-     *
-     * System.out.printf&#40;&quot;Setting properties completed with status %d%n&quot;,
-     *     client.setPropertiesWithResponse&#40;properties, timeout, context&#41;.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeServiceClient.setPropertiesWithResponse#DataLakeServiceProperties-Duration-Context -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.setPropertiesWithResponse#DataLakeServiceProperties-Duration-Context}
      *
      * @param properties Configures the service.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -419,12 +308,7 @@ public class DataLakeServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeServiceClient.getUserDelegationKey#OffsetDateTime-OffsetDateTime -->
-     * <pre>
-     * System.out.printf&#40;&quot;User delegation key: %s%n&quot;,
-     *     client.getUserDelegationKey&#40;delegationKeyStartTime, delegationKeyExpiryTime&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeServiceClient.getUserDelegationKey#OffsetDateTime-OffsetDateTime -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.getUserDelegationKey#OffsetDateTime-OffsetDateTime}
      *
      * @param start Start time for the key's validity. Null indicates immediate start.
      * @param expiry Expiration of the key's validity.
@@ -441,12 +325,7 @@ public class DataLakeServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeServiceClient.getUserDelegationKeyWithResponse#OffsetDateTime-OffsetDateTime-Duration-Context -->
-     * <pre>
-     * System.out.printf&#40;&quot;User delegation key: %s%n&quot;,
-     *     client.getUserDelegationKeyWithResponse&#40;delegationKeyStartTime, delegationKeyExpiryTime, timeout, context&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeServiceClient.getUserDelegationKeyWithResponse#OffsetDateTime-OffsetDateTime-Duration-Context -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.getUserDelegationKeyWithResponse#OffsetDateTime-OffsetDateTime-Duration-Context}
      *
      * @param start Start time for the key's validity. Null indicates immediate start.
      * @param expiry Expiration of the key's validity.
@@ -480,22 +359,7 @@ public class DataLakeServiceClient {
      *
      * <p>The snippet below generates a SAS that lasts for two days and gives the user read and list access to file
      * systems and file shares.</p>
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeServiceClient.generateAccountSas#AccountSasSignatureValues -->
-     * <pre>
-     * AccountSasPermission permissions = new AccountSasPermission&#40;&#41;
-     *     .setListPermission&#40;true&#41;
-     *     .setReadPermission&#40;true&#41;;
-     * AccountSasResourceType resourceTypes = new AccountSasResourceType&#40;&#41;.setContainer&#40;true&#41;;
-     * AccountSasService services = new AccountSasService&#40;&#41;.setBlobAccess&#40;true&#41;.setFileAccess&#40;true&#41;;
-     * OffsetDateTime expiryTime = OffsetDateTime.now&#40;&#41;.plus&#40;Duration.ofDays&#40;2&#41;&#41;;
-     *
-     * AccountSasSignatureValues sasValues =
-     *     new AccountSasSignatureValues&#40;expiryTime, permissions, services, resourceTypes&#41;;
-     *
-     * &#47;&#47; Client must be authenticated via StorageSharedKeyCredential
-     * String sas = client.generateAccountSas&#40;sasValues&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeServiceClient.generateAccountSas#AccountSasSignatureValues -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.generateAccountSas#AccountSasSignatureValues}
      *
      * @param accountSasSignatureValues {@link AccountSasSignatureValues}
      *
@@ -512,22 +376,7 @@ public class DataLakeServiceClient {
      *
      * <p>The snippet below generates a SAS that lasts for two days and gives the user read and list access to file
      * systems and file shares.</p>
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeServiceClient.generateAccountSas#AccountSasSignatureValues-Context -->
-     * <pre>
-     * AccountSasPermission permissions = new AccountSasPermission&#40;&#41;
-     *     .setListPermission&#40;true&#41;
-     *     .setReadPermission&#40;true&#41;;
-     * AccountSasResourceType resourceTypes = new AccountSasResourceType&#40;&#41;.setContainer&#40;true&#41;;
-     * AccountSasService services = new AccountSasService&#40;&#41;.setBlobAccess&#40;true&#41;.setFileAccess&#40;true&#41;;
-     * OffsetDateTime expiryTime = OffsetDateTime.now&#40;&#41;.plus&#40;Duration.ofDays&#40;2&#41;&#41;;
-     *
-     * AccountSasSignatureValues sasValues =
-     *     new AccountSasSignatureValues&#40;expiryTime, permissions, services, resourceTypes&#41;;
-     *
-     * &#47;&#47; Client must be authenticated via StorageSharedKeyCredential
-     * String sas = client.generateAccountSas&#40;sasValues, new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeServiceClient.generateAccountSas#AccountSasSignatureValues-Context -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.generateAccountSas#AccountSasSignatureValues-Context}
      *
      * @param accountSasSignatureValues {@link AccountSasSignatureValues}
      * @param context Additional context that is passed through the code when generating a SAS.
@@ -547,18 +396,7 @@ public class DataLakeServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeServiceClient.undeleteFileSystem#String-String -->
-     * <pre>
-     * ListFileSystemsOptions listFileSystemsOptions = new ListFileSystemsOptions&#40;&#41;;
-     * listFileSystemsOptions.getDetails&#40;&#41;.setRetrieveDeleted&#40;true&#41;;
-     * client.listFileSystems&#40;listFileSystemsOptions, null&#41;.forEach&#40;
-     *     deletedFileSystem -&gt; &#123;
-     *         DataLakeFileSystemClient fileSystemClient = client.undeleteFileSystem&#40;
-     *             deletedFileSystem.getName&#40;&#41;, deletedFileSystem.getVersion&#40;&#41;&#41;;
-     *     &#125;
-     * &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeServiceClient.undeleteFileSystem#String-String -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.undeleteFileSystem#String-String}
      *
      * @param deletedFileSystemName The name of the previously deleted file system.
      * @param deletedFileSystemVersion The version of the previously deleted file system.
@@ -582,19 +420,7 @@ public class DataLakeServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeServiceClient.undeleteFileSystemWithResponse#FileSystemUndeleteOptions-Duration-Context -->
-     * <pre>
-     * ListFileSystemsOptions listFileSystemsOptions = new ListFileSystemsOptions&#40;&#41;;
-     * listFileSystemsOptions.getDetails&#40;&#41;.setRetrieveDeleted&#40;true&#41;;
-     * client.listFileSystems&#40;listFileSystemsOptions, null&#41;.forEach&#40;
-     *     deletedFileSystem -&gt; &#123;
-     *         DataLakeFileSystemClient fileSystemClient = client.undeleteFileSystemWithResponse&#40;
-     *             new FileSystemUndeleteOptions&#40;deletedFileSystem.getName&#40;&#41;, deletedFileSystem.getVersion&#40;&#41;&#41;, timeout,
-     *             context&#41;.getValue&#40;&#41;;
-     *     &#125;
-     * &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeServiceClient.undeleteFileSystemWithResponse#FileSystemUndeleteOptions-Duration-Context -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.undeleteFileSystemWithResponse#FileSystemUndeleteOptions-Duration-Context}
      *
      * @param options {@link FileSystemUndeleteOptions}.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -618,8 +444,7 @@ public class DataLakeServiceClient {
 //     *
 //     * <p><strong>Code Samples</strong></p>
 //     *
-//     * <!-- src_embed com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystem#String-String -->
-//     * <!-- end com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystem#String-String -->
+//     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystem#String-String}
 //     *
 //     * @param sourceFileSystemName The current name of the file system.
 //     * @param destinationFileSystemName The new name of the file system.
@@ -636,8 +461,7 @@ public class DataLakeServiceClient {
 //     *
 //     * <p><strong>Code Samples</strong></p>
 //     *
-//     * <!-- src_embed com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystemWithResponse#String-FileSystemRenameOptions-Duration-Context -->
-//     * <!-- end com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystemWithResponse#String-FileSystemRenameOptions-Duration-Context -->
+//     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystemWithResponse#String-FileSystemRenameOptions-Duration-Context}
 //     *
 //     * @param sourceFileSystemName The current name of the file system.
 //     * @param options {@link FileSystemRenameOptions}

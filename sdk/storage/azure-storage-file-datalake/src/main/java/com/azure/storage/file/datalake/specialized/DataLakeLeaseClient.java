@@ -25,29 +25,11 @@ import java.time.Duration;
  *
  * <p><strong>Instantiating a DataLakeLeaseClient</strong></p>
  *
- * <!-- src_embed com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder.syncInstantiationWithFile -->
- * <pre>
- * DataLakeLeaseClient dataLakeLeaseClient = new DataLakeLeaseClientBuilder&#40;&#41;
- *     .fileClient&#40;fileClient&#41;
- *     .buildClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder.syncInstantiationWithFile -->
+ * {@codesnippet com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder.syncInstantiationWithFile}
  *
- * <!-- src_embed com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder.syncInstantiationWithDirectory -->
- * <pre>
- * DataLakeLeaseClient dataLakeLeaseClient = new DataLakeLeaseClientBuilder&#40;&#41;
- *     .directoryClient&#40;directoryClient&#41;
- *     .buildClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder.syncInstantiationWithDirectory -->
+ * {@codesnippet com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder.syncInstantiationWithDirectory}
  *
- * <!-- src_embed com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder.syncInstantiationWithFileSystem -->
- * <pre>
- * DataLakeLeaseClient dataLakeLeaseClient = new DataLakeLeaseClientBuilder&#40;&#41;
- *     .fileSystemClient&#40;dataLakeFileSystemClient&#41;
- *     .buildClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder.syncInstantiationWithFileSystem -->
+ * {@codesnippet com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder.syncInstantiationWithFileSystem}
  *
  * <p>View {@link DataLakeLeaseClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -93,11 +75,7 @@ public final class DataLakeLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.acquireLease#int -->
-     * <pre>
-     * System.out.printf&#40;&quot;Lease ID is %s%n&quot;, client.acquireLease&#40;60&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.acquireLease#int -->
+     * {@codesnippet com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.acquireLease#int}
      *
      * @param duration The duration of the lease between 15 to 60 seconds or -1 for an infinite duration.
      * @return The lease ID.
@@ -113,16 +91,7 @@ public final class DataLakeLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.acquireLeaseWithResponse#int-RequestConditions-Duration-Context -->
-     * <pre>
-     * RequestConditions modifiedRequestConditions = new RequestConditions&#40;&#41;
-     *     .setIfModifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
-     *
-     * System.out.printf&#40;&quot;Lease ID is %s%n&quot;, client
-     *     .acquireLeaseWithResponse&#40;60, modifiedRequestConditions, timeout, new Context&#40;key, value&#41;&#41;
-     *     .getValue&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.acquireLeaseWithResponse#int-RequestConditions-Duration-Context -->
+     * {@codesnippet com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.acquireLeaseWithResponse#int-RequestConditions-Duration-Context}
      *
      * @param duration The duration of the lease between 15 to 60 seconds or -1 for an infinite duration.
      * @param modifiedRequestConditions Standard HTTP Access conditions related to the modification of data. ETag and
@@ -144,11 +113,7 @@ public final class DataLakeLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.renewLease -->
-     * <pre>
-     * System.out.printf&#40;&quot;Renewed lease ID is %s%n&quot;, client.renewLease&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.renewLease -->
+     * {@codesnippet com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.renewLease}
      *
      * @return The renewed lease ID.
      */
@@ -162,16 +127,7 @@ public final class DataLakeLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.renewLeaseWithResponse#RequestConditions-Duration-Context -->
-     * <pre>
-     * RequestConditions modifiedRequestConditions = new RequestConditions&#40;&#41;
-     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
-     *
-     * System.out.printf&#40;&quot;Renewed lease ID is %s%n&quot;,
-     *     client.renewLeaseWithResponse&#40;modifiedRequestConditions, timeout, new Context&#40;key, value&#41;&#41;
-     *         .getValue&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.renewLeaseWithResponse#RequestConditions-Duration-Context -->
+     * {@codesnippet com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.renewLeaseWithResponse#RequestConditions-Duration-Context}
      *
      * @param modifiedRequestConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
@@ -192,12 +148,7 @@ public final class DataLakeLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.releaseLease -->
-     * <pre>
-     * client.releaseLease&#40;&#41;;
-     * System.out.println&#40;&quot;Release lease completed&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.releaseLease -->
+     * {@codesnippet com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.releaseLease}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void releaseLease() {
@@ -209,16 +160,7 @@ public final class DataLakeLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.releaseLeaseWithResponse#RequestConditions-Duration-Context -->
-     * <pre>
-     * RequestConditions modifiedRequestConditions = new RequestConditions&#40;&#41;
-     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
-     *
-     * System.out.printf&#40;&quot;Release lease completed with status %d%n&quot;,
-     *     client.releaseLeaseWithResponse&#40;modifiedRequestConditions, timeout, new Context&#40;key, value&#41;&#41;
-     *         .getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.releaseLeaseWithResponse#RequestConditions-Duration-Context -->
+     * {@codesnippet com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.releaseLeaseWithResponse#RequestConditions-Duration-Context}
      *
      * @param modifiedRequestConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
@@ -239,11 +181,7 @@ public final class DataLakeLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.breakLease -->
-     * <pre>
-     * System.out.printf&#40;&quot;The broken lease has %d seconds remaining on the lease&quot;, client.breakLease&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.breakLease -->
+     * {@codesnippet com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.breakLease}
      *
      * @return The remaining time in the broken lease in seconds.
      */
@@ -260,17 +198,7 @@ public final class DataLakeLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.breakLeaseWithResponse#Integer-RequestConditions-Duration-Context -->
-     * <pre>
-     * Integer retainLeaseInSeconds = 5;
-     * RequestConditions modifiedRequestConditions = new RequestConditions&#40;&#41;
-     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
-     *
-     * System.out.printf&#40;&quot;The broken lease has %d seconds remaining on the lease&quot;, client
-     *     .breakLeaseWithResponse&#40;retainLeaseInSeconds, modifiedRequestConditions, timeout, new Context&#40;key, value&#41;&#41;
-     *     .getValue&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.breakLeaseWithResponse#Integer-RequestConditions-Duration-Context -->
+     * {@codesnippet com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.breakLeaseWithResponse#Integer-RequestConditions-Duration-Context}
      *
      * @param breakPeriodInSeconds An optional duration, between 0 and 60 seconds, that the lease should continue before
      * it is broken. If the break period is longer than the time remaining on the lease the remaining time on the lease
@@ -296,11 +224,7 @@ public final class DataLakeLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.changeLease#String -->
-     * <pre>
-     * System.out.printf&#40;&quot;Changed lease ID is %s%n&quot;, client.changeLease&#40;&quot;proposedId&quot;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.changeLease#String -->
+     * {@codesnippet com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.changeLease#String}
      *
      * @param proposedId A new lease ID in a valid GUID format.
      * @return The new lease ID.
@@ -315,16 +239,7 @@ public final class DataLakeLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.changeLeaseWithResponse#String-RequestConditions-Duration-Context -->
-     * <pre>
-     * RequestConditions modifiedRequestConditions = new RequestConditions&#40;&#41;
-     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
-     *
-     * System.out.printf&#40;&quot;Changed lease ID is %s%n&quot;,
-     *     client.changeLeaseWithResponse&#40;&quot;proposedId&quot;, modifiedRequestConditions, timeout, new Context&#40;key, value&#41;&#41;
-     *         .getValue&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.changeLeaseWithResponse#String-RequestConditions-Duration-Context -->
+     * {@codesnippet com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.changeLeaseWithResponse#String-RequestConditions-Duration-Context}
      *
      * @param proposedId A new lease ID in a valid GUID format.
      * @param modifiedRequestConditions Standard HTTP Access conditions related to the modification of data. ETag and

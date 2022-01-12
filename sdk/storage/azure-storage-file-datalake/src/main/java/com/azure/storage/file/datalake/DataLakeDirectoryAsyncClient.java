@@ -119,12 +119,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.delete -->
-     * <pre>
-     * client.delete&#40;&#41;.subscribe&#40;response -&gt;
-     *     System.out.println&#40;&quot;Delete request completed&quot;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.delete -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.delete}
      *
      * <p>For more information see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
@@ -146,16 +141,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteWithResponse#boolean-DataLakeRequestConditions -->
-     * <pre>
-     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
-     *     .setLeaseId&#40;leaseId&#41;;
-     * boolean recursive = false; &#47;&#47; Default value
-     *
-     * client.deleteWithResponse&#40;recursive, requestConditions&#41;
-     *     .subscribe&#40;response -&gt; System.out.println&#40;&quot;Delete request completed&quot;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteWithResponse#boolean-DataLakeRequestConditions -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteWithResponse#boolean-DataLakeRequestConditions}
      *
      * <p>For more information see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
@@ -183,11 +169,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.getFileAsyncClient#String -->
-     * <pre>
-     * DataLakeFileAsyncClient dataLakeFileClient = client.getFileAsyncClient&#40;fileName&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.getFileAsyncClient#String -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.getFileAsyncClient#String}
      *
      * @param fileName A {@code String} representing the name of the file.
      * @return A new {@link DataLakeFileAsyncClient} object which references the file with the specified name in this
@@ -213,11 +195,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFile#String -->
-     * <pre>
-     * DataLakeFileAsyncClient fileClient = client.createFile&#40;fileName&#41;.block&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFile#String -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFile#String}
      *
      * @param fileName Name of the file to create.
      * @return A {@link Mono} containing a {@link DataLakeFileAsyncClient} used to interact with the file created.
@@ -234,12 +212,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFile#String-boolean -->
-     * <pre>
-     * boolean overwrite = false; &#47;* Default value. *&#47;
-     * DataLakeFileAsyncClient fClient = client.createFile&#40;fileName, overwrite&#41;.block&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFile#String-boolean -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFile#String-boolean}
      *
      * @param fileName Name of the file to create.
      * @param overwrite Whether or not to overwrite, should the file exist.
@@ -267,20 +240,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions -->
-     * <pre>
-     * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
-     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
-     *     .setContentType&#40;&quot;binary&quot;&#41;;
-     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
-     *     .setLeaseId&#40;leaseId&#41;;
-     * String permissions = &quot;permissions&quot;;
-     * String umask = &quot;umask&quot;;
-     * DataLakeFileAsyncClient newFileClient = client.createFileWithResponse&#40;fileName,
-     *     permissions, umask, httpHeaders, Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;, requestConditions
-     * &#41;.block&#40;&#41;.getValue&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions}
      *
      * @param fileName Name of the file to create.
      * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
@@ -313,12 +273,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteFile#String -->
-     * <pre>
-     * client.deleteFile&#40;fileName&#41;.subscribe&#40;response -&gt;
-     *     System.out.println&#40;&quot;Delete request completed&quot;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteFile#String -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteFile#String}
      *
      * @param fileName Name of the file to delete.
      * @return A reactive response signalling completion.
@@ -339,15 +294,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteFileWithResponse#String-DataLakeRequestConditions -->
-     * <pre>
-     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
-     *     .setLeaseId&#40;leaseId&#41;;
-     *
-     * client.deleteFileWithResponse&#40;fileName, requestConditions&#41;
-     *     .subscribe&#40;response -&gt; System.out.println&#40;&quot;Delete request completed&quot;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteFileWithResponse#String-DataLakeRequestConditions -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteFileWithResponse#String-DataLakeRequestConditions}
      *
      * @param fileName Name of the file to delete.
      * @param requestConditions {@link DataLakeRequestConditions}
@@ -369,11 +316,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.getSubdirectoryAsyncClient#String -->
-     * <pre>
-     * DataLakeDirectoryAsyncClient dataLakeDirectoryClient = client.getSubdirectoryAsyncClient&#40;directoryName&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.getSubdirectoryAsyncClient#String -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.getSubdirectoryAsyncClient#String}
      *
      * @param subdirectoryName A {@code String} representing the name of the sub-directory.
      * @return A new {@link DataLakeDirectoryAsyncClient} object which references the directory with the specified name
@@ -399,11 +342,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectory#String -->
-     * <pre>
-     * DataLakeDirectoryAsyncClient directoryClient = client.createSubdirectory&#40;directoryName&#41;.block&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectory#String -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectory#String}
      *
      * @param subdirectoryName Name of the sub-directory to create.
      * @return A {@link Mono} containing a {@link DataLakeDirectoryAsyncClient} used to interact with the directory
@@ -420,12 +359,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectory#String-boolean -->
-     * <pre>
-     * boolean overwrite = false; &#47;* Default value. *&#47;
-     * DataLakeDirectoryAsyncClient dClient = client.createSubdirectory&#40;directoryName, overwrite&#41;.block&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectory#String-boolean -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectory#String-boolean}
      *
      * @param subdirectoryName Name of the sub-directory to create.
      * @param overwrite Whether or not to overwrite, should the sub directory exist.
@@ -453,21 +387,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions -->
-     * <pre>
-     * PathHttpHeaders httpHeaders = new PathHttpHeaders&#40;&#41;
-     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
-     *     .setContentType&#40;&quot;binary&quot;&#41;;
-     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
-     *     .setLeaseId&#40;leaseId&#41;;
-     * String permissions = &quot;permissions&quot;;
-     * String umask = &quot;umask&quot;;
-     * DataLakeDirectoryAsyncClient newDirectoryClient = client.createSubdirectoryWithResponse&#40;
-     *     directoryName, permissions, umask, httpHeaders, Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;,
-     *     requestConditions
-     * &#41;.block&#40;&#41;.getValue&#40;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.createSubdirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions}
      *
      * @param subdirectoryName Name of the sub-directory to create.
      * @param permissions POSIX access permissions for the sub-directory owner, the sub-directory owning group, and
@@ -502,12 +422,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteSubdirectory#String -->
-     * <pre>
-     * client.deleteSubdirectory&#40;directoryName&#41;.subscribe&#40;response -&gt;
-     *     System.out.println&#40;&quot;Delete request completed&quot;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteSubdirectory#String -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteSubdirectory#String}
      *
      * @param subdirectoryName Name of the sub-directory to delete.
      * @return A reactive response signalling completion.
@@ -529,16 +444,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteSubdirectoryWithResponse#String-boolean-DataLakeRequestConditions -->
-     * <pre>
-     * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;
-     *     .setLeaseId&#40;leaseId&#41;;
-     * boolean recursive = false; &#47;&#47; Default value
-     *
-     * client.deleteSubdirectoryWithResponse&#40;directoryName, recursive, requestConditions&#41;
-     *     .subscribe&#40;response -&gt; System.out.println&#40;&quot;Delete request completed&quot;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteSubdirectoryWithResponse#String-boolean-DataLakeRequestConditions -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteSubdirectoryWithResponse#String-boolean-DataLakeRequestConditions}
      *
      * @param directoryName Name of the sub-directory to delete.
      * @param recursive Whether or not to delete all paths beneath the sub-directory.
@@ -563,12 +469,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.rename#String-String -->
-     * <pre>
-     * DataLakeDirectoryAsyncClient renamedClient = client.rename&#40;fileSystemName, destinationPath&#41;.block&#40;&#41;;
-     * System.out.println&#40;&quot;Directory Client has been renamed&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.rename#String-String -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.rename#String-String}
      *
      * @param destinationFileSystem The file system of the destination within the account.
      * {@code null} for the current file system.
@@ -594,17 +495,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.renameWithResponse#String-String-DataLakeRequestConditions-DataLakeRequestConditions -->
-     * <pre>
-     * DataLakeRequestConditions sourceRequestConditions = new DataLakeRequestConditions&#40;&#41;
-     *     .setLeaseId&#40;leaseId&#41;;
-     * DataLakeRequestConditions destinationRequestConditions = new DataLakeRequestConditions&#40;&#41;;
-     *
-     * DataLakeDirectoryAsyncClient newRenamedClient = client.renameWithResponse&#40;fileSystemName, destinationPath,
-     *     sourceRequestConditions, destinationRequestConditions&#41;.block&#40;&#41;.getValue&#40;&#41;;
-     * System.out.println&#40;&quot;Directory Client has been renamed&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.renameWithResponse#String-String-DataLakeRequestConditions-DataLakeRequestConditions -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.renameWithResponse#String-String-DataLakeRequestConditions-DataLakeRequestConditions}
      *
      * @param destinationFileSystem The file system of the destination within the account.
      * {@code null} for the current file system.
@@ -635,11 +526,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.listPaths -->
-     * <pre>
-     * client.listPaths&#40;&#41;.subscribe&#40;path -&gt; System.out.printf&#40;&quot;Name: %s%n&quot;, path.getName&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.listPaths -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.listPaths}
      *
      * @return A reactive response emitting the list of files/directories.
      */
@@ -654,12 +541,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.listPaths#boolean-boolean-Integer -->
-     * <pre>
-     * client.listPaths&#40;false, false, 10&#41;
-     *     .subscribe&#40;path -&gt; System.out.printf&#40;&quot;Name: %s%n&quot;, path.getName&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.listPaths#boolean-boolean-Integer -->
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.listPaths#boolean-boolean-Integer}
      *
      * @param recursive Specifies if the call should recursively include all paths.
      * @param userPrincipleNameReturned If "true", the user identity values returned in the x-ms-owner, x-ms-group,
