@@ -9,6 +9,7 @@ import com.azure.resourcemanager.streamanalytics.fluent.models.OutputInner;
 import com.azure.resourcemanager.streamanalytics.models.Diagnostics;
 import com.azure.resourcemanager.streamanalytics.models.Output;
 import com.azure.resourcemanager.streamanalytics.models.OutputDataSource;
+import com.azure.resourcemanager.streamanalytics.models.ResourceTestStatus;
 import com.azure.resourcemanager.streamanalytics.models.Serialization;
 
 public final class OutputImpl implements Output, Output.Definition, Output.Update {
@@ -18,6 +19,14 @@ public final class OutputImpl implements Output, Output.Definition, Output.Updat
 
     public String id() {
         return this.innerModel().id();
+    }
+
+    public String name() {
+        return this.innerModel().name();
+    }
+
+    public String type() {
+        return this.innerModel().type();
     }
 
     public OutputDataSource datasource() {
@@ -42,14 +51,6 @@ public final class OutputImpl implements Output, Output.Definition, Output.Updat
 
     public String etag() {
         return this.innerModel().etag();
-    }
-
-    public String name() {
-        return this.innerModel().name();
-    }
-
-    public String type() {
-        return this.innerModel().type();
     }
 
     public OutputInner innerModel() {
@@ -175,6 +176,23 @@ public final class OutputImpl implements Output, Output.Definition, Output.Updat
         return this;
     }
 
+    public ResourceTestStatus test(OutputInner output) {
+        return serviceManager.outputs().test(resourceGroupName, jobName, outputName, output);
+    }
+
+    public ResourceTestStatus test() {
+        return serviceManager.outputs().test(resourceGroupName, jobName, outputName);
+    }
+
+    public ResourceTestStatus test(OutputInner output, Context context) {
+        return serviceManager.outputs().test(resourceGroupName, jobName, outputName, output, context);
+    }
+
+    public OutputImpl withName(String name) {
+        this.innerModel().withName(name);
+        return this;
+    }
+
     public OutputImpl withDatasource(OutputDataSource datasource) {
         this.innerModel().withDatasource(datasource);
         return this;
@@ -195,14 +213,14 @@ public final class OutputImpl implements Output, Output.Definition, Output.Updat
         return this;
     }
 
-    public OutputImpl withName(String name) {
-        this.innerModel().withName(name);
-        return this;
-    }
-
     public OutputImpl withIfMatch(String ifMatch) {
-        this.createIfMatch = ifMatch;
-        return this;
+        if (isInCreateMode()) {
+            this.createIfMatch = ifMatch;
+            return this;
+        } else {
+            this.updateIfMatch = ifMatch;
+            return this;
+        }
     }
 
     public OutputImpl withIfNoneMatch(String ifNoneMatch) {
@@ -210,8 +228,7 @@ public final class OutputImpl implements Output, Output.Definition, Output.Updat
         return this;
     }
 
-    public OutputImpl ifMatch(String ifMatch) {
-        this.updateIfMatch = ifMatch;
-        return this;
+    private boolean isInCreateMode() {
+        return this.innerModel().id() == null;
     }
 }

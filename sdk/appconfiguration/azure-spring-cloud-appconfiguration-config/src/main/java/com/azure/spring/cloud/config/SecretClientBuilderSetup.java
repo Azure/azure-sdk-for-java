@@ -9,6 +9,11 @@ import com.azure.security.keyvault.secrets.SecretClientBuilder;
  */
 public interface SecretClientBuilderSetup {
 
+    /**
+     * Updates the SecretClientBuilder for connecting to the given uri.
+     * @param builder SecretClientBuilder
+     * @param uri String
+     */
     void setup(SecretClientBuilder builder, String uri);
 
 }

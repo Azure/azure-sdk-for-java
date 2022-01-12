@@ -497,8 +497,7 @@ public final class ChatThreadAsyncClient {
             return this.chatThreadClient.sendChatMessageWithResponseAsync(chatThreadId, options, context)
                 .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
                 .map(result -> new SimpleResponse<SendChatMessageResult>(result, (result.getValue())));
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }

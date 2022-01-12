@@ -2,13 +2,15 @@
 
 ## 2.11.0-beta.1 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
 ### Bugs Fixed
 
+- Fixed issue where update of `CnameRecordSet` did not update `canonicalName`.
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2018-05-01`.
 
 ## 2.10.0 (2021-11-22)
 

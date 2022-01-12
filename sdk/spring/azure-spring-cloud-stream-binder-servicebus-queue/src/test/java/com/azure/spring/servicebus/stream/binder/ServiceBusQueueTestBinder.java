@@ -14,7 +14,7 @@ import org.springframework.cloud.stream.binder.ExtendedProducerProperties;
 import org.springframework.context.support.GenericApplicationContext;
 
 /**
- * @author Warren Zhu
+ * Test Azure ServiceBus Queue Binder.
  */
 public class ServiceBusQueueTestBinder
     extends AbstractTestBinder<ServiceBusQueueMessageChannelBinder,
@@ -25,6 +25,7 @@ public class ServiceBusQueueTestBinder
         ServiceBusQueueMessageChannelBinder binder = new ServiceBusQueueMessageChannelBinder(
             BinderHeaders.STANDARD_HEADERS, new ServiceBusChannelProvisioner(), operation);
         GenericApplicationContext context = new GenericApplicationContext();
+        context.refresh();
         binder.setApplicationContext(context);
         this.setBinder(binder);
     }

@@ -8,7 +8,6 @@ import com.azure.cosmos.spark.TransientIOErrorsRetryingIteratorITest.maxRetryCou
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.CosmosPagedIterable
 import com.fasterxml.jackson.databind.node.ObjectNode
-import org.scalatest.Ignore
 
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
@@ -235,11 +234,10 @@ class TransientIOErrorsRetryingIteratorITest
     // pages - and the retry logic depends on this assertion
     // so the test here will only ever inject an error after retrieving the
     // last document of one page (and before retrieving teh next one)
-    if (!idSnapshot.equals("") &&
-      idSnapshot.equals(lastIdOfPage.get()) &&
-      idsWithRetries.computeIfAbsent(idSnapshot, id => 0) <= maxRetryCountPerIOOperation * 10 &&
+    if (
+      idsWithRetries.computeIfAbsent(idSnapshot, id => 0) <= maxRetryCountPerIOOperation * 100 &&
       idsWithRetries.computeIfPresent(
-        idSnapshot, (id, currentRetryCount) => currentRetryCount + 1) <= maxRetryCountPerIOOperation * 10) {
+        idSnapshot, (id, currentRetryCount) => currentRetryCount + 1) <= maxRetryCountPerIOOperation * 100) {
 
       //scalastyle:off null
       throw new ServiceUnavailableException("Dummy 503", null, null)

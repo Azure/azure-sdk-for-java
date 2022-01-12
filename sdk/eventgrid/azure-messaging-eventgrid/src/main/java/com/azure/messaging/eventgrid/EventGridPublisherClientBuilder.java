@@ -180,6 +180,7 @@ public final class EventGridPublisherClientBuilder {
         HttpPipeline buildPipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
             .policies(httpPipelinePolicies.toArray(new HttpPipelinePolicy[0]))
+            .clientOptions(clientOptions)
             .build();
 
 

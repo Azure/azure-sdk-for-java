@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -71,14 +72,24 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
                     throw new IllegalStateException("Collection cannot be null");
                 }
 
-                final String effectivePartitionKey =
-                    this.partitionKey.getEffectivePartitionKeyString(
-                    this.partitionKey,
-                    collection.getPartitionKey());
-
-                Range<String> range = Range.getPointRange(effectivePartitionKey);
+                Range<String> range = getEffectiveRange(collection.getPartitionKey());
                 return Mono.just(range);
             });
+    }
+
+    public Range<String> getEffectiveRange(
+        PartitionKeyDefinition pkDefinition) {
+
+        checkNotNull(
+            pkDefinition,
+            "Argument 'pkDefinition' must not be null");
+
+        final String effectivePartitionKey =
+            this.partitionKey.getEffectivePartitionKeyString(
+                this.partitionKey,
+                pkDefinition);
+
+        return Range.getPointRange(effectivePartitionKey);
     }
 
     @Override

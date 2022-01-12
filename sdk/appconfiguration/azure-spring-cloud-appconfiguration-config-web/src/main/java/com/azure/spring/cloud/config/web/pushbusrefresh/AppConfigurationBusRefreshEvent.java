@@ -12,6 +12,9 @@ public final class AppConfigurationBusRefreshEvent extends RemoteApplicationEven
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Endpoint being refreshed.
+     */
     private String endpoint;
 
     /**

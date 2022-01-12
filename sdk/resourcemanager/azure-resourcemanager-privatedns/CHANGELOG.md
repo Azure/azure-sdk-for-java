@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Update CnameRecordSet to make it no longer ignore changes to the cname property
+
 ### Other Changes
 
 ## 2.10.0 (2021-11-22)

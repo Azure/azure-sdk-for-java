@@ -60,6 +60,15 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
     private static AtomicBoolean startup = new AtomicBoolean(true);
 
+    /**
+     * Loads all Azure App Configuration Property Sources configured.
+     * @param properties Configurations for stores to be loaded.
+     * @param appProperties Configurations for the library.
+     * @param clients Clients for connecting to Azure App Configuration.
+     * @param keyVaultCredentialProvider optional provider for Key Vault Credentials
+     * @param keyVaultClientProvider optional provider for modifying the Key Vault Client
+     * @param keyVaultSecretProvider optional provider for loading  secrets instead of connecting to Key Vault
+     */
     public AppConfigurationPropertySourceLocator(AppConfigurationProperties properties,
         AppConfigurationProviderProperties appProperties, ClientStore clients,
         KeyVaultCredentialProvider keyVaultCredentialProvider, SecretClientBuilderSetup keyVaultClientProvider,

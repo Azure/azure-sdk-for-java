@@ -6,4 +6,14 @@ private[cosmos] case class NormalizedRange
 (
   min: String,
   max: String
-)
+) extends Ordered[NormalizedRange] {
+  override def compare(that: NormalizedRange): Int = {
+    val minComparison = this.min.compareTo(that.min)
+
+    if (minComparison == 0) {
+      this.max.compareTo(that.max)
+    } else {
+      minComparison
+    }
+  }
+}

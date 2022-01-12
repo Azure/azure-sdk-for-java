@@ -89,6 +89,14 @@ private object CosmosTableSchemaInferrer
   private[spark] def inferSchema(client: CosmosAsyncClient,
                                  userConfig: Map[String, String],
                                  defaultSchema: StructType): StructType = {
+
+    TransientErrorsRetryPolicy.executeWithRetry(() =>
+      inferSchemaImpl(client, userConfig, defaultSchema))
+  }
+
+  private[this] def inferSchemaImpl(client: CosmosAsyncClient,
+                                 userConfig: Map[String, String],
+                                 defaultSchema: StructType): StructType = {
     val cosmosInferenceConfig = CosmosSchemaInferenceConfig.parseCosmosInferenceConfig(userConfig)
     val cosmosReadConfig = CosmosReadConfig.parseCosmosReadConfig(userConfig)
     if (cosmosInferenceConfig.inferSchemaEnabled) {

@@ -402,7 +402,11 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public Network getPrimaryNetwork() throws IOException {
-        String subnetId = primaryNicDefaultIpConfiguration().subnet().id();
+        VirtualMachineScaleSetIpConfiguration ipConfiguration = primaryNicDefaultIpConfiguration();
+        if (ipConfiguration == null) {
+            return null;
+        }
+        String subnetId = ipConfiguration.subnet().id();
         String virtualNetworkId = ResourceUtils.parentResourceIdFromResourceId(subnetId);
         return this.networkManager.networks().getById(virtualNetworkId);
     }
@@ -481,12 +485,20 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetStorageProfile storageProfile() {
-        return this.innerModel().virtualMachineProfile().storageProfile();
+        if (this.innerModel().virtualMachineProfile() != null) {
+            return this.innerModel().virtualMachineProfile().storageProfile();
+        } else {
+            return null;
+        }
     }
 
     @Override
     public VirtualMachineScaleSetNetworkProfile networkProfile() {
-        return this.innerModel().virtualMachineProfile().networkProfile();
+        if (this.innerModel().virtualMachineProfile() != null) {
+            return this.innerModel().virtualMachineProfile().networkProfile();
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -515,6 +527,9 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetPublicIpAddressConfiguration virtualMachinePublicIpConfig() {
         VirtualMachineScaleSetIpConfiguration nicConfig = this.primaryNicDefaultIpConfiguration();
+        if (nicConfig == null) {
+            return null;
+        }
         return nicConfig.publicIpAddressConfiguration();
     }
 
@@ -530,27 +545,25 @@ public class VirtualMachineScaleSetImpl
     @Override
     public boolean isIpForwardingEnabled() {
         VirtualMachineScaleSetNetworkConfiguration nicConfig = primaryNicConfiguration();
-        if (nicConfig.enableIpForwarding() != null) {
-            return nicConfig.enableIpForwarding();
-        } else {
+        if (nicConfig == null || nicConfig.enableIpForwarding() == null) {
             return false;
         }
+        return nicConfig.enableIpForwarding();
     }
 
     @Override
     public boolean isAcceleratedNetworkingEnabled() {
         VirtualMachineScaleSetNetworkConfiguration nicConfig = primaryNicConfiguration();
-        if (nicConfig.enableAcceleratedNetworking() != null) {
-            return nicConfig.enableAcceleratedNetworking();
-        } else {
+        if (nicConfig == null || nicConfig.enableAcceleratedNetworking() == null) {
             return false;
         }
+        return nicConfig.enableAcceleratedNetworking();
     }
 
     @Override
     public String networkSecurityGroupId() {
         VirtualMachineScaleSetNetworkConfiguration nicConfig = primaryNicConfiguration();
-        if (nicConfig.networkSecurityGroup() != null) {
+        if (nicConfig != null && nicConfig.networkSecurityGroup() != null) {
             return nicConfig.networkSecurityGroup().id();
         } else {
             return null;
@@ -569,6 +582,9 @@ public class VirtualMachineScaleSetImpl
     @Override
     public List<String> applicationGatewayBackendAddressPoolsIds() {
         VirtualMachineScaleSetIpConfiguration nicIpConfig = this.primaryNicDefaultIpConfiguration();
+        if (nicIpConfig == null) {
+            return Collections.emptyList();
+        }
         List<SubResource> backendPools = nicIpConfig.applicationGatewayBackendAddressPools();
         List<String> result = new ArrayList<>();
         if (backendPools != null) {
@@ -582,6 +598,9 @@ public class VirtualMachineScaleSetImpl
     @Override
     public List<String> applicationSecurityGroupIds() {
         VirtualMachineScaleSetIpConfiguration nicIpConfig = this.primaryNicDefaultIpConfiguration();
+        if (nicIpConfig == null) {
+            return Collections.emptyList();
+        }
         List<String> asgIds = new ArrayList<>();
         if (nicIpConfig.applicationSecurityGroups() != null) {
             for (SubResource asg : nicIpConfig.applicationSecurityGroups()) {
@@ -714,7 +733,7 @@ public class VirtualMachineScaleSetImpl
                 .logExceptionAsError(
                     new IllegalArgumentException("Parameter loadBalancer must be an Internet facing load balancer"));
         }
-
+        initVMProfileIfNecessary();
         if (isInCreateMode()) {
             this.primaryInternetFacingLoadBalancer = loadBalancer;
             associateLoadBalancerToIpConfiguration(
@@ -727,6 +746,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withPrimaryInternetFacingLoadBalancerBackends(String... backendNames) {
+        initVMProfileIfNecessary();
         if (this.isInCreateMode()) {
             VirtualMachineScaleSetIpConfiguration defaultPrimaryIpConfig = this.primaryNicDefaultIpConfiguration();
             removeAllBackendAssociationFromIpConfiguration(
@@ -741,6 +761,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withPrimaryInternetFacingLoadBalancerInboundNatPools(String... natPoolNames) {
+        initVMProfileIfNecessary();
         if (this.isInCreateMode()) {
             VirtualMachineScaleSetIpConfiguration defaultPrimaryIpConfig = this.primaryNicDefaultIpConfiguration();
             removeAllInboundNatPoolAssociationFromIpConfiguration(
@@ -766,7 +787,7 @@ public class VirtualMachineScaleSetImpl
                 lbNetworkId = frontEnd.networkId();
             }
         }
-
+        initVMProfileIfNecessary();
         if (isInCreateMode()) {
             String vmNICNetworkId =
                 ResourceUtils.parentResourceIdFromResourceId(this.existingPrimaryNetworkSubnetNameToAssociate);
@@ -1238,6 +1259,9 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public boolean isManagedDiskEnabled() {
+        if (this.innerModel() == null || this.innerModel().virtualMachineProfile() == null) {
+            return false;
+        }
         VirtualMachineScaleSetStorageProfile storageProfile =
             this.innerModel().virtualMachineProfile().storageProfile();
         if (isOsDiskFromCustomImage(storageProfile)) {
@@ -1721,13 +1745,6 @@ public class VirtualMachineScaleSetImpl
                 .withNetworkApiVersion(NetworkApiVersion.TWO_ZERO_TWO_ZERO_ONE_ONE_ZERO_ONE);
         }
     }
-    private void initVMProfileIfNecessary() {
-        if (this.innerModel().virtualMachineProfile() == null) {
-            this.innerModel().withVirtualMachineProfile(initDefaultVMProfile());
-            this.profileAttached = true;
-        }
-    }
-
     private Mono<VirtualMachineScaleSetInner> createInnerNoProfile() {
         this.innerModel().withVirtualMachineProfile(null);
         return manager()
@@ -1749,6 +1766,13 @@ public class VirtualMachineScaleSetImpl
                     self.virtualMachineScaleSetMsiHandler.clear();
                     return self;
                 });
+    }
+
+    private void initVMProfileIfNecessary() {
+        if (this.innerModel().virtualMachineProfile() == null) {
+            this.innerModel().withVirtualMachineProfile(initDefaultVMProfile());
+            this.profileAttached = true;
+        }
     }
 
     private VirtualMachineScaleSetVMProfile initDefaultVMProfile() {
@@ -1970,7 +1994,7 @@ public class VirtualMachineScaleSetImpl
         if (isInUpdateMode()) {
             return;
         }
-
+        initVMProfileIfNecessary();
         VirtualMachineScaleSetIpConfiguration ipConfig = this.primaryNicDefaultIpConfiguration();
         ipConfig.withSubnet(new ApiEntityReference().withId(this.existingPrimaryNetworkSubnetNameToAssociate));
         this.existingPrimaryNetworkSubnetNameToAssociate = null;
@@ -1986,6 +2010,7 @@ public class VirtualMachineScaleSetImpl
                 .loadCurrentPrimaryLoadBalancersIfAvailableAsync()
                 .map(
                     virtualMachineScaleSet -> {
+                        initVMProfileIfNecessary();
                         VirtualMachineScaleSetIpConfiguration primaryIpConfig = primaryNicDefaultIpConfiguration();
                         if (this.primaryInternetFacingLoadBalancer != null) {
                             removeBackendsFromIpConfiguration(
@@ -2129,6 +2154,9 @@ public class VirtualMachineScaleSetImpl
 
         String firstLoadBalancerId = null;
         VirtualMachineScaleSetIpConfiguration ipConfig = primaryNicDefaultIpConfiguration();
+        if (ipConfig == null) {
+            return self;
+        }
         if (!ipConfig.loadBalancerBackendAddressPools().isEmpty()) {
             firstLoadBalancerId =
                 ResourceUtils.parentResourceIdFromResourceId(ipConfig.loadBalancerBackendAddressPools().get(0).id());
@@ -2213,7 +2241,9 @@ public class VirtualMachineScaleSetImpl
     }
 
     private VirtualMachineScaleSetIpConfiguration primaryNicDefaultIpConfiguration() {
-        initVMProfileIfNecessary();
+        if (this.innerModel() == null || this.innerModel().virtualMachineProfile() == null) {
+            return null;
+        }
         List<VirtualMachineScaleSetNetworkConfiguration> nicConfigurations =
             this.innerModel().virtualMachineProfile().networkProfile().networkInterfaceConfigurations();
 
@@ -2237,6 +2267,9 @@ public class VirtualMachineScaleSetImpl
     }
 
     private VirtualMachineScaleSetNetworkConfiguration primaryNicConfiguration() {
+        if (this.innerModel() == null || this.innerModel().virtualMachineProfile() == null) {
+            return null;
+        }
         List<VirtualMachineScaleSetNetworkConfiguration> nicConfigurations =
             this.innerModel().virtualMachineProfile().networkProfile().networkInterfaceConfigurations();
 
@@ -2630,6 +2663,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withVirtualMachinePublicIp() {
+        initVMProfileIfNecessary();
         VirtualMachineScaleSetIpConfiguration nicIpConfig = this.primaryNicDefaultIpConfiguration();
         if (nicIpConfig.publicIpAddressConfiguration() != null) {
             return this;
@@ -2646,6 +2680,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withVirtualMachinePublicIp(String leafDomainLabel) {
+        initVMProfileIfNecessary();
         VirtualMachineScaleSetIpConfiguration nicIpConfig = this.primaryNicDefaultIpConfiguration();
         if (nicIpConfig.publicIpAddressConfiguration() != null) {
             if (nicIpConfig.publicIpAddressConfiguration().dnsSettings() != null) {
@@ -2671,6 +2706,7 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withVirtualMachinePublicIp(
         VirtualMachineScaleSetPublicIpAddressConfiguration pipConfig) {
+        initVMProfileIfNecessary();
         VirtualMachineScaleSetIpConfiguration nicIpConfig = this.primaryNicDefaultIpConfiguration();
         nicIpConfig.withPublicIpAddressConfiguration(pipConfig);
         return this;
@@ -2678,6 +2714,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withAcceleratedNetworking() {
+        initVMProfileIfNecessary();
         VirtualMachineScaleSetNetworkConfiguration nicConfig = this.primaryNicConfiguration();
         nicConfig.withEnableAcceleratedNetworking(true);
         return this;
@@ -2685,6 +2722,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withoutAcceleratedNetworking() {
+        initVMProfileIfNecessary();
         VirtualMachineScaleSetNetworkConfiguration nicConfig = this.primaryNicConfiguration();
         nicConfig.withEnableAcceleratedNetworking(false);
         return this;
@@ -2692,6 +2730,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withIpForwarding() {
+        initVMProfileIfNecessary();
         VirtualMachineScaleSetNetworkConfiguration nicConfig = this.primaryNicConfiguration();
         nicConfig.withEnableIpForwarding(true);
         return this;
@@ -2700,12 +2739,16 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withoutIpForwarding() {
         VirtualMachineScaleSetNetworkConfiguration nicConfig = this.primaryNicConfiguration();
+        if (nicConfig == null) {
+            return this;
+        }
         nicConfig.withEnableIpForwarding(false);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withExistingNetworkSecurityGroup(NetworkSecurityGroup networkSecurityGroup) {
+        initVMProfileIfNecessary();
         VirtualMachineScaleSetNetworkConfiguration nicConfig = this.primaryNicConfiguration();
         nicConfig.withNetworkSecurityGroup(new SubResource().withId(networkSecurityGroup.id()));
         return this;
@@ -2713,6 +2756,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withExistingNetworkSecurityGroupId(String networkSecurityGroupId) {
+        initVMProfileIfNecessary();
         VirtualMachineScaleSetNetworkConfiguration nicConfig = this.primaryNicConfiguration();
         nicConfig.withNetworkSecurityGroup(new SubResource().withId(networkSecurityGroupId));
         return this;
@@ -2721,6 +2765,9 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withoutNetworkSecurityGroup() {
         VirtualMachineScaleSetNetworkConfiguration nicConfig = this.primaryNicConfiguration();
+        if (nicConfig == null) {
+            return this;
+        }
         nicConfig.withNetworkSecurityGroup(null);
         return this;
     }
@@ -2739,6 +2786,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withExistingApplicationGatewayBackendPool(String backendPoolId) {
+        initVMProfileIfNecessary();
         VirtualMachineScaleSetIpConfiguration nicIpConfig = primaryNicDefaultIpConfiguration();
         if (nicIpConfig.applicationGatewayBackendAddressPools() == null) {
             nicIpConfig.withApplicationGatewayBackendAddressPools(new ArrayList<>());
@@ -2759,7 +2807,7 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withoutApplicationGatewayBackendPool(String backendPoolId) {
         VirtualMachineScaleSetIpConfiguration nicIpConfig = primaryNicDefaultIpConfiguration();
-        if (nicIpConfig.applicationGatewayBackendAddressPools() == null) {
+        if (nicIpConfig == null || nicIpConfig.applicationGatewayBackendAddressPools() == null) {
             return this;
         } else {
             int foundIndex = -1;
@@ -2786,6 +2834,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withExistingApplicationSecurityGroupId(String applicationSecurityGroupId) {
+        initVMProfileIfNecessary();
         VirtualMachineScaleSetIpConfiguration nicIpConfig = primaryNicDefaultIpConfiguration();
         if (nicIpConfig.applicationSecurityGroups() == null) {
             nicIpConfig.withApplicationSecurityGroups(new ArrayList<>());
@@ -2806,7 +2855,7 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withoutApplicationSecurityGroup(String applicationSecurityGroupId) {
         VirtualMachineScaleSetIpConfiguration nicIpConfig = primaryNicDefaultIpConfiguration();
-        if (nicIpConfig.applicationSecurityGroups() == null) {
+        if (nicIpConfig == null || nicIpConfig.applicationSecurityGroups() == null) {
             return this;
         } else {
             int foundIndex = -1;
