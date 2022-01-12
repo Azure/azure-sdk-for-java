@@ -45,7 +45,7 @@
 /sdk/core/                                          @alzimmermsft @srnagar @anuchandy @lmolkova @pallavit @vcolin7 @mssfang @jonathangiles @billwert @kasobol-msft
 
 # PRLabel: %Azure.Core.AMQP
-/sdk/core/azure-core-amqp/                          @conniey @anuchandy @ki1729 @srnagar @jonathangiles @haolingdong @liukun-msft @weidongxu @ZejiaJiang
+/sdk/core/azure-core-amqp/                          @conniey @anuchandy @ki1729 @srnagar @jonathangiles @haolingdong-msft @liukun-msft @weidongxu-microsoft @ZejiaJiang
 
 # PRLabel: %Azure.Core
 /sdk/core/azure-core-tracing-opentelemetry/         @samvaity @alzimmermsft @trask @lmolkova
@@ -67,7 +67,7 @@
 /sdk/eventgrid/                                     @srnagar @lmolkova @mssfang
 
 # PRLabel: %Event Hubs
-/sdk/eventhubs/                                     @conniey @anuchandy @ki1729 @srnagar @haolingdong @liukun-msft @weidongxu @ZejiaJiang
+/sdk/eventhubs/                                     @conniey @anuchandy @ki1729 @srnagar @haolingdong-msft @liukun-msft @weidongxu-microsoft @ZejiaJiang
 
 # PRLabel: %Event Hubs
 /sdk/eventhubs/microsoft-azure-eventhubs-eph/       @JamesBirdsall @sjkwak
@@ -113,7 +113,7 @@
 /sdk/search/                                        @alzimmermsft @pallavit @mssfang @samvaity
 
 # PRLabel: %Service Bus
-/sdk/servicebus/                                    @anuchandy @ki1729 @conniey @haolingdong @liukun-msft @weidongxu @ZejiaJiang
+/sdk/servicebus/                                    @anuchandy @ki1729 @conniey @haolingdong-msft @liukun-msft @weidongxu-microsoft @ZejiaJiang
 
 # PRLabel: %Service Bus
 /sdk/servicebus/microsoft-azure-servicebus/         @shankarsama @yvgopal
