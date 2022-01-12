@@ -15,9 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.lang.reflect.UndeclaredThrowableException;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -101,6 +101,20 @@ public class FeatureHandlerTest {
         verify(response).sendRedirect("/redirected");
         verifyNoMoreInteractions(response);
         verifyNoInteractions(disabledFeaturesHandler);
+    }
+
+    @Test
+    public void preHandleFeatureOnRedirectError() throws NoSuchMethodException, IOException {
+        Method method = TestClass.class.getMethod("featureOnAnnotationRedirected");
+        when(handlerMethod.getMethod()).thenReturn(method);
+        when(featureManager.isEnabledAsync(Mockito.matches("test"))).thenReturn(Mono.just(false));
+        IOException ioException = new IOException();
+        doThrow(ioException).when(response).sendRedirect("/redirected");
+
+        UndeclaredThrowableException ex = assertThrows(UndeclaredThrowableException.class,
+                () -> featureHandler.preHandle(request, response, handlerMethod));
+
+        assertSame(ioException, ex.getCause());
     }
 
     @Test
