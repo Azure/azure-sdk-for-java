@@ -1,5 +1,11 @@
 # Release History
 
+## 1.2.3-beta.1 (2022-01-12)
+
+### Other Changes
+
+- Testing
+
 ## 1.2.1-beta.16 (2020-10-16)
 
 - Demo for training
