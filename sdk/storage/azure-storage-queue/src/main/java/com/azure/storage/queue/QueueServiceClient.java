@@ -31,14 +31,7 @@ import java.util.Map;
  *
  * <p><strong>Instantiating an Synchronous Queue Service Client</strong></p>
  *
- * <!-- src_embed com.azure.storage.queue.queueServiceClient.instantiation -->
- * <pre>
- * QueueServiceClient client = new QueueServiceClientBuilder&#40;&#41;
- *     .connectionString&#40;&quot;connectionstring&quot;&#41;
- *     .endpoint&#40;&quot;endpoint&quot;&#41;
- *     .buildClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.storage.queue.queueServiceClient.instantiation -->
+ * {@codesnippet com.azure.storage.queue.queueServiceClient.instantiation}
  *
  * <p>View {@link QueueServiceClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -103,12 +96,7 @@ public final class QueueServiceClient {
      *
      * <p>Create the queue "test"</p>
      *
-     * <!-- src_embed com.azure.storage.queue.queueServiceClient.createQueue#string -->
-     * <pre>
-     * client.createQueue&#40;&quot;myqueue&quot;&#41;;
-     * System.out.println&#40;&quot;Complete creating queue.&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.queue.queueServiceClient.createQueue#string -->
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.createQueue#string}
      *
      * @param queueName Name of the queue
      * @return A response containing the QueueClient and the status of creating the queue
@@ -127,13 +115,7 @@ public final class QueueServiceClient {
      *
      * <p>Create the queue "test" with metadata "queue:metadata"</p>
      *
-     * <!-- src_embed com.azure.storage.queue.queueServiceClient.createQueueWithResponse#string-map-duration-context -->
-     * <pre>
-     * Response&lt;QueueClient&gt; response = client.createQueueWithResponse&#40;&quot;myqueue&quot;,
-     *     Collections.singletonMap&#40;&quot;queue&quot;, &quot;metadata&quot;&#41;, Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
-     * System.out.println&#40;&quot;Complete creating queue with status code: &quot; + response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.queue.queueServiceClient.createQueueWithResponse#string-map-duration-context -->
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.createQueueWithResponse#string-map-duration-context}
      *
      * @param queueName Name of the queue
      * @param metadata Metadata to associate with the queue. If there is leading or trailing whitespace in any
@@ -161,12 +143,7 @@ public final class QueueServiceClient {
      *
      * <p>Delete the queue "test"</p>
      *
-     * <!-- src_embed com.azure.storage.queue.queueServiceClient.deleteQueue#string -->
-     * <pre>
-     * client.deleteQueue&#40;&quot;myqueue&quot;&#41;;
-     * System.out.println&#40;&quot;Complete deleting the queue.&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.queue.queueServiceClient.deleteQueue#string -->
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.deleteQueue#string}
      *
      * @param queueName Name of the queue
      * @throws QueueStorageException If the queue doesn't exist
@@ -183,13 +160,7 @@ public final class QueueServiceClient {
      *
      * <p>Delete the queue "test"</p>
      *
-     * <!-- src_embed com.azure.storage.queue.queueServiceClient.deleteQueueWithResponse#string-duration-context -->
-     * <pre>
-     * Response&lt;Void&gt; response = client.deleteQueueWithResponse&#40;&quot;myqueue&quot;, Duration.ofSeconds&#40;1&#41;,
-     *     new Context&#40;key1, value1&#41;&#41;;
-     * System.out.println&#40;&quot;Complete deleting the queue with status code: &quot; + response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.queue.queueServiceClient.deleteQueueWithResponse#string-duration-context -->
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.deleteQueueWithResponse#string-duration-context}
      *
      * @param queueName Name of the queue
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
@@ -212,13 +183,7 @@ public final class QueueServiceClient {
      *
      * <p>List all queues in the account</p>
      *
-     * <!-- src_embed com.azure.storage.queue.queueServiceClient.listQueues -->
-     * <pre>
-     * client.listQueues&#40;&#41;.forEach&#40;
-     *     queueItem -&gt; System.out.printf&#40;&quot;Queue %s exists in the account&quot;, queueItem.getName&#40;&#41;&#41;
-     * &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.queue.queueServiceClient.listQueues -->
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.listQueues}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-queues1">Azure Docs</a>.</p>
@@ -240,15 +205,7 @@ public final class QueueServiceClient {
      *
      * <p>List all queues that begin with "azure"</p>
      *
-     * <!-- src_embed com.azure.storage.queue.queueServiceClient.listQueues#queueSergmentOptions-duration-context -->
-     * <pre>
-     * client.listQueues&#40;new QueuesSegmentOptions&#40;&#41;.setPrefix&#40;&quot;azure&quot;&#41;, Duration.ofSeconds&#40;1&#41;,
-     *     new Context&#40;key1, value1&#41;&#41;.forEach&#40;
-     *         queueItem -&gt; System.out.printf&#40;&quot;Queue %s exists in the account and has metadata %s&quot;,
-     *         queueItem.getName&#40;&#41;, queueItem.getMetadata&#40;&#41;&#41;
-     * &#41;;
-     * </pre>
-     * <!-- end com.azure.storage.queue.queueServiceClient.listQueues#queueSergmentOptions-duration-context -->
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.listQueues#queueSergmentOptions-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-queues1">Azure Docs</a>.</p>
@@ -294,13 +251,7 @@ public final class QueueServiceClient {
      *
      * <p>Retrieve Queue service properties</p>
      *
-     * <!-- src_embed com.azure.storage.queue.queueServiceClient.getProperties -->
-     * <pre>
-     * QueueServiceProperties properties = client.getProperties&#40;&#41;;
-     * System.out.printf&#40;&quot;Hour metrics enabled: %b, Minute metrics enabled: %b&quot;,
-     *     properties.getHourMetrics&#40;&#41;.isEnabled&#40;&#41;, properties.getMinuteMetrics&#40;&#41;.isEnabled&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.queue.queueServiceClient.getProperties -->
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.getProperties}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-queue-service-properties">Azure
@@ -321,14 +272,7 @@ public final class QueueServiceClient {
      *
      * <p>Retrieve Queue service properties</p>
      *
-     * <!-- src_embed com.azure.storage.queue.queueServiceClient.getPropertiesWithResponse#duration-context -->
-     * <pre>
-     * QueueServiceProperties properties = client.getPropertiesWithResponse&#40;Duration.ofSeconds&#40;1&#41;,
-     *     new Context&#40;key1, value1&#41;&#41;.getValue&#40;&#41;;
-     * System.out.printf&#40;&quot;Hour metrics enabled: %b, Minute metrics enabled: %b&quot;,
-     *     properties.getHourMetrics&#40;&#41;.isEnabled&#40;&#41;, properties.getMinuteMetrics&#40;&#41;.isEnabled&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.queue.queueServiceClient.getPropertiesWithResponse#duration-context -->
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.getPropertiesWithResponse#duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-queue-service-properties">Azure
@@ -358,31 +302,11 @@ public final class QueueServiceClient {
      *
      * <p>Clear CORS in the Queue service</p>
      *
-     * <!-- src_embed com.azure.storage.queue.queueServiceClient.setProperties#QueueServiceProperties -->
-     * <pre>
-     * QueueServiceProperties properties = client.getProperties&#40;&#41;;
-     * properties.setCors&#40;Collections.emptyList&#40;&#41;&#41;;
-     *
-     * client.setProperties&#40;properties&#41;;
-     * System.out.println&#40;&quot;Setting Queue service properties completed.&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.queue.queueServiceClient.setProperties#QueueServiceProperties -->
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.setProperties#QueueServiceProperties}
      *
      * <p>Enable Minute and Hour Metrics</p>
      *
-     * <!-- src_embed com.azure.storage.queue.queueServiceClient.setPropertiesEnableMetrics#QueueServiceProperties -->
-     * <pre>
-     * QueueServiceProperties properties = client.getProperties&#40;&#41;;
-     * properties.getMinuteMetrics&#40;&#41;.setEnabled&#40;true&#41;;
-     * properties.getMinuteMetrics&#40;&#41;.setIncludeApis&#40;true&#41;;
-     * properties.getMinuteMetrics&#40;&#41;.setRetentionPolicy&#40;new QueueRetentionPolicy&#40;&#41;.setDays&#40;7&#41;.setEnabled&#40;true&#41;&#41;;
-     * properties.getHourMetrics&#40;&#41;.setEnabled&#40;true&#41;;
-     * properties.getHourMetrics&#40;&#41;.setIncludeApis&#40;true&#41;;
-     * properties.getHourMetrics&#40;&#41;.setRetentionPolicy&#40;new QueueRetentionPolicy&#40;&#41;.setDays&#40;7&#41;.setEnabled&#40;true&#41;&#41;;
-     * client.setProperties&#40;properties&#41;;
-     * System.out.println&#40;&quot;Setting Queue service properties completed.&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.queue.queueServiceClient.setPropertiesEnableMetrics#QueueServiceProperties -->
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.setPropertiesEnableMetrics#QueueServiceProperties}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-queue-service-properties">Azure
@@ -420,32 +344,11 @@ public final class QueueServiceClient {
      *
      * <p>Clear CORS in the Queue service</p>
      *
-     * <!-- src_embed com.azure.storage.queue.queueServiceClient.setPropertiesWithResponse#QueueServiceProperties-duration-context -->
-     * <pre>
-     * QueueServiceProperties properties = client.getProperties&#40;&#41;;
-     * properties.setCors&#40;Collections.emptyList&#40;&#41;&#41;;
-     * Response&lt;Void&gt; response = client.setPropertiesWithResponse&#40;properties, Duration.ofSeconds&#40;1&#41;,
-     *     new Context&#40;key1, value1&#41;&#41;;
-     * System.out.printf&#40;&quot;Setting Queue service properties completed with status code %d&quot;, response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.queue.queueServiceClient.setPropertiesWithResponse#QueueServiceProperties-duration-context -->
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.setPropertiesWithResponse#QueueServiceProperties-duration-context}
      *
      * <p>Enable Minute and Hour Metrics</p>
      *
-     * <!-- src_embed com.azure.storage.queue.queueServiceClient.setPropertiesWithResponseEnableMetrics#QueueServiceProperties-duration-context -->
-     * <pre>
-     * QueueServiceProperties properties = client.getProperties&#40;&#41;;
-     * properties.getMinuteMetrics&#40;&#41;.setEnabled&#40;true&#41;;
-     * properties.getMinuteMetrics&#40;&#41;.setIncludeApis&#40;true&#41;;
-     * properties.getMinuteMetrics&#40;&#41;.setRetentionPolicy&#40;new QueueRetentionPolicy&#40;&#41;.setDays&#40;7&#41;.setEnabled&#40;true&#41;&#41;;
-     * properties.getHourMetrics&#40;&#41;.setEnabled&#40;true&#41;;
-     * properties.getHourMetrics&#40;&#41;.setIncludeApis&#40;true&#41;;
-     * properties.getHourMetrics&#40;&#41;.setRetentionPolicy&#40;new QueueRetentionPolicy&#40;&#41;.setDays&#40;7&#41;.setEnabled&#40;true&#41;&#41;;
-     * Response&lt;Void&gt; response = client.setPropertiesWithResponse&#40;properties, Duration.ofSeconds&#40;1&#41;,
-     *     new Context&#40;key1, value1&#41;&#41;;
-     * System.out.printf&#40;&quot;Setting Queue service properties completed with status code %d&quot;, response.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.queue.queueServiceClient.setPropertiesWithResponseEnableMetrics#QueueServiceProperties-duration-context -->
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.setPropertiesWithResponseEnableMetrics#QueueServiceProperties-duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-queue-service-properties">Azure
@@ -484,13 +387,7 @@ public final class QueueServiceClient {
      *
      * <p>Retrieve the geo replication information</p>
      *
-     * <!-- src_embed com.azure.storage.queue.queueServiceClient.getStatistics -->
-     * <pre>
-     * QueueServiceStatistics stats = client.getStatistics&#40;&#41;;
-     * System.out.printf&#40;&quot;Geo replication status: %s, Last synced: %s&quot;,
-     *     stats.getGeoReplication&#40;&#41;.getStatus&#40;&#41;, stats.getGeoReplication&#40;&#41;.getLastSyncTime&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.queue.queueServiceClient.getStatistics -->
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.getStatistics}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-queue-service-stats">Azure Docs</a>.</p>
@@ -509,14 +406,7 @@ public final class QueueServiceClient {
      *
      * <p>Retrieve the geo replication information</p>
      *
-     * <!-- src_embed com.azure.storage.queue.queueServiceClient.getStatisticsWithResponse#duration-context -->
-     * <pre>
-     * QueueServiceStatistics stats = client.getStatisticsWithResponse&#40;Duration.ofSeconds&#40;1&#41;,
-     *     new Context&#40;key1, value1&#41;&#41;.getValue&#40;&#41;;
-     * System.out.printf&#40;&quot;Geo replication status: %s, Last synced: %s&quot;,
-     *     stats.getGeoReplication&#40;&#41;.getStatus&#40;&#41;, stats.getGeoReplication&#40;&#41;.getLastSyncTime&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.queue.queueServiceClient.getStatisticsWithResponse#duration-context -->
+     * {@codesnippet com.azure.storage.queue.queueServiceClient.getStatisticsWithResponse#duration-context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-queue-service-stats">Azure Docs</a>.</p>
@@ -561,22 +451,7 @@ public final class QueueServiceClient {
      * <p><strong>Generating an account SAS</strong></p>
      * <p>The snippet below generates an AccountSasSignatureValues object that lasts for two days and gives the user
      * read and list access to queue and file shares.</p>
-     * <!-- src_embed com.azure.storage.queue.QueueServiceClient.generateAccountSas#AccountSasSignatureValues -->
-     * <pre>
-     * AccountSasPermission permissions = new AccountSasPermission&#40;&#41;
-     *     .setListPermission&#40;true&#41;
-     *     .setReadPermission&#40;true&#41;;
-     * AccountSasResourceType resourceTypes = new AccountSasResourceType&#40;&#41;.setContainer&#40;true&#41;.setObject&#40;true&#41;;
-     * AccountSasService services = new AccountSasService&#40;&#41;.setQueueAccess&#40;true&#41;.setFileAccess&#40;true&#41;;
-     * OffsetDateTime expiryTime = OffsetDateTime.now&#40;&#41;.plus&#40;Duration.ofDays&#40;2&#41;&#41;;
-     *
-     * AccountSasSignatureValues sasValues =
-     *     new AccountSasSignatureValues&#40;expiryTime, permissions, services, resourceTypes&#41;;
-     *
-     * &#47;&#47; Client must be authenticated via StorageSharedKeyCredential
-     * String sas = queueServiceClient.generateAccountSas&#40;sasValues&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.queue.QueueServiceClient.generateAccountSas#AccountSasSignatureValues -->
+     * {@codesnippet com.azure.storage.queue.QueueServiceClient.generateAccountSas#AccountSasSignatureValues}
      *
      * @param accountSasSignatureValues {@link AccountSasSignatureValues}
      *
@@ -594,22 +469,7 @@ public final class QueueServiceClient {
      * <p><strong>Generating an account SAS</strong></p>
      * <p>The snippet below generates an AccountSasSignatureValues object that lasts for two days and gives the user
      * read and list access to queue and file shares.</p>
-     * <!-- src_embed com.azure.storage.queue.QueueServiceClient.generateAccountSas#AccountSasSignatureValues-Context -->
-     * <pre>
-     * AccountSasPermission permissions = new AccountSasPermission&#40;&#41;
-     *     .setListPermission&#40;true&#41;
-     *     .setReadPermission&#40;true&#41;;
-     * AccountSasResourceType resourceTypes = new AccountSasResourceType&#40;&#41;.setContainer&#40;true&#41;.setObject&#40;true&#41;;
-     * AccountSasService services = new AccountSasService&#40;&#41;.setQueueAccess&#40;true&#41;.setFileAccess&#40;true&#41;;
-     * OffsetDateTime expiryTime = OffsetDateTime.now&#40;&#41;.plus&#40;Duration.ofDays&#40;2&#41;&#41;;
-     *
-     * AccountSasSignatureValues sasValues =
-     *     new AccountSasSignatureValues&#40;expiryTime, permissions, services, resourceTypes&#41;;
-     *
-     * &#47;&#47; Client must be authenticated via StorageSharedKeyCredential
-     * String sas = queueServiceClient.generateAccountSas&#40;sasValues, new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.queue.QueueServiceClient.generateAccountSas#AccountSasSignatureValues-Context -->
+     * {@codesnippet com.azure.storage.queue.QueueServiceClient.generateAccountSas#AccountSasSignatureValues-Context}
      *
      * @param accountSasSignatureValues {@link AccountSasSignatureValues}
      * @param context Additional context that is passed through the code when generating a SAS.
