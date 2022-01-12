@@ -28,21 +28,9 @@ import java.time.Duration;
  *
  * <p><strong>Instantiating a BlobLeaseClient</strong></p>
  *
- * <!-- src_embed com.azure.storage.blob.specialized.LeaseClientBuilder.syncInstantiationWithBlob -->
- * <pre>
- * BlobLeaseClient blobLeaseClient = new BlobLeaseClientBuilder&#40;&#41;
- *     .blobClient&#40;blobClient&#41;
- *     .buildClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.storage.blob.specialized.LeaseClientBuilder.syncInstantiationWithBlob -->
+ * {@codesnippet com.azure.storage.blob.specialized.LeaseClientBuilder.syncInstantiationWithBlob}
  *
- * <!-- src_embed com.azure.storage.blob.specialized.LeaseClientBuilder.syncInstantiationWithContainer -->
- * <pre>
- * BlobLeaseClient blobLeaseClient = new BlobLeaseClientBuilder&#40;&#41;
- *     .containerClient&#40;blobContainerClient&#41;
- *     .buildClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.storage.blob.specialized.LeaseClientBuilder.syncInstantiationWithContainer -->
+ * {@codesnippet com.azure.storage.blob.specialized.LeaseClientBuilder.syncInstantiationWithContainer}
  *
  * <p>View {@link BlobLeaseClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -86,11 +74,7 @@ public final class BlobLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.specialized.BlobLeaseClient.acquireLease#int -->
-     * <pre>
-     * System.out.printf&#40;&quot;Lease ID is %s%n&quot;, client.acquireLease&#40;60&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.specialized.BlobLeaseClient.acquireLease#int -->
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClient.acquireLease#int}
      *
      * @param duration The duration of the lease between 15 to 60 seconds or -1 for an infinite duration.
      * @return The lease ID.
@@ -106,16 +90,7 @@ public final class BlobLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.specialized.BlobLeaseClient.acquireLeaseWithResponse#int-RequestConditions-Duration-Context -->
-     * <pre>
-     * RequestConditions modifiedRequestConditions = new RequestConditions&#40;&#41;
-     *     .setIfModifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
-     *
-     * System.out.printf&#40;&quot;Lease ID is %s%n&quot;, client
-     *     .acquireLeaseWithResponse&#40;60, modifiedRequestConditions, timeout, new Context&#40;key, value&#41;&#41;
-     *     .getValue&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.specialized.BlobLeaseClient.acquireLeaseWithResponse#int-RequestConditions-Duration-Context -->
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClient.acquireLeaseWithResponse#int-RequestConditions-Duration-Context}
      *
      * @param duration The duration of the lease between 15 to 60 seconds or -1 for an infinite duration.
      * @param modifiedRequestConditions Standard HTTP Access conditions related to the modification of data. ETag and
@@ -139,19 +114,7 @@ public final class BlobLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.specialized.BlobLeaseClient.acquireLeaseWithResponse#BlobAcquireLeaseOptions-Duration-Context -->
-     * <pre>
-     * BlobLeaseRequestConditions requestConditions = new BlobLeaseRequestConditions&#40;&#41;
-     *     .setIfModifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
-     *
-     * BlobAcquireLeaseOptions options = new BlobAcquireLeaseOptions&#40;60&#41;
-     *     .setRequestConditions&#40;requestConditions&#41;;
-     *
-     * System.out.printf&#40;&quot;Lease ID is %s%n&quot;, client
-     *     .acquireLeaseWithResponse&#40;options, timeout, new Context&#40;key, value&#41;&#41;
-     *     .getValue&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.specialized.BlobLeaseClient.acquireLeaseWithResponse#BlobAcquireLeaseOptions-Duration-Context -->
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClient.acquireLeaseWithResponse#BlobAcquireLeaseOptions-Duration-Context}
      *
      * @param options {@link BlobAcquireLeaseOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -170,11 +133,7 @@ public final class BlobLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.specialized.BlobLeaseClient.renewLease -->
-     * <pre>
-     * System.out.printf&#40;&quot;Renewed lease ID is %s%n&quot;, client.renewLease&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.specialized.BlobLeaseClient.renewLease -->
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClient.renewLease}
      *
      * @return The renewed lease ID.
      */
@@ -188,16 +147,7 @@ public final class BlobLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.specialized.BlobLeaseClient.renewLeaseWithResponse#RequestConditions-Duration-Context -->
-     * <pre>
-     * RequestConditions modifiedRequestConditions = new RequestConditions&#40;&#41;
-     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
-     *
-     * System.out.printf&#40;&quot;Renewed lease ID is %s%n&quot;,
-     *     client.renewLeaseWithResponse&#40;modifiedRequestConditions, timeout, new Context&#40;key, value&#41;&#41;
-     *         .getValue&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.specialized.BlobLeaseClient.renewLeaseWithResponse#RequestConditions-Duration-Context -->
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClient.renewLeaseWithResponse#RequestConditions-Duration-Context}
      *
      * @param modifiedRequestConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
@@ -219,19 +169,7 @@ public final class BlobLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.specialized.BlobLeaseClient.renewLeaseWithResponse#BlobRenewLeaseOptions-Duration-Context -->
-     * <pre>
-     * BlobLeaseRequestConditions requestConditions = new BlobLeaseRequestConditions&#40;&#41;
-     *     .setIfModifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
-     *
-     * BlobRenewLeaseOptions options = new BlobRenewLeaseOptions&#40;&#41;
-     *     .setRequestConditions&#40;requestConditions&#41;;
-     *
-     * System.out.printf&#40;&quot;Renewed lease ID is %s%n&quot;,
-     *     client.renewLeaseWithResponse&#40;options, timeout, new Context&#40;key, value&#41;&#41;
-     *         .getValue&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.specialized.BlobLeaseClient.renewLeaseWithResponse#BlobRenewLeaseOptions-Duration-Context -->
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClient.renewLeaseWithResponse#BlobRenewLeaseOptions-Duration-Context}
      *
      * @param options {@link BlobRenewLeaseOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -249,12 +187,7 @@ public final class BlobLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.specialized.BlobLeaseClient.releaseLease -->
-     * <pre>
-     * client.releaseLease&#40;&#41;;
-     * System.out.println&#40;&quot;Release lease completed&quot;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.specialized.BlobLeaseClient.releaseLease -->
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClient.releaseLease}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void releaseLease() {
@@ -266,16 +199,7 @@ public final class BlobLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.specialized.BlobLeaseClient.releaseLeaseWithResponse#RequestConditions-Duration-Context -->
-     * <pre>
-     * RequestConditions modifiedRequestConditions = new RequestConditions&#40;&#41;
-     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
-     *
-     * System.out.printf&#40;&quot;Release lease completed with status %d%n&quot;,
-     *     client.releaseLeaseWithResponse&#40;modifiedRequestConditions, timeout, new Context&#40;key, value&#41;&#41;
-     *         .getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.specialized.BlobLeaseClient.releaseLeaseWithResponse#RequestConditions-Duration-Context -->
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClient.releaseLeaseWithResponse#RequestConditions-Duration-Context}
      *
      * @param modifiedRequestConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
@@ -297,19 +221,7 @@ public final class BlobLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.specialized.BlobLeaseClient.releaseLeaseWithResponse#BlobReleaseLeaseOptions-Duration-Context -->
-     * <pre>
-     * BlobLeaseRequestConditions requestConditions = new BlobLeaseRequestConditions&#40;&#41;
-     *     .setIfModifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
-     *
-     * BlobReleaseLeaseOptions options = new BlobReleaseLeaseOptions&#40;&#41;
-     *     .setRequestConditions&#40;requestConditions&#41;;
-     *
-     * System.out.printf&#40;&quot;Release lease completed with status %d%n&quot;,
-     *     client.releaseLeaseWithResponse&#40;options, timeout, new Context&#40;key, value&#41;&#41;
-     *         .getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.specialized.BlobLeaseClient.releaseLeaseWithResponse#BlobReleaseLeaseOptions-Duration-Context -->
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClient.releaseLeaseWithResponse#BlobReleaseLeaseOptions-Duration-Context}
      *
      * @param options {@link BlobReleaseLeaseOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -328,11 +240,7 @@ public final class BlobLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.specialized.BlobLeaseClient.breakLease -->
-     * <pre>
-     * System.out.printf&#40;&quot;The broken lease has %d seconds remaining on the lease&quot;, client.breakLease&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.specialized.BlobLeaseClient.breakLease -->
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClient.breakLease}
      *
      * @return The remaining time in the broken lease in seconds.
      */
@@ -349,17 +257,7 @@ public final class BlobLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.specialized.BlobLeaseClient.breakLeaseWithResponse#Integer-RequestConditions-Duration-Context -->
-     * <pre>
-     * Integer retainLeaseInSeconds = 5;
-     * RequestConditions modifiedRequestConditions = new RequestConditions&#40;&#41;
-     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
-     *
-     * System.out.printf&#40;&quot;The broken lease has %d seconds remaining on the lease&quot;, client
-     *     .breakLeaseWithResponse&#40;retainLeaseInSeconds, modifiedRequestConditions, timeout, new Context&#40;key, value&#41;&#41;
-     *     .getValue&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.specialized.BlobLeaseClient.breakLeaseWithResponse#Integer-RequestConditions-Duration-Context -->
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClient.breakLeaseWithResponse#Integer-RequestConditions-Duration-Context}
      *
      * @param breakPeriodInSeconds An optional duration, between 0 and 60 seconds, that the lease should continue before
      * it is broken. If the break period is longer than the time remaining on the lease the remaining time on the lease
@@ -389,21 +287,7 @@ public final class BlobLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.specialized.BlobLeaseClient.breakLeaseWithResponse#BlobBreakLeaseOptions-Duration-Context -->
-     * <pre>
-     * Integer retainLeaseInSeconds = 5;
-     * BlobLeaseRequestConditions requestConditions = new BlobLeaseRequestConditions&#40;&#41;
-     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
-     *
-     * BlobBreakLeaseOptions options = new BlobBreakLeaseOptions&#40;&#41;
-     *     .setBreakPeriod&#40;Duration.ofSeconds&#40;retainLeaseInSeconds&#41;&#41;
-     *     .setRequestConditions&#40;requestConditions&#41;;
-     *
-     * System.out.printf&#40;&quot;The broken lease has %d seconds remaining on the lease&quot;, client
-     *     .breakLeaseWithResponse&#40;options, timeout, new Context&#40;key, value&#41;&#41;
-     *     .getValue&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.specialized.BlobLeaseClient.breakLeaseWithResponse#BlobBreakLeaseOptions-Duration-Context -->
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClient.breakLeaseWithResponse#BlobBreakLeaseOptions-Duration-Context}
      *
      * @param options {@link BlobBreakLeaseOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -420,11 +304,7 @@ public final class BlobLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.specialized.BlobLeaseClient.changeLease#String -->
-     * <pre>
-     * System.out.printf&#40;&quot;Changed lease ID is %s%n&quot;, client.changeLease&#40;&quot;proposedId&quot;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.specialized.BlobLeaseClient.changeLease#String -->
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClient.changeLease#String}
      *
      * @param proposedId A new lease ID in a valid GUID format.
      * @return The new lease ID.
@@ -439,16 +319,7 @@ public final class BlobLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.specialized.BlobLeaseClient.changeLeaseWithResponse#String-RequestConditions-Duration-Context -->
-     * <pre>
-     * RequestConditions modifiedRequestConditions = new RequestConditions&#40;&#41;
-     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
-     *
-     * System.out.printf&#40;&quot;Changed lease ID is %s%n&quot;,
-     *     client.changeLeaseWithResponse&#40;&quot;proposedId&quot;, modifiedRequestConditions, timeout, new Context&#40;key, value&#41;&#41;
-     *         .getValue&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.specialized.BlobLeaseClient.changeLeaseWithResponse#String-RequestConditions-Duration-Context -->
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClient.changeLeaseWithResponse#String-RequestConditions-Duration-Context}
      *
      * @param proposedId A new lease ID in a valid GUID format.
      * @param modifiedRequestConditions Standard HTTP Access conditions related to the modification of data. ETag and
@@ -471,19 +342,7 @@ public final class BlobLeaseClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.specialized.BlobLeaseClient.changeLeaseWithResponse#BlobChangeLeaseOptions-Duration-Context -->
-     * <pre>
-     * BlobLeaseRequestConditions requestConditions = new BlobLeaseRequestConditions&#40;&#41;
-     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
-     *
-     * BlobChangeLeaseOptions options = new BlobChangeLeaseOptions&#40;&quot;proposedId&quot;&#41;
-     *     .setRequestConditions&#40;requestConditions&#41;;
-     *
-     * System.out.printf&#40;&quot;Changed lease ID is %s%n&quot;,
-     *     client.changeLeaseWithResponse&#40;options, timeout, new Context&#40;key, value&#41;&#41;
-     *         .getValue&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.specialized.BlobLeaseClient.changeLeaseWithResponse#BlobChangeLeaseOptions-Duration-Context -->
+     * {@codesnippet com.azure.storage.blob.specialized.BlobLeaseClient.changeLeaseWithResponse#BlobChangeLeaseOptions-Duration-Context}
      *
      * @param options {@link BlobChangeLeaseOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.

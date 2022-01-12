@@ -49,19 +49,10 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
 public final class BlobContainerClient {
     private final BlobContainerAsyncClient client;
 
-    /**
-     * Special container name for the root container in the Storage account.
-     */
     public static final String ROOT_CONTAINER_NAME = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
 
-    /**
-     * Special container name for the static website container in the Storage account.
-     */
     public static final String STATIC_WEBSITE_CONTAINER_NAME = BlobContainerAsyncClient.STATIC_WEBSITE_CONTAINER_NAME;
 
-    /**
-     * Special container name for the logs container in the Storage account.
-     */
     public static final String LOG_CONTAINER_NAME = BlobContainerAsyncClient.LOG_CONTAINER_NAME;
 
     /**
@@ -83,11 +74,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.getBlobClient#String -->
-     * <pre>
-     * BlobClient blobClient = client.getBlobClient&#40;blobName&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobContainerClient.getBlobClient#String -->
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.getBlobClient#String}
      * @return A new {@link BlobClient} object which references the blob with the specified name in this container.
      */
     public BlobClient getBlobClient(String blobName) {
@@ -100,11 +87,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.getBlobClient#String-String -->
-     * <pre>
-     * BlobClient blobClient = client.getBlobClient&#40;blobName, snapshot&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobContainerClient.getBlobClient#String-String -->
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.getBlobClient#String-String}
      *
      * @param blobName A {@code String} representing the name of the blob. If the blob name contains special characters,
      * pass in the url encoded version of the blob name.
@@ -133,12 +116,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.getBlobContainerName -->
-     * <pre>
-     * String containerName = client.getBlobContainerName&#40;&#41;;
-     * System.out.println&#40;&quot;The name of the blob is &quot; + containerName&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobContainerClient.getBlobContainerName -->
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.getBlobContainerName}
      *
      * @return The name of container.
      */
@@ -224,11 +202,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.exists -->
-     * <pre>
-     * System.out.printf&#40;&quot;Exists? %b%n&quot;, client.exists&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobContainerClient.exists -->
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.exists}
      *
      * @return true if the container exists, false if it doesn't
      */
@@ -241,12 +215,7 @@ public final class BlobContainerClient {
      * Gets if the container this client represents exists in the cloud.
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.existsWithResponse#Duration-Context -->
-     * <pre>
-     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
-     * System.out.printf&#40;&quot;Exists? %b%n&quot;, client.existsWithResponse&#40;timeout, context&#41;.getValue&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobContainerClient.existsWithResponse#Duration-Context -->
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.existsWithResponse#Duration-Context}
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -266,18 +235,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.create -->
-     * <pre>
-     * try &#123;
-     *     client.create&#40;&#41;;
-     *     System.out.printf&#40;&quot;Create completed%n&quot;&#41;;
-     * &#125; catch &#40;BlobStorageException error&#41; &#123;
-     *     if &#40;error.getErrorCode&#40;&#41;.equals&#40;BlobErrorCode.CONTAINER_ALREADY_EXISTS&#41;&#41; &#123;
-     *         System.out.printf&#40;&quot;Can't create container. It already exists %n&quot;&#41;;
-     *     &#125;
-     * &#125;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobContainerClient.create -->
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.create}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void create() {
@@ -291,15 +249,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.createWithResponse#Map-PublicAccessType-Duration-Context -->
-     * <pre>
-     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
-     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
-     *
-     * System.out.printf&#40;&quot;Create completed with status %d%n&quot;,
-     *     client.createWithResponse&#40;metadata, PublicAccessType.CONTAINER, timeout, context&#41;.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobContainerClient.createWithResponse#Map-PublicAccessType-Duration-Context -->
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.createWithResponse#Map-PublicAccessType-Duration-Context}
      *
      * @param metadata Metadata to associate with the container. If there is leading or trailing whitespace in any
      * metadata key or value, it must be removed or encoded.
@@ -323,18 +273,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.delete -->
-     * <pre>
-     * try &#123;
-     *     client.delete&#40;&#41;;
-     *     System.out.printf&#40;&quot;Delete completed%n&quot;&#41;;
-     * &#125; catch &#40;BlobStorageException error&#41; &#123;
-     *     if &#40;error.getErrorCode&#40;&#41;.equals&#40;BlobErrorCode.CONTAINER_NOT_FOUND&#41;&#41; &#123;
-     *         System.out.printf&#40;&quot;Delete failed. Container was not found %n&quot;&#41;;
-     *     &#125;
-     * &#125;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobContainerClient.delete -->
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.delete}
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete() {
@@ -348,17 +287,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.deleteWithResponse#BlobRequestConditions-Duration-Context -->
-     * <pre>
-     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;
-     *     .setLeaseId&#40;leaseId&#41;
-     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
-     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
-     *
-     * System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, client.deleteWithResponse&#40;
-     *     requestConditions, timeout, context&#41;.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobContainerClient.deleteWithResponse#BlobRequestConditions-Duration-Context -->
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.deleteWithResponse#BlobRequestConditions-Duration-Context}
      *
      * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -379,15 +308,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.getProperties -->
-     * <pre>
-     * BlobContainerProperties properties = client.getProperties&#40;&#41;;
-     * System.out.printf&#40;&quot;Public Access Type: %s, Legal Hold? %b, Immutable? %b%n&quot;,
-     *     properties.getBlobPublicAccess&#40;&#41;,
-     *     properties.hasLegalHold&#40;&#41;,
-     *     properties.hasImmutabilityPolicy&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobContainerClient.getProperties -->
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.getProperties}
      *
      * @return The container properties.
      */
@@ -402,18 +323,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.getPropertiesWithResponse#String-Duration-Context -->
-     * <pre>
-     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
-     *
-     * BlobContainerProperties properties = client.getPropertiesWithResponse&#40;leaseId, timeout, context&#41;
-     *     .getValue&#40;&#41;;
-     * System.out.printf&#40;&quot;Public Access Type: %s, Legal Hold? %b, Immutable? %b%n&quot;,
-     *     properties.getBlobPublicAccess&#40;&#41;,
-     *     properties.hasLegalHold&#40;&#41;,
-     *     properties.hasImmutabilityPolicy&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobContainerClient.getPropertiesWithResponse#String-Duration-Context -->
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.getPropertiesWithResponse#String-Duration-Context}
      *
      * @param leaseId The lease ID the active lease on the container must match.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -432,17 +342,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.setMetadata#Map -->
-     * <pre>
-     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
-     * try &#123;
-     *     client.setMetadata&#40;metadata&#41;;
-     *     System.out.printf&#40;&quot;Set metadata completed with status %n&quot;&#41;;
-     * &#125; catch &#40;UnsupportedOperationException error&#41; &#123;
-     *     System.out.printf&#40;&quot;Fail while setting metadata %n&quot;&#41;;
-     * &#125;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobContainerClient.setMetadata#Map -->
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.setMetadata#Map}
      *
      * @param metadata Metadata to associate with the container. If there is leading or trailing whitespace in any
      * metadata key or value, it must be removed or encoded.
@@ -458,18 +358,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.setMetadataWithResponse#Map-BlobRequestConditions-Duration-Context -->
-     * <pre>
-     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
-     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;
-     *     .setLeaseId&#40;leaseId&#41;
-     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
-     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
-     *
-     * System.out.printf&#40;&quot;Set metadata completed with status %d%n&quot;,
-     *     client.setMetadataWithResponse&#40;metadata, requestConditions, timeout, context&#41;.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobContainerClient.setMetadataWithResponse#Map-BlobRequestConditions-Duration-Context -->
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.setMetadataWithResponse#Map-BlobRequestConditions-Duration-Context}
      * @param metadata Metadata to associate with the container. If there is leading or trailing whitespace in any
      * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link BlobRequestConditions}
@@ -492,18 +381,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.getAccessPolicy -->
-     * <pre>
-     * BlobContainerAccessPolicies accessPolicies = client.getAccessPolicy&#40;&#41;;
-     * System.out.printf&#40;&quot;Blob Access Type: %s%n&quot;, accessPolicies.getBlobAccessType&#40;&#41;&#41;;
-     *
-     * for &#40;BlobSignedIdentifier identifier : accessPolicies.getIdentifiers&#40;&#41;&#41; &#123;
-     *     System.out.printf&#40;&quot;Identifier Name: %s, Permissions %s%n&quot;,
-     *         identifier.getId&#40;&#41;,
-     *         identifier.getAccessPolicy&#40;&#41;.getPermissions&#40;&#41;&#41;;
-     * &#125;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobContainerClient.getAccessPolicy -->
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.getAccessPolicy}
      *
      * @return The container access policy.
      */
@@ -519,20 +397,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.getAccessPolicyWithResponse#String-Duration-Context -->
-     * <pre>
-     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
-     * BlobContainerAccessPolicies accessPolicies = client.getAccessPolicyWithResponse&#40;leaseId, timeout, context&#41;
-     *     .getValue&#40;&#41;;
-     * System.out.printf&#40;&quot;Blob Access Type: %s%n&quot;, accessPolicies.getBlobAccessType&#40;&#41;&#41;;
-     *
-     * for &#40;BlobSignedIdentifier identifier : accessPolicies.getIdentifiers&#40;&#41;&#41; &#123;
-     *     System.out.printf&#40;&quot;Identifier Name: %s, Permissions %s%n&quot;,
-     *         identifier.getId&#40;&#41;,
-     *         identifier.getAccessPolicy&#40;&#41;.getPermissions&#40;&#41;&#41;;
-     * &#125;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobContainerClient.getAccessPolicyWithResponse#String-Duration-Context -->
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.getAccessPolicyWithResponse#String-Duration-Context}
      *
      * @param leaseId The lease ID the active lease on the container must match.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -553,23 +418,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.setAccessPolicy#PublicAccessType-List -->
-     * <pre>
-     * BlobSignedIdentifier identifier = new BlobSignedIdentifier&#40;&#41;
-     *     .setId&#40;&quot;name&quot;&#41;
-     *     .setAccessPolicy&#40;new BlobAccessPolicy&#40;&#41;
-     *         .setStartsOn&#40;OffsetDateTime.now&#40;&#41;&#41;
-     *         .setExpiresOn&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;7&#41;&#41;
-     *         .setPermissions&#40;&quot;permissionString&quot;&#41;&#41;;
-     *
-     * try &#123;
-     *     client.setAccessPolicy&#40;PublicAccessType.CONTAINER, Collections.singletonList&#40;identifier&#41;&#41;;
-     *     System.out.printf&#40;&quot;Set Access Policy completed %n&quot;&#41;;
-     * &#125; catch &#40;UnsupportedOperationException error&#41; &#123;
-     *     System.out.printf&#40;&quot;Set Access Policy completed %s%n&quot;, error&#41;;
-     * &#125;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobContainerClient.setAccessPolicy#PublicAccessType-List -->
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.setAccessPolicy#PublicAccessType-List}
      *
      * @param accessType Specifies how the data in this container is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
@@ -592,29 +441,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.setAccessPolicyWithResponse#PublicAccessType-List-BlobRequestConditions-Duration-Context -->
-     * <pre>
-     * BlobSignedIdentifier identifier = new BlobSignedIdentifier&#40;&#41;
-     *     .setId&#40;&quot;name&quot;&#41;
-     *     .setAccessPolicy&#40;new BlobAccessPolicy&#40;&#41;
-     *         .setStartsOn&#40;OffsetDateTime.now&#40;&#41;&#41;
-     *         .setExpiresOn&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;7&#41;&#41;
-     *         .setPermissions&#40;&quot;permissionString&quot;&#41;&#41;;
-     *
-     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;
-     *     .setLeaseId&#40;leaseId&#41;
-     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
-     *
-     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
-     *
-     * System.out.printf&#40;&quot;Set access policy completed with status %d%n&quot;,
-     *     client.setAccessPolicyWithResponse&#40;PublicAccessType.CONTAINER,
-     *         Collections.singletonList&#40;identifier&#41;,
-     *         requestConditions,
-     *         timeout,
-     *         context&#41;.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobContainerClient.setAccessPolicyWithResponse#PublicAccessType-List-BlobRequestConditions-Duration-Context -->
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.setAccessPolicyWithResponse#PublicAccessType-List-BlobRequestConditions-Duration-Context}
      *
      * @param accessType Specifies how the data in this container is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
@@ -650,12 +477,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.listBlobs -->
-     * <pre>
-     * client.listBlobs&#40;&#41;.forEach&#40;blob -&gt;
-     *     System.out.printf&#40;&quot;Name: %s, Directory? %b%n&quot;, blob.getName&#40;&#41;, blob.isPrefix&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobContainerClient.listBlobs -->
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.listBlobs}
      *
      * @return The listed blobs, flattened.
      */
@@ -677,22 +499,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.listBlobs#ListBlobsOptions-Duration -->
-     * <pre>
-     * ListBlobsOptions options = new ListBlobsOptions&#40;&#41;
-     *     .setPrefix&#40;&quot;prefixToMatch&quot;&#41;
-     *     .setDetails&#40;new BlobListDetails&#40;&#41;
-     *         .setRetrieveDeletedBlobs&#40;true&#41;
-     *         .setRetrieveSnapshots&#40;true&#41;&#41;;
-     *
-     * client.listBlobs&#40;options, timeout&#41;.forEach&#40;blob -&gt;
-     *     System.out.printf&#40;&quot;Name: %s, Directory? %b, Deleted? %b, Snapshot ID: %s%n&quot;,
-     *         blob.getName&#40;&#41;,
-     *         blob.isPrefix&#40;&#41;,
-     *         blob.isDeleted&#40;&#41;,
-     *         blob.getSnapshot&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobContainerClient.listBlobs#ListBlobsOptions-Duration -->
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.listBlobs#ListBlobsOptions-Duration}
      *
      * @param options {@link ListBlobsOptions}. If iterating by page, the page size passed to byPage methods such as
      * {@link PagedIterable#iterableByPage(int)} will be preferred over the value set on these options.
@@ -717,24 +524,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.listBlobs#ListBlobsOptions-String-Duration -->
-     * <pre>
-     * ListBlobsOptions options = new ListBlobsOptions&#40;&#41;
-     *     .setPrefix&#40;&quot;prefixToMatch&quot;&#41;
-     *     .setDetails&#40;new BlobListDetails&#40;&#41;
-     *         .setRetrieveDeletedBlobs&#40;true&#41;
-     *         .setRetrieveSnapshots&#40;true&#41;&#41;;
-     *
-     * String continuationToken = &quot;continuationToken&quot;;
-     *
-     * client.listBlobs&#40;options, continuationToken, timeout&#41;.forEach&#40;blob -&gt;
-     *     System.out.printf&#40;&quot;Name: %s, Directory? %b, Deleted? %b, Snapshot ID: %s%n&quot;,
-     *         blob.getName&#40;&#41;,
-     *         blob.isPrefix&#40;&#41;,
-     *         blob.isDeleted&#40;&#41;,
-     *         blob.getSnapshot&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobContainerClient.listBlobs#ListBlobsOptions-String-Duration -->
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.listBlobs#ListBlobsOptions-String-Duration}
      *
      * @param options {@link ListBlobsOptions}. If iterating by page, the page size passed to byPage methods such as
      * {@link PagedIterable#iterableByPage(int)} will be preferred over the value set on these options.
@@ -773,12 +563,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.listBlobsByHierarchy#String -->
-     * <pre>
-     * client.listBlobsByHierarchy&#40;&quot;directoryName&quot;&#41;.forEach&#40;blob -&gt;
-     *     System.out.printf&#40;&quot;Name: %s, Directory? %b%n&quot;, blob.getName&#40;&#41;, blob.isPrefix&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobContainerClient.listBlobsByHierarchy#String -->
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.listBlobsByHierarchy#String}
      *
      * @param directory The directory to list blobs underneath
      * @return A reactive response emitting the prefixes and blobs.
@@ -814,22 +599,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.listBlobsByHierarchy#String-ListBlobsOptions-Duration -->
-     * <pre>
-     * ListBlobsOptions options = new ListBlobsOptions&#40;&#41;
-     *     .setPrefix&#40;&quot;directoryName&quot;&#41;
-     *     .setDetails&#40;new BlobListDetails&#40;&#41;
-     *         .setRetrieveDeletedBlobs&#40;true&#41;
-     *         .setRetrieveSnapshots&#40;true&#41;&#41;;
-     *
-     * client.listBlobsByHierarchy&#40;&quot;&#47;&quot;, options, timeout&#41;.forEach&#40;blob -&gt;
-     *     System.out.printf&#40;&quot;Name: %s, Directory? %b, Deleted? %b, Snapshot ID: %s%n&quot;,
-     *         blob.getName&#40;&#41;,
-     *         blob.isPrefix&#40;&#41;,
-     *         blob.isDeleted&#40;&#41;,
-     *         blob.getSnapshot&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobContainerClient.listBlobsByHierarchy#String-ListBlobsOptions-Duration -->
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.listBlobsByHierarchy#String-ListBlobsOptions-Duration}
      *
      * @param delimiter The delimiter for blob hierarchy, "/" for hierarchy based on directories
      * @param options {@link ListBlobsOptions}. If iterating by page, the page size passed to byPage methods such as
@@ -851,12 +621,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.getAccountInfo#Duration -->
-     * <pre>
-     * StorageAccountInfo accountInfo = client.getAccountInfo&#40;timeout&#41;;
-     * System.out.printf&#40;&quot;Account Kind: %s, SKU: %s%n&quot;, accountInfo.getAccountKind&#40;&#41;, accountInfo.getSkuName&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobContainerClient.getAccountInfo#Duration -->
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.getAccountInfo#Duration}
      * @return The account info.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -870,13 +635,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.getAccountInfoWithResponse#Duration-Context -->
-     * <pre>
-     * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
-     * StorageAccountInfo accountInfo = client.getAccountInfoWithResponse&#40;timeout, context&#41;.getValue&#40;&#41;;
-     * System.out.printf&#40;&quot;Account Kind: %s, SKU: %s%n&quot;, accountInfo.getAccountKind&#40;&#41;, accountInfo.getSkuName&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobContainerClient.getAccountInfoWithResponse#Duration-Context -->
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.getAccountInfoWithResponse#Duration-Context}
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -894,8 +653,7 @@ public final class BlobContainerClient {
 //     *
 //     * <p><strong>Code Samples</strong></p>
 //     *
-//     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.rename#String -->
-//     * <!-- end com.azure.storage.blob.BlobContainerClient.rename#String -->
+//     * {@codesnippet com.azure.storage.blob.BlobContainerClient.rename#String}
 //     *
 //     * @param destinationContainerName The new name of the container.
 //     * @return A {@link BlobContainerClient} used to interact with the renamed container.
@@ -911,8 +669,7 @@ public final class BlobContainerClient {
 //     *
 //     * <p><strong>Code Samples</strong></p>
 //     *
-//     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.renameWithResponse#BlobContainerRenameOptions-Duration-Context -->
-//     * <!-- end com.azure.storage.blob.BlobContainerClient.renameWithResponse#BlobContainerRenameOptions-Duration-Context -->
+//     * {@codesnippet com.azure.storage.blob.BlobContainerClient.renameWithResponse#BlobContainerRenameOptions-Duration-Context}
 //     *
 //     * @param options {@link BlobContainerRenameOptions}
 //     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -935,17 +692,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey -->
-     * <pre>
-     * OffsetDateTime myExpiryTime = OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;;
-     * BlobContainerSasPermission myPermission = new BlobContainerSasPermission&#40;&#41;.setReadPermission&#40;true&#41;;
-     *
-     * BlobServiceSasSignatureValues myValues = new BlobServiceSasSignatureValues&#40;expiryTime, permission&#41;
-     *     .setStartTime&#40;OffsetDateTime.now&#40;&#41;&#41;;
-     *
-     * client.generateUserDelegationSas&#40;values, userDelegationKey&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobContainerClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey -->
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey}
      *
      * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
      * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
@@ -965,17 +712,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey-String-Context -->
-     * <pre>
-     * OffsetDateTime myExpiryTime = OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;;
-     * BlobContainerSasPermission myPermission = new BlobContainerSasPermission&#40;&#41;.setReadPermission&#40;true&#41;;
-     *
-     * BlobServiceSasSignatureValues myValues = new BlobServiceSasSignatureValues&#40;expiryTime, permission&#41;
-     *     .setStartTime&#40;OffsetDateTime.now&#40;&#41;&#41;;
-     *
-     * client.generateUserDelegationSas&#40;values, userDelegationKey, accountName, new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobContainerClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey-String-Context -->
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey-String-Context}
      *
      * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
      * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
@@ -999,17 +736,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.generateSas#BlobServiceSasSignatureValues -->
-     * <pre>
-     * OffsetDateTime expiryTime = OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;;
-     * BlobContainerSasPermission permission = new BlobContainerSasPermission&#40;&#41;.setReadPermission&#40;true&#41;;
-     *
-     * BlobServiceSasSignatureValues values = new BlobServiceSasSignatureValues&#40;expiryTime, permission&#41;
-     *     .setStartTime&#40;OffsetDateTime.now&#40;&#41;&#41;;
-     *
-     * client.generateSas&#40;values&#41;; &#47;&#47; Client must be authenticated via StorageSharedKeyCredential
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobContainerClient.generateSas#BlobServiceSasSignatureValues -->
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.generateSas#BlobServiceSasSignatureValues}
      *
      * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
      *
@@ -1026,18 +753,7 @@ public final class BlobContainerClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.generateSas#BlobServiceSasSignatureValues-Context -->
-     * <pre>
-     * OffsetDateTime expiryTime = OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;;
-     * BlobContainerSasPermission permission = new BlobContainerSasPermission&#40;&#41;.setReadPermission&#40;true&#41;;
-     *
-     * BlobServiceSasSignatureValues values = new BlobServiceSasSignatureValues&#40;expiryTime, permission&#41;
-     *     .setStartTime&#40;OffsetDateTime.now&#40;&#41;&#41;;
-     *
-     * &#47;&#47; Client must be authenticated via StorageSharedKeyCredential
-     * client.generateSas&#40;values, new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.blob.BlobContainerClient.generateSas#BlobServiceSasSignatureValues-Context -->
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.generateSas#BlobServiceSasSignatureValues-Context}
      *
      * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
      * @param context Additional context that is passed through the code when generating a SAS.

@@ -17,7 +17,7 @@ public final class BlobItemInternal {
      * The Name property.
      */
     @JsonProperty(value = "Name", required = true)
-    private BlobName name;
+    private String name;
 
     /*
      * The Deleted property.
@@ -84,7 +84,7 @@ public final class BlobItemInternal {
      *
      * @return the name value.
      */
-    public BlobName getName() {
+    public String getName() {
         return this.name;
     }
 
@@ -94,7 +94,7 @@ public final class BlobItemInternal {
      * @param name the name value to set.
      * @return the BlobItemInternal object itself.
      */
-    public BlobItemInternal setName(BlobName name) {
+    public BlobItemInternal setName(String name) {
         this.name = name;
         return this;
     }
