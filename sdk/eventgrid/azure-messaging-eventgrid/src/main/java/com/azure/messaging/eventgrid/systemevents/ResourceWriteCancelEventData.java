@@ -6,7 +6,6 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Map;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.Resources.ResourceWriteCancel event. This is raised
@@ -60,13 +59,13 @@ public final class ResourceWriteCancelEventData {
      * The requested authorization for the operation.
      */
     @JsonProperty(value = "authorization")
-    private ResourceAuthorization authorization;
+    private String authorization;
 
     /*
      * The properties of the claims.
      */
     @JsonProperty(value = "claims")
-    private Map<String, String> claims;
+    private String claims;
 
     /*
      * An operation ID used for troubleshooting.
@@ -78,7 +77,7 @@ public final class ResourceWriteCancelEventData {
      * The details of the operation.
      */
     @JsonProperty(value = "httpRequest")
-    private ResourceHttpRequest httpRequest;
+    private String httpRequest;
 
     /**
      * Get the tenantId property: The tenant ID of the resource.
@@ -225,7 +224,7 @@ public final class ResourceWriteCancelEventData {
      *
      * @return the authorization value.
      */
-    public ResourceAuthorization getAuthorization() {
+    public String getAuthorization() {
         return this.authorization;
     }
 
@@ -235,7 +234,7 @@ public final class ResourceWriteCancelEventData {
      * @param authorization the authorization value to set.
      * @return the ResourceWriteCancelEventData object itself.
      */
-    public ResourceWriteCancelEventData setAuthorization(ResourceAuthorization authorization) {
+    public ResourceWriteCancelEventData setAuthorization(String authorization) {
         this.authorization = authorization;
         return this;
     }
@@ -245,7 +244,7 @@ public final class ResourceWriteCancelEventData {
      *
      * @return the claims value.
      */
-    public Map<String, String> getClaims() {
+    public String getClaims() {
         return this.claims;
     }
 
@@ -255,7 +254,7 @@ public final class ResourceWriteCancelEventData {
      * @param claims the claims value to set.
      * @return the ResourceWriteCancelEventData object itself.
      */
-    public ResourceWriteCancelEventData setClaims(Map<String, String> claims) {
+    public ResourceWriteCancelEventData setClaims(String claims) {
         this.claims = claims;
         return this;
     }
@@ -285,7 +284,7 @@ public final class ResourceWriteCancelEventData {
      *
      * @return the httpRequest value.
      */
-    public ResourceHttpRequest getHttpRequest() {
+    public String getHttpRequest() {
         return this.httpRequest;
     }
 
@@ -295,7 +294,7 @@ public final class ResourceWriteCancelEventData {
      * @param httpRequest the httpRequest value to set.
      * @return the ResourceWriteCancelEventData object itself.
      */
-    public ResourceWriteCancelEventData setHttpRequest(ResourceHttpRequest httpRequest) {
+    public ResourceWriteCancelEventData setHttpRequest(String httpRequest) {
         this.httpRequest = httpRequest;
         return this;
     }
