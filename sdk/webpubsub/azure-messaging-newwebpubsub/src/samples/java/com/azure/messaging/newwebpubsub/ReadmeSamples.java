@@ -4,9 +4,15 @@
 
 package com.azure.messaging.newwebpubsub;
 
+import com.azure.core.util.Configuration;
+
 public final class ReadmeSamples {
     public void readmeSamples() {
         // BEGIN: com.azure.messaging.newwebpubsub.readme
+        WebPubSubClient client = new WebPubSubClientBuilder()
+                .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
+                .buildWebPubSubClient();
+        boolean userExists = client.userExistsWithResponse("hub", "user_id", null).getValue();
         // END: com.azure.messaging.newwebpubsub.readme
     }
 }
