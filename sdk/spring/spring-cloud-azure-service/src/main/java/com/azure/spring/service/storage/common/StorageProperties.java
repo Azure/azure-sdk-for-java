@@ -12,10 +12,22 @@ import com.azure.spring.core.properties.AzureProperties;
  */
 public interface StorageProperties extends AzureProperties, SasTokenAware, ConnectionStringAware {
 
+    /**
+     * Get the storage endpoint.
+     * @return the storage endpoint.
+     */
     String getEndpoint();
 
+    /**
+     * Get the storage account name.
+     * @return the storage account name.
+     */
     String getAccountName();
 
+    /**
+     * Get the storage account key.
+     * @return the storage account key.
+     */
     String getAccountKey();
 
 }

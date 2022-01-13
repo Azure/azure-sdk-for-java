@@ -51,8 +51,18 @@ public interface ServiceBusProducerFactory {
     @FunctionalInterface
     interface Listener {
 
+        /**
+         * The listener method that the producer has been added.
+         * @param name the name for the producer.
+         * @param client the client for the producer.
+         */
         void producerAdded(String name, ServiceBusSenderAsyncClient client);
 
+        /**
+         * The default listener method that the producer has been removed.
+         * @param name the name for the producer.
+         * @param client the client for the producer.
+         */
         default void producerRemoved(String name, ServiceBusSenderAsyncClient client) {
         }
 

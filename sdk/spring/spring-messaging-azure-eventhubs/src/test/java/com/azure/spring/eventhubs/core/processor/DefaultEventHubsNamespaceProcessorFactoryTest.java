@@ -32,7 +32,7 @@ class DefaultEventHubsNamespaceProcessorFactoryTest {
         processorAddedTimes = 0;
         this.processorFactory.addListener(new EventHubsProcessorFactory.Listener() {
             @Override
-            public void processorAdded(String eventHub, String consumerGroup, EventProcessorClient client) {
+            public void processorAdded(String eventHubs, String consumerGroup, EventProcessorClient client) {
                 processorAddedTimes++;
             }
         });

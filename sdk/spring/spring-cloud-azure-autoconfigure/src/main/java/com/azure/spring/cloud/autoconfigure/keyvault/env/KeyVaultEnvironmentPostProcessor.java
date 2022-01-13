@@ -39,7 +39,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
     private final Log logger;
 
     /**
-     *
+     * Creates a new instance of {@link KeyVaultEnvironmentPostProcessor}.
      * @param logger The logger used in this class.
      */
     public KeyVaultEnvironmentPostProcessor(Log logger) {

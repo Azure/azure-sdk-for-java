@@ -16,7 +16,7 @@ public final class AzureKeyCredentialResolver implements AzureCredentialResolver
 
     @Override
     public AzureKeyCredentialProvider resolve(AzureProperties properties) {
-        if (!isResolvable(properties)) {
+        if (!(properties instanceof KeyAware)) {
             return null;
         }
 

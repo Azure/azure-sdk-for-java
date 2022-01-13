@@ -17,10 +17,17 @@ public class StorageQueueMessageConverter extends AbstractAzureMessageConverter<
 
     private final ObjectMapper objectMapper;
 
+    /**
+     * Create an instance of {@link StorageQueueMessageConverter}.
+     */
     public StorageQueueMessageConverter() {
         this.objectMapper = OBJECT_MAPPER;
     }
 
+    /**
+     * Create an instance of {@link StorageQueueMessageConverter}.
+     * @param objectMapper the object mapper.
+     */
     public StorageQueueMessageConverter(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }

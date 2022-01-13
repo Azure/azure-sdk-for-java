@@ -11,10 +11,22 @@ import com.azure.storage.blob.BlobServiceVersion;
  */
 public interface BlobServiceClientProperties extends StorageProperties {
 
+    /**
+     * Get the storage blob customer provided key.
+     * @return the storage blob customer provided key.
+     */
     String getCustomerProvidedKey();
 
+    /**
+     * Get the storage blob encryption scope.
+     * @return the storage blob encryption scope.
+     */
     String getEncryptionScope();
 
+    /**
+     * Get the storage blob service version.
+     * @return the storage blob service version.
+     */
     BlobServiceVersion getServiceVersion();
 
 }

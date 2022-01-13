@@ -10,6 +10,10 @@ import com.azure.spring.service.servicebus.processor.consumer.ServiceBusErrorCon
  */
 public interface MessageProcessingListener {
 
+    /**
+     * Return the default error context consumer by default.
+     * @return the error context consumer.
+     */
     default ServiceBusErrorContextConsumer getErrorContextConsumer() {
         return errorContext -> { };
     }

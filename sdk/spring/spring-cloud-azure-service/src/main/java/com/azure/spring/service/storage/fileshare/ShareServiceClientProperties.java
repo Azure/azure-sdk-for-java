@@ -11,6 +11,10 @@ import com.azure.storage.file.share.ShareServiceVersion;
  */
 public interface ShareServiceClientProperties extends StorageProperties {
 
+    /**
+     * Get the share service version.
+     * @return the share service version.
+     */
     ShareServiceVersion getServiceVersion();
 
 }

@@ -40,6 +40,10 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
 
     private final Log logger;
 
+    /**
+     * Creates a new instance of {@link AzureGlobalConfigurationEnvironmentPostProcessor}.
+     * @param logger The logger used in this class.
+     */
     public AzureGlobalConfigurationEnvironmentPostProcessor(Log logger) {
         this.logger = logger;
         AzureCoreEnvMapping.setLogger(logger);

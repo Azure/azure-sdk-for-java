@@ -22,6 +22,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.util.Assert;
 
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 
@@ -63,19 +64,23 @@ public class AzureDefaultTokenCredentialAutoConfiguration extends AzureServiceCo
         return new AzureServiceClientBuilderFactoryPostProcessor();
     }
 
+    /**
+     * Apply the default token credential to service client builder factory.
+     */
     static class AzureServiceClientBuilderFactoryPostProcessor implements BeanPostProcessor, BeanFactoryAware {
 
-        private BeanFactory beanFactory;
+        private BeanFactory beanFactory = null;
 
-        @SuppressWarnings("rawtypes")
         @Override
+        @SuppressWarnings("rawtypes")
         public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
             if (bean instanceof AbstractAzureCredentialBuilderFactory) {
                 return bean;
             }
+
+            Assert.notNull(beanFactory, "beanFactory should be not null.");
             if (bean instanceof AbstractAzureServiceClientBuilderFactory
                 && beanFactory.containsBean(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)) {
-
                 ((AbstractAzureServiceClientBuilderFactory) bean).setDefaultTokenCredential(
                     (TokenCredential) beanFactory.getBean(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME));
             }

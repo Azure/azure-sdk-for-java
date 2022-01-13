@@ -8,6 +8,10 @@ package com.azure.spring.core.aware.authentication;
  */
 public interface KeyAware {
 
+    /**
+     * Get the key
+     * @return the key
+     */
     String getKey();
 
 }

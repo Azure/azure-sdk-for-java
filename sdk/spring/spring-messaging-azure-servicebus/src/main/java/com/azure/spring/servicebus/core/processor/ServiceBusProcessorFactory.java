@@ -57,8 +57,20 @@ public interface ServiceBusProcessorFactory {
     @FunctionalInterface
     interface Listener {
 
+        /**
+         * The listener method that the processor has been added.
+         * @param name the name for the processor.
+         * @param subscription the subscription for the processor.
+         * @param client the client for the processor.
+         */
         void processorAdded(String name, String subscription, ServiceBusProcessorClient client);
 
+        /**
+         * The default listener method that the processor has been removed.
+         * @param name the name for the processor.
+         * @param subscription the subscription for the processor.
+         * @param client the client for the processor.
+         */
         default void processorRemoved(String name, String subscription, ServiceBusProcessorClient client) {
         }
 

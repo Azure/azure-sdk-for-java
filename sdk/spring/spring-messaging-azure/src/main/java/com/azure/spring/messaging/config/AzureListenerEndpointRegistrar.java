@@ -53,9 +53,9 @@ class AzureListenerEndpointRegistrar implements BeanFactoryAware, InitializingBe
     }
 
     protected void registerAllEndpoints() {
-        Assert.state(this.endpointRegistry != null, "No AzureListenerEndpointRegistry set");
         synchronized (this.mutex) {
             for (AzureListenerEndpointDescriptor descriptor : this.endpointDescriptors) {
+                Assert.state(this.endpointRegistry != null, "No AzureListenerEndpointRegistry set");
                 this.endpointRegistry
                     .registerListenerContainer(descriptor.endpoint, resolveContainerFactory(descriptor));
             }

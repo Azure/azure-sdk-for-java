@@ -134,7 +134,7 @@ public class AzureServiceBusJmsProperties {
             throw new IllegalArgumentException("'spring.jms.servicebus.connection-string' should be provided");
         }
 
-        if (!pricingTier.matches("(?i)premium|standard|basic")) {
+        if (pricingTier == null || !pricingTier.matches("(?i)premium|standard|basic")) {
             throw new IllegalArgumentException("'spring.jms.servicebus.pricing-tier' is not valid");
         }
     }

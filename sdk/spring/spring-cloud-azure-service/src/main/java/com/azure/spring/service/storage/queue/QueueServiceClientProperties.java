@@ -12,8 +12,14 @@ import com.azure.storage.queue.QueueServiceVersion;
  */
 public interface QueueServiceClientProperties extends StorageProperties {
 
+    /**
+     * @return the queue service version.
+     */
     QueueServiceVersion getServiceVersion();
 
+    /**
+     * @return the message encoding.
+     */
     QueueMessageEncoding getMessageEncoding();
 
 }

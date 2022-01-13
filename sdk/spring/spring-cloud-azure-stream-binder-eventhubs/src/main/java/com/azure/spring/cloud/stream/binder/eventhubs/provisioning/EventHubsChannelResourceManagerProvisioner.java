@@ -35,6 +35,6 @@ public class EventHubsChannelResourceManagerProvisioner extends EventHubsChannel
 
     @Override
     protected void validateOrCreateForProducer(String name) {
-        eventHubsProvisioner.provisionEventHub(this.namespace, name);
+        eventHubsProvisioner.provisionEventHubs(this.namespace, name);
     }
 }

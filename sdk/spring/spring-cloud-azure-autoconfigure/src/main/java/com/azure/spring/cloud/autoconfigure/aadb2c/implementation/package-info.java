@@ -1,0 +1,7 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+/**
+ * Internal implementation class for Active Directory B2C features.
+ */
+package com.azure.spring.cloud.autoconfigure.aadb2c.implementation;

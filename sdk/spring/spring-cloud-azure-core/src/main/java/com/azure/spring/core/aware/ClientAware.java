@@ -14,6 +14,10 @@ import java.util.List;
  */
 public interface ClientAware {
 
+    /**
+     * Get the client configuration.
+     * @return the client configuration.
+     */
     Client getClient();
 
     /**
@@ -21,8 +25,16 @@ public interface ClientAware {
      */
     interface Client {
 
+        /**
+         * Get the application id
+         * @return the application id.
+         */
         String getApplicationId();
 
+        /**
+         * Get header properties list for client header.
+         * @return header properties list.
+         */
         List<HeaderProperties> getHeaders();
 
     }
@@ -32,16 +44,40 @@ public interface ClientAware {
      */
     interface HttpClient extends Client, HttpLoggingAware {
 
+        /**
+         * Get the http client write timeout.
+         * @return the http client write timeout.
+         */
         Duration getWriteTimeout();
 
+        /**
+         * Get the http client response timeout.
+         * @return the http client response timeout.
+         */
         Duration getResponseTimeout();
 
+        /**
+         * Get the http client read timeout.
+         * @return the http client read timeout.
+         */
         Duration getReadTimeout();
 
+        /**
+         * Get the http client connect timeout.
+         * @return the http client connect timeout.
+         */
         Duration getConnectTimeout();
 
+        /**
+         * Get the maximum connection pool size for http client.
+         * @return the maximum connection pool size
+         */
         Integer getMaximumConnectionPoolSize();
 
+        /**
+         * Get the connection idle timeout for http client.
+         * @return the connection idle timeout
+         */
         Duration getConnectionIdleTimeout();
 
     }
@@ -51,6 +87,10 @@ public interface ClientAware {
      */
     interface AmqpClient extends Client {
 
+        /**
+         * Get the AMQP transport type.
+         * @return the AMQP transport type.
+         */
         AmqpTransportType getTransportType();
     }
 

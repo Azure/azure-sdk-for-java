@@ -11,6 +11,10 @@ import java.util.Map;
  */
 public interface AzureProfileAware {
 
+    /**
+     * Get the profile
+     * @return the profile
+     */
     Profile getProfile();
 
     /**
@@ -18,12 +22,28 @@ public interface AzureProfileAware {
      */
     interface Profile {
 
+        /**
+         * Get the tenant id.
+         * @return the tenant id.
+         */
         String getTenantId();
 
+        /**
+         * Get the subscription id.
+         * @return the subscription id.
+         */
         String getSubscriptionId();
 
+        /**
+         * Get the cloud type.
+         * @return the cloud type.
+         */
         CloudType getCloud();
 
+        /**
+         * Get the AzureEnvironment implementation.
+         * @return the AzureEnvironment implementation.
+         */
         AzureEnvironment getEnvironment();
 
     }
@@ -124,8 +144,16 @@ public interface AzureProfileAware {
          */
         String getAzureApplicationInsightsEndpoint();
 
+        /**
+         * Get the AzureEnvironment from {@link com.azure.core.management.AzureEnvironment}.
+         * @param environment the azure core AzureEnvironment.
+         * @return the AzureEnvironment implementation.
+         */
         AzureEnvironment fromManagementAzureEnvironment(com.azure.core.management.AzureEnvironment environment);
 
+        /**
+         * @return the azure core {@link com.azure.core.management.AzureEnvironment}.
+         */
         default com.azure.core.management.AzureEnvironment toManagementAzureEnvironment() {
             Map<String, String> endpointsMap = new HashMap<>();
             endpointsMap.put("portalUrl", getPortal());
