@@ -1,5 +1,15 @@
 # Release History
 
+## 2.13.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 2.12.0 (2021-12-24)
 This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.1, and Spring Cloud 2020.0.0-2020.0.5, 2021.0.0.
 

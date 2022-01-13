@@ -168,6 +168,12 @@
           "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
         },
         {
+          "regex": true,
+          "code": "java\\.annotation\\.(added|attributeValueChanged|attributeAdded)",
+          "new": "(class|method void|parameter void) com\\.azure\\.search\\.documents\\.indexes\\.models\\..*",
+          "justification": "Generated classes were moved into public API, these annotations were already being used in implementation used during serialization and deserialization."
+        },
+        {
           "code": "java.method.added",
           "new": "method boolean com.google.gson.JsonArray::isEmpty()",
           "justification": "com.google.code.gson:gson:jar:2.8.7 added this new method."
@@ -201,7 +207,37 @@
           "code": "java.method.added",
           "new": "method java.lang.Class<T> com.azure.core.util.serializer.TypeReference<T>::getJavaClass()",
           "justification": "New method added to TypeReference in azure-core."
-        }
+        },
+        {
+           "code": "java.method.added",
+           "new": "method void com.azure.core.util.logging.ClientLogger::<init>(java.lang.Class<?>, java.util.Map<java.lang.String, java.lang.Object>)",
+           "justification": "New method added to ClientLogger in azure-core:1.24.0"
+         },
+         {
+           "code": "java.method.added",
+           "new": "method void com.azure.core.util.logging.ClientLogger::<init>(java.lang.String, java.util.Map<java.lang.String, java.lang.Object>)",
+           "justification": "New method added to ClientLogger in azure-core:1.24.0"
+         },
+         {
+           "code": "java.method.added",
+           "new": "method com.azure.core.util.logging.LoggingEventBuilder com.azure.core.util.logging.ClientLogger::atError()",
+           "justification": "New method added to ClientLogger in azure-core:1.24.0"
+         },
+         {
+           "code": "java.method.added",
+           "new": "method com.azure.core.util.logging.LoggingEventBuilder com.azure.core.util.logging.ClientLogger::atInfo()",
+           "justification": "New method added to ClientLogger in azure-core:1.24.0"
+         },
+         {
+           "code": "java.method.added",
+           "new": "method com.azure.core.util.logging.LoggingEventBuilder com.azure.core.util.logging.ClientLogger::atVerbose()",
+           "justification": "New method added to ClientLogger in azure-core:1.24.0"
+         },
+         {
+           "code": "java.method.added",
+           "new": "method com.azure.core.util.logging.LoggingEventBuilder com.azure.core.util.logging.ClientLogger::atWarning()",
+           "justification": "New method added to ClientLogger in azure-core:1.24.0"
+         }
       ]
     }
   }

@@ -176,7 +176,8 @@ policy on the instance.
 ```java readme-sample-set-unsigned-policy
 // Set the listed policy on an attestation instance. Please note that this particular policy will deny all
 // attestation requests and should not be used in production.
-PolicyResult policyResult = client.setAttestationPolicy(AttestationType.OPEN_ENCLAVE, "version=1.0; authorizationrules{=> deny();}; issuancerules{};");
+PolicyResult policyResult = client.setAttestationPolicy(AttestationType.OPEN_ENCLAVE,
+    "version=1.0; authorizationrules{=> deny();}; issuancerules{};");
 System.out.printf("Policy set for OpenEnclave result: %s\n", policyResult.getPolicyResolution());
 ```
 
@@ -223,8 +224,10 @@ ignored (this possibly surprising behavior is there because retries could cause 
 ```java readme-sample-addPolicyManagementCertificate
 System.out.printf("Adding new certificate %s\n", certificateToAdd.getSubjectDN().toString());
 PolicyCertificatesModificationResult modificationResult = client.addPolicyManagementCertificate(
-    new PolicyManagementCertificateOptions(certificateToAdd, new AttestationSigningKey(isolatedCertificate, isolatedKey)));
-System.out.printf("Updated policy certificate, certificate add result: %s\n", modificationResult.getCertificateResolution());
+    new PolicyManagementCertificateOptions(certificateToAdd,
+        new AttestationSigningKey(isolatedCertificate, isolatedKey)));
+System.out.printf("Updated policy certificate, certificate add result: %s\n",
+    modificationResult.getCertificateResolution());
 System.out.printf("Added certificate thumbprint: %s\n", modificationResult.getCertificateThumbprint());
 ```
 
@@ -239,8 +242,10 @@ ignored (this possibly surprising behavior is there because retries could cause 
 ```java readme-sample-removePolicyManagementCertificate
 System.out.printf("Removing existing certificate %s\n", certificateToRemove.getSubjectDN().toString());
 PolicyCertificatesModificationResult modificationResult = client.removePolicyManagementCertificate(
-    new PolicyManagementCertificateOptions(certificateToRemove, new AttestationSigningKey(isolatedCertificate, isolatedKey)));
-System.out.printf("Updated policy certificate, certificate remove result: %s\n", modificationResult.getCertificateResolution());
+    new PolicyManagementCertificateOptions(certificateToRemove,
+        new AttestationSigningKey(isolatedCertificate, isolatedKey)));
+System.out.printf("Updated policy certificate, certificate remove result: %s\n",
+    modificationResult.getCertificateResolution());
 System.out.printf("Removed certificate thumbprint: %s\n", modificationResult.getCertificateThumbprint());
 ```
 
