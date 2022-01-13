@@ -3,7 +3,6 @@
 ## 4.0.0-beta.3 (Unreleased)
 - Supported spring-boot version: 2.6.0 - 2.6.1
 - Supported spring-cloud version: 2021.0.0
-- Remove `StorageQueueOperation`
 
 ### Features Added
 
@@ -20,6 +19,8 @@ Upgrade dependency according to spring-boot-dependencies:2.6.1 and spring-cloud-
 5. Property name "spring.cloud.azure.active-directory.graph-base-uri" changed to "spring.cloud.azure.active-directory.profile.environment.microsoft-graph-endpoint".
 6. Property name "spring.cloud.azure.active-directory.graph-membership-uri" changed to "spring.cloud.azure.active-directory.profile.environment.microsoft-graph-endpoint" and "spring.cloud.azure.active-directory.user-group.use-transitive-members".
 7. Remove artifact id `spring-cloud-azure-stream-binder-test`.
+8. Remove `StorageQueueOperation`.
+9. Deprecate configure checkpoint mode for StorageQueueTemplate, and support only MANUAL mode.
 
 ### Bugs Fixed
 

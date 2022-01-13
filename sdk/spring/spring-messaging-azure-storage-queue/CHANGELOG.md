@@ -5,6 +5,8 @@
 ### Features Added
 
 ### Breaking Changes
+- Remove `StorageQueueOperation`.
+- Deprecate configure checkpoint mode for StorageQueueTemplate, and support only MANUAL mode.
 
 ### Bugs Fixed
 
