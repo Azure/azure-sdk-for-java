@@ -16,6 +16,11 @@
   <name>Spring Cloud Azure App Configuration Config Web</name>
   <description>Integration of Spring Cloud Config and Azure App Configuration Service</description>
 
+  <properties>
+    <!-- TODO: Remove this once all Javadoc warnings and errors are resolved -->
+    <doclint>all,-missing</doclint>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.microsoft.azure</groupId>

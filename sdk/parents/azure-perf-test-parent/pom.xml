@@ -46,12 +46,11 @@
     <spotbugs.skip>true</spotbugs.skip>
     <revapi.skip>true</revapi.skip>
 
-    <!-- Additional Javadoc configuration to skip using old doclet tooling. -->
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
-
     <!-- Main class used by children projects. Used to centralize how performance tests are built. -->
     <perf.test.mainClass></perf.test.mainClass>
+
+    <!-- Skip missing Javadocs in performance tests. -->
+    <doclint>all,-missing</doclint>
   </properties>
 
   <build>

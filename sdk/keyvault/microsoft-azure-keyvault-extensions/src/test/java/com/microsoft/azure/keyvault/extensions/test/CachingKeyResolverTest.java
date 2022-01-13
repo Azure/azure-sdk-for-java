@@ -23,6 +23,8 @@ import com.google.common.util.concurrent.UncheckedExecutionException;
 import com.microsoft.azure.keyvault.core.IKey;
 import com.microsoft.azure.keyvault.core.IKeyResolver;
 import com.microsoft.azure.keyvault.extensions.CachingKeyResolver;
+import org.junit.Assume;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -48,6 +50,37 @@ public class CachingKeyResolverTest {
     static final String KEY_ID_3 = "https://test.vault.azure.net/keys/keyID3/version";
     static final String NEWER_KEY_ID_3 = "https://test.vault.azure.net/keys/keyID3/version2";
     static final String UNVERSIONNED_KEY_ID_3 = "https://test.vault.azure.net/keys/keyID3";
+
+    @BeforeClass
+    public static void ensureJavaVersion() {
+        // java.version format:
+        // 8 and lower: 1.7, 1.8.0
+        // 9 and above: 12, 14.1.1
+        String version = System.getProperty("java.version");
+        if (version == null || version.isEmpty()) {
+            throw new RuntimeException("Can't find 'java.version' system property.");
+        }
+
+        String javaMajorVersion;
+        if (version.startsWith("1.")) {
+            if (version.length() < 3) {
+                throw new RuntimeException("Can't parse 'java.version':" + version);
+            }
+            javaMajorVersion = version.substring(2, 3);
+        } else {
+            int idx = version.indexOf(".");
+            javaMajorVersion = (idx == -1) ? version : version.substring(0, idx);
+        }
+
+        int javaVersionNumber;
+        try {
+            javaVersionNumber = Integer.parseInt(javaMajorVersion);
+        } catch (Throwable t) {
+            throw new RuntimeException("Can't parse 'java.version':" + version, t);
+        }
+
+        Assume.assumeTrue("This test has only been vetted up to Java 11.", javaVersionNumber <= 11);
+    }
 
     /*
      * Tests the capacity limit of CachingKeyResolver by adding more keys

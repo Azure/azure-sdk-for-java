@@ -49,9 +49,6 @@
       --add-exports com.azure.core.serializer.avro.apache/com.azure.core.serializer.avro.apache.generatedtestsources=org.apache.avro
       --add-opens com.azure.core.serializer.avro.apache/com.azure.core.serializer.avro.apache=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
     <checkstyle.excludes>**/generatedtestsources/**/*.java</checkstyle.excludes>
   </properties>
 

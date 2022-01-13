@@ -39,9 +39,6 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.resourcemanager.containerregistry/com.azure.resourcemanager.containerregistry=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
     <revapi.skip>true</revapi.skip>
   </properties>
 

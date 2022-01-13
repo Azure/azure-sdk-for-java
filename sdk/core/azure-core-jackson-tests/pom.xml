@@ -49,8 +49,6 @@
 
   <properties>
     <jackson.version>2.12.4</jackson.version>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <dependencies>

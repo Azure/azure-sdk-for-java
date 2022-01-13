@@ -42,9 +42,6 @@
       --add-opens com.azure.messaging.servicebus/com.azure.messaging.servicebus.administration=ALL-UNNAMED
       --add-opens com.azure.messaging.servicebus/com.azure.messaging.servicebus.administration.models=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <dependencies>

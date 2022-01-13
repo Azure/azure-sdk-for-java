@@ -32,9 +32,6 @@
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
     <checkstyle.excludes>**/implementation/**/*.java</checkstyle.excludes>
   </properties>
   <dependencies>

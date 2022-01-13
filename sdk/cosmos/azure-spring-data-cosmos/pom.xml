@@ -35,9 +35,6 @@
       --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.repository.support=ALL-UNNAMED,spring.core
       --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.domain=com.fasterxml.jackson.databind,spring.core,spring.data.commons
     </javaModulesSurefireArgLine>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <dependencies>

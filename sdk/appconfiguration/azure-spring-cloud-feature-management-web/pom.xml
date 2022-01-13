@@ -17,9 +17,6 @@
 
   <properties>
     <checkstyle.skip>true</checkstyle.skip>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <dependencies>

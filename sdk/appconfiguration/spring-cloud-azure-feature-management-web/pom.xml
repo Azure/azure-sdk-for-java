@@ -15,6 +15,11 @@
   <name>Spring Cloud Azure Feature Management Web</name>
   <description>Adds Feature Management into Spring Web</description>
 
+  <properties>
+    <!-- TODO: Remove this once all Javadoc warnings and errors are resolved -->
+    <doclint>all,-missing</doclint>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>

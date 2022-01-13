@@ -25,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -76,6 +77,8 @@ import com.microsoft.rest.interceptors.LoggingInterceptor;
 
 import okhttp3.Interceptor;
 import com.microsoft.azure.keyvault.test.resources.MockUserTokenCredentials;
+
+import static com.microsoft.azure.keyvault.test.KeyVaultClientIntegrationTestBase.getJavaVersion;
 
 public class ITManagedStorageAccountKey {
 
@@ -188,7 +191,7 @@ public class ITManagedStorageAccountKey {
 
     @Test
     public void testCrudOperationsForManagedStorageAccountKey() {
-
+        Assume.assumeTrue("This test has only been vetted up to Java 11.", getJavaVersion() <= 11);
         String msakUUID = null;
         String storageAccountName = null;
         String vaultName = null;
@@ -261,7 +264,7 @@ public class ITManagedStorageAccountKey {
     @Test
     public void testSetAndGetSasDefinitionForManagedStorageAccountKey()
             throws ParseException, URISyntaxException, StorageException, InvalidKeyException, IOException {
-
+        Assume.assumeTrue("This test has only been vetted up to Java 11.", getJavaVersion() <= 11);
         String sasUUID = null;
         String storageAccountName = null;
         String vaultName = null;

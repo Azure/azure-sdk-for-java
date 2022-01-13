@@ -10,6 +10,7 @@ import java.util.Map;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import org.joda.time.DateTime;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Test;
 
 import com.microsoft.azure.PagedList;
@@ -35,6 +36,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
 
     @Test
     public void transparentAuthenticationForSecretOperationsTest() throws Exception {
+        Assume.assumeTrue("This test has only been vetted up to Java 11.", getJavaVersion() <= 11);
         // Create a secret on a vault.
         Attributes attributes = new SecretAttributes().withEnabled(true)
                 .withExpires(new DateTime().withYear(2050).withMonthOfYear(1))
@@ -92,6 +94,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
 
     @Test
     public void crudOperationsForSecretOperationsTest() throws Exception {
+        Assume.assumeTrue("This test has only been vetted up to Java 11.", getJavaVersion() <= 11);
         // Create secret
         SecretBundle secret = keyVaultClient
                 .setSecret(new SetSecretRequest.Builder(getVaultUri(), CRUD_SECRET_NAME, SECRET_VALUE).build());

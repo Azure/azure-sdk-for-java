@@ -371,4 +371,31 @@ public class KeyVaultClientIntegrationTestBase {
                     .withNetworkInterceptor(interceptorManager.initInterceptor())
                     .withInterceptor(new ResourceManagerThrottlingInterceptor()));
     }
+
+    public static int getJavaVersion() {
+        // java.version format:
+        // 8 and lower: 1.7, 1.8.0
+        // 9 and above: 12, 14.1.1
+        String version = System.getProperty("java.version");
+        if (version == null || version.isEmpty()) {
+            throw new RuntimeException("Can't find 'java.version' system property.");
+        }
+
+        String javaMajorVersion;
+        if (version.startsWith("1.")) {
+            if (version.length() < 3) {
+                throw new RuntimeException("Can't parse 'java.version':" + version);
+            }
+            javaMajorVersion = version.substring(2, 3);
+        } else {
+            int idx = version.indexOf(".");
+            javaMajorVersion = (idx == -1) ? version : version.substring(0, idx);
+        }
+
+        try {
+            return Integer.parseInt(javaMajorVersion);
+        } catch (Throwable t) {
+            throw new RuntimeException("Can't parse 'java.version':" + version, t);
+        }
+    }
 }

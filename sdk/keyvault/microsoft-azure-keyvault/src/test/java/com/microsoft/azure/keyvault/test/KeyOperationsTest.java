@@ -22,6 +22,7 @@ import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import org.joda.time.DateTime;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Test;
 
 import com.microsoft.azure.keyvault.models.KeyBundle;
@@ -96,7 +97,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
 
     @Test
     public void importKeyOperationForKeyOperationsTest() throws Exception {
-
+        Assume.assumeTrue("This test has only been vetted up to Java 11.", getJavaVersion() <= 11);
         KeyBundle keyBundle = new KeyBundle();
         JsonWebKey key = JsonWebKey.fromRSA(getTestKeyMaterial());
 

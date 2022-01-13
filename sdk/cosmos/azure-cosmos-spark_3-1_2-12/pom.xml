@@ -30,8 +30,6 @@
       <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]>
     </legal>
     <codesnippet.skip>true</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
     <revapi.skip>true</revapi.skip>
   </properties>
 

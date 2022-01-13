@@ -35,9 +35,6 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.core.tracing.opentelemetry/com.azure.core.tracing.opentelemetry.implementation=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <dependencies>

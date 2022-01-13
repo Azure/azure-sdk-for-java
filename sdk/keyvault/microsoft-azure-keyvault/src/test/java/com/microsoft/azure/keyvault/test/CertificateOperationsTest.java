@@ -40,6 +40,7 @@ import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import org.apache.commons.codec.binary.Base64;
 import org.joda.time.DateTime;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Test;
 
 import com.microsoft.azure.PagedList;
@@ -115,6 +116,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
      */
     @Test
     public void createSelfSignedCertificatePkcs12ForCertificateOperationsTest() throws Exception {
+        Assume.assumeTrue("This test has only been vetted up to Java 11.", getJavaVersion() <= 11);
         // Set content type to indicate the certificate is PKCS12 format.
         SecretProperties secretProperties = new SecretProperties()
                                         .withContentType(MIME_PKCS12);
@@ -550,6 +552,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
      */
     @Test
     public void importCertificatePkcs12ForCertificateOperationsTest() throws Exception {
+        Assume.assumeTrue("This test has only been vetted up to Java 11.", getJavaVersion() <= 11);
         String certificateContent = readCertificate("pkcs12_base64_testdata.cer");
         String certificatePassword = "123";
 
@@ -614,6 +617,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
      */
     @Test
     public void certificateUpdateForCertificateOperationsTest() throws Exception {
+        Assume.assumeTrue("This test has only been vetted up to Java 11.", getJavaVersion() <= 11);
         String certificateContent = readCertificate("pkcs12_base64_testdata.cer");
         String certificatePassword = "123";
 

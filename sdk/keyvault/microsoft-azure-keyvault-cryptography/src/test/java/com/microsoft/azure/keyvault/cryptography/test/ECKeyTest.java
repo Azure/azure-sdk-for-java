@@ -36,6 +36,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -107,6 +108,8 @@ public class ECKeyTest {
 
     @Test
     public void testCurves() throws Exception {
+        Assume.assumeTrue("Test only runs on Java version 14 and below due to changes to the SunEC security provider.",
+            getJavaVersion() <= 14);
         for (JsonWebKeyCurveName crv : curveList) {
             EcKey key = new EcKey("keyId", crv);
             doSignVerify(key, curveToDigest.get(crv));
@@ -126,6 +129,8 @@ public class ECKeyTest {
 
     @Test
     public void testWithKeyPair() throws Exception {
+        Assume.assumeTrue("Test only runs on Java version 14 and below due to changes to the SunEC security provider.",
+            getJavaVersion() <= 14);
         for (JsonWebKeyCurveName crv : curveList) {
             ECGenParameterSpec gps = new ECGenParameterSpec(EcKey.CURVE_TO_SPEC_NAME.get(crv));
             ecKeyGenerator.initialize(gps);
@@ -141,6 +146,8 @@ public class ECKeyTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testWithNotCurveKeyPair() throws Exception {
+        Assume.assumeTrue("Test only runs on Java version 14 and below due to changes to the SunEC security provider.",
+            getJavaVersion() <= 14);
         ECGenParameterSpec gps = new ECGenParameterSpec("secp192k1");
         ecKeyGenerator.initialize(gps);
         KeyPair keyPair = ecKeyGenerator.generateKeyPair();
@@ -244,6 +251,8 @@ public class ECKeyTest {
 
     @Test
     public void testCreateSECP256K1Key() throws Exception {
+        Assume.assumeTrue("Test only runs on Java version 14 and below due to changes to the SunEC security provider.",
+            getJavaVersion() <= 14);
         ECGenParameterSpec gps = new ECGenParameterSpec("secp256k1");
         Provider myprov = Security.getProvider("BC");
         final KeyPairGenerator generator = KeyPairGenerator.getInstance("EC");
@@ -269,6 +278,8 @@ public class ECKeyTest {
 
     @Test
     public void testFromSEC256File() throws Exception {
+        Assume.assumeTrue("Test only runs on Java version 14 and below due to changes to the SunEC security provider.",
+            getJavaVersion() <= 14);
         testFromFile("secp256", digest256, Es256k.ALGORITHM_NAME);
     }
 
@@ -336,5 +347,32 @@ public class ECKeyTest {
         assertFalse(incorrectResult);
 
         key.close();
+    }
+
+    private static int getJavaVersion() {
+        // java.version format:
+        // 8 and lower: 1.7, 1.8.0
+        // 9 and above: 12, 14.1.1
+        String version = System.getProperty("java.version");
+        if (version == null || version.isEmpty()) {
+            throw new RuntimeException("Can't find 'java.version' system property.");
+        }
+
+        String javaMajorVersion;
+        if (version.startsWith("1.")) {
+            if (version.length() < 3) {
+                throw new RuntimeException("Can't parse 'java.version':" + version);
+            }
+            javaMajorVersion = version.substring(2, 3);
+        } else {
+            int idx = version.indexOf(".");
+            javaMajorVersion = (idx == -1) ? version : version.substring(0, idx);
+        }
+
+        try {
+            return Integer.parseInt(javaMajorVersion);
+        } catch (Throwable t) {
+            throw new RuntimeException("Can't parse 'java.version':" + version, t);
+        }
     }
 }

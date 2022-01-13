@@ -46,9 +46,6 @@
 
       --add-opens com.azure.resourcemanager.privatedns/com.azure.resourcemanager.privatedns=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <developers>

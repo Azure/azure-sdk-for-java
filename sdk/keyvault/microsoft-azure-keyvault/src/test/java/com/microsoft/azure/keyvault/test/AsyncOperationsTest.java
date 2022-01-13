@@ -13,6 +13,7 @@ import java.util.concurrent.ExecutionException;
 
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Test;
 
 import com.microsoft.azure.keyvault.models.BackupKeyResult;
@@ -183,7 +184,7 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
 
     @Test
     public void certificateAsyncForAsyncOperationsTest() throws Exception {
-
+        Assume.assumeTrue("This test has only been vetted up to Java 11.", getJavaVersion() <= 11);
         String vault = getVaultUri();
         String certificateName = "tempCertificate2";
 

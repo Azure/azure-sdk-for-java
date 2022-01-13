@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Random;
 
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,7 +28,8 @@ public class EcValidationTests {
 
     @Test
     public void ecPublicKeyValidation() throws Exception {
-
+        Assume.assumeTrue("Test only runs on Java version 14 and below due to changes to the SunEC security provider.",
+            getJavaVersion() <= 14);
         for (String keyStr : keys.values()) {
             ObjectMapper mapper = new ObjectMapper();
             JsonWebKey key = mapper.readValue(keyStr, JsonWebKey.class);
@@ -48,6 +50,8 @@ public class EcValidationTests {
 
     @Test
     public void ecPrivateKeyValidation() throws Exception {
+        Assume.assumeTrue("Test only runs on Java version 14 and below due to changes to the SunEC security provider.",
+            getJavaVersion() <= 14);
         for (String keyStr : keys.values()) {
             ObjectMapper mapper = new ObjectMapper();
             JsonWebKey key = mapper.readValue(keyStr, JsonWebKey.class);
@@ -114,4 +118,31 @@ public class EcValidationTests {
             .put(JsonWebKeyCurveName.P_521, "SHA512withECDSA")
             .put(JsonWebKeyCurveName.P_256K, "NONEwithECDSA")
             .build();
+
+    private static int getJavaVersion() {
+        // java.version format:
+        // 8 and lower: 1.7, 1.8.0
+        // 9 and above: 12, 14.1.1
+        String version = System.getProperty("java.version");
+        if (version == null || version.isEmpty()) {
+            throw new RuntimeException("Can't find 'java.version' system property.");
+        }
+
+        String javaMajorVersion;
+        if (version.startsWith("1.")) {
+            if (version.length() < 3) {
+                throw new RuntimeException("Can't parse 'java.version':" + version);
+            }
+            javaMajorVersion = version.substring(2, 3);
+        } else {
+            int idx = version.indexOf(".");
+            javaMajorVersion = (idx == -1) ? version : version.substring(0, idx);
+        }
+
+        try {
+            return Integer.parseInt(javaMajorVersion);
+        } catch (Throwable t) {
+            throw new RuntimeException("Can't parse 'java.version':" + version, t);
+        }
+    }
 }
