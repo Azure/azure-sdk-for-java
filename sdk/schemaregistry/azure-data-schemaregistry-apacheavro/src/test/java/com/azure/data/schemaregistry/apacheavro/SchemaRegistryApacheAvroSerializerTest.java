@@ -8,17 +8,21 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestContextManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
 import com.azure.data.schemaregistry.SchemaRegistryClientBuilder;
+import com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person;
+import com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person2;
 import com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCard;
 import com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCardSuit;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.apache.avro.Schema;
 import org.apache.avro.SchemaBuilder;
 import org.apache.avro.generic.GenericData;
@@ -72,6 +76,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
     private static final int MOCK_CACHE_SIZE = 128;
     private static final DecoderFactory DECODER_FACTORY = DecoderFactory.get();
     private static final EncoderFactory ENCODER_FACTORY = EncoderFactory.get();
+    private static InterceptorManager interceptorManager;
 
     private Schema.Parser parser;
     private AutoCloseable mocksCloseable;
@@ -104,6 +109,10 @@ public class SchemaRegistryApacheAvroSerializerTest {
 
     @AfterEach
     public void afterEach() throws Exception {
+        if (interceptorManager != null) {
+            interceptorManager.close();
+        }
+
         if (mocksCloseable != null) {
             mocksCloseable.close();
         }
@@ -256,7 +265,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
 
             try (ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray())) {
                 StepVerifier.create(deserializer.deserializeAsync(inputStream,
-                    TypeReference.createInstance(String.class)))
+                        TypeReference.createInstance(String.class)))
                     .verifyError(BufferUnderflowException.class);
             }
         }
@@ -284,32 +293,10 @@ public class SchemaRegistryApacheAvroSerializerTest {
             .set("favourite_colour", expectedColour)
             .build();
 
-        final TestContextManager testContextManager = new TestContextManager(testInfo.getTestMethod().get(), TestMode.PLAYBACK);
-        final InterceptorManager interceptorManager;
-        try {
-            interceptorManager = new InterceptorManager(testContextManager);
-        } catch (UncheckedIOException e) {
-            Assertions.fail(e);
-            return;
-        }
-
-        final TokenCredential tokenCredential = mock(TokenCredential.class);
-        when(tokenCredential.getToken(any(TokenRequestContext.class))).thenAnswer(invocationOnMock -> {
-            return Mono.fromCallable(() -> {
-                return new AccessToken("foo", OffsetDateTime.now().plusMinutes(20));
-            });
-        });
-
-        final SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder()
-            .httpClient(interceptorManager.getPlaybackClient())
-            .credential(tokenCredential)
-            .fullyQualifiedNamespace(PLAYBACK_ENDPOINT)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .buildAsyncClient();
-
+        final SchemaRegistryAsyncClient client = getSchemaRegistryClient(testInfo, TestMode.PLAYBACK);
         final SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
             .schemaGroup(PLAYBACK_TEST_GROUP)
-            .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
+            .schemaRegistryAsyncClient(client)
             .avroSpecificReader(true)
             .buildSerializer();
 
@@ -326,6 +313,56 @@ public class SchemaRegistryApacheAvroSerializerTest {
         assertTrue(outputArray.length > 0, "There should have been contents in array.");
     }
 
+    /**
+     * Verifies that we can deserialize and serialize when the writer schema is newer than the reader schema. Writer
+     * schema is using a forward compatible schema.
+     */
+    @Test
+    public void serializeForwardCompatibility() throws IOException {
+        // Arrange
+        final SchemaRegistryAsyncClient client = getSchemaRegistryClient(testInfo, TestMode.PLAYBACK);
+        final SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
+            .schemaGroup(PLAYBACK_TEST_GROUP)
+            .schemaRegistryAsyncClient(client)
+            .avroSpecificReader(true)
+            .buildSerializer();
+        final String name = "Jackson";
+        final String colour = "green";
+        final String pet = "Gophers";
+        final int number = 19;
+
+        // The writer has a newer schema.
+        final Person2 writerPerson = Person2.newBuilder()
+            .setName(name)
+            .setFavouriteNumber(number)
+            .setFavouriteColour(colour)
+            .setFavouritePet(pet)
+            .build();
+
+        // Act: Serialize the new Person2.
+        byte[] outputArray;
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream(4096)) {
+            StepVerifier.create(serializer.serializeAsync(outputStream, writerPerson))
+                .expectComplete()
+                .verify(Duration.ofSeconds(30));
+
+            outputArray = outputStream.toByteArray();
+        }
+
+        assertTrue(outputArray.length > 0, "There should have been contents in array.");
+
+        // Act: Deserialize Person (the older schema)
+        final Person readerPerson;
+        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(outputArray)) {
+            readerPerson = serializer.deserialize(inputStream, TypeReference.createInstance(Person.class));
+        }
+
+        assertNotNull(readerPerson);
+        assertEquals(name, readerPerson.getName());
+        assertEquals(number, readerPerson.getFavouriteNumber());
+        assertEquals(colour, readerPerson.getFavouriteColour());
+    }
+
     private static byte[] getPayload(PlayingCard card) throws IOException {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             outputStream.write(RECORD_FORMAT_INDICATOR);
@@ -338,5 +375,57 @@ public class SchemaRegistryApacheAvroSerializerTest {
 
             return outputStream.toByteArray();
         }
+    }
+
+    /**
+     * Creates the schema registry client based on the test mode.
+     *
+     * @param testInfo Information about current test.
+     * @param testMode Test mode
+     *
+     * @return Corresponding SchemaRegistryAsyncClient.
+     */
+    private static SchemaRegistryAsyncClient getSchemaRegistryClient(TestInfo testInfo, TestMode testMode) {
+        final TestContextManager testContextManager = new TestContextManager(testInfo.getTestMethod().get(), testMode);
+        try {
+            interceptorManager = new InterceptorManager(testContextManager);
+        } catch (UncheckedIOException e) {
+            Assertions.fail(e);
+            throw e;
+        }
+
+        TokenCredential tokenCredential;
+        String endpoint;
+        if (testMode == TestMode.PLAYBACK) {
+            tokenCredential = mock(TokenCredential.class);
+
+            // Sometimes it throws an "NotAMockException", so we had to change from thenReturn to thenAnswer.
+            when(tokenCredential.getToken(any(TokenRequestContext.class))).thenAnswer(invocationOnMock -> {
+                return Mono.fromCallable(() -> {
+                    return new AccessToken("foo", OffsetDateTime.now().plusMinutes(20));
+                });
+            });
+
+            endpoint = PLAYBACK_ENDPOINT;
+        } else {
+            tokenCredential = new DefaultAzureCredentialBuilder().build();
+            endpoint = System.getenv(SchemaRegistryApacheAvroSerializerIntegrationTest.SCHEMA_REGISTRY_ENDPOINT);
+
+            assertNotNull(endpoint, "'endpoint' cannot be null in LIVE/RECORD mode.");
+        }
+
+        final SchemaRegistryClientBuilder builder = new SchemaRegistryClientBuilder()
+            .credential(tokenCredential)
+            .fullyQualifiedNamespace(endpoint);
+
+        if (testMode == TestMode.PLAYBACK) {
+            builder.httpClient(interceptorManager.getPlaybackClient());
+        } else {
+            builder.addPolicy(new RetryPolicy())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        return builder.buildAsyncClient();
     }
 }
