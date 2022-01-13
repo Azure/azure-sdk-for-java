@@ -15,6 +15,10 @@
 
 ### Other Changes
 
+#### Dependency Updates
+- Update `azure-core` dependency to `1.24.1`.
+- Update `azure-core-http-netty` dependency to `1.11.6`.
+
 ## 4.7.1 (2021-11-11)
 
 ### Other Changes
