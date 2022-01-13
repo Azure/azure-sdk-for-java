@@ -25,31 +25,19 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-<<<<<<< HEAD
       <version>12.14.3</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
-=======
-      <version>12.14.3</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
->>>>>>> upstream/main
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-datalake</artifactId>
-<<<<<<< HEAD
       <version>12.7.3</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
-=======
-      <version>12.7.3</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
->>>>>>> upstream/main
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-share</artifactId>
-<<<<<<< HEAD
       <version>12.11.3</version> <!-- {x-version-update;com.azure:azure-storage-file-share;current} -->
-=======
-      <version>12.11.3</version> <!-- {x-version-update;com.azure:azure-storage-file-share;current} -->
->>>>>>> upstream/main
     </dependency>
 
 
