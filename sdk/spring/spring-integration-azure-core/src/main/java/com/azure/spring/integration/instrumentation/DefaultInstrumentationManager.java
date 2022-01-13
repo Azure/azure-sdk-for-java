@@ -26,8 +26,8 @@ public class DefaultInstrumentationManager implements InstrumentationManager {
     }
 
     @Override
-    public void addHealthInstrumentation(String id, Instrumentation instrumentation) {
-        healthInstrumentations.put(id, instrumentation);
+    public void addHealthInstrumentation(Instrumentation instrumentation) {
+        healthInstrumentations.put(instrumentation.getId(), instrumentation);
     }
 
     @Override

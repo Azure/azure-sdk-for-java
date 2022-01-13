@@ -18,10 +18,9 @@ public interface InstrumentationManager {
 
     /**
      * Add the health instrumentation.
-     * @param id the id of instrumentation.
      * @param instrumentation the instrumentation.
      */
-    void addHealthInstrumentation(String id, Instrumentation instrumentation);
+    void addHealthInstrumentation(Instrumentation instrumentation);
 
     /**
      * Get the health instrumentation by id.

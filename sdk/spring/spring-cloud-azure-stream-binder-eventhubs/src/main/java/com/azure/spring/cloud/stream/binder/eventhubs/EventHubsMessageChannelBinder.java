@@ -209,7 +209,7 @@ public class EventHubsMessageChannelBinder extends
             factory.addListener((name, producerAsyncClient) -> {
                 DefaultInstrumentation instrumentation = new DefaultInstrumentation(name, PRODUCER);
                 instrumentation.markUp();
-                instrumentationManager.addHealthInstrumentation(instrumentation.getId(), instrumentation);
+                instrumentationManager.addHealthInstrumentation(instrumentation);
             });
             this.eventHubsTemplate = new EventHubsTemplate(factory);
         }
@@ -224,7 +224,7 @@ public class EventHubsMessageChannelBinder extends
                 String instrumentationName = name + "/" + consumerGroup;
                 Instrumentation instrumentation = new EventHubsProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));
                 instrumentation.markUp();
-                instrumentationManager.addHealthInstrumentation(instrumentation.getId(), instrumentation);
+                instrumentationManager.addHealthInstrumentation(instrumentation);
             });
             this.processorContainer = new EventHubsProcessorContainer(factory);
         }
