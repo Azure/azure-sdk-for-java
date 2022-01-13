@@ -14,7 +14,7 @@ import org.springframework.jms.connection.CachingConnectionFactory;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ServiceBusJmsAutoConfigurationTest extends AbstractServiceBusJmsAutoConfigurationTest {
-    public ServiceBusJmsAutoConfigurationTest() {
+    ServiceBusJmsAutoConfigurationTest() {
         this.contextRunner = super.contextRunner
             .withPropertyValues("spring.jms.servicebus.pricing-tier=premium")
             .withConfiguration(AutoConfigurations.of(ServiceBusJmsAutoConfiguration.class));
