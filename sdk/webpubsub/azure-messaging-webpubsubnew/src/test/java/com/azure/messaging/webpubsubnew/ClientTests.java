@@ -14,6 +14,8 @@ import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.time.OffsetDateTime;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -43,5 +45,7 @@ public final class ClientTests extends TestBase {
     @DoNotRecord(skipInPlayback = true)
     public void testClient() {
         // use the builder to create client
+        boolean userExists = builder.buildWebPubSubClient().userExistsWithResponse("hub", "userId", null).getValue();
+        Assertions.assertFalse(userExists);
     }
 }
