@@ -200,7 +200,7 @@
         {
           "code": "java.method.added",
           "new": "method java.lang.Class<T> com.azure.core.util.serializer.TypeReference<T>::getJavaClass()",
-          "justification": "New method added to TypeReference in azure-core:1.24.0"
+          "justification": "New method added to TypeReference in azure-core."
         },
         {
            "code": "java.method.added",
