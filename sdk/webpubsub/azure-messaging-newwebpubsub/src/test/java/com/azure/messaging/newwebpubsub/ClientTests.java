@@ -16,6 +16,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 import reactor.core.publisher.Mono;
 
 public final class ClientTests extends TestBase {
@@ -42,6 +43,7 @@ public final class ClientTests extends TestBase {
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void testClient() {
-        // use the builder to create client
+        boolean userExists = builder.buildWebPubSubClient().userExistsWithResponse("hub", "user_id", null).getValue();
+        Assertions.assertFalse(userExists);
     }
 }
