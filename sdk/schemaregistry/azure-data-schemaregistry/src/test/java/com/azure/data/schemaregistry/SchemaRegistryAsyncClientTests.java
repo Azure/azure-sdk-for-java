@@ -47,15 +47,15 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
 
     // When we regenerate recordings, make sure that the schema group matches what we are persisting.
     static final String PLAYBACK_TEST_GROUP = "mygroup";
+    static final String PLAYBACK_ENDPOINT = "https://foo.servicebus.windows.net";
 
     private String schemaGroup;
     private SchemaRegistryClientBuilder builder;
 
     @Override
     protected void beforeTest() {
-        final String endpoint;
         TokenCredential tokenCredential;
-
+        String endpoint;
         if (interceptorManager.isPlaybackMode()) {
             tokenCredential = mock(TokenCredential.class);
             schemaGroup = PLAYBACK_TEST_GROUP;
@@ -67,7 +67,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
                 });
             });
 
-            endpoint = "https://foo.servicebus.windows.net";
+            endpoint = PLAYBACK_ENDPOINT;
         } else {
             tokenCredential = new DefaultAzureCredentialBuilder().build();
             endpoint = System.getenv(SCHEMA_REGISTRY_ENDPOINT);
@@ -306,7 +306,6 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
             })
             .verify();
     }
-
 
     static void assertSchemaRegistrySchema(SchemaRegistrySchema actual, String expectedSchemaId, SchemaFormat format,
         String expectedContents) {

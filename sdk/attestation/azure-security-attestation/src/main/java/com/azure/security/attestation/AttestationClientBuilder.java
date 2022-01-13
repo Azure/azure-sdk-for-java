@@ -96,7 +96,7 @@ public final class AttestationClientBuilder {
         try {
             new URL(endpoint);
         } catch (MalformedURLException ex) {
-            logger.logExceptionAsError(new IllegalArgumentException(ex));
+            throw logger.logExceptionAsError(new IllegalArgumentException(ex));
         }
         clientImplBuilder.instanceUrl(endpoint);
         return this;

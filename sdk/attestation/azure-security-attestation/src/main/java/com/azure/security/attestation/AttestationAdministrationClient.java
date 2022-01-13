@@ -131,6 +131,44 @@ public final class AttestationAdministrationClient {
      * <!-- end com.azure.security.attestation.AttestationAdministrationClient.getPolicyWithResponse -->
      *
      * @param attestationType Specifies the trusted execution environment whose policy should be retrieved.
+     * @param options Options used when validating the attestation token.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to an attestation policy operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public String getAttestationPolicy(AttestationType attestationType, AttestationTokenValidationOptions options) {
+        return asyncClient.getAttestationPolicy(attestationType, options).block();
+    }
+
+
+    /**
+     * Retrieves the current policy for an attestation type.
+     * <p>
+     * <b>NOTE:</b>
+     *     The {@link AttestationAdministrationAsyncClient#getAttestationPolicyWithResponse(AttestationType, AttestationTokenValidationOptions, Context)} API returns the underlying
+     *     attestation policy specified by the user. This is NOT the full attestation policy maintained by
+     *     the attestation service. Specifically it does not include the signing certificates used to verify the attestation
+     *     policy.
+     *     </p>
+     *     <p>
+     *         To retrieve the signing certificates used to sign the policy, {@link Response} object returned from this API
+     *         is an instance of an {@link com.azure.security.attestation.models.AttestationResponse} object
+     *         and the caller can retrieve the full policy object maintained by the service by calling the
+     *         {@link AttestationResponse#getToken()} method.
+     *         The returned {@link com.azure.security.attestation.models.AttestationToken} object will be
+     *         the value stored by the attestation service.
+     *  </p>
+     *
+     * <p><strong>Retrieve the current attestation policy for SGX enclaves.</strong></p>
+     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClient.getPolicyWithResponse -->
+     * <pre>
+     * Response&lt;String&gt; response = client.getAttestationPolicyWithResponse&#40;AttestationType.SGX_ENCLAVE, null, Context.NONE&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationAdministrationClient.getPolicyWithResponse -->
+     *
+     * @param attestationType Specifies the trusted execution environment whose policy should be retrieved.
      * @param validationOptions Options used when validating the token returned by the attestation service.
      * @param context Context for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -567,7 +605,7 @@ public final class AttestationAdministrationClient {
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationAdministrationClient.removePolicyManagementCertificateWithResponse -->
      *
-     * <p><strong><i>Note:</i></strong> It is not considered an error to removethe same certificate twice. If
+     * <p><strong><i>Note:</i></strong> It is not considered an error to remove the same certificate twice. If
      * the same certificate is removed twice, the service ignores the second remove request. This also means that
      * it is not an error to remove a certificate which was not actually in the set of policy certificates.</p>
      *
@@ -583,4 +621,4 @@ public final class AttestationAdministrationClient {
     public Response<PolicyCertificatesModificationResult> removePolicyManagementCertificateWithResponse(PolicyManagementCertificateOptions options, Context context) {
         return asyncClient.removePolicyManagementCertificateWithResponse(options, context).block();
     }
-};
+}

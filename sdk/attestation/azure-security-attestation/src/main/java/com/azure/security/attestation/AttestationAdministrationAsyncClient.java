@@ -188,8 +188,48 @@ public final class AttestationAdministrationAsyncClient {
     public Mono<String> getAttestationPolicy(AttestationType attestationType) {
         return getAttestationPolicyWithResponse(attestationType, null)
             .flatMap(FluxUtil::toMono);
-
     }
+
+    /**
+     * Retrieves the current policy for an attestation type.
+     *  <p>
+     *      <b>NOTE:</b>
+     *     The {@code getAttestationPolicy} API returns the underlying
+     *     attestation policy specified by the user. This is NOT the full attestation policy maintained by
+     *     the attestation service. Specifically it does not include the signing certificates used to verify the attestation
+     *     policy.
+     *     </p>
+     *     <p>
+     *         To retrieve the signing certificates used to sign the policy, use the {@link AttestationAdministrationAsyncClient#getAttestationPolicyWithResponse(AttestationType, AttestationTokenValidationOptions)} API.
+     *         The {@link Response} object is an instance of an {@link com.azure.security.attestation.models.AttestationResponse} object
+     *         and the caller can retrieve the full information maintained by the service by calling the {@link AttestationResponse#getToken()} method.
+     *         The returned {@link com.azure.security.attestation.models.AttestationToken} object will be
+     *         the value stored by the attestation service.
+     *  </p>
+     *
+     * <P><strong>Retrieve the current attestation policy for SGX enclaves.</strong></P>
+     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationAsyncClient.getPolicyWithOptions -->
+     * <pre>
+     * Mono&lt;String&gt; policyMono2 = client.getAttestationPolicy&#40;AttestationType.SGX_ENCLAVE,
+     *     new AttestationTokenValidationOptions&#40;&#41;
+     *         .setValidationSlack&#40;Duration.ofSeconds&#40;10&#41;&#41;&#41;;
+     * policyMono2.subscribe&#40;policy -&gt; System.out.printf&#40;&quot;Current SGX policy: %s&#92;n&quot;, policy&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationAdministrationAsyncClient.getPolicyWithOptions -->
+     *
+     * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
+     * @param options Token validation options to validate returned attestation token.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to an attestation policy operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<String> getAttestationPolicy(AttestationType attestationType, AttestationTokenValidationOptions options) {
+        return getAttestationPolicyWithResponse(attestationType, options)
+            .flatMap(FluxUtil::toMono);
+    }
+
 
     /**
      * Retrieves the current policy for an attestation type.
@@ -213,7 +253,7 @@ public final class AttestationAdministrationAsyncClient {
                         String policyJwt = token.getValue().getBody(com.azure.security.attestation.implementation.models.PolicyResult.class).getPolicy();
                         AttestationTokenImpl policyToken = new AttestationTokenImpl(policyJwt);
                         StoredAttestationPolicy storedPolicy = policyToken.getBody(StoredAttestationPolicy.class);
-                        String policy = null;
+                        String policy;
                         // If there's a stored attestation policy in the token, convert it to a string.
                         if (storedPolicy != null) {
                             policy = new String(storedPolicy.getAttestationPolicy(), StandardCharsets.UTF_8);
@@ -796,7 +836,7 @@ public final class AttestationAdministrationAsyncClient {
 
         // Generate an attestation token for that stored attestation policy. We use the common function in
         // PolicyResult which is used in creating the SetPolicy hash.
-        String base64Certificate = null;
+        String base64Certificate;
 
         try {
             base64Certificate = Base64.getEncoder().encodeToString(options.getCertificate().getEncoded());
@@ -810,7 +850,7 @@ public final class AttestationAdministrationAsyncClient {
         AttestationCertificateManagementBody certificateBody = new AttestationCertificateManagementBody()
             .setPolicyCertificate(jwk);
 
-        AttestationToken addToken = null;
+        AttestationToken addToken;
         try {
             addToken = AttestationTokenImpl.createSecuredToken(SERIALIZER_ADAPTER.serialize(certificateBody, SerializerEncoding.JSON), options.getAttestationSigner());
         } catch (IOException e) {
@@ -856,7 +896,7 @@ public final class AttestationAdministrationAsyncClient {
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationAdministrationAsyncClient.removePolicyManagementCertificate -->
      *
-     * <p><strong><i>Note:</i></strong> It is not considered an error to removethe same certificate twice. If
+     * <p><strong><i>Note:</i></strong> It is not considered an error to remove the same certificate twice. If
      * the same certificate is removed twice, the service ignores the second remove request. This also means that
      * it is not an error to remove a certificate which was not actually in the set of policy certificates.</p>
      *
@@ -900,7 +940,7 @@ public final class AttestationAdministrationAsyncClient {
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationAdministrationAsyncClient.removePolicyManagementCertificateWithResponse -->
      *
-     * <p><strong><i>Note:</i></strong> It is not considered an error to removethe same certificate twice. If
+     * <p><strong><i>Note:</i></strong> It is not considered an error to remove the same certificate twice. If
      * the same certificate is removed twice, the service ignores the second remove request. This also means that
      * it is not an error to remove a certificate which was not actually in the set of policy certificates.</p>
      *
@@ -935,7 +975,7 @@ public final class AttestationAdministrationAsyncClient {
 
         // Generate an attestation token for that stored attestation policy. We use the common function in
         // PolicyResult which is used in creating the SetPolicy hash.
-        String base64Certificate = null;
+        String base64Certificate;
 
         try {
             base64Certificate = Base64.getEncoder().encodeToString(options.getCertificate().getEncoded());
@@ -949,7 +989,7 @@ public final class AttestationAdministrationAsyncClient {
         AttestationCertificateManagementBody certificateBody = new AttestationCertificateManagementBody()
             .setPolicyCertificate(jwk);
 
-        AttestationToken addToken = null;
+        AttestationToken addToken;
         try {
             addToken = AttestationTokenImpl.createSecuredToken(SERIALIZER_ADAPTER.serialize(certificateBody, SerializerEncoding.JSON), options.getAttestationSigner());
         } catch (IOException e) {

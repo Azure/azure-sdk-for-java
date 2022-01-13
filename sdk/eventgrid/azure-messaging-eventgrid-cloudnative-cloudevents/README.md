@@ -1,4 +1,4 @@
-# Azure Cloud Native Cloud Event support for Event Grid
+# Azure Cloud Native Cloud Event client library for Java
 
 This library can be used to enable publishing the Cloud Native Computing Foundation(CNCF) [CloudEvents][CNCFCloudEvents]
 using the Azure Event Grid library. 
@@ -23,6 +23,11 @@ If you want to take dependency on a particular version of the library, add the d
 </dependency>
 ```
 [//]: # ({x-version-update-end})
+
+## Key concepts
+For information about general Event Grid concepts: [Concepts in Azure Event Grid][eventgridConcept].
+
+For detailed information about the Event Grid client library concepts: [Event Grid Client Library][eventgridClientConcept].
 
 ## Examples
 
@@ -109,8 +114,10 @@ If you would like to become an active contributor to this project please refer t
 Contribution Guidelines for more information.
 
 <!-- LINKS -->
+[eventgridGettingStarted]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventgrid/azure-messaging-eventgrid#getting-started
+[eventgridConcept]: https://docs.microsoft.com/azure/event-grid/concepts
+[eventgridClientConcept]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventgrid/azure-messaging-eventgrid#key-concepts
 [javadocs]: https://azure.github.io/azure-sdk-for-java/eventgrid.html
-[eventgridGettingStarted]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventgrid/azure-messaging-eventgrid#getting-started 
 [CNCFCloudEvents]: https://cloudevents.github.io/sdk-java/
 [HttpResponseException]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java
 

@@ -991,7 +991,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         For specificity, our basic implementation of BasicFileAttributes uses the name azureBasic. However, the docs
         state that "basic" must be supported, so we funnel to azureBasic.
          */
-        if (viewType.equals("basic")) {
+        if ("basic".equals(viewType)) {
             viewType = AzureBasicFileAttributeView.NAME;
         }
         if (!viewType.equals(AzureBasicFileAttributeView.NAME) && !viewType.equals(AzureBlobFileAttributeView.NAME)) {
@@ -1006,7 +1006,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
              */
             // TODO: Put these strings in constants
             if (viewType.equals(AzureBasicFileAttributeView.NAME)) {
-                if (!AzureBasicFileAttributes.ATTRIBUTE_STRINGS.contains(attributeName) && !attributeName.equals("*")) {
+                if (!AzureBasicFileAttributes.ATTRIBUTE_STRINGS.contains(attributeName) && !"*".equals(attributeName)) {
                     throw LoggingUtility.logError(logger,
                         new IllegalArgumentException("Invalid attribute. View: " + viewType
                             + ". Attribute: " + attributeName));
@@ -1021,7 +1021,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             }
 
             // If "*" is specified, add all of the attributes from the specified set.
-            if (attributeName.equals("*")) {
+            if ("*".equals(attributeName)) {
                 if (viewType.equals(AzureBasicFileAttributeView.NAME)) {
                     for (String attr : AzureBasicFileAttributes.ATTRIBUTE_STRINGS) {
                         results.put(attr, attributeSuppliers.get(attr).get());
@@ -1095,7 +1095,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         For specificity, our basic implementation of BasicFileAttributes uses the name azureBasic. However, the docs
         state that "basic" must be supported, so we funnel to azureBasic.
          */
-        if (viewType.equals("basic")) {
+        if ("basic".equals(viewType)) {
             viewType = AzureBasicFileAttributeView.NAME;
         }
 
