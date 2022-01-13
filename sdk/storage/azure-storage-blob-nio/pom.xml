@@ -82,9 +82,9 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
 <<<<<<< HEAD
-      <version>12.14.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+      <version>12.14.3</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
 =======
-      <version>12.15.0-beta.3</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+      <version>12.14.3</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
 >>>>>>> upstream/main
     </dependency>
 
@@ -92,9 +92,9 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
 <<<<<<< HEAD
-      <version>12.14.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.14.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
 =======
-      <version>12.15.0-beta.3</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.14.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
 >>>>>>> upstream/main
       <classifier>tests</classifier>
       <type>test-jar</type>
