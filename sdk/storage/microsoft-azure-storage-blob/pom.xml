@@ -97,11 +97,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-common</artifactId>
-<<<<<<< HEAD
           <version>12.14.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
-=======
-          <version>12.14.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
->>>>>>> upstream/main
           <classifier>tests</classifier>
           <type>test-jar</type>
           <scope>test</scope>
