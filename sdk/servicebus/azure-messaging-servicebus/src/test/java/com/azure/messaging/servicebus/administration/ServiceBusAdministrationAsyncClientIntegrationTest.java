@@ -407,8 +407,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
             ? "topic-1"
             : getEntityName(getTopicBaseName(), 1);
         final CreateSubscriptionOptions expected = new CreateSubscriptionOptions()
-            .setForwardTo(forwardToTopic)
-            .setForwardDeadLetteredMessagesTo(forwardToTopic);
+            .setForwardTo(forwardToTopic);
 
         // Act & Assert
         if (!interceptorManager.isPlaybackMode()) {
