@@ -123,7 +123,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.0.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
+        <version>3.3.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>compile-test-shared-source</id>
@@ -143,7 +143,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
-        <version>3.2.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-assembly-plugin;external_dependency} -->
+        <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-assembly-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>package-test-shared-jar</id>
@@ -163,7 +163,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+        <version>3.0.0-M5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
         <configuration>
           <additionalClasspathElements>
             <additionalClasspathElement>${settings.localRepository}/com/azure/${project.artifactId}/${project.version}/${project.artifactId}-${project.version}-tests.jar</additionalClasspathElement>
@@ -191,7 +191,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.9.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>default-testCompile</id>
@@ -273,7 +273,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.9.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>default-testCompile</id>

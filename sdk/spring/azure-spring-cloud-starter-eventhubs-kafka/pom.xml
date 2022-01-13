@@ -38,7 +38,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.0.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
@@ -77,7 +77,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <version>3.2.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <executions>
           <!-- BEGIN: Empty Java Doc -->
           <execution>
@@ -110,7 +110,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+        <version>3.0.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>copy-readme-to-javadocTemp</id>
@@ -155,7 +155,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>3.0.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-source-plugin;external_dependency} -->
+        <version>3.2.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-source-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>attach-sources</id>

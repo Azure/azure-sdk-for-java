@@ -196,7 +196,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <version>3.9.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
       </plugin>
 
       <!-- This plugin scans checkstyle issues in the code -->
@@ -233,7 +233,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <version>3.2.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <configuration>
           <outputDirectory>${packageOutputDirectory}</outputDirectory>
           <archive combine.children="append">
@@ -287,7 +287,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>3.0.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-source-plugin;external_dependency} -->
+        <version>3.2.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-source-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>attach-sources</id>
@@ -305,7 +305,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+        <version>3.0.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>copy</id>
@@ -401,7 +401,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.0.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
+        <version>3.3.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>attach-artifacts</id>
@@ -444,7 +444,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.0.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <!--
@@ -504,7 +504,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+          <version>3.9.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
           <configuration>
             <showWarnings>true</showWarnings>
             <failOnWarning>true</failOnWarning>
@@ -549,7 +549,7 @@
             <dependency>
               <groupId>com.puppycrawl.tools</groupId>
               <artifactId>checkstyle</artifactId>
-              <version>9.2</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
+              <version>9.2.1</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
             </dependency>
           </dependencies>
           <configuration>
@@ -728,7 +728,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+          <version>3.0.0-M5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
           <configuration>
             <runOrder>alphabetical</runOrder>
             <useSystemClassLoader>false</useSystemClassLoader>
@@ -851,7 +851,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>3.0.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-project-info-reports-plugin;external_dependency} -->
+        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-project-info-reports-plugin;external_dependency} -->
         <reportSets>
           <reportSet>
             <reports>
@@ -903,7 +903,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.9.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <source>1.8</source>
               <target>1.8</target>
@@ -953,7 +953,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.9.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <compilerArgs combine.children="append">
                 <arg>-Xlint:-module</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
@@ -1004,7 +1004,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.0.0-M5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <systemPropertyVariables>
                 <jacoco-agent.destfile>${project.build.directory}/jacoco.exec</jacoco-agent.destfile>
@@ -1038,7 +1038,7 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
-            <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+            <version>3.0.0</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>generate-overview-from-readme</id>
@@ -1089,7 +1089,7 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
-            <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+            <version>3.0.0</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>code-snippet-for-readme</id>
@@ -1125,7 +1125,7 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
-            <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+            <version>3.0.0</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>verify-readme-codesnippet</id>
@@ -1162,7 +1162,7 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
-            <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+            <version>3.0.0</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>verify-readme-codesnippet</id>
@@ -1258,7 +1258,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.0.0-M5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
@@ -1280,7 +1280,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.0.0-M5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
@@ -1301,7 +1301,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.0.0-M5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
@@ -1323,7 +1323,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.0.0-M5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>

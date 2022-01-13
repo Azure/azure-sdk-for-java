@@ -34,13 +34,13 @@
     <dependency>
       <groupId>com.puppycrawl.tools</groupId>
       <artifactId>checkstyle</artifactId>
-      <version>9.2</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
+      <version>9.2.1</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>com.puppycrawl.tools</groupId>
       <artifactId>checkstyle</artifactId>
-      <version>9.2</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
+      <version>9.2.1</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
@@ -65,12 +65,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
-        <version>3.7.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-site-plugin;external_dependency} -->
+        <version>3.10.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-site-plugin;external_dependency} -->
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>3.0.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-project-info-reports-plugin;external_dependency} -->
+        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-project-info-reports-plugin;external_dependency} -->
       </plugin>
     </plugins>
   </build>
