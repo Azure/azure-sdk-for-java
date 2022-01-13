@@ -4,7 +4,7 @@
 package com.azure.spring.integration.storage.queue;
 
 import com.azure.spring.integration.storage.queue.inbound.StorageQueueMessageSource;
-import com.azure.spring.storage.queue.core.StorageQueueOperation;
+import com.azure.spring.storage.queue.core.StorageQueueTemplate;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +28,7 @@ import static org.mockito.Mockito.when;
 public class StorageQueueMessageSourceTest {
 
     @Mock
-    private StorageQueueOperation mockOperation;
+    private StorageQueueTemplate mockTemplate;
     private Message<?> message;
 
     private String destination = "test-destination";
@@ -49,7 +49,7 @@ public class StorageQueueMessageSourceTest {
 
     @BeforeEach
     public void setup() {
-        messageSource = new StorageQueueMessageSource(destination, mockOperation);
+        messageSource = new StorageQueueMessageSource(destination, mockTemplate);
     }
 
     @AfterAll
@@ -59,13 +59,13 @@ public class StorageQueueMessageSourceTest {
 
     @Test
     public void testDoReceiveWhenHaveNoMessage() {
-        when(this.mockOperation.receiveAsync(eq(destination))).thenReturn(Mono.empty());
+        when(this.mockTemplate.receiveAsync(eq(destination))).thenReturn(Mono.empty());
         assertNull(messageSource.doReceive());
     }
 
     @Test
     public void testDoReceiveSuccess() {
-        when(this.mockOperation.receiveAsync(eq(destination))).thenReturn(Mono.just(message));
+        when(this.mockTemplate.receiveAsync(eq(destination))).thenReturn(Mono.just(message));
         Message<?> receivedMessage = (Message<?>) messageSource.doReceive();
         assertEquals(message, receivedMessage);
     }

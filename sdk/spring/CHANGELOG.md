@@ -3,6 +3,7 @@
 ## 4.0.0-beta.3 (Unreleased)
 - Supported spring-boot version: 2.6.0 - 2.6.1
 - Supported spring-cloud version: 2021.0.0
+- Remove `StorageQueueOperation`
 
 ### Features Added
 

@@ -3,7 +3,7 @@
 
 package com.azure.spring.integration.storage.queue.inbound;
 
-import com.azure.spring.storage.queue.core.StorageQueueOperation;
+import com.azure.spring.storage.queue.core.StorageQueueTemplate;
 import org.springframework.integration.endpoint.AbstractMessageSource;
 import org.springframework.messaging.Message;
 import org.springframework.util.Assert;
@@ -15,24 +15,24 @@ import org.springframework.util.Assert;
  */
 public class StorageQueueMessageSource extends AbstractMessageSource<Message<?>> {
 
-    private final StorageQueueOperation storageQueueOperation;
+    private final StorageQueueTemplate storageQueueTemplate;
     private final String destination;
 
     /**
-     * Construct a {@link StorageQueueMessageSource} with the specified destination and {@link StorageQueueOperation}.
+     * Construct a {@link StorageQueueMessageSource} with the specified destination and {@link StorageQueueTemplate}.
      *
      * @param destination the destination
-     * @param storageQueueOperation the storage queue operation
+     * @param storageQueueTemplate the storage queue operation
      */
-    public StorageQueueMessageSource(String destination, StorageQueueOperation storageQueueOperation) {
+    public StorageQueueMessageSource(String destination, StorageQueueTemplate storageQueueTemplate) {
         Assert.hasText(destination, "destination can't be null or empty");
-        this.storageQueueOperation = storageQueueOperation;
+        this.storageQueueTemplate = storageQueueTemplate;
         this.destination = destination;
     }
 
     @Override
     public Object doReceive() {
-        return storageQueueOperation.receiveAsync(destination).block();
+        return storageQueueTemplate.receiveAsync(destination).block();
     }
 
     @Override
