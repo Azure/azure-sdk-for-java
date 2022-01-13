@@ -1,6 +1,6 @@
 # Release History
 
-## 3.0.0-beta.3 (2021-12-20)
+## 3.0.0-beta.3 (2022-01-18)
 
 - Introduced the new API `lastDetectAnomaly`
 - Added 2 new optional properties: `imputeMode` & `imputeFixedValue` to the `DetectRequest` object.
