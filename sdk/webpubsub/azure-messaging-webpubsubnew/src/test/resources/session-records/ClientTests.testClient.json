@@ -1,0 +1,23 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "HEAD",
+    "Uri" : "https://REDACTED.webpubsub.azure.com/api/hubs/hub/users/userId?api-version=2021-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-messaging-webpubsubnew/1.0.0-beta.1 (17.0.1; Linux; 5.10.16.3-microsoft-standard-WSL2)"
+    },
+    "Response" : {
+      "content-length" : "123",
+      "Server" : "nginx",
+      "api-supported-versions" : "2021-10-01",
+      "Connection" : "keep-alive",
+      "x-ms-error-code" : "Warning.User.NotExisted",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Body" : "",
+      "Date" : "Thu, 13 Jan 2022 08:47:18 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

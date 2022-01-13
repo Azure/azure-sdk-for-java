@@ -10,7 +10,6 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.time.OffsetDateTime;
@@ -27,7 +26,7 @@ public final class ClientTests extends TestBase {
     public void setup() {
         builder =
                 new WebPubSubClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
+                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "https://dummy.webpubsub.azure.com"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -42,7 +41,6 @@ public final class ClientTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
     public void testClient() {
         // use the builder to create client
         boolean userExists = builder.buildWebPubSubClient().userExistsWithResponse("hub", "userId", null).getValue();
