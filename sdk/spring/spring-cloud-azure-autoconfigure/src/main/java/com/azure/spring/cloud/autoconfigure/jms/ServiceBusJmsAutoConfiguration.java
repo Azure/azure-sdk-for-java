@@ -39,36 +39,30 @@ import static com.azure.spring.core.AzureSpringIdentifier.AZURE_SPRING_SERVICE_B
 public class ServiceBusJmsAutoConfiguration {
     @Bean
     ServiceBusJmsConnectionFactoryCustomizer customizeAmqpOpenProperties(AzureServiceBusJmsProperties serviceBusJmsProperties) {
-        return new ServiceBusJmsConnectionFactoryCustomizer() {
-            @Override
-            public void customize(ServiceBusJmsConnectionFactory factory) {
-                if (serviceBusJmsProperties.getPricingTier().equalsIgnoreCase("premium")) {
-                    final Map<String, Object> properties = new HashMap<>();
-                    properties.put("com.microsoft:is-client-provider", true);
-                    properties.put("user-agent", AZURE_SPRING_SERVICE_BUS);
-                    //set user agent
-                    factory.setExtension(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES.toString(),
-                        (connection, uri) -> properties);
-                }
+        return factory -> {
+            if (serviceBusJmsProperties.getPricingTier().equalsIgnoreCase("premium")) {
+                final Map<String, Object> properties = new HashMap<>();
+                properties.put("com.microsoft:is-client-provider", true);
+                properties.put("user-agent", AZURE_SPRING_SERVICE_BUS);
+                //set user agent
+                factory.setExtension(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES.toString(),
+                    (connection, uri) -> properties);
             }
         };
     }
 
     @Bean
     ServiceBusJmsConnectionFactoryCustomizer customizePrefetchPolicy(AzureServiceBusJmsProperties serviceBusJmsProperties) {
-        return new ServiceBusJmsConnectionFactoryCustomizer() {
-            @Override
-            public void customize(ServiceBusJmsConnectionFactory factory) {
-                AzureServiceBusJmsProperties.PrefetchPolicy prefetchProperties = serviceBusJmsProperties
-                    .getPrefetchPolicy();
-                JmsDefaultPrefetchPolicy prefetchPolicy = (JmsDefaultPrefetchPolicy) factory
-                    .getPrefetchPolicy();
-                prefetchPolicy.setDurableTopicPrefetch(prefetchProperties.getDurableTopicPrefetch());
-                prefetchPolicy.setQueueBrowserPrefetch(prefetchProperties.getQueueBrowserPrefetch());
-                prefetchPolicy.setQueuePrefetch(prefetchProperties.getQueuePrefetch());
-                prefetchPolicy.setTopicPrefetch(prefetchProperties.getTopicPrefetch());
-                factory.setPrefetchPolicy(prefetchPolicy);
-            }
+        return factory -> {
+            AzureServiceBusJmsProperties.PrefetchPolicy prefetchProperties = serviceBusJmsProperties
+                .getPrefetchPolicy();
+            JmsDefaultPrefetchPolicy prefetchPolicy = (JmsDefaultPrefetchPolicy) factory
+                .getPrefetchPolicy();
+            prefetchPolicy.setDurableTopicPrefetch(prefetchProperties.getDurableTopicPrefetch());
+            prefetchPolicy.setQueueBrowserPrefetch(prefetchProperties.getQueueBrowserPrefetch());
+            prefetchPolicy.setQueuePrefetch(prefetchProperties.getQueuePrefetch());
+            prefetchPolicy.setTopicPrefetch(prefetchProperties.getTopicPrefetch());
+            factory.setPrefetchPolicy(prefetchPolicy);
         };
     }
 }
