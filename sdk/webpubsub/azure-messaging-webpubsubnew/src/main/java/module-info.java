@@ -6,4 +6,5 @@ module com.azure.messaging.webpubsubnew {
     requires transitive com.azure.core;
 
     exports com.azure.messaging.webpubsubnew;
+    exports com.azure.messaging.webpubsubnew.models;
 }

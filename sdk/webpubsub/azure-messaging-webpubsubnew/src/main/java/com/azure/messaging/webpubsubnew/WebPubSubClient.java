@@ -13,6 +13,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.messaging.webpubsubnew.implementation.WebPubSubsImpl;
+import com.azure.messaging.webpubsubnew.models.WebPubSubPermission;
 
 /** Initializes a new instance of the synchronous WebPubSubClient type. */
 @ServiceClient(builder = WebPubSubClientBuilder.class)
@@ -629,10 +630,10 @@ public final class WebPubSubClient {
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> checkPermissionWithResponse(
-            String hub, String permission, String connectionId, RequestOptions requestOptions) {
-        return this.serviceClient.checkPermissionWithResponse(hub, permission, connectionId, requestOptions);
+            String hub, WebPubSubPermission permission, String connectionId, RequestOptions requestOptions) {
+        return this.serviceClient.checkPermissionWithResponse(
+                hub, permission.toString(), connectionId, requestOptions);
     }
 }
