@@ -20,8 +20,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-import reactor.core.publisher.Mono;
-
 public class ReadmeSamples {
 
     public RoomsClient createRoomsClientUsingAzureKeyCredential() {
@@ -139,7 +137,7 @@ public class ReadmeSamples {
         }
     }
 
-    public void AddRoomWithRoomId() {
+    public void addRoomWithRoomId() {
         String user1 = "8:acs:b6372803-0c35-4ec0-833b-c19b798cef1d_0000000e-3240-55cf-9806-113a0d001dd9";
         String user2 = "8:acs:b6372803-0c35-4ec0-833b-c19b798cef1d_0000001e-322a-f9f7-740a-113a0d00ee19";
         String user3 = "8:acs:b6372803-0c35-4ec0-833b-c19b798cef1d_0000002e-5609-f66d-defd-8b3a0d002749";
@@ -157,7 +155,7 @@ public class ReadmeSamples {
         }
     }
 
-    public void RemoveRoomWithRoomId() {
+    public void removeRoomWithRoomId() {
         String user1 = "8:acs:b6372803-0c35-4ec0-833b-c19b798cef1d_0000000e-3240-55cf-9806-113a0d001dd9";
         String user2 = "8:acs:b6372803-0c35-4ec0-833b-c19b798cef1d_0000001e-322a-f9f7-740a-113a0d00ee19";
     
@@ -169,6 +167,19 @@ public class ReadmeSamples {
             CommunicationRoom removedParticipantRoom =  roomsClient.removeParticipants("<Room Id>", participants);
             System.out.println("Room Id: " + removedParticipantRoom.getRoomId());
 
+        } catch (RuntimeException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    public void deleteAllParticipantsWithEmptyPayload() {    
+        Map<String, Object> participants = new HashMap<>();
+        RoomRequest roomRequest = new RoomRequest();
+        roomRequest.setParticipants(participants);
+        RoomsClient roomsClient = createRoomsClientWithConnectionString();
+        try {
+            CommunicationRoom deleteAllParticipantsRoom =  roomsClient.updateRoom("<Room Id>", roomRequest);
+            System.out.println("Room Id: " + deleteAllParticipantsRoom.getRoomId());
         } catch (RuntimeException ex) {
             System.out.println(ex);
         }

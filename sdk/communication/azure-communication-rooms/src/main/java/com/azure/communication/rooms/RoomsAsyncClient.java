@@ -354,10 +354,12 @@ public class RoomsAsyncClient {
      * @return The create room request.
      */
     private CreateRoomRequest toCreateRoomRequest(RoomRequest request) {
-        
         CreateRoomRequest createRoomRequest = new CreateRoomRequest();
-        if (request.getValidFrom() != null && request.getValidUntil() != null) {
+        if (request.getValidFrom() != null) {
             createRoomRequest.setValidFrom(request.getValidFrom());
+        }
+
+        if (request.getValidUntil() != null) {
             createRoomRequest.setValidUntil(request.getValidUntil());
         }
 
@@ -374,10 +376,13 @@ public class RoomsAsyncClient {
      * @return The update room request.
      */
     private UpdateRoomRequest toUpdateRoomRequest(RoomRequest request) {
-
         UpdateRoomRequest updateRoomRequest = new UpdateRoomRequest();
-        if (request.getValidFrom() != null && request.getValidUntil() != null) {
+
+        if (request.getValidFrom() != null) {
             updateRoomRequest.setValidFrom(request.getValidFrom());
+        }
+
+        if (request.getValidUntil() != null) {
             updateRoomRequest.setValidUntil(request.getValidUntil());
         }
 

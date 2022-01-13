@@ -180,6 +180,36 @@ public class RoomsClientTest extends RoomsTestBase {
         });
     }
 
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void patchMeetingValidTimeWithResponse(HttpClient httpClient) {
+        RoomsClientBuilder builder = getRoomsClientWithConnectionString(httpClient);
+        roomsClient = setupSyncClient(builder, "patchMeetingValidTimeWithResponse");
+        assertNotNull(roomsClient);
+        RoomRequest createRoomRequest = new RoomRequest();
+        createRoomRequest.setValidFrom(VALID_FROM);
+        createRoomRequest.setParticipants(PARTICIPANTS4);
+        Response<CommunicationRoom> createdRoomResponse = roomsClient.createRoomWithResponse(createRoomRequest, Context.NONE);
+        assertHappyPath(createdRoomResponse, 201);
+        assertEquals(createdRoomResponse.getValue().getParticipants().size(), 2);
+        assertEquals(createdRoomResponse.getValue().getValidFrom().getDayOfYear(), createRoomRequest.getValidFrom().getDayOfYear());
+
+        String roomId = createdRoomResponse.getValue().getRoomId();
+
+        RoomRequest updateRoomRequest = new RoomRequest();
+        updateRoomRequest.setValidFrom(VALID_FROM);
+        updateRoomRequest.setValidUntil(VALID_UNTIL);
+        updateRoomRequest.setParticipants(PARTICIPANTS3);
+        Response<CommunicationRoom> updateRoomResponse = roomsClient.updateRoomWithResponse(roomId, updateRoomRequest, Context.NONE);
+        assertHappyPath(updateRoomResponse, 200);
+        assertEquals(updateRoomResponse.getValue().getParticipants().size(), 1);
+        assertEquals(updateRoomResponse.getValue().getValidFrom().getDayOfYear(), updateRoomRequest.getValidFrom().getDayOfYear());
+        assertEquals(updateRoomResponse.getValue().getValidUntil().getDayOfYear(), updateRoomRequest.getValidUntil().getDayOfYear());
+
+        Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);
+        assertEquals(deleteResponse.getStatusCode(), 204);
+    }
+
     private RoomsClient setupSyncClient(RoomsClientBuilder builder, String testName) {
         return addLoggingPolicy(builder, testName).buildClient();
     }

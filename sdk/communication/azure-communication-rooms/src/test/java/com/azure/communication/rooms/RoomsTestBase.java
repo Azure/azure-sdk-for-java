@@ -44,8 +44,8 @@ public class RoomsTestBase extends TestBase {
             "COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING",
             "endpoint=https://REDACTED.communication.azure.com/;accesskey=P2tP5RwZVFcJa3sfJvHEmGaKbemSAw2e");
 
-    protected static final OffsetDateTime VALID_FROM = OffsetDateTime.of(2021, 12, 1, 5, 30, 20, 10, ZoneOffset.UTC);
-    protected static final OffsetDateTime VALID_UNTIL = OffsetDateTime.of(2022, 1, 1, 5, 30, 20, 10, ZoneOffset.UTC);
+    protected static final OffsetDateTime VALID_FROM = OffsetDateTime.of(2022, 5, 1, 5, 30, 20, 10, ZoneOffset.UTC);
+    protected static final OffsetDateTime VALID_UNTIL = VALID_FROM.plusDays(30);
     protected static final String USER1 = "8:acs:db75ed0c-e801-41a3-99a4-66a0a119a06c_0000000e-3240-55cf-9806-113a0d001dd9";
     protected static final String USER2 = "8:acs:db75ed0c-e801-41a3-99a4-66a0a119a06c_0000001e-322a-f9f7-740a-113a0d00ee19";
     protected static final String USER3 = "8:acs:db75ed0c-e801-41a3-99a4-66a0a119a06c_0000002e-5609-f66d-defd-8b3a0d002749";
