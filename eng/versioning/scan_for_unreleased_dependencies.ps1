@@ -26,6 +26,12 @@ Write-Host "serviceDirectory=$($serviceDirectory)"
 # Scan each pom file under the service directory until we find the pom file for the input groupId/artifactId. If
 # found then scan that pomfile for any unreleased dependency tags.
 Get-ChildItem -Path $serviceDirectory -Filter pom*.xml -Recurse -File | ForEach-Object {
+    if ($serviceDirectory -match '.*/sdk/resourcemanagerhybrid')
+    {
+        $script:FoundPomFile = $true
+        return
+    }
+
     $libraryIsBeta = $false
     $pomFile = $_.FullName
     $xmlPomFile = New-Object xml
