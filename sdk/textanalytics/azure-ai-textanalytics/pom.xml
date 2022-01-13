@@ -39,9 +39,6 @@
       --add-opens com.azure.ai.textanalytics/com.azure.ai.textanalytics=ALL-UNNAMED
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <dependencies>

@@ -55,9 +55,6 @@
     <additionalSurefireArgLine>
       -Djdk.httpclient.allowRestrictedHeaders=Content-Length
     </additionalSurefireArgLine>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <developers>
