@@ -23,12 +23,16 @@ import org.apache.avro.specific.SpecificRecord;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Class containing implementation of Apache Avro serializer
@@ -156,8 +160,8 @@ class AvroSerializer {
         Objects.requireNonNull(bytes, "'bytes' must not be null.");
         Objects.requireNonNull(schemaBytes, "'schemaBytes' must not be null.");
 
-        String schemaString = new String(schemaBytes, StandardCharsets.UTF_8);
-        Schema schemaObject = parseSchemaString(schemaString);
+        final String schemaString = new String(schemaBytes, StandardCharsets.UTF_8);
+        final Schema schemaObject = parseSchemaString(schemaString);
 
         if (isSingleObjectEncoded(bytes)) {
             final BinaryMessageDecoder<T> messageDecoder = new BinaryMessageDecoder<>(SpecificData.get(), schemaObject);
@@ -230,6 +234,47 @@ class AvroSerializer {
     }
 
     /**
+     * Gets the type's schema if there is one.
+     *
+     * @param clazz Class to get schema.
+     * @param <T> The type of object.
+     *
+     * @return The {@link Schema} or {@code null} if it was not a GenericContainer, could not instantiate the type, or
+     *     there was no default constructor.
+     */
+    <T> Schema getSchemaFromTypeReference(Class<T> clazz) {
+        if (!GenericContainer.class.isAssignableFrom(clazz)) {
+            return null;
+        }
+
+        final Optional<Constructor<?>> defaultConstructor;
+        try {
+            defaultConstructor = Arrays.stream(clazz.getDeclaredConstructors())
+                .filter(constructor -> constructor.getParameterCount() == 0)
+                .findFirst();
+        } catch (SecurityException e) {
+            logger.info("Could not get declaring constructors for deserializing T ({}). Using writer schema.",
+                clazz, e);
+            return null;
+        }
+
+        if (!defaultConstructor.isPresent()) {
+            return null;
+        }
+
+        Object instance = null;
+        try {
+            instance = defaultConstructor.get().newInstance();
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            logger.info("Could not create new instance for deserializing T ({}). Using writer schema.", clazz, e);
+        }
+
+        return instance instanceof GenericContainer
+            ? ((GenericContainer) instance).getSchema()
+            : null;
+    }
+
+    /**
      * Gets a schema for the given class if it is an Avro primitive type.
      *
      * @param clazz Object class
@@ -256,10 +301,8 @@ class AvroSerializer {
      *
      * @return correct Avro DatumReader object given encoder configuration
      */
-    @SuppressWarnings("unchecked")
     private <T> DatumReader<T> getDatumReader(Schema writerSchema, TypeReference<T> typeReference) {
-        // Suppressing this warning because we know that the Type is a representation of the Class<T>
-        final Class<T> clazz = (Class<T>) typeReference.getJavaType();
+        final Class<T> clazz = typeReference.getJavaClass();
         final Schema primitiveSchema = getPrimitiveSchema(clazz);
 
         if (primitiveSchema != null) {
@@ -268,6 +311,12 @@ class AvroSerializer {
             } else {
                 return new GenericDatumReader<>(writerSchema);
             }
+        }
+
+        final Schema readerSchema = getSchemaFromTypeReference(clazz);
+        if (readerSchema != null && !readerSchema.equals(writerSchema)) {
+            logger.verbose("The writer schema is different than reader schema. Using reader schema.");
+            return new SpecificDatumReader<>(writerSchema, readerSchema);
         }
 
         if (SpecificRecord.class.isAssignableFrom(clazz)) {
