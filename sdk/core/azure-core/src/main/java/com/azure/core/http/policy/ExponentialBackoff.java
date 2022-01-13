@@ -61,7 +61,7 @@ public class ExponentialBackoff implements RetryStrategy {
     /**
      * Caller must only call this method if they are sure that user specified retry policy options
      */
-    static RetryStrategy fromConfigurationOrDefault(Configuration configuration, RetryStrategy defaultStrategy) {
+    static RetryStrategy fromConfiguration(Configuration configuration, RetryStrategy defaultStrategy) {
         if (configuration == null || configuration == NONE) {
             return defaultStrategy;
         }

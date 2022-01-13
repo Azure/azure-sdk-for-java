@@ -176,7 +176,9 @@ public final class ConfigurationClientBuilder {
             : configuration;
 
         // Service version
-        ConfigurationServiceVersion serviceVersion = getServiceVersion();
+        ConfigurationServiceVersion serviceVersion = (version != null)
+            ? version
+            : ConfigurationServiceVersion.getLatest();
 
         // Endpoint
         String buildEndpoint = endpoint;
@@ -403,9 +405,9 @@ public final class ConfigurationClientBuilder {
         this.configuration = configuration.getSection("appconfiguration");
 
         // will populate ClientOptions or HttpClientOptions depending on config
-        clientOptions(HttpClientOptions.fromConfigurationOrDefault(this.configuration, this.clientOptions));
+        clientOptions(HttpClientOptions.fromConfiguration(this.configuration, this.clientOptions));
 
-        httpLogOptions(HttpLogOptions.fromConfigurationOrDefault(this.configuration, this.httpLogOptions));
+        httpLogOptions(HttpLogOptions.fromConfiguration(this.configuration, this.httpLogOptions));
 
         endpoint(this.configuration.get("appconfiguration.endpoint", this.endpoint));
 
@@ -414,7 +416,7 @@ public final class ConfigurationClientBuilder {
             connectionString(connectionString);
         }
 
-        retryPolicy(RetryPolicy.fromConfigurationOrDefault(this.configuration, null));
+        retryPolicy(RetryPolicy.fromConfiguration(this.configuration, null));
         serviceVersion(this.configuration.get("appconfiguration.service-version", this.version));
 
         // TODO(configuration) credential

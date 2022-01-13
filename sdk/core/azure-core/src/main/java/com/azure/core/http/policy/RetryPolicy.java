@@ -90,7 +90,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
         this(retryStrategy, null, null);
     }
 
-    public static RetryPolicy fromConfigurationOrDefault(Configuration configuration, RetryPolicy defaultPolicy) {
+    public static RetryPolicy fromConfiguration(Configuration configuration, RetryPolicy defaultPolicy) {
         if (configuration == null || configuration == NONE) {
             return defaultPolicy;
         }
@@ -109,10 +109,10 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
         RetryStrategy retryStrategy;
         if ("fixed".equals(retryStrategyStr)) {
-            retryStrategy = FixedDelay.fromConfigurationOrDefault(configuration, null);
+            retryStrategy = FixedDelay.fromConfiguration(configuration, null);
             // throw if null
         } else {
-            retryStrategy = ExponentialBackoff.fromConfigurationOrDefault(configuration, new ExponentialBackoff());
+            retryStrategy = ExponentialBackoff.fromConfiguration(configuration, new ExponentialBackoff());
         }
 
         ChronoUnit retryAfterUnit = null;

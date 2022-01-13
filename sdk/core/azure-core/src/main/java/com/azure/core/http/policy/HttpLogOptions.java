@@ -19,6 +19,7 @@ import java.util.Set;
  */
 public class HttpLogOptions {
     private String applicationId;
+
     private HttpLogDetailLevel logLevel;
     private Set<String> allowedHeaderNames;
     private Set<String> allowedQueryParamNames;
@@ -58,7 +59,7 @@ public class HttpLogOptions {
         "User-Agent"
     );
 
-    public static HttpLogOptions fromConfigurationOrDefault(Configuration configuration, HttpLogOptions defaultOptions) {
+    public static HttpLogOptions fromConfiguration(Configuration configuration, HttpLogOptions defaultOptions) {
         if (configuration == Configuration.NONE || configuration == null) {
             return defaultOptions;
         }

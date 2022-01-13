@@ -28,7 +28,7 @@ public class ClientOptions {
     private String applicationId;
 
     // TODO(configuration) maybe can simplify it further
-    static ClientOptions fromConfigurationOrDefault(String applicationId, String headersStr, Supplier<ClientOptions> implementationSupplier, ClientOptions defaultOptions) {
+    static ClientOptions fromConfiguration(String applicationId, String headersStr, Supplier<ClientOptions> implementationSupplier, ClientOptions defaultOptions) {
         if (applicationId == null && headersStr == null) {
             // no client options - return null to indicate it
             return defaultOptions;

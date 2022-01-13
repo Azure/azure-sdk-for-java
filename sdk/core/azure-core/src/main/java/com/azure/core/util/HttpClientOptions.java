@@ -56,7 +56,7 @@ public final class HttpClientOptions extends ClientOptions {
     private Integer maximumConnectionPoolSize;
     private Duration connectionIdleTimeout;
 
-    public static ClientOptions fromConfigurationOrDefault(Configuration configuration, ClientOptions defaultOptions) {
+    public static ClientOptions fromConfiguration(Configuration configuration, ClientOptions defaultOptions) {
         // TODO(configuration): copy-paste with loadconfig
 
         String appId = configuration.get("http-client.application-id");
@@ -78,14 +78,14 @@ public final class HttpClientOptions extends ClientOptions {
             maxPoolSizeStr != null;
 
         if (!anyHttpClientSettingOn) {
-            return ClientOptions.fromConfigurationOrDefault(configuration.get("client.application-id"),
+            return ClientOptions.fromConfiguration(configuration.get("client.application-id"),
                 configuration.get("client.headers"),
                 () -> new ClientOptions(),
                 defaultOptions);
         }
 
         HttpClientOptions options = new HttpClientOptions();
-        ClientOptions.fromConfigurationOrDefault(appId, headerStr, () -> options, defaultOptions);
+        ClientOptions.fromConfiguration(appId, headerStr, () -> options, defaultOptions);
 
         // TODO (configuration) formats, copy-paste
         if (connectTimeoutStr != null) {
@@ -120,7 +120,7 @@ public final class HttpClientOptions extends ClientOptions {
         String appId = configuration.get("http-client.application-id", configuration.get("client.application-id"));
         String headerStr = configuration.get("http-client.headers", configuration.get("client.headers"));
 
-        ClientOptions.fromConfigurationOrDefault(appId, headerStr, () -> this, this);
+        ClientOptions.fromConfiguration(appId, headerStr, () -> this, this);
 
         if (connectTimeout == null) {
             setConnectTimeout(getDefaultTimeoutFromEnvironment(configuration, "http-client.connect-timeout", DEFAULT_CONNECT_TIMEOUT, logger));
@@ -151,7 +151,7 @@ public final class HttpClientOptions extends ClientOptions {
         }
 
         // TODO(configuration) should we move createUnresolved to config property instead of control flag?
-        setProxyOptions(ProxyOptions.fromConfigurationOrDefault(configuration, false, this.proxyOptions));
+        setProxyOptions(ProxyOptions.fromConfiguration(configuration, false, this.proxyOptions));
     }
 
     @Override

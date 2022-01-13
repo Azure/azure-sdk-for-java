@@ -186,23 +186,23 @@ public class ConfigurationTests {
     @Test
     public void getPropertySanityTODO() {
         Configuration configuration = new Configuration()
-            .put("appconfiguration.connection-string", "connection-string-value")
-            .put("connection-string", "some-value");
+            .put("appconfiguration.connection-string", "local-connection-string-value")
+            .put("connection-string", "global");
 
         Configuration appconfigSection = configuration.getSection("appconfiguration");
 
-        assertEquals("connection-string-value", configuration.get("appconfiguration.connection-string"));
-        assertEquals("some-value", configuration.get("connection-string"));
+        assertEquals("local-connection-string-value", configuration.get("appconfiguration.connection-string"));
+
+        assertEquals("local-connection-string-value", appconfigSection.get("appconfiguration.connection-string"));
+        assertEquals("global", configuration.get("connection-string"));
+        assertEquals("global", appconfigSection.get("connection-string"));
 
         configuration.remove("appconfiguration.connection-string");
         appconfigSection.remove("appconfiguration.connection-string");
 
+        assertEquals("global", configuration.get("connection-string"));
         assertNull(configuration.get("appconfiguration.connection-string"));
-        assertEquals("some-value", configuration.get("connection-string"));
-
-        assertNull(configuration.get("appconfiguration.connection-string"));
-        assertEquals("some-value", configuration.get("connection-string"));
-
+        assertNull(appconfigSection.get("appconfiguration.connection-string"));
     }
 
     @Test
@@ -214,7 +214,7 @@ public class ConfigurationTests {
             .put("http.retry.retry-after-header", "retry-after")
             .put("http.retry.retry-after-time-unit", "MILLIS");
 
-        RetryPolicy retryPolicy = RetryPolicy.fromConfigurationOrDefault(configuration, null);
+        RetryPolicy retryPolicy = RetryPolicy.fromConfiguration(configuration, null);
 
         Configuration appConfig = new Configuration()
             .put("http.retry.strategy", "fixed")
@@ -222,7 +222,7 @@ public class ConfigurationTests {
             .put("appconfiguration.http.retry.strategy.fixed.delay", "PT1S")
             .getSection("appconfiguration");
 
-        RetryPolicy retryPolicyAppConfig = RetryPolicy.fromConfigurationOrDefault(appConfig, null);
+        RetryPolicy retryPolicyAppConfig = RetryPolicy.fromConfiguration(appConfig, null);
 
         // compare in debug
     }

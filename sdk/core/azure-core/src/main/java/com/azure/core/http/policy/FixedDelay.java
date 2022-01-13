@@ -42,7 +42,7 @@ public class FixedDelay implements RetryStrategy {
         return delay;
     }
 
-    static RetryStrategy fromConfigurationOrDefault(Configuration configuration, RetryStrategy defaultStrategy) {
+    static RetryStrategy fromConfiguration(Configuration configuration, RetryStrategy defaultStrategy) {
         if (configuration == null || configuration == NONE) {
             return defaultStrategy;
         }

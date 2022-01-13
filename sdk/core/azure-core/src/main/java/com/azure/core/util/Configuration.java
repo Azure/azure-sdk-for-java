@@ -3,6 +3,7 @@
 
 package com.azure.core.util;
 
+import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
@@ -174,7 +175,7 @@ public class Configuration implements Cloneable {
     /*
      * Configurations that are loaded into the global configuration store when the application starts.
      */
-    private static final String[] DEFAULT_CONFIGURATIONS = {
+    static final String[] DEFAULT_CONFIGURATIONS = {
         PROPERTY_HTTP_PROXY,
         PROPERTY_HTTPS_PROXY,
         PROPERTY_IDENTITY_ENDPOINT,
@@ -206,7 +207,21 @@ public class Configuration implements Cloneable {
         PROPERTY_AZURE_REQUEST_READ_TIMEOUT
     };
 
-    public static final ConfigurationSource[] CONFIG_SOURCES = new ConfigurationSource[]{ConfigurationSource.ENV_VAR_SOURCE, ConfigurationSource.SYSTEM_PROP_SOURCE};
+    private static final ConfigurationSource ENVIRONMENT_COMPOSITE_SOURCE = new ConfigurationSource() {
+        @Override
+        public String getValue(String propertyName) {
+            // TODO(configuration): it seems we're leaning towards only allowing known and documented azure sdk env vars,
+            // do we also do it for system properties?
+            String value = System.getProperty(propertyName);
+
+            // TODO (optimize)
+            if (value == null && Arrays.stream(Configuration.DEFAULT_CONFIGURATIONS).anyMatch(c -> c.equals(propertyName))) {
+                value = System.getenv(propertyName);
+            }
+
+            return value;
+        }
+    };
 
     /**
      * No-op {@link Configuration} object used to opt out of using global configurations when constructing client
@@ -215,13 +230,28 @@ public class Configuration implements Cloneable {
     @SuppressWarnings("StaticInitializerReferencesSubClass")
     public static final Configuration NONE = new NoopConfiguration();
 
+    // TODO(configuration) should we ship one by default right away or leave it to users: probably no, just document.
+    // leaving it as an example here
+    /*public static class FileSource implements ConfigurationSource {
+        public final Map<String, String> properties;
+        public FileSource(String fileName) {
+            properties = CoreUtils.getProperties(fileName);
+        }
+
+        @Override
+        public String getValue(String propertyName) {
+            return properties.get(propertyName);
+        }
+    }
+    */
+
     /*
      * Gets the global configuration shared by all client libraries.
      */
     private static final Configuration GLOBAL_CONFIGURATION = new Configuration();
 
     private final ConcurrentMap<String, String> configurations;
-    private final ConfigurationSource[] configurationSources;
+    private final ConfigurationSource configurationSource;
     private final String sectionName;
     private final Configuration base;
 
@@ -230,40 +260,26 @@ public class Configuration implements Cloneable {
      */
     public Configuration() {
         this.configurations = new ConcurrentHashMap<>();
-        this.configurationSources = CONFIG_SOURCES;
+        this.configurationSource = ENVIRONMENT_COMPOSITE_SOURCE;
         this.sectionName = null;
         this.base = null;
         loadBaseConfiguration(this);
     }
 
-    public Configuration(ConfigurationSource... additionalSources) {
+    public Configuration(ConfigurationSource source) {
         this.configurations = new ConcurrentHashMap<>();
-
-        // TODO(configuration): priority, should we add env var sources by default
-        this.configurationSources = new ConfigurationSource[CONFIG_SOURCES.length + additionalSources.length];
-
-        // reverse order, so last config is requested first to ensure priority
-
-        int i = 0;
-        for (int j = additionalSources.length - 1; j >= 0; j--, i ++) {
-            this.configurationSources[i] = additionalSources[j];
-        }
-
-        for (int j = CONFIG_SOURCES.length - 1; j >= 0; j --, i++) {
-            this.configurationSources[i] = CONFIG_SOURCES[j];
-        }
-
+        this.configurationSource = source;
         this.sectionName = null;
         this.base = getGlobalConfiguration();
     }
 
     public Configuration getSection(String sectionName) {
-        return new Configuration(sectionName, this.configurations, this.configurationSources, this);
+        return new Configuration(sectionName, this.configurations, this.configurationSource, this);
     }
 
-    private Configuration(String sectionName, ConcurrentMap<String, String> configurations, ConfigurationSource[] configurationSources, Configuration base) {
+    private Configuration(String sectionName, ConcurrentMap<String, String> configurations, ConfigurationSource configurationSource, Configuration base) {
         this.sectionName = sectionName;
-        this.configurationSources = configurationSources;
+        this.configurationSource = configurationSource;
         this.configurations = new ConcurrentHashMap<>(configurations);
         this.base = base;
     }
@@ -365,29 +381,32 @@ public class Configuration implements Cloneable {
      * @return If found the loaded configuration, otherwise null.
      */
     private String load(String name) {
-        if (sectionName == null) {
-            for (ConfigurationSource source : configurationSources) {
-                String value = source.getValue(name);
-                if (value != null) {
-                    return value;
-                }
-            }
-
-            return null;
+        String value = configurationSource.getValue(name);
+        if (value != null) {
+            return value;
         }
 
-        // TODO(configration): this is too hard, confusing and relies on property names conventions
-        // need API or other hint for it. making clients do global lookup is even harder
-        if (name.startsWith(sectionName) && name.charAt(sectionName.length()) == '.') {
-            // things that are requested with client name prefix should not be looked up in global config
-            return base.getOrLoad(name);
+        // TODO(configuration): this is too hard, confusing and relies on property names conventions:
+        //      local properties must be requested with client prefix, global must be requested without client prefix
+        //
+        // instead need explicit hint for it: making all clients do local and global lookup is hard
+        //
+        // we can simplify it with ConfigurationProperties annotations:
+        // there can be some sort of bind(Configuration, TOption) common method that would introspect annotations
+        // and there we'd do different behavior based on ConfigProperty declaration
+        //
+        // Keeping it here for now (as well as getSection), will reconsider after prototyping annotations
+        if (sectionName != null && !(name.startsWith(sectionName) && name.charAt(sectionName.length()) == '.')) {
+            // maybe there is a local property
+            value = base.getOrLoad(sectionName + "." + name);
         }
 
-        String prefixedName = sectionName + "." + name;
-        // check local property
-        String value = base.getOrLoad(prefixedName);
         // if not found - global property
-        return value == null ? base.getOrLoad(name) : value;
+        if (value == null && base != null) {
+            value = base.getOrLoad(name);
+        }
+
+        return value;
     }
 
     /**
@@ -436,7 +455,7 @@ public class Configuration implements Cloneable {
      */
     @SuppressWarnings("CloneDoesntCallSuperClone")
     public Configuration clone() {
-        return new Configuration(sectionName, configurations, configurationSources, base);
+        return new Configuration(sectionName, configurations, configurationSource, base);
     }
 
     /*

@@ -211,7 +211,7 @@ public class ProxyOptions {
         return attemptToLoadProxy(proxyConfiguration, createUnresolved);
     }
 
-    public static ProxyOptions fromConfigurationOrDefault(Configuration configuration, boolean createUnresolved, ProxyOptions defaultOptions) {
+    public static ProxyOptions fromConfiguration(Configuration configuration, boolean createUnresolved, ProxyOptions defaultOptions) {
         if (configuration == null || configuration == Configuration.NONE) {
             return defaultOptions;
         }
