@@ -89,7 +89,7 @@ public class ReadmeSamples {
 
     public void writeAttributesToAFile() throws IOException {
         AzureBlobFileAttributeView view = Files.getFileAttributeView(filePath, AzureBlobFileAttributeView.class);
-        view.setMetadata(Collections.EMPTY_MAP);
+        view.setMetadata(Collections.emptyMap());
     }
 
     public void writeAttributesToAFileString() throws IOException {
