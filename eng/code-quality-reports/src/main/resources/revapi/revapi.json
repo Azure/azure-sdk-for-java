@@ -201,7 +201,37 @@
           "code": "java.method.added",
           "new": "method java.lang.Class<T> com.azure.core.util.serializer.TypeReference<T>::getJavaClass()",
           "justification": "New method added to TypeReference in azure-core."
-        }
+        },
+	{
+           "code": "java.method.added",
+           "new": "method void com.azure.core.util.logging.ClientLogger::<init>(java.lang.Class<?>, java.util.Map<java.lang.String, java.lang.Object>)",
+           "justification": "New method added to ClientLogger in azure-core."
+         },
+         {
+           "code": "java.method.added",
+           "new": "method void com.azure.core.util.logging.ClientLogger::<init>(java.lang.String, java.util.Map<java.lang.String, java.lang.Object>)",
+           "justification": "New method added to ClientLogger in azure-core."
+         },
+         {
+           "code": "java.method.added",
+           "new": "method com.azure.core.util.logging.LoggingEventBuilder com.azure.core.util.logging.ClientLogger::atError()",
+           "justification": "New method added to ClientLogger in azure-core."
+         },
+         {
+           "code": "java.method.added",
+           "new": "method com.azure.core.util.logging.LoggingEventBuilder com.azure.core.util.logging.ClientLogger::atInfo()",
+           "justification": "New method added to ClientLogger in azure-core."
+         },
+         {
+           "code": "java.method.added",
+           "new": "method com.azure.core.util.logging.LoggingEventBuilder com.azure.core.util.logging.ClientLogger::atVerbose()",
+           "justification": "New method added to ClientLogger in azure-core."
+         },
+         {
+           "code": "java.method.added",
+           "new": "method com.azure.core.util.logging.LoggingEventBuilder com.azure.core.util.logging.ClientLogger::atWarning()",
+           "justification": "New method added to ClientLogger in azure-core."
+         }
       ]
     }
   }
