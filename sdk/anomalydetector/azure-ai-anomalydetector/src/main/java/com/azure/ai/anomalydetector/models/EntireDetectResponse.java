@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The EntireDetectResponse model. */
+/** The response of entire anomaly detection. */
 @Fluent
 public final class EntireDetectResponse {
     /*
@@ -73,6 +73,14 @@ public final class EntireDetectResponse {
      */
     @JsonProperty(value = "isPositiveAnomaly", required = true)
     private List<Boolean> isPositiveAnomaly;
+
+    /*
+     * The severity score for each input point. The larger the value is, the
+     * more sever the anomaly is. For normal points, the "severity" is always
+     * 0.
+     */
+    @JsonProperty(value = "severity")
+    private List<Float> severity;
 
     /**
      * Get the period property: Frequency extracted from the series, zero means no recurrent pattern has been found.
@@ -237,6 +245,28 @@ public final class EntireDetectResponse {
      */
     public EntireDetectResponse setIsPositiveAnomaly(List<Boolean> isPositiveAnomaly) {
         this.isPositiveAnomaly = isPositiveAnomaly;
+        return this;
+    }
+
+    /**
+     * Get the severity property: The severity score for each input point. The larger the value is, the more sever the
+     * anomaly is. For normal points, the "severity" is always 0.
+     *
+     * @return the severity value.
+     */
+    public List<Float> getSeverity() {
+        return this.severity;
+    }
+
+    /**
+     * Set the severity property: The severity score for each input point. The larger the value is, the more sever the
+     * anomaly is. For normal points, the "severity" is always 0.
+     *
+     * @param severity the severity value to set.
+     * @return the EntireDetectResponse object itself.
+     */
+    public EntireDetectResponse setSeverity(List<Float> severity) {
+        this.severity = severity;
         return this;
     }
 }
