@@ -37,6 +37,10 @@ Various documentation is available to help you get started
 ## Examples
 
 ```java com.azure.messaging.webpubsubnew.readme
+WebPubSubClient client = new WebPubSubClientBuilder()
+        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
+        .buildWebPubSubClient();
+boolean userExists = client.userExistsWithResponse("hub", "user_id", null).getValue();
 ```
 
 ## Troubleshooting
