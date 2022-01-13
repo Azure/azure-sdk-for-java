@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Event Hubs event consumer.
+ * Event Hubs event context consumer.
  */
 package com.azure.spring.service.eventhubs.processor.consumer;

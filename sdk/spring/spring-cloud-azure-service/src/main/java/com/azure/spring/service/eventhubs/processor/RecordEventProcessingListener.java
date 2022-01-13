@@ -12,7 +12,7 @@ import com.azure.messaging.eventhubs.models.EventContext;
 public interface RecordEventProcessingListener extends EventProcessingListener {
 
     /**
-     * Listener method on event.
+     * The event processing callback.
      * @param eventContext the event context.
      */
     void onEvent(EventContext eventContext);

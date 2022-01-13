@@ -4,9 +4,14 @@
 package com.azure.spring.service.eventhubs.processor;
 
 
+import com.azure.messaging.eventhubs.models.CloseContext;
+import com.azure.messaging.eventhubs.models.ErrorContext;
+import com.azure.messaging.eventhubs.models.InitializationContext;
 import com.azure.spring.service.eventhubs.processor.consumer.EventHubsCloseContextConsumer;
 import com.azure.spring.service.eventhubs.processor.consumer.EventHubsErrorContextConsumer;
 import com.azure.spring.service.eventhubs.processor.consumer.EventHubsInitializationContextConsumer;
+
+import java.util.function.Consumer;
 
 /**
  * A listener to process Event Hub events.
@@ -14,7 +19,7 @@ import com.azure.spring.service.eventhubs.processor.consumer.EventHubsInitializa
 public interface EventProcessingListener {
 
     /**
-     * Return the initialization context consumer for event hubs by default.
+     * Return the {@link Consumer} of {@link InitializationContext} for Event Hubs by default.
      * @return the initialization context consumer.
      */
     default EventHubsInitializationContextConsumer getInitializationContextConsumer() {
@@ -22,7 +27,7 @@ public interface EventProcessingListener {
     }
 
     /**
-     * Return the default close context consumer by default.
+     * Return the {@link Consumer} of {@link CloseContext} for Event Hubs by default.
      * @return the close context consumer.
      */
     default EventHubsCloseContextConsumer getCloseContextConsumer() {
@@ -30,7 +35,7 @@ public interface EventProcessingListener {
     }
 
     /**
-     * Return the default error context consumer by default.
+     * Return the {@link Consumer} of {@link ErrorContext} for Event Hubs by default.
      * @return the error context consumer.
      */
     default EventHubsErrorContextConsumer getErrorContextConsumer() {

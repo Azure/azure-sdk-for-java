@@ -15,8 +15,8 @@ import java.util.Map;
 public interface EventProcessorClientProperties extends EventHubConsumerProperties {
 
     /**
-     * Get the track last enqueued event properties switch.
-     * @return true or false.
+     * Get whether to track the last enqueued event properties.
+     * @return whether to track the last enqueued event properties.
      */
     Boolean getTrackLastEnqueuedEventProperties();
 

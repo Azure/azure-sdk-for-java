@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Service Bus client builder factory.
+ * Service Bus Service client builder factory.
  */
 package com.azure.spring.service.servicebus.factory;

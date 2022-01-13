@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Service Bus event consumer.
+ * Service Bus message context consumer
  */
 package com.azure.spring.service.servicebus.processor.consumer;

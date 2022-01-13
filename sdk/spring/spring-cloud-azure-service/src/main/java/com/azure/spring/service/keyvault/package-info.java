@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Support for Key Vault client builder factory.
+ * Support for Key Vault Service client builder factory.
  */
 package com.azure.spring.service.keyvault;

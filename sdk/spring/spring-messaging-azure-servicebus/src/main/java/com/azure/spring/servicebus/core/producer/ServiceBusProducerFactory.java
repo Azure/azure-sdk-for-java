@@ -52,14 +52,14 @@ public interface ServiceBusProducerFactory {
     interface Listener {
 
         /**
-         * The listener method that the producer has been added.
+         * The callback method that the producer has been added.
          * @param name the name for the producer.
          * @param client the client for the producer.
          */
         void producerAdded(String name, ServiceBusSenderAsyncClient client);
 
         /**
-         * The default listener method that the producer has been removed.
+         * The default callback method that the producer has been removed.
          * @param name the name for the producer.
          * @param client the client for the producer.
          */

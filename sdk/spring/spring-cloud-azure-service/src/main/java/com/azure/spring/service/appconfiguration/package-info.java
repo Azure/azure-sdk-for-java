@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Support for App Configuration client builder factory.
+ * Support for App Configuration Service client builder factory.
  */
 package com.azure.spring.service.appconfiguration;

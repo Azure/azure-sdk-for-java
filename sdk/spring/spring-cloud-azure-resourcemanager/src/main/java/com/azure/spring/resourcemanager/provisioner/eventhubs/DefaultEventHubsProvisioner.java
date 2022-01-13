@@ -37,7 +37,7 @@ public class DefaultEventHubsProvisioner implements EventHubsProvisioner {
     }
 
     @Override
-    public void provisionEventHubs(String namespace, String eventHubs) {
+    public void provisionEventHub(String namespace, String eventHubs) {
         this.eventHubsCrud.getOrCreate(Tuples.of(namespace, eventHubs));
     }
 

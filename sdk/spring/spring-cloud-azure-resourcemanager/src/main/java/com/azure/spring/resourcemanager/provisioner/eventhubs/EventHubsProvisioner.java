@@ -19,7 +19,7 @@ public interface EventHubsProvisioner {
      * @param namespace the namespace of the Event Hubs.
      * @param eventHub the event hub of the Event Hubs.
      */
-    void provisionEventHubs(String namespace, String eventHub);
+    void provisionEventHub(String namespace, String eventHub);
 
     /**
      * Provision the namespace, event hub and consumer group of the Event Hubs.

@@ -11,7 +11,7 @@ import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 public interface RecordMessageProcessingListener extends MessageProcessingListener {
 
     /**
-     * Listener method on message.
+     * The message processing callback.
      * @param messageContext the message context.
      */
     void onMessage(ServiceBusReceivedMessageContext messageContext);

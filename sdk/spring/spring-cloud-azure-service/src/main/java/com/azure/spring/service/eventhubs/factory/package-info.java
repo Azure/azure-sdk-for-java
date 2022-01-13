@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Event Hubs client builder factory.
+ * Event Hub client builder factory.
  */
 package com.azure.spring.service.eventhubs.factory;
