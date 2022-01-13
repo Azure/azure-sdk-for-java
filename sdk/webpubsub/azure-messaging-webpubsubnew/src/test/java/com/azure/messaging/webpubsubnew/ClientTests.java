@@ -10,7 +10,6 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.time.OffsetDateTime;
@@ -42,7 +41,6 @@ public final class ClientTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
     public void testClient() {
         // use the builder to create client
         boolean userExists = builder.buildWebPubSubClient().userExistsWithResponse("hub", "userId", null).getValue();
