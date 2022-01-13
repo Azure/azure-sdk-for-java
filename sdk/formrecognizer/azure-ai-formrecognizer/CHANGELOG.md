@@ -1,6 +1,6 @@
 # Release History
 
-## 3.1.7 (2021-01-12)
+## 3.1.7 (2021-01-13)
 ### Other Changes
 #### Dependency Updates
 - Updated `azure-core` to `1.24.1`.
