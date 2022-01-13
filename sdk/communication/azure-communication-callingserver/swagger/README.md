@@ -33,7 +33,7 @@ To update generated files for calling service, run the following command
 ``` yaml
 tag: package-2021-11-15-preview
 require:
-    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/07dc82c145c529f6cdefd458328816be2c196c5e/specification/communication/data-plane/CallingServer/readme.md
+    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/a7b3fb3f90c97c4f292da387855056b0d33c3fb7/specification/communication/data-plane/CallingServer/readme.md
 java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
@@ -72,11 +72,11 @@ directive:
     from: CallParticipant
     to: CallParticipantInternal
 - rename-model:
-    from: AudioRoutingGroupResult
-    to: AudioRoutingGroupResultInternal
+    from: AudioGroupResult
+    to: AudioGroupResultInternal
 - rename-model:
-    from: CreateAudioRoutingGroupResult
-    to: CreateAudioRoutingGroupResultInternal
+    from: CreateAudioGroupResult
+    to: CreateAudioGroupResultInternal
 - rename-model:
     from: JoinCallResult
     to: JoinCallResultInternal

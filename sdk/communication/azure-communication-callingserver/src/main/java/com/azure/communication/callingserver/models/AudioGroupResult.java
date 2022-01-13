@@ -9,9 +9,9 @@ import com.azure.core.annotation.Immutable;
 
 import java.util.List;
 
-/** The audio routing group result. */
+/** The audio group result. */
 @Immutable
-public final class AudioRoutingGroupResult {
+public final class AudioGroupResult {
     /*
      * The audio routing mode.
      */
@@ -33,7 +33,7 @@ public final class AudioRoutingGroupResult {
     }
 
     /**
-     * Get the targets property: The target identities that would be receivers in the audio routing group.
+     * Get the targets property: The target identities that would be receivers in the audio group.
      *
      * @return the targets value.
      */
@@ -42,12 +42,12 @@ public final class AudioRoutingGroupResult {
     }
 
     /**
-     * Initializes a new instance of AudioRoutingGroupResult.
+     * Initializes a new instance of AudioGroupResult.
      *
      * @param audioRoutingMode the audioRoutingMode value.
      * @param targets the targets value.
      */
-    public AudioRoutingGroupResult(AudioRoutingMode audioRoutingMode, List<CommunicationIdentifier> targets) {
+    public AudioGroupResult(AudioRoutingMode audioRoutingMode, List<CommunicationIdentifier> targets) {
         this.audioRoutingMode = audioRoutingMode;
         this.targets = targets;
     }

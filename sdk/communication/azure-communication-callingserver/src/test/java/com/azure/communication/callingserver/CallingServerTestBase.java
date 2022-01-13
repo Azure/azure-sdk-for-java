@@ -41,6 +41,12 @@ import com.azure.core.http.HttpResponse;
 public class CallingServerTestBase extends TestBase {
     protected static final TestMode TEST_MODE = initializeTestMode();
 
+    protected static final String USER_IDENTIFIER = "0000000e-f19d-d6fd-7bfa-553a0d00d316";
+
+    protected static final String ANOTHER_USER_IDENTIFIER = "0000000e-f2c3-ce77-655d-573a0d00fafc";
+
+    protected static final String TARGET_CALL_CONNECTION_ID = "41201300-4316-4094-b8f0-a2238937273b";
+
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING",
             "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
@@ -65,7 +71,7 @@ public class CallingServerTestBase extends TestBase {
         .get("CALLBACK_URI", "https://host.app/api/callback/calling");
 
     protected static final String AUDIO_FILE_URI = Configuration.getGlobalConfiguration()
-        .get("AUDIO_FILE_URI", "https://host.app/audio/bot-callcenter-intro.wav");
+        .get("AUDIO_FILE_URI", "https://acsfunctionappstorage.blob.core.windows.net/acs-audio-files/sample-message.wav");
 
     protected static final String METADATA_URL = Configuration.getGlobalConfiguration()
         .get("METADATA_URL", "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141c/content/acsmetadata");
@@ -103,6 +109,14 @@ public class CallingServerTestBase extends TestBase {
 
     protected String getRandomUserId() {
         return "8:acs:" + AZURE_TENANT_ID + "_" + UUID.randomUUID();
+    }
+
+    protected String getUserId(String userGuid) {
+        return "8:acs:" + AZURE_TENANT_ID + "_" + userGuid;
+    }
+
+    protected String getTargetCallConnectionId() {
+        return TARGET_CALL_CONNECTION_ID;
     }
 
     protected String getGroupId(String testName) {

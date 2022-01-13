@@ -22,6 +22,12 @@ public final class ToneReceivedEventInternal {
     @JsonProperty(value = "callConnectionId")
     private String callConnectionId;
 
+    /*
+     * The server call locator.
+     */
+    @JsonProperty(value = "callLocator")
+    private CallLocatorModel callLocator;
+
     /**
      * Get the toneInfo property: The tone info.
      *
@@ -59,6 +65,26 @@ public final class ToneReceivedEventInternal {
      */
     public ToneReceivedEventInternal setCallConnectionId(String callConnectionId) {
         this.callConnectionId = callConnectionId;
+        return this;
+    }
+
+    /**
+     * Get the callLocator property: The server call locator.
+     *
+     * @return the callLocator value.
+     */
+    public CallLocatorModel getCallLocator() {
+        return this.callLocator;
+    }
+
+    /**
+     * Set the callLocator property: The server call locator.
+     *
+     * @param callLocator the callLocator value to set.
+     * @return the ToneReceivedEventInternal object itself.
+     */
+    public ToneReceivedEventInternal setCallLocator(CallLocatorModel callLocator) {
+        this.callLocator = callLocator;
         return this;
     }
 }

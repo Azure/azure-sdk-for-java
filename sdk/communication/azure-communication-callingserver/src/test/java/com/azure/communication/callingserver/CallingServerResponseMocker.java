@@ -31,7 +31,7 @@ import reactor.core.publisher.Mono;
 public class CallingServerResponseMocker {
     public static final String CALL_CONNECTION_ID = "callConnectionId";
     public static final String OPERATION_ID = "operationId";
-    public static final String AUDIOROUTING_GROUPID = "audioRoutingGroupId";
+    public static final String AUDIO_GROUPID = "AudioGroupId";
     public static final String OPERATION_CONTEXT = "operationContext";
     public static final String INCOMING_CALL_CONTEXT = "incomingCallContext";
     public static final int TIMEOUT = 3;
@@ -54,9 +54,9 @@ public class CallingServerResponseMocker {
         return serializeObject(result);
     }
 
-    public static String generateGetAudioRoutingGroupsResult() {
+    public static String generateGetAudioGroupsResult() {
 
-        AudioRoutingGroupResultInternal result = new AudioRoutingGroupResultInternal()
+        AudioGroupResultInternal result = new AudioGroupResultInternal()
             .setAudioRoutingMode(AudioRoutingMode.ONE_TO_ONE)
             .setTargets(Collections.singletonList(CommunicationIdentifierConverter.convert(COMMUNICATION_USER)));
 
@@ -156,9 +156,9 @@ public class CallingServerResponseMocker {
         return serializeObject(result);
     }
 
-    public static String generateCreateAudioRoutingGroupResult() {
-        CreateAudioRoutingGroupResultInternal result = new CreateAudioRoutingGroupResultInternal()
-            .setAudioRoutingGroupId(AUDIOROUTING_GROUPID);
+    public static String generateCreateAudioGroupResult() {
+        CreateAudioGroupResultInternal result = new CreateAudioGroupResultInternal()
+            .setAudioGroupId(AUDIO_GROUPID);
 
         return serializeObject(result);
     }

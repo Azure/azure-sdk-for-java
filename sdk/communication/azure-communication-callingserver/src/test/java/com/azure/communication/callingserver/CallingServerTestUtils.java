@@ -9,10 +9,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 import com.azure.communication.callingserver.models.AddParticipantResult;
+import com.azure.communication.callingserver.models.CallParticipant;
 import com.azure.communication.callingserver.models.CallingOperationStatus;
 import com.azure.communication.callingserver.models.PlayAudioResult;
+import com.azure.communication.callingserver.models.CallConnectionProperties;
+import com.azure.communication.callingserver.models.TransferCallResult;
+import com.azure.communication.callingserver.models.AudioGroupResult;
 import com.azure.core.http.rest.Response;
 import org.junit.jupiter.api.Assertions;
+
+import java.util.List;
 
 public class CallingServerTestUtils {
     protected static void validateCallConnectionResponse(Response<CallConnection> callConnectionResponse) {
@@ -88,5 +94,48 @@ public class CallingServerTestUtils {
         assertFalse(result.getOperationId().isEmpty());
         assertNotNull(result.getStatus());
         assertSame(result.getStatus(), CallingOperationStatus.RUNNING);
+    }
+    protected static void validateGetParticipantResponse(Response<CallParticipant> response) {
+        assertNotNull(response);
+        Assertions.assertEquals(200, response.getStatusCode());
+        assertNotNull(response.getValue());
+        assertNotNull(response.getValue().getParticipantId());
+        assertFalse(response.getValue().getParticipantId().isEmpty());
+    }
+
+    protected static void validateGetParticipantsResponse(Response<List<CallParticipant>> response) {
+        assertNotNull(response);
+        Assertions.assertEquals(200, response.getStatusCode());
+        assertNotNull(response.getValue());
+    }
+
+    protected static void validateApiResponse(Response<Void> response) {
+        assertNotNull(response);
+        Assertions.assertEquals(200, response.getStatusCode());
+    }
+
+    protected static void validateGetCallResponse(Response<CallConnectionProperties> response) {
+        assertNotNull(response);
+        Assertions.assertEquals(200, response.getStatusCode());
+        assertNotNull(response.getValue());
+        assertNotNull(response.getValue().getCallConnectionId());
+    }
+
+    protected static void validateTransferResponse(Response<TransferCallResult> response) {
+        assertNotNull(response);
+        Assertions.assertEquals(202, response.getStatusCode());
+        assertNotNull(response.getValue());
+        assertEquals(CallingOperationStatus.RUNNING, response.getValue().getStatus());
+    }
+
+    protected static void validateAudioGroupResult(AudioGroupResult audioGroupResponse) {
+        assertNotNull(audioGroupResponse);
+        assertNotNull(audioGroupResponse.getAudioRoutingMode());
+    }
+
+    protected static void validateAudioGroupResponse(Response<AudioGroupResult> audioGroupResponse) {
+        assertNotNull(audioGroupResponse);
+        assertNotNull(audioGroupResponse.getValue());
+        assertNotNull(audioGroupResponse.getValue().getAudioRoutingMode());
     }
 }

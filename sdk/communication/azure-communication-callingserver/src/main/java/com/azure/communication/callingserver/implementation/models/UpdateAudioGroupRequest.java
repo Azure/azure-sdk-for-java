@@ -8,18 +8,17 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The update audio routing group request. */
+/** The update audio group request. */
 @Fluent
-public final class UpdateAudioRoutingGroupRequest {
+public final class UpdateAudioGroupRequest {
     /*
-     * The target identities that would be receivers in the audio routing
-     * group.
+     * The target identities that would be receivers in the audio group.
      */
     @JsonProperty(value = "targets", required = true)
     private List<CommunicationIdentifierModel> targets;
 
     /**
-     * Get the targets property: The target identities that would be receivers in the audio routing group.
+     * Get the targets property: The target identities that would be receivers in the audio group.
      *
      * @return the targets value.
      */
@@ -28,12 +27,12 @@ public final class UpdateAudioRoutingGroupRequest {
     }
 
     /**
-     * Set the targets property: The target identities that would be receivers in the audio routing group.
+     * Set the targets property: The target identities that would be receivers in the audio group.
      *
      * @param targets the targets value to set.
-     * @return the UpdateAudioRoutingGroupRequest object itself.
+     * @return the UpdateAudioGroupRequest object itself.
      */
-    public UpdateAudioRoutingGroupRequest setTargets(List<CommunicationIdentifierModel> targets) {
+    public UpdateAudioGroupRequest setTargets(List<CommunicationIdentifierModel> targets) {
         this.targets = targets;
         return this;
     }

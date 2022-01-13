@@ -586,105 +586,105 @@ public class CallConnectionAsyncUnitTests {
     }
 
     @Test
-    public void holdParticipantMeetingAudioAsync() {
+    public void removeParticipantFromDefaultAudioGroupAsync() {
         CallConnectionAsync callConnectionAsync = getCallConnectionAsync(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
                 new SimpleEntry<String, Integer>("", 200)
             )));
 
-        callConnectionAsync.holdParticipantMeetingAudio(
+        callConnectionAsync.removeParticipantFromDefaultAudioGroup(
             COMMUNICATION_USER
         ).block();
     }
 
     @Test
-    public void holdParticipantMeetingAudioAsyncWithResponse() {
+    public void removeParticipantFromDefaultAudioGroupAsyncWithResponse() {
         CallConnectionAsync callConnectionAsync = getCallConnectionAsync(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
                 new SimpleEntry<String, Integer>("", 200)
             )));
 
-        Response<Void> holdParticipantMeetingAudioResponse = callConnectionAsync.holdParticipantMeetingAudioWithResponse(
+        Response<Void> removeParticipantFromDefaultAudioGroupResponse = callConnectionAsync.removeParticipantFromDefaultAudioGroupWithResponse(
             COMMUNICATION_USER
         ).block();
 
-        assertEquals(200, holdParticipantMeetingAudioResponse.getStatusCode());
+        assertEquals(200, removeParticipantFromDefaultAudioGroupResponse.getStatusCode());
     }
 
     @Test
-    public void resumeParticipantMeetingAudioAsync() {
+    public void addParticipantToDefaultAudioGroupAsync() {
         CallConnectionAsync callConnectionAsync = getCallConnectionAsync(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
                 new SimpleEntry<String, Integer>("", 200)
             )));
 
-        callConnectionAsync.resumeParticipantMeetingAudio(
+        callConnectionAsync.addParticipantToDefaultAudioGroup(
             COMMUNICATION_USER
         ).block();
     }
 
     @Test
-    public void resumeParticipantMeetingAudioAsyncWithResponse() {
+    public void addParticipantToDefaultAudioGroupAsyncWithResponse() {
         CallConnectionAsync callConnectionAsync = getCallConnectionAsync(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
                 new SimpleEntry<String, Integer>("", 200)
             )));
 
-        Response<Void> resumeParticipantMeetingAudioResponse = callConnectionAsync.resumeParticipantMeetingAudioWithResponse(
+        Response<Void> addParticipantToDefaultAudioGroupResponse = callConnectionAsync.addParticipantToDefaultAudioGroupWithResponse(
             COMMUNICATION_USER
         ).block();
 
-        assertEquals(200, resumeParticipantMeetingAudioResponse.getStatusCode());
+        assertEquals(200, addParticipantToDefaultAudioGroupResponse.getStatusCode());
     }
 
     @Test
-    public void createAudioRoutingGroupAsync() {
+    public void createAudioGroupAsync() {
         CallConnectionAsync callConnectionAsync = getCallConnectionAsync(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
-                new SimpleEntry<String, Integer>(generateCreateAudioRoutingGroupResult(), 201)
+                new SimpleEntry<String, Integer>(generateCreateAudioGroupResult(), 201)
             )));
 
-        CreateAudioRoutingGroupResult createAudioRoutingGroupResult = callConnectionAsync.createAudioRoutingGroup(
+        CreateAudioGroupResult createAudioGroupResult = callConnectionAsync.createAudioGroup(
             AudioRoutingMode.ONE_TO_ONE,
             Collections.singletonList(COMMUNICATION_USER)
         ).block();
 
-        assertEquals(AUDIOROUTING_GROUPID, createAudioRoutingGroupResult.getAudioRoutingGroupId());
+        assertEquals(AUDIO_GROUPID, createAudioGroupResult.getAudioGroupId());
     }
 
     @Test
-    public void createAudioRoutingGroupAsyncWithResponse() {
+    public void createAudioGroupAsyncWithResponse() {
         CallConnectionAsync callConnectionAsync = getCallConnectionAsync(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
-                new SimpleEntry<String, Integer>(generateCreateAudioRoutingGroupResult(), 201)
+                new SimpleEntry<String, Integer>(generateCreateAudioGroupResult(), 201)
             )));
 
-        Response<CreateAudioRoutingGroupResult> createAudioRoutingGroupResponse = callConnectionAsync.createAudioRoutingGroupWithResponse(
+        Response<CreateAudioGroupResult> createAudioGroupResponse = callConnectionAsync.createAudioGroupWithResponse(
             AudioRoutingMode.ONE_TO_ONE,
             Collections.singletonList(COMMUNICATION_USER)
         ).block();
 
-        assertEquals(201, createAudioRoutingGroupResponse.getStatusCode());
-        CreateAudioRoutingGroupResult createAudioRoutingGroupResult = createAudioRoutingGroupResponse.getValue();
-        assertEquals(AUDIOROUTING_GROUPID, createAudioRoutingGroupResult.getAudioRoutingGroupId());
+        assertEquals(201, createAudioGroupResponse.getStatusCode());
+        CreateAudioGroupResult createAudioGroupResult = createAudioGroupResponse.getValue();
+        assertEquals(AUDIO_GROUPID, createAudioGroupResult.getAudioGroupId());
     }
 
     @Test
-    public void updateAudioRoutingGroupAsync() {
+    public void updateAudioGroupAsync() {
         CallConnectionAsync callConnectionAsync = getCallConnectionAsync(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
                 new SimpleEntry<String, Integer>("", 200)
             )));
 
-        callConnectionAsync.updateAudioRoutingGroup(
-            AUDIOROUTING_GROUPID,
+        callConnectionAsync.updateAudioGroup(
+            AUDIO_GROUPID,
             Arrays.asList(
                 COMMUNICATION_USER,
                 COMMUNICATION_USER_1
@@ -693,83 +693,83 @@ public class CallConnectionAsyncUnitTests {
     }
 
     @Test
-    public void updateAudioRoutingGroupAsyncWithResponse() {
+    public void updateAudioGroupAsyncWithResponse() {
         CallConnectionAsync callConnectionAsync = getCallConnectionAsync(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
                 new SimpleEntry<String, Integer>("", 200)
             )));
 
-        Response<Void> updateAudioRoutingGroupResponse = callConnectionAsync.updateAudioRoutingGroupWithResponse(
-            AUDIOROUTING_GROUPID,
+        Response<Void> updateAudioGroupResponse = callConnectionAsync.updateAudioGroupWithResponse(
+            AUDIO_GROUPID,
             Arrays.asList(
                 COMMUNICATION_USER,
                 COMMUNICATION_USER_1
             )
         ).block();
 
-        assertEquals(200, updateAudioRoutingGroupResponse.getStatusCode());
+        assertEquals(200, updateAudioGroupResponse.getStatusCode());
     }
 
     @Test
-    public void getAudioRoutingGroupsAsync() {
+    public void getAudioGroupsAsync() {
         CallConnectionAsync callConnectionAsync = getCallConnectionAsync(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
-                new SimpleEntry<String, Integer>(generateGetAudioRoutingGroupsResult(), 200)
+                new SimpleEntry<String, Integer>(generateGetAudioGroupsResult(), 200)
             )));
 
-        AudioRoutingGroupResult getAudioRoutingGroupsResult = callConnectionAsync.getAudioRoutingGroups(
-            AUDIOROUTING_GROUPID
+        AudioGroupResult getAudioGroupsResult = callConnectionAsync.getAudioGroups(
+            AUDIO_GROUPID
         ).block();
 
-        assertEquals(AudioRoutingMode.ONE_TO_ONE, getAudioRoutingGroupsResult.getAudioRoutingMode());
-        assertEquals(COMMUNICATION_USER, getAudioRoutingGroupsResult.getTargets().get(0));
+        assertEquals(AudioRoutingMode.ONE_TO_ONE, getAudioGroupsResult.getAudioRoutingMode());
+        assertEquals(COMMUNICATION_USER, getAudioGroupsResult.getTargets().get(0));
     }
 
     @Test
-    public void getAudioRoutingGroupsAsyncWithResponse() {
+    public void getAudioGroupsAsyncWithResponse() {
         CallConnectionAsync callConnectionAsync = getCallConnectionAsync(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
-                new SimpleEntry<String, Integer>(generateGetAudioRoutingGroupsResult(), 200)
+                new SimpleEntry<String, Integer>(generateGetAudioGroupsResult(), 200)
             )));
 
-        Response<AudioRoutingGroupResult> getAudioRoutingGroupsResponse = callConnectionAsync.getAudioRoutingGroupsWithResponse(
-            AUDIOROUTING_GROUPID
+        Response<AudioGroupResult> getAudioGroupsResponse = callConnectionAsync.getAudioGroupsWithResponse(
+            AUDIO_GROUPID
         ).block();
 
-        assertEquals(200, getAudioRoutingGroupsResponse.getStatusCode());
-        AudioRoutingGroupResult getAudioRoutingGroupsResult = getAudioRoutingGroupsResponse.getValue();
-        assertEquals(AudioRoutingMode.ONE_TO_ONE, getAudioRoutingGroupsResult.getAudioRoutingMode());
-        assertEquals(COMMUNICATION_USER, getAudioRoutingGroupsResult.getTargets().get(0));
+        assertEquals(200, getAudioGroupsResponse.getStatusCode());
+        AudioGroupResult getAudioGroupsResult = getAudioGroupsResponse.getValue();
+        assertEquals(AudioRoutingMode.ONE_TO_ONE, getAudioGroupsResult.getAudioRoutingMode());
+        assertEquals(COMMUNICATION_USER, getAudioGroupsResult.getTargets().get(0));
     }
 
     @Test
-    public void deleteAudioRoutingGroupAsync() {
+    public void deleteAudioGroupAsync() {
         CallConnectionAsync callConnectionAsync = getCallConnectionAsync(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
-                new SimpleEntry<String, Integer>("", 202)
+                new SimpleEntry<String, Integer>("", 200)
             )));
 
-        callConnectionAsync.deleteAudioRoutingGroup(
-            AUDIOROUTING_GROUPID
+        callConnectionAsync.deleteAudioGroup(
+            AUDIO_GROUPID
         ).block();
     }
 
     @Test
-    public void deleteAudioRoutingGroupAsyncWithResponse() {
+    public void deleteAudioGroupAsyncWithResponse() {
         CallConnectionAsync callConnectionAsync = getCallConnectionAsync(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
-                new SimpleEntry<String, Integer>("", 202)
+                new SimpleEntry<String, Integer>("", 200)
             )));
 
-        Response<Void> updateAudioRoutingGroupResponse = callConnectionAsync.deleteAudioRoutingGroupWithResponse(
-            AUDIOROUTING_GROUPID
+        Response<Void> updateAudioGroupResponse = callConnectionAsync.deleteAudioGroupWithResponse(
+            AUDIO_GROUPID
         ).block();
 
-        assertEquals(202, updateAudioRoutingGroupResponse.getStatusCode());
+        assertEquals(200, updateAudioGroupResponse.getStatusCode());
     }
 }

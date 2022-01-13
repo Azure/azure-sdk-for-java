@@ -7,9 +7,9 @@ package com.azure.communication.callingserver.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The request payload for holding meeting audio for a participant. */
+/** The request payload for removing a participant from default audio group. */
 @Fluent
-public final class HoldMeetingAudioRequest {
+public final class RemoveFromDefaultAudioGroupRequest {
     /*
      * The identifier of the participant.
      */
@@ -29,9 +29,9 @@ public final class HoldMeetingAudioRequest {
      * Set the identifier property: The identifier of the participant.
      *
      * @param identifier the identifier value to set.
-     * @return the HoldMeetingAudioRequest object itself.
+     * @return the RemoveFromDefaultAudioGroupRequest object itself.
      */
-    public HoldMeetingAudioRequest setIdentifier(CommunicationIdentifierModel identifier) {
+    public RemoveFromDefaultAudioGroupRequest setIdentifier(CommunicationIdentifierModel identifier) {
         this.identifier = identifier;
         return this;
     }
