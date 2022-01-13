@@ -15,6 +15,9 @@ import com.azure.core.exception.AzureException;
  */
 public final class DocumentModelOperationException extends AzureException {
 
+    /**
+     * the error information for this exception.
+     */
     private DocumentModelOperationError documentModelOperationError;
 
     /**

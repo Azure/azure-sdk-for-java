@@ -55,6 +55,31 @@ public class CreateEcKeyOptions extends CreateKeyOptions {
     }
 
     /**
+     * Get the HSM value of the key being created.
+     *
+     * @return The HSM value.
+     */
+    public Boolean isHardwareProtected() {
+        return this.hardwareProtected;
+    }
+
+    /**
+     * Set whether the key being created is of HSM type or not.
+     *
+     * @param hardwareProtected The HSM value to set.
+     *
+     * @return The {@link CreateEcKeyOptions} object.
+     */
+    public CreateEcKeyOptions setHardwareProtected(Boolean hardwareProtected) {
+        this.hardwareProtected = hardwareProtected;
+        KeyType keyType = hardwareProtected ? KeyType.EC_HSM : KeyType.EC;
+
+        setKeyType(keyType);
+
+        return this;
+    }
+
+    /**
      * Set the key operations.
      *
      * @param keyOperations The key operations to set.
@@ -121,30 +146,5 @@ public class CreateEcKeyOptions extends CreateKeyOptions {
         super.setEnabled(enabled);
 
         return this;
-    }
-
-    /**
-     * Set whether the key being created is of HSM type or not.
-     *
-     * @param hardwareProtected The HSM value to set.
-     *
-     * @return The {@link CreateEcKeyOptions} object.
-     */
-    public CreateEcKeyOptions setHardwareProtected(Boolean hardwareProtected) {
-        this.hardwareProtected = hardwareProtected;
-        KeyType keyType = hardwareProtected ? KeyType.EC_HSM : KeyType.EC;
-
-        setKeyType(keyType);
-
-        return this;
-    }
-
-    /**
-     * Get the HSM value of the key being created.
-     *
-     * @return The HSM value.
-     */
-    public Boolean isHardwareProtected() {
-        return this.hardwareProtected;
     }
 }

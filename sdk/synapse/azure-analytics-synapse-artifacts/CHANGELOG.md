@@ -1,14 +1,13 @@
 # Release History
 
-## 1.0.0-beta.7 (Unreleased)
-
-### Features Added
+## 1.0.0-beta.7 (2021-11-18)
 
 ### Breaking Changes
-
-### Bugs Fixed
+- Removed methods `getDataSet`, `setDataset`, `getLinkedService` and `setLinkedService` from `DataflowSink` and `DataflowSource` models.
+- Removed `DatasetBZip2Compression`, `DatasetDeflateCompression`, `DatasetGZipCompression`, `DatasetTarCompression`, `DatasetTarGZipCompression` and `DatasetZipDeflateCompression` models.
 
 ### Other Changes
+- Upgrade to [package-artifacts-composite-v2](https://github.com/Azure/azure-rest-api-specs/blob/9ab141452538ce5cf1427300d3c181923a8a8765/specification/synapse/data-plane/readme.md#tag-package-artifacts-composite-v2)
 
 ## 1.0.0-beta.6 (2021-11-08)
 

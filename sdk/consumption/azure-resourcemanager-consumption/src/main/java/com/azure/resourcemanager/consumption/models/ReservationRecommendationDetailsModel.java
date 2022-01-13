@@ -45,11 +45,18 @@ public interface ReservationRecommendationDetailsModel {
     String sku();
 
     /**
-     * Gets the etag property: Resource eTag.
+     * Gets the etag property: The etag for the resource.
      *
      * @return the etag value.
      */
     String etag();
+
+    /**
+     * Gets the tags property: Resource tags.
+     *
+     * @return the tags value.
+     */
+    Map<String, String> tags();
 
     /**
      * Gets the currency property: An ISO 4217 currency code identifier for the costs and savings.
@@ -92,13 +99,6 @@ public interface ReservationRecommendationDetailsModel {
      * @return the usage value.
      */
     ReservationRecommendationDetailsUsageProperties usage();
-
-    /**
-     * Gets the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    Map<String, String> tags();
 
     /**
      * Gets the inner com.azure.resourcemanager.consumption.fluent.models.ReservationRecommendationDetailsModelInner

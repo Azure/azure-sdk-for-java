@@ -305,7 +305,8 @@ public final class ApplicationSecurityGroupsClientImpl
             deleteWithResponseAsync(resourceGroupName, applicationSecurityGroupName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -729,7 +730,7 @@ public final class ApplicationSecurityGroupsClientImpl
                 this.client.getHttpPipeline(),
                 ApplicationSecurityGroupInner.class,
                 ApplicationSecurityGroupInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

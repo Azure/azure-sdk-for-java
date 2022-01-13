@@ -302,7 +302,8 @@ public final class NetworkSecurityGroupsClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, networkSecurityGroupName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -752,7 +753,7 @@ public final class NetworkSecurityGroupsClientImpl
                 this.client.getHttpPipeline(),
                 NetworkSecurityGroupInner.class,
                 NetworkSecurityGroupInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

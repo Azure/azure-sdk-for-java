@@ -67,8 +67,7 @@ public final class RemoteRenderingClientBuilder {
         if (accessToken == null) {
             MixedRealityStsAsyncClient stsClient = stsBuilder.buildAsyncClient();
             builder.addPolicy(new BearerTokenAuthenticationPolicy(r -> stsClient.getToken(), scope));
-        }
-        else {
+        } else {
             builder.addPolicy(new BearerTokenAuthenticationPolicy(r -> Mono.just(this.accessToken), scope));
         }
 

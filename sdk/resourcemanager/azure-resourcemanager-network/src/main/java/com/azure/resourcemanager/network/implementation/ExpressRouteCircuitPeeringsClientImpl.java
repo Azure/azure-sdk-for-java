@@ -267,7 +267,8 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, circuitName, peeringName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -718,7 +719,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
                 this.client.getHttpPipeline(),
                 ExpressRouteCircuitPeeringInner.class,
                 ExpressRouteCircuitPeeringInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

@@ -67,7 +67,7 @@ public final class ProviderOperationsMetadatasClientImpl implements ProviderOper
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProviderOperationsMetadataInner>> get(
             @HostParam("$host") String endpoint,
-            @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
+            @PathParam(value = "resourceProviderNamespace", encoded = true) String resourceProviderNamespace,
             @QueryParam("api-version") String apiVersion,
             @QueryParam("$expand") String expand,
             @HeaderParam("Accept") String accept,
@@ -127,7 +127,7 @@ public final class ProviderOperationsMetadatasClientImpl implements ProviderOper
                 context ->
                     service
                         .get(this.client.getEndpoint(), resourceProviderNamespace, apiVersion, expand, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -270,7 +270,7 @@ public final class ProviderOperationsMetadatasClientImpl implements ProviderOper
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -410,7 +410,7 @@ public final class ProviderOperationsMetadatasClientImpl implements ProviderOper
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**

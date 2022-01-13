@@ -25,6 +25,7 @@ import java.security.Security;
 public class ClientSSLSample {
 
     public static void main(String[] args) throws Exception {
+        // BEGIN: readme-sample-clientSSL
         KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
         Security.addProvider(provider);
 
@@ -59,6 +60,7 @@ public class ClientSSLSample {
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
+        // END: readme-sample-clientSSL
     }
 
 }

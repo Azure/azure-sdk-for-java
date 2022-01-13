@@ -63,6 +63,28 @@ public class CreateKeyOptions {
     }
 
     /**
+     * Get the key name.
+     *
+     * @return The name of the key.
+     */
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Get the key type.
+     *
+     * @return The key type.
+     */
+    public KeyType getKeyType() {
+        return this.keyType;
+    }
+
+    void setKeyType(KeyType keyType) {
+        this.keyType = keyType;
+    }
+
+    /**
      * Get the key operations.
      *
      * @return The key operations.
@@ -82,19 +104,6 @@ public class CreateKeyOptions {
         this.keyOperations = Arrays.asList(keyOperations);
 
         return this;
-    }
-
-    /**
-     * Get the key type.
-     *
-     * @return The key type.
-     */
-    public KeyType getKeyType() {
-        return this.keyType;
-    }
-
-    void setKeyType(KeyType keyType) {
-        this.keyType = keyType;
     }
 
     /**
@@ -184,14 +193,4 @@ public class CreateKeyOptions {
 
         return this;
     }
-
-    /**
-     * Get the key name.
-     *
-     * @return The name of the key.
-     */
-    public String getName() {
-        return this.name;
-    }
-
 }

@@ -390,6 +390,7 @@ public class Transforms {
         return documentFieldMap;
     }
 
+
     private static DocumentField toDocumentField(
         com.azure.ai.formrecognizer.implementation.models.DocumentField innerDocumentField) {
         DocumentField documentField = new DocumentField();
@@ -409,6 +410,7 @@ public class Transforms {
             .stream()
             .map(innerDocumentSpan -> toDocumentSpan(innerDocumentSpan))
             .collect(Collectors.toList()));
+        DocumentFieldHelper.setConfidence(documentField, innerDocumentField.getConfidence());
         setDocumentFieldValue(innerDocumentField, documentField);
         return documentField;
     }

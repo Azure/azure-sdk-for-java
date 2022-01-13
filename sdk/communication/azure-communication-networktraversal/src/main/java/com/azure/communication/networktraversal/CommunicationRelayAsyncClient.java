@@ -8,6 +8,7 @@ import com.azure.communication.networktraversal.implementation.CommunicationNetw
 import com.azure.communication.networktraversal.models.CommunicationRelayConfiguration;
 import com.azure.communication.networktraversal.models.CommunicationRelayConfigurationRequest;
 import com.azure.communication.networktraversal.models.CommunicationErrorResponseException;
+import com.azure.communication.networktraversal.models.RouteType;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -36,55 +37,68 @@ public final class CommunicationRelayAsyncClient {
     }
 
     /**
-     * Creates a new CommunicationRelayConfiguration.
+     * Gets a Relay Configuration.
      *
-     * @param communicationUser The CommunicationUserIdentifier for whom to issue a token
-     * @return The created Communication Relay Configuration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CommunicationRelayConfiguration> getRelayConfiguration(CommunicationUserIdentifier communicationUser) {
-        return this.getRelayConfigurationWithResponse(communicationUser).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Creates a new CommunicationRelayConfiguration.
-     *
-     * @return The created Communication Relay Configuration.
+     * @return The obtained Communication Relay Configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CommunicationRelayConfiguration> getRelayConfiguration() {
-        return this.getRelayConfigurationWithResponse(null).flatMap(FluxUtil::toMono);
+        return this.getRelayConfigurationWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Creates a new CommunicationRelayConfiguration with response.
+     * Gets a Relay Configuration for a CommunicationUserIdentifier.
      *
      * @param communicationUser The CommunicationUserIdentifier for whom to issue a token
-     * @return The created Communication Relay Configuration.
+     * @return The obtained Communication Relay Configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CommunicationRelayConfiguration>> getRelayConfigurationWithResponse(CommunicationUserIdentifier communicationUser) {
-        return withContext(context -> getRelayConfigurationWithResponse(communicationUser, context));
+    public Mono<CommunicationRelayConfiguration> getRelayConfiguration(CommunicationUserIdentifier communicationUser) {
+        return this.getRelayConfigurationWithResponse(communicationUser, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Creates a new CommunicationRelayConfiguration with response.
+     * Gets a Relay Configuration given a RouteType.
      *
-     * @return The created Communication Relay Configuration.
+     * @param routeType The specified RouteType for the relay request
+     * @return The obtained Communication Relay Configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CommunicationRelayConfiguration> getRelayConfiguration(RouteType routeType) {
+        return this.getRelayConfigurationWithResponse(null, routeType, null).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets a Relay Configuration for a CommunicationUserIdentifier given a RouteType.
+     *
+     * @param communicationUser The CommunicationUserIdentifier for whom to issue a token
+     * @param routeType The specified RouteType for the relay request
+     * @return The obtained Communication Relay Configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CommunicationRelayConfiguration> getRelayConfiguration(CommunicationUserIdentifier communicationUser, RouteType routeType) {
+        return this.getRelayConfigurationWithResponse(communicationUser, routeType, null).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets a Relay Configuration with response.
+     *
+     * @return The obtained Communication Relay Configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CommunicationRelayConfiguration>> getRelayConfigurationWithResponse() {
-        return withContext(context -> getRelayConfigurationWithResponse(null, context));
+        return withContext(context -> getRelayConfigurationWithResponse(null, null, context));
     }
 
     /**
-     * Creates a new CommunicationRelayConfiguration with response.
+     * Gets a Relay Configuration for a CommunicationUserIdentifier given a RouteType with response.
      *
      * @param communicationUser The CommunicationUserIdentifier for whom to issue a token
+     * @param routeType The specified RouteType for the relay request
      * @param context A {@link Context} representing the request context.
-     * @return The created Communication Relay Configuration.
+     * @return The obtained Communication Relay Configuration.
      */
-    Mono<Response<CommunicationRelayConfiguration>> getRelayConfigurationWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
+    Mono<Response<CommunicationRelayConfiguration>> getRelayConfigurationWithResponse(CommunicationUserIdentifier communicationUser, RouteType routeType, Context context) {
         context = context == null ? Context.NONE : context;
         try {
             CommunicationRelayConfigurationRequest body = new CommunicationRelayConfigurationRequest();
@@ -92,6 +106,11 @@ public final class CommunicationRelayAsyncClient {
             if (communicationUser != null) {
                 body.setId(communicationUser.getId());
             }
+
+            if (routeType != null) {
+                body.setRouteType(routeType);
+            }
+
             return client.issueRelayConfigurationWithResponseAsync(body, context)
                 .onErrorMap(CommunicationErrorResponseException.class, e -> e);
         } catch (RuntimeException ex) {

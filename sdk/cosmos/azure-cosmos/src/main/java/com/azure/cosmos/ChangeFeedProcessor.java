@@ -25,7 +25,20 @@ import java.util.Map;
  * <li>The delegate: the delegate is the code that defines what you, the developer, want to do with each batch of
  * changes that the change feed processor reads.</li>
  * </ul>
- * {@codesnippet com.azure.cosmos.changeFeedProcessor.builder}
+ * <!-- src_embed com.azure.cosmos.changeFeedProcessor.builder -->
+ * <pre>
+ * ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder&#40;&#41;
+ *     .hostName&#40;hostName&#41;
+ *     .feedContainer&#40;feedContainer&#41;
+ *     .leaseContainer&#40;leaseContainer&#41;
+ *     .handleChanges&#40;docs -&gt; &#123;
+ *         for &#40;JsonNode item : docs&#41; &#123;
+ *             &#47;&#47; Implementation for handling and processing of each JsonNode item goes here
+ *         &#125;
+ *     &#125;&#41;
+ *     .buildChangeFeedProcessor&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.cosmos.changeFeedProcessor.builder -->
  */
 public interface ChangeFeedProcessor {
 

@@ -108,6 +108,20 @@ public interface WebSiteManagementClient {
     CertificatesClient getCertificates();
 
     /**
+     * Gets the ContainerAppsClient object to access its operations.
+     *
+     * @return the ContainerAppsClient object.
+     */
+    ContainerAppsClient getContainerApps();
+
+    /**
+     * Gets the ContainerAppsRevisionsClient object to access its operations.
+     *
+     * @return the ContainerAppsRevisionsClient object.
+     */
+    ContainerAppsRevisionsClient getContainerAppsRevisions();
+
+    /**
      * Gets the DeletedWebAppsClient object to access its operations.
      *
      * @return the DeletedWebAppsClient object.

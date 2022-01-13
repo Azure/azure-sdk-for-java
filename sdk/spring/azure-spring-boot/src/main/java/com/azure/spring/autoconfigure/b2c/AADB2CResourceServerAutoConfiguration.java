@@ -47,16 +47,32 @@ public class AADB2CResourceServerAutoConfiguration {
 
     private final AADB2CProperties properties;
 
+    /**
+     * Creates a new instance of {@link AADB2CResourceServerAutoConfiguration}.
+     *
+     * @param properties the AAD B2C properties
+     */
     public AADB2CResourceServerAutoConfiguration(@NonNull AADB2CProperties properties) {
         this.properties = properties;
     }
 
+    /**
+     * Declare AADTrustedIssuerRepository bean.
+     *
+     * @return AADTrustedIssuerRepository bean
+     */
     @Bean
     @ConditionalOnMissingBean
     public AADTrustedIssuerRepository trustedIssuerRepository() {
         return new AADB2CTrustedIssuerRepository(properties);
     }
 
+    /**
+     * Declare JWTClaimsSetAwareJWSKeySelector bean.
+     *
+     * @param aadTrustedIssuerRepository the AAD trusted issuer repository
+     * @return JWTClaimsSetAwareJWSKeySelector bean
+     */
     @Bean
     @ConditionalOnMissingBean
     public JWTClaimsSetAwareJWSKeySelector<SecurityContext> aadIssuerJWSKeySelector(
@@ -65,6 +81,12 @@ public class AADB2CResourceServerAutoConfiguration {
             properties.getJwtReadTimeout(), properties.getJwtSizeLimit());
     }
 
+    /**
+     * Declare JWTProcessor bean.
+     *
+     * @param keySelector the JWT claims set aware JWS key selector
+     * @return JWTProcessor bean
+     */
     @Bean
     @ConditionalOnMissingBean
     public JWTProcessor<SecurityContext> jwtProcessor(
@@ -74,6 +96,13 @@ public class AADB2CResourceServerAutoConfiguration {
         return jwtProcessor;
     }
 
+    /**
+     * Declare JwtDecoder bean.
+     *
+     * @param jwtProcessor the JWT processor
+     * @param trustedIssuerRepository the AAD trusted issuer repository
+     * @return JwtDecoder bean
+     */
     @Bean
     @ConditionalOnMissingBean
     public JwtDecoder jwtDecoder(JWTProcessor<SecurityContext> jwtProcessor,

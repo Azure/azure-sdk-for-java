@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.scanning;
 
 import com.azure.analytics.purview.scanning.implementation.KeyVaultConnectionsImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -13,18 +14,18 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
 
 /** Initializes a new instance of the synchronous PurviewScanningClient type. */
 @ServiceClient(builder = PurviewScanningClientBuilder.class)
 public final class KeyVaultConnectionsClient {
-    private final KeyVaultConnectionsImpl serviceClient;
+    @Generated private final KeyVaultConnectionsImpl serviceClient;
 
     /**
      * Initializes an instance of KeyVaultConnections client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     KeyVaultConnectionsClient(KeyVaultConnectionsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -55,14 +56,13 @@ public final class KeyVaultConnectionsClient {
      *
      * @param keyVaultName The keyVaultName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return key vault information.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String keyVaultName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getWithResponse(keyVaultName, requestOptions, context);
+    public Response<BinaryData> getWithResponse(String keyVaultName, RequestOptions requestOptions) {
+        return this.serviceClient.getWithResponse(keyVaultName, requestOptions);
     }
 
     /**
@@ -105,15 +105,14 @@ public final class KeyVaultConnectionsClient {
      * @param keyVaultName The keyVaultName parameter.
      * @param body The body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createWithResponse(
-            String keyVaultName, BinaryData body, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.createWithResponse(keyVaultName, body, requestOptions, context);
+            String keyVaultName, BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.createWithResponse(keyVaultName, body, requestOptions);
     }
 
     /**
@@ -142,15 +141,13 @@ public final class KeyVaultConnectionsClient {
      *
      * @param keyVaultName The keyVaultName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteWithResponse(
-            String keyVaultName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.deleteWithResponse(keyVaultName, requestOptions, context);
+    public Response<BinaryData> deleteWithResponse(String keyVaultName, RequestOptions requestOptions) {
+        return this.serviceClient.deleteWithResponse(keyVaultName, requestOptions);
     }
 
     /**
@@ -184,13 +181,12 @@ public final class KeyVaultConnectionsClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listAll(RequestOptions requestOptions, Context context) {
-        return this.serviceClient.listAll(requestOptions, context);
+    public PagedIterable<BinaryData> listAll(RequestOptions requestOptions) {
+        return this.serviceClient.listAll(requestOptions);
     }
 }

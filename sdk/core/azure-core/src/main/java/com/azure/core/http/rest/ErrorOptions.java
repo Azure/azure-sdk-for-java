@@ -6,7 +6,7 @@ package com.azure.core.http.rest;
 /**
  * Determines how errors are handled by requests using {@link RequestOptions}.
  */
-public enum ErrorOptions {
+enum ErrorOptions {
     /**
      * Throw exceptions when an HTTP response with a status code indicating an error (400 or above) is received.
      */

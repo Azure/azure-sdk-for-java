@@ -40,14 +40,15 @@ public final class BlobInputStream extends StorageInputStream {
      * @param blobRangeOffset The offset of blob data to begin stream.
      * @param blobRangeLength How much data the stream should return after blobRangeOffset.
      * @param chunkSize The size of the chunk to download.
+     * @param initialBuffer The result of the initial download.
      * @param accessCondition An {@link BlobRequestConditions} object which represents the access conditions for the
      * blob.
      * @throws BlobStorageException An exception representing any error which occurred during the operation.
      */
     BlobInputStream(final BlobAsyncClientBase blobClient, long blobRangeOffset, Long blobRangeLength, int chunkSize,
-        final BlobRequestConditions accessCondition, final BlobProperties blobProperties)
-        throws BlobStorageException {
-        super(blobRangeOffset, blobRangeLength, chunkSize, blobProperties.getBlobSize());
+        final ByteBuffer initialBuffer, final BlobRequestConditions accessCondition,
+        final BlobProperties blobProperties) throws BlobStorageException {
+        super(blobRangeOffset, blobRangeLength, chunkSize, blobProperties.getBlobSize(), initialBuffer);
 
         this.blobClient = blobClient;
         this.accessCondition = accessCondition;

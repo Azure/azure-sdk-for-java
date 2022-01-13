@@ -8,10 +8,10 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.ApiEntityReference;
 import com.azure.resourcemanager.compute.models.ConsistencyModeTypes;
-import com.azure.resourcemanager.compute.models.RestorePointProvisioningDetails;
 import com.azure.resourcemanager.compute.models.RestorePointSourceMetadata;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 /** The restore point properties. */
@@ -47,11 +47,10 @@ public final class RestorePointProperties {
     private ConsistencyModeTypes consistencyMode;
 
     /*
-     * Gets the provisioning details set by the server during Create restore
-     * point operation.
+     * Gets the creation time of the restore point.
      */
-    @JsonProperty(value = "provisioningDetails", access = JsonProperty.Access.WRITE_ONLY)
-    private RestorePointProvisioningDetails provisioningDetails;
+    @JsonProperty(value = "timeCreated")
+    private OffsetDateTime timeCreated;
 
     /**
      * Get the excludeDisks property: List of disk resource ids that the customer wishes to exclude from the restore
@@ -104,13 +103,23 @@ public final class RestorePointProperties {
     }
 
     /**
-     * Get the provisioningDetails property: Gets the provisioning details set by the server during Create restore point
-     * operation.
+     * Get the timeCreated property: Gets the creation time of the restore point.
      *
-     * @return the provisioningDetails value.
+     * @return the timeCreated value.
      */
-    public RestorePointProvisioningDetails provisioningDetails() {
-        return this.provisioningDetails;
+    public OffsetDateTime timeCreated() {
+        return this.timeCreated;
+    }
+
+    /**
+     * Set the timeCreated property: Gets the creation time of the restore point.
+     *
+     * @param timeCreated the timeCreated value to set.
+     * @return the RestorePointProperties object itself.
+     */
+    public RestorePointProperties withTimeCreated(OffsetDateTime timeCreated) {
+        this.timeCreated = timeCreated;
+        return this;
     }
 
     /**
@@ -124,9 +133,6 @@ public final class RestorePointProperties {
         }
         if (sourceMetadata() != null) {
             sourceMetadata().validate();
-        }
-        if (provisioningDetails() != null) {
-            provisioningDetails().validate();
         }
     }
 }

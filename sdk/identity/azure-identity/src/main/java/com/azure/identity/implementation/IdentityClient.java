@@ -1293,7 +1293,7 @@ public class IdentityClient {
         }
 
         String endpoint = options.getImdsAuthorityHost().replaceAll("/+$", "")
-            + "/" + IdentityConstants.DEFAULT_IMDS_TOKENPATH;
+            + IdentityConstants.DEFAULT_IMDS_TOKENPATH;
 
         return checkIMDSAvailable(endpoint).flatMap(available -> Mono.fromCallable(() -> {
             int retry = 1;

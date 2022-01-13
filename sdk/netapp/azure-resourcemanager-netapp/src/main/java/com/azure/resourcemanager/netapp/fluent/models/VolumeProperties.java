@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
+import com.azure.resourcemanager.netapp.models.PlacementKeyValuePairs;
 import com.azure.resourcemanager.netapp.models.SecurityStyle;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesDataProtection;
@@ -179,7 +180,8 @@ public final class VolumeProperties {
     private Boolean smbContinuouslyAvailable;
 
     /*
-     * Maximum throughput in Mibps that can be achieved by this volume
+     * Maximum throughput in Mibps that can be achieved by this volume and this
+     * will be accepted as input only for manual qosType volume
      */
     @JsonProperty(value = "throughputMibps")
     private Float throughputMibps;
@@ -256,6 +258,44 @@ public final class VolumeProperties {
      */
     @JsonProperty(value = "defaultGroupQuotaInKiBs")
     private Long defaultGroupQuotaInKiBs;
+
+    /*
+     * Volume Group Name
+     */
+    @JsonProperty(value = "volumeGroupName", access = JsonProperty.Access.WRITE_ONLY)
+    private String volumeGroupName;
+
+    /*
+     * Pool Resource Id used in case of creating a volume through volume group
+     */
+    @JsonProperty(value = "capacityPoolResourceId")
+    private String capacityPoolResourceId;
+
+    /*
+     * Proximity placement group associated with the volume
+     */
+    @JsonProperty(value = "proximityPlacementGroup")
+    private String proximityPlacementGroup;
+
+    /*
+     * T2 network information
+     */
+    @JsonProperty(value = "t2Network", access = JsonProperty.Access.WRITE_ONLY)
+    private String t2Network;
+
+    /*
+     * Volume spec name is the application specific designation or identifier
+     * for the particular volume in a volume group for e.g. data, log
+     */
+    @JsonProperty(value = "volumeSpecName")
+    private String volumeSpecName;
+
+    /*
+     * Volume placement rules Application specific placement rules for the
+     * particular volume
+     */
+    @JsonProperty(value = "placementRules")
+    private List<PlacementKeyValuePairs> placementRules;
 
     /**
      * Get the fileSystemId property: FileSystem ID Unique FileSystem Identifier.
@@ -674,7 +714,8 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume.
+     * Get the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume and this will
+     * be accepted as input only for manual qosType volume.
      *
      * @return the throughputMibps value.
      */
@@ -683,7 +724,8 @@ public final class VolumeProperties {
     }
 
     /**
-     * Set the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume.
+     * Set the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume and this will
+     * be accepted as input only for manual qosType volume.
      *
      * @param throughputMibps the throughputMibps value to set.
      * @return the VolumeProperties object itself.
@@ -901,6 +943,108 @@ public final class VolumeProperties {
     }
 
     /**
+     * Get the volumeGroupName property: Volume Group Name.
+     *
+     * @return the volumeGroupName value.
+     */
+    public String volumeGroupName() {
+        return this.volumeGroupName;
+    }
+
+    /**
+     * Get the capacityPoolResourceId property: Pool Resource Id used in case of creating a volume through volume group.
+     *
+     * @return the capacityPoolResourceId value.
+     */
+    public String capacityPoolResourceId() {
+        return this.capacityPoolResourceId;
+    }
+
+    /**
+     * Set the capacityPoolResourceId property: Pool Resource Id used in case of creating a volume through volume group.
+     *
+     * @param capacityPoolResourceId the capacityPoolResourceId value to set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withCapacityPoolResourceId(String capacityPoolResourceId) {
+        this.capacityPoolResourceId = capacityPoolResourceId;
+        return this;
+    }
+
+    /**
+     * Get the proximityPlacementGroup property: Proximity placement group associated with the volume.
+     *
+     * @return the proximityPlacementGroup value.
+     */
+    public String proximityPlacementGroup() {
+        return this.proximityPlacementGroup;
+    }
+
+    /**
+     * Set the proximityPlacementGroup property: Proximity placement group associated with the volume.
+     *
+     * @param proximityPlacementGroup the proximityPlacementGroup value to set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withProximityPlacementGroup(String proximityPlacementGroup) {
+        this.proximityPlacementGroup = proximityPlacementGroup;
+        return this;
+    }
+
+    /**
+     * Get the t2Network property: T2 network information.
+     *
+     * @return the t2Network value.
+     */
+    public String t2Network() {
+        return this.t2Network;
+    }
+
+    /**
+     * Get the volumeSpecName property: Volume spec name is the application specific designation or identifier for the
+     * particular volume in a volume group for e.g. data, log.
+     *
+     * @return the volumeSpecName value.
+     */
+    public String volumeSpecName() {
+        return this.volumeSpecName;
+    }
+
+    /**
+     * Set the volumeSpecName property: Volume spec name is the application specific designation or identifier for the
+     * particular volume in a volume group for e.g. data, log.
+     *
+     * @param volumeSpecName the volumeSpecName value to set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withVolumeSpecName(String volumeSpecName) {
+        this.volumeSpecName = volumeSpecName;
+        return this;
+    }
+
+    /**
+     * Get the placementRules property: Volume placement rules Application specific placement rules for the particular
+     * volume.
+     *
+     * @return the placementRules value.
+     */
+    public List<PlacementKeyValuePairs> placementRules() {
+        return this.placementRules;
+    }
+
+    /**
+     * Set the placementRules property: Volume placement rules Application specific placement rules for the particular
+     * volume.
+     *
+     * @param placementRules the placementRules value to set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withPlacementRules(List<PlacementKeyValuePairs> placementRules) {
+        this.placementRules = placementRules;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -924,6 +1068,9 @@ public final class VolumeProperties {
         }
         if (dataProtection() != null) {
             dataProtection().validate();
+        }
+        if (placementRules() != null) {
+            placementRules().forEach(e -> e.validate());
         }
     }
 }

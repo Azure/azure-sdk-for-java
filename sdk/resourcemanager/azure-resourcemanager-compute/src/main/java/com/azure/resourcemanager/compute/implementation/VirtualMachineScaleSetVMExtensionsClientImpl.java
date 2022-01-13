@@ -334,7 +334,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
                 this.client.getHttpPipeline(),
                 VirtualMachineScaleSetVMExtensionInner.class,
                 VirtualMachineScaleSetVMExtensionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -707,7 +707,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
                 this.client.getHttpPipeline(),
                 VirtualMachineScaleSetVMExtensionInner.class,
                 VirtualMachineScaleSetVMExtensionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1039,7 +1039,8 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
             deleteWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

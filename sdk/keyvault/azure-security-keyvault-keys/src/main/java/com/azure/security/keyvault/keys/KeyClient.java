@@ -34,7 +34,14 @@ import com.azure.security.keyvault.keys.models.KeyVaultKey;
  * enabled Azure Key Vault.
  *
  * <p><strong>Samples to construct the sync client</strong></p>
- * {@codesnippet com.azure.security.keyvault.keys.KeyClient.instantiation}
+ * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.instantiation -->
+ * <pre>
+ * KeyClient keyClient = new KeyClientBuilder&#40;&#41;
+ *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.azure.net&#47;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.keys.KeyClient.instantiation -->
  *
  * @see KeyClientBuilder
  * @see PagedIterable
@@ -73,7 +80,13 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new {@link KeyVaultKey EC key}. Prints out the details of the {@link KeyVaultKey created key}.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.createKey#String-KeyType}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.createKey#String-KeyType -->
+     * <pre>
+     * KeyVaultKey key = keyClient.createKey&#40;&quot;keyName&quot;, KeyType.EC&#41;;
+     *
+     * System.out.printf&#40;&quot;Created key with name: %s and id: %s%n&quot;, key.getName&#40;&#41;, key.getId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.createKey#String-KeyType -->
      *
      * @param name The name of the {@link KeyVaultKey key} being created.
      * @param keyType The type of {@link KeyVaultKey key} to create. For valid values, see {@link KeyType KeyType}.
@@ -106,7 +119,16 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new {@link KeyVaultKey RSA key} which activates in one day and expires in one year. Prints out the
      * details of the {@link KeyVaultKey created key}.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.createKey#CreateKeyOptions}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.createKey#CreateKeyOptions -->
+     * <pre>
+     * CreateKeyOptions createKeyOptions = new CreateKeyOptions&#40;&quot;keyName&quot;, KeyType.RSA&#41;
+     *     .setNotBefore&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;&#41;
+     *     .setExpiresOn&#40;OffsetDateTime.now&#40;&#41;.plusYears&#40;1&#41;&#41;;
+     * KeyVaultKey optionsKey = keyClient.createKey&#40;createKeyOptions&#41;;
+     *
+     * System.out.printf&#40;&quot;Created key with name: %s and id: %s%n&quot;, optionsKey.getName&#40;&#41;, optionsKey.getId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.createKey#CreateKeyOptions -->
      *
      * @param createKeyOptions The {@link CreateKeyOptions options object} containing information about the
      * {@link KeyVaultKey key} being created.
@@ -140,7 +162,18 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new {@link KeyVaultKey RSA key} which activates in one day and expires in one year. Prints out the
      * details of the {@link KeyVaultKey created key}.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.createKeyWithResponse#CreateKeyOptions-Context}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.createKeyWithResponse#CreateKeyOptions-Context -->
+     * <pre>
+     * CreateKeyOptions createKeyOptions = new CreateKeyOptions&#40;&quot;keyName&quot;, KeyType.RSA&#41;
+     *     .setNotBefore&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;&#41;
+     *     .setExpiresOn&#40;OffsetDateTime.now&#40;&#41;.plusYears&#40;1&#41;&#41;;
+     * Response&lt;KeyVaultKey&gt; createKeyResponse =
+     *     keyClient.createKeyWithResponse&#40;createKeyOptions, new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Created key with name: %s and: id %s%n&quot;, createKeyResponse.getValue&#40;&#41;.getName&#40;&#41;,
+     *     createKeyResponse.getValue&#40;&#41;.getId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.createKeyWithResponse#CreateKeyOptions-Context -->
      *
      * @param createKeyOptions The {@link CreateKeyOptions options object} containing information about the
      * {@link KeyVaultKey key} being created.
@@ -176,7 +209,17 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new {@link KeyVaultKey RSA key} with size 2048 which activates in one day and expires in one year.
      * Prints out the details of the {@link KeyVaultKey created key}.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.createRsaKey#CreateRsaKeyOptions}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.createRsaKey#CreateRsaKeyOptions -->
+     * <pre>
+     * CreateRsaKeyOptions createRsaKeyOptions = new CreateRsaKeyOptions&#40;&quot;keyName&quot;&#41;
+     *     .setKeySize&#40;2048&#41;
+     *     .setNotBefore&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;&#41;
+     *     .setExpiresOn&#40;OffsetDateTime.now&#40;&#41;.plusYears&#40;1&#41;&#41;;
+     * KeyVaultKey rsaKey = keyClient.createRsaKey&#40;createRsaKeyOptions&#41;;
+     *
+     * System.out.printf&#40;&quot;Created key with name: %s and id: %s%n&quot;, rsaKey.getName&#40;&#41;, rsaKey.getId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.createRsaKey#CreateRsaKeyOptions -->
      *
      * @param createRsaKeyOptions The {@link CreateRsaKeyOptions options object} containing information about the
      * {@link KeyVaultKey RSA key} being created.
@@ -210,7 +253,19 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new {@link KeyVaultKey RSA key} with size 2048 which activates in one day and expires in one year.
      * Prints out the details of the {@link KeyVaultKey created key}.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.createRsaKeyWithResponse#CreateRsaKeyOptions-Context}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.createRsaKeyWithResponse#CreateRsaKeyOptions-Context -->
+     * <pre>
+     * CreateRsaKeyOptions createRsaKeyOptions = new CreateRsaKeyOptions&#40;&quot;keyName&quot;&#41;
+     *     .setKeySize&#40;2048&#41;
+     *     .setNotBefore&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;&#41;
+     *     .setExpiresOn&#40;OffsetDateTime.now&#40;&#41;.plusYears&#40;1&#41;&#41;;
+     * Response&lt;KeyVaultKey&gt; createRsaKeyResponse =
+     *     keyClient.createRsaKeyWithResponse&#40;createRsaKeyOptions, new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Created key with name: %s and: id %s%n&quot;, createRsaKeyResponse.getValue&#40;&#41;.getName&#40;&#41;,
+     *     createRsaKeyResponse.getValue&#40;&#41;.getId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.createRsaKeyWithResponse#CreateRsaKeyOptions-Context -->
      *
      * @param createRsaKeyOptions The {@link CreateRsaKeyOptions options object} containing information about the
      * {@link KeyVaultKey RSA key} being created.
@@ -247,7 +302,17 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new {@link KeyVaultKey EC key} with a {@link KeyCurveName#P_384 P-384} web key curve. The key
      * activates in one day and expires in one year. Prints out the details of the {@link KeyVaultKey created key}.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.createEcKey#CreateOctKeyOptions}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.createEcKey#CreateOctKeyOptions -->
+     * <pre>
+     * CreateEcKeyOptions createEcKeyOptions = new CreateEcKeyOptions&#40;&quot;keyName&quot;&#41;
+     *     .setCurveName&#40;KeyCurveName.P_384&#41;
+     *     .setNotBefore&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;&#41;
+     *     .setExpiresOn&#40;OffsetDateTime.now&#40;&#41;.plusYears&#40;1&#41;&#41;;
+     * KeyVaultKey ecKey = keyClient.createEcKey&#40;createEcKeyOptions&#41;;
+     *
+     * System.out.printf&#40;&quot;Created key with name: %s and id: %s%n&quot;, ecKey.getName&#40;&#41;, ecKey.getId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.createEcKey#CreateOctKeyOptions -->
      *
      * @param createEcKeyOptions The {@link CreateEcKeyOptions options object} containing information about the
      * {@link KeyVaultKey EC key} being created.
@@ -283,7 +348,19 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new {@link KeyVaultKey EC key} with a {@link KeyCurveName#P_384 P-384} web key curve. The key
      * activates in one day and expires in one year. Prints out the details of the {@link KeyVaultKey created key}.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.createEcKeyWithResponse#CreateEcKeyOptions-Context}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.createEcKeyWithResponse#CreateEcKeyOptions-Context -->
+     * <pre>
+     * CreateEcKeyOptions createEcKeyOptions = new CreateEcKeyOptions&#40;&quot;keyName&quot;&#41;
+     *     .setCurveName&#40;KeyCurveName.P_384&#41;
+     *     .setNotBefore&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;&#41;
+     *     .setExpiresOn&#40;OffsetDateTime.now&#40;&#41;.plusYears&#40;1&#41;&#41;;
+     * Response&lt;KeyVaultKey&gt; createEcKeyResponse =
+     *     keyClient.createEcKeyWithResponse&#40;createEcKeyOptions, new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Created key with name: %s and: id %s%n&quot;, createEcKeyResponse.getValue&#40;&#41;.getName&#40;&#41;,
+     *     createEcKeyResponse.getValue&#40;&#41;.getId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.createEcKeyWithResponse#CreateEcKeyOptions-Context -->
      *
      * @param createEcKeyOptions The {@link CreateEcKeyOptions options object} containing information about the
      * {@link KeyVaultKey EC key} being created.
@@ -317,7 +394,16 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new {@link KeyVaultKey symmetric key}. The {@link KeyVaultKey key} activates in one day and expires
      * in one year. Prints out the details of the newly {@link KeyVaultKey created key}.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.async.KeyClient.createOctKey#CreateOctKeyOptions}
+     * <!-- src_embed com.azure.security.keyvault.keys.async.KeyClient.createOctKey#CreateOctKeyOptions -->
+     * <pre>
+     * CreateOctKeyOptions createOctKeyOptions = new CreateOctKeyOptions&#40;&quot;keyName&quot;&#41;
+     *     .setNotBefore&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;&#41;
+     *     .setExpiresOn&#40;OffsetDateTime.now&#40;&#41;.plusYears&#40;1&#41;&#41;;
+     * KeyVaultKey octKey = keyClient.createOctKey&#40;createOctKeyOptions&#41;;
+     *
+     * System.out.printf&#40;&quot;Created key with name: %s and id: %s%n&quot;, octKey.getName&#40;&#41;, octKey.getId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.async.KeyClient.createOctKey#CreateOctKeyOptions -->
      *
      * @param createOctKeyOptions The {@link CreateOctKeyOptions options object} containing information about the
      * {@link KeyVaultKey symmetric key} being created.
@@ -349,7 +435,18 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new {@link KeyVaultKey symmetric key}. The {@link KeyVaultKey key} activates in one day and expires
      * in one year. Prints out the details of the newly {@link KeyVaultKey created key}.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.async.KeyClient.createOctKey#CreateOctKeyOptions-Context}
+     * <!-- src_embed com.azure.security.keyvault.keys.async.KeyClient.createOctKey#CreateOctKeyOptions-Context -->
+     * <pre>
+     * CreateOctKeyOptions createOctKeyOptions = new CreateOctKeyOptions&#40;&quot;keyName&quot;&#41;
+     *     .setNotBefore&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;&#41;
+     *     .setExpiresOn&#40;OffsetDateTime.now&#40;&#41;.plusYears&#40;1&#41;&#41;;
+     * Response&lt;KeyVaultKey&gt; createOctKeyResponse =
+     *     keyClient.createOctKeyWithResponse&#40;createOctKeyOptions, new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Created key with name: %s and: id %s%n&quot;, createOctKeyResponse.getValue&#40;&#41;.getName&#40;&#41;,
+     *     createOctKeyResponse.getValue&#40;&#41;.getId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.async.KeyClient.createOctKey#CreateOctKeyOptions-Context -->
      *
      * @param createOctKeyOptions The {@link CreateOctKeyOptions options object} containing information about the
      * {@link KeyVaultKey symmetric key} being created.
@@ -376,7 +473,13 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Imports a new {@link KeyVaultKey key} into the key vault. Prints out the details of the
      * {@link KeyVaultKey imported key}.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.importKey#String-JsonWebKey}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.importKey#String-JsonWebKey -->
+     * <pre>
+     * KeyVaultKey key = keyClient.importKey&#40;&quot;keyName&quot;, jsonWebKeyToImport&#41;;
+     *
+     * System.out.printf&#40;&quot;Imported key with name: %s and id: %s%n&quot;, key.getName&#40;&#41;, key.getId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.importKey#String-JsonWebKey -->
      *
      * @param name The name for the {@link KeyVaultKey imported key}.
      * @param keyMaterial The {@link JsonWebKey} being imported.
@@ -407,7 +510,16 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Imports a new {@link KeyVaultKey key} into the key vault. Prints out the details of the
      * {@link KeyVaultKey imported key}.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.importKey#ImportKeyOptions}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.importKey#ImportKeyOptions -->
+     * <pre>
+     * ImportKeyOptions options = new ImportKeyOptions&#40;&quot;keyName&quot;, jsonWebKeyToImport&#41;
+     *     .setHardwareProtected&#40;false&#41;;
+     * KeyVaultKey importedKey = keyClient.importKey&#40;options&#41;;
+     *
+     * System.out.printf&#40;&quot;Imported key with name: %s and id: %s%n&quot;, importedKey.getName&#40;&#41;,
+     *     importedKey.getId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.importKey#ImportKeyOptions -->
      *
      * @param importKeyOptions The {@link ImportKeyOptions options object} containing information about the
      * {@link JsonWebKey} being imported.
@@ -439,7 +551,17 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Imports a new {@link KeyVaultKey key} into the key vault. Prints out the details of the
      * {@link KeyVaultKey imported key}.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.importKeyWithResponse#ImportKeyOptions-Context}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.importKeyWithResponse#ImportKeyOptions-Context -->
+     * <pre>
+     * ImportKeyOptions importKeyOptions = new ImportKeyOptions&#40;&quot;keyName&quot;, jsonWebKeyToImport&#41;
+     *     .setHardwareProtected&#40;false&#41;;
+     * Response&lt;KeyVaultKey&gt; response =
+     *     keyClient.importKeyWithResponse&#40;importKeyOptions, new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Imported key with name: %s and id: %s%n&quot;, response.getValue&#40;&#41;.getName&#40;&#41;,
+     *     response.getValue&#40;&#41;.getId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.importKeyWithResponse#ImportKeyOptions-Context -->
      *
      * @param importKeyOptions The {@link ImportKeyOptions options object} containing information about the
      * {@link JsonWebKey} being imported.
@@ -463,7 +585,15 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets a specific version of the {@link KeyVaultKey key} in the key vault. Prints out the details of the
      * {@link KeyVaultKey retrieved key}.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.getKey#String-String}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.getKey#String-String -->
+     * <pre>
+     * String keyVersion = &quot;6A385B124DEF4096AF1361A85B16C204&quot;;
+     * KeyVaultKey keyWithVersion = keyClient.getKey&#40;&quot;keyName&quot;, keyVersion&#41;;
+     *
+     * System.out.printf&#40;&quot;Retrieved key with name: %s and: id %s%n&quot;, keyWithVersion.getName&#40;&#41;,
+     *     keyWithVersion.getId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.getKey#String-String -->
      *
      * @param name The name of the {@link KeyVaultKey key}, cannot be {@code null}.
      * @param version The version of the {@link KeyVaultKey key}  to retrieve. If this is an empty string or
@@ -489,7 +619,16 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets a specific version of the {@link KeyVaultKey key} in the key vault. Prints out the details of the
      * {@link KeyVaultKey retrieved key}.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.getKeyWithResponse#String-String-Context}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.getKeyWithResponse#String-String-Context -->
+     * <pre>
+     * String keyVersion = &quot;6A385B124DEF4096AF1361A85B16C204&quot;;
+     * Response&lt;KeyVaultKey&gt; getKeyResponse =
+     *     keyClient.getKeyWithResponse&#40;&quot;keyName&quot;, keyVersion, new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Retrieved key with name: %s and: id %s%n&quot;, getKeyResponse.getValue&#40;&#41;.getName&#40;&#41;,
+     *     getKeyResponse.getValue&#40;&#41;.getId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.getKeyWithResponse#String-String-Context -->
      *
      * @param name The name of the {@link KeyVaultKey key}, cannot be {@code null}.
      * @param context Additional {@link Context} that is passed through the {@link HttpPipeline} during the service
@@ -518,7 +657,14 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets a specific version of the {@link KeyVaultKey key} in the key vault. Prints out the details of the
      * {@link KeyVaultKey retrieved key}.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.getKey#String}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.getKey#String -->
+     * <pre>
+     * KeyVaultKey keyWithVersionValue = keyClient.getKey&#40;&quot;keyName&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Retrieved key with name: %s and: id %s%n&quot;, keyWithVersionValue.getName&#40;&#41;,
+     *     keyWithVersionValue.getId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.getKey#String -->
      *
      * @param name The name of the {@link KeyVaultKey key}, cannot be {@code null}.
      *
@@ -545,7 +691,18 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the latest version of the {@link KeyVaultKey key}, changes its expiry time and
      * {@link KeyOperation key operations} and the updates the {@link KeyVaultKey key} in the key vault.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.updateKeyProperties#KeyProperties-KeyOperation}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.updateKeyProperties#KeyProperties-KeyOperation -->
+     * <pre>
+     * KeyVaultKey key = keyClient.getKey&#40;&quot;keyName&quot;&#41;;
+     *
+     * key.getProperties&#40;&#41;.setExpiresOn&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;60&#41;&#41;;
+     *
+     * KeyVaultKey updatedKey = keyClient.updateKeyProperties&#40;key.getProperties&#40;&#41;, KeyOperation.ENCRYPT,
+     *     KeyOperation.DECRYPT&#41;;
+     *
+     * System.out.printf&#40;&quot;Key is updated with name %s and id %s %n&quot;, updatedKey.getName&#40;&#41;, updatedKey.getId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.updateKeyProperties#KeyProperties-KeyOperation -->
      *
      * @param keyProperties The {@link KeyProperties key properties} object with updated properties.
      * @param keyOperations The updated {@link KeyOperation key operations} to associate with the key.
@@ -575,7 +732,20 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the latest version of the {@link KeyVaultKey key}, changes its expiry time and
      * {@link KeyOperation key operations} and the updates the {@link KeyVaultKey key} in the key vault.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.updateKeyPropertiesWithResponse#KeyProperties-Context-KeyOperation}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.updateKeyPropertiesWithResponse#KeyProperties-Context-KeyOperation -->
+     * <pre>
+     * KeyVaultKey key = keyClient.getKey&#40;&quot;keyName&quot;&#41;;
+     *
+     * key.getProperties&#40;&#41;.setExpiresOn&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;60&#41;&#41;;
+     *
+     * Response&lt;KeyVaultKey&gt; updateKeyResponse =
+     *     keyClient.updateKeyPropertiesWithResponse&#40;key.getProperties&#40;&#41;, new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;,
+     *         KeyOperation.ENCRYPT, KeyOperation.DECRYPT&#41;;
+     *
+     * System.out.printf&#40;&quot;Updated key with name: %s and id: %s%n&quot;, updateKeyResponse.getValue&#40;&#41;.getName&#40;&#41;,
+     *     updateKeyResponse.getValue&#40;&#41;.getId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.updateKeyPropertiesWithResponse#KeyProperties-Context-KeyOperation -->
      *
      * @param keyProperties The {@link KeyProperties key properties} object with updated properties.
      * @param context Additional {@link Context} that is passed through the {@link HttpPipeline} during the service
@@ -609,7 +779,22 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes the {@link KeyVaultKey key} from the key vault. Prints out the recovery id of the
      * {@link KeyVaultKey deleted key}.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.deleteKey#String}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.deleteKey#String -->
+     * <pre>
+     * SyncPoller&lt;DeletedKey, Void&gt; deleteKeyPoller = keyClient.beginDeleteKey&#40;&quot;keyName&quot;&#41;;
+     * PollResponse&lt;DeletedKey&gt; deleteKeyPollResponse = deleteKeyPoller.poll&#40;&#41;;
+     *
+     * &#47;&#47; Deleted date only works for SoftDelete Enabled Key Vault.
+     * DeletedKey deletedKey = deleteKeyPollResponse.getValue&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Key delete date: %s%n&quot; + deletedKey.getDeletedOn&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Deleted key's recovery id: %s%n&quot;, deletedKey.getRecoveryId&#40;&#41;&#41;;
+     *
+     * &#47;&#47; Key is being deleted on server.
+     * deleteKeyPoller.waitForCompletion&#40;&#41;;
+     * &#47;&#47; Key is deleted
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.deleteKey#String -->
      *
      * @param name The name of the {@link KeyVaultKey key} to be deleted.
      *
@@ -630,7 +815,13 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the {@link KeyVaultKey deleted key} from the key vault enabled for soft-delete. Prints out the details
      * of the {@link KeyVaultKey deleted key}.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.getDeletedKey#String}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.getDeletedKey#String -->
+     * <pre>
+     * DeletedKey deletedKey = keyClient.getDeletedKey&#40;&quot;keyName&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Deleted key's recovery id: %s%n&quot;, deletedKey.getRecoveryId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.getDeletedKey#String -->
      *
      * @param name The name of the deleted {@link KeyVaultKey key}.
      *
@@ -651,7 +842,14 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the {@link KeyVaultKey deleted key} from the key vault enabled for soft-delete. Prints out the details
      * of the {@link KeyVaultKey deleted key} returned in the {@link Response HTTPresponse}.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.getDeletedKeyWithResponse#String-Context}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.getDeletedKeyWithResponse#String-Context -->
+     * <pre>
+     * Response&lt;DeletedKey&gt; deletedKeyResponse =
+     *     keyClient.getDeletedKeyWithResponse&#40;&quot;keyName&quot;, new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Deleted key with recovery id: %s%n&quot;, deletedKeyResponse.getValue&#40;&#41;.getRecoveryId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.getDeletedKeyWithResponse#String-Context -->
      *
      * @param name The name of the deleted {@link KeyVaultKey key}.
      * @param context Additional {@link Context} that is passed through the {@link HttpPipeline} during the service
@@ -674,7 +872,11 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Purges the {@link KeyVaultKey deleted key} from the key vault enabled for soft-delete.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.purgeDeletedKey#String}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.purgeDeletedKey#String -->
+     * <pre>
+     * keyClient.purgeDeletedKey&#40;&quot;deletedKeyName&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.purgeDeletedKey#String -->
      *
      * @param name The name of the {@link KeyVaultKey deleted key}.
      *
@@ -693,7 +895,14 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Purges the {@link KeyVaultKey deleted key} from the key vault enabled for soft-delete.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.purgeDeletedKeyWithResponse#String-Context}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.purgeDeletedKeyWithResponse#String-Context -->
+     * <pre>
+     * Response&lt;Void&gt; purgeDeletedKeyResponse = keyClient.purgeDeletedKeyWithResponse&#40;&quot;deletedKeyName&quot;,
+     *     new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Purge response status code: %d%n&quot;, purgeDeletedKeyResponse.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.purgeDeletedKeyWithResponse#String-Context -->
      *
      * @param name The name of the {@link KeyVaultKey deleted key}.
      * @param context Additional {@link Context} that is passed through the {@link HttpPipeline} during the service
@@ -717,7 +926,21 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Recovers the {@link KeyVaultKey deleted key} from the key vault enabled for soft-delete.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.recoverDeletedKey#String}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.recoverDeletedKey#String -->
+     * <pre>
+     * SyncPoller&lt;KeyVaultKey, Void&gt; recoverKeyPoller = keyClient.beginRecoverDeletedKey&#40;&quot;deletedKeyName&quot;&#41;;
+     *
+     * PollResponse&lt;KeyVaultKey&gt; recoverKeyPollResponse = recoverKeyPoller.poll&#40;&#41;;
+     *
+     * KeyVaultKey recoveredKey = recoverKeyPollResponse.getValue&#40;&#41;;
+     * System.out.printf&#40;&quot;Recovered key name: %s%n&quot;, recoveredKey.getName&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Recovered key id: %s%n&quot;, recoveredKey.getId&#40;&#41;&#41;;
+     *
+     * &#47;&#47; Key is being recovered on server.
+     * recoverKeyPoller.waitForCompletion&#40;&#41;;
+     * &#47;&#47; Key is recovered
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.recoverDeletedKey#String -->
      *
      * @param name The name of the {@link KeyVaultKey deleted key} to be recovered.
      *
@@ -746,7 +969,13 @@ public final class KeyClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Backs up the {@link KeyVaultKey key} from the key vault.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.backupKey#String}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.backupKey#String -->
+     * <pre>
+     * byte[] keyBackup = keyClient.backupKey&#40;&quot;keyName&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Key backup byte array length: %s%n&quot;, keyBackup.length&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.backupKey#String -->
      *
      * @param name The name of the {@link KeyVaultKey key}.
      *
@@ -776,7 +1005,13 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Backs up the {@link KeyVaultKey key} from the key vault and prints out the length of the key's backup byte
      * array returned in the {@link Response HTTPresponse}.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.backupKeyWithResponse#String-Context}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.backupKeyWithResponse#String-Context -->
+     * <pre>
+     * Response&lt;byte[]&gt; backupKeyResponse = keyClient.backupKeyWithResponse&#40;&quot;keyName&quot;, new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Key backup byte array length: %s%n&quot;, backupKeyResponse.getValue&#40;&#41;.length&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.backupKeyWithResponse#String-Context -->
      *
      * @param name The name of the {@link KeyVaultKey key}.
      * @param context Additional {@link Context} that is passed through the {@link HttpPipeline} during the service
@@ -808,7 +1043,13 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Restores the {@link KeyVaultKey key} in the key vault from its backup.</p>
      * // Pass the key backup byte array to the restore operation.
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.restoreKeyBackup#byte}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.restoreKeyBackup#byte -->
+     * <pre>
+     * byte[] keyBackupByteArray = &#123;&#125;;
+     * KeyVaultKey keyResponse = keyClient.restoreKeyBackup&#40;keyBackupByteArray&#41;;
+     * System.out.printf&#40;&quot;Restored key with name: %s and: id %s%n&quot;, keyResponse.getName&#40;&#41;, keyResponse.getId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.restoreKeyBackup#byte -->
      *
      * @param backup The backup blob associated with the {@link KeyVaultKey key}.
      *
@@ -838,7 +1079,15 @@ public final class KeyClient {
      * <p>Restores the {@link KeyVaultKey key} in the key vault from its backup. Prints out the details of the
      * {@link KeyVaultKey restored key} returned in the {@link Response HTTPresponse}.</p>
      * // Pass the key backup byte array to the restore operation.
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.restoreKeyBackupWithResponse#byte-Context}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.restoreKeyBackupWithResponse#byte-Context -->
+     * <pre>
+     * Response&lt;KeyVaultKey&gt; keyResponse = keyClient.restoreKeyBackupWithResponse&#40;keyBackupByteArray,
+     *     new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Restored key with name: %s and: id %s%n&quot;,
+     *     keyResponse.getValue&#40;&#41;.getName&#40;&#41;, keyResponse.getValue&#40;&#41;.getId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.restoreKeyBackupWithResponse#byte-Context -->
      *
      * @param backup The backup blob associated with the {@link KeyVaultKey key}.
      * @param context Additional {@link Context} that is passed through the {@link HttpPipeline} during the service
@@ -864,13 +1113,34 @@ public final class KeyClient {
      * <p>It is possible to get {@link KeyVaultKey full keys} with key material from this information. Loop over the
      * {@link KeyProperties} and call {@link KeyClient#getKey(String, String)}. This will return the
      * {@link KeyVaultKey key} with key material included as of its latest version.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.listPropertiesOfKeys}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.listPropertiesOfKeys -->
+     * <pre>
+     * for &#40;KeyProperties keyProperties : keyClient.listPropertiesOfKeys&#40;&#41;&#41; &#123;
+     *     KeyVaultKey key = keyClient.getKey&#40;keyProperties.getName&#40;&#41;, keyProperties.getVersion&#40;&#41;&#41;;
+     *
+     *     System.out.printf&#40;&quot;Retrieved key with name: %s and type: %s%n&quot;, key.getName&#40;&#41;, key.getKeyType&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.listPropertiesOfKeys -->
      *
      * <p><strong>Code Samples to iterate keys by page</strong></p>
      * <p>It is possible to get {@link KeyVaultKey full keys} with key material from this information. Iterate over all
      * the {@link KeyProperties} by page and call {@link KeyClient#getKey(String, String)}. This will return the
      * {@link KeyVaultKey key} with key material included as of its latest version.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.listPropertiesOfKeys.iterableByPage}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.listPropertiesOfKeys.iterableByPage -->
+     * <pre>
+     * keyClient.listPropertiesOfKeys&#40;&#41;.iterableByPage&#40;&#41;.forEach&#40;pagedResponse -&gt; &#123;
+     *     System.out.printf&#40;&quot;Got response details. Url: %s. Status code: %d.%n&quot;,
+     *         pagedResponse.getRequest&#40;&#41;.getUrl&#40;&#41;, pagedResponse.getStatusCode&#40;&#41;&#41;;
+     *     pagedResponse.getElements&#40;&#41;.forEach&#40;keyProperties -&gt; &#123;
+     *         KeyVaultKey key = keyClient.getKey&#40;keyProperties.getName&#40;&#41;, keyProperties.getVersion&#40;&#41;&#41;;
+     *
+     *         System.out.printf&#40;&quot;Retrieved key with name: %s and type: %s%n&quot;, key.getName&#40;&#41;,
+     *             key.getKeyType&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.listPropertiesOfKeys.iterableByPage -->
      *
      * @return {@link PagedIterable} of {@link KeyProperties key} of all the {@link KeyVaultKey keys} in the vault.
      */
@@ -890,13 +1160,35 @@ public final class KeyClient {
      * <p>It is possible to get {@link KeyVaultKey full keys} with key material from this information. Loop over the
      * {@link KeyProperties} and call {@link KeyClient#getKey(String, String)}. This will return the
      * {@link KeyVaultKey key} with key material included as of its latest version.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.listPropertiesOfKeys#Context}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.listPropertiesOfKeys#Context -->
+     * <pre>
+     * for &#40;KeyProperties keyProperties : keyClient.listPropertiesOfKeys&#40;new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;&#41; &#123;
+     *     KeyVaultKey key = keyClient.getKey&#40;keyProperties.getName&#40;&#41;, keyProperties.getVersion&#40;&#41;&#41;;
+     *
+     *     System.out.printf&#40;&quot;Retrieved key with name: %s and type: %s%n&quot;, key.getName&#40;&#41;,
+     *         key.getKeyType&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.listPropertiesOfKeys#Context -->
      *
      * <p><strong>Code Samples to iterate keys by page</strong></p>
      * <p>It is possible to get {@link KeyVaultKey full keys} with key material from this information. Iterate over all
      * the {@link KeyProperties} by page and call {@link KeyClient#getKey(String, String)}. This will return the
      * {@link KeyVaultKey key} with key material included as of its latest version.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.listPropertiesOfKeys.iterableByPage}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.listPropertiesOfKeys.iterableByPage -->
+     * <pre>
+     * keyClient.listPropertiesOfKeys&#40;&#41;.iterableByPage&#40;&#41;.forEach&#40;pagedResponse -&gt; &#123;
+     *     System.out.printf&#40;&quot;Got response details. Url: %s. Status code: %d.%n&quot;,
+     *         pagedResponse.getRequest&#40;&#41;.getUrl&#40;&#41;, pagedResponse.getStatusCode&#40;&#41;&#41;;
+     *     pagedResponse.getElements&#40;&#41;.forEach&#40;keyProperties -&gt; &#123;
+     *         KeyVaultKey key = keyClient.getKey&#40;keyProperties.getName&#40;&#41;, keyProperties.getVersion&#40;&#41;&#41;;
+     *
+     *         System.out.printf&#40;&quot;Retrieved key with name: %s and type: %s%n&quot;, key.getName&#40;&#41;,
+     *             key.getKeyType&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.listPropertiesOfKeys.iterableByPage -->
      *
      * @param context Additional {@link Context} that is passed through the {@link HttpPipeline} during the service
      * call.
@@ -917,12 +1209,27 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Lists the {@link DeletedKey deleted keys} in the key vault and for each {@link DeletedKey deleted key} prints
      * out its recovery id.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.listDeletedKeys}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.listDeletedKeys -->
+     * <pre>
+     * for &#40;DeletedKey deletedKey : keyClient.listDeletedKeys&#40;&#41;&#41; &#123;
+     *     System.out.printf&#40;&quot;Deleted key's recovery id:%s%n&quot;, deletedKey.getRecoveryId&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.listDeletedKeys -->
      *
      * <p><strong>Code Samples to iterate over deleted keys by page</strong></p>
      * <p>Iterates over the {@link DeletedKey deleted keys} by page in the key vault and for each deleted key prints out
      * its recovery id.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.listDeletedKeys.iterableByPage}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.listDeletedKeys.iterableByPage -->
+     * <pre>
+     * keyClient.listDeletedKeys&#40;&#41;.iterableByPage&#40;&#41;.forEach&#40;pagedResponse -&gt; &#123;
+     *     System.out.printf&#40;&quot;Got response details. Url: %s. Status code: %d.%n&quot;,
+     *         pagedResponse.getRequest&#40;&#41;.getUrl&#40;&#41;, pagedResponse.getStatusCode&#40;&#41;&#41;;
+     *     pagedResponse.getElements&#40;&#41;.forEach&#40;deletedKey -&gt;
+     *         System.out.printf&#40;&quot;Deleted key's recovery id:%s%n&quot;, deletedKey.getRecoveryId&#40;&#41;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.listDeletedKeys.iterableByPage -->
      *
      * @return {@link PagedIterable} of all of the {@link DeletedKey deleted keys} in the vault.
      */
@@ -940,12 +1247,27 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Lists the {@link DeletedKey deleted keys} in the key vault and for each {@link DeletedKey deleted key} prints
      * out its recovery id.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.listDeletedKeys#Context}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.listDeletedKeys#Context -->
+     * <pre>
+     * for &#40;DeletedKey deletedKey : keyClient.listDeletedKeys&#40;new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;&#41; &#123;
+     *     System.out.printf&#40;&quot;Deleted key's recovery id:%s%n&quot;, deletedKey.getRecoveryId&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.listDeletedKeys#Context -->
      *
      * <p><strong>Code Samples to iterate over deleted keys by page</strong></p>
      * <p>Iterates over the {@link DeletedKey deleted keys} by page in the key vault and for each deleted key prints out
      * its recovery id.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.listDeletedKeys.iterableByPage}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.listDeletedKeys.iterableByPage -->
+     * <pre>
+     * keyClient.listDeletedKeys&#40;&#41;.iterableByPage&#40;&#41;.forEach&#40;pagedResponse -&gt; &#123;
+     *     System.out.printf&#40;&quot;Got response details. Url: %s. Status code: %d.%n&quot;,
+     *         pagedResponse.getRequest&#40;&#41;.getUrl&#40;&#41;, pagedResponse.getStatusCode&#40;&#41;&#41;;
+     *     pagedResponse.getElements&#40;&#41;.forEach&#40;deletedKey -&gt;
+     *         System.out.printf&#40;&quot;Deleted key's recovery id:%s%n&quot;, deletedKey.getRecoveryId&#40;&#41;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.listDeletedKeys.iterableByPage -->
      *
      * @param context Additional {@link Context} that is passed through the {@link HttpPipeline} during the service
      * call.
@@ -966,13 +1288,32 @@ public final class KeyClient {
      * <p>It is possible to get {@link KeyVaultKey full keys} with key material for each version from this information.
      * Loop over the {@link KeyProperties key} and call {@link KeyClient#getKey(String, String)}. This will return the
      * {@link KeyVaultKey keys} with key material included of the specified versions.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.listPropertiesOfKeyVersions#String}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.listPropertiesOfKeyVersions#String -->
+     * <pre>
+     * for &#40;KeyProperties keyProperties : keyClient.listPropertiesOfKeyVersions&#40;&quot;keyName&quot;&#41;&#41; &#123;
+     *     KeyVaultKey key = keyClient.getKey&#40;keyProperties.getName&#40;&#41;, keyProperties.getVersion&#40;&#41;&#41;;
+     *
+     *     System.out.printf&#40;&quot;Retrieved key version: %s with name: %s and type: %s%n&quot;,
+     *         key.getProperties&#40;&#41;.getVersion&#40;&#41;, key.getName&#40;&#41;, key.getKeyType&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.listPropertiesOfKeyVersions#String -->
      *
      * <p><strong>Code Samples to iterate over key versions by page</strong></p>
      * <p>It is possible to get {@link KeyVaultKey full keys} with key material for each version from this information.
      * Iterate over all the {@link KeyProperties key} by page and call {@link KeyClient#getKey(String, String)}. This
      * will return the {@link KeyVaultKey keys} with key material included of the specified versions.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.listPropertiesOfKeyVersions.iterableByPage}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.listPropertiesOfKeyVersions.iterableByPage -->
+     * <pre>
+     * keyClient.listPropertiesOfKeyVersions&#40;&quot;keyName&quot;&#41;.iterableByPage&#40;&#41;.forEach&#40;pagedResponse -&gt; &#123;
+     *     System.out.printf&#40;&quot;Got response details. Url: %s. Status code: %d.%n&quot;,
+     *         pagedResponse.getRequest&#40;&#41;.getUrl&#40;&#41;, pagedResponse.getStatusCode&#40;&#41;&#41;;
+     *     pagedResponse.getElements&#40;&#41;.forEach&#40;keyProperties -&gt;
+     *         System.out.printf&#40;&quot;Key name: %s. Key version: %s.%n&quot;, keyProperties.getName&#40;&#41;,
+     *             keyProperties.getVersion&#40;&#41;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.listPropertiesOfKeyVersions.iterableByPage -->
      *
      * @param name The name of the {@link KeyVaultKey key}.
      *
@@ -995,13 +1336,32 @@ public final class KeyClient {
      * <p>It is possible to get {@link KeyVaultKey full keys} with key material for each version from this information.
      * Loop over the {@link KeyProperties key} and call {@link KeyClient#getKey(String, String)}. This will return the
      * {@link KeyVaultKey keys} with key material included of the specified versions.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.listPropertiesOfKeyVersions#String-Context}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.listPropertiesOfKeyVersions#String-Context -->
+     * <pre>
+     * for &#40;KeyProperties keyProperties : keyClient.listPropertiesOfKeyVersions&#40;&quot;keyName&quot;, new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;&#41; &#123;
+     *     KeyVaultKey key = keyClient.getKey&#40;keyProperties.getName&#40;&#41;, keyProperties.getVersion&#40;&#41;&#41;;
+     *
+     *     System.out.printf&#40;&quot;Retrieved key version: %s with name: %s and type: %s%n&quot;,
+     *         key.getProperties&#40;&#41;.getVersion&#40;&#41;, key.getName&#40;&#41;, key.getKeyType&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.listPropertiesOfKeyVersions#String-Context -->
      *
      * <p><strong>Code Samples to iterate over key versions by page</strong></p>
      * <p>It is possible to get {@link KeyVaultKey full keys} with key material for each version from this information.
      * Iterate over all the {@link KeyProperties key} by page and call {@link KeyClient#getKey(String, String)}. This
      * will return the {@link KeyVaultKey keys} with key material included of the specified versions.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.listPropertiesOfKeyVersions.iterableByPage}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.listPropertiesOfKeyVersions.iterableByPage -->
+     * <pre>
+     * keyClient.listPropertiesOfKeyVersions&#40;&quot;keyName&quot;&#41;.iterableByPage&#40;&#41;.forEach&#40;pagedResponse -&gt; &#123;
+     *     System.out.printf&#40;&quot;Got response details. Url: %s. Status code: %d.%n&quot;,
+     *         pagedResponse.getRequest&#40;&#41;.getUrl&#40;&#41;, pagedResponse.getStatusCode&#40;&#41;&#41;;
+     *     pagedResponse.getElements&#40;&#41;.forEach&#40;keyProperties -&gt;
+     *         System.out.printf&#40;&quot;Key name: %s. Key version: %s.%n&quot;, keyProperties.getName&#40;&#41;,
+     *             keyProperties.getVersion&#40;&#41;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.listPropertiesOfKeyVersions.iterableByPage -->
      *
      * @param name The name of the {@link KeyVaultKey key}.
      * @param context Additional {@link Context} that is passed through the {@link HttpPipeline} during the service

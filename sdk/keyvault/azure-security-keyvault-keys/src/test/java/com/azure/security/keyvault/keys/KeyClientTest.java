@@ -9,6 +9,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.KeyProperties;
@@ -39,7 +40,11 @@ public class KeyClientTest extends KeyClientTestBase {
     }
 
     protected void createKeyClient(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        HttpPipeline httpPipeline = getHttpPipeline(httpClient);
+        createKeyClient(httpClient, serviceVersion, null);
+    }
+
+    protected void createKeyClient(HttpClient httpClient, KeyServiceVersion serviceVersion, String testTenantId) {
+        HttpPipeline httpPipeline = getHttpPipeline(httpClient, testTenantId);
         KeyAsyncClient asyncClient = spy(new KeyClientBuilder()
             .vaultUrl(getEndpoint())
             .pipeline(httpPipeline)
@@ -60,6 +65,19 @@ public class KeyClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     public void setKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyClient(httpClient, serviceVersion);
+        setKeyRunner((expected) -> assertKeyEquals(expected, client.createKey(expected)));
+    }
+
+    /**
+     * Tests that a key can be created in the key vault while using a different tenant ID than the one that will be
+     * provided in the authentication challenge.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void setKeyWithMultipleTenants(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyClient(httpClient, serviceVersion, testResourceNamer.randomUuid());
+        setKeyRunner((expected) -> assertKeyEquals(expected, client.createKey(expected)));
+        KeyVaultCredentialPolicy.clearCache(); // Ensure we don't have anything cached and try again.
         setKeyRunner((expected) -> assertKeyEquals(expected, client.createKey(expected)));
     }
 
@@ -123,11 +141,15 @@ public class KeyClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     public void updateKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyClient(httpClient, serviceVersion);
-        updateKeyRunner((original, updated) -> {
-            assertKeyEquals(original, client.createKey(original));
-            KeyVaultKey keyToUpdate = client.getKey(original.getName());
-            client.updateKeyProperties(keyToUpdate.getProperties().setExpiresOn(updated.getExpiresOn()));
-            assertKeyEquals(updated, client.getKey(original.getName()));
+        updateKeyRunner((createKeyOptions, updateKeyOptions) -> {
+            KeyVaultKey createdKey = client.createKey(createKeyOptions);
+
+            assertKeyEquals(createKeyOptions, createdKey);
+
+            KeyVaultKey updatedKey =
+                client.updateKeyProperties(createdKey.getProperties().setExpiresOn(updateKeyOptions.getExpiresOn()));
+
+            assertKeyEquals(updateKeyOptions, updatedKey);
         });
     }
 
@@ -138,11 +160,15 @@ public class KeyClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     public void updateDisabledKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyClient(httpClient, serviceVersion);
-        updateDisabledKeyRunner((original, updated) -> {
-            assertKeyEquals(original, client.createKey(original));
-            KeyVaultKey keyToUpdate = client.getKey(original.getName());
-            client.updateKeyProperties(keyToUpdate.getProperties().setExpiresOn(updated.getExpiresOn()));
-            assertKeyEquals(updated, client.getKey(original.getName()));
+        updateDisabledKeyRunner((createKeyOptions, updateKeyOptions) -> {
+            KeyVaultKey createdKey = client.createKey(createKeyOptions);
+
+            assertKeyEquals(createKeyOptions, createdKey);
+
+            KeyVaultKey updatedKey =
+                client.updateKeyProperties(createdKey.getProperties().setExpiresOn(updateKeyOptions.getExpiresOn()));
+
+            assertKeyEquals(updateKeyOptions, updatedKey);
         });
     }
 
@@ -451,24 +477,6 @@ public class KeyClientTest extends KeyClientTestBase {
             List<KeyProperties> keyVersionsList = new ArrayList<>();
             keyVersionsOutput.forEach(keyVersionsList::add);
             assertEquals(keyVersions.size(), keyVersionsList.size());
-        });
-    }
-
-    /**
-     * Tests that an RSA key with a public exponent can be created in the key vault.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
-    public void createRsaKeyWithPublicExponent(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        createKeyClient(httpClient, serviceVersion);
-        createRsaKeyWithPublicExponentRunner((createRsaKeyOptions) -> {
-            KeyVaultKey rsaKey = client.createRsaKey(createRsaKeyOptions);
-
-            assertKeyEquals(createRsaKeyOptions, rsaKey);
-            // TODO: Investigate why the KV service sets the JWK's "e" parameter to "AQAB" instead of "Aw".
-            /*assertEquals(BigInteger.valueOf(createRsaKeyOptions.getPublicExponent()),
-                toBigInteger(rsaKey.getKey().getE()));*/
-            assertEquals(createRsaKeyOptions.getKeySize(), rsaKey.getKey().getN().length * 8);
         });
     }
 

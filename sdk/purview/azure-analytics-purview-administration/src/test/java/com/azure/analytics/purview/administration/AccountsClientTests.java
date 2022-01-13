@@ -19,7 +19,7 @@ public class AccountsClientTests extends PurviewAccountClientTestBase {
 
     @Test
     public void testGetAccount() {
-        BinaryData response = client.getAccountPropertiesWithResponse(null, null).getValue();
+        BinaryData response = client.getAccountPropertiesWithResponse(null).getValue();
         System.out.println(response);
     }
 }

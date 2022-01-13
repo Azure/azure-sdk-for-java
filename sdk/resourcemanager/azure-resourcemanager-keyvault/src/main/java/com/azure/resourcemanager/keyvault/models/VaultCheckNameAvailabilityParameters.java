@@ -24,7 +24,7 @@ public final class VaultCheckNameAvailabilityParameters {
      * The type of resource, Microsoft.KeyVault/vaults
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "Microsoft.KeyVault/vaults";
 
     /** Creates an instance of VaultCheckNameAvailabilityParameters class. */
     public VaultCheckNameAvailabilityParameters() {

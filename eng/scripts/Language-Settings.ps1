@@ -274,7 +274,7 @@ function SourcePackageHasComFolder($artifactNamePrefix, $packageDirectory) {
     $mvnResults = mvn `
       dependency:copy `
       -Dartifact="$packageArtifact" `
-      -DoutputDirectory="$packageDirectory"
+      -DoutputDirectory="$packageDirectory" 
 
     if ($LASTEXITCODE) {
       LogWarning "Could not download source artifact: $packageArtifact"
@@ -336,7 +336,12 @@ function PackageDependenciesResolve($artifactNamePrefix, $packageDirectory) {
   return $true
 }
 
-function ValidatePackage($groupId, $artifactId, $version, $workingDirectory) {
+function ValidatePackage($groupId, $artifactId, $version, $DocValidationImageId) {
+  $workingDirectory = Join-Path ([System.IO.Path]::GetTempPath()) "validation"
+  if (!(Test-Path $workingDirectory)) {
+    New-Item -ItemType Directory -Force -Path $workingDirectory | Out-Null
+  }
+
   $artifactNamePrefix = "${groupId}:${artifactId}:${version}"
 
   $packageDirectory = Join-Path `
@@ -344,11 +349,51 @@ function ValidatePackage($groupId, $artifactId, $version, $workingDirectory) {
     "${groupId}__${artifactId}__${version}"
   New-Item -ItemType Directory -Path $packageDirectory -Force | Out-Null
 
-  return (SourcePackageHasComFolder $artifactNamePrefix $packageDirectory) `
-    -and (PackageDependenciesResolve $artifactNamePrefix $packageDirectory)
+  # Add more validation by replicating as much of the docs CI process as
+  # possible
+  # https://github.com/Azure/azure-sdk-for-python/issues/20109
+  if (!$DocValidationImageId) 
+  {
+    Write-Host "Validating using mvn command directly on $artifactId."
+    return FallbackValidation -artifactNamePrefix $artifactNamePrefix -workingDirectory $packageDirectory
+  } 
+  else 
+  {
+    Write-Host "Validating using $DocValidationImageId on $artifactId."
+    return DockerValidation -packageName "$artifactId" -packageVersion "$version" -groupId "$groupId" -DocValidationImageId $DocValidationImageId -workingDirectory $packageDirectory
+  }
 }
 
-function Update-java-DocsMsPackages($DocsRepoLocation, $DocsMetadata) {
+function FallbackValidation ($artifactNamePrefix, $workingDirectory) 
+{
+  return (SourcePackageHasComFolder $artifactNamePrefix $workingDirectory) `
+    -and (PackageDependenciesResolve $artifactNamePrefix $workingDirectory)
+}
+
+function DockerValidation($packageName, $packageVersion, $groupId, $DocValidationImageId, $workingdirectory) 
+{
+  $output = docker run -v "${workingDirectory}:/workdir/out" `
+    -e TARGET_PACKAGE=$packageName -e TARGET_VERSION=$packageVersion -e TARGET_GROUP_ID=$groupId -t $DocValidationImageId 2>&1 
+  # The docker exit codes: https://docs.docker.com/engine/reference/run/#exit-status
+  # If the docker failed because of docker itself instead of the application, 
+  # we should skip the validation and keep the packages. 
+  $artifactNamePrefix = "${groupId}:${packageName}:${packageVersion}"
+  if ($LASTEXITCODE -eq 125 -Or $LASTEXITCODE -eq 126 -Or $LASTEXITCODE -eq 127) 
+  { 
+    LogWarning "The `docker` command does not work with exit code $LASTEXITCODE. Fall back to mvn install $artifactNamePrefix directly."
+    $output | Write-Host
+    FallbackValidation -artifactNamePrefix "$artifactNamePrefix" -workingDirectory $workingdirectory
+  }
+  elseif ($LASTEXITCODE -ne 0) 
+  { 
+    LogWarning "Package $artifactNamePrefix ref docs validation failed."
+    $output | Write-Host
+    return $false
+  }
+  return $true
+}
+
+function Update-java-DocsMsPackages($DocsRepoLocation, $DocsMetadata, $DocValidationImageId) {
   Write-Host "Excluded packages:"
   foreach ($excludedPackage in $PackageExclusions.Keys) {
     Write-Host "  $excludedPackage - $($PackageExclusions[$excludedPackage])"
@@ -371,9 +416,6 @@ function Update-java-DocsMsPackages($DocsRepoLocation, $DocsMetadata) {
 
 function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
   $packageConfig = Get-Content $DocConfigFile -Raw | ConvertFrom-Json
-
-  $workingDirectory = Join-Path ([System.IO.Path]::GetTempPath()) ([System.IO.Path]::GetRandomFileName())
-  New-Item -ItemType Directory -Force -Path $workingDirectory | Out-Null
 
   $packageOutputPath = 'docs-ref-autogen'
   if ($Mode -eq 'preview') {
@@ -439,7 +481,7 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
     # If upgrading the package, run basic sanity checks against the package
     if ($package.packageVersion -ne $packageVersion) {
       Write-Host "Validating new version detected for $packageName ($packageVersion)"
-      $validatePackageResult = ValidatePackage $package.packageGroupId $package.packageArtifactId $packageVersion $workingDirectory
+      $validatePackageResult = ValidatePackage $package.packageGroupId $package.packageArtifactId $packageVersion 
 
       if (!$validatePackageResult) {
         LogWarning "Package is not valid: $packageName. Keeping old version."
@@ -480,7 +522,7 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
     }
 
     Write-Host "Validating new package $($packageGroupId):$($packageName):$($packageVersion)"
-    $validatePackageResult = ValidatePackage $packageGroupId $packageName $packageVersion $workingDirectory
+    $validatePackageResult = ValidatePackage $packageGroupId $packageName $packageVersion 
     if (!$validatePackageResult) {
       LogWarning "Package is not valid: ${packageGroupId}:$packageName. Cannot onboard."
       continue
@@ -583,7 +625,7 @@ function GetExistingPackageVersions ($PackageName, $GroupId=$null)
     return $null
   }
   catch {
-    LogError "Failed to retrieve package versions. `n$_"
+    LogError "Failed to retrieve package versions for ${PackageName}. $($_.Exception.Message)"
     return $null
   }
 }
@@ -610,4 +652,13 @@ function Get-java-DocsMsMetadataForPackage($PackageInfo) {
     PreviewReadMeLocation = 'docs-ref-services/preview'
     Suffix = ''
   }
+}
+
+function Validate-java-DocMsPackages ($PackageInfo, $DocValidationImageId) 
+{
+  if (!(ValidatePackage $PackageInfo.Group $PackageInfo.Name $PackageInfo.Version $DocValidationImageId)) 
+  {
+    Write-Error "Package $($PackageInfo.Name) failed on validation" -ErrorAction Continue
+  }
+  return
 }

@@ -497,7 +497,7 @@ public final class IpGroupsClientImpl
         return this
             .client
             .<IpGroupInner, IpGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), IpGroupInner.class, IpGroupInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), IpGroupInner.class, IpGroupInner.class, this.client.getContext());
     }
 
     /**
@@ -910,7 +910,8 @@ public final class IpGroupsClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, ipGroupsName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

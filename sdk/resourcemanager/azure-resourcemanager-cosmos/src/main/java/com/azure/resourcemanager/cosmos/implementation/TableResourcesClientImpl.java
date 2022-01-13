@@ -687,7 +687,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                 this.client.getHttpPipeline(),
                 TableGetResultsInner.class,
                 TableGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -978,7 +978,8 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteTableWithResponseAsync(resourceGroupName, accountName, tableName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1437,7 +1438,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1747,7 +1748,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2015,7 +2016,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

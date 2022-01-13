@@ -20,9 +20,16 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.security.InvalidAlgorithmParameterException;
+//import java.security.KeyPair;
+//import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
+//import java.security.Provider;
+//import java.security.Security;
+//import java.security.spec.ECGenParameterSpec;
 import java.util.Arrays;
+//import java.util.HashMap;
 import java.util.List;
+//import java.util.Map;
 import java.util.Random;
 
 import static com.azure.security.keyvault.keys.cryptography.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;

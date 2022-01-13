@@ -18,9 +18,15 @@ import java.util.Objects;
 public class CosmosPageRequest extends PageRequest {
     private static final long serialVersionUID = 6093304300037688375L;
 
+    /**
+     * Offset
+     */
     private long offset;
 
     // Request continuation token used to resume query
+    /**
+     * Request continuation token
+     */
     private final String requestContinuation;
 
     /**

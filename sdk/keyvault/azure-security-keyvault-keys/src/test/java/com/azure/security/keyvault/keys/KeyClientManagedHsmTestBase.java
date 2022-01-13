@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Test;
 
 public interface KeyClientManagedHsmTestBase {
     @Test
+    void createRsaKeyWithPublicExponent(HttpClient httpClient, KeyServiceVersion serviceVersion);
+
+    @Test
     void createOctKeyWithDefaultSize(HttpClient httpClient, KeyServiceVersion serviceVersion);
 
     @Test

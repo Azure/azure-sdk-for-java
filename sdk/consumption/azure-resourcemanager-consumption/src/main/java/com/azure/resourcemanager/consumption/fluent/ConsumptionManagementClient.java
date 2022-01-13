@@ -129,13 +129,6 @@ public interface ConsumptionManagementClient {
     PriceSheetsClient getPriceSheets();
 
     /**
-     * Gets the ForecastsClient object to access its operations.
-     *
-     * @return the ForecastsClient object.
-     */
-    ForecastsClient getForecasts();
-
-    /**
      * Gets the OperationsClient object to access its operations.
      *
      * @return the OperationsClient object.

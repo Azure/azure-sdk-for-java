@@ -5,6 +5,7 @@
 package com.azure.security.attestation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.security.attestation.models.CertificateModification;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The result of a policy certificate modification. */
