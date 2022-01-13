@@ -55,9 +55,6 @@
       --add-opens com.azure.messaging.eventgrid/com.azure.messaging.eventgrid=ALL-UNNAMED
       --add-opens com.azure.messaging.eventgrid/com.azure.messaging.eventgrid.implementation=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <developers>

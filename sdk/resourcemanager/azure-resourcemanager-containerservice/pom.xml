@@ -39,9 +39,6 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.resourcemanager.containerservice/com.azure.resourcemanager.containerservice=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <developers>
