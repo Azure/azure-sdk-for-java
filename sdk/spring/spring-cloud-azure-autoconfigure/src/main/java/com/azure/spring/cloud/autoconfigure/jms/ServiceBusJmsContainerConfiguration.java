@@ -25,7 +25,7 @@ import javax.jms.ConnectionFactory;
 @ConditionalOnClass(EnableJms.class)
 public class ServiceBusJmsContainerConfiguration {
 
-    private static final Logger logger = LoggerFactory.getLogger(ServiceBusJmsContainerConfiguration.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusJmsContainerConfiguration.class);
 
     /**
      * The Azure ServiceBus JMS properties
@@ -93,7 +93,7 @@ public class ServiceBusJmsContainerConfiguration {
 
         @Override
         public void handleError(Throwable t) {
-            logger.error(t.getCause().getMessage());
+            LOGGER.error(t.getCause().getMessage());
         }
     }
 }
