@@ -5,8 +5,8 @@
 - Supported spring-cloud version: 2021.0.0
 
 ### Features Added
-
-### Breaking Changes
+- Support StorageQueueMessageConverter as a bean to support customize ObjectMapper.
+- Support EventHubsMessageConverter as a bean to support customize ObjectMapper.
 
 ### Dependency Updates
 Upgrade dependency according to spring-boot-dependencies:2.6.1 and spring-cloud-dependencies:2021.0.0

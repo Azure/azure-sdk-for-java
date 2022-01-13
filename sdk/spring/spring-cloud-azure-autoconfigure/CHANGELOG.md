@@ -3,7 +3,8 @@
 ## 4.0.0-beta.3 (Unreleased)
 
 ### Features Added
-
+- Support StorageQueueMessageConverter as a bean to support customize ObjectMapper.
+- Support EventHubsMessageConverter as a bean to support customize ObjectMapper.
 ### Breaking Changes
 
 ### Bugs Fixed
