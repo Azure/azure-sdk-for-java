@@ -160,28 +160,6 @@ public class RoomsClientTest extends RoomsTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getRoomWithUnexistingRoomIdReturnBadRequest(HttpClient httpClient) {
-        RoomsClientBuilder builder = getRoomsClientWithConnectionString(httpClient);
-        roomsClient = setupSyncClient(builder, "getRoomWithUnexistingRoomIdReturnBadRequest");
-        assertNotNull(roomsClient);
-        assertThrows(HttpResponseException.class, () -> {
-            roomsClient.getRoom(NONEXIST_ROOM_ID);
-        });
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void deleteRoomWithUnexistingRoomIdReturnBadRequest(HttpClient httpClient) {
-        RoomsClientBuilder builder = getRoomsClientWithConnectionString(httpClient);
-        roomsClient = setupSyncClient(builder, "deleteRoomWithUnexistingRoomIdReturnBadRequest");
-        assertNotNull(roomsClient);
-        assertThrows(HttpResponseException.class, () -> {
-            roomsClient.deleteRoomWithResponse(NONEXIST_ROOM_ID, Context.NONE);
-        });
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void patchMeetingValidTimeWithResponse(HttpClient httpClient) {
         RoomsClientBuilder builder = getRoomsClientWithConnectionString(httpClient);
         roomsClient = setupSyncClient(builder, "patchMeetingValidTimeWithResponse");
@@ -208,6 +186,28 @@ public class RoomsClientTest extends RoomsTestBase {
 
         Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);
         assertEquals(deleteResponse.getStatusCode(), 204);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getRoomWithUnexistingRoomIdReturnBadRequest(HttpClient httpClient) {
+        RoomsClientBuilder builder = getRoomsClientWithConnectionString(httpClient);
+        roomsClient = setupSyncClient(builder, "getRoomWithUnexistingRoomIdReturnBadRequest");
+        assertNotNull(roomsClient);
+        assertThrows(HttpResponseException.class, () -> {
+            roomsClient.getRoom(NONEXIST_ROOM_ID);
+        });
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void deleteRoomWithUnexistingRoomIdReturnBadRequest(HttpClient httpClient) {
+        RoomsClientBuilder builder = getRoomsClientWithConnectionString(httpClient);
+        roomsClient = setupSyncClient(builder, "deleteRoomWithUnexistingRoomIdReturnBadRequest");
+        assertNotNull(roomsClient);
+        assertThrows(HttpResponseException.class, () -> {
+            roomsClient.deleteRoomWithResponse(NONEXIST_ROOM_ID, Context.NONE);
+        });
     }
 
     private RoomsClient setupSyncClient(RoomsClientBuilder builder, String testName) {
