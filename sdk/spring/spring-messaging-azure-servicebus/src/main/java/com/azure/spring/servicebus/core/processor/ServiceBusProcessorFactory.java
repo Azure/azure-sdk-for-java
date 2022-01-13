@@ -58,7 +58,7 @@ public interface ServiceBusProcessorFactory {
     interface Listener {
 
         /**
-         * The listener method that the processor has been added.
+         * The callback method that the processor has been added.
          * @param name the name for the processor.
          * @param subscription the subscription for the processor.
          * @param client the client for the processor.
@@ -66,7 +66,7 @@ public interface ServiceBusProcessorFactory {
         void processorAdded(String name, String subscription, ServiceBusProcessorClient client);
 
         /**
-         * The default listener method that the processor has been removed.
+         * The default callback method that the processor has been removed.
          * @param name the name for the processor.
          * @param subscription the subscription for the processor.
          * @param client the client for the processor.
