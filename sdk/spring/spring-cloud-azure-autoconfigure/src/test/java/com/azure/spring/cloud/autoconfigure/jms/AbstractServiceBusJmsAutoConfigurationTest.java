@@ -92,7 +92,7 @@ abstract class AbstractServiceBusJmsAutoConfigurationTest {
                 assertThat(context).hasSingleBean(AzureServiceBusJmsProperties.class);
                 assertThat(context.getBean(AzureServiceBusJmsProperties.class).getConnectionString()).isEqualTo(CONNECTION_STRING);
                 assertThat(context.getBean(AzureServiceBusJmsProperties.class).getTopicClientId()).isEqualTo("cid");
-                assertThat(context.getBean(AzureServiceBusJmsProperties.class).getIdleTimeout().toSeconds()).isEqualTo(123);
+                assertThat(context.getBean(AzureServiceBusJmsProperties.class).getIdleTimeout().getSeconds()).isEqualTo(123);
             });
     }
 
