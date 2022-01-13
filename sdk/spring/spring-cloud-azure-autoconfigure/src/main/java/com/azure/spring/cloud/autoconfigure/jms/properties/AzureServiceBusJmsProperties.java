@@ -32,7 +32,7 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
      */
     private String topicClientId;
 
-    private Duration idleTimeout = Duration.ofMillis(1800000);
+    private Duration idleTimeout = Duration.ofMinutes(30);
 
     private String pricingTier;
 

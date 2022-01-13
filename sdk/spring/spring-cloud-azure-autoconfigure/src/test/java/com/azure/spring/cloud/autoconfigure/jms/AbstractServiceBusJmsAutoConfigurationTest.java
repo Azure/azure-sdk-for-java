@@ -87,12 +87,12 @@ abstract class AbstractServiceBusJmsAutoConfigurationTest {
             .withPropertyValues(
                 "spring.jms.servicebus.connection-string=" + CONNECTION_STRING,
                 "spring.jms.servicebus.topic-client-id=cid",
-                "spring.jms.servicebus.idle-timeout=123")
+                "spring.jms.servicebus.idle-timeout=123s")
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureServiceBusJmsProperties.class);
                 assertThat(context.getBean(AzureServiceBusJmsProperties.class).getConnectionString()).isEqualTo(CONNECTION_STRING);
                 assertThat(context.getBean(AzureServiceBusJmsProperties.class).getTopicClientId()).isEqualTo("cid");
-                assertThat(context.getBean(AzureServiceBusJmsProperties.class).getIdleTimeout()).isEqualTo(123);
+                assertThat(context.getBean(AzureServiceBusJmsProperties.class).getIdleTimeout().toSeconds()).isEqualTo(123);
             });
     }
 
