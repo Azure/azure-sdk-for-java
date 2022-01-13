@@ -188,7 +188,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         } else {
             routeTableParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -255,7 +255,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         } else {
             routeTableParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -294,7 +294,11 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         return this
             .client
             .<HubRouteTableInner, HubRouteTableInner>getLroResult(
-                mono, this.client.getHttpPipeline(), HubRouteTableInner.class, HubRouteTableInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                HubRouteTableInner.class,
+                HubRouteTableInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -504,7 +508,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         if (routeTableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -559,7 +563,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         if (routeTableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -668,7 +672,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         if (routeTableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -723,7 +727,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         if (routeTableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeTableName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -756,7 +760,8 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
             deleteWithResponseAsync(resourceGroupName, virtualHubName, routeTableName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -918,7 +923,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -977,7 +982,7 @@ public final class HubRouteTablesClientImpl implements HubRouteTablesClient {
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

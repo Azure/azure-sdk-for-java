@@ -763,7 +763,8 @@ public final class CassandraClustersClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, clusterName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1014,7 +1015,7 @@ public final class CassandraClustersClientImpl
                 this.client.getHttpPipeline(),
                 ClusterResourceInner.class,
                 ClusterResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1286,7 +1287,7 @@ public final class CassandraClustersClientImpl
                 this.client.getHttpPipeline(),
                 ClusterResourceInner.class,
                 ClusterResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1546,7 +1547,11 @@ public final class CassandraClustersClientImpl
         return this
             .client
             .<CommandOutputInner, CommandOutputInner>getLroResult(
-                mono, this.client.getHttpPipeline(), CommandOutputInner.class, CommandOutputInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                CommandOutputInner.class,
+                CommandOutputInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1795,7 +1800,8 @@ public final class CassandraClustersClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = deallocateWithResponseAsync(resourceGroupName, clusterName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2043,7 +2049,8 @@ public final class CassandraClustersClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, clusterName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

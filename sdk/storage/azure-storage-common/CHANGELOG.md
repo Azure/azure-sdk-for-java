@@ -1,6 +1,6 @@
 # Release History
 
-## 12.15.0-beta.2 (Unreleased)
+## 12.15.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,23 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.15.0-beta.2 (2021-12-07)
+
+### Features Added
+- Added support for 2021-02-12 service version.
+
+### Bugs Fixed
+- Fixed a bug that would cause authenticating with a sas token to fail if the timestamps in the token were formatted differently.
+
+## 12.14.1 (2021-11-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.21.0` to version `1.22.0`.
+- Upgraded `azure-core-http-netty` from `1.11.1` to version `1.11.2`.
 
 ## 12.15.0-beta.1 (2021-11-05)
 

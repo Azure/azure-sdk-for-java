@@ -401,7 +401,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginPurgeAsync(
         String location, String resourceGroupName, String accountName) {
         Mono<Response<Flux<ByteBuffer>>> mono = purgeWithResponseAsync(location, resourceGroupName, accountName);
@@ -422,7 +422,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginPurgeAsync(
         String location, String resourceGroupName, String accountName, Context context) {
         context = this.client.mergeContext(context);
@@ -444,7 +444,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurge(
         String location, String resourceGroupName, String accountName) {
         return beginPurgeAsync(location, resourceGroupName, accountName).getSyncPoller();
@@ -462,7 +462,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurge(
         String location, String resourceGroupName, String accountName, Context context) {
         return beginPurgeAsync(location, resourceGroupName, accountName, context).getSyncPoller();

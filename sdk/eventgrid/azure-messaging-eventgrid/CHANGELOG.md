@@ -1,14 +1,31 @@
 # Release History
 
-## 4.8.0-beta.1 (Unreleased)
+## 4.8.0 (2022-01-13)
 
 ### Features Added
+- Added new properties
+    - `deleteLocation` to `AcsRecordingChunkInfoProperties`,
+    - `recordingChannelType`, `recordingContentType`, `recordingFormatType` to `AcsRecordingFileStatusUpdatedEventData`
+    - `connectedRegistry`, `location` to `ContainerRegistryImagePushedEventData`, `ContainerRegistryImageDeletedEventData`,
+      `ContainerRegistryEventConnectedRegistry`, `ContainerRegistryChartPushedEventData`,
+      `ContainerRegistryChartDeletedEventData`, `ContainerResistryArtifactEventData`
 
-### Breaking Changes
-
-### Bugs Fixed
+- Added new model type,
+    - `ContainerRegistryEventConnectedRegistry`, `RecordingChannelType`, `RecordingContentType`, `RecordingFormatType`
 
 ### Other Changes
+
+#### Dependency Updates
+- Update `azure-core` dependency to `1.24.1`.
+- Update `azure-core-http-netty` dependency to `1.11.6`.
+
+## 4.7.1 (2021-11-11)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` from `1.21.0` to `1.22.0`.
+- Updated `azure-core-http-netty` from `1.11.1` to `1.11.2`.
 
 ## 4.7.0 (2021-10-13)
 

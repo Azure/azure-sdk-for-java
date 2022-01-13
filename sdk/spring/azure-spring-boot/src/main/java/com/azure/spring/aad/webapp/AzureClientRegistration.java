@@ -18,15 +18,31 @@ public class AzureClientRegistration {
     private final ClientRegistration client;
     private final Set<String> accessTokenScopes;
 
+    /**
+     * Creates a new instance of {@link AzureClientRegistration}.
+     *
+     * @param client the client registration
+     * @param scopes the set of access token scopes
+     */
     public AzureClientRegistration(ClientRegistration client, Set<String> scopes) {
         this.client = client;
         this.accessTokenScopes = scopes;
     }
 
+    /**
+     * Gets the client registration.
+     *
+     * @return the client registration
+     */
     public ClientRegistration getClient() {
         return client;
     }
 
+    /**
+     * Gets the set of access token scopes.
+     *
+     * @return the set of access token scopes
+     */
     public Set<String> getAccessTokenScopes() {
         return accessTokenScopes;
     }

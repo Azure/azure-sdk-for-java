@@ -8,6 +8,8 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.data.schemaregistry.models.SchemaFormat;
@@ -19,6 +21,7 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
@@ -43,16 +46,16 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
     static final String SCHEMA_CONTENT_NO_WHITESPACE = WHITESPACE_PATTERN.matcher(SCHEMA_CONTENT).replaceAll("");
 
     // When we regenerate recordings, make sure that the schema group matches what we are persisting.
-    static final String PLAYBACK_TEST_GROUP = "testgroup001";
+    static final String PLAYBACK_TEST_GROUP = "mygroup";
+    static final String PLAYBACK_ENDPOINT = "https://foo.servicebus.windows.net";
 
     private String schemaGroup;
     private SchemaRegistryClientBuilder builder;
 
     @Override
     protected void beforeTest() {
-        final String endpoint;
         TokenCredential tokenCredential;
-
+        String endpoint;
         if (interceptorManager.isPlaybackMode()) {
             tokenCredential = mock(TokenCredential.class);
             schemaGroup = PLAYBACK_TEST_GROUP;
@@ -64,7 +67,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
                 });
             });
 
-            endpoint = "https://foo.servicebus.windows.net";
+            endpoint = PLAYBACK_ENDPOINT;
         } else {
             tokenCredential = new DefaultAzureCredentialBuilder().build();
             endpoint = System.getenv(SCHEMA_REGISTRY_ENDPOINT);
@@ -82,6 +85,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
             builder.httpClient(interceptorManager.getPlaybackClient());
         } else {
             builder.addPolicy(new RetryPolicy())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .addPolicy(interceptorManager.getRecordPolicy());
         }
     }
@@ -202,6 +206,53 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
     }
 
     /**
+     * Verifies that a 415 is returned if we use an invalid schema format.
+     */
+    @Test
+    public void registerSchemaInvalidFormat() {
+        // Arrange
+        final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
+        final SchemaRegistryAsyncClient client = builder.buildAsyncClient();
+        final SchemaFormat unknownSchemaFormat = SchemaFormat.fromString("protobuf");
+
+        // Act & Assert
+        StepVerifier.create(client.registerSchemaWithResponse(schemaGroup, schemaName, SCHEMA_CONTENT, unknownSchemaFormat))
+            .expectErrorSatisfies(error -> {
+                assertTrue(error instanceof HttpResponseException);
+
+                final HttpResponseException responseException = ((HttpResponseException) error);
+                assertEquals(415, responseException.getResponse().getStatusCode());
+            })
+            .verify();
+    }
+
+    /**
+     * Verifies that if we register a schema and try to fetch it using an invalid schema format, an error is returned.
+     */
+    @Test
+    public void registerAndGetSchemaPropertiesWithInvalidFormat() {
+        // Arrange
+        final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
+        final SchemaRegistryAsyncClient client1 = builder.buildAsyncClient();
+        final SchemaRegistryAsyncClient client2 = builder.buildAsyncClient();
+        final SchemaFormat invalidFormat = SchemaFormat.fromString("protobuf");
+
+        final SchemaProperties schemaProperties = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT,
+            SchemaFormat.AVRO).block(Duration.ofSeconds(10));
+
+        assertNotNull(schemaProperties);
+
+        // Act & Assert
+        StepVerifier.create(client2.getSchemaProperties(schemaGroup, schemaName, SCHEMA_CONTENT, invalidFormat))
+            .expectErrorSatisfies(error -> {
+                assertTrue(error instanceof HttpResponseException);
+
+                final HttpResponseException responseException = ((HttpResponseException) error);
+                assertEquals(415, responseException.getResponse().getStatusCode());
+            }).verify();
+    }
+
+    /**
      * Verifies that we can register a schema and then get it by its schemaId.
      */
     @Test
@@ -248,7 +299,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         final SchemaRegistryAsyncClient client1 = builder.buildAsyncClient();
 
         // Act & Assert
-        StepVerifier.create(client1.getSchemaProperties(PLAYBACK_TEST_GROUP, "bar", SCHEMA_CONTENT, SchemaFormat.AVRO))
+        StepVerifier.create(client1.getSchemaProperties(schemaGroup, "bar", SCHEMA_CONTENT, SchemaFormat.AVRO))
             .expectErrorSatisfies(error -> {
                 assertTrue(error instanceof ResourceNotFoundException);
                 assertEquals(404, ((ResourceNotFoundException) error).getResponse().getStatusCode());

@@ -3,7 +3,8 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosAsyncClient
-import com.azure.cosmos.models.CosmosQueryRequestOptions
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers
+import com.azure.cosmos.models.{CosmosQueryRequestOptions, FeedRange}
 import com.azure.cosmos.spark.CosmosPartitionPlanner.logWarning
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.CosmosPagedIterable
@@ -88,6 +89,14 @@ private object CosmosTableSchemaInferrer
   private[spark] def inferSchema(client: CosmosAsyncClient,
                                  userConfig: Map[String, String],
                                  defaultSchema: StructType): StructType = {
+
+    TransientErrorsRetryPolicy.executeWithRetry(() =>
+      inferSchemaImpl(client, userConfig, defaultSchema))
+  }
+
+  private[this] def inferSchemaImpl(client: CosmosAsyncClient,
+                                 userConfig: Map[String, String],
+                                 defaultSchema: StructType): StructType = {
     val cosmosInferenceConfig = CosmosSchemaInferenceConfig.parseCosmosInferenceConfig(userConfig)
     val cosmosReadConfig = CosmosReadConfig.parseCosmosReadConfig(userConfig)
     if (cosmosInferenceConfig.inferSchemaEnabled) {
@@ -98,6 +107,13 @@ private object CosmosTableSchemaInferrer
       queryOptions.setMaxBufferedItemCount(cosmosInferenceConfig.inferSchemaSamplingSize)
       val queryText = cosmosInferenceConfig.inferSchemaQuery match {
         case None =>
+          ImplementationBridgeHelpers
+            .CosmosQueryRequestOptionsHelper
+            .getCosmosQueryRequestOptionsAccessor
+            .disallowQueryPlanRetrieval(queryOptions)
+          queryOptions.setMaxDegreeOfParallelism(1);
+          queryOptions.setFeedRange(FeedRange.forFullRange())
+
           cosmosReadConfig.customQuery match {
             case None => s"select TOP ${cosmosInferenceConfig.inferSchemaSamplingSize} * from c"
             case _ => cosmosReadConfig.customQuery.get.queryText

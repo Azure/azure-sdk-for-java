@@ -1,5 +1,17 @@
 # Release History
 
+## 1.0.0 (2022-01-11)
+
+### Breaking Changes
+ - Renamed `ArtifactTagOrderBy` to `ArtifactTagOrder`.
+ - Renamed `ArtifactManifestOrderBy` to `ArtifactManifestOrder`.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` to `1.24.1`
+- Upgraded `azure-core-http-netty` to `1.11.6`
+
 ## 1.0.0-beta.5 (2021-11-09)
 ### New features
 - Enabled support for the stable `2021-07-01` swagger api-version.

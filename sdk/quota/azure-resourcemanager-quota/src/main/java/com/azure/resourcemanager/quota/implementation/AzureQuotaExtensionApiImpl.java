@@ -22,7 +22,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.quota.fluent.AzureQuotaExtensionApi;
-import com.azure.resourcemanager.quota.fluent.OperationsClient;
+import com.azure.resourcemanager.quota.fluent.QuotaOperationsClient;
 import com.azure.resourcemanager.quota.fluent.QuotaRequestStatusClient;
 import com.azure.resourcemanager.quota.fluent.QuotasClient;
 import com.azure.resourcemanager.quota.fluent.UsagesClient;
@@ -137,16 +137,16 @@ public final class AzureQuotaExtensionApiImpl implements AzureQuotaExtensionApi 
         return this.quotaRequestStatus;
     }
 
-    /** The OperationsClient object to access its operations. */
-    private final OperationsClient operations;
+    /** The QuotaOperationsClient object to access its operations. */
+    private final QuotaOperationsClient quotaOperations;
 
     /**
-     * Gets the OperationsClient object to access its operations.
+     * Gets the QuotaOperationsClient object to access its operations.
      *
-     * @return the OperationsClient object.
+     * @return the QuotaOperationsClient object.
      */
-    public OperationsClient getOperations() {
-        return this.operations;
+    public QuotaOperationsClient getQuotaOperations() {
+        return this.quotaOperations;
     }
 
     /**
@@ -172,7 +172,7 @@ public final class AzureQuotaExtensionApiImpl implements AzureQuotaExtensionApi 
         this.usages = new UsagesClientImpl(this);
         this.quotas = new QuotasClientImpl(this);
         this.quotaRequestStatus = new QuotaRequestStatusClientImpl(this);
-        this.operations = new OperationsClientImpl(this);
+        this.quotaOperations = new QuotaOperationsClientImpl(this);
     }
 
     /**

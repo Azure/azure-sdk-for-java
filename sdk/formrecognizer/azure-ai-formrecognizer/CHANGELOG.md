@@ -1,6 +1,16 @@
 # Release History
 
-## 4.0.0-beta.2 (Unreleased)
+## 4.0.0-beta.3 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 4.0.0-beta.2 (2021-11-10)
 
 ### Features Added
 - Update `HttpResponseException` to use azure-core `ResponseError`.
@@ -8,11 +18,18 @@
 
 ### Breaking Changes
 - Rename `DocumentAnalysisException`, `FormRecognizerError`, `InnerError` to 
-`DocumentModelOperationException`, `DocumentModelOperationError`, `DocumentModelOperationInnerError` respectively. 
-
-### Bugs Fixed
+`DocumentModelOperationException`, `DocumentModelOperationError`, `DocumentModelOperationInnerError` respectively.
 
 ### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.22.0`.
+- Updated `azure-core-http-netty` to `1.11.2`.
+
+## 3.1.6 (2021-11-10)
+### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.22.0`.
+- Updated `azure-core-http-netty` to `1.11.2`.
 
 ## 4.0.0-beta.1 (2021-10-07)
 This version of the SDK defaults to the latest supported API version, which currently is 2021-09-30-preview.

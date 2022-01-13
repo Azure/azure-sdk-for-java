@@ -227,8 +227,8 @@ public final class ConfigurationAsyncClient {
 
                     return Mono.error(throwable);
                 })
-            .doOnSubscribe(ignoredValue -> logger.info("Adding ConfigurationSetting - {}", setting))
-            .doOnSuccess(response -> logger.info("Added ConfigurationSetting - {}", response.getValue()))
+            .doOnSubscribe(ignoredValue -> logger.verbose("Adding ConfigurationSetting - {}", setting))
+            .doOnSuccess(response -> logger.verbose("Added ConfigurationSetting - {}", response.getValue()))
             .onErrorMap(ConfigurationAsyncClient::addConfigurationSettingExceptionMapper)
             .doOnError(error -> logger.warning("Failed to add ConfigurationSetting - {}", setting, error));
     }
@@ -382,8 +382,8 @@ public final class ConfigurationAsyncClient {
         // If no ETag value was passed in, then the value is always added or updated.
         return service.setKey(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, setting, ifMatchETag,
             null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
-                   .doOnSubscribe(ignoredValue -> logger.info("Setting ConfigurationSetting - {}", setting))
-                   .doOnSuccess(response -> logger.info("Set ConfigurationSetting - {}", response.getValue()))
+                   .doOnSubscribe(ignoredValue -> logger.verbose("Setting ConfigurationSetting - {}", setting))
+                   .doOnSuccess(response -> logger.verbose("Set ConfigurationSetting - {}", response.getValue()))
                    .doOnError(error -> logger.warning("Failed to set ConfigurationSetting - {}", setting, error));
     }
 
@@ -555,8 +555,8 @@ public final class ConfigurationAsyncClient {
 
                     return Mono.error(throwable);
                 })
-            .doOnSubscribe(ignoredValue -> logger.info("Retrieving ConfigurationSetting - {}", setting))
-            .doOnSuccess(response -> logger.info("Retrieved ConfigurationSetting - {}", response.getValue()))
+            .doOnSubscribe(ignoredValue -> logger.verbose("Retrieving ConfigurationSetting - {}", setting))
+            .doOnSuccess(response -> logger.verbose("Retrieved ConfigurationSetting - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to get ConfigurationSetting - {}", setting, error));
     }
 
@@ -689,8 +689,8 @@ public final class ConfigurationAsyncClient {
         final String ifMatchETag = ifUnchanged ? getETagValue(setting.getETag()) : null;
         return service.delete(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, ifMatchETag,
             null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
-            .doOnSubscribe(ignoredValue -> logger.info("Deleting ConfigurationSetting - {}", setting))
-            .doOnSuccess(response -> logger.info("Deleted ConfigurationSetting - {}", response.getValue()))
+            .doOnSubscribe(ignoredValue -> logger.verbose("Deleting ConfigurationSetting - {}", setting))
+            .doOnSuccess(response -> logger.verbose("Deleted ConfigurationSetting - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to delete ConfigurationSetting - {}", setting, error));
     }
 
@@ -839,7 +839,7 @@ public final class ConfigurationAsyncClient {
             return service.lockKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, null,
                 null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
                 .doOnSubscribe(ignoredValue -> logger.verbose("Setting read only ConfigurationSetting - {}", setting))
-                .doOnSuccess(response -> logger.info("Set read only ConfigurationSetting - {}", response.getValue()))
+                .doOnSuccess(response -> logger.verbose("Set read only ConfigurationSetting - {}", response.getValue()))
                 .doOnError(error -> logger.warning("Failed to set read only ConfigurationSetting - {}", setting,
                     error));
         } else {
@@ -847,7 +847,7 @@ public final class ConfigurationAsyncClient {
                 null, null, context)
                 .doOnSubscribe(ignoredValue -> logger.verbose("Clearing read only ConfigurationSetting - {}", setting))
                 .doOnSuccess(
-                    response -> logger.info("Cleared read only ConfigurationSetting - {}", response.getValue()))
+                    response -> logger.verbose("Cleared read only ConfigurationSetting - {}", response.getValue()))
                 .doOnError(
                     error -> logger.warning("Failed to clear read only ConfigurationSetting - {}", setting, error));
         }
@@ -898,8 +898,8 @@ public final class ConfigurationAsyncClient {
             return service.listKeyValues(serviceEndpoint, continuationToken,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
                 .doOnSubscribe(
-                    ignoredValue -> logger.info("Retrieving the next listing page - Page {}", continuationToken))
-                .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", continuationToken))
+                    ignoredValue -> logger.verbose("Retrieving the next listing page - Page {}", continuationToken))
+                .doOnSuccess(response -> logger.verbose("Retrieved the next listing page - Page {}", continuationToken))
                 .doOnError(
                     error -> logger.warning("Failed to retrieve the next listing page - Page {}", continuationToken,
                         error));
@@ -913,8 +913,8 @@ public final class ConfigurationAsyncClient {
             if (selector == null) {
                 return service.listKeyValues(serviceEndpoint, null, null, apiVersion, null, null,
                     context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
-                    .doOnRequest(ignoredValue -> logger.info("Listing all ConfigurationSettings"))
-                    .doOnSuccess(response -> logger.info("Listed all ConfigurationSettings"))
+                    .doOnRequest(ignoredValue -> logger.verbose("Listing all ConfigurationSettings"))
+                    .doOnSuccess(response -> logger.verbose("Listed all ConfigurationSettings"))
                     .doOnError(error -> logger.warning("Failed to list all ConfigurationSetting", error));
             }
 
@@ -925,8 +925,8 @@ public final class ConfigurationAsyncClient {
             return service.listKeyValues(serviceEndpoint, keyFilter, labelFilter, apiVersion, fields,
                 selector.getAcceptDateTime(),
                 context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
-                .doOnSubscribe(ignoredValue -> logger.info("Listing ConfigurationSettings - {}", selector))
-                .doOnSuccess(response -> logger.info("Listed ConfigurationSettings - {}", selector))
+                .doOnSubscribe(ignoredValue -> logger.verbose("Listing ConfigurationSettings - {}", selector))
+                .doOnSuccess(response -> logger.verbose("Listed ConfigurationSettings - {}", selector))
                 .doOnError(error -> logger.warning("Failed to list ConfigurationSetting - {}", selector, error));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -982,16 +982,17 @@ public final class ConfigurationAsyncClient {
                 result = service.listKeyValueRevisions(serviceEndpoint, keyFilter, labelFilter, apiVersion, fields,
                     selector.getAcceptDateTime(), null,
                     context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
-                    .doOnRequest(ignoredValue -> logger.info("Listing ConfigurationSetting revisions - {}", selector))
-                    .doOnSuccess(response -> logger.info("Listed ConfigurationSetting revisions - {}", selector))
+                    .doOnRequest(ignoredValue -> logger.verbose("Listing ConfigurationSetting revisions - {}",
+                        selector))
+                    .doOnSuccess(response -> logger.verbose("Listed ConfigurationSetting revisions - {}", selector))
                     .doOnError(error ->
                         logger.warning("Failed to list ConfigurationSetting revisions - {}", selector, error));
             } else {
                 result = service.listKeyValueRevisions(
                     serviceEndpoint, null, null, apiVersion, null, null, null,
                     context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
-                    .doOnRequest(ignoredValue -> logger.info("Listing ConfigurationSetting revisions"))
-                    .doOnSuccess(response -> logger.info("Listed ConfigurationSetting revisions"))
+                    .doOnRequest(ignoredValue -> logger.verbose("Listing ConfigurationSetting revisions"))
+                    .doOnSuccess(response -> logger.verbose("Listed ConfigurationSetting revisions"))
                     .doOnError(error -> logger.warning("Failed to list all ConfigurationSetting revisions", error));
             }
 
@@ -1056,7 +1057,7 @@ public final class ConfigurationAsyncClient {
      * @return The ETag surrounded by quotations. (ex. "ETag")
      */
     private static String getETagValue(String etag) {
-        return (etag == null || etag.equals("*")) ? etag : "\"" + etag + "\"";
+        return (etag == null || "*".equals(etag)) ? etag : "\"" + etag + "\"";
     }
 
     /*

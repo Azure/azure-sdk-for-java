@@ -6,8 +6,7 @@ package com.azure.resourcemanager.quota.generated;
 
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.quota.models.CurrentQuotaLimitBase;
-import com.azure.resourcemanager.quota.models.LimitType;
-import com.azure.resourcemanager.quota.models.LimitValue;
+import com.azure.resourcemanager.quota.models.LimitObject;
 import com.azure.resourcemanager.quota.models.QuotaProperties;
 import com.azure.resourcemanager.quota.models.ResourceName;
 
@@ -34,7 +33,7 @@ public final class QuotaUpdateSamples {
             .update()
             .withProperties(
                 new QuotaProperties()
-                    .withLimit(new LimitValue().withValue(10).withLimitObjectType(LimitType.LIMIT_VALUE))
+                    .withLimit(new LimitObject().withValue(10))
                     .withName(new ResourceName().withValue("standardFSv2Family")))
             .apply();
     }
@@ -60,7 +59,7 @@ public final class QuotaUpdateSamples {
             .update()
             .withProperties(
                 new QuotaProperties()
-                    .withLimit(new LimitValue().withValue(10).withLimitObjectType(LimitType.LIMIT_VALUE))
+                    .withLimit(new LimitObject().withValue(10))
                     .withName(new ResourceName().withValue("MinPublicIpInterNetworkPrefixLength"))
                     .withResourceType("MinPublicIpInterNetworkPrefixLength"))
             .apply();

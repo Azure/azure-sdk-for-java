@@ -146,7 +146,7 @@ public final class WebTestsImpl implements WebTests {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'webtests'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, webTestName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, webTestName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
