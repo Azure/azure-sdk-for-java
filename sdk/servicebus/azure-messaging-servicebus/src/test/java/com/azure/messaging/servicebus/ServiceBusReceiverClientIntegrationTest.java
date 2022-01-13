@@ -369,14 +369,11 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void peekMessage(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSender(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
-
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled, false);
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
 
         sendMessage(message);
-
-        setReceiver(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
 
         // Act
         ServiceBusReceivedMessage receivedMessage = receiver.peekMessage();
