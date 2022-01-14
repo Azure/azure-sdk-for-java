@@ -24,12 +24,12 @@ You need to use AzureDeviceUpdateClientBuilder to create a proper valid AzureDev
 let you access the other clients - Updates and Management. In the sample `ListDevicesSample`, it creates `ManagementAsyncClient`.
 
 ```java com.azure.iot.deviceupdate.ManagementAsyncClient.instantiate
-ManagementAsyncClient client = new DeviceUpdateClientBuilder()
+DeviceManagementAsyncClient client = new DeviceUpdateClientBuilder()
     .endpoint(Configuration.getGlobalConfiguration().get("AZURE_ACCOUNT_ENDPOINT"))
     .instanceId(Configuration.getGlobalConfiguration().get("AZURE_INSTANCE_ID"))
     .credential(new DefaultAzureCredentialBuilder().build())
     .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-    .buildManagementAsyncClient();
+    .buildDeviceManagementAsyncClient();
 ```
 
 ## List Devices

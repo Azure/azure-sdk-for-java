@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class DeviceUpdatesClientTests extends TestBase {
+public class DeviceUpdateClientTests extends TestBase {
 
     private DeviceUpdateAsyncClient createClient() {
         DeviceUpdateClientBuilder builder =

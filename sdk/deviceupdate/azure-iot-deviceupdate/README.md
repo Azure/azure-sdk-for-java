@@ -39,8 +39,8 @@ Please refer to [Java SDK Get Started document](https://docs.microsoft.com/azure
 
 Device Update for IoT Hub is a managed service that enables you to deploy over-the-air updates for your IoT devices. The client library has two main components:
 
-- **Updates**: update management (import, enumerate, delete, etc.)
-- **Management**: device management (enumerate devices and retrieve device properties), deployment management (start and monitor update deployments to a set of devices)
+- **DeviceUpdate**: update management (import, enumerate, delete, etc.)
+- **DeviceManagement**: device management (enumerate devices and retrieve device properties), deployment management (start and monitor update deployments to a set of devices)
 
 You can learn more about Device Update for IoT Hub by visiting [Device Update for IoT Hub](https://github.com/azure/iot-hub-device-update).
 
