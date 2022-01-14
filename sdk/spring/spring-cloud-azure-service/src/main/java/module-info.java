@@ -15,20 +15,5 @@ module com.azure.spring.service {
     exports com.azure.spring.service.eventhubs.processor.consumer;
     exports com.azure.spring.service.servicebus.processor.consumer;
     exports com.azure.spring.service.servicebus.properties;
-//    exports com.azure.spring.service.implementation.appconfiguration;
-//    exports com.azure.spring.service.implementation.cosmos;
-//    exports com.azure.spring.service.implementation.eventhubs.factory;
-//    exports com.azure.spring.service.implementation.eventhubs.processor;
-//    exports com.azure.spring.service.implementation.eventhubs.properties;
-//    exports com.azure.spring.service.implementation.keyvault;
-//    exports com.azure.spring.service.implementation.keyvault.certificates;
-//    exports com.azure.spring.service.implementation.keyvault.secrets;
-//    exports com.azure.spring.service.implementation.servicebus.factory;
-//    exports com.azure.spring.service.implementation.servicebus.processor;
 
-//    exports com.azure.spring.service.implementation.storage.blob;
-//    exports com.azure.spring.service.implementation.storage.common;
-//    exports com.azure.spring.service.implementation.storage.common.credential;
-//    exports com.azure.spring.service.implementation.storage.fileshare;
-//    exports com.azure.spring.service.implementation.storage.queue;
 }
