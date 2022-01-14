@@ -191,7 +191,7 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
             throw new IllegalArgumentException("'spring.jms.servicebus.connection-string' should be provided");
         }
 
-        if (null == pricingTier || !pricingTier.matches("(?i)premium|standard|basic")) {
+        if (pricingTier == null || !pricingTier.matches("(?i)premium|standard|basic")) {
             throw new IllegalArgumentException("'spring.jms.servicebus.pricing-tier' is not valid");
         }
 

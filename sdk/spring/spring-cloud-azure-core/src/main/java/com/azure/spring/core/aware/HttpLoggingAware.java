@@ -15,6 +15,10 @@ import java.util.Set;
  */
 public interface HttpLoggingAware {
 
+    /**
+     * Get the http logging details.
+     * @return the http logging.
+     */
     HttpLogging getLogging();
 
     /**

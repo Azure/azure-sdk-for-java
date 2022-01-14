@@ -2286,44 +2286,8 @@
     </And>
     <Bug pattern="BC_UNCONFIRMED_CAST"/>
   </Match>
-  
-  <Match>
-    <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
-                  NP_LOAD_OF_KNOWN_NULL_VALUE,
-                  RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE,
-                  RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
-  </Match>
 
-  <Match>
-    <Or>
-      <Class name="com.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate$QueueMessageHandler"/> <!-- false positive -->
-      <Class name="com.azure.spring.servicebus.core.topic.ServiceBusTopicTemplate$TopicMessageHandler"/> <!-- false positive -->
-    </Or>
-    <Method name="OnCloseSessionAsync"/>
-    <Bug pattern="NM_METHOD_NAMING_CONVENTION"/>
-  </Match>
-  <!-- Generated implementation of SubscriptionPropertiesSupplier is using an inline class -->
-  <Match>
-    <Class name="com.azure.spring.servicebus.core.processor.DefaultServiceBusNamespaceProcessorFactory"/>
-    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.spring.messaging.config.AzureListenerEndpointRegistrar"/>
-    <Bug pattern="NP_NULL_ON_SOME_PATH"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.spring.integration.servicebus.com.azure.spring.eventhubs.support.converter.converter.ServiceBusMessageConverter"/>
-    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties"/>
-    <Field name="pricingTier"/>
-    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
-  </Match>
-
+  <!-- This match should be removed after fixing https://github.com/Azure/azure-sdk-for-java/issues/26356 -->
   <Match>
     <Class name="com.azure.spring.cloud.autoconfigure.keyvault.env.KeyVaultOperation" />
     <Field name="timer" />
@@ -2336,11 +2300,9 @@
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
 
-  <!-- Referring to https://sourceforge.net/p/findbugs/bugs/1385/, the @Nullable gives a false positive on equals() method -->
   <Match>
-    <Class name="com.azure.spring.messaging.ConsumerIdentifier"/>
-    <Method name="equals"/>
-    <Bug pattern="NP_METHOD_PARAMETER_TIGHTENS_ANNOTATION"/>
+    <Class name="com.azure.spring.messaging.config.AzureListenerEndpointRegistrar"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH"/>
   </Match>
 
   <!-- The transient fields are not used if deserialization happens. -->

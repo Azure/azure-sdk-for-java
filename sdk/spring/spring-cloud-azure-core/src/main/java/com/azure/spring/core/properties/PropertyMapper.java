@@ -76,6 +76,10 @@ public final class PropertyMapper {
             this.predicate = predicate;
         }
 
+        /**
+         * Complete the mapping by passing any non-filtered value to the specified consumer.
+         * @param consumer the consumer that should accept the value if it's not been filtered.
+         */
         public void to(Consumer<T> consumer) {
             T val = this.supplier.get();
             if (this.predicate.test(val)) {
@@ -83,30 +87,56 @@ public final class PropertyMapper {
             }
         }
 
+        /**
+         * Return a filtered version of the source that won't map values that don't match the given predicate.
+         * @param predicate the predicate used to filter values.
+         * @return a new filtered source instance.
+         */
         public Source<T> when(Predicate<T> predicate) {
             Assert.notNull(predicate, "Predicate must not be null");
             return new Source<>(this.supplier, this.predicate.and(predicate));
         }
 
+        /**
+         * Return a filtered version of the source that won't map values that match the given predicate.
+         * @param predicate the predicate used to filter values.
+         * @return a new filtered source instance.
+         */
         public Source<T> whenNot(Predicate<T> predicate) {
             Assert.notNull(predicate, "Predicate must not be null");
             return when(predicate.negate());
         }
 
+        /**
+         * Return a filtered version of the source that won't map non-null values or suppliers that throw a NullPointerException.
+         * @return a new filtered source instance.
+         */
         public Source<T> whenNonNull() {
             return new Source<>(new NullSafeSupplier<>(this.supplier), Objects::nonNull);
         }
 
+        /**
+         * Return a filtered version of the source that will only map values that are true.
+         * @return a new filtered source instance.
+         */
         public Source<T> whenTrue() {
             return when(Boolean.TRUE::equals);
         }
 
+        /**
+         * Return a filtered version of the source that will only map values that are false.
+         * @return a new filtered source instance.
+         */
         public Source<T> whenFalse() {
             return when(Boolean.FALSE::equals);
         }
 
     }
 
+    /**
+     * Supplier that will catch and ignore any {@link NullPointerException}.
+     * @param <T> the source type.
+     */
     private static class NullSafeSupplier<T> implements Supplier<T> {
 
         private final Supplier<T> supplier;

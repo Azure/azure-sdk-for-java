@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.messaging;
 
-import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
@@ -59,22 +58,18 @@ public class ConsumerIdentifier {
     }
 
     @Override
-    public boolean equals(@Nullable Object o) {
-        if (this == o) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
             return true;
         }
 
-        if (!(o instanceof ConsumerIdentifier)) {
+        if (obj == null || !(obj instanceof ConsumerIdentifier)) {
             return false;
         }
 
-        ConsumerIdentifier consumerIdentifier = (ConsumerIdentifier) o;
-
-        if (!ObjectUtils.nullSafeEquals(destination, consumerIdentifier.destination)) {
-            return false;
-        }
-
-        return ObjectUtils.nullSafeEquals(group, consumerIdentifier.group);
+        ConsumerIdentifier consumerIdentifier = (ConsumerIdentifier) obj;
+        return (ObjectUtils.nullSafeEquals(destination, consumerIdentifier.destination)
+            && ObjectUtils.nullSafeEquals(group, consumerIdentifier.group));
     }
 
     @Override

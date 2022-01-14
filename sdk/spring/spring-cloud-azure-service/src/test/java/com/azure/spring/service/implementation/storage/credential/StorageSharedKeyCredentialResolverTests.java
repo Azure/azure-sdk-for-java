@@ -4,7 +4,7 @@
 package com.azure.spring.service.implementation.storage.credential;
 
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.service.storage.common.StorageProperties;
+import com.azure.spring.service.implementation.storage.common.StorageProperties;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;

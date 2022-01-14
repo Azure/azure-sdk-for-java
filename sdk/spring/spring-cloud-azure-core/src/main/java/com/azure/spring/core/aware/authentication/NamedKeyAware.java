@@ -10,5 +10,9 @@ import com.azure.spring.core.properties.authentication.NamedKeyProperties;
  */
 public interface NamedKeyAware {
 
+    /**
+     * Get the named key properties
+     * @return the named key properties
+     */
     NamedKeyProperties getNamedKey();
 }

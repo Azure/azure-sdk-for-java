@@ -4,6 +4,7 @@
 package com.azure.spring.service.eventhubs.properties;
 
 import com.azure.messaging.eventhubs.LoadBalancingStrategy;
+import com.azure.spring.service.implementation.eventhubs.properties.EventProcessorClientProperties;
 
 import java.time.Duration;
 
