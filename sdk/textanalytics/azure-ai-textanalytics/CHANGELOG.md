@@ -1,6 +1,6 @@
 # Release History
 
-## 5.1.5 (2022-01-13)
+## 5.1.5 (2022-01-14)
 ### Other Changes
 
 #### Dependency Updates
