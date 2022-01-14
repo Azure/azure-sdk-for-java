@@ -21,7 +21,7 @@ environment settings:
 ## Creating Client
 
 You need to use AzureDeviceUpdateClientBuilder to create a proper valid AzureDeviceUpdateClient. This main client will
-let you access the other clients - Updates and Management. In the sample `ListDevicesSample`, it creates `ManagementAsyncClient`.
+let you access the other clients - Updates and Management. In the sample `ListDevicesSample`, it creates `DeviceManagementAsyncClient`.
 
 ```java com.azure.iot.deviceupdate.ManagementAsyncClient.instantiate
 DeviceManagementAsyncClient client = new DeviceUpdateClientBuilder()
@@ -34,6 +34,6 @@ DeviceManagementAsyncClient client = new DeviceUpdateClientBuilder()
 
 ## List Devices
 
-In the sample `ListDevicesSample`, it uses `ManagementAsyncClient` to call `listDevices`. 
+In the sample `ListDevicesSample`, it uses `DeviceManagementAsyncClient` to call `listDevices`. 
 It returns a `PagedFlux`, you can call `response.toStream().count()` to get the device count.
 
