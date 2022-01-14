@@ -43,6 +43,22 @@ Install the Azure Monitor Query client library for Java by adding the following 
 
 An authenticated client is required to query Logs or Metrics. The library includes both synchronous and asynchronous forms of the clients. To authenticate, the following examples use `DefaultAzureCredentialBuilder` from the [com.azure:azure-identity](https://search.maven.org/artifact/com.azure/azure-identity) package.
 
+### Authenticating using Azure Active Directory
+
+You can authenticate with Azure Active Directory using the [Azure Identity library][azure_identity]. Note that regional endpoints do not support AAD authentication. Create a [custom subdomain][custom_subdomain] for your resource in order to use this type of authentication.
+
+To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below, or other credential providers provided with the Azure SDK, please include the `azure-identity` package:
+
+[//]: # ({x-version-update-start;com.azure:azure-identity;dependency})
+```xml
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-identity</artifactId>
+    <version>1.4.3</version>
+</dependency>
+```
+Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
+
 #### Synchronous clients
 
 ```java readme-sample-createLogsQueryClient
