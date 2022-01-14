@@ -4,7 +4,7 @@
 package com.azure.spring.service.implementation.converter;
 
 import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.spring.service.eventhubs.properties.EventProcessorClientProperties;
+import com.azure.spring.service.implementation.eventhubs.properties.EventProcessorClientProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
@@ -24,7 +24,6 @@ public final class EventPositionConverter implements Converter<EventProcessorCli
     private EventPositionConverter() {
 
     }
-
 
     @NonNull
     @Override

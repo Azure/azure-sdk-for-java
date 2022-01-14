@@ -12,7 +12,7 @@ import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.service.AzureServiceType;
-import com.azure.spring.service.servicebus.factory.ServiceBusSenderClientBuilderFactory;
+import com.azure.spring.service.implementation.servicebus.factory.ServiceBusSenderClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -30,7 +30,7 @@ class AzureServiceBusProducerClientConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "entity-type", "producer.entity-type" })
-    public ServiceBusSenderClientBuilderFactory serviceBusSenderClientBuilderFactory(
+    ServiceBusSenderClientBuilderFactory serviceBusSenderClientBuilderFactory(
         AzureServiceBusProperties serviceBusProperties,
         ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders,
         ObjectProvider<ConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders,
@@ -52,7 +52,7 @@ class AzureServiceBusProducerClientConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(ServiceBusSenderClientBuilderFactory.class)
-    public ServiceBusClientBuilder.ServiceBusSenderClientBuilder serviceBusSenderClientBuilder(
+    ServiceBusClientBuilder.ServiceBusSenderClientBuilder serviceBusSenderClientBuilder(
         ServiceBusSenderClientBuilderFactory builderFactory) {
         return builderFactory.build();
     }

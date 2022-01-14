@@ -12,7 +12,7 @@ import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.spring.cloud.autoconfigure.properties.core.AbstractAzureServiceConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.properties.core.client.ClientConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.properties.core.proxy.HttpProxyConfigurationProperties;
-import com.azure.spring.service.cosmos.CosmosClientProperties;
+import com.azure.spring.service.implementation.cosmos.CosmosClientProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.util.ArrayList;

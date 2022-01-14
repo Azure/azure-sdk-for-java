@@ -11,7 +11,7 @@ import com.azure.spring.cloud.autoconfigure.appconfiguration.AzureAppConfigurati
 import com.azure.spring.cloud.autoconfigure.appconfiguration.properties.AzureAppConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.core.AzureSpringIdentifier;
-import com.azure.spring.service.appconfiguration.ConfigurationClientBuilderFactory;
+import com.azure.spring.service.implementation.appconfiguration.ConfigurationClientBuilderFactory;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

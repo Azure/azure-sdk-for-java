@@ -9,7 +9,7 @@ import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
-import com.azure.spring.service.eventhubs.factory.EventProcessorClientBuilderFactory;
+import com.azure.spring.service.implementation.eventhubs.factory.EventProcessorClientBuilderFactory;
 import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
 import com.azure.spring.service.eventhubs.processor.RecordEventProcessingListener;
 import org.junit.jupiter.api.Test;
@@ -110,5 +110,5 @@ class AzureEventHubsProcessorClientConfigurationTest {
 
         }
     }
-    
+
 }

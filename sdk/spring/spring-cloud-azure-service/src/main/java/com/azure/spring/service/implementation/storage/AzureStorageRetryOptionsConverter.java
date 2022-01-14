@@ -4,7 +4,7 @@
 package com.azure.spring.service.implementation.storage;
 
 import com.azure.spring.core.aware.RetryAware;
-import com.azure.spring.service.storage.common.StorageRetry;
+import com.azure.spring.service.implementation.storage.common.StorageRetry;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RetryPolicyType;
 import org.springframework.core.convert.converter.Converter;
