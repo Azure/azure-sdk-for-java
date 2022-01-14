@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.implementation.graph;
 
-import com.azure.spring.cloud.autoconfigure.aad.implementation.utils.JacksonObjectMapperFactory;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.util.JacksonObjectMapperFactory;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.oauth2.sdk.http.HTTPResponse;

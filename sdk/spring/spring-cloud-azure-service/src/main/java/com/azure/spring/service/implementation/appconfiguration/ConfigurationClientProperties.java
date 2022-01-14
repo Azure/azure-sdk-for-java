@@ -12,8 +12,16 @@ import com.azure.spring.core.properties.AzureProperties;
  */
 public interface ConfigurationClientProperties extends AzureProperties, ConnectionStringAware {
 
+    /**
+     * Get the service endpoint.
+     * @return the service endpoint.
+     */
     String getEndpoint();
 
+    /**
+     * Get the service version.
+     * @return the service version.
+     */
     ConfigurationServiceVersion getServiceVersion();
 
 }

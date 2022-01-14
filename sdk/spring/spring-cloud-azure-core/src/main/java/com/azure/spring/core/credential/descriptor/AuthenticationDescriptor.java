@@ -15,9 +15,21 @@ import java.util.function.Consumer;
  */
 public interface AuthenticationDescriptor<T extends AzureCredentialProvider<?>> {
 
+    /**
+     * Get the azure credential type.
+     * @return the azure credential type.
+     */
     AzureCredentialType getAzureCredentialType();
 
+    /**
+     * Get the azure credential resolver ro resolver the builder.
+     * @return the credential resolver.
+     */
     AzureCredentialResolver<T> getAzureCredentialResolver();
 
+    /**
+     * Get the consumer function for credential.
+     * @return the cunsumer function.
+     */
     Consumer<T> getConsumer();
 }

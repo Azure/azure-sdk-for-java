@@ -15,8 +15,18 @@ import com.azure.spring.core.properties.AzureProperties;
  */
 public interface AzureCredentialResolver<T extends AzureCredentialProvider<?>> {
 
+    /**
+     * Resolve the credential provider according to the azure properties.
+     * @param properties the azure properties.
+     * @return the azure credential provider.
+     */
     T resolve(AzureProperties properties);
 
+    /**
+     * Is the azure properties resolvable.
+     * @param properties the azure properties.
+     * @return true or false.
+     */
     boolean isResolvable(AzureProperties properties);
 
 }

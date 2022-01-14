@@ -14,12 +14,28 @@ import java.util.Map;
  */
 public interface EventProcessorClientProperties extends EventHubConsumerProperties {
 
+    /**
+     * Get whether to track the last enqueued event properties.
+     * @return whether to track the last enqueued event properties.
+     */
     Boolean getTrackLastEnqueuedEventProperties();
 
+    /**
+     * Get the initial partition event position mapping.
+     * @return the partition event position map.
+     */
     Map<String, ? extends StartPosition> getInitialPartitionEventPosition();
 
+    /**
+     * Get the event batch.
+     * @return the event batch.
+     */
     EventBatch getBatch();
 
+    /**
+     * Get the load balancing configuration.
+     * @return the load balancing configuration.
+     */
     LoadBalancing getLoadBalancing();
 
     /**

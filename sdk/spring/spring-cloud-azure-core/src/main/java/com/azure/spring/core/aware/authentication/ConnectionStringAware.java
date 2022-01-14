@@ -8,6 +8,10 @@ package com.azure.spring.core.aware.authentication;
  */
 public interface ConnectionStringAware {
 
+    /**
+     * Get the connection string
+     * @return the connection string
+     */
     String getConnectionString();
 
 }

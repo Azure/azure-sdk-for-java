@@ -26,6 +26,14 @@ public interface SubscribeByGroupOperation extends Checkpointable {
     boolean subscribe(String destination, String consumerGroup, Consumer<Message<?>> consumer,
                       Class<?> messagePayloadType);
 
+    /**
+     * Register a message consumer using the byte array class of payload by default.
+     * @param destination destination
+     * @param consumerGroup consumer group name
+     * @param consumer consumer
+     * @return {@code true} if the consumer was subscribed or {@code false} if it
+     * was already subscribed.
+     */
     default boolean subscribe(String destination, String consumerGroup, Consumer<Message<?>> consumer) {
         return this.subscribe(destination, consumerGroup, consumer, byte[].class);
     }

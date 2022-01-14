@@ -8,6 +8,10 @@ package com.azure.spring.service.implementation.eventhubs.properties;
  */
 public interface EventHubsNamespaceProperties extends EventHubClientCommonProperties {
 
+    /**
+     * Get the shared connection switch.
+     * @return the shared connection switch.
+     */
     Boolean getSharedConnection();
 
 }

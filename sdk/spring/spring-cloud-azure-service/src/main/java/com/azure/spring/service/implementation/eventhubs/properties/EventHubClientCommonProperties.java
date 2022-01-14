@@ -11,14 +11,34 @@ import com.azure.spring.core.properties.AzureProperties;
  */
 public interface EventHubClientCommonProperties extends AzureProperties, ConnectionStringAware {
 
+    /**
+     * Get the fully qualified namespace.
+     * @return the fully qualified namespace.
+     */
     String getFullyQualifiedNamespace();
 
+    /**
+     * Get the domain name.
+     * @return the domain name.
+     */
     String getDomainName();
 
+    /**
+     * Get the namespace.
+     * @return the namespace.
+     */
     String getNamespace();
 
+    /**
+     * Get the event hub name.
+     * @return the event hub name.
+     */
     String getEventHubName();
 
+    /**
+     * Get the custom endpoint address.
+     * @return the custom endpoint address.
+     */
     String getCustomEndpointAddress();
 
 }

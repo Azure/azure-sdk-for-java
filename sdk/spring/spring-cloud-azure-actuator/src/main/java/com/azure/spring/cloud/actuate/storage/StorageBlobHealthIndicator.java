@@ -55,6 +55,10 @@ public class StorageBlobHealthIndicator implements HealthIndicator {
         return healthBuilder.build();
     }
 
+    /**
+     * Set health check request timeout.
+     * @param timeout the duration value.
+     */
     public void setTimeout(Duration timeout) {
         this.timeout = timeout;
     }

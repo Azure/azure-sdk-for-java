@@ -8,10 +8,26 @@ package com.azure.spring.resourcemanager.provisioner.servicebus;
  */
 public interface ServiceBusProvisioner {
 
+    /**
+     * Provision the namespace and queue of the Service Bus.
+     * @param namespace the namespace of the Service Bus.
+     * @param queue the queue of the Service Bus.
+     */
     void provisionQueue(String namespace, String queue);
 
+    /**
+     * Provision the namespace and topic of the Service Bus.
+     * @param namespace the namespace of the Service Bus.
+     * @param topic the topic of the Service Bus.
+     */
     void provisionTopic(String namespace, String topic);
 
+    /**
+     * Provision the namespace and topic of the Service Bus.
+     * @param namespace the namespace of the Service Bus.
+     * @param topic the topic of the Service Bus.
+     * @param subscription the subscription of the topic.
+     */
     void provisionSubscription(String namespace, String topic, String subscription);
 
 }

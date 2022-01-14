@@ -248,7 +248,7 @@ public class ServiceBusMessageChannelBinder extends
             factory.addListener((name, client) -> {
                 DefaultInstrumentation instrumentation = new DefaultInstrumentation(name, PRODUCER);
                 instrumentation.markUp();
-                instrumentationManager.addHealthInstrumentation(instrumentation.getId(), instrumentation);
+                instrumentationManager.addHealthInstrumentation(instrumentation);
             });
             this.serviceBusTemplate = new ServiceBusTemplate(factory);
         }
@@ -264,7 +264,7 @@ public class ServiceBusMessageChannelBinder extends
                 String instrumentationName = name + "/" + getGroup(subscription);
                 Instrumentation instrumentation = new ServiceBusProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));
                 instrumentation.markUp();
-                instrumentationManager.addHealthInstrumentation(instrumentation.getId(), instrumentation);
+                instrumentationManager.addHealthInstrumentation(instrumentation);
             });
 
             this.processorContainer = new ServiceBusProcessorContainer(factory);

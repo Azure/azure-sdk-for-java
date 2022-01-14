@@ -12,7 +12,15 @@ import com.azure.spring.core.credential.AzureCredentialType;
  */
 public interface AzureCredentialProvider<T> {
 
+    /**
+     * Get the credential type.
+     * @return the credential type.
+     */
     AzureCredentialType getType();
 
+    /**
+     * Get the credential implementation.
+     * @return the credential.
+     */
     T getCredential();
 }
