@@ -33,6 +33,8 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
+import static com.azure.spring.service.implementation.converter.EventPositionConverter.EVENT_POSITION_CONVERTER;
+
 /**
  * Event Hub client builder factory, it builds the {@link EventHubClientBuilder} according the configuration context and
  * blob properties.
@@ -101,19 +103,17 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
         map.from(eventProcessorClientProperties.getLoadBalancing().getStrategy()).to(builder::loadBalancingStrategy);
         map.from(eventProcessorClientProperties.getLoadBalancing().getUpdateInterval()).to(builder::loadBalancingUpdateInterval);
 
-        map.from(eventProcessorClientProperties.getInitialPartitionEventPosition()).when(c -> !CollectionUtils.isEmpty(c)).to(
-            p -> {
-                Map<String, EventPosition> positions = p.entrySet()
-                    .stream()
-                    .collect(Collectors.toMap(Map.Entry::getKey,
-                        e -> e.getValue().toEventPosition()));
-                builder.initialPartitionEventPosition(positions);
-            });
-
+        map.from(eventProcessorClientProperties.getInitialPartitionEventPosition()).when(c -> !CollectionUtils.isEmpty(c))
+                .to(m -> {
+                    Map<String, EventPosition> eventPositionMap = m.entrySet()
+                        .stream()
+                        .filter(entry -> entry.getValue() != null)
+                        .collect(Collectors.toMap(Map.Entry::getKey, entry -> EVENT_POSITION_CONVERTER.convert(entry.getValue())));
+                    builder.initialPartitionEventPosition(eventPositionMap);
+                });
         configureCheckpointStore(builder);
         configureProcessorListener(builder);
     }
-
 
     //Credentials have not been set. They can be set using:
     // connectionString(String),

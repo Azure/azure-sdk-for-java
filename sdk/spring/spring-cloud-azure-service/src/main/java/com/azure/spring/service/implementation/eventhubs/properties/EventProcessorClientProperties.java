@@ -4,9 +4,9 @@
 package com.azure.spring.service.implementation.eventhubs.properties;
 
 import com.azure.messaging.eventhubs.LoadBalancingStrategy;
-import com.azure.messaging.eventhubs.models.EventPosition;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Map;
 
 /**
@@ -16,7 +16,7 @@ public interface EventProcessorClientProperties extends EventHubConsumerProperti
 
     Boolean getTrackLastEnqueuedEventProperties();
 
-    Map<String, StartPosition> getInitialPartitionEventPosition();
+    Map<String, ? extends StartPosition> getInitialPartitionEventPosition();
 
     EventBatch getBatch();
 
@@ -69,17 +69,33 @@ public interface EventProcessorClientProperties extends EventHubConsumerProperti
     /**
      * The starting position from which to consume events.
      */
-    enum StartPosition {
-        EARLIEST,
-        LATEST;
+    interface StartPosition {
 
-        public EventPosition toEventPosition() {
-            if (EARLIEST.equals(this)) {
-                return EventPosition.earliest();
-            } else {
-                return EventPosition.latest();
-            }
-        }
+        /**
+         * Whether the event of the specified sequence number is included.
+         * @return Whether to include the specified event.
+         */
+        boolean isInclusive();
+
+        /**
+         * The offset of the event within that partition. String keyword, "earliest" and "latest" (case-insensitive),
+         * are reserved for specifying the start and end of the partition. Other provided value will be cast to Long.
+         * @return The offset of the event within that partition.
+         */
+        String getOffset();
+
+        /**
+         * The sequence number of the event within that partition.
+         * @return The sequence number of the event within that partition.
+         */
+        Long getSequenceNumber();
+
+        /**
+         * The event enqueued after the requested enqueuedDateTime becomes the current position.
+         * @return The enqueued datetime.
+         */
+        Instant getEnqueuedDateTime();
+
     }
 
 }
