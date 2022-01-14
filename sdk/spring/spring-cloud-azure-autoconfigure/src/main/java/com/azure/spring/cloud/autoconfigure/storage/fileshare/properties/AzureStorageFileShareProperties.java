@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.storage.fileshare.properties;
 
 import com.azure.spring.cloud.autoconfigure.storage.common.AzureStorageProperties;
-import com.azure.spring.service.storage.fileshare.ShareServiceClientProperties;
+import com.azure.spring.service.implementation.storage.fileshare.ShareServiceClientProperties;
 import com.azure.storage.file.share.ShareServiceVersion;
 
 /**

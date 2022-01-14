@@ -3,7 +3,7 @@
 
 package com.azure.spring.servicebus.core.properties;
 
-import com.azure.spring.service.servicebus.properties.ServiceBusNamespaceProperties;
+import com.azure.spring.service.implementation.servicebus.properties.ServiceBusNamespaceProperties;
 
 /**
  * A service bus namespace related properties.

@@ -12,8 +12,8 @@ import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.service.AzureServiceType;
-import com.azure.spring.service.eventhubs.factory.EventProcessorClientBuilderFactory;
 import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
+import com.azure.spring.service.implementation.eventhubs.factory.EventProcessorClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.AllNestedConditions;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -48,7 +48,7 @@ class AzureEventHubsProcessorClientConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public EventProcessorClientBuilderFactory eventProcessorClientBuilderFactory(
+    EventProcessorClientBuilderFactory eventProcessorClientBuilderFactory(
         CheckpointStore checkpointStore, EventProcessingListener listener,
         ObjectProvider<ConnectionStringProvider<AzureServiceType.EventHubs>> connectionStringProviders,
         ObjectProvider<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>> customizers) {
@@ -63,7 +63,7 @@ class AzureEventHubsProcessorClientConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public EventProcessorClientBuilder eventProcessorClientBuilder(EventProcessorClientBuilderFactory factory) {
+    EventProcessorClientBuilder eventProcessorClientBuilder(EventProcessorClientBuilderFactory factory) {
         return factory.build();
     }
 

@@ -46,21 +46,22 @@
       --add-modules com.azure.storage.internal.avro
       --add-modules com.azure.storage.queue
       --add-opens com.azure.spring.core/com.azure.spring.core.factory=ALL-UNNAMED
-      --add-opens com.azure.spring.service/com.azure.spring.service.appconfiguration=ALL-UNNAMED
-      --add-opens com.azure.spring.service/com.azure.spring.service.core=ALL-UNNAMED
-      --add-opens com.azure.spring.service/com.azure.spring.service.cosmos=ALL-UNNAMED
-      --add-opens com.azure.spring.service/com.azure.spring.service.credential=ALL-UNNAMED
       --add-opens com.azure.spring.service/com.azure.spring.service.eventhubs=ALL-UNNAMED
-      --add-opens com.azure.spring.service/com.azure.spring.service.implementation.storage.credential=ALL-UNNAMED
+      --add-opens com.azure.spring.service/com.azure.spring.service.implementation.appconfiguration=ALL-UNNAMED
+      --add-opens com.azure.spring.service/com.azure.spring.service.implementation.core=ALL-UNNAMED
+      --add-opens com.azure.spring.service/com.azure.spring.service.implementation.cosmos=ALL-UNNAMED
+      --add-opens com.azure.spring.service/com.azure.spring.service.implementation.credential=ALL-UNNAMED
       --add-opens com.azure.spring.service/com.azure.spring.service.implementation.converter=ALL-UNNAMED
-      --add-opens com.azure.spring.service/com.azure.spring.service.keyvault.certificates=ALL-UNNAMED
-      --add-opens com.azure.spring.service/com.azure.spring.service.keyvault.secret=ALL-UNNAMED
-      --add-opens com.azure.spring.service/com.azure.spring.service.servicebus.factory=ALL-UNNAMED
-      --add-opens com.azure.spring.service/com.azure.spring.service.servicebus=ALL-UNNAMED
-      --add-opens com.azure.spring.service/com.azure.spring.service.storage.blob=ALL-UNNAMED
-      --add-opens com.azure.spring.service/com.azure.spring.service.storage.fileshare=ALL-UNNAMED
-      --add-opens com.azure.spring.service/com.azure.spring.service.storage.queue=ALL-UNNAMED
-      --add-opens com.azure.spring.service/com.azure.spring.service=ALL-UNNAMED
+      --add-opens com.azure.spring.service/com.azure.spring.service.implementation.eventhubs=ALL-UNNAMED
+      --add-opens com.azure.spring.service/com.azure.spring.service.implementation.keyvault.certificates=ALL-UNNAMED
+      --add-opens com.azure.spring.service/com.azure.spring.service.implementation.keyvault.secret=ALL-UNNAMED
+      --add-opens com.azure.spring.service/com.azure.spring.service.implementation.servicebus.factory=ALL-UNNAMED
+      --add-opens com.azure.spring.service/com.azure.spring.service.implementation.servicebus=ALL-UNNAMED
+      --add-opens com.azure.spring.service/com.azure.spring.service.implementation.storage.credential=ALL-UNNAMED
+      --add-opens com.azure.spring.service/com.azure.spring.service.implementation.storage.blob=ALL-UNNAMED
+      --add-opens com.azure.spring.service/com.azure.spring.service.implementation.storage.fileshare=ALL-UNNAMED
+      --add-opens com.azure.spring.service/com.azure.spring.service.implementation.storage.queue=ALL-UNNAMED
+      --add-opens com.azure.spring.service/com.azure.spring.service.implementation=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 

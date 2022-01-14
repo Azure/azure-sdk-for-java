@@ -12,7 +12,7 @@ import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.service.AzureServiceType;
-import com.azure.spring.service.storage.fileshare.ShareServiceClientBuilderFactory;
+import com.azure.spring.service.implementation.storage.fileshare.ShareServiceClientBuilderFactory;
 import com.azure.storage.file.share.ShareAsyncClient;
 import com.azure.storage.file.share.ShareClient;
 import com.azure.storage.file.share.ShareFileAsyncClient;
@@ -59,7 +59,7 @@ public class AzureStorageFileShareAutoConfiguration extends AzureServiceConfigur
 
     @Bean
     @ConditionalOnMissingBean
-    public ShareServiceClientBuilderFactory shareServiceClientBuilderFactory(
+    ShareServiceClientBuilderFactory shareServiceClientBuilderFactory(
         AzureStorageFileShareProperties properties,
         ObjectProvider<ConnectionStringProvider<AzureServiceType.StorageFileShare>> connectionStringProviders,
         ObjectProvider<AzureServiceClientBuilderCustomizer<ShareServiceClientBuilder>> customizers) {
@@ -73,7 +73,7 @@ public class AzureStorageFileShareAutoConfiguration extends AzureServiceConfigur
 
     @Bean
     @ConditionalOnMissingBean
-    public ShareServiceClientBuilder shareServiceClientBuilder(ShareServiceClientBuilderFactory factory) {
+    ShareServiceClientBuilder shareServiceClientBuilder(ShareServiceClientBuilderFactory factory) {
         return factory.build();
     }
 

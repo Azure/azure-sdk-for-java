@@ -10,7 +10,7 @@ import com.azure.security.keyvault.certificates.CertificateClientBuilder;
 import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.keyvault.certificates.properties.AzureKeyVaultCertificateProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
-import com.azure.spring.service.keyvault.certificates.CertificateClientBuilderFactory;
+import com.azure.spring.service.implementation.keyvault.certificates.CertificateClientBuilderFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
