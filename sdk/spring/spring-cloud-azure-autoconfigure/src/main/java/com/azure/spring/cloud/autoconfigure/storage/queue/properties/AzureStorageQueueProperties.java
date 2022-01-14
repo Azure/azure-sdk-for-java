@@ -24,11 +24,10 @@ public class AzureStorageQueueProperties extends AzureStorageProperties implemen
      * How queue message body is represented in HTTP requests and responses.
      */
     private QueueMessageEncoding messageEncoding;
-
     /**
-     * Whether to create the queue if it does not exist.
+     * Name of the storage queue.
      */
-    private Boolean createQueueIfNotExists;
+    private String queueName;
 
     public String getEndpoint() {
         return endpoint == null ? buildEndpointFromAccountName() : endpoint;
@@ -56,12 +55,11 @@ public class AzureStorageQueueProperties extends AzureStorageProperties implemen
         this.messageEncoding = messageEncoding;
     }
 
-    @Override
-    public Boolean getCreateQueueIfNotExists() {
-        return createQueueIfNotExists;
+    public String getQueueName() {
+        return queueName;
     }
 
-    public void setCreateQueueIfNotExists(Boolean createQueueIfNotExists) {
-        this.createQueueIfNotExists = createQueueIfNotExists;
+    public void setQueueName(String queueName) {
+        this.queueName = queueName;
     }
 }

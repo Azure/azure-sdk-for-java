@@ -46,16 +46,6 @@ public final class DefaultStorageQueueClientFactory implements StorageQueueClien
     public QueueAsyncClient createQueueClient(String queueName) {
         return clients.computeIfAbsent(queueName, q -> {
             final QueueAsyncClient queueClient = queueServiceAsyncClient.getQueueAsyncClient(queueName);
-            // TODO (xiada): when used with connection string, this call will throw exception
-            // TODO (xiada): https://github.com/Azure/azure-sdk-for-java/issues/15008
-            if (storageQueueProperties.getCreateQueueIfNotExists()) {
-                queueClient.create().subscribe(
-                    response -> {
-                    },
-                    e -> LOGGER.error("Fail to create the queue.", e),
-                    () -> LOGGER.info("Complete creating the queue!")
-                );
-            }
             this.listeners.forEach(l -> l.queueClientAdded(queueName, queueClient));
             return queueClient;
         });

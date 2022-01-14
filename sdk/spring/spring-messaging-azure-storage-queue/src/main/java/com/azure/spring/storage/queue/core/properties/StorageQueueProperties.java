@@ -47,11 +47,6 @@ public class StorageQueueProperties extends AzureHttpSdkProperties implements Qu
      */
     private QueueMessageEncoding messageEncoding;
 
-    /**
-     * Whether to create the queue if it does not exist.
-     */
-    private Boolean createQueueIfNotExists;
-
     @Override
     public String getConnectionString() {
         return connectionString;
@@ -119,12 +114,4 @@ public class StorageQueueProperties extends AzureHttpSdkProperties implements Qu
         this.messageEncoding = messageEncoding;
     }
 
-    @Override
-    public Boolean getCreateQueueIfNotExists() {
-        return createQueueIfNotExists;
-    }
-
-    public void setCreateQueueIfNotExists(Boolean createQueueIfNotExists) {
-        this.createQueueIfNotExists = createQueueIfNotExists;
-    }
 }

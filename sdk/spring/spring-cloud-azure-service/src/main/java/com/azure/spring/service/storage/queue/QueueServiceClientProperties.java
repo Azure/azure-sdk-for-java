@@ -16,6 +16,4 @@ public interface QueueServiceClientProperties extends StorageProperties {
 
     QueueMessageEncoding getMessageEncoding();
 
-    Boolean getCreateQueueIfNotExists();
-
 }
