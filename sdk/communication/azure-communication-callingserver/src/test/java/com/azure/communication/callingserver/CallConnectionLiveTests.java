@@ -17,6 +17,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.net.URI;
@@ -387,16 +388,16 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
             // Mute User
             callConnection.muteParticipant(addUser);
             // Get User
-            var getMutedParticipantresult = callConnection.getParticipant(addUser);
-            assertTrue(getMutedParticipantresult.isMuted() == true);
+            CallParticipant getMutedParticipantresult = callConnection.getParticipant(addUser);
+            assertTrue(getMutedParticipantresult.isMuted());
             // Unmute User
             callConnection.unmuteParticipant(addUser);
             // Get User
-            var getUnmutedParticipantresult = callConnection.getParticipant(addUser);
-            assertTrue(getUnmutedParticipantresult.isMuted() == false);
+            CallParticipant getUnmutedParticipantresult = callConnection.getParticipant(addUser);
+            assertFalse(getUnmutedParticipantresult.isMuted());
             // Get Users
-            var getParticipantsResult = callConnection.getParticipants();
-            assertTrue(getParticipantsResult.size()>2);
+            List <CallParticipant> getParticipantsResult = callConnection.getParticipants();
+            assertTrue(getParticipantsResult.size() > 2);
             // Remove User
             callConnection.removeParticipant(addUser);
         } catch (Exception e) {
@@ -457,7 +458,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
             // Get User
             Response<CallParticipant> getMutedParticipantresponse =
                 callConnection.getParticipantWithResponse(addUser, null);
-            assertTrue(getMutedParticipantresponse.getValue().isMuted() == true);
+            assertTrue(getMutedParticipantresponse.getValue().isMuted());
             CallingServerTestUtils.validateGetParticipantResponse(getMutedParticipantresponse);
 
             // Unmute User
@@ -468,13 +469,13 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
             // Get User
             Response<CallParticipant> getUnmutedParticipantresponse =
                 callConnection.getParticipantWithResponse(addUser, null);
-            assertTrue(getUnmutedParticipantresponse.getValue().isMuted() == false);
+            assertFalse(getUnmutedParticipantresponse.getValue().isMuted());
             CallingServerTestUtils.validateGetParticipantResponse(getUnmutedParticipantresponse);
 
             // Get Users
             Response<List<CallParticipant>> getParticipantsResponse = 
                 callConnection.getParticipantsWithResponse(null);
-            assertTrue(getParticipantsResponse.getValue().size()>2);
+            assertTrue(getParticipantsResponse.getValue().size() > 2);
             CallingServerTestUtils.validateGetParticipantsResponse(getParticipantsResponse);
 
             // Remove User

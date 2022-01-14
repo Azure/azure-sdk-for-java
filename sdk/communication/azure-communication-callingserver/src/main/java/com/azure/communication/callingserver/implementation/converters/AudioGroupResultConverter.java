@@ -17,14 +17,14 @@ public final class AudioGroupResultConverter {
     /**
      * Maps from {@link AudioGroupResultInternal} to {@link PlayAudioResult}.
      */
-    public static AudioGroupResult convert(AudioGroupResultInternal AudioGroupResultInternal) {
-        if (AudioGroupResultInternal == null) {
+    public static AudioGroupResult convert(AudioGroupResultInternal audioGroupResultInternal) {
+        if (audioGroupResultInternal == null) {
             return null;
         }
 
         return new AudioGroupResult(
-            AudioGroupResultInternal.getAudioRoutingMode(),
-            AudioGroupResultInternal.getTargets().stream()
+            audioGroupResultInternal.getAudioRoutingMode(),
+            audioGroupResultInternal.getTargets().stream()
                 .map(CommunicationIdentifierConverter::convert)
                 .collect(Collectors.toList())
         );

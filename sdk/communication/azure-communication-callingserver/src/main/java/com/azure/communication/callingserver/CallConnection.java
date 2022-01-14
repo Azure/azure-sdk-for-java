@@ -618,7 +618,7 @@ public final class CallConnection {
     /**
      * Update Audio Group.
      *
-     * @param AudioGroupId The audio group id.
+     * @param audioGroupId The audio group id.
      * @param targets the targets value to set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -626,15 +626,15 @@ public final class CallConnection {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateAudioGroup(
-        String AudioGroupId,
+        String audioGroupId,
         List<CommunicationIdentifier> targets) {
-        updateAudioGroupWithResponse(AudioGroupId, targets, Context.NONE).getValue();
+        updateAudioGroupWithResponse(audioGroupId, targets, Context.NONE).getValue();
     }
 
     /**
      * Update Audio Group.
      *
-     * @param AudioGroupId The audio group id.
+     * @param audioGroupId The audio group id.
      * @param targets the targets value to set.
      * @param context A {@link Context} representing the request context.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -644,16 +644,16 @@ public final class CallConnection {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateAudioGroupWithResponse(
-        String AudioGroupId,
+        String audioGroupId,
         List<CommunicationIdentifier> targets,
         Context context) {
-        return callConnectionAsync.updateAudioGroupWithResponseInternal(AudioGroupId, targets, context).block();
+        return callConnectionAsync.updateAudioGroupWithResponseInternal(audioGroupId, targets, context).block();
     }
 
     /**
      * Get audio groups in a call.
      *
-     * @param AudioGroupId The audio group id.
+     * @param audioGroupId The audio group id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -661,14 +661,14 @@ public final class CallConnection {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AudioGroupResult getAudioGroups(
-        String AudioGroupId) {
-        return getAudioGroupsWithResponse(AudioGroupId, Context.NONE).getValue();
+        String audioGroupId) {
+        return getAudioGroupsWithResponse(audioGroupId, Context.NONE).getValue();
     }
 
     /**
      * Get audio groups in a call.
      *
-     * @param AudioGroupId The audio group id.
+     * @param audioGroupId The audio group id.
      * @param context A {@link Context} representing the request context.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -677,29 +677,29 @@ public final class CallConnection {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AudioGroupResult> getAudioGroupsWithResponse(
-        String AudioGroupId,
+        String audioGroupId,
         Context context) {
-        return callConnectionAsync.getAudioGroupsWithResponseInternal(AudioGroupId, context).block();
+        return callConnectionAsync.getAudioGroupsWithResponseInternal(audioGroupId, context).block();
     }
 
     /**
      * Delete Audio Group.
      *
-     * @param AudioGroupId The audio group id.
+     * @param audioGroupId The audio group id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAudioGroup(
-        String AudioGroupId) {
-        deleteAudioGroupWithResponse(AudioGroupId, Context.NONE).getValue();
+        String audioGroupId) {
+        deleteAudioGroupWithResponse(audioGroupId, Context.NONE).getValue();
     }
 
     /**
      * Delete Audio Group.
      *
-     * @param AudioGroupId The audio group id.
+     * @param audioGroupId The audio group id.
      * @param context A {@link Context} representing the request context.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -708,8 +708,8 @@ public final class CallConnection {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteAudioGroupWithResponse(
-        String AudioGroupId,
+        String audioGroupId,
         Context context) {
-        return callConnectionAsync.deleteAudioGroupWithResponseInternal(AudioGroupId, context).block();
+        return callConnectionAsync.deleteAudioGroupWithResponseInternal(audioGroupId, context).block();
     }
 }
