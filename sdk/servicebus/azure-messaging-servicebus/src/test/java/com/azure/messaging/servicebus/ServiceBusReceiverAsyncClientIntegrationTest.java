@@ -454,7 +454,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
         final CountDownLatch countDownLatch = new CountDownLatch(1);
 
-        sendMessage(message).block();
+        StepVerifier.create(sendMessage(message)).expectComplete().verify(TIMEOUT);
 
         setReceiver(entityType, entityIndex, isSessionEnabled);
 
