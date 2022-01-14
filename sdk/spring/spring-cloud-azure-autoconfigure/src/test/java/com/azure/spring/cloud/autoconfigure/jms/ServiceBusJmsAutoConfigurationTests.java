@@ -93,8 +93,7 @@ class ServiceBusJmsAutoConfigurationTests {
         this.contextRunner
             .run(context ->
                 assertThrows(IllegalStateException.class,
-                    () -> context.getBean(AzureServiceBusJmsProperties.class))
-            );
+                    () -> context.getBean(AzureServiceBusJmsProperties.class)));
     }
 
     @ParameterizedTest
@@ -119,16 +118,15 @@ class ServiceBusJmsAutoConfigurationTests {
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
                 "spring.jms.servicebus.connection-string=" + CONNECTION_STRING)
             .run(context -> {
-                    assertThat(context).hasSingleBean(AzureServiceBusJmsProperties.class);
-                    assertThat(context).hasSingleBean(ServiceBusJmsAutoConfiguration.class);
-                    assertThat(context).hasSingleBean(ConnectionFactory.class);
-                    assertThat(context).hasSingleBean(JmsTemplate.class);
-                    assertThat(context).hasSingleBean(DefaultJmsListenerContainerFactoryConfigurer.class);
-                    assertThat(context).hasBean("jmsListenerContainerFactory");
-                    assertThat(context).hasBean("topicJmsListenerContainerFactory");
-                    assertThat(context).doesNotHaveBean("amqpOpenPropertiesCustomizer");
-                }
-            );
+                assertThat(context).hasSingleBean(AzureServiceBusJmsProperties.class);
+                assertThat(context).hasSingleBean(ServiceBusJmsAutoConfiguration.class);
+                assertThat(context).hasSingleBean(ConnectionFactory.class);
+                assertThat(context).hasSingleBean(JmsTemplate.class);
+                assertThat(context).hasSingleBean(DefaultJmsListenerContainerFactoryConfigurer.class);
+                assertThat(context).hasBean("jmsListenerContainerFactory");
+                assertThat(context).hasBean("topicJmsListenerContainerFactory");
+                assertThat(context).doesNotHaveBean("amqpOpenPropertiesCustomizer");
+            });
     }
 
 
@@ -140,16 +138,15 @@ class ServiceBusJmsAutoConfigurationTests {
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
                 "spring.jms.servicebus.connection-string=" + CONNECTION_STRING)
             .run(context -> {
-                    assertThat(context).hasSingleBean(AzureServiceBusJmsProperties.class);
-                    assertThat(context).hasSingleBean(ServiceBusJmsAutoConfiguration.class);
-                    assertThat(context).hasSingleBean(ConnectionFactory.class);
-                    assertThat(context).hasSingleBean(JmsTemplate.class);
-                    assertThat(context).hasSingleBean(DefaultJmsListenerContainerFactoryConfigurer.class);
-                    assertThat(context).hasBean("jmsListenerContainerFactory");
-                    assertThat(context).hasBean("topicJmsListenerContainerFactory");
-                    assertThat(context).hasBean("amqpOpenPropertiesCustomizer");
-                }
-            );
+                assertThat(context).hasSingleBean(AzureServiceBusJmsProperties.class);
+                assertThat(context).hasSingleBean(ServiceBusJmsAutoConfiguration.class);
+                assertThat(context).hasSingleBean(ConnectionFactory.class);
+                assertThat(context).hasSingleBean(JmsTemplate.class);
+                assertThat(context).hasSingleBean(DefaultJmsListenerContainerFactoryConfigurer.class);
+                assertThat(context).hasBean("jmsListenerContainerFactory");
+                assertThat(context).hasBean("topicJmsListenerContainerFactory");
+                assertThat(context).hasBean("amqpOpenPropertiesCustomizer");
+            });
     }
 
     @ParameterizedTest
@@ -237,11 +234,10 @@ class ServiceBusJmsAutoConfigurationTests {
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
                 "spring.jms.servicebus.connection-string=" + CONNECTION_STRING)
             .run(context -> {
-                    assertThat(context).hasSingleBean(CachingConnectionFactory.class);
-                    assertThat(context).doesNotHaveBean(ServiceBusJmsConnectionFactory.class);
-                    assertThat(context).doesNotHaveBean(JmsPoolConnectionFactory.class);
-                }
-            );
+                assertThat(context).hasSingleBean(CachingConnectionFactory.class);
+                assertThat(context).doesNotHaveBean(ServiceBusJmsConnectionFactory.class);
+                assertThat(context).doesNotHaveBean(JmsPoolConnectionFactory.class);
+            });
     }
 
     @ParameterizedTest
@@ -253,11 +249,10 @@ class ServiceBusJmsAutoConfigurationTests {
                 "spring.jms.cache.enabled=true",
                 "spring.jms.servicebus.connection-string=" + CONNECTION_STRING)
             .run(context -> {
-                    assertThat(context).hasSingleBean(CachingConnectionFactory.class);
-                    assertThat(context).doesNotHaveBean(ServiceBusJmsConnectionFactory.class);
-                    assertThat(context).doesNotHaveBean(JmsPoolConnectionFactory.class);
-                }
-            );
+                assertThat(context).hasSingleBean(CachingConnectionFactory.class);
+                assertThat(context).doesNotHaveBean(ServiceBusJmsConnectionFactory.class);
+                assertThat(context).doesNotHaveBean(JmsPoolConnectionFactory.class);
+            });
     }
 
     @ParameterizedTest
