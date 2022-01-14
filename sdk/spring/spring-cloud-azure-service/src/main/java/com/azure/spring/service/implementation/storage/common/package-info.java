@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Storage common utility classes.
+ * Internal storage common utility implementation.
  */
 package com.azure.spring.service.implementation.storage.common;

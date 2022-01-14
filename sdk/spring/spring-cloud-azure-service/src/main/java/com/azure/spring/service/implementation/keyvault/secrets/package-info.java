@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Key Vault Secrets Service client builder factory.
+ * Internal builder factory implementation for Key Vault Secrets client.
  */
 package com.azure.spring.service.implementation.keyvault.secrets;

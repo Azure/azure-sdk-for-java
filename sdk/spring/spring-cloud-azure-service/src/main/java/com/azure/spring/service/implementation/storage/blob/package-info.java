@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Support for Storage Blob Service client builder factory.
+ * Internal builder factory implementation for Storage Blob Service client.
  */
 package com.azure.spring.service.implementation.storage.blob;

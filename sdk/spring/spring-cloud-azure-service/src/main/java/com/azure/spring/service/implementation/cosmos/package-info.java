@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Support for Cosmos Service client builder factory.
+ * Internal builder factory implementation for Cosmos Service client.
  */
 package com.azure.spring.service.implementation.cosmos;

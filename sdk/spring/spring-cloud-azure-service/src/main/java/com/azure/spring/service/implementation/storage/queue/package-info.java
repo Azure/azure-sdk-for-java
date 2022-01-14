@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Support for Storage Queue Service client builder factory.
+ * Internal builder factory implementation for Storage Queue Service client.
  */
 package com.azure.spring.service.implementation.storage.queue;

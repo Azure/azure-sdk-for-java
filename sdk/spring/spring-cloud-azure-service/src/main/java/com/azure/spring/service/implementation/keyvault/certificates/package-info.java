@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Key Vault Certificates Service client builder factory.
+ * Internal builder factory implementation for Key Vault Certificates Service client.
  */
 package com.azure.spring.service.implementation.keyvault.certificates;

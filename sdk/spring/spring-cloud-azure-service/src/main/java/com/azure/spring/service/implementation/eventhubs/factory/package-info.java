@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Event Hub client builder factory.
+ * Internal builder factory implementation for Event Hub Service client.
  */
 package com.azure.spring.service.implementation.eventhubs.factory;

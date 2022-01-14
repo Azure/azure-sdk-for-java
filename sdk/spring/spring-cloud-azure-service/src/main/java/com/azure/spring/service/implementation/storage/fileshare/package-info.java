@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Support for Storage File Share Service client builder factory.
+ * Internal builder factory implementation for Storage File Share Service client.
  */
 package com.azure.spring.service.implementation.storage.fileshare;

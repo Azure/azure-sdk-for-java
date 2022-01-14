@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Internal core implementation.
+ * Internal core implementation for SDKs service client.
  */
 package com.azure.spring.service.implementation.core;
