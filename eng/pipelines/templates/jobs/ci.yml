@@ -183,11 +183,10 @@ jobs:
         inputs:
           BuildDropPath: $(Build.ArtifactStagingDirectory)
 
-      - task: PublishPipelineArtifact@1
-        displayName: 'Publish BOM'
-        inputs:
-          artifact: 'manifest'
-          path: $(Build.ArtifactStagingDirectory)/_manifest
+      - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+        parameters:
+          ArtifactPath: '$(Build.ArtifactStagingDirectory)/_manifest'
+          ArtifactName: 'manifest'
 
       - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml
         parameters:
