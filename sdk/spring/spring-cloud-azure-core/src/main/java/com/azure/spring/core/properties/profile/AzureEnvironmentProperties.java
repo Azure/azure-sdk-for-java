@@ -128,6 +128,7 @@ public class AzureEnvironmentProperties implements AzureProfileAware.AzureEnviro
         return new AzureEnvironmentProperties(environment);
     }
 
+    @Override
     public String getPortal() {
         return portal;
     }
@@ -140,6 +141,7 @@ public class AzureEnvironmentProperties implements AzureProfileAware.AzureEnviro
         this.portal = portal;
     }
 
+    @Override
     public String getPublishingProfile() {
         return publishingProfile;
     }
@@ -152,6 +154,7 @@ public class AzureEnvironmentProperties implements AzureProfileAware.AzureEnviro
         this.publishingProfile = publishingProfile;
     }
 
+    @Override
     public String getManagementEndpoint() {
         return managementEndpoint;
     }
@@ -164,6 +167,7 @@ public class AzureEnvironmentProperties implements AzureProfileAware.AzureEnviro
         this.managementEndpoint = managementEndpoint;
     }
 
+    @Override
     public String getResourceManagerEndpoint() {
         return resourceManagerEndpoint;
     }
@@ -176,6 +180,7 @@ public class AzureEnvironmentProperties implements AzureProfileAware.AzureEnviro
         this.resourceManagerEndpoint = resourceManagerEndpoint;
     }
 
+    @Override
     public String getSqlManagementEndpoint() {
         return sqlManagementEndpoint;
     }
@@ -188,6 +193,7 @@ public class AzureEnvironmentProperties implements AzureProfileAware.AzureEnviro
         this.sqlManagementEndpoint = sqlManagementEndpoint;
     }
 
+    @Override
     public String getSqlServerHostnameSuffix() {
         return sqlServerHostnameSuffix;
     }
@@ -200,6 +206,7 @@ public class AzureEnvironmentProperties implements AzureProfileAware.AzureEnviro
         this.sqlServerHostnameSuffix = sqlServerHostnameSuffix;
     }
 
+    @Override
     public String getGalleryEndpoint() {
         return galleryEndpoint;
     }
@@ -212,6 +219,7 @@ public class AzureEnvironmentProperties implements AzureProfileAware.AzureEnviro
         this.galleryEndpoint = galleryEndpoint;
     }
 
+    @Override
     public String getActiveDirectoryEndpoint() {
         return activeDirectoryEndpoint;
     }
@@ -224,6 +232,7 @@ public class AzureEnvironmentProperties implements AzureProfileAware.AzureEnviro
         this.activeDirectoryEndpoint = activeDirectoryEndpoint;
     }
 
+    @Override
     public String getActiveDirectoryResourceId() {
         return activeDirectoryResourceId;
     }
@@ -236,6 +245,7 @@ public class AzureEnvironmentProperties implements AzureProfileAware.AzureEnviro
         this.activeDirectoryResourceId = activeDirectoryResourceId;
     }
 
+    @Override
     public String getActiveDirectoryGraphEndpoint() {
         return activeDirectoryGraphEndpoint;
     }
@@ -248,6 +258,7 @@ public class AzureEnvironmentProperties implements AzureProfileAware.AzureEnviro
         this.activeDirectoryGraphEndpoint = activeDirectoryGraphEndpoint;
     }
 
+    @Override
     public String getMicrosoftGraphEndpoint() {
         return microsoftGraphEndpoint;
     }
@@ -260,6 +271,7 @@ public class AzureEnvironmentProperties implements AzureProfileAware.AzureEnviro
         this.microsoftGraphEndpoint = microsoftGraphEndpoint;
     }
 
+    @Override
     public String getDataLakeEndpointResourceId() {
         return dataLakeEndpointResourceId;
     }
@@ -272,6 +284,7 @@ public class AzureEnvironmentProperties implements AzureProfileAware.AzureEnviro
         this.dataLakeEndpointResourceId = dataLakeEndpointResourceId;
     }
 
+    @Override
     public String getActiveDirectoryGraphApiVersion() {
         return activeDirectoryGraphApiVersion;
     }
@@ -284,6 +297,7 @@ public class AzureEnvironmentProperties implements AzureProfileAware.AzureEnviro
         this.activeDirectoryGraphApiVersion = activeDirectoryGraphApiVersion;
     }
 
+    @Override
     public String getStorageEndpointSuffix() {
         return storageEndpointSuffix;
     }
@@ -296,6 +310,7 @@ public class AzureEnvironmentProperties implements AzureProfileAware.AzureEnviro
         this.storageEndpointSuffix = storageEndpointSuffix;
     }
 
+    @Override
     public String getKeyVaultDnsSuffix() {
         return keyVaultDnsSuffix;
     }
@@ -308,6 +323,7 @@ public class AzureEnvironmentProperties implements AzureProfileAware.AzureEnviro
         this.keyVaultDnsSuffix = keyVaultDnsSuffix;
     }
 
+    @Override
     public String getAzureDataLakeStoreFileSystemEndpointSuffix() {
         return azureDataLakeStoreFileSystemEndpointSuffix;
     }
@@ -320,6 +336,7 @@ public class AzureEnvironmentProperties implements AzureProfileAware.AzureEnviro
         this.azureDataLakeStoreFileSystemEndpointSuffix = azureDataLakeStoreFileSystemEndpointSuffix;
     }
 
+    @Override
     public String getAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix() {
         return azureDataLakeAnalyticsCatalogAndJobEndpointSuffix;
     }
@@ -332,6 +349,7 @@ public class AzureEnvironmentProperties implements AzureProfileAware.AzureEnviro
         this.azureDataLakeAnalyticsCatalogAndJobEndpointSuffix = azureDataLakeAnalyticsCatalogAndJobEndpointSuffix;
     }
 
+    @Override
     public String getAzureLogAnalyticsEndpoint() {
         return azureLogAnalyticsEndpoint;
     }
@@ -344,6 +362,7 @@ public class AzureEnvironmentProperties implements AzureProfileAware.AzureEnviro
         this.azureLogAnalyticsEndpoint = azureLogAnalyticsEndpoint;
     }
 
+    @Override
     public String getAzureApplicationInsightsEndpoint() {
         return azureApplicationInsightsEndpoint;
     }

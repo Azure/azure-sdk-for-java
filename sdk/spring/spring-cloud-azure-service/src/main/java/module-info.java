@@ -13,7 +13,10 @@ module com.azure.spring.service {
     requires spring.core;
 
     exports com.azure.spring.service.eventhubs.processor.consumer;
+    exports com.azure.spring.service.eventhubs.processor;
+    exports com.azure.spring.service.eventhubs.properties;
     exports com.azure.spring.service.servicebus.processor.consumer;
+    exports com.azure.spring.service.servicebus.processor;
     exports com.azure.spring.service.servicebus.properties;
 
 }

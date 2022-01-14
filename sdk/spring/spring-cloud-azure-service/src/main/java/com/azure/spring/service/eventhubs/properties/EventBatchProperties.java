@@ -21,18 +21,28 @@ public class EventBatchProperties implements EventProcessorClientProperties.Even
      */
     private Integer maxSize;
 
+    @Override
     public Duration getMaxWaitTime() {
         return maxWaitTime;
     }
 
+    /**
+     * Set the max wait time.
+     * @param maxWaitTime The max wait time.
+     */
     public void setMaxWaitTime(Duration maxWaitTime) {
         this.maxWaitTime = maxWaitTime;
     }
 
+    @Override
     public Integer getMaxSize() {
         return maxSize;
     }
 
+    /**
+     * Set the max size.
+     * @param maxSize The max size.
+     */
     public void setMaxSize(Integer maxSize) {
         this.maxSize = maxSize;
     }

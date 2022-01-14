@@ -22,6 +22,10 @@ public class StartPositionProperties implements EventProcessorClientProperties.S
         return offset;
     }
 
+    /**
+     * Set the offset.
+     * @param offset The offset.
+     */
     public void setOffset(String offset) {
         this.offset = offset;
     }
@@ -31,6 +35,10 @@ public class StartPositionProperties implements EventProcessorClientProperties.S
         return sequenceNumber;
     }
 
+    /**
+     * Set the sequence number.
+     * @param sequenceNumber the sequence number.
+     */
     public void setSequenceNumber(Long sequenceNumber) {
         this.sequenceNumber = sequenceNumber;
     }
@@ -40,14 +48,23 @@ public class StartPositionProperties implements EventProcessorClientProperties.S
         return enqueuedDateTime;
     }
 
+    /**
+     * Set the enqueued date time.
+     * @param enqueuedDateTime The enqueued date time.
+     */
     public void setEnqueuedDateTime(Instant enqueuedDateTime) {
         this.enqueuedDateTime = enqueuedDateTime;
     }
 
+    @Override
     public boolean isInclusive() {
         return inclusive;
     }
 
+    /**
+     * Whether the position is inclusive.
+     * @param inclusive Whether the position is inclusive.
+     */
     public void setInclusive(boolean inclusive) {
         this.inclusive = inclusive;
     }
