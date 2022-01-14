@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Spring Cloud Azure's auto-configuration for Spring Cloud Sleuth features.
+ * Auto-configuration for Spring Cloud Azure integration with Spring Cloud Sleuth.
  */
 package com.azure.spring.cloud.autoconfigure.trace.sleuth;

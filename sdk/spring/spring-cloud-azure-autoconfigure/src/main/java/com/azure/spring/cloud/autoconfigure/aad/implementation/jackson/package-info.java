@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Internal Jackson implementation for Active Directory features.
+ * Internal Jackson implementation for Active Directory.
  */
 package com.azure.spring.cloud.autoconfigure.aad.implementation.jackson;

@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Spring Cloud Azure's auto-configuration for Spring Kafka features.
+ * Spring Cloud Azure's auto-configuration for Spring Kafka.
  */
 package com.azure.spring.cloud.autoconfigure.eventhubs.kafka;

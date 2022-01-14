@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Spring Cloud Azure's auto-configuration for Spring JMS features.
+ * Spring Cloud Azure's auto-configuration for Spring JMS.
  */
 package com.azure.spring.cloud.autoconfigure.jms;

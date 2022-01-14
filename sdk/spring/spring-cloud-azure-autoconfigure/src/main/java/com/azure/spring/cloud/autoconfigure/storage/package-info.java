@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Spring Cloud Azure's auto-configuration for Storage features.
+ * Spring Cloud Azure's auto-configuration for Storage.
  */
 package com.azure.spring.cloud.autoconfigure.storage;

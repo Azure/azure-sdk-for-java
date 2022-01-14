@@ -22,7 +22,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.util.Assert;
 
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 
@@ -69,7 +68,7 @@ public class AzureDefaultTokenCredentialAutoConfiguration extends AzureServiceCo
      */
     static class AzureServiceClientBuilderFactoryPostProcessor implements BeanPostProcessor, BeanFactoryAware {
 
-        private BeanFactory beanFactory = null;
+        private BeanFactory beanFactory;
 
         @Override
         @SuppressWarnings("rawtypes")
@@ -78,7 +77,6 @@ public class AzureDefaultTokenCredentialAutoConfiguration extends AzureServiceCo
                 return bean;
             }
 
-            Assert.notNull(beanFactory, "beanFactory should be not null.");
             if (bean instanceof AbstractAzureServiceClientBuilderFactory
                 && beanFactory.containsBean(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)) {
                 ((AbstractAzureServiceClientBuilderFactory) bean).setDefaultTokenCredential(

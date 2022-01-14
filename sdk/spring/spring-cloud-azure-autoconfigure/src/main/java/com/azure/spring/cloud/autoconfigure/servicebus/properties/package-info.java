@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Configuration properties class for Service Bus features.
+ * Configuration properties class for Service Bus.
  */
 package com.azure.spring.cloud.autoconfigure.servicebus.properties;

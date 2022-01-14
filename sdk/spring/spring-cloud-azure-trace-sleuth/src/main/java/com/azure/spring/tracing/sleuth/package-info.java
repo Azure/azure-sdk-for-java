@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Support for Spring Cloud Sleuth features.
+ * Support for Spring Cloud Sleuth.
  */
 package com.azure.spring.tracing.sleuth;

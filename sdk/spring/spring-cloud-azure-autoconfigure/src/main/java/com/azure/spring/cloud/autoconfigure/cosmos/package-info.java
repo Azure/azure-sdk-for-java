@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Spring Cloud Azure's auto-configuration for Cosmos features.
+ * Spring Cloud Azure's auto-configuration for Cosmos.
  */
 package com.azure.spring.cloud.autoconfigure.cosmos;

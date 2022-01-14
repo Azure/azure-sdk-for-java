@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Configuration class for Active Directory features.
+ * Configuration class for Active Directory.
  */
 package com.azure.spring.cloud.autoconfigure.aad.configuration;

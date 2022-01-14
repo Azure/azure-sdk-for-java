@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Spring's resource abstraction.
+ * Spring Cloud Azure integration with Spring Resource.
  */
 package com.azure.spring.core.resource;

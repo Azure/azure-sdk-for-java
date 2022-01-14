@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Spring Cloud Azure's auto-configuration for Spring Message features.
+ * Spring Cloud Azure's auto-configuration for Spring Message.
  */
 package com.azure.spring.cloud.autoconfigure.messaging;

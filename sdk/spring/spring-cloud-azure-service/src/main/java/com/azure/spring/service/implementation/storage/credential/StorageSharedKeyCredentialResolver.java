@@ -16,7 +16,7 @@ public final class StorageSharedKeyCredentialResolver implements AzureCredential
 
     @Override
     public StorageSharedKeyCredentialProvider resolve(AzureProperties azureProperties) {
-        if (!(azureProperties instanceof StorageProperties)) {
+        if (!isResolvable(azureProperties)) {
             return null;
         }
 

@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Spring Cloud Azure's auto-configuration for Key Vault Certificates features.
+ * Spring Cloud Azure's auto-configuration for Key Vault Certificates.
  */
 package com.azure.spring.cloud.autoconfigure.keyvault.certificates;

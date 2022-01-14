@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Configuration properties class for Event Hubs features.
+ * Configuration properties class for Event Hubs.
  */
 package com.azure.spring.cloud.autoconfigure.eventhubs.properties;

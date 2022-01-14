@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Configuration properties class for Resource Manager features.
+ * Configuration properties class for Resource Manager.
  */
 package com.azure.spring.cloud.autoconfigure.properties.resourcemanager;

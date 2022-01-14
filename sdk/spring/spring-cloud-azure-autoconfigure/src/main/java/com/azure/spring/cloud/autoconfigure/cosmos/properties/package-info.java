@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Configuration properties class for Cosmos features.
+ * Configuration properties class for Cosmos.
  */
 package com.azure.spring.cloud.autoconfigure.cosmos.properties;

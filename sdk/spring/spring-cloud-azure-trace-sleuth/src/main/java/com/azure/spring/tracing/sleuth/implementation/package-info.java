@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Internal implementation for Sleuth features.
+ * Internal implementation for Sleuth.
  */
 package com.azure.spring.tracing.sleuth.implementation;

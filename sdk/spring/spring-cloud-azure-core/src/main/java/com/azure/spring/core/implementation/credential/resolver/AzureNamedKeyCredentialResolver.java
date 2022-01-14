@@ -17,7 +17,7 @@ public final class AzureNamedKeyCredentialResolver implements AzureCredentialRes
 
     @Override
     public AzureNamedKeyCredentialProvider resolve(AzureProperties properties) {
-        if (!(properties instanceof NamedKeyAware)) {
+        if (!isResolvable(properties)) {
             return null;
         }
 

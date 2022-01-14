@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Spring Cloud Azure's auto-configuration for Spring Environment Key Vault features.
+ * Spring Cloud Azure's auto-configuration for Spring Environment Key Vault.
  */
 package com.azure.spring.cloud.autoconfigure.keyvault.env;

@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Configuration properties class for App Configuration features.
+ * Configuration properties class for App Configuration.
  */
 package com.azure.spring.cloud.autoconfigure.appconfiguration.properties;

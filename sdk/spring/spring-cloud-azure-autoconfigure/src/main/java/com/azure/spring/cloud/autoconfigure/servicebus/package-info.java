@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Spring Cloud Azure's auto-configuration for Service Bus features.
+ * Spring Cloud Azure's auto-configuration for Service Bus.
  */
 package com.azure.spring.cloud.autoconfigure.servicebus;

@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Internal Jwt implementation for Active Directory features.
+ * Internal Jwt implementation for Active Directory.
  */
 package com.azure.spring.cloud.autoconfigure.aad.implementation.jwt;

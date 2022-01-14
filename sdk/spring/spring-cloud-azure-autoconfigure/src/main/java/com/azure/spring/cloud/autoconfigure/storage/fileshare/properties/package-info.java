@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Configuration properties class for Storage File Share features.
+ * Configuration properties class for Storage File Share.
  */
 package com.azure.spring.cloud.autoconfigure.storage.fileshare.properties;

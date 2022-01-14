@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Configuration properties class for Key Vault Certificates features.
+ * Configuration properties class for Key Vault Certificates.
  */
 package com.azure.spring.cloud.autoconfigure.keyvault.certificates.properties;

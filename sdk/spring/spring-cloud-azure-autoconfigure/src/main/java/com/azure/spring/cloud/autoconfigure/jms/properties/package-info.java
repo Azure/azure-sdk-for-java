@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Configuration properties class for Spring JMS features.
+ * Configuration properties class for Spring JMS.
  */
 package com.azure.spring.cloud.autoconfigure.jms.properties;

@@ -16,7 +16,7 @@ public final class AzureSasCredentialResolver implements AzureCredentialResolver
 
     @Override
     public AzureSasCredentialProvider resolve(AzureProperties properties) {
-        if (!(properties instanceof SasTokenAware)) {
+        if (!isResolvable(properties)) {
             return null;
         }
 

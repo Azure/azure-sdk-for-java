@@ -37,13 +37,13 @@ public class DefaultEventHubsProvisioner implements EventHubsProvisioner {
     }
 
     @Override
-    public void provisionEventHub(String namespace, String eventHubs) {
-        this.eventHubsCrud.getOrCreate(Tuples.of(namespace, eventHubs));
+    public void provisionEventHub(String namespace, String eventHub) {
+        this.eventHubsCrud.getOrCreate(Tuples.of(namespace, eventHub));
     }
 
     @Override
-    public void provisionConsumerGroup(String namespace, String eventHubs, String consumerGroup) {
-        this.consumerGroupCrud.getOrCreate(Tuples.of(namespace, eventHubs, consumerGroup));
+    public void provisionConsumerGroup(String namespace, String eventHub, String consumerGroup) {
+        this.consumerGroupCrud.getOrCreate(Tuples.of(namespace, eventHub, consumerGroup));
     }
 
 }

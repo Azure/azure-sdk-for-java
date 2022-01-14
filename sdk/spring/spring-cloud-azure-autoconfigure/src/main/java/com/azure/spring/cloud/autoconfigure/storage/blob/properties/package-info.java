@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Configuration properties class for Storage Blob features.
+ * Configuration properties class for Storage Blob.
  */
 package com.azure.spring.cloud.autoconfigure.storage.blob.properties;
