@@ -21,9 +21,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class UpdatesClientTests extends TestBase {
+public class DeviceUpdatesClientTests extends TestBase {
 
-    private UpdatesAsyncClient createClient() {
+    private DeviceUpdateAsyncClient createClient() {
         DeviceUpdateClientBuilder builder =
             new DeviceUpdateClientBuilder()
                 .endpoint(TestData.ACCOUNT_ENDPOINT)
@@ -39,12 +39,12 @@ public class UpdatesClientTests extends TestBase {
         } else if (getTestMode() == TestMode.LIVE) {
             builder.credential(new DefaultAzureCredentialBuilder().build());
         }
-        return builder.buildUpdatesAsyncClient();
+        return builder.buildDeviceUpdateAsyncClient();
     }
 
     @Test
     public void testGetUpdateNotFound() {
-        UpdatesAsyncClient client = createClient();
+        DeviceUpdateAsyncClient client = createClient();
         try {
             client.getUpdateWithResponse("foo", "bar", "0.0.0.1", null).block();
             fail("Expected NotFound response");
@@ -55,7 +55,7 @@ public class UpdatesClientTests extends TestBase {
 
     @Test
     public void testGetProviders() {
-        UpdatesAsyncClient client = createClient();
+        DeviceUpdateAsyncClient client = createClient();
         PagedFlux<BinaryData> response = client.listProviders(null);
 
         assertNotNull(response);

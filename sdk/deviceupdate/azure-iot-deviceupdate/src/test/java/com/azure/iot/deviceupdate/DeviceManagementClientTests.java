@@ -19,9 +19,9 @@ import java.time.OffsetDateTime;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class ManagementClientTests extends TestBase {
+public class DeviceManagementClientTests extends TestBase {
 
-    private ManagementAsyncClient createClient() {
+    private DeviceManagementAsyncClient createClient() {
         DeviceUpdateClientBuilder builder =
             new DeviceUpdateClientBuilder()
                 .endpoint(TestData.ACCOUNT_ENDPOINT)
@@ -37,12 +37,12 @@ public class ManagementClientTests extends TestBase {
         } else if (getTestMode() == TestMode.LIVE) {
             builder.credential(new DefaultAzureCredentialBuilder().build());
         }
-        return builder.buildManagementAsyncClient();
+        return builder.buildDeviceManagementAsyncClient();
     }
 
     @Test
     public void testGetAllDeployments() {
-        ManagementAsyncClient client = createClient();
+        DeviceManagementAsyncClient client = createClient();
         PagedFlux<BinaryData> response = client.listDeploymentsForGroup("Uncategorized", null);
 
         assertNotNull(response);
@@ -51,7 +51,7 @@ public class ManagementClientTests extends TestBase {
 
     @Test
     public void testListDeviceTags() {
-        ManagementAsyncClient client = createClient();
+        DeviceManagementAsyncClient client = createClient();
         PagedFlux<BinaryData> response = client.listDeviceTags(null);
 
         assertNotNull(response);
@@ -60,7 +60,7 @@ public class ManagementClientTests extends TestBase {
 
     @Test
     public void testListDevices() {
-        ManagementAsyncClient client = createClient();
+        DeviceManagementAsyncClient client = createClient();
         PagedFlux<BinaryData> response = client.listDevices(null);
 
         assertNotNull(response);
@@ -69,7 +69,7 @@ public class ManagementClientTests extends TestBase {
 
     @Test
     public void testGetAllDeviceClasses() {
-        ManagementAsyncClient client = createClient();
+        DeviceManagementAsyncClient client = createClient();
         PagedFlux<BinaryData> response = client.listDeviceClasses(null);
 
         assertNotNull(response);

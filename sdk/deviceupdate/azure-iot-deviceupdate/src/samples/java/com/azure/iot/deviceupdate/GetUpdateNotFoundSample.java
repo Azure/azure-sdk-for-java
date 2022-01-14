@@ -10,12 +10,12 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class GetUpdateNotFoundSample {
     public static void main(String[] args) {
-        UpdatesAsyncClient client = new DeviceUpdateClientBuilder()
+        DeviceUpdateAsyncClient client = new DeviceUpdateClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("AZURE_ACCOUNT_ENDPOINT"))
             .instanceId(Configuration.getGlobalConfiguration().get("AZURE_INSTANCE_ID"))
             .credential(new DefaultAzureCredentialBuilder().build())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .buildUpdatesAsyncClient();
+            .buildDeviceUpdateAsyncClient();
 
         // BEGIN: com.azure.iot.deviceupdate.UpdatesAsyncClient.notfound
         try {
