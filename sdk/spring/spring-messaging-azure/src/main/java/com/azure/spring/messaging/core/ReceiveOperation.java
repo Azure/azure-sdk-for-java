@@ -36,5 +36,9 @@ public interface ReceiveOperation {
      */
     void setMessagePayloadType(Class<?> messagePayloadType);
 
+    /**
+     * Set the checkpoint mode.
+     * @param checkpointMode the checkpoint mode.
+     */
     void setCheckpointMode(CheckpointMode checkpointMode);
 }

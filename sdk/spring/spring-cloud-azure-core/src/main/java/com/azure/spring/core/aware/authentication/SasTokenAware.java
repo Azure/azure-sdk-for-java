@@ -8,6 +8,10 @@ package com.azure.spring.core.aware.authentication;
  */
 public interface SasTokenAware {
 
+    /**
+     * Get the SAS token
+     * @return the SAS token
+     */
     String getSasToken();
 
 }

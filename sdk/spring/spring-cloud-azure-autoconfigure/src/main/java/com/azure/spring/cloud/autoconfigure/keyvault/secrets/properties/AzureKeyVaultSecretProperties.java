@@ -6,7 +6,7 @@ package com.azure.spring.cloud.autoconfigure.keyvault.secrets.properties;
 import com.azure.security.keyvault.secrets.SecretServiceVersion;
 import com.azure.spring.cloud.autoconfigure.keyvault.common.AzureKeyVaultProperties;
 import com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultPropertySourceProperties;
-import com.azure.spring.service.keyvault.secrets.SecretClientProperties;
+import com.azure.spring.service.implementation.keyvault.secrets.SecretClientProperties;
 
 import java.util.ArrayList;
 import java.util.List;

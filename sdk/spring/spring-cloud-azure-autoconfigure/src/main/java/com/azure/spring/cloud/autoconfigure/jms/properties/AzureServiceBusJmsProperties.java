@@ -124,7 +124,6 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
         this.topicClientId = topicClientId;
     }
 
-
     /**
      * Gets the pricing tier.
      *
@@ -178,7 +177,6 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
     public PrefetchPolicy getPrefetchPolicy() {
         return prefetchPolicy;
     }
-
 
     /**
      * Validate spring.jms.servicebus related properties.

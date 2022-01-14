@@ -5,7 +5,7 @@ package com.azure.spring.servicebus.core.properties;
 
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
-import com.azure.spring.service.servicebus.properties.ServiceBusReceiverClientProperties;
+import com.azure.spring.service.implementation.servicebus.properties.ServiceBusReceiverClientProperties;
 
 import java.time.Duration;
 

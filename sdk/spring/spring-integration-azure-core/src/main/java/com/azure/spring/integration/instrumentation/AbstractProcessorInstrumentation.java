@@ -33,21 +33,12 @@ public abstract class AbstractProcessorInstrumentation<T> implements Instrumenta
         this.noneErrorWindow = noneErrorWindow;
     }
 
-    /**
-     * Get type.
-     *
-     * @return type the type
-     * @see Type
-     */
+    @Override
     public Type getType() {
         return type;
     }
 
-    /**
-     * Check whether is down.
-     *
-     * @return true if the status is down,false otherwise
-     */
+    @Override
     public boolean isDown() {
         if (System.currentTimeMillis() > lastErrorTimestamp + noneErrorWindow.toMillis()) {
             this.errorContext = null;
@@ -57,11 +48,7 @@ public abstract class AbstractProcessorInstrumentation<T> implements Instrumenta
         }
     }
 
-    /**
-     * Check whether is up.
-     *
-     * @return false if the status is up,true otherwise
-     */
+    @Override
     public boolean isUp() {
         return !isDown();
     }
@@ -85,11 +72,7 @@ public abstract class AbstractProcessorInstrumentation<T> implements Instrumenta
         return errorContext;
     }
 
-    /**
-     * Get the name of destination entity.
-     *
-     * @return name the name of destination entity
-     */
+    @Override
     public String getName() {
         return name;
     }

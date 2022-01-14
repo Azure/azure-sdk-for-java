@@ -10,7 +10,7 @@ import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.service.AzureServiceType;
-import com.azure.spring.service.eventhubs.factory.EventHubClientBuilderFactory;
+import com.azure.spring.service.implementation.eventhubs.factory.EventHubClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -28,13 +28,13 @@ class AzureEventHubsClientBuilderConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public EventHubClientBuilder eventHubClientBuilder(EventHubClientBuilderFactory factory) {
+    EventHubClientBuilder eventHubClientBuilder(EventHubClientBuilderFactory factory) {
         return factory.build();
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public EventHubClientBuilderFactory eventHubClientBuilderFactory(AzureEventHubsProperties properties,
+    EventHubClientBuilderFactory eventHubClientBuilderFactory(AzureEventHubsProperties properties,
         ObjectProvider<ConnectionStringProvider<AzureServiceType.EventHubs>> connectionStringProviders,
         ObjectProvider<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>> customizers) {
         final EventHubClientBuilderFactory factory = new EventHubClientBuilderFactory(properties);

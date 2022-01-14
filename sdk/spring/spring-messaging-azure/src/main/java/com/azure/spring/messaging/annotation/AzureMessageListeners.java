@@ -27,6 +27,10 @@ import java.lang.annotation.Documented;
 @Documented
 public @interface AzureMessageListeners {
 
+    /**
+     * Aggregates {@link AzureMessageListener} annotations.
+     * @return the AzureMessageListener annotations.
+     */
     AzureMessageListener[] value();
 
 }
