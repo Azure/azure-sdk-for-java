@@ -1,16 +1,16 @@
 # Release History
 
-## 4.8.0 (2022-01-13)
+## 4.8.0 (2022-01-14)
 
 ### Features Added
 - Added new properties
-    - `deleteLocation` to `AcsRecordingChunkInfoProperties`,
+    - `deleteLocation` to `AcsRecordingChunkInfoProperties`
     - `recordingChannelType`, `recordingContentType`, `recordingFormatType` to `AcsRecordingFileStatusUpdatedEventData`
     - `connectedRegistry`, `location` to `ContainerRegistryImagePushedEventData`, `ContainerRegistryImageDeletedEventData`,
       `ContainerRegistryEventConnectedRegistry`, `ContainerRegistryChartPushedEventData`,
       `ContainerRegistryChartDeletedEventData`, `ContainerResistryArtifactEventData`
 
-- Added new model type,
+- Added new model types,
     - `ContainerRegistryEventConnectedRegistry`, `RecordingChannelType`, `RecordingContentType`, `RecordingFormatType`
 
 ### Other Changes
