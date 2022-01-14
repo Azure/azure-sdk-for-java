@@ -70,7 +70,11 @@ public final class BlobChangefeedClientBuilder {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.changefeed.BlobChangefeedClientBuilder#buildClient}
+     * <!-- src_embed com.azure.storage.blob.changefeed.BlobChangefeedClientBuilder#buildClient -->
+     * <pre>
+     * BlobChangefeedClient changefeedClient = new BlobChangefeedClientBuilder&#40;blobServiceClient&#41;.buildClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.changefeed.BlobChangefeedClientBuilder#buildClient -->
      *F
      * @return a {@link BlobChangefeedClient} created from the configurations in this builder.
      */
@@ -83,7 +87,11 @@ public final class BlobChangefeedClientBuilder {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.changefeed.BlobChangefeedClientBuilder#buildAsyncClient}
+     * <!-- src_embed com.azure.storage.blob.changefeed.BlobChangefeedClientBuilder#buildAsyncClient -->
+     * <pre>
+     * BlobChangefeedAsyncClient changefeedClient = new BlobChangefeedClientBuilder&#40;blobServiceAsyncClient&#41;.buildAsyncClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.changefeed.BlobChangefeedClientBuilder#buildAsyncClient -->
      *
      * @return a {@link BlobChangefeedAsyncClient} created from the configurations in this builder.
      */
