@@ -52,6 +52,7 @@
       --add-opens com.azure.spring.service/com.azure.spring.service.credential=ALL-UNNAMED
       --add-opens com.azure.spring.service/com.azure.spring.service.eventhubs=ALL-UNNAMED
       --add-opens com.azure.spring.service/com.azure.spring.service.implementation.storage.credential=ALL-UNNAMED
+      --add-opens com.azure.spring.service/com.azure.spring.service.implementation.converter=ALL-UNNAMED
       --add-opens com.azure.spring.service/com.azure.spring.service.keyvault.certificates=ALL-UNNAMED
       --add-opens com.azure.spring.service/com.azure.spring.service.keyvault.secret=ALL-UNNAMED
       --add-opens com.azure.spring.service/com.azure.spring.service.servicebus.factory=ALL-UNNAMED
