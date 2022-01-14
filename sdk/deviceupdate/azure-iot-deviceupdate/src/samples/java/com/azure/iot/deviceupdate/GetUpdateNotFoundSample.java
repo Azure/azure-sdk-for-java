@@ -17,7 +17,7 @@ public class GetUpdateNotFoundSample {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildDeviceUpdateAsyncClient();
 
-        // BEGIN: com.azure.iot.deviceupdate.UpdatesAsyncClient.notfound
+        // BEGIN: com.azure.iot.deviceupdate.DeviceUpdateAsyncClient.notfound
         try {
             client.getUpdateWithResponse("foo", "bar", "0.0.0.1", null).block();
         } catch (HttpResponseException e) {
@@ -26,7 +26,7 @@ public class GetUpdateNotFoundSample {
                 System.out.println("update does not exist");
             }
         }
-        // END: com.azure.iot.deviceupdate.UpdatesAsyncClient.notfound
+        // END: com.azure.iot.deviceupdate.DeviceUpdateAsyncClient.notfound
 
     }
 }

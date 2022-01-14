@@ -54,7 +54,7 @@ All Device Update for IoT Hub service operations will throw a ErrorResponseExcep
 
 For example, if you use the `getUpdateWithResponse` operation and the model you are looking for doesn't exist, you can catch that specific HttpStatusCode to decide the operation that follows in that case.
 
-``` java com.azure.iot.deviceupdate.UpdatesAsyncClient.notfound
+``` java com.azure.iot.deviceupdate.DeviceUpdateAsyncClient.notfound
 try {
     client.getUpdateWithResponse("foo", "bar", "0.0.0.1", null).block();
 } catch (HttpResponseException e) {

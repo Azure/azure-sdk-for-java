@@ -23,7 +23,7 @@ environment settings:
 You need to use AzureDeviceUpdateClientBuilder to create a proper valid AzureDeviceUpdateClient. This main client will
 let you access the other clients - Updates and Management. In the sample `ListDevicesSample`, it creates `DeviceManagementAsyncClient`.
 
-```java com.azure.iot.deviceupdate.ManagementAsyncClient.instantiate
+```java com.azure.iot.deviceupdate.DeviceManagementAsyncClient.instantiate
 DeviceManagementAsyncClient client = new DeviceUpdateClientBuilder()
     .endpoint(Configuration.getGlobalConfiguration().get("AZURE_ACCOUNT_ENDPOINT"))
     .instanceId(Configuration.getGlobalConfiguration().get("AZURE_INSTANCE_ID"))
