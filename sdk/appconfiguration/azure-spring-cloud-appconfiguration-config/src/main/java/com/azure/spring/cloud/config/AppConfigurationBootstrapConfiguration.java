@@ -39,7 +39,7 @@ public class AppConfigurationBootstrapConfiguration {
 
     /**
      * Creates Connections Pool. Contains basic connection info to each App Configuration Store.
-     * 
+     *
      * @param properties Configured properties to setup connections.
      * @return ConnectionPool
      */
@@ -69,7 +69,7 @@ public class AppConfigurationBootstrapConfiguration {
     }
 
     /**
-     * 
+     *
      * @param properties Client properties
      * @param appProperties Library properties
      * @param clients Store Connections
@@ -119,7 +119,7 @@ public class AppConfigurationBootstrapConfiguration {
 
     /**
      * Builds ClientStores used for connecting to App Configuration.
-     * 
+     *
      * @param properties Client configurations for setting up connections to each config store.
      * @param appProperties Library configurations for setting up connections to each config store.
      * @param pool Basic connection info for connecting to each config store.
@@ -160,7 +160,7 @@ public class AppConfigurationBootstrapConfiguration {
         List<String> profiles = Arrays.asList(env.getActiveProfiles());
 
         for (String profile : profiles) {
-            if (profile.equalsIgnoreCase("dev")) {
+            if ("dev".equalsIgnoreCase(profile)) {
                 isDev = true;
             }
         }

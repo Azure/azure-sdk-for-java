@@ -2,13 +2,11 @@
 
 ## 2.11.0-beta.1 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of authentication to `2020-08-01-preview`
 
 ## 2.10.0 (2021-11-22)
 

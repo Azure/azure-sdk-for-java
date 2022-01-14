@@ -4,7 +4,7 @@ package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
-import com.azure.containers.containerregistry.models.ArtifactManifestOrderBy;
+import com.azure.containers.containerregistry.models.ArtifactManifestOrder;
 import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
@@ -111,7 +111,7 @@ public class ReadmeSamples {
             // Obtain the images ordered from newest to oldest
             PagedIterable<ArtifactManifestProperties> imageManifests =
                 repository.listManifestProperties(
-                    ArtifactManifestOrderBy.LAST_UPDATED_ON_DESCENDING,
+                    ArtifactManifestOrder.LAST_UPDATED_ON_DESCENDING,
                     Context.NONE);
 
             imageManifests.stream().skip(imagesCountToKeep)

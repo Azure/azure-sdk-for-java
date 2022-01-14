@@ -109,7 +109,7 @@ public final class OutputsClientImpl implements OutputsClient {
             @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics"
                 + "/streamingjobs/{jobName}/outputs/{outputName}")
@@ -122,6 +122,7 @@ public final class OutputsClientImpl implements OutputsClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("jobName") String jobName,
             @PathParam("outputName") String outputName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -236,7 +237,6 @@ public final class OutputsClientImpl implements OutputsClient {
         } else {
             output.validate();
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -246,7 +246,7 @@ public final class OutputsClientImpl implements OutputsClient {
                             this.client.getEndpoint(),
                             ifMatch,
                             ifNoneMatch,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             jobName,
@@ -311,7 +311,6 @@ public final class OutputsClientImpl implements OutputsClient {
         } else {
             output.validate();
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -319,7 +318,7 @@ public final class OutputsClientImpl implements OutputsClient {
                 this.client.getEndpoint(),
                 ifMatch,
                 ifNoneMatch,
-                apiVersion,
+                this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 jobName,
@@ -495,7 +494,6 @@ public final class OutputsClientImpl implements OutputsClient {
         } else {
             output.validate();
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -504,7 +502,7 @@ public final class OutputsClientImpl implements OutputsClient {
                         .update(
                             this.client.getEndpoint(),
                             ifMatch,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             jobName,
@@ -569,14 +567,13 @@ public final class OutputsClientImpl implements OutputsClient {
         } else {
             output.validate();
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
                 ifMatch,
-                apiVersion,
+                this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 jobName,
@@ -736,18 +733,19 @@ public final class OutputsClientImpl implements OutputsClient {
         if (outputName == null) {
             return Mono.error(new IllegalArgumentException("Parameter outputName is required and cannot be null."));
         }
-        final String apiVersion = "2017-04-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
                         .delete(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             jobName,
                             outputName,
+                            accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -789,16 +787,17 @@ public final class OutputsClientImpl implements OutputsClient {
         if (outputName == null) {
             return Mono.error(new IllegalArgumentException("Parameter outputName is required and cannot be null."));
         }
-        final String apiVersion = "2017-04-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 jobName,
                 outputName,
+                accept,
                 context);
     }
 
@@ -887,7 +886,6 @@ public final class OutputsClientImpl implements OutputsClient {
         if (outputName == null) {
             return Mono.error(new IllegalArgumentException("Parameter outputName is required and cannot be null."));
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -895,7 +893,7 @@ public final class OutputsClientImpl implements OutputsClient {
                     service
                         .get(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             jobName,
@@ -942,13 +940,12 @@ public final class OutputsClientImpl implements OutputsClient {
         if (outputName == null) {
             return Mono.error(new IllegalArgumentException("Parameter outputName is required and cannot be null."));
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 jobName,
@@ -1050,7 +1047,6 @@ public final class OutputsClientImpl implements OutputsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1059,7 +1055,7 @@ public final class OutputsClientImpl implements OutputsClient {
                         .listByStreamingJob(
                             this.client.getEndpoint(),
                             select,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             jobName,
@@ -1113,14 +1109,13 @@ public final class OutputsClientImpl implements OutputsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByStreamingJob(
                 this.client.getEndpoint(),
                 select,
-                apiVersion,
+                this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 jobName,
@@ -1276,7 +1271,6 @@ public final class OutputsClientImpl implements OutputsClient {
         if (output != null) {
             output.validate();
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1284,7 +1278,7 @@ public final class OutputsClientImpl implements OutputsClient {
                     service
                         .test(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             jobName,
@@ -1339,13 +1333,12 @@ public final class OutputsClientImpl implements OutputsClient {
         if (output != null) {
             output.validate();
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .test(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 jobName,
@@ -1370,7 +1363,7 @@ public final class OutputsClientImpl implements OutputsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the status of the test operation along with error information, if applicable.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ResourceTestStatusInner>, ResourceTestStatusInner> beginTestAsync(
         String resourceGroupName, String jobName, String outputName, OutputInner output) {
         Mono<Response<Flux<ByteBuffer>>> mono = testWithResponseAsync(resourceGroupName, jobName, outputName, output);
@@ -1381,7 +1374,7 @@ public final class OutputsClientImpl implements OutputsClient {
                 this.client.getHttpPipeline(),
                 ResourceTestStatusInner.class,
                 ResourceTestStatusInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1400,7 +1393,7 @@ public final class OutputsClientImpl implements OutputsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the status of the test operation along with error information, if applicable.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ResourceTestStatusInner>, ResourceTestStatusInner> beginTestAsync(
         String resourceGroupName, String jobName, String outputName, OutputInner output, Context context) {
         context = this.client.mergeContext(context);
@@ -1431,7 +1424,7 @@ public final class OutputsClientImpl implements OutputsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the status of the test operation along with error information, if applicable.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourceTestStatusInner>, ResourceTestStatusInner> beginTest(
         String resourceGroupName, String jobName, String outputName, OutputInner output) {
         return beginTestAsync(resourceGroupName, jobName, outputName, output).getSyncPoller();
@@ -1453,7 +1446,7 @@ public final class OutputsClientImpl implements OutputsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the status of the test operation along with error information, if applicable.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourceTestStatusInner>, ResourceTestStatusInner> beginTest(
         String resourceGroupName, String jobName, String outputName, OutputInner output, Context context) {
         return beginTestAsync(resourceGroupName, jobName, outputName, output, context).getSyncPoller();
