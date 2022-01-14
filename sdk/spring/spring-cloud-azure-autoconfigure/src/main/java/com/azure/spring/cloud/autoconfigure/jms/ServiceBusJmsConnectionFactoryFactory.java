@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.jms;
 
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
+import org.apache.qpid.jms.policy.JmsDefaultPrefetchPolicy;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -26,27 +27,31 @@ public class ServiceBusJmsConnectionFactoryFactory {
 
     }
 
-    <T extends ServiceBusJmsConnectionFactory> T createConnectionFactory(Class<T> factoryClass) {
-        try {
-            return doCreateConnectionFactory(factoryClass);
-        } catch (Exception ex) {
-            throw new IllegalStateException("Unable to create ActiveMQConnectionFactory", ex);
-        }
+    <T extends ServiceBusJmsConnectionFactory> T createConnectionFactory(Class<T> factoryClass)throws IllegalStateException {
+        T factory = createConnectionFactoryInstance(factoryClass);
+        setClientId(factory);
+        setPrefetchPolicy(factory);
+        customize(factory);
+        return factory;
     }
 
-
-    private <T extends ServiceBusJmsConnectionFactory> T doCreateConnectionFactory(Class<T> factoryClass) throws IllegalStateException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
-        T factory = createConnectionFactoryInstance(factoryClass);
+    private <T extends ServiceBusJmsConnectionFactory> void setClientId(T factory) {
         if (StringUtils.hasText(this.properties.getTopicClientId())) {
             factory.setClientID(this.properties.getTopicClientId());
         }
-        customize(factory);
-        return factory;
-
     }
 
-    private <T extends ServiceBusJmsConnectionFactory> T createConnectionFactoryInstance(Class<T> factoryClass)
-        throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    private <T extends ServiceBusJmsConnectionFactory> void setPrefetchPolicy(T factory) {
+        AzureServiceBusJmsProperties.PrefetchPolicy prefetchProperties = this.properties.getPrefetchPolicy();
+        JmsDefaultPrefetchPolicy prefetchPolicy = (JmsDefaultPrefetchPolicy) factory.getPrefetchPolicy();
+        prefetchPolicy.setDurableTopicPrefetch(prefetchProperties.getDurableTopicPrefetch());
+        prefetchPolicy.setQueueBrowserPrefetch(prefetchProperties.getQueueBrowserPrefetch());
+        prefetchPolicy.setQueuePrefetch(prefetchProperties.getQueuePrefetch());
+        prefetchPolicy.setTopicPrefetch(prefetchProperties.getTopicPrefetch());
+        factory.setPrefetchPolicy(prefetchPolicy);
+    }
+
+    private <T extends ServiceBusJmsConnectionFactory> T createConnectionFactoryInstance(Class<T> factoryClass) {
         try {
             T factory;
             String remoteUrl = this.properties.getRemoteUrl();

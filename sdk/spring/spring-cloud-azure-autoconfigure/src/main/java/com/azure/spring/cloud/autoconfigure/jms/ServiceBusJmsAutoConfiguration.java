@@ -6,10 +6,10 @@ package com.azure.spring.cloud.autoconfigure.jms;
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
 import org.apache.qpid.jms.JmsConnectionExtensions;
 import org.apache.qpid.jms.JmsConnectionFactory;
-import org.apache.qpid.jms.policy.JmsDefaultPrefetchPolicy;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration;
 import org.springframework.boot.autoconfigure.jms.JmsProperties;
 import org.springframework.boot.autoconfigure.jms.JndiConnectionFactoryAutoConfiguration;
@@ -30,39 +30,21 @@ import static com.azure.spring.core.AzureSpringIdentifier.AZURE_SPRING_SERVICE_B
  */
 @Configuration(proxyBeanMethods = false)
 @AutoConfigureBefore(JmsAutoConfiguration.class)
-@AutoConfigureAfter({ JndiConnectionFactoryAutoConfiguration.class })
-@ConditionalOnClass({ ConnectionFactory.class, JmsConnectionFactory.class,
-    JmsTemplate.class })
-@EnableConfigurationProperties({ AzureServiceBusJmsProperties.class,
-    JmsProperties.class })
+@AutoConfigureAfter(JndiConnectionFactoryAutoConfiguration.class)
+@ConditionalOnClass({ ConnectionFactory.class, JmsConnectionFactory.class, JmsTemplate.class })
+@EnableConfigurationProperties({ AzureServiceBusJmsProperties.class, JmsProperties.class })
 @Import({ ServiceBusJmsConnectionFactoryConfiguration.class, ServiceBusJmsContainerConfiguration.class })
 public class ServiceBusJmsAutoConfiguration {
     @Bean
-    ServiceBusJmsConnectionFactoryCustomizer customizeAmqpOpenProperties(AzureServiceBusJmsProperties serviceBusJmsProperties) {
+    @ConditionalOnExpression("'${spring.jms.servicebus.pricing-tier}'.equalsIgnoreCase('premium')")
+    ServiceBusJmsConnectionFactoryCustomizer amqpOpenPropertiesCustomizer(AzureServiceBusJmsProperties serviceBusJmsProperties) {
         return factory -> {
-            if (serviceBusJmsProperties.getPricingTier().equalsIgnoreCase("premium")) {
-                final Map<String, Object> properties = new HashMap<>();
-                properties.put("com.microsoft:is-client-provider", true);
-                properties.put("user-agent", AZURE_SPRING_SERVICE_BUS);
-                //set user agent
-                factory.setExtension(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES.toString(),
-                    (connection, uri) -> properties);
-            }
-        };
-    }
-
-    @Bean
-    ServiceBusJmsConnectionFactoryCustomizer customizePrefetchPolicy(AzureServiceBusJmsProperties serviceBusJmsProperties) {
-        return factory -> {
-            AzureServiceBusJmsProperties.PrefetchPolicy prefetchProperties = serviceBusJmsProperties
-                .getPrefetchPolicy();
-            JmsDefaultPrefetchPolicy prefetchPolicy = (JmsDefaultPrefetchPolicy) factory
-                .getPrefetchPolicy();
-            prefetchPolicy.setDurableTopicPrefetch(prefetchProperties.getDurableTopicPrefetch());
-            prefetchPolicy.setQueueBrowserPrefetch(prefetchProperties.getQueueBrowserPrefetch());
-            prefetchPolicy.setQueuePrefetch(prefetchProperties.getQueuePrefetch());
-            prefetchPolicy.setTopicPrefetch(prefetchProperties.getTopicPrefetch());
-            factory.setPrefetchPolicy(prefetchPolicy);
+            final Map<String, Object> properties = new HashMap<>();
+            properties.put("com.microsoft:is-client-provider", true);
+            properties.put("user-agent", AZURE_SPRING_SERVICE_BUS);
+            //set user agent
+            factory.setExtension(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES.toString(),
+                (connection, uri) -> properties);
         };
     }
 }

@@ -4,12 +4,10 @@
 package com.azure.spring.cloud.autoconfigure.jms;
 
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
 
@@ -19,7 +17,6 @@ import javax.jms.ConnectionFactory;
  * Abstract autoconfiguration class of ServiceBusJMS for JmsListenerContainerFactory.
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnClass(EnableJms.class)
 public class ServiceBusJmsContainerConfiguration {
 
     /**

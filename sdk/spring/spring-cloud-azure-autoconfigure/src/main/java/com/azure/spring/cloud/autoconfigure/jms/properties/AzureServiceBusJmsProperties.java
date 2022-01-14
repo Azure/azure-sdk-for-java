@@ -36,8 +36,10 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
 
     private String pricingTier;
 
+    @NestedConfigurationProperty
     private final Listener listener = new Listener();
 
+    @NestedConfigurationProperty
     private final PrefetchPolicy prefetchPolicy = new PrefetchPolicy();
 
     @NestedConfigurationProperty
@@ -189,7 +191,7 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
             throw new IllegalArgumentException("'spring.jms.servicebus.connection-string' should be provided");
         }
 
-        if (!pricingTier.matches("(?i)premium|standard|basic")) {
+        if (null == pricingTier || !pricingTier.matches("(?i)premium|standard|basic")) {
             throw new IllegalArgumentException("'spring.jms.servicebus.pricing-tier' is not valid");
         }
 

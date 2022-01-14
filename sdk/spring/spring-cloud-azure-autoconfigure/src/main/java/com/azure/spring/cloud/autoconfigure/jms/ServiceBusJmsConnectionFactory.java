@@ -14,11 +14,11 @@ public class ServiceBusJmsConnectionFactory extends JmsConnectionFactory {
         super();
     }
 
-    public ServiceBusJmsConnectionFactory(String remoteURI) {
-        super(remoteURI);
+    public ServiceBusJmsConnectionFactory(String remoteUri) {
+        super(remoteUri);
     }
 
-    public ServiceBusJmsConnectionFactory(String userName, String password, String remoteURI) {
-        super(userName, password, remoteURI);
+    public ServiceBusJmsConnectionFactory(String userName, String password, String remoteUri) {
+        super(userName, password, remoteUri);
     }
 }

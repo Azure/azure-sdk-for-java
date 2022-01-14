@@ -45,9 +45,7 @@ public class ServiceBusJmsConnectionFactoryConfiguration {
             return createJmsConnectionFactory(properties, factoryCustomizers);
         }
 
-
         @Configuration(proxyBeanMethods = false)
-        @ConditionalOnClass(CachingConnectionFactory.class)
         @ConditionalOnProperty(prefix = "spring.jms.cache", name = "enabled", havingValue = "true",
             matchIfMissing = true)
         static class CachingConnectionFactoryConfiguration {
