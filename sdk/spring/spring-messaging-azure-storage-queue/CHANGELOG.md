@@ -7,7 +7,8 @@
 ### Breaking Changes
 - Remove `StorageQueueOperation`.
 - Deprecate configure checkpoint mode for StorageQueueTemplate, and support only MANUAL mode.
-
+- Remove auto creating Storage Queue when send/receive messages via `StorageQueueTemplate`, and provide a property of
+`spring.cloud.azure.storage.queue.create-queue-if-not-exists` to support enabling the auto creation.
 ### Bugs Fixed
 
 ### Other Changes

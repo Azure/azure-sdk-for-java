@@ -4,31 +4,60 @@
 package com.azure.spring.storage.queue.core;
 
 import com.azure.spring.storage.queue.core.factory.DefaultStorageQueueClientFactory;
+import com.azure.spring.storage.queue.core.factory.StorageQueueClientFactory;
+import com.azure.spring.storage.queue.core.properties.StorageQueueProperties;
 import com.azure.storage.queue.QueueAsyncClient;
-import com.azure.storage.queue.QueueServiceAsyncClient;
-import org.junit.Ignore;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class DefaultStorageQueueClientFactoryTests {
 
-//    @Test
-//    void returnSameQueueClientWhenMultiGetQueueClient() {
-//        QueueServiceAsyncClient serviceAsyncClient = mock(QueueServiceAsyncClient.class);
-//        DefaultStorageQueueClientFactory factory = new DefaultStorageQueueClientFactory(serviceAsyncClient);
-//        String queueName = "test-queue";
-//        QueueAsyncClient queueAsyncClient = mock(QueueAsyncClient.class);
-//        when(queueAsyncClient.create()).thenReturn(Mono.empty());
-//        when(serviceAsyncClient.getQueueAsyncClient(queueName)).thenReturn(queueAsyncClient);
-//        QueueAsyncClient queueClientFirst = factory.createQueueClient(queueName);
-//        QueueAsyncClient queueClientTwo = factory.createQueueClient(queueName);
-//        assertEquals(queueClientFirst, queueClientTwo);
-//        verify(serviceAsyncClient, times(1)).getQueueAsyncClient(queueName);
-//    }
+    private StorageQueueClientFactory storageQueueClientFactory;
+    private final String queueName = "queue";
+    private int clientAddedTimes;
+
+    @BeforeEach
+    void setUp() {
+        StorageQueueProperties storageQueueProperties = new StorageQueueProperties();
+        storageQueueProperties.setAccountKey("test-key");
+        storageQueueProperties.setAccountName("test-account");
+        storageQueueProperties.setCreateQueueIfNotExists(false);
+        this.storageQueueClientFactory = new DefaultStorageQueueClientFactory(storageQueueProperties);
+        clientAddedTimes = 0;
+        this.storageQueueClientFactory.addListener(new StorageQueueClientFactory.Listener() {
+            @Override
+            public void queueClientAdded(String name, QueueAsyncClient client) {
+                clientAddedTimes++;
+            }
+        });
+    }
+
+    @Test
+    void testCreateQueueClient(){
+        QueueAsyncClient client = storageQueueClientFactory.createQueueClient(queueName);
+        assertNotNull(client);
+        assertEquals(1, clientAddedTimes);
+    }
+
+    @Test
+    void testCreateQueueClientTwice(){
+        QueueAsyncClient client = storageQueueClientFactory.createQueueClient(queueName);
+        assertNotNull(client);
+
+        client = storageQueueClientFactory.createQueueClient(queueName);
+        assertEquals(1, clientAddedTimes);
+    }
+
+    @Test
+    void testRecreateQueueClient() {
+        QueueAsyncClient client = storageQueueClientFactory.createQueueClient(queueName);
+        assertNotNull(client);
+
+        QueueAsyncClient client2 = storageQueueClientFactory.createQueueClient("queueName2");
+        assertNotNull(client2);
+        assertEquals(2, clientAddedTimes);
+    }
 }

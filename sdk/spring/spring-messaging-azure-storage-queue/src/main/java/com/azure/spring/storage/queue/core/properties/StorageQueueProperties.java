@@ -12,6 +12,8 @@ import com.azure.storage.queue.QueueServiceVersion;
  */
 public class StorageQueueProperties extends AzureHttpSdkProperties implements QueueServiceClientProperties {
 
+    public static final String QUEUE_ENDPOINT_PATTERN = "https://%s.queue%s";
+
     /**
      * Endpoint for Azure Storage service.
      */
@@ -45,6 +47,11 @@ public class StorageQueueProperties extends AzureHttpSdkProperties implements Qu
      */
     private QueueMessageEncoding messageEncoding;
 
+    /**
+     * Whether to create the queue if it does not exist.
+     */
+    private Boolean createQueueIfNotExists;
+
     @Override
     public String getConnectionString() {
         return connectionString;
@@ -56,7 +63,11 @@ public class StorageQueueProperties extends AzureHttpSdkProperties implements Qu
 
     @Override
     public String getEndpoint() {
-        return endpoint;
+        return endpoint == null ? buildEndpointFromAccountName() : endpoint;
+    }
+
+    private String buildEndpointFromAccountName() {
+        return String.format(QUEUE_ENDPOINT_PATTERN, accountName, profile.getEnvironment().getStorageEndpointSuffix());
     }
 
     public void setEndpoint(String endpoint) {
@@ -106,5 +117,14 @@ public class StorageQueueProperties extends AzureHttpSdkProperties implements Qu
 
     public void setMessageEncoding(QueueMessageEncoding messageEncoding) {
         this.messageEncoding = messageEncoding;
+    }
+
+    @Override
+    public Boolean getCreateQueueIfNotExists() {
+        return createQueueIfNotExists;
+    }
+
+    public void setCreateQueueIfNotExists(Boolean createQueueIfNotExists) {
+        this.createQueueIfNotExists = createQueueIfNotExists;
     }
 }

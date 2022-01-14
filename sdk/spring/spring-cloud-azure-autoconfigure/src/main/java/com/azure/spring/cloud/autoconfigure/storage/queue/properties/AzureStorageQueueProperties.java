@@ -25,6 +25,10 @@ public class AzureStorageQueueProperties extends AzureStorageProperties implemen
      */
     private QueueMessageEncoding messageEncoding;
 
+    /**
+     * Whether to create the queue if it does not exist.
+     */
+    private Boolean createQueueIfNotExists;
 
     public String getEndpoint() {
         return endpoint == null ? buildEndpointFromAccountName() : endpoint;
@@ -34,6 +38,7 @@ public class AzureStorageQueueProperties extends AzureStorageProperties implemen
         return String.format(QUEUE_ENDPOINT_PATTERN, accountName, profile.getEnvironment().getStorageEndpointSuffix());
     }
 
+    @Override
     public QueueServiceVersion getServiceVersion() {
         return serviceVersion;
     }
@@ -49,5 +54,14 @@ public class AzureStorageQueueProperties extends AzureStorageProperties implemen
 
     public void setMessageEncoding(QueueMessageEncoding messageEncoding) {
         this.messageEncoding = messageEncoding;
+    }
+
+    @Override
+    public Boolean getCreateQueueIfNotExists() {
+        return createQueueIfNotExists;
+    }
+
+    public void setCreateQueueIfNotExists(Boolean createQueueIfNotExists) {
+        this.createQueueIfNotExists = createQueueIfNotExists;
     }
 }

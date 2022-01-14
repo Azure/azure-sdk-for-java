@@ -28,14 +28,16 @@ public final class DefaultStorageQueueClientFactory implements StorageQueueClien
     private final List<Listener> listeners = new ArrayList<>();
     private final Map<String, QueueAsyncClient> clients = new ConcurrentHashMap<>();
     private final QueueServiceAsyncClient queueServiceAsyncClient;
+    private final StorageQueueProperties storageQueueProperties;
 
     /**
      * Construct a factory with the provided {@link StorageQueueProperties}.
      * @param storageQueueProperties the storage queue properties
      */
     public DefaultStorageQueueClientFactory(@NonNull StorageQueueProperties storageQueueProperties) {
+        this.storageQueueProperties = storageQueueProperties;
         QueueServiceClientBuilderFactory queueServiceClientBuilderFactory =
-            new QueueServiceClientBuilderFactory(storageQueueProperties);
+            new QueueServiceClientBuilderFactory(this.storageQueueProperties);
         queueServiceClientBuilderFactory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_STORAGE_QUEUE);
         this.queueServiceAsyncClient = queueServiceClientBuilderFactory.build().buildAsyncClient();
     }
@@ -46,13 +48,14 @@ public final class DefaultStorageQueueClientFactory implements StorageQueueClien
             final QueueAsyncClient queueClient = queueServiceAsyncClient.getQueueAsyncClient(queueName);
             // TODO (xiada): when used with connection string, this call will throw exception
             // TODO (xiada): https://github.com/Azure/azure-sdk-for-java/issues/15008
-            // Do we need to auto create the queue or add another property of autoCreateQueueIfNotExist for it?
-            queueClient.create().subscribe(
-                response -> {
-                },
-                e -> LOGGER.error("Fail to create the queue.", e),
-                () -> LOGGER.info("Complete creating the queue!")
-            );
+            if (storageQueueProperties.getCreateQueueIfNotExists()) {
+                queueClient.create().subscribe(
+                    response -> {
+                    },
+                    e -> LOGGER.error("Fail to create the queue.", e),
+                    () -> LOGGER.info("Complete creating the queue!")
+                );
+            }
             this.listeners.forEach(l -> l.queueClientAdded(queueName, queueClient));
             return queueClient;
         });

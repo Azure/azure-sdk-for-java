@@ -21,7 +21,8 @@ Upgrade dependency according to spring-boot-dependencies:2.6.1 and spring-cloud-
 7. Remove artifact id `spring-cloud-azure-stream-binder-test`.
 8. Remove `StorageQueueOperation`.
 9. Deprecate configure checkpoint mode for StorageQueueTemplate, and support only MANUAL mode.
-
+10. Remove auto creating Storage Queue when send/receive messages via `StorageQueueTemplate`, and provide a property of
+  `spring.cloud.azure.storage.queue.create-queue-if-not-exists` to support enabling the auto creation.
 ### Bugs Fixed
 
 ### Other Changes

@@ -14,6 +14,7 @@ class TestAzureStorageQueueProperties extends TestAzureStorageProperties impleme
 
     private QueueServiceVersion serviceVersion;
     private QueueMessageEncoding messageEncoding;
+    private Boolean createQueueIfNotExists;
 
     @Override
     public QueueServiceVersion getServiceVersion() {
@@ -31,5 +32,14 @@ class TestAzureStorageQueueProperties extends TestAzureStorageProperties impleme
 
     public void setMessageEncoding(QueueMessageEncoding messageEncoding) {
         this.messageEncoding = messageEncoding;
+    }
+
+    @Override
+    public Boolean getCreateQueueIfNotExists() {
+        return createQueueIfNotExists;
+    }
+
+    public void setCreateQueueIfNotExists(Boolean createQueueIfNotExists) {
+        this.createQueueIfNotExists = createQueueIfNotExists;
     }
 }

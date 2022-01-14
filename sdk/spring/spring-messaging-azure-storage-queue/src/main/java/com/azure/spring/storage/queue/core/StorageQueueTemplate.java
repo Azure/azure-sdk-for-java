@@ -161,6 +161,7 @@ public class StorageQueueTemplate implements SendOperation, ReceiveOperation {
     /**
      * Get the {@code checkpointMode}. Deprecated from version 4.0.0-beta.3, only MANUAL checkpoint mode is supported.
      * @return the {@code checkpointMode.MANUAL}.
+     * @deprecated deprecated from version 4.0.0-beta.3, only MANUAL checkpoint mode is supported.
      */
     @Deprecated
     public CheckpointMode getCheckpointMode() {
