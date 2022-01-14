@@ -35,14 +35,14 @@ public class DefaultStorageQueueClientFactoryTests {
     }
 
     @Test
-    void testCreateQueueClient(){
+    void testCreateQueueClient() {
         QueueAsyncClient client = storageQueueClientFactory.createQueueClient(queueName);
         assertNotNull(client);
         assertEquals(1, clientAddedTimes);
     }
 
     @Test
-    void testCreateQueueClientTwice(){
+    void testCreateQueueClientTwice() {
         QueueAsyncClient client = storageQueueClientFactory.createQueueClient(queueName);
         assertNotNull(client);
 
