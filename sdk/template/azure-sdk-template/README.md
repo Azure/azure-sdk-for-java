@@ -130,7 +130,7 @@ provides more information on configuring or changing the HTTP client.
   
 * After adding the new SDK, you need to include the package in the following locations
 1. version_client.txt - include the package with the version.
-2. parent pom - <enlistmentroot>\pom.xml - Multiple places in the file.
+2. parent pom - \pom.xml - Multiple places in the file.
 
 ## Contributing
 
