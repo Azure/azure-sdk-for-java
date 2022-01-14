@@ -24,7 +24,6 @@ public class DefaultStorageQueueClientFactoryTests {
         StorageQueueProperties storageQueueProperties = new StorageQueueProperties();
         storageQueueProperties.setAccountKey("test-key");
         storageQueueProperties.setAccountName("test-account");
-        storageQueueProperties.setCreateQueueIfNotExists(false);
         this.storageQueueClientFactory = new DefaultStorageQueueClientFactory(storageQueueProperties);
         clientAddedTimes = 0;
         this.storageQueueClientFactory.addListener(new StorageQueueClientFactory.Listener() {
