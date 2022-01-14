@@ -4,9 +4,9 @@
 package com.azure.spring.service.eventhubs.properties;
 
 import com.azure.messaging.eventhubs.LoadBalancingStrategy;
-import com.azure.messaging.eventhubs.models.EventPosition;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Map;
 
 /**
@@ -24,7 +24,7 @@ public interface EventProcessorClientProperties extends EventHubConsumerProperti
      * Get the initial partition event position mapping.
      * @return the partition event position map.
      */
-    Map<String, StartPosition> getInitialPartitionEventPosition();
+    Map<String, ? extends StartPosition> getInitialPartitionEventPosition();
 
     /**
      * Get the event batch.
@@ -85,21 +85,33 @@ public interface EventProcessorClientProperties extends EventHubConsumerProperti
     /**
      * The starting position from which to consume events.
      */
-    enum StartPosition {
-        EARLIEST,
-        LATEST;
+    interface StartPosition {
 
         /**
-         * Convert the current StartPosition to EventPosition object.
-         * @return the EventPosition object.
+         * Whether the event of the specified sequence number is included.
+         * @return Whether to include the specified event.
          */
-        public EventPosition toEventPosition() {
-            if (EARLIEST.equals(this)) {
-                return EventPosition.earliest();
-            } else {
-                return EventPosition.latest();
-            }
-        }
+        boolean isInclusive();
+
+        /**
+         * The offset of the event within that partition. String keyword, "earliest" and "latest" (case-insensitive),
+         * are reserved for specifying the start and end of the partition. Other provided value will be cast to Long.
+         * @return The offset of the event within that partition.
+         */
+        String getOffset();
+
+        /**
+         * The sequence number of the event within that partition.
+         * @return The sequence number of the event within that partition.
+         */
+        Long getSequenceNumber();
+
+        /**
+         * The event enqueued after the requested enqueuedDateTime becomes the current position.
+         * @return The enqueued datetime.
+         */
+        Instant getEnqueuedDateTime();
+
     }
 
 }

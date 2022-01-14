@@ -24,6 +24,10 @@ public class AzureStorageQueueProperties extends AzureStorageProperties implemen
      * How queue message body is represented in HTTP requests and responses.
      */
     private QueueMessageEncoding messageEncoding;
+    /**
+     * Name of the storage queue.
+     */
+    private String queueName;
 
 
     public String getEndpoint() {
@@ -49,5 +53,13 @@ public class AzureStorageQueueProperties extends AzureStorageProperties implemen
 
     public void setMessageEncoding(QueueMessageEncoding messageEncoding) {
         this.messageEncoding = messageEncoding;
+    }
+
+    public String getQueueName() {
+        return queueName;
+    }
+
+    public void setQueueName(String queueName) {
+        this.queueName = queueName;
     }
 }
