@@ -1,14 +1,19 @@
 # Release History
 
-## 4.0.0-beta.3 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
+## 4.0.0-beta.3 (2022-01-13)
 ### Bugs Fixed
+- Fixed confidence value returned on fields.
 
 ### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.24.1`.
+- Updated `azure-core-http-netty` to `1.11.6`.
+
+## 3.1.7 (2022-01-13)
+### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.24.1`.
+- Updated `azure-core-http-netty` to `1.11.6`.
 
 ## 4.0.0-beta.2 (2021-11-10)
 
