@@ -13,7 +13,7 @@
   <suppress checks="[a-zA-Z0-9]*" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
 
   <!-- Suppress certain checks for samples. -->
-  <suppress checks="(MissingJavadocMethod|MissingJavadocType|MissingJavadocPackage|com\.azure\.tools\.checkstyle\.checks\..*)"
+  <suppress checks="(MissingJavadocMethod|MissingJavadocType|MissingJavadocPackage|EqualsAvoidNullCheck|com\.azure\.tools\.checkstyle\.checks\..*)"
             files=".*[/\\]samples[/\\].*\.java"/>
 
   <!-- Code was taken from Netty and uses its license instead of our usual one. -->

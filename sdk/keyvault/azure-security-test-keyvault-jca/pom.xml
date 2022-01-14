@@ -18,10 +18,7 @@
   <description>The Java Crypto Architecture (JCA) Provider for Azure Key Vault Test</description>
 
   <properties>
-    <codesnippet.skip>false</codesnippet.skip>
     <spotbugs.skip>true</spotbugs.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <dependencies>
@@ -85,7 +82,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.7.6</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.7.7</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

@@ -285,12 +285,12 @@ public class AttestationClientTestBase extends TestBase {
     protected KeyPair createKeyPair(String algorithm) throws NoSuchAlgorithmException {
 
         KeyPairGenerator keyGen;
-        if (algorithm.equals("EC")) {
+        if ("EC".equals(algorithm)) {
             keyGen = KeyPairGenerator.getInstance(algorithm, Security.getProvider("SunEC"));
         } else {
             keyGen = KeyPairGenerator.getInstance(algorithm);
         }
-        if (algorithm.equals("RSA")) {
+        if ("RSA".equals(algorithm)) {
             keyGen.initialize(2048); // Generate a reasonably strong key.
         }
         return keyGen.generateKeyPair();

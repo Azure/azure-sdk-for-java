@@ -37,9 +37,6 @@ Licensed under the MIT License.
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0.01</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.01</jacoco.min.branchcoverage>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
 
     <!-- CosmosSkip - This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
     <!-- This can only be enabled once we release GA, as it needs a stable version to check for breaking changes. -->
@@ -57,7 +54,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-keys</artifactId>
-      <version>4.3.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
+      <version>4.3.6</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -74,7 +71,7 @@ Licensed under the MIT License.
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
       <scope>test</scope>
-      <version>1.4.2</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.4.3</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
