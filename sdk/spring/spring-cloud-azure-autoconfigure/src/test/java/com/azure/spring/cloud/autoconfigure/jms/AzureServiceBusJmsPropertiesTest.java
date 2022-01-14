@@ -52,9 +52,6 @@ class AzureServiceBusJmsPropertiesTest {
         prop.setConnectionString(CONNECTION_STRING);
         prop.setPricingTier(pricingTier);
         prop.afterPropertiesSet();
-        System.out.println(prop.getUsername());
-        System.out.println(prop.getPassword());
-        System.out.println(prop.getRemoteUrl());
         assertThat(prop.getUsername()).isEqualTo("sasKeyName");
         assertThat(prop.getPassword()).isEqualTo("sasKey");
         assertThat(prop.getRemoteUrl()).isEqualTo("amqps://host?amqp.idleTimeout=1800000");
