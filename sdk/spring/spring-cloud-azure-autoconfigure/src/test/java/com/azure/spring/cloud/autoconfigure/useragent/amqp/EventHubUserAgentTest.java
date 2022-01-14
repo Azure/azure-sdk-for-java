@@ -14,13 +14,13 @@ import com.azure.spring.cloud.autoconfigure.eventhubs.TestCheckpointStore;
 import com.azure.spring.cloud.autoconfigure.eventhubs.TestEventProcessorListener;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.useragent.util.UserAgentTestUtil;
+import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
-import static com.azure.spring.core.AzureSpringIdentifier.AZURE_SPRING_EVENT_HUBS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class EventHubUserAgentTest {
@@ -47,7 +47,7 @@ class EventHubUserAgentTest {
                 EventHubClientBuilder eventHubClientBuilder = (EventHubClientBuilder) UserAgentTestUtil.getPrivateFieldValue(EventProcessorClientBuilder.class, "eventHubClientBuilder", eventProcessorClientBuilder);
                 ClientOptions options = (ClientOptions) UserAgentTestUtil.getPrivateFieldValue(EventHubClientBuilder.class, "clientOptions", eventHubClientBuilder);
                 Assertions.assertNotNull(options);
-                Assertions.assertEquals(AZURE_SPRING_EVENT_HUBS, options.getApplicationId());
+                Assertions.assertEquals(AzureSpringIdentifier.AZURE_SPRING_EVENT_HUBS, options.getApplicationId());
 
             });
     }

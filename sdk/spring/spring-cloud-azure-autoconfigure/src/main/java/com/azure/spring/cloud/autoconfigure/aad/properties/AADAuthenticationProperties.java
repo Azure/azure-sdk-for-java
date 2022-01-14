@@ -72,7 +72,7 @@ public class AADAuthenticationProperties implements InitializingBean {
     private String redirectUriTemplate = "{baseUrl}/login/oauth2/code/";
 
     /**
-     * App ID URI which might be used in the <code>"aud"</code> claim of an <code>id_token</code>.
+     * App ID URI which might be used in the "aud" claim of an id_token.
      */
     private String appIdUri;
 
@@ -121,6 +121,9 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     private Map<String, AuthorizationClientProperties> authorizationClients = new HashMap<>();
 
+    /**
+     * Type of the AAD application.
+     */
     private AADApplicationType applicationType;
 
     /**

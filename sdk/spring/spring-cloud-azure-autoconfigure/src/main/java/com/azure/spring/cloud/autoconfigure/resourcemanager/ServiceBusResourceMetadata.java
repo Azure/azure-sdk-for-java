@@ -3,8 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.resourcemanager;
 
+import com.azure.spring.cloud.autoconfigure.properties.resourcemanager.AzureResourceMetadataConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
-import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -12,8 +12,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * Azure Service Bus resource metadata
  */
 @ConfigurationProperties(prefix = AzureServiceBusProperties.PREFIX + ".resource")
-public class ServiceBusResourceMetadata extends AzureResourceMetadata {
+public class ServiceBusResourceMetadata extends AzureResourceMetadataConfigurationProperties {
 
+    /**
+     * Namespace of the service bus.
+     */
     @Value("${spring.cloud.azure.servicebus.namespace:}")
     private String name;
 

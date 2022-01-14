@@ -2336,6 +2336,13 @@
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
 
+  <!-- Referring to https://sourceforge.net/p/findbugs/bugs/1385/, the @Nullable gives a false positive on equals() method -->
+  <Match>
+    <Class name="com.azure.spring.messaging.ConsumerIdentifier"/>
+    <Method name="equals"/>
+    <Bug pattern="NP_METHOD_PARAMETER_TIGHTENS_ANNOTATION"/>
+  </Match>
+
   <!-- The transient fields are not used if deserialization happens. -->
   <Match>
     <Class name="com.azure.identity.implementation.MsalAuthenticationAccount"/>

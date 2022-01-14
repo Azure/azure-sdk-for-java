@@ -3,6 +3,8 @@
 
 package com.azure.spring.integration.servicebus.inbound;
 
+import com.azure.messaging.servicebus.ServiceBusMessage;
+import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.integration.instrumentation.Instrumentation;
 import com.azure.spring.integration.instrumentation.InstrumentationManager;
@@ -13,6 +15,7 @@ import com.azure.spring.messaging.checkpoint.AzureCheckpointer;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.messaging.checkpoint.Checkpointer;
+import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
 import com.azure.spring.service.servicebus.processor.RecordMessageProcessingListener;
 import com.azure.spring.service.servicebus.processor.consumer.ServiceBusErrorContextConsumer;
@@ -23,6 +26,7 @@ import com.azure.spring.servicebus.support.ServiceBusMessageHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.integration.endpoint.MessageProducerSupport;
+import org.springframework.lang.Nullable;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.util.Assert;
@@ -35,7 +39,34 @@ import static com.azure.spring.service.servicebus.properties.ServiceBusEntityTyp
 import static com.azure.spring.service.servicebus.properties.ServiceBusEntityType.TOPIC;
 
 /**
- * Inbound channel adapter for Service Bus Queue.
+ * Inbound channel adapter for Service Bus.
+ * <p>
+ * Example:
+ * <pre> <code>
+ *   {@literal @}ServiceActivator(inputChannel = "input")
+ *     public void messageReceiver(byte[] payload, {@literal @}Header(AzureHeaders.CHECKPOINTER) Checkpointer checkpointer) {
+ *         String message = new String(payload);
+ *         LOGGER.info("New message received: '{}'", message);
+ *         checkpointer.success()
+ *                 .doOnSuccess(s -&gt; LOGGER.info("Message '{}' successfully checkpointed", message))
+ *                 .doOnError(e -&gt; LOGGER.error("Error found", e))
+ *                 .subscribe();
+ *     }
+ *
+ *    {@literal @}Bean
+ *     public ServiceBusInboundChannelAdapter queueMessageChannelAdapter(
+ *         {@literal @}Qualifier("input") MessageChannel inputChannel, ServiceBusProcessorContainer processorContainer) {
+ *         ServiceBusInboundChannelAdapter adapter = new ServiceBusInboundChannelAdapter(processorContainer, "queue-name",
+ *             null, new CheckpointConfig(CheckpointMode.MANUAL));
+ *         adapter.setOutputChannel(inputChannel);
+ *         return adapter;
+ *     }
+ *
+ *    {@literal @}Bean(name = INPUT_CHANNEL)
+ *     public MessageChannel input() {
+ *         return new DirectChannel();
+ *     }
+ * </code> </pre>
  */
 public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
 
@@ -54,68 +85,34 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
     private static final String MSG_SUCCESS_CHECKPOINT = "Checkpointed %s in %s mode";
 
     /**
-     * Construct a {@link ServiceBusInboundChannelAdapter} with the specified {@link ServiceBusProcessorContainer}, queue and {@link CheckpointConfig}.
+     * Construct a {@link ServiceBusInboundChannelAdapter} with the specified {@link ServiceBusProcessorContainer}, destination name,
+     * subscription name if topic is used and {@link CheckpointConfig}.
      *
      * @param processorContainer the processor container
-     * @param queue the queue
+     * @param destination the Service Bus entity name
+     * @param subscription the subscription name if topic is used
      * @param checkpointConfig the checkpoint config
      */
-    public ServiceBusInboundChannelAdapter(ServiceBusProcessorContainer processorContainer, String queue,
-                                           CheckpointConfig checkpointConfig) {
-        this(processorContainer, queue, ListenerMode.RECORD, checkpointConfig);
+    public ServiceBusInboundChannelAdapter(ServiceBusProcessorContainer processorContainer, String destination,
+                                           @Nullable String subscription, CheckpointConfig checkpointConfig) {
+        this(processorContainer, destination, subscription, ListenerMode.RECORD, checkpointConfig);
     }
 
     /**
-     * Construct a {@link ServiceBusInboundChannelAdapter} with the specified {@link ServiceBusProcessorContainer}, queue, {@link ListenerMode} and {@link CheckpointConfig}.
-     *
+     * Construct a {@link ServiceBusInboundChannelAdapter} with the specified {@link ServiceBusProcessorContainer},
+     * destination name, subscription name if topic is used, {@link ListenerMode} and {@link CheckpointConfig}.
      * @param processorContainer the processor container
-     * @param queue the queue
+     * @param destination the Service Bus entity name
+     * @param subscription the subscription name if topic is used
      * @param listenerMode the listen mode
      * @param checkpointConfig the checkpoint config
      */
-    public ServiceBusInboundChannelAdapter(ServiceBusProcessorContainer processorContainer, String queue,
-                                           ListenerMode listenerMode, CheckpointConfig checkpointConfig) {
-        this(processorContainer, QUEUE, queue, null, listenerMode, checkpointConfig);
-    }
-
-    /**
-     * Construct a {@link ServiceBusInboundChannelAdapter} with the specified {@link ServiceBusProcessorContainer}, topic, subscription and {@link CheckpointConfig}.
-     *
-     * @param processorContainer the processor container
-     * @param topic the topic
-     * @param subscription the subscription
-     * @param checkpointConfig the checkpoint config
-     */
-    public ServiceBusInboundChannelAdapter(ServiceBusProcessorContainer processorContainer, String topic,
-                                           String subscription, CheckpointConfig checkpointConfig) {
-        this(processorContainer, topic, subscription, ListenerMode.RECORD, checkpointConfig);
-    }
-
-    /**
-     * Construct a {@link ServiceBusInboundChannelAdapter} with the specified {@link ServiceBusProcessorContainer}, topic
-     * , subscription, {@link ListenerMode} and {@link CheckpointConfig}.
-     *
-     * @param processorContainer the processor container
-     * @param topic the topic
-     * @param subscription the subscription
-     * @param listenerMode the listen mode
-     * @param checkpointConfig the checkpoint config
-     */
-    public ServiceBusInboundChannelAdapter(ServiceBusProcessorContainer processorContainer, String topic,
-                                           String subscription, ListenerMode listenerMode,
+    public ServiceBusInboundChannelAdapter(ServiceBusProcessorContainer processorContainer, String destination,
+                                           @Nullable String subscription, ListenerMode listenerMode,
                                            CheckpointConfig checkpointConfig) {
-        this(processorContainer, TOPIC, topic, subscription, listenerMode, checkpointConfig);
-    }
-
-    private ServiceBusInboundChannelAdapter(ServiceBusProcessorContainer processorContainer, ServiceBusEntityType type,
-                                            String destination, String subscription, ListenerMode listenerMode,
-                                            CheckpointConfig checkpointConfig) {
         Assert.hasText(destination, "destination can't be null or empty");
-        if (TOPIC == type) {
-            Assert.hasText(subscription, "subscription can't be null or empty");
-        }
+        this.type = subscription == null ? QUEUE : TOPIC;
         this.processorContainer = processorContainer;
-        this.type = type;
         this.destination = destination;
         this.subscription = subscription;
         this.listenerMode = listenerMode;
@@ -145,7 +142,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
      *
      * @param messageConverter the message converter
      */
-    public void setMessageConverter(ServiceBusMessageConverter messageConverter) {
+    public void setMessageConverter(AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> messageConverter) {
         this.recordEventProcessor.setMessageConverter(messageConverter);
     }
 
@@ -176,9 +173,10 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
         this.recordEventProcessor.setInstrumentationId(instrumentationId);
 
     }
-    private class IntegrationRecordMessageProcessingListener implements RecordMessageProcessingListener {
 
-        private ServiceBusMessageConverter messageConverter = new ServiceBusMessageConverter();
+    protected class IntegrationRecordMessageProcessingListener implements RecordMessageProcessingListener {
+
+        private AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> messageConverter = new ServiceBusMessageConverter();
         private Class<?> payloadType = byte[].class;
         private InstrumentationManager instrumentationManager;
         private String instrumentationId;
@@ -189,6 +187,9 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
                 LOGGER.error("Error occurred on entity {}. Error: {}",
                     errorContext.getEntityPath(),
                     errorContext.getException());
+                if (instrumentationManager == null) {
+                    return;
+                }
 
                 Instrumentation instrumentation = instrumentationManager.getHealthInstrumentation(instrumentationId);
                 if (instrumentation != null) {
@@ -218,8 +219,10 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
 
             if (checkpointConfig.getMode() == CheckpointMode.RECORD) {
                 checkpointer.success()
-                            .doOnSuccess(t -> logCheckpointSuccess(message))
-                            .doOnError(t -> logCheckpointFail(message, t))
+                            .doOnSuccess(t ->
+                                LOGGER.debug(String.format(MSG_SUCCESS_CHECKPOINT, message, checkpointConfig.getMode())))
+                            .doOnError(t ->
+                                LOGGER.warn(String.format(MSG_FAIL_CHECKPOINT, message), t))
                             .subscribe();
             }
         }
@@ -229,7 +232,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
          *
          * @param converter the converter
          */
-        public void setMessageConverter(ServiceBusMessageConverter converter) {
+        public void setMessageConverter(AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> converter) {
             this.messageConverter = converter;
         }
 
@@ -260,28 +263,4 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
             this.instrumentationId = instrumentationId;
         }
     }
-
-    /**
-     * Log checkpoint fail.
-     *
-     * @param message the message
-     * @param t the cause of failure
-     */
-    protected void logCheckpointFail(Message<?> message, Throwable t) {
-        if (LOGGER.isWarnEnabled()) {
-            LOGGER.warn(String.format(MSG_FAIL_CHECKPOINT, message), t);
-        }
-    }
-
-    /**
-     * Log checkpoint success.
-     *
-     * @param message the message
-     */
-    protected void logCheckpointSuccess(Message<?> message) {
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format(MSG_SUCCESS_CHECKPOINT, message, this.checkpointConfig.getMode()));
-        }
-    }
-
 }

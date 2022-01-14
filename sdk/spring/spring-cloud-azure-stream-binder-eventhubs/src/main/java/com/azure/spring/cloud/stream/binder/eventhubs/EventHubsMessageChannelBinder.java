@@ -16,7 +16,7 @@ import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.eventhubs.core.properties.ProcessorProperties;
 import com.azure.spring.eventhubs.core.properties.ProducerProperties;
 import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
-import com.azure.spring.integration.eventhubs.inbound.health.EventHusProcessorInstrumentation;
+import com.azure.spring.integration.eventhubs.inbound.health.EventHubsProcessorInstrumentation;
 import com.azure.spring.integration.handler.DefaultMessageHandler;
 import com.azure.spring.integration.instrumentation.DefaultInstrumentation;
 import com.azure.spring.integration.instrumentation.DefaultInstrumentationManager;
@@ -25,6 +25,7 @@ import com.azure.spring.integration.instrumentation.InstrumentationManager;
 import com.azure.spring.integration.instrumentation.InstrumentationSendCallback;
 import com.azure.spring.messaging.ListenerMode;
 import com.azure.spring.messaging.PropertiesSupplier;
+import com.azure.spring.messaging.ConsumerIdentifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.stream.binder.AbstractMessageChannelBinder;
@@ -44,8 +45,6 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
-import reactor.util.function.Tuple2;
-import reactor.util.function.Tuples;
 
 import java.time.Duration;
 import java.util.Map;
@@ -76,7 +75,7 @@ public class EventHubsMessageChannelBinder extends
     private EventHubsExtendedBindingProperties bindingProperties = new EventHubsExtendedBindingProperties();
     private final Map<String, ExtendedProducerProperties<EventHubsProducerProperties>>
         extendedProducerPropertiesMap = new ConcurrentHashMap<>();
-    private final Map<Tuple2<String, String>, ExtendedConsumerProperties<EventHubsConsumerProperties>>
+    private final Map<ConsumerIdentifier, ExtendedConsumerProperties<EventHubsConsumerProperties>>
         extendedConsumerPropertiesMap = new ConcurrentHashMap<>();
 
     /**
@@ -119,7 +118,7 @@ public class EventHubsMessageChannelBinder extends
     @Override
     protected MessageProducer createConsumerEndpoint(ConsumerDestination destination, String group,
                                                      ExtendedConsumerProperties<EventHubsConsumerProperties> properties) {
-        extendedConsumerPropertiesMap.put(Tuples.of(destination.getName(), group), properties);
+        extendedConsumerPropertiesMap.put(new ConsumerIdentifier(destination.getName(), group), properties);
         Assert.notNull(getProcessorContainer(), "eventProcessorsContainer can't be null when create a consumer");
 
         boolean anonymous = !StringUtils.hasText(group);
@@ -188,16 +187,16 @@ public class EventHubsMessageChannelBinder extends
         };
     }
 
-    private PropertiesSupplier<Tuple2<String, String>, ProcessorProperties> getProcessorPropertiesSupplier() {
+    private PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> getProcessorPropertiesSupplier() {
         return key -> {
             if (this.extendedConsumerPropertiesMap.containsKey(key)) {
                 EventHubsConsumerProperties consumerProperties = this.extendedConsumerPropertiesMap.get(key)
                     .getExtension();
-                consumerProperties.setEventHubName(key.getT1());
-                consumerProperties.setConsumerGroup(key.getT2());
+                consumerProperties.setEventHubName(key.getDestination());
+                consumerProperties.setConsumerGroup(key.getGroup());
                 return consumerProperties;
             } else {
-                LOGGER.debug("Can't find extended properties for destination {}, group {}", key.getT1(), key.getT2());
+                LOGGER.debug("Can't find extended properties for destination {}, group {}", key.getDestination(), key.getGroup());
                 return null;
             }
         };
@@ -223,7 +222,7 @@ public class EventHubsMessageChannelBinder extends
                 this.checkpointStore, this.namespaceProperties, getProcessorPropertiesSupplier());
             factory.addListener((name, consumerGroup, processorClient) -> {
                 String instrumentationName = name + "/" + consumerGroup;
-                Instrumentation instrumentation = new EventHusProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));
+                Instrumentation instrumentation = new EventHubsProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));
                 instrumentation.markUp();
                 instrumentationManager.addHealthInstrumentation(instrumentation.getId(), instrumentation);
             });

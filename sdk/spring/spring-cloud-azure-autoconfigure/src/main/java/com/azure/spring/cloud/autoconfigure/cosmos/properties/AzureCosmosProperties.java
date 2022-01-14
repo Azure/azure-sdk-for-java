@@ -9,9 +9,9 @@ import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.models.CosmosPermissionProperties;
-import com.azure.spring.cloud.autoconfigure.properties.core.AbstractAzureServiceCP;
-import com.azure.spring.cloud.autoconfigure.properties.core.client.ClientCP;
-import com.azure.spring.cloud.autoconfigure.properties.core.proxy.HttpProxyCP;
+import com.azure.spring.cloud.autoconfigure.properties.core.AbstractAzureServiceConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.core.client.ClientConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.core.proxy.HttpProxyConfigurationProperties;
 import com.azure.spring.service.cosmos.CosmosClientProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
@@ -21,43 +21,82 @@ import java.util.List;
 /**
  * Configuration properties for Cosmos database, consistency, telemetry, connection, query metrics and diagnostics.
  */
-public class AzureCosmosProperties extends AbstractAzureServiceCP implements CosmosClientProperties {
+public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProperties implements CosmosClientProperties {
 
     public static final String PREFIX = "spring.cloud.azure.cosmos";
 
     @NestedConfigurationProperty
-    private final HttpProxyCP proxy = new HttpProxyCP();
+    private final HttpProxyConfigurationProperties proxy = new HttpProxyConfigurationProperties();
 
     @NestedConfigurationProperty
-    private final ClientCP client = new ClientCP();
+    private final ClientConfigurationProperties client = new ClientConfigurationProperties();
 
+    /**
+     * Endpoint of the cosmos db.
+     */
     private String endpoint;
-
+    /**
+     * Key to authenticate for accessing the cosmos db.
+     */
     private String key;
-
+    /**
+     * Database name of the cosmos db.
+     */
     private String database;
-
+    /**
+     * Resource token to authenticate for accessing the cosmos db.
+     */
     private String resourceToken;
-
+    /**
+     * Whether to enable client telemetry which will periodically collect database operations aggregation statistics,
+     * system information like cpu/memory and send it to cosmos monitoring service, which will be helpful during
+     * debugging.
+     */
     private Boolean clientTelemetryEnabled;
+    /**
+     * Whether to enable endpoint discovery for geo-replicated database accounts.
+     */
     private Boolean endpointDiscoveryEnabled;
+    /**
+     * Whether to enable connections sharing across multiple Cosmos Clients.
+     */
     private Boolean connectionSharingAcrossClientsEnabled;
+    /**
+     * Whether to only return the headers and status code in Cosmos DB response in case of Create, Update and Delete
+     * operations on CosmosItem.  If set to false, service doesn't return payload in the response.
+     */
     private Boolean contentResponseOnWriteEnabled;
+    /**
+     * Whether to enable writes on any regions for geo-replicated database accounts in the Azure Cosmos DB service.
+     */
     private Boolean multipleWriteRegionsEnabled;
     /**
-     * Override enabled, session capturing is enabled by default for {@link ConsistencyLevel#SESSION}
+     * Whether to enable session capturing. Session capturing is enabled by default for SESSION consistency level.
      */
     private Boolean sessionCapturingOverrideEnabled;
+    /**
+     * Whether to allow for reads to go to multiple regions configured on an account of Azure Cosmos DB service.
+     */
     private Boolean readRequestsFallbackEnabled;
-
+    /**
+     * Permission list which contains the resource tokens needed to access resources.
+     */
     private final List<CosmosPermissionProperties> permissions = new ArrayList<>();
-
+    /**
+     * Preferred regions for geo-replicated database accounts. For example, "East US" as the preferred region.
+     */
     private final List<String> preferredRegions = new ArrayList<>();
 
     @NestedConfigurationProperty
     private final ThrottlingRetryOptions throttlingRetryOptions = new ThrottlingRetryOptions();
-
+    /**
+     * Consistency level. The requested ConsistencyLevel must match or be weaker than that provisioned for the database
+     * account.
+     */
     private ConsistencyLevel consistencyLevel;
+    /**
+     * Connection mode to be used by the client in the Azure Cosmos DB database service.
+     */
     private ConnectionMode connectionMode;
 
     @NestedConfigurationProperty
@@ -67,17 +106,17 @@ public class AzureCosmosProperties extends AbstractAzureServiceCP implements Cos
     private final DirectConnectionConfig directConnection = new DirectConnectionConfig();
 
     /**
-     * Populate Diagnostics Strings and Query metrics
+     * Whether to populate diagnostics strings and query metrics.
      */
     private boolean populateQueryMetrics;
 
     @Override
-    public HttpProxyCP getProxy() {
+    public HttpProxyConfigurationProperties getProxy() {
         return proxy;
     }
 
     @Override
-    public ClientCP getClient() {
+    public ClientConfigurationProperties getClient() {
         return client;
     }
 

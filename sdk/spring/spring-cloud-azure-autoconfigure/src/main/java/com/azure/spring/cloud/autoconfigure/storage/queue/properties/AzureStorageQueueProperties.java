@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.storage.queue.properties;
 
 import com.azure.spring.cloud.autoconfigure.storage.common.AzureStorageProperties;
 import com.azure.spring.service.storage.queue.QueueServiceClientProperties;
+import com.azure.storage.queue.QueueMessageEncoding;
 import com.azure.storage.queue.QueueServiceVersion;
 
 /**
@@ -15,8 +16,18 @@ public class AzureStorageQueueProperties extends AzureStorageProperties implemen
     public static final String PREFIX = "spring.cloud.azure.storage.queue";
     public static final String QUEUE_ENDPOINT_PATTERN = "https://%s.queue%s";
 
+    /**
+     * Queue service version used when making API requests.
+     */
     private QueueServiceVersion serviceVersion;
-    private String messageEncoding;
+    /**
+     * How queue message body is represented in HTTP requests and responses.
+     */
+    private QueueMessageEncoding messageEncoding;
+    /**
+     * Name of the storage queue.
+     */
+    private String queueName;
 
 
     public String getEndpoint() {
@@ -35,11 +46,20 @@ public class AzureStorageQueueProperties extends AzureStorageProperties implemen
         this.serviceVersion = serviceVersion;
     }
 
-    public String getMessageEncoding() {
+    @Override
+    public QueueMessageEncoding getMessageEncoding() {
         return messageEncoding;
     }
 
-    public void setMessageEncoding(String messageEncoding) {
+    public void setMessageEncoding(QueueMessageEncoding messageEncoding) {
         this.messageEncoding = messageEncoding;
+    }
+
+    public String getQueueName() {
+        return queueName;
+    }
+
+    public void setQueueName(String queueName) {
+        this.queueName = queueName;
     }
 }

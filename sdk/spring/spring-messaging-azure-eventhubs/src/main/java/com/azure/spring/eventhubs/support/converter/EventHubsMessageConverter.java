@@ -6,6 +6,7 @@ package com.azure.spring.eventhubs.support.converter;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.spring.eventhubs.support.EventHubsHeaders;
 import com.azure.spring.messaging.converter.AbstractAzureMessageConverter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.Message;
@@ -27,11 +28,40 @@ public class EventHubsMessageConverter extends AbstractAzureMessageConverter<Eve
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsMessageConverter.class);
 
-    private static final Set<String> SYSTEM_HEADERS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+    private static final Set<String> IGNORED_SPRING_MESSAGE_HEADERS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
         EventHubsHeaders.PARTITION_KEY,
+        EventHubsHeaders.BATCH_CONVERTED_PARTITION_KEY,
         EventHubsHeaders.ENQUEUED_TIME,
+        EventHubsHeaders.BATCH_CONVERTED_ENQUEUED_TIME,
         EventHubsHeaders.OFFSET,
-        EventHubsHeaders.SEQUENCE_NUMBER)));
+        EventHubsHeaders.BATCH_CONVERTED_OFFSET,
+        EventHubsHeaders.SEQUENCE_NUMBER,
+        EventHubsHeaders.BATCH_CONVERTED_SEQUENCE_NUMBER,
+        EventHubsHeaders.BATCH_CONVERTED_SYSTEM_PROPERTIES,
+        EventHubsHeaders.BATCH_CONVERTED_APPLICATION_PROPERTIES
+        )));
+
+    private final ObjectMapper objectMapper;
+
+    /**
+     * Construct the message converter with default {@code ObjectMapper}.
+     */
+    public EventHubsMessageConverter() {
+        this.objectMapper = OBJECT_MAPPER;
+    }
+
+    /**
+     * Construct the message converter with customized {@code ObjectMapper}.
+     * @param objectMapper the object mapper.
+     */
+    public EventHubsMessageConverter(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
+
+    @Override
+    protected ObjectMapper getObjectMapper() {
+        return objectMapper;
+    }
 
     @Override
     protected byte[] getPayload(EventData azureMessage) {
@@ -51,14 +81,17 @@ public class EventHubsMessageConverter extends AbstractAzureMessageConverter<Eve
     @Override
     protected void setCustomHeaders(MessageHeaders headers, EventData azureMessage) {
         super.setCustomHeaders(headers, azureMessage);
+        Set<String> ignoredHeaders = new HashSet<>();
         headers.forEach((key, value) -> {
-            if (SYSTEM_HEADERS.contains(key)) {
-                LOGGER.warn("System property {}({}) is not allowed to be defined and will be ignored.",
-                    key, value);
+            if (IGNORED_SPRING_MESSAGE_HEADERS.contains(key)) {
+                ignoredHeaders.add(key);
             } else {
                 azureMessage.getProperties().put(key, value.toString());
             }
         });
+
+        ignoredHeaders.forEach(header -> LOGGER.info("Message headers {} is not supported to be set and will be "
+            + "ignored.", header));
     }
 
     @Override

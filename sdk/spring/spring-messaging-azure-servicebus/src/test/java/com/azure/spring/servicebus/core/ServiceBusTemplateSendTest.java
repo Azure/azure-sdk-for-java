@@ -139,11 +139,6 @@ public class ServiceBusTemplateSendTest extends SendOperationTest<ServiceBusTemp
     }
 
     @Override
-    protected void whenSendWithException() {
-        when(this.producerFactory.createProducer(anyString(), any())).thenThrow(ServiceBusRuntimeException.class);
-    }
-
-    @Override
     protected void verifyGetClientCreator(int times) {
         verify(this.producerFactory, times(times)).createProducer(anyString(), any());
     }

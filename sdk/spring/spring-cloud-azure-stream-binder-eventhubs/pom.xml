@@ -114,7 +114,6 @@
             <bannedDependencies>
               <includes>
                 <include>org.springframework.boot:spring-boot-starter-actuator:[2.6.1]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
-                <!--<include>com.fasterxml.jackson.core:jackson-core:[2.13.0]</include> &lt;!&ndash; {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} &ndash;&gt;-->
               </includes>
             </bannedDependencies>
           </rules>

@@ -2,12 +2,12 @@ package com.azure.spring.cloud.config;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.azure.spring.cloud.config.app.AppRunner;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.azure.spring.cloud.config.app.DummyApp;
-import com.azure.spring.test.AppRunner;
 
 public class LoadConfigsTest {
 

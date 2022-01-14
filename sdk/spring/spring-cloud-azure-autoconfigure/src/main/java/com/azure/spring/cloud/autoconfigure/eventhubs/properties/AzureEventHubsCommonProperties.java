@@ -3,18 +3,35 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhubs.properties;
 
-import com.azure.spring.cloud.autoconfigure.properties.core.AbstractAzureAmqpCP;
+import com.azure.spring.cloud.autoconfigure.properties.core.AbstractAzureAmqpConfigurationProperties;
 import com.azure.spring.core.implementation.connectionstring.EventHubsConnectionString;
 
 /**
  * Azure Event Hubs related properties.
  */
-public abstract class AzureEventHubsCommonProperties extends AbstractAzureAmqpCP {
+public abstract class AzureEventHubsCommonProperties extends AbstractAzureAmqpConfigurationProperties {
 
+    /**
+     * The domain name of an Event Hub namespace.
+     */
     protected String domainName = "servicebus.windows.net";
+    /**
+     * The namespace of an event hub.
+     */
     protected String namespace;
+    /**
+     * The name of an event hub.
+     */
     protected String eventHubName;
+    /**
+     * Connection string to connect to an event hub.
+     */
     protected String connectionString;
+    /**
+     * A custom endpoint address when connecting to the Event Hubs service. This can be useful when your network does
+     * not allow connecting to the standard Azure Event Hubs endpoint address, but does allow connecting through an
+     * intermediary. For example: https://my.custom.endpoint.com:55300.
+     */
     protected String customEndpointAddress;
 
     protected String extractFqdnFromConnectionString() {

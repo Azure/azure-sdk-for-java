@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.time.Duration;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -37,7 +38,7 @@ public class AzureDefaultAzureCredentialBuilderFactoryTest extends AzureServiceC
     }
 
     @Test
-    void testAuthorityHostAndExecutorServiceConfigured() {
+    void authorityHostAndExecutorServiceConfigured() {
         AzureProperties properties = createMinimalServiceProperties();
 
         DefaultAzureCredentialBuilderFactoryExt factory = new DefaultAzureCredentialBuilderFactoryExt(properties);
@@ -53,7 +54,7 @@ public class AzureDefaultAzureCredentialBuilderFactoryTest extends AzureServiceC
     }
 
     @Test
-    void testHttpClientConfigured() {
+    void httpClientConfigured() {
         AzureProperties properties = createMinimalServiceProperties();
         DefaultAzureCredentialBuilderFactoryExt factory = new DefaultAzureCredentialBuilderFactoryExt(properties);
         factory.setExecutorService(getThreadPoolExecutor());
@@ -63,7 +64,7 @@ public class AzureDefaultAzureCredentialBuilderFactoryTest extends AzureServiceC
     }
 
     @Test
-    void testRetryOptionsConfigured() {
+    void retryOptionsConfigured() {
         TestAzureGlobalProperties properties = createMinimalServiceProperties();
         RetryProperties retryProperties = properties.getRetry();
         retryProperties.setMaxAttempts(3);
@@ -77,19 +78,29 @@ public class AzureDefaultAzureCredentialBuilderFactoryTest extends AzureServiceC
     }
 
     @Test
-    void testProxyOptionsConfigured() {
+    void proxyOptionsConfigured() {
         TestAzureGlobalProperties properties = createMinimalServiceProperties();
         ProxyProperties proxyProperties = properties.getProxy();
         proxyProperties.setHostname("localhost");
         proxyProperties.setPort(8080);
         DefaultAzureCredentialBuilderFactoryProxyExt factory = new DefaultAzureCredentialBuilderFactoryProxyExt(properties);
-        factory.setExecutorService(getThreadPoolExecutor());
 
         DefaultAzureCredentialBuilder builder = factory.getBuilder();
         HttpClientProvider defaultHttpClientProvider = factory.getDefaultHttpClientProvider();
         DefaultAzureCredentialBuilder credentialBuilder = factory.build();
         verify(builder, times(1)).httpClient(any(HttpClient.class));
         verify(defaultHttpClientProvider, times(1)).createInstance(any(HttpClientOptions.class));
+    }
+
+    @Test
+    void executorServiceConfigured() {
+        TestAzureGlobalProperties properties = createMinimalServiceProperties();
+        DefaultAzureCredentialBuilderFactoryExt factory = new DefaultAzureCredentialBuilderFactoryExt(properties);
+        factory.setExecutorService(getThreadPoolExecutor());
+
+        DefaultAzureCredentialBuilder builder = factory.getBuilder();
+        DefaultAzureCredentialBuilder credentialBuilder = factory.build();
+        verify(builder, times(1)).executorService(any(ExecutorService.class));
     }
 
     private ThreadPoolExecutor getThreadPoolExecutor() {

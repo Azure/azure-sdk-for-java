@@ -10,7 +10,7 @@ import com.azure.spring.service.servicebus.factory.ServiceBusSenderClientBuilder
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.core.properties.ProducerProperties;
-import com.azure.spring.servicebus.core.properties.merger.ProducerPropertiesParentMerger;
+import com.azure.spring.servicebus.core.properties.merger.SenderPropertiesParentMerger;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.lang.Nullable;
 
@@ -35,7 +35,7 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
     private final NamespaceProperties namespaceProperties;
     private final PropertiesSupplier<String, ProducerProperties> propertiesSupplier;
     private final Map<String, ServiceBusSenderAsyncClient> clients = new ConcurrentHashMap<>();
-    private final ProducerPropertiesParentMerger parentMerger = new ProducerPropertiesParentMerger();
+    private final SenderPropertiesParentMerger parentMerger = new SenderPropertiesParentMerger();
 
     /**
      * Construct a factory with the provided namespace level configuration.

@@ -18,7 +18,6 @@ import com.azure.spring.core.properties.PropertyMapper;
 import com.azure.spring.service.storage.common.AbstractAzureStorageClientBuilderFactory;
 import com.azure.spring.service.storage.common.credential.StorageSharedKeyAuthenticationDescriptor;
 import com.azure.storage.common.policy.RequestRetryOptions;
-import com.azure.storage.queue.QueueMessageEncoding;
 import com.azure.storage.queue.QueueServiceClientBuilder;
 
 import java.util.Arrays;
@@ -87,8 +86,7 @@ public class QueueServiceClientBuilderFactory extends AbstractAzureStorageClient
     @Override
     protected void configureService(QueueServiceClientBuilder builder) {
         PropertyMapper map = new PropertyMapper();
-        map.from(queueServiceClientProperties.getMessageEncoding()).to(p ->
-            builder.messageEncoding(convertToMessageEncoding(p)));
+        map.from(queueServiceClientProperties.getMessageEncoding()).to(builder::messageEncoding);
         map.from(queueServiceClientProperties.getServiceVersion()).to(builder::serviceVersion);
         map.from(queueServiceClientProperties.getEndpoint()).to(builder::endpoint);
     }
@@ -106,12 +104,6 @@ public class QueueServiceClientBuilderFactory extends AbstractAzureStorageClient
     @Override
     protected BiConsumer<QueueServiceClientBuilder, String> consumeConnectionString() {
         return QueueServiceClientBuilder::connectionString;
-    }
-
-    private QueueMessageEncoding convertToMessageEncoding(String messageEncoding) {
-        return QueueMessageEncoding.BASE64
-            .name()
-            .equalsIgnoreCase(messageEncoding) ? QueueMessageEncoding.BASE64 : QueueMessageEncoding.NONE;
     }
 
     @Override

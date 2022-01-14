@@ -3,11 +3,15 @@
 
 package com.azure.spring.service.cosmos;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
+import com.azure.identity.ClientCertificateCredential;
+import com.azure.identity.ClientSecretCredential;
 import com.azure.spring.core.properties.retry.RetryProperties;
 import com.azure.spring.service.AzureServiceClientBuilderFactoryTestBase;
 import org.junit.jupiter.api.Test;
@@ -25,7 +29,44 @@ public class CosmosClientBuilderFactoryTest extends AzureServiceClientBuilderFac
     private static final String ENDPOINT = "https://test.documents.azure.com:443/";
 
     @Test
-    void testGatewayConnectionModeConfigured() {
+    void azureKeyCredentialConfigured() {
+        TestAzureCosmosHttpProperties properties = createMinimalServiceProperties();
+        properties.setKey("key");
+        final CosmosClientBuilder builder = new CosmosClientBuilderFactoryExt(properties).build();
+        CosmosClient cosmosClient = builder.buildClient();
+        verify(builder, times(1)).credential(any(AzureKeyCredential.class));
+    }
+
+    @Test
+    void tokenCredentialConfigured() {
+        TestAzureCosmosHttpProperties properties = createMinimalServiceProperties();
+
+        properties.getCredential().setClientId("test-client");
+        properties.getCredential().setClientSecret("test-secret");
+        properties.getProfile().setTenantId("test-tenant");
+
+        final CosmosClientBuilder builder = new CosmosClientBuilderFactoryExt(properties).build();
+        final CosmosClient cosmosClient = builder.buildClient();
+
+        verify(builder, times(1)).credential(any(ClientSecretCredential.class));
+    }
+
+    @Test
+    void clientCertificateTokenCredentialConfigured() {
+        TestAzureCosmosHttpProperties properties = createMinimalServiceProperties();
+
+        properties.getCredential().setClientId("test-client");
+        properties.getCredential().setClientCertificatePath("test-cert-path");
+        properties.getCredential().setClientCertificatePassword("test-cert-password");
+        properties.getProfile().setTenantId("test-tenant");
+
+        final CosmosClientBuilder builder = new CosmosClientBuilderFactoryExt(properties).build();
+        final CosmosClient cosmosClient = builder.buildClient();
+        verify(builder, times(1)).credential(any(ClientCertificateCredential.class));
+    }
+
+    @Test
+    void gatewayConnectionModeConfigured() {
         TestAzureCosmosHttpProperties properties = createMinimalServiceProperties();
         properties.setConnectionMode(ConnectionMode.GATEWAY);
         final CosmosClientBuilderFactoryExt factoryExt = new CosmosClientBuilderFactoryExt(properties);
@@ -35,7 +76,7 @@ public class CosmosClientBuilderFactoryTest extends AzureServiceClientBuilderFac
     }
 
     @Test
-    void testDirectConnectionModeConfigured() {
+    void directConnectionModeConfigured() {
         TestAzureCosmosHttpProperties properties = createMinimalServiceProperties();
         properties.setConnectionMode(ConnectionMode.DIRECT);
         final CosmosClientBuilderFactoryExt factoryExt = new CosmosClientBuilderFactoryExt(properties);
@@ -45,7 +86,7 @@ public class CosmosClientBuilderFactoryTest extends AzureServiceClientBuilderFac
     }
 
     @Test
-    void testThrottlingRetryOptionsConfiguredRetry() {
+    void throttlingRetryOptionsConfiguredRetry() {
         TestAzureCosmosHttpProperties properties = createMinimalServiceProperties();
         RetryProperties retryProperties = properties.getRetry();
         retryProperties.setTimeout(Duration.ofMillis(1000));

@@ -3,25 +3,36 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus.properties;
 
-import com.azure.spring.cloud.autoconfigure.properties.core.AbstractAzureAmqpCP;
+import com.azure.spring.cloud.autoconfigure.properties.core.AbstractAzureAmqpConfigurationProperties;
 import com.azure.spring.core.implementation.connectionstring.ServiceBusConnectionString;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 
 /**
  *
  */
-public abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpCP {
+public abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpConfigurationProperties {
 
     // https://help.boomi.com/bundle/connectors/page/r-atm-Microsoft_Azure_Service_Bus_connection.html
     // https://docs.microsoft.com/en-us/rest/api/servicebus/addressing-and-protocol
+    /**
+     * The domain name of a Service Bus namespace.
+     */
     protected String domainName = "servicebus.windows.net";
-
+    /**
+     * The namespace of a service bus.
+     */
     protected String namespace;
-
+    /**
+     * Connection string to connect to a service bus.
+     */
     protected String connectionString;
-
+    /**
+     * The name of a Service Bus Queue or Topic.
+     */
     private String entityName;
-
+    /**
+     * The type of Service Bus entity, which is a Queue or a Topic.
+     */
     private ServiceBusEntityType entityType;
 
     private String extractFqdnFromConnectionString() {
