@@ -8,6 +8,8 @@ import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.storage.queue.properties.AzureStorageQueueProperties;
 import com.azure.spring.service.implementation.storage.queue.QueueServiceClientBuilderFactory;
+import com.azure.storage.queue.QueueAsyncClient;
+import com.azure.storage.queue.QueueClient;
 import com.azure.storage.queue.QueueServiceAsyncClient;
 import com.azure.storage.queue.QueueServiceClient;
 import com.azure.storage.queue.QueueServiceClientBuilder;
@@ -53,6 +55,33 @@ class AzureStorageQueueAutoConfigurationTest {
                 assertThat(context).hasSingleBean(QueueServiceAsyncClient.class);
                 assertThat(context).hasSingleBean(QueueServiceClientBuilder.class);
                 assertThat(context).hasSingleBean(QueueServiceClientBuilderFactory.class);
+            });
+    }
+
+    @Test
+    void queueNameSetShouldConfigureQueueClient() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.storage.queue.account-name=sa",
+                "spring.cloud.azure.storage.queue.queue-name=queue1"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(QueueClient.class);
+                assertThat(context).hasSingleBean(QueueAsyncClient.class);
+            });
+    }
+
+    @Test
+    void queueNameNotSetShouldNotConfigureQueueClient() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.storage.queue.account-name=sa"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .run(context -> {
+                assertThat(context).doesNotHaveBean(QueueClient.class);
+                assertThat(context).doesNotHaveBean(QueueAsyncClient.class);
             });
     }
 

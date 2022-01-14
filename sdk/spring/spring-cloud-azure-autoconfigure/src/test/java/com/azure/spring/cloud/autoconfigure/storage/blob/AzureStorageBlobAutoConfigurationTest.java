@@ -8,6 +8,8 @@ import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.storage.blob.properties.AzureStorageBlobProperties;
 import com.azure.spring.service.implementation.storage.blob.BlobServiceClientBuilderFactory;
+import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
@@ -53,6 +55,33 @@ class AzureStorageBlobAutoConfigurationTest {
                 assertThat(context).hasSingleBean(BlobServiceAsyncClient.class);
                 assertThat(context).hasSingleBean(BlobServiceClientBuilder.class);
                 assertThat(context).hasSingleBean(BlobServiceClientBuilderFactory.class);
+            });
+    }
+
+    @Test
+    void containerNameSetShouldConfigureContainerClient() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.storage.blob.account-name=sa",
+                "spring.cloud.azure.storage.blob.container-name=container1"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(BlobContainerClient.class);
+                assertThat(context).hasSingleBean(BlobContainerAsyncClient.class);
+            });
+    }
+
+    @Test
+    void containerNameNotSetShouldNotConfigureContainerClient() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.storage.blob.account-name=sa"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .run(context -> {
+                assertThat(context).doesNotHaveBean(BlobContainerClient.class);
+                assertThat(context).doesNotHaveBean(BlobContainerAsyncClient.class);
             });
     }
 

@@ -11,7 +11,7 @@ import com.azure.spring.integration.instrumentation.Instrumentation;
 
 import java.time.Duration;
 
-class EventHusProcessorInstrumentationTests extends AbstractProcessorInstrumentationTests<ErrorContext> {
+class EventHubsProcessorInstrumentationTests extends AbstractProcessorInstrumentationTests<ErrorContext> {
 
 
     @Override
