@@ -75,28 +75,28 @@ public final class DeviceUpdateClientImpl {
         return this.serializerAdapter;
     }
 
-    /** The UpdatesImpl object to access its operations. */
-    private final UpdatesImpl updates;
+    /** The DeviceUpdatesImpl object to access its operations. */
+    private final DeviceUpdatesImpl deviceUpdates;
 
     /**
-     * Gets the UpdatesImpl object to access its operations.
+     * Gets the DeviceUpdatesImpl object to access its operations.
      *
-     * @return the UpdatesImpl object.
+     * @return the DeviceUpdatesImpl object.
      */
-    public UpdatesImpl getUpdates() {
-        return this.updates;
+    public DeviceUpdatesImpl getDeviceUpdates() {
+        return this.deviceUpdates;
     }
 
-    /** The ManagementsImpl object to access its operations. */
-    private final ManagementsImpl managements;
+    /** The DeviceManagementsImpl object to access its operations. */
+    private final DeviceManagementsImpl deviceManagements;
 
     /**
-     * Gets the ManagementsImpl object to access its operations.
+     * Gets the DeviceManagementsImpl object to access its operations.
      *
-     * @return the ManagementsImpl object.
+     * @return the DeviceManagementsImpl object.
      */
-    public ManagementsImpl getManagements() {
-        return this.managements;
+    public DeviceManagementsImpl getDeviceManagements() {
+        return this.deviceManagements;
     }
 
     /**
@@ -150,7 +150,7 @@ public final class DeviceUpdateClientImpl {
         this.endpoint = endpoint;
         this.instanceId = instanceId;
         this.serviceVersion = serviceVersion;
-        this.updates = new UpdatesImpl(this);
-        this.managements = new ManagementsImpl(this);
+        this.deviceUpdates = new DeviceUpdatesImpl(this);
+        this.deviceManagements = new DeviceManagementsImpl(this);
     }
 }

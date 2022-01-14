@@ -34,10 +34,10 @@ import java.util.stream.Collectors;
 /** A builder for creating a new instance of the DeviceUpdateClient type. */
 @ServiceClientBuilder(
         serviceClients = {
-            UpdatesClient.class,
-            ManagementClient.class,
-            UpdatesAsyncClient.class,
-            ManagementAsyncClient.class
+            DeviceUpdateClient.class,
+            DeviceManagementClient.class,
+            DeviceUpdateAsyncClient.class,
+            DeviceManagementAsyncClient.class
         })
 public final class DeviceUpdateClientBuilder {
     @Generated private static final String SDK_NAME = "name";
@@ -314,42 +314,42 @@ public final class DeviceUpdateClientBuilder {
     }
 
     /**
-     * Builds an instance of UpdatesAsyncClient async client.
+     * Builds an instance of DeviceUpdateAsyncClient async client.
      *
-     * @return an instance of UpdatesAsyncClient.
+     * @return an instance of DeviceUpdateAsyncClient.
      */
     @Generated
-    public UpdatesAsyncClient buildUpdatesAsyncClient() {
-        return new UpdatesAsyncClient(buildInnerClient().getUpdates());
+    public DeviceUpdateAsyncClient buildDeviceUpdateAsyncClient() {
+        return new DeviceUpdateAsyncClient(buildInnerClient().getDeviceUpdates());
     }
 
     /**
-     * Builds an instance of ManagementAsyncClient async client.
+     * Builds an instance of DeviceManagementAsyncClient async client.
      *
-     * @return an instance of ManagementAsyncClient.
+     * @return an instance of DeviceManagementAsyncClient.
      */
     @Generated
-    public ManagementAsyncClient buildManagementAsyncClient() {
-        return new ManagementAsyncClient(buildInnerClient().getManagements());
+    public DeviceManagementAsyncClient buildDeviceManagementAsyncClient() {
+        return new DeviceManagementAsyncClient(buildInnerClient().getDeviceManagements());
     }
 
     /**
-     * Builds an instance of UpdatesClient sync client.
+     * Builds an instance of DeviceUpdateClient sync client.
      *
-     * @return an instance of UpdatesClient.
+     * @return an instance of DeviceUpdateClient.
      */
     @Generated
-    public UpdatesClient buildUpdatesClient() {
-        return new UpdatesClient(buildInnerClient().getUpdates());
+    public DeviceUpdateClient buildDeviceUpdateClient() {
+        return new DeviceUpdateClient(buildInnerClient().getDeviceUpdates());
     }
 
     /**
-     * Builds an instance of ManagementClient sync client.
+     * Builds an instance of DeviceManagementClient sync client.
      *
-     * @return an instance of ManagementClient.
+     * @return an instance of DeviceManagementClient.
      */
     @Generated
-    public ManagementClient buildManagementClient() {
-        return new ManagementClient(buildInnerClient().getManagements());
+    public DeviceManagementClient buildDeviceManagementClient() {
+        return new DeviceManagementClient(buildInnerClient().getDeviceManagements());
     }
 }
