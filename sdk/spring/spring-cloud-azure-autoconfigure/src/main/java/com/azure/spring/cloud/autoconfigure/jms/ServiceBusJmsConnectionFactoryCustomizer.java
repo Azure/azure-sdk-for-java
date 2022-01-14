@@ -4,9 +4,14 @@
 package com.azure.spring.cloud.autoconfigure.jms;
 
 /**
- * An customizer for ServiceBusJmsConnectionFactory
+ * A customizer for {@link ServiceBusJmsConnectionFactory}.
  */
 @FunctionalInterface
 public interface ServiceBusJmsConnectionFactoryCustomizer {
+
+    /**
+     * Customize the given {@link ServiceBusJmsConnectionFactory}.
+     * @param factory The Service Bus JMS connection factory.
+     */
     void customize(ServiceBusJmsConnectionFactory factory);
 }
