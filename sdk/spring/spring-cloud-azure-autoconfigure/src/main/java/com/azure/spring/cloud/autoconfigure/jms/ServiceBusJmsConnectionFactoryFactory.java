@@ -27,7 +27,7 @@ public class ServiceBusJmsConnectionFactoryFactory {
 
     }
 
-    <T extends ServiceBusJmsConnectionFactory> T createConnectionFactory(Class<T> factoryClass)throws IllegalStateException {
+    <T extends ServiceBusJmsConnectionFactory> T createConnectionFactory(Class<T> factoryClass) {
         T factory = createConnectionFactoryInstance(factoryClass);
         setClientId(factory);
         setPrefetchPolicy(factory);

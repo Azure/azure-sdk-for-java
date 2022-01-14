@@ -36,7 +36,7 @@ import static com.azure.spring.core.AzureSpringIdentifier.AZURE_SPRING_SERVICE_B
 @Import({ ServiceBusJmsConnectionFactoryConfiguration.class, ServiceBusJmsContainerConfiguration.class })
 public class ServiceBusJmsAutoConfiguration {
     @Bean
-    @ConditionalOnExpression("'${spring.jms.servicebus.pricing-tier}'.equalsIgnoreCase('premium')")
+    @ConditionalOnExpression("'premium'.equalsIgnoreCase('${spring.jms.servicebus.pricing-tier}')")
     ServiceBusJmsConnectionFactoryCustomizer amqpOpenPropertiesCustomizer(AzureServiceBusJmsProperties serviceBusJmsProperties) {
         return factory -> {
             final Map<String, Object> properties = new HashMap<>();

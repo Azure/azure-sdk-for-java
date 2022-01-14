@@ -37,7 +37,7 @@ class ServiceBusJmsAutoConfigurationTests {
     static final String CONNECTION_STRING = "Endpoint=sb://host/;SharedAccessKeyName=sasKeyName;"
         + "SharedAccessKey=sasKey";
 
-    protected ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(JmsAutoConfiguration.class, ServiceBusJmsAutoConfiguration.class));
 
     private void testQueueJmsListenerContainerFactoryWithCustomSettings(AssertableApplicationContext loaded) {
@@ -79,7 +79,7 @@ class ServiceBusJmsAutoConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(classes = { ConnectionFactory.class, JmsConnectionFactory.class, JmsTemplate.class })
-    void autoconfigurationNotEnabled(Class clz) {
+    void autoconfigurationNotEnabled(Class<?> clz) {
         this.contextRunner
             .withClassLoader(new FilteredClassLoader(clz))
             .run(context -> {
