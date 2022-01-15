@@ -57,6 +57,22 @@ public final class AnomalyDetectorClientBuilder {
     }
 
     /*
+     * Anomaly Detector API version (for example, v1.0).
+     */
+    private String apiVersion;
+
+    /**
+     * Sets Anomaly Detector API version (for example, v1.0).
+     *
+     * @param apiVersion the apiVersion value.
+     * @return the AnomalyDetectorClientBuilder.
+     */
+    public AnomalyDetectorClientBuilder apiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
+        return this;
+    }
+
+    /*
      * The HTTP pipeline to send requests through
      */
     private HttpPipeline pipeline;
@@ -176,13 +192,17 @@ public final class AnomalyDetectorClientBuilder {
      * @return an instance of AnomalyDetectorClientImpl.
      */
     private AnomalyDetectorClientImpl buildInnerClient() {
+        if (apiVersion == null) {
+            this.apiVersion = "v1.1-preview.1";
+        }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        AnomalyDetectorClientImpl client = new AnomalyDetectorClientImpl(pipeline, serializerAdapter, endpoint);
+        AnomalyDetectorClientImpl client =
+                new AnomalyDetectorClientImpl(pipeline, serializerAdapter, endpoint, apiVersion);
         return client;
     }
 
