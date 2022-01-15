@@ -191,7 +191,7 @@ private class ChangeFeedMicroBatchStream
    * The source can return `null`, if there is no data to process or the source does not support
    * to this method.
    */
-  def reportLatestOffset(): Offset = {
+  override def reportLatestOffset(): Offset = {
     this.latestOffsetSnapshot.orNull
   }
 

@@ -64,6 +64,7 @@
         <module>azure-spring-data-cosmos</module>
         <module>azure-spring-data-cosmos-test</module>
         <module>azure-cosmos-spark_3-1_2-12</module>
+        <module>azure-cosmos-spark_3-2_2-12</module>
       </modules>
     </profile>
   </profiles>
