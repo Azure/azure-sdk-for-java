@@ -107,13 +107,6 @@
       <version>3.21.0</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
-
-    <dependency>
-      <groupId>org.apache.spark</groupId>
-      <artifactId>spark-hive_2.12</artifactId>
-      <version>3.1.1</version> <!-- {x-version-update;cosmos_org.apache.spark:spark-hive_2.12;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>org.scalatest</groupId>
       <artifactId>scalatest_2.12</artifactId>
@@ -230,8 +223,8 @@
                 <include>javax.annotation:javax.annotation-api:[1.3.2]</include> <!-- {x-include-update;javax.annotation:javax.annotation-api;external_dependency} -->
                 <include>org.apache.commons:commons-lang3:[3.12.0]</include> <!-- {x-include-update;org.apache.commons:commons-lang3;external_dependency} -->
                 <include>org.slf4j:slf4j-api:[1.7.32]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
-                <include>org.apache.spark:spark-sql_2.12:[3.1.1]</include> <!-- {x-include-update;cosmos_org.apache.spark:spark-sql_2.12;external_dependency} -->
-                <include>org.apache.spark:spark-sql_2.12:[3.2.0]</include> <!-- {x-include-update;cosmos_org.apache.spark:spark-sql_2.12;external_dependency} -->
+                <include>org.apache.spark:spark-sql_2.12:[3.1.1]</include> <!-- {x-include-update;cosmos-spark_3-1_org.apache.spark:spark-sql_2.12;external_dependency} -->
+                <include>org.apache.spark:spark-sql_2.12:[3.2.0]</include> <!-- {x-include-update;cosmos-spark_3-2_org.apache.spark:spark-sql_2.12;external_dependency} -->
                 <include>commons-io:commons-io:[2.4]</include> <!-- {x-include-update;cosmos_commons-io:commons-io;external_dependency} -->
                 <include>org.scala-lang:scala-library:[2.12.10]</include> <!-- {x-include-update;cosmos_org.scala-lang:scala-library;external_dependency} -->
                 <include>org.scala-lang.modules:scala-java8-compat_2.12:[0.8.0]</include> <!-- {x-include-update;cosmos_org.scala-lang.modules:scala-java8-compat_2.12;external_dependency} -->
