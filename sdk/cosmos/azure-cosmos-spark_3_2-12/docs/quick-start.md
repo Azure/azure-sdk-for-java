@@ -15,7 +15,7 @@ You can use any other Spark 3.1.1 spark offering as well, also you should be abl
 - For Spark 3.1:
   - [Azure Databricks  Runtime 9.1 LTS with Spark 3.1.2](https://docs.microsoft.com/azure/databricks/release-notes/runtime/9.1)
 - For Spark 3.2:
-    - [Azure Databricks  Runtime 10.2 with Spark 3.2.0](https://docs.microsoft.com/en-us/azure/databricks/release-notes/runtime/10.2)
+    - [Azure Databricks  Runtime 10.2 with Spark 3.2.0](https://docs.microsoft.com/azure/databricks/release-notes/runtime/10.2)
     
 - (Optional) [SLF4J binding](https://www.slf4j.org/manual.html) is used to associate a
   specific logging framework with SLF4J.
@@ -84,7 +84,7 @@ spark.createDataFrame((("cat-alive", "Schrodinger cat", 2, True), ("cat-dead", "
 
 Note that `id` is a mandatory field for Cosmos DB.
 
-For more details related to ingesting data, see the full [write configuration](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/configuration-reference.md#write-config) documentation.
+For more details related to ingesting data, see the full [write configuration](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3_2-12/docs/configuration-reference.md#write-config) documentation.
 
 ### Querying data
 
