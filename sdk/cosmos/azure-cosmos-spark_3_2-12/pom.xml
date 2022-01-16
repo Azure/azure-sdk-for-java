@@ -49,12 +49,6 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.spark</groupId>
-      <artifactId>spark-sql_2.12</artifactId>
-      <version>3.1.1</version> <!-- {x-version-update;cosmos_org.apache.spark:spark-sql_2.12;external_dependency} -->
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <version>2.4</version> <!-- {x-version-update;cosmos_commons-io:commons-io;external_dependency} -->
