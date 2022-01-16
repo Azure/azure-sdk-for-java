@@ -313,7 +313,7 @@ cosmos_org.hdrhistogram:HdrHistogram;2.1.12
 ## Cosmos Spark connector under sdk\cosmos\azure-cosmos-spark_3-1_2-12\pom.xml
 # Cosmos Spark connector runtime dependencies - provided by Spark runtime/host
 cosmos-spark_3-1_org.apache.spark:spark-sql_2.12;3.1.1
-cosmos-spark_3-2.org.apache.spark:spark-sql_2.12;3.2.0
+cosmos-spark_3-2_org.apache.spark:spark-sql_2.12;3.2.0
 cosmos-spark_3-1_org.apache.spark:spark-hive_2.12;3.1.1
 cosmos-spark_3-2_org.apache.spark:spark-hive_2.12;3.2.0
 cosmos_org.scala-lang:scala-library;2.12.10
