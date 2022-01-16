@@ -101,7 +101,7 @@ df.filter(col("isAlive") == True)\
  .show()
 ```
 
-For more details related to querying data, see the full [query configuration](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/configuration-reference.md#query-config) documentation.
+For more details related to querying data, see the full [query configuration](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3_2-12/docs/configuration-reference.md#query-config) documentation.
 
 ### Schema inference
 
@@ -141,4 +141,4 @@ df = spark.read.format("cosmos.oltp").options(**cfg)\
 df.printSchema()
 ```
 
-For more details related to schema inference, see the full [schema inference configuration](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/configuration-reference.md#schema-inference-config) documentation.
+For more details related to schema inference, see the full [schema inference configuration](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3_2-12/docs/configuration-reference.md#schema-inference-config) documentation.
