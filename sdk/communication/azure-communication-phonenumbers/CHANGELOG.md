@@ -3,7 +3,8 @@
 ## 1.1.0-beta.1 (2022-01-24)
 
 ### Features Added
-- Support of Denmark (DK) and United Kingdom (GB) phone number acquisitions.
+- Users can now purchase United Kingdom (GB) toll free and geographic phone numbers for PSTN Calling
+- Users can now purchase Denmark (DK) toll free and geographic phone numbers for PSTN Calling
 
 ### Breaking Changes
 
