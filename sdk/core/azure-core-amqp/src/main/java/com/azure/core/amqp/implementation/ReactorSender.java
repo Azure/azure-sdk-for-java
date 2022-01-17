@@ -330,12 +330,13 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
     @Override
     public Mono<Integer> getLinkSize() {
         if (linkSize > 0) {
-            return Mono.just(this.linkSize);
+            // Using Mono.defer when returning cached linkSize, refer https://github.com/Azure/azure-sdk-for-java/issues/26372.
+            return Mono.defer(() -> Mono.just(this.linkSize));
         }
 
         synchronized (this) {
             if (linkSize > 0) {
-                return Mono.just(linkSize);
+                return Mono.defer(() -> Mono.just(linkSize));
             }
 
             return RetryUtil.withRetry(getEndpointStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE),
