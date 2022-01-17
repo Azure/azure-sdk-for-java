@@ -37,7 +37,7 @@ import static com.azure.spring.core.AzureSpringIdentifier.AZURE_SPRING_SERVICE_B
 public class ServiceBusJmsAutoConfiguration {
     @Bean
     @ConditionalOnExpression("'premium'.equalsIgnoreCase('${spring.jms.servicebus.pricing-tier}')")
-    ServiceBusJmsConnectionFactoryCustomizer amqpOpenPropertiesCustomizer(AzureServiceBusJmsProperties serviceBusJmsProperties) {
+    ServiceBusJmsConnectionFactoryCustomizer amqpOpenPropertiesCustomizer() {
         return factory -> {
             final Map<String, Object> properties = new HashMap<>();
             properties.put("com.microsoft:is-client-provider", true);
