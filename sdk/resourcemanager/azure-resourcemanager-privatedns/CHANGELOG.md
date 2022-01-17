@@ -4,7 +4,7 @@
 
 ### Bugs Fixed
 
-- Update CnameRecordSet to make it no longer ignore changes to the cname property
+- Fixed issue where update of `CnameRecordSet` did not update `canonicalName`.
 
 ### Other Changes
 
