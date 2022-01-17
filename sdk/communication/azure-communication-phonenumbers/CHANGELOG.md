@@ -3,7 +3,7 @@
 ## 1.1.0-beta.1 (2022-01-24)
 
 ### Features Added
-- Support of DK and GB phone numbers acquisition.
+- Support of Denmark (DK) and United Kingdom (GB) phone number acquisitions.
 
 ### Breaking Changes
 
