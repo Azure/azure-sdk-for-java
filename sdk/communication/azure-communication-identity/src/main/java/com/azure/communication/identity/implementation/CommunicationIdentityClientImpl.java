@@ -9,8 +9,6 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
 
 /** Initializes a new instance of the CommunicationIdentityClient type. */
 public final class CommunicationIdentityClientImpl {
@@ -50,71 +48,36 @@ public final class CommunicationIdentityClientImpl {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
-    private final SerializerAdapter serializerAdapter;
+    /** The CommunicationIdentityImpl object to access its operations. */
+    private final CommunicationIdentityImpl communicationIdentity;
 
     /**
-     * Gets The serializer to serialize an object into a string.
+     * Gets the CommunicationIdentityImpl object to access its operations.
      *
-     * @return the serializerAdapter value.
+     * @return the CommunicationIdentityImpl object.
      */
-    public SerializerAdapter getSerializerAdapter() {
-        return this.serializerAdapter;
+    public CommunicationIdentityImpl getCommunicationIdentity() {
+        return this.communicationIdentity;
     }
 
-    /** The CommunicationIdentitiesImpl object to access its operations. */
-    private final CommunicationIdentitiesImpl communicationIdentities;
-
-    /**
-     * Gets the CommunicationIdentitiesImpl object to access its operations.
-     *
-     * @return the CommunicationIdentitiesImpl object.
-     */
-    public CommunicationIdentitiesImpl getCommunicationIdentities() {
-        return this.communicationIdentities;
-    }
-
-    /**
-     * Initializes an instance of CommunicationIdentityClient client.
-     *
-     * @param endpoint The communication resource, for example https://my-resource.communication.azure.com.
-     * @param apiVersion Api Version.
-     */
-    CommunicationIdentityClientImpl(String endpoint, String apiVersion) {
+    /** Initializes an instance of CommunicationIdentityClient client. */
+    CommunicationIdentityClientImpl(String endpoint) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint,
-                apiVersion);
+                endpoint);
     }
 
     /**
      * Initializes an instance of CommunicationIdentityClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param endpoint The communication resource, for example https://my-resource.communication.azure.com.
-     * @param apiVersion Api Version.
      */
-    CommunicationIdentityClientImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
-    }
-
-    /**
-     * Initializes an instance of CommunicationIdentityClient client.
-     *
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param endpoint The communication resource, for example https://my-resource.communication.azure.com.
-     * @param apiVersion Api Version.
-     */
-    CommunicationIdentityClientImpl(
-            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
+    CommunicationIdentityClientImpl(HttpPipeline httpPipeline, String endpoint) {
         this.httpPipeline = httpPipeline;
-        this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
-        this.apiVersion = apiVersion;
-        this.communicationIdentities = new CommunicationIdentitiesImpl(this);
+        this.apiVersion = "2021-03-07";
+        this.communicationIdentity = new CommunicationIdentityImpl(this);
     }
 }
