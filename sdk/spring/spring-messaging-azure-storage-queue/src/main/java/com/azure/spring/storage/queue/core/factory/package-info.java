@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Event Hubs resource provisioner.
+ * Spring Messaging Storage Queue factory package.
  */
-package com.azure.spring.resourcemanager.provisioning.eventhubs;
+package com.azure.spring.storage.queue.core.factory;

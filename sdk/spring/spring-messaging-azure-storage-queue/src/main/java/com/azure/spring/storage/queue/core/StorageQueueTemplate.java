@@ -4,7 +4,6 @@
 package com.azure.spring.storage.queue.core;
 
 import com.azure.spring.messaging.AzureHeaders;
-import com.azure.spring.messaging.PartitionSupplier;
 import com.azure.spring.messaging.checkpoint.AzureCheckpointer;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.messaging.checkpoint.Checkpointer;
@@ -50,6 +49,13 @@ public class StorageQueueTemplate {
         LOG.info("StorageQueueTemplate started with default properties {}", buildProperties());
     }
 
+    /**
+     * Send a {@link Message} to the given queue asynchronously.
+     * @param queueName the queue
+     * @param message message
+     * @param <T> payload class in message
+     * @return Mono Void
+     */
     public <T> Mono<Void> sendAsync(String queueName, @NonNull Message<T> message) {
         Assert.hasText(queueName, "queueName can't be null or empty");
         QueueMessageItem queueMessageItem = messageConverter.fromMessage(message, QueueMessageItem.class);
@@ -58,6 +64,13 @@ public class StorageQueueTemplate {
         return queueClient.sendMessage(queueMessageItem.getBody().toString()).then();
     }
 
+    /**
+     * Receive a message from the queue asynchronously.
+     * @param queueName the queue
+     * @param visibilityTimeout The timeout period for how long the message is invisible in the queue. If left empty
+     * the dequeued messages will be invisible for 30 seconds. The timeout must be between 1 second and 7 days.
+     * @return {@link Mono} of the next available {@link Message} or {@code null} if empty
+     */
     public Mono<Message<?>> receiveAsync(String queueName, Duration visibilityTimeout) {
         Assert.hasText(queueName, "queueName can't be null or empty");
         QueueAsyncClient queueClient = storageQueueClientFactory.createQueueClient(queueName);
@@ -125,13 +138,17 @@ public class StorageQueueTemplate {
         return messagePayloadType;
     }
 
+    /**
+     * Set message payload type. Default is {@code byte[]}
+     * @param payloadType message payload type
+     */
     public void setMessagePayloadType(Class<?> payloadType) {
         this.messagePayloadType = payloadType;
         LOG.info("StorageQueueTemplate messagePayloadType becomes: {}", this.messagePayloadType);
     }
 
     /**
-     * Get the {@code checkpointMode}. Deprecated from version 4.0.0-beta.3, only MANUAL checkpoint mode is supported.
+     * Get the {@code checkpointMode}. Deprecated from version 4.0.0-beta.3, MANUAL checkpoint mode is used by default.
      * @return the {@code checkpointMode.MANUAL}.
      * @deprecated deprecated from version 4.0.0-beta.3, only MANUAL checkpoint mode is supported.
      */
@@ -140,6 +157,13 @@ public class StorageQueueTemplate {
         return CheckpointMode.MANUAL;
     }
 
+    /**
+     * Set the {@code checkpointMode}. Deprecated from version 4.0.0-beta.3, MANUAL checkpoint mode is used by default
+     * and configuration is not supported.
+     * @param checkpointMode the {@code checkpointMode}
+     * @throws IllegalStateException for configuration is not supported.
+     * @deprecated deprecated from version 4.0.0-beta.3, only MANUAL checkpoint mode is supported.
+     */
     @Deprecated
     public void setCheckpointMode(CheckpointMode checkpointMode) {
         throw new IllegalStateException("Configuration of checkpoint mode is not supported, the MANUAL checkpoint mode is applied");

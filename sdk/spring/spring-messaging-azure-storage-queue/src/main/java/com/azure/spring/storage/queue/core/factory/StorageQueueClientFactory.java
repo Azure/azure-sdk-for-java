@@ -40,8 +40,18 @@ public interface StorageQueueClientFactory {
     @FunctionalInterface
     interface Listener {
 
+        /**
+         * The callback method that the queue client has been added.
+         * @param name the name for the queue.
+         * @param client the queue client.
+         */
         void queueClientAdded(String name, QueueAsyncClient client);
 
+        /**
+         * The default callback method that the queue client has been removed.
+         * @param name the name for the queue.
+         * @param client the queue client.
+         */
         default void queueClientRemoved(String name, QueueAsyncClient client) {
         }
 

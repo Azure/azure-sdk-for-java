@@ -4,4 +4,4 @@
 /**
  * Service Bus resource provisioner.
  */
-package com.azure.spring.resourcemanager.provisioner.servicebus;
+package com.azure.spring.resourcemanager.provisioning.servicebus;
