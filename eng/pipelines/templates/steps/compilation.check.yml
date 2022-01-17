@@ -28,10 +28,11 @@ steps:
       foreach ($retry in 0..${{ parameters.RetryLimit }}) {
         Write-Host "mvn --no-transfer-progress -f $pomf compile"
         mvn --no-transfer-progress -f $pomf compile
-        if (!$LASTEXITCODE) { break }
+        if (!$LASTEXITCODE -or ($retry -ge ${{ parameters.RetryLimit }})) { break }
         Write-Host "Install failed, retrying in 1 minute..."
-        sleep 60
+        Start-Sleep -s 60
       }
+
       exit $LASTEXITCODE
 
     workingDirectory: ${{parameters.ArtifactDirectory}}

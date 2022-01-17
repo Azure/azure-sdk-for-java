@@ -17,6 +17,9 @@
 
   <properties>
     <jacoco.min.linecoverage>0.3</jacoco.min.linecoverage>
+
+    <!-- TODO: Remove this once all Javadoc warnings and errors are resolved -->
+    <doclint>all,-missing</doclint>
   </properties>
 
   <dependencies>
@@ -37,7 +40,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.11.2</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+      <version>12.11.3</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
       <optional>true</optional>
     </dependency>
 
