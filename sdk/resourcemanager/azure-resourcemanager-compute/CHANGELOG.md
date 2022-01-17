@@ -6,11 +6,11 @@
 
 - Supported Flexible orchestration mode for `VirtualMachineScaleSet` during create.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-08-01`.
 
 ## 2.10.0 (2021-11-22)
 

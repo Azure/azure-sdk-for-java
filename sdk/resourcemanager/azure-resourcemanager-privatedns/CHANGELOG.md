@@ -2,15 +2,15 @@
 
 ## 2.11.0-beta.1 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
 ### Bugs Fixed
 
-- Update CnameRecordSet to make it no longer ignore changes to the cname property
+- Fixed issue where update of `CnameRecordSet` did not update `canonicalName`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources
 
 ## 2.10.0 (2021-11-22)
 
