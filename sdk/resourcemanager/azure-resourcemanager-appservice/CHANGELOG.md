@@ -2,6 +2,10 @@
 
 ## 2.11.0-beta.1 (Unreleased)
 
+### Features Added
+
+- Supported option for tracking deployment status via `pushDeploy` in `WebApp` and `DeploymentSlot`.
+
 ### Other Changes
 
 #### Dependency Updates
