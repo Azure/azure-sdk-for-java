@@ -24,6 +24,12 @@ public final class LinkedIntegrationRuntimeRbacAuthorization extends LinkedInteg
     @JsonProperty(value = "resourceId", required = true)
     private String resourceId;
 
+    /*
+     * The credential reference containing authentication information.
+     */
+    @JsonProperty(value = "credential")
+    private CredentialReference credential;
+
     /**
      * Get the resourceId property: The resource identifier of the integration runtime to be shared.
      *
@@ -45,6 +51,26 @@ public final class LinkedIntegrationRuntimeRbacAuthorization extends LinkedInteg
     }
 
     /**
+     * Get the credential property: The credential reference containing authentication information.
+     *
+     * @return the credential value.
+     */
+    public CredentialReference credential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     *
+     * @param credential the credential value to set.
+     * @return the LinkedIntegrationRuntimeRbacAuthorization object itself.
+     */
+    public LinkedIntegrationRuntimeRbacAuthorization withCredential(CredentialReference credential) {
+        this.credential = credential;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -57,6 +83,9 @@ public final class LinkedIntegrationRuntimeRbacAuthorization extends LinkedInteg
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property resourceId in model LinkedIntegrationRuntimeRbacAuthorization"));
+        }
+        if (credential() != null) {
+            credential().validate();
         }
     }
 }
