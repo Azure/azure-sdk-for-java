@@ -323,7 +323,8 @@ public abstract class IntegrationTestBase extends TestBase {
         return Stream.of(
             Arguments.of(MessagingEntityType.QUEUE, false),
             Arguments.of(MessagingEntityType.SUBSCRIPTION, false),
-            Arguments.of(MessagingEntityType.QUEUE, true)
+            Arguments.of(MessagingEntityType.QUEUE, true),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, true)
         );
     }
 
