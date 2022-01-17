@@ -11,6 +11,10 @@ import java.time.temporal.ChronoUnit;
  */
 public interface RetryAware {
 
+    /**
+     * Get the retry configuration.
+     * @return the retry configuration.
+     */
     Retry getRetry();
 
     /**
@@ -30,6 +34,10 @@ public interface RetryAware {
          */
         Duration getTimeout();
 
+        /**
+         * Get the backoff for retry configuration.
+         * @return the backoff configuration.
+         */
         Backoff getBackoff();
     }
 
@@ -38,8 +46,16 @@ public interface RetryAware {
      */
     interface HttpRetry extends Retry {
 
+        /**
+         * Get the http header.
+         * @return herder name
+         */
         String getRetryAfterHeader();
 
+        /**
+         * Get the time unit to use when applying the retry delay
+         * @return the time unit.
+         */
         ChronoUnit getRetryAfterTimeUnit();
     }
 
@@ -48,10 +64,22 @@ public interface RetryAware {
      */
     interface Backoff {
 
+        /**
+         * Get the delay duration.
+         * @return the delay duration.
+         */
         Duration getDelay();
 
+        /**
+         * Get the max delay duration.
+         * @return the max delay duration.
+         */
         Duration getMaxDelay();
 
+        /**
+         * Get the multiplier.
+         * @return the multiplier.
+         */
         Double getMultiplier();
     }
 }

@@ -15,6 +15,9 @@ public final class AzureProfileProperties extends AzureProfileAdapter {
     private AzureProfileAware.CloudType cloud;
     private final AzureEnvironmentProperties environment;
 
+    /**
+     * Construct an {@link AzureProfileProperties} instance with default value.
+     */
     public AzureProfileProperties() {
         environment = new AzureEnvironmentProperties();
         setCloud(AzureProfileAware.CloudType.AZURE);

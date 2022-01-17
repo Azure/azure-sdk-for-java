@@ -39,8 +39,18 @@ public interface EventHubsProducerFactory {
      */
     interface Listener {
 
+        /**
+         * The callback method that the producer has been added.
+         * @param name the name for the producer.
+         * @param client the client for the producer.
+         */
         void producerAdded(String name, EventHubProducerAsyncClient client);
 
+        /**
+         * The default callback method that the producer has been removed.
+         * @param name the name for the producer.
+         * @param client the client for the producer.
+         */
         default void producerRemoved(String name, EventHubProducerAsyncClient client) {
         }
 

@@ -11,6 +11,10 @@ import org.springframework.messaging.MessageHandler;
  */
 public interface AzureMessageHandler extends MessageHandler {
 
+    /**
+     * Get the message payload type.
+     * @return the message payload type.
+     */
     @Nullable
     Class<?> getMessagePayloadType();
 }

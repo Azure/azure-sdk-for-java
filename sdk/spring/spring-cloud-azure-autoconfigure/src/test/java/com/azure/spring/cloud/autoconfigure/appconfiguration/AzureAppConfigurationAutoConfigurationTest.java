@@ -11,7 +11,7 @@ import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.appconfiguration.properties.AzureAppConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultSecretAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
-import com.azure.spring.service.appconfiguration.ConfigurationClientBuilderFactory;
+import com.azure.spring.service.implementation.appconfiguration.ConfigurationClientBuilderFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;

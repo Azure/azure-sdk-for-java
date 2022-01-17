@@ -4,6 +4,7 @@
 package com.azure.spring.service.eventhubs.properties;
 
 import com.azure.messaging.eventhubs.LoadBalancingStrategy;
+import com.azure.spring.service.implementation.eventhubs.properties.EventProcessorClientProperties;
 
 import java.time.Duration;
 
@@ -25,22 +26,33 @@ public class LoadBalancingProperties implements EventProcessorClientProperties.L
      */
     private Duration partitionOwnershipExpirationInterval;
 
+    @Override
     public Duration getUpdateInterval() {
         return updateInterval;
     }
 
+    /**
+     * Set the update interval.
+     * @param updateInterval The update interval.
+     */
     public void setUpdateInterval(Duration updateInterval) {
         this.updateInterval = updateInterval;
     }
 
+    @Override
     public LoadBalancingStrategy getStrategy() {
         return strategy;
     }
 
+    /**
+     * Set the load balancing strategy.
+     * @param strategy The load balancing strategy.
+     */
     public void setStrategy(LoadBalancingStrategy strategy) {
         this.strategy = strategy;
     }
 
+    @Override
     public Duration getPartitionOwnershipExpirationInterval() {
         return partitionOwnershipExpirationInterval;
     }

@@ -8,10 +8,25 @@ package com.azure.spring.resourcemanager.provisioning.eventhubs;
  */
 public interface EventHubsProvisioner {
 
+    /**
+     * Provision the namespace of the Event Hubs.
+     * @param namespace the namespace of the Event Hubs.
+     */
     void provisionNamespace(String namespace);
 
+    /**
+     * Provision the namespace and event hub of the Event Hubs.
+     * @param namespace the namespace of the Event Hubs.
+     * @param eventHub the event hub of the Event Hubs.
+     */
     void provisionEventHub(String namespace, String eventHub);
 
+    /**
+     * Provision the namespace, event hub and consumer group of the Event Hubs.
+     * @param namespace the namespace of the Event Hubs.
+     * @param eventHub the event hub of the Event Hubs.
+     * @param consumerGroup the consumer of the event hub.
+     */
     void provisionConsumerGroup(String namespace, String eventHub, String consumerGroup);
 
 }

@@ -9,6 +9,11 @@ package com.azure.spring.messaging;
 @FunctionalInterface
 public interface PropertiesSupplier<K, V> {
 
+    /**
+     * Get the properties by the key.
+     * @param key the key.
+     * @return the properties instance.
+     */
     V getProperties(K key);
 
 }

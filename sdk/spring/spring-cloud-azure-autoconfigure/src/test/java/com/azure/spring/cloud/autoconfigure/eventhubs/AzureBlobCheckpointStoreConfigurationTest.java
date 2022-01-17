@@ -6,11 +6,10 @@ package com.azure.spring.cloud.autoconfigure.eventhubs;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
 import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
-import com.azure.spring.cloud.autoconfigure.context.AzureContextUtils;
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobAutoConfiguration;
-import com.azure.spring.service.storage.blob.BlobServiceClientBuilderFactory;
+import com.azure.spring.service.implementation.storage.blob.BlobServiceClientBuilderFactory;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
@@ -23,7 +22,10 @@ import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.EVENT_HUB_PROCESSOR_CHECKPOINT_STORE_STORAGE_CLIENT_BUILDER_BEAN_NAME;
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.EVENT_HUB_PROCESSOR_CHECKPOINT_STORE_STORAGE_CLIENT_BUILDER_FACTORY_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.STORAGE_BLOB_CLIENT_BUILDER_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.STORAGE_BLOB_CLIENT_BUILDER_FACTORY_BEAN_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -92,9 +94,11 @@ class AzureBlobCheckpointStoreConfigurationTest {
                 assertThat(context).hasSingleBean(AzureBlobCheckpointStoreConfiguration.class);
                 assertThat(context).hasSingleBean(AzureStorageBlobAutoConfiguration.class);
                 assertThat(context).hasBean(EVENT_HUB_PROCESSOR_CHECKPOINT_STORE_STORAGE_CLIENT_BUILDER_FACTORY_BEAN_NAME);
-                assertThat(context).hasBean(AzureContextUtils.STORAGE_BLOB_CLIENT_BUILDER_FACTORY_BEAN_NAME);
+                assertThat(context).hasBean(STORAGE_BLOB_CLIENT_BUILDER_FACTORY_BEAN_NAME);
 
-                assertThat(context).hasSingleBean(BlobServiceClientBuilder.class);
+                assertThat(context).hasBean(EVENT_HUB_PROCESSOR_CHECKPOINT_STORE_STORAGE_CLIENT_BUILDER_BEAN_NAME);
+                assertThat(context).hasBean(STORAGE_BLOB_CLIENT_BUILDER_BEAN_NAME);
+
                 assertThat(context).hasSingleBean(BlobContainerAsyncClient.class);
 
                 assertThat(context).has(new Condition<>(c -> {

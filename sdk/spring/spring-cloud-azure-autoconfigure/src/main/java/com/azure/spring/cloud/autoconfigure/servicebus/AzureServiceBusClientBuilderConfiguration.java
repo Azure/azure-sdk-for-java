@@ -11,7 +11,7 @@ import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.service.AzureServiceType;
-import com.azure.spring.service.servicebus.factory.ServiceBusClientBuilderFactory;
+import com.azure.spring.service.implementation.servicebus.factory.ServiceBusClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -32,7 +32,7 @@ class AzureServiceBusClientBuilderConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ServiceBusClientBuilderFactory serviceBusClientBuilderFactory(
+    ServiceBusClientBuilderFactory serviceBusClientBuilderFactory(
         ObjectProvider<ConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders,
         ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> customizers) {
 
@@ -46,7 +46,7 @@ class AzureServiceBusClientBuilderConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ServiceBusClientBuilder serviceBusClientBuilder(ServiceBusClientBuilderFactory factory) {
+    ServiceBusClientBuilder serviceBusClientBuilder(ServiceBusClientBuilderFactory factory) {
         return factory.build();
     }
 

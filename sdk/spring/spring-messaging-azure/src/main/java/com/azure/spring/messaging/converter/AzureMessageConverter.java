@@ -40,11 +40,19 @@ public interface AzureMessageConverter<I, O> {
      * @param targetPayloadClass the target payload class for the conversion
      * @param <U> payload class type in message
      * @return the new message, or {@code null} if the converter does not support the
-     *      * Object type or the target media type
+     * Object type or the target media type
      */
     @Nullable
     <U> Message<U> toMessage(I azureMessage, Map<String, Object> headers, Class<U> targetPayloadClass);
 
+    /**
+     * Create an empty header {@link Message} by default.
+     * @param azureMessage the Object to convert
+     * @param targetPayloadClass the target payload class for the conversion
+     * @param <U> payload class type in message
+     * @return the new message, or {@code null} if the converter does not support the
+     *     * Object type or the target media type
+     */
     @Nullable
     default <U> Message<U> toMessage(I azureMessage, Class<U> targetPayloadClass) {
         return this.toMessage(azureMessage, new HashMap<>(), targetPayloadClass);

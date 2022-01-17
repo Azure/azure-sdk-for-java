@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.storage.blob.properties;
 
 import com.azure.spring.cloud.autoconfigure.storage.common.AzureStorageProperties;
-import com.azure.spring.service.storage.blob.BlobServiceClientProperties;
+import com.azure.spring.service.implementation.storage.blob.BlobServiceClientProperties;
 import com.azure.storage.blob.BlobServiceVersion;
 
 /**
