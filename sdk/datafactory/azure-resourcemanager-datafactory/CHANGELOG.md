@@ -1,14 +1,41 @@
 # Release History
 
-## 1.0.0-beta.10 (Unreleased)
+## 1.0.0-beta.10 (2022-01-17)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.FailActivity` was added
 
-### Bugs Fixed
+#### `models.DynamicsLinkedService` was modified
 
-### Other Changes
+* `withCredential(models.CredentialReference)` was added
+* `credential()` was added
+
+#### `models.CosmosDbLinkedService` was modified
+
+* `withCredential(models.CredentialReference)` was added
+* `credential()` was added
+
+#### `models.AzureBlobFSLinkedService` was modified
+
+* `servicePrincipalCredential()` was added
+* `withServicePrincipalCredential(models.SecretBase)` was added
+* `servicePrincipalCredentialType()` was added
+* `withServicePrincipalCredentialType(java.lang.Object)` was added
+
+#### `models.AzureDatabricksDeltaLakeLinkedService` was modified
+
+* `withCredential(models.CredentialReference)` was added
+* `workspaceResourceId()` was added
+* `credential()` was added
+* `withWorkspaceResourceId(java.lang.Object)` was added
+
+#### `models.LinkedIntegrationRuntimeRbacAuthorization` was modified
+
+* `withCredential(models.CredentialReference)` was added
+* `credential()` was added
 
 ## 1.0.0-beta.9 (2021-12-20)
 
