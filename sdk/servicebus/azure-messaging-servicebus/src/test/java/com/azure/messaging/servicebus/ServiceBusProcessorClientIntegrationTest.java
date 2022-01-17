@@ -41,7 +41,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
 
     @Override
     protected void beforeTest() {
-        sessionId = UUID.randomUUID().toString();
+        sessionId.set(UUID.randomUUID().toString());
     }
 
     @Override
@@ -84,7 +84,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
         sendMessage(message).block(TIMEOUT);
 
         if (isSessionEnabled) {
-            assertNotNull(sessionId, "'sessionId' should have been set.");
+            assertNotNull(sessionId.get(), "'sessionId' should have been set.");
             AmqpRetryOptions amqpRetryOptions = new AmqpRetryOptions()
                 .setTryTimeout(Duration.ofSeconds(2 * lockTimeoutDurationSeconds));
             processor = getSessionProcessorBuilder(false, entityType, entityIndex, false, amqpRetryOptions)
