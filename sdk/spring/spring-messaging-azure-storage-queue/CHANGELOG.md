@@ -8,6 +8,7 @@
 - Remove `StorageQueueOperation`.
 - Deprecate configure checkpoint mode for StorageQueueTemplate, and support only MANUAL mode.
 - Remove auto creating Storage Queue when send/receive messages via `StorageQueueTemplate`.
+- Add the parameter of visibility timeout for StorageQueueTemplate#receiveAsync
 ### Bugs Fixed
 
 ### Other Changes

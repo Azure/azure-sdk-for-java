@@ -48,7 +48,6 @@ public class StorageQueueTemplateReceiveTests {
     private QueueAsyncClient mockClient;
     private StorageQueueTemplate template;
     private QueueMessageItem queueMessage;
-    private int visibilityTimeoutInSeconds = 30;
     private String destination = "queue";
     private AutoCloseable closeable;
 
@@ -106,17 +105,17 @@ public class StorageQueueTemplateReceiveTests {
 
     @Test
     public void testReceiveFailure() {
-        when(this.mockClient.receiveMessages(eq(1), eq(Duration.ofSeconds(visibilityTimeoutInSeconds))))
+        when(this.mockClient.receiveMessages(eq(1), any()))
             .thenReturn(new PagedFlux<>(() -> Mono.error(new QueueStorageException("error happened", null, null))));
 
-        final Mono<Message<?>> mono = this.template.receiveAsync(this.destination);
+        final Mono<Message<?>> mono = this.template.receiveAsync(this.destination, any());
         verifyQueueStorageExceptionThrown(mono);
     }
 
     @Test
     public void testReceiveSuccessWithManualMode() {
         when(mockClient.deleteMessage(this.messageId, this.popReceipt)).thenReturn(Mono.empty());
-        final Mono<Message<?>> mono = this.template.receiveAsync(destination);
+        final Mono<Message<?>> mono = this.template.receiveAsync(destination, any());
 
         Map<String, Object> headers = mono.block().getHeaders();
         Checkpointer checkpointer = (Checkpointer) headers.get(AzureHeaders.CHECKPOINTER);

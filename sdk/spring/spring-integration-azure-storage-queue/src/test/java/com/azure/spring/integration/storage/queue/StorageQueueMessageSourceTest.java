@@ -21,6 +21,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
@@ -59,13 +60,13 @@ public class StorageQueueMessageSourceTest {
 
     @Test
     public void testDoReceiveWhenHaveNoMessage() {
-        when(this.mockTemplate.receiveAsync(eq(destination))).thenReturn(Mono.empty());
+        when(this.mockTemplate.receiveAsync(eq(destination), any())).thenReturn(Mono.empty());
         assertNull(messageSource.doReceive());
     }
 
     @Test
     public void testDoReceiveSuccess() {
-        when(this.mockTemplate.receiveAsync(eq(destination))).thenReturn(Mono.just(message));
+        when(this.mockTemplate.receiveAsync(eq(destination), any())).thenReturn(Mono.just(message));
         Message<?> receivedMessage = (Message<?>) messageSource.doReceive();
         assertEquals(message, receivedMessage);
     }

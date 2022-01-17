@@ -4,12 +4,10 @@
 package com.azure.spring.storage.queue.core.factory;
 
 import com.azure.spring.core.AzureSpringIdentifier;
-import com.azure.spring.service.storage.queue.QueueServiceClientBuilderFactory;
+import com.azure.spring.service.implementation.storage.queue.QueueServiceClientBuilderFactory;
 import com.azure.spring.storage.queue.core.properties.StorageQueueProperties;
 import com.azure.storage.queue.QueueAsyncClient;
 import com.azure.storage.queue.QueueServiceAsyncClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.lang.NonNull;
 
@@ -23,7 +21,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * for provided {@link QueueServiceAsyncClient} on each {@link #createQueueClient} invocation.
  */
 public final class DefaultStorageQueueClientFactory implements StorageQueueClientFactory, DisposableBean {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultStorageQueueClientFactory.class);
 
     private final List<Listener> listeners = new ArrayList<>();
     private final Map<String, QueueAsyncClient> clients = new ConcurrentHashMap<>();

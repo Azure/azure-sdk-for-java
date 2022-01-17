@@ -32,7 +32,7 @@ public class StorageQueueMessageSource extends AbstractMessageSource<Message<?>>
 
     @Override
     public Object doReceive() {
-        return storageQueueTemplate.receiveAsync(destination).block();
+        return storageQueueTemplate.receiveAsync(destination, null).block();
     }
 
     @Override

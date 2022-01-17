@@ -8,8 +8,6 @@ import com.azure.spring.messaging.PartitionSupplier;
 import com.azure.spring.messaging.checkpoint.AzureCheckpointer;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.messaging.checkpoint.Checkpointer;
-import com.azure.spring.messaging.core.ReceiveOperation;
-import com.azure.spring.messaging.core.SendOperation;
 import com.azure.spring.storage.queue.core.factory.StorageQueueClientFactory;
 import com.azure.spring.storage.queue.support.StorageQueueHelper;
 import com.azure.spring.storage.queue.support.converter.StorageQueueMessageConverter;
@@ -28,21 +26,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Azure Storage Queue template to support send / receive {@link Message} asynchronously.
+ * Azure Storage Queue template to support send / receive {@link Message}s asynchronously.
  *
  * You should checkpoint if message has been processed successfully, otherwise it will be visible again after certain
- * time specified by {@link #setVisibilityTimeout(Duration)}.
+ * time specified by {@link #receiveAsync(String, Duration)} }.
  */
-public class StorageQueueTemplate implements SendOperation, ReceiveOperation {
+public class StorageQueueTemplate {
     private static final Logger LOG = LoggerFactory.getLogger(StorageQueueTemplate.class);
-    private static final Duration DEFAULT_VISIBILITY_TIMEOUT_IN_SECONDS = Duration.ofSeconds(30);
     private static final String MSG_FAIL_CHECKPOINT = "Failed to checkpoint %s in storage queue '%s'";
     private static final String MSG_SUCCESS_CHECKPOINT = "Checkpointed %s in storage queue '%s'";
     private final StorageQueueClientFactory storageQueueClientFactory;
 
     private StorageQueueMessageConverter messageConverter = new StorageQueueMessageConverter();
-
-    private Duration visibilityTimeout = DEFAULT_VISIBILITY_TIMEOUT_IN_SECONDS;
 
     private Class<?> messagePayloadType = byte[].class;
 
@@ -55,19 +50,12 @@ public class StorageQueueTemplate implements SendOperation, ReceiveOperation {
         LOG.info("StorageQueueTemplate started with default properties {}", buildProperties());
     }
 
-    @Override
-    public <T> Mono<Void> sendAsync(String queueName, @NonNull Message<T> message,
-                                    PartitionSupplier partitionSupplier) {
+    public <T> Mono<Void> sendAsync(String queueName, @NonNull Message<T> message) {
         Assert.hasText(queueName, "queueName can't be null or empty");
         QueueMessageItem queueMessageItem = messageConverter.fromMessage(message, QueueMessageItem.class);
         QueueAsyncClient queueClient = storageQueueClientFactory.createQueueClient(queueName);
         Assert.notNull(queueMessageItem, "queueMessageItem can't be null");
         return queueClient.sendMessage(queueMessageItem.getBody().toString()).then();
-    }
-
-    @Override
-    public Mono<Message<?>> receiveAsync(String queueName) {
-        return this.receiveAsync(queueName, visibilityTimeout);
     }
 
     public Mono<Message<?>> receiveAsync(String queueName, Duration visibilityTimeout) {
@@ -101,7 +89,6 @@ public class StorageQueueTemplate implements SendOperation, ReceiveOperation {
     private Map<String, Object> buildProperties() {
         Map<String, Object> properties = new HashMap<>();
 
-        properties.put("visibilityTimeout", this.visibilityTimeout);
         properties.put("messagePayloadType", this.messagePayloadType);
         return properties;
     }
@@ -131,20 +118,6 @@ public class StorageQueueTemplate implements SendOperation, ReceiveOperation {
     }
 
     /**
-     * Get the {@code visibilityTimeoutInSeconds}.
-     * @return the visibilityTimeoutInSeconds.
-     */
-    public Duration getVisibilityTimeout() {
-        return visibilityTimeout;
-    }
-
-    public void setVisibilityTimeout(Duration visibilityTimeoutDuration) {
-        Assert.state(visibilityTimeoutDuration.isNegative() || visibilityTimeoutDuration.isZero(), "VisibilityTimeoutInSeconds should be positive");
-        this.visibilityTimeout = visibilityTimeoutDuration;
-        LOG.info("StorageQueueTemplate VisibilityTimeout becomes: {} seconds", this.visibilityTimeout.getSeconds());
-    }
-
-    /**
      * Get the {@code messagePayloadType}.
      * @return the messagePayloadType.
      */
@@ -152,7 +125,6 @@ public class StorageQueueTemplate implements SendOperation, ReceiveOperation {
         return messagePayloadType;
     }
 
-    @Override
     public void setMessagePayloadType(Class<?> payloadType) {
         this.messagePayloadType = payloadType;
         LOG.info("StorageQueueTemplate messagePayloadType becomes: {}", this.messagePayloadType);
@@ -168,7 +140,6 @@ public class StorageQueueTemplate implements SendOperation, ReceiveOperation {
         return CheckpointMode.MANUAL;
     }
 
-    @Override
     @Deprecated
     public void setCheckpointMode(CheckpointMode checkpointMode) {
         throw new IllegalStateException("Configuration of checkpoint mode is not supported, the MANUAL checkpoint mode is applied");

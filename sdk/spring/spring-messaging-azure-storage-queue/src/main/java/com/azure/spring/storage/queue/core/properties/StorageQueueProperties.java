@@ -3,7 +3,7 @@
 package com.azure.spring.storage.queue.core.properties;
 
 import com.azure.spring.core.properties.AzureHttpSdkProperties;
-import com.azure.spring.service.storage.queue.QueueServiceClientProperties;
+import com.azure.spring.service.implementation.storage.queue.QueueServiceClientProperties;
 import com.azure.storage.queue.QueueMessageEncoding;
 import com.azure.storage.queue.QueueServiceVersion;
 
