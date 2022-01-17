@@ -4,9 +4,11 @@
 package com.azure.spring.storage.queue.core;
 
 import com.azure.spring.messaging.AzureHeaders;
+import com.azure.spring.messaging.PartitionSupplier;
 import com.azure.spring.messaging.checkpoint.AzureCheckpointer;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.messaging.checkpoint.Checkpointer;
+import com.azure.spring.messaging.core.SendOperation;
 import com.azure.spring.storage.queue.core.factory.StorageQueueClientFactory;
 import com.azure.spring.storage.queue.support.StorageQueueHelper;
 import com.azure.spring.storage.queue.support.converter.StorageQueueMessageConverter;
@@ -30,7 +32,7 @@ import java.util.Map;
  * You should checkpoint if message has been processed successfully, otherwise it will be visible again after certain
  * time specified by {@link #receiveAsync(String, Duration)} }.
  */
-public class StorageQueueTemplate {
+public class StorageQueueTemplate implements SendOperation {
     private static final Logger LOG = LoggerFactory.getLogger(StorageQueueTemplate.class);
     private static final String MSG_FAIL_CHECKPOINT = "Failed to checkpoint %s in storage queue '%s'";
     private static final String MSG_SUCCESS_CHECKPOINT = "Checkpointed %s in storage queue '%s'";
@@ -49,14 +51,8 @@ public class StorageQueueTemplate {
         LOG.info("StorageQueueTemplate started with default properties {}", buildProperties());
     }
 
-    /**
-     * Send a {@link Message} to the given queue asynchronously.
-     * @param queueName the queue
-     * @param message message
-     * @param <T> payload class in message
-     * @return Mono Void
-     */
-    public <T> Mono<Void> sendAsync(String queueName, @NonNull Message<T> message) {
+    @Override
+    public <T> Mono<Void> sendAsync(String queueName, @NonNull Message<T> message, PartitionSupplier partitionSupplier) {
         Assert.hasText(queueName, "queueName can't be null or empty");
         QueueMessageItem queueMessageItem = messageConverter.fromMessage(message, QueueMessageItem.class);
         QueueAsyncClient queueClient = storageQueueClientFactory.createQueueClient(queueName);
