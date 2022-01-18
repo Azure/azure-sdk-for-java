@@ -15,7 +15,7 @@ This section includes changes in the `spring-cloud-azure-autoconfigure` module.
 #### Features Added
 - Enable `Caching` and `Pooling` ConnectionFactory autoconfiguration for Service Bus JMS [#26072](https://github.com/Azure/azure-sdk-for-java/issues/26072).
 - Support all configuration options of the initial position when processing an event hub [#26434](https://github.com/Azure/azure-sdk-for-java/issues/26434).
-- Support autoconfiguration of `QueueClient` by adding configuration property `spring.cloud.azure.storage.queue.queue-name` [#26382](https://github.com/Azure/azure-sdk-for-java/pull/26382)
+- Support autoconfiguration of `QueueClient` by adding configuration property `spring.cloud.azure.storage.queue.queue-name` [#26382](https://github.com/Azure/azure-sdk-for-java/pull/26382).
 - Improve the `spring-configuration-metadata.json` [#26292](https://github.com/Azure/azure-sdk-for-java/issues/26292), [#26274](https://github.com/Azure/azure-sdk-for-java/pull/26274).
 - Support `StorageQueueMessageConverter` as a bean to support customize ObjectMapper [#26200](https://github.com/Azure/azure-sdk-for-java/pull/26200).
 - Support `EventHubsMessageConverter` as a bean to support customize ObjectMapper [#26200](https://github.com/Azure/azure-sdk-for-java/pull/26200).
@@ -31,7 +31,7 @@ This section includes changes in the `spring-cloud-azure-autoconfigure` module.
 - Change AAD B2C configuration properties to use the namespace for credential and environment properties [#25799](https://github.com/Azure/azure-sdk-for-java/pull/25799).
 - Change Event Hubs processor configuration properties `spring.cloud.azure.eventhbs.processor.partition-ownership-expiration-interval` to `spring.cloud.azure.eventhbs.processor.load-balancing.partition-ownership-expiration-interval` [#25851](https://github.com/Azure/azure-sdk-for-java/pull/25851).
 - Change Event Hubs configuration properties `spring.cloud.azure.eventhubs.fqdn` to `spring.cloud.azure.eventhubs.fully-qualified-namespace` [#25851](https://github.com/Azure/azure-sdk-for-java/pull/25851).
-- Rename all `*CP` classes to `*ConfigurationProperties` in `spring-cloud-azure-autoconfigure` [#26209](https://github.com/Azure/azure-sdk-for-java/pull/26209).
+- Rename all `*CP` classes to `*ConfigurationProperties` [#26209](https://github.com/Azure/azure-sdk-for-java/pull/26209).
 
 #### Bugs Fixed
 - Fix global HTTP client properties `spring.cloud.azure.client.http.*` not set correctly [#26190](https://github.com/Azure/azure-sdk-for-java/issues/26190).
