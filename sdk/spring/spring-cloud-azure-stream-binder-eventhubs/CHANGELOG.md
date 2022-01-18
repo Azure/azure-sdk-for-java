@@ -3,7 +3,7 @@
 ## 4.0.0-beta.3 (Unreleased)
 
 ### Features Added
-
+- Support EventHubsMessageConverter as a bean to support customize ObjectMapper.
 ### Breaking Changes
 
 ### Bugs Fixed

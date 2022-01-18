@@ -5,6 +5,6 @@ module com.azure.spring.resourcemanager {
     requires spring.core;
 
     exports com.azure.spring.resourcemanager.connectionstring;
-    exports com.azure.spring.resourcemanager.provisioner.eventhubs;
-    exports com.azure.spring.resourcemanager.provisioner.servicebus;
+    exports com.azure.spring.resourcemanager.provisioning.eventhubs;
+    exports com.azure.spring.resourcemanager.provisioning.servicebus;
 }

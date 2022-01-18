@@ -29,7 +29,6 @@ public class AzureStorageQueueProperties extends AzureStorageProperties implemen
      */
     private String queueName;
 
-
     public String getEndpoint() {
         return endpoint == null ? buildEndpointFromAccountName() : endpoint;
     }
@@ -38,6 +37,7 @@ public class AzureStorageQueueProperties extends AzureStorageProperties implemen
         return String.format(QUEUE_ENDPOINT_PATTERN, accountName, profile.getEnvironment().getStorageEndpointSuffix());
     }
 
+    @Override
     public QueueServiceVersion getServiceVersion() {
         return serviceVersion;
     }

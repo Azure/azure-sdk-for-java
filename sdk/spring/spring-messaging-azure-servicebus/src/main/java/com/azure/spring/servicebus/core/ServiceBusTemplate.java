@@ -68,7 +68,7 @@ public class ServiceBusTemplate implements SendOperation {
 
     /**
      * Get the message converter.
-     * @return the message conveter.
+     * @return the message converter.
      */
     public ServiceBusMessageConverter getMessageConverter() {
         return messageConverter;

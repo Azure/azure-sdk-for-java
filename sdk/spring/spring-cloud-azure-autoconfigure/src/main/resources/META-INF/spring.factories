@@ -29,7 +29,7 @@ com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobResourceAutoCo
 com.azure.spring.cloud.autoconfigure.storage.fileshare.AzureStorageFileShareAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.storage.fileshare.AzureStorageFileShareResourceAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.storage.queue.AzureStorageQueueAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.storage.AzureStorageQueueOperationAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.storage.AzureStorageQueueMessagingAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.trace.sleuth.AzureSleuthAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureEventHubsResourceManagerAutoConfiguration,\

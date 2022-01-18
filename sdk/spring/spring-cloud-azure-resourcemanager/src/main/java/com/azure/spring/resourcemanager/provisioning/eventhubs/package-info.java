@@ -4,4 +4,4 @@
 /**
  * Event Hubs resource provisioner.
  */
-package com.azure.spring.resourcemanager.provisioner.eventhubs;
+package com.azure.spring.resourcemanager.provisioning.eventhubs;

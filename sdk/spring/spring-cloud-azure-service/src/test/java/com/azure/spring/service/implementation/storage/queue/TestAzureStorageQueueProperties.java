@@ -32,4 +32,5 @@ class TestAzureStorageQueueProperties extends TestAzureStorageProperties impleme
     public void setMessageEncoding(QueueMessageEncoding messageEncoding) {
         this.messageEncoding = messageEncoding;
     }
+
 }

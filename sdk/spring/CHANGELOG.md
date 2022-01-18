@@ -5,8 +5,8 @@
 - Supported spring-cloud version: 2021.0.0
 
 ### Features Added
-
-### Breaking Changes
+- Support StorageQueueMessageConverter as a bean to support customize ObjectMapper.
+- Support EventHubsMessageConverter as a bean to support customize ObjectMapper.
 
 ### Dependency Updates
 Upgrade dependency according to spring-boot-dependencies:2.6.1 and spring-cloud-dependencies:2021.0.0
@@ -19,7 +19,9 @@ Upgrade dependency according to spring-boot-dependencies:2.6.1 and spring-cloud-
 5. Property name "spring.cloud.azure.active-directory.graph-base-uri" changed to "spring.cloud.azure.active-directory.profile.environment.microsoft-graph-endpoint".
 6. Property name "spring.cloud.azure.active-directory.graph-membership-uri" changed to "spring.cloud.azure.active-directory.profile.environment.microsoft-graph-endpoint" and "spring.cloud.azure.active-directory.user-group.use-transitive-members".
 7. Remove artifact id `spring-cloud-azure-stream-binder-test`.
-
+8. Remove `StorageQueueOperation`.
+9. Remove configuration of checkpoint mode for StorageQueueTemplate, and support only MANUAL mode.
+10. Remove auto creating Storage Queue when send/receive messages via `StorageQueueTemplate`.
 ### Bugs Fixed
 
 ### Other Changes

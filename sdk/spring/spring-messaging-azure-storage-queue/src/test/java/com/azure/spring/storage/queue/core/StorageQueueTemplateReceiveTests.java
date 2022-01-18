@@ -10,8 +10,8 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
 import com.azure.spring.messaging.AzureHeaders;
-import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.messaging.checkpoint.Checkpointer;
+import com.azure.spring.storage.queue.core.factory.StorageQueueClientFactory;
 import com.azure.storage.queue.QueueAsyncClient;
 import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueStorageException;
@@ -24,14 +24,9 @@ import org.springframework.messaging.Message;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
-import java.util.Arrays;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -48,9 +43,8 @@ public class StorageQueueTemplateReceiveTests {
     private StorageQueueClientFactory mockClientFactory;
     @Mock
     private QueueAsyncClient mockClient;
-    private StorageQueueOperation operation;
+    private StorageQueueTemplate template;
     private QueueMessageItem queueMessage;
-    private int visibilityTimeoutInSeconds = 30;
     private String destination = "queue";
     private AutoCloseable closeable;
 
@@ -95,10 +89,10 @@ public class StorageQueueTemplateReceiveTests {
                 return new IterableStream<QueueMessageItem>(flux);
             }
         };
-        when(this.mockClientFactory.getOrCreateQueueClient(eq(destination))).thenReturn(this.mockClient);
+        when(this.mockClientFactory.createQueueClient(eq(destination))).thenReturn(this.mockClient);
         when(this.mockClient.receiveMessages(eq(1), any()))
             .thenReturn(new PagedFlux<>(() -> Mono.just(pagedResponse)));
-        this.operation = new StorageQueueTemplate(this.mockClientFactory);
+        this.template = new StorageQueueTemplate(this.mockClientFactory);
     }
 
     @AfterEach
@@ -108,32 +102,17 @@ public class StorageQueueTemplateReceiveTests {
 
     @Test
     public void testReceiveFailure() {
-        when(this.mockClient.receiveMessages(eq(1), eq(Duration.ofSeconds(visibilityTimeoutInSeconds))))
+        when(this.mockClient.receiveMessages(eq(1), any()))
             .thenReturn(new PagedFlux<>(() -> Mono.error(new QueueStorageException("error happened", null, null))));
 
-        final Mono<Message<?>> mono = this.operation.receiveAsync(this.destination);
+        final Mono<Message<?>> mono = this.template.receiveAsync(this.destination, any());
         verifyQueueStorageExceptionThrown(mono);
-    }
-
-    @Test
-    public void testReceiveSuccessWithRecordMode() {
-        when(mockClient.deleteMessage(this.messageId, this.popReceipt)).thenReturn(Mono.empty());
-
-        final Mono<Message<?>> mono = this.operation.receiveAsync(destination);
-        assertTrue(Arrays.equals((byte[]) mono.block().getPayload(), this.queueMessage.getBody().toBytes()));
-
-        verify(this.mockClient, times(1)).receiveMessages(1,
-            Duration.ofSeconds(visibilityTimeoutInSeconds));
-
-        Map<String, Object> headers = mono.block().getHeaders();
-        assertNull(headers.get(AzureHeaders.CHECKPOINTER));
     }
 
     @Test
     public void testReceiveSuccessWithManualMode() {
         when(mockClient.deleteMessage(this.messageId, this.popReceipt)).thenReturn(Mono.empty());
-        operation.setCheckpointMode(CheckpointMode.MANUAL);
-        final Mono<Message<?>> mono = this.operation.receiveAsync(destination);
+        final Mono<Message<?>> mono = this.template.receiveAsync(destination, any());
 
         Map<String, Object> headers = mono.block().getHeaders();
         Checkpointer checkpointer = (Checkpointer) headers.get(AzureHeaders.CHECKPOINTER);
@@ -141,13 +120,6 @@ public class StorageQueueTemplateReceiveTests {
         checkpointFuture.block();
 
         verify(this.mockClient, times(1)).deleteMessage(messageId, popReceipt);
-    }
-
-    @Test
-    public void checkpointWithInvalidMode() {
-        assertThrows(IllegalStateException.class, () -> operation.setCheckpointMode(CheckpointMode.BATCH));
-        assertThrows(IllegalStateException.class, () -> operation.setCheckpointMode(CheckpointMode.PARTITION_COUNT));
-        assertThrows(IllegalStateException.class, () -> operation.setCheckpointMode(CheckpointMode.TIME));
     }
 
     private void verifyQueueStorageExceptionThrown(Mono<Message<?>> mono) {

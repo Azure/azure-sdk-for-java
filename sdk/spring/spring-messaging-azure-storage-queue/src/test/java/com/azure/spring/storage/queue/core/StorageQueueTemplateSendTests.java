@@ -4,6 +4,7 @@
 package com.azure.spring.storage.queue.core;
 
 import com.azure.spring.messaging.core.SendOperationTest;
+import com.azure.spring.storage.queue.core.factory.StorageQueueClientFactory;
 import com.azure.storage.queue.QueueAsyncClient;
 import com.azure.storage.queue.models.SendMessageResult;
 import org.junit.jupiter.api.AfterEach;
@@ -20,7 +21,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class StorageQueueTemplateSendTests extends SendOperationTest<StorageQueueOperation> {
+public class StorageQueueTemplateSendTests extends SendOperationTest<StorageQueueTemplate> {
 
     @Mock
     private StorageQueueClientFactory mockClientFactory;
@@ -42,7 +43,7 @@ public class StorageQueueTemplateSendTests extends SendOperationTest<StorageQueu
 
     @BeforeEach
     public void setup() {
-        when(this.mockClientFactory.getOrCreateQueueClient(eq(destination))).thenReturn(mockClient);
+        when(this.mockClientFactory.createQueueClient(eq(destination))).thenReturn(mockClient);
         when(this.mockClient.sendMessage(anyString())).thenReturn(Mono.just(new SendMessageResult()));
 
         this.sendOperation = new StorageQueueTemplate(mockClientFactory);
@@ -61,7 +62,7 @@ public class StorageQueueTemplateSendTests extends SendOperationTest<StorageQueu
 
     @Override
     protected void verifyGetClientCreator(int times) {
-        verify(this.mockClientFactory, times(times)).getOrCreateQueueClient(this.destination);
+        verify(this.mockClientFactory, times(times)).createQueueClient(this.destination);
     }
 
 }
