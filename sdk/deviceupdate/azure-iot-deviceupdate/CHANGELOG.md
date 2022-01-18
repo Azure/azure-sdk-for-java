@@ -2,7 +2,7 @@
 
 ## 1.0.0-beta.2 (Unreleased)
 
-This is a new version of LLC SDK. Changes are
+This is a new version of client SDK. Changes are
 
 - Remove models, use `BinaryData` as request and response payload.
 - A sync client and an async client for each operation group.
