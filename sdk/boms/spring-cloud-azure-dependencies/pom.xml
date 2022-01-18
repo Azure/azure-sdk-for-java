@@ -223,7 +223,7 @@
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-keyvault-secrets</artifactId>
-        <version>4.0.0-beta.3</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-keyvault-secrets;current} -->
+        <version>4.0.0-beta.4</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-keyvault-secrets;current} -->
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
