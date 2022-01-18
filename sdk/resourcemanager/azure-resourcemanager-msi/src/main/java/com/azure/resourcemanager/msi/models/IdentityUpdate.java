@@ -5,18 +5,18 @@
 package com.azure.resourcemanager.msi.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.msi.fluent.models.UserAssignedIdentityProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 import java.util.UUID;
 
 /** Describes an identity resource. */
-@JsonFlatten
 @Fluent
-public class IdentityUpdate extends ProxyResource {
+public final class IdentityUpdate extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(IdentityUpdate.class);
 
     /*
@@ -29,27 +29,15 @@ public class IdentityUpdate extends ProxyResource {
      * Resource tags
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
-     * The id of the tenant which the identity belongs to.
-     */
-    @JsonProperty(value = "properties.tenantId", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID tenantId;
-
-    /*
-     * The id of the service principal object associated with the created
+     * User Assigned Identity properties. The properties associated with the
      * identity.
      */
-    @JsonProperty(value = "properties.principalId", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID principalId;
-
-    /*
-     * The id of the app associated with the identity. This is a random
-     * generated UUID by MSI.
-     */
-    @JsonProperty(value = "properties.clientId", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID clientId;
+    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    private UserAssignedIdentityProperties innerProperties;
 
     /**
      * Get the location property: The geo-location where the resource lives.
@@ -92,12 +80,21 @@ public class IdentityUpdate extends ProxyResource {
     }
 
     /**
+     * Get the innerProperties property: User Assigned Identity properties. The properties associated with the identity.
+     *
+     * @return the innerProperties value.
+     */
+    private UserAssignedIdentityProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the tenantId property: The id of the tenant which the identity belongs to.
      *
      * @return the tenantId value.
      */
     public UUID tenantId() {
-        return this.tenantId;
+        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
     }
 
     /**
@@ -106,7 +103,7 @@ public class IdentityUpdate extends ProxyResource {
      * @return the principalId value.
      */
     public UUID principalId() {
-        return this.principalId;
+        return this.innerProperties() == null ? null : this.innerProperties().principalId();
     }
 
     /**
@@ -116,7 +113,7 @@ public class IdentityUpdate extends ProxyResource {
      * @return the clientId value.
      */
     public UUID clientId() {
-        return this.clientId;
+        return this.innerProperties() == null ? null : this.innerProperties().clientId();
     }
 
     /**
@@ -125,5 +122,8 @@ public class IdentityUpdate extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -472,7 +472,7 @@ public class FluxAutoLockRenewTest {
 
         final boolean enableAutoComplete = false;
         final int totalProcessingTimeSeconds = 2;
-        final int renewedForAtLeast = 3;
+        final int renewedForAtLeast = 2;
         final AtomicInteger actualTokenRenewCalledTimes = new AtomicInteger();
         final Function<String, Mono<OffsetDateTime>> lockTokenRenewFunction = (lockToken) -> {
             actualTokenRenewCalledTimes.getAndIncrement();

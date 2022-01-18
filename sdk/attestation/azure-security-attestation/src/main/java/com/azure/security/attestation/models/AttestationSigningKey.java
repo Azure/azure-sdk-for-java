@@ -9,7 +9,6 @@ import com.azure.core.util.logging.ClientLogger;
 import java.security.InvalidKeyException;
 import java.security.InvalidParameterException;
 import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.Signature;
 import java.security.SignatureException;
 import java.security.cert.X509Certificate;
@@ -77,10 +76,9 @@ public final class AttestationSigningKey {
      * @throws InvalidKeyException - Thrown if the PrivateKey provided is from an API family different from the certificate.
      * @throws SignatureException - Thrown if the digital signature cannot be verified or created.
      * @throws NoSuchAlgorithmException - Thrown if the signature algorithm is not supported.
-     * @throws NoSuchProviderException - Thrown if the specified provider is incorrect.
      * @throws InvalidParameterException - Thrown if the certificate could not validate a buffer signed with the signing key.
      */
-    public void verify() throws InvalidKeyException, SignatureException, NoSuchAlgorithmException, NoSuchProviderException {
+    public void verify() throws InvalidKeyException, SignatureException, NoSuchAlgorithmException {
         Objects.requireNonNull(certificate);
         Objects.requireNonNull(privateKey);
 

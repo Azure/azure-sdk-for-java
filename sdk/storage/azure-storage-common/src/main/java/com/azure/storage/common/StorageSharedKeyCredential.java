@@ -151,7 +151,7 @@ public final class StorageSharedKeyCredential {
     private String buildStringToSign(URL requestURL, String httpMethod, HttpHeaders headers,
         boolean logStringToSign) {
         String contentLength = headers.getValue("Content-Length");
-        contentLength = contentLength.equals("0") ? "" : contentLength;
+        contentLength = "0".equals(contentLength) ? "" : contentLength;
 
         // If the x-ms-header exists ignore the Date header
         String dateHeader = (headers.getValue("x-ms-date") != null) ? ""

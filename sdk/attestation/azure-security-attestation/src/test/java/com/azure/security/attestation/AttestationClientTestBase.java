@@ -285,12 +285,12 @@ public class AttestationClientTestBase extends TestBase {
     protected KeyPair createKeyPair(String algorithm) throws NoSuchAlgorithmException {
 
         KeyPairGenerator keyGen;
-        if (algorithm.equals("EC")) {
+        if ("EC".equals(algorithm)) {
             keyGen = KeyPairGenerator.getInstance(algorithm, Security.getProvider("SunEC"));
         } else {
             keyGen = KeyPairGenerator.getInstance(algorithm);
         }
-        if (algorithm.equals("RSA")) {
+        if ("RSA".equals(algorithm)) {
             keyGen.initialize(2048); // Generate a reasonably strong key.
         }
         return keyGen.generateKeyPair();
@@ -358,7 +358,7 @@ public class AttestationClientTestBase extends TestBase {
      * @return a stream of Argument objects associated with each of the regions on which to run the attestation test.
      */
     static Stream<Arguments> getAttestationClients() {
-        // when this issues is closed, the newer version of junit will have better support for
+        // when this issue is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
 
         final String regionShortName = getLocationShortName();

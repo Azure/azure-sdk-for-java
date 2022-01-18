@@ -4,6 +4,9 @@ package com.azure.security.keyvault.jca.test;
 
 import com.azure.security.keyvault.jca.KeyVaultJcaProvider;
 
+/**
+ * Test modularization.
+ */
 public class TestModularization {
     /**
      * Simply test compiling ok.
