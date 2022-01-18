@@ -8,6 +8,7 @@ import com.azure.communication.callingserver.implementation.AzureCommunicationCa
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.TokenCredentialSupport;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -61,7 +62,7 @@ import java.util.Objects;
  * <!-- end com.azure.communication.callingserver.CallingServerClientBuilder.pipeline.instantiation -->
  */
 @ServiceClientBuilder(serviceClients = { CallingServerClient.class, CallingServerAsyncClient.class })
-public final class CallingServerClientBuilder {
+public final class CallingServerClientBuilder implements TokenCredentialSupport<CallingServerClientBuilder> {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final String APP_CONFIG_PROPERTIES = "azure-communication-callingserver.properties";
@@ -112,6 +113,7 @@ public final class CallingServerClientBuilder {
      * @return Updated {@link CallingServerClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
+    @Override
     public CallingServerClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         return this;

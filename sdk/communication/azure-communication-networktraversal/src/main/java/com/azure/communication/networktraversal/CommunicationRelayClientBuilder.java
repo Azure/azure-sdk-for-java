@@ -8,6 +8,7 @@ import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.networktraversal.implementation.CommunicationNetworkingClientImpl;
 import com.azure.communication.networktraversal.implementation.CommunicationNetworkingClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.TokenCredentialSupport;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
@@ -35,7 +36,7 @@ import java.util.Objects;
  * CommunicationRelayClientBuilder that creates CommunicationRelayAsyncClient and CommunicationRelayClient.
  */
 @ServiceClientBuilder(serviceClients = {CommunicationRelayClient.class, CommunicationRelayAsyncClient.class})
-public final class CommunicationRelayClientBuilder {
+public final class CommunicationRelayClientBuilder implements TokenCredentialSupport<CommunicationRelayClientBuilder> {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
@@ -85,6 +86,7 @@ public final class CommunicationRelayClientBuilder {
      * @param tokenCredential {@link TokenCredential} used to authenticate HTTP requests.
      * @return The updated {@link CommunicationRelayClientBuilder} object.
      */
+    @Override
     public CommunicationRelayClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
         return this;
@@ -288,7 +290,7 @@ public final class CommunicationRelayClientBuilder {
         } else if (!CoreUtils.isNullOrEmpty(buildLogOptions.getApplicationId())) {
             applicationId = buildLogOptions.getApplicationId();
         }
-        
+
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, configuration));
         policies.add(new RequestIdPolicy());
         policies.add(this.retryPolicy == null ? new RetryPolicy() : this.retryPolicy);

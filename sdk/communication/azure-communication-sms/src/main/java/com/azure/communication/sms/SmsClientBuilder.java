@@ -8,6 +8,7 @@ import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImpl;
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.TokenCredentialSupport;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -35,7 +36,7 @@ import java.util.Objects;
  * SmsClientBuilder that creates SmsAsyncClient and SmsClient.
  */
 @ServiceClientBuilder(serviceClients = {SmsClient.class, SmsAsyncClient.class})
-public final class SmsClientBuilder {
+public final class SmsClientBuilder implements TokenCredentialSupport<SmsClientBuilder> {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final String APP_CONFIG_PROPERTIES = "azure-communication-sms.properties";
@@ -83,6 +84,7 @@ public final class SmsClientBuilder {
      * @return The updated {@link SmsClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
+    @Override
     public SmsClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         return this;

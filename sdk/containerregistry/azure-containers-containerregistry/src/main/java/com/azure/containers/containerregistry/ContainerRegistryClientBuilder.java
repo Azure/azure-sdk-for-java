@@ -4,6 +4,7 @@ package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.TokenCredentialSupport;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -106,7 +107,7 @@ import java.util.Objects;
         RegistryArtifactAsync.class,
         RegistryArtifact.class
     })
-public final class ContainerRegistryClientBuilder {
+public final class ContainerRegistryClientBuilder implements TokenCredentialSupport<ContainerRegistryClientBuilder> {
     private final ClientLogger logger = new ClientLogger(ContainerRegistryClientBuilder.class);
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
@@ -158,6 +159,7 @@ public final class ContainerRegistryClientBuilder {
      * @param credential Azure token credentials used to authenticate HTTP requests.
      * @return The updated {@link ContainerRegistryClientBuilder} object.
      */
+    @Override
     public ContainerRegistryClientBuilder credential(TokenCredential credential) {
         this.credential = credential;
         return this;

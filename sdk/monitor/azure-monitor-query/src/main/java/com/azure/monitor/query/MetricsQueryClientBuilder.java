@@ -4,6 +4,7 @@
 package com.azure.monitor.query;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.TokenCredentialSupport;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -41,7 +42,7 @@ import com.azure.monitor.query.implementation.metricsnamespaces.MetricsNamespace
  * <!-- end com.azure.monitor.query.MetricsQueryClient.instantiation -->
  */
 @ServiceClientBuilder(serviceClients = {MetricsQueryClient.class, MetricsQueryAsyncClient.class})
-public final class MetricsQueryClientBuilder {
+public final class MetricsQueryClientBuilder implements TokenCredentialSupport<MetricsQueryClientBuilder> {
 
     private final MonitorManagementClientImplBuilder innerMetricsBuilder = new MonitorManagementClientImplBuilder();
     private final MetricsDefinitionsClientImplBuilder innerMetricsDefinitionsBuilder =
@@ -142,6 +143,7 @@ public final class MetricsQueryClientBuilder {
      * @param tokenCredential the tokenCredential value.
      * @return the MetricsClientBuilder.
      */
+    @Override
     public MetricsQueryClientBuilder credential(TokenCredential tokenCredential) {
         innerMetricsBuilder.credential(tokenCredential);
         innerMetricsDefinitionsBuilder.credential(tokenCredential);

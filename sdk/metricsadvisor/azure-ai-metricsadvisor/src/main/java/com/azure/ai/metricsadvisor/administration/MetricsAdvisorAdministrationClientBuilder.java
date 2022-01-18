@@ -8,6 +8,7 @@ import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAd
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.ai.metricsadvisor.MetricsAdvisorServiceVersion;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.TokenCredentialSupport;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpClient;
@@ -102,7 +103,7 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = {MetricsAdvisorAdministrationAsyncClient.class,
     MetricsAdvisorAdministrationClient.class})
-public final class MetricsAdvisorAdministrationClientBuilder {
+public final class MetricsAdvisorAdministrationClientBuilder implements TokenCredentialSupport<MetricsAdvisorAdministrationClientBuilder> {
 
     private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
     private static final String CONTENT_TYPE_HEADER_VALUE = ContentType.APPLICATION_JSON;
@@ -287,6 +288,7 @@ public final class MetricsAdvisorAdministrationClientBuilder {
      * @return The updated {@link MetricsAdvisorAdministrationClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
+    @Override
     public MetricsAdvisorAdministrationClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         return this;

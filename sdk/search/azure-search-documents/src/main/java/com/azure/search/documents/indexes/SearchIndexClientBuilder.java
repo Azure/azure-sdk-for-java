@@ -3,6 +3,7 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.TokenCredentialSupport;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -63,7 +64,7 @@ import java.util.Objects;
  * @see SearchIndexAsyncClient
  */
 @ServiceClientBuilder(serviceClients = {SearchIndexClient.class, SearchIndexAsyncClient.class})
-public final class SearchIndexClientBuilder {
+public final class SearchIndexClientBuilder implements TokenCredentialSupport<SearchIndexClientBuilder> {
     private final ClientLogger logger = new ClientLogger(SearchIndexClientBuilder.class);
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -164,6 +165,7 @@ public final class SearchIndexClientBuilder {
      * @param credential The {@link TokenCredential} used to authenticate HTTP requests.
      * @return The updated SearchIndexClientBuilder object.
      */
+    @Override
     public SearchIndexClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = credential;
         return this;

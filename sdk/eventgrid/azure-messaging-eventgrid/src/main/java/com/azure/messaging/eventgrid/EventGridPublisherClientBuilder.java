@@ -4,6 +4,7 @@
 package com.azure.messaging.eventgrid;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.TokenCredentialSupport;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
@@ -46,7 +47,7 @@ import java.util.Objects;
  * @see CloudEvent
  */
 @ServiceClientBuilder(serviceClients = {EventGridPublisherClient.class, EventGridPublisherAsyncClient.class})
-public final class EventGridPublisherClientBuilder {
+public final class EventGridPublisherClientBuilder implements TokenCredentialSupport<EventGridPublisherClientBuilder> {
 
     private static final String AEG_SAS_KEY = "aeg-sas-key";
 
@@ -276,6 +277,7 @@ public final class EventGridPublisherClientBuilder {
      *
      * @return the builder itself.
      */
+    @Override
     public EventGridPublisherClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = credential;
         return this;

@@ -4,6 +4,7 @@
 package com.azure.monitor.query;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.TokenCredentialSupport;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -39,7 +40,7 @@ import com.azure.monitor.query.implementation.logs.AzureLogAnalyticsImplBuilder;
  * <!-- end com.azure.monitor.query.LogsQueryClient.instantiation -->
  */
 @ServiceClientBuilder(serviceClients = {LogsQueryClient.class, LogsQueryAsyncClient.class})
-public final class LogsQueryClientBuilder {
+public final class LogsQueryClientBuilder implements TokenCredentialSupport<LogsQueryClientBuilder> {
     private final ClientLogger logger = new ClientLogger(LogsQueryClientBuilder.class);
     private final AzureLogAnalyticsImplBuilder innerLogBuilder = new AzureLogAnalyticsImplBuilder();
     private ClientOptions clientOptions;
@@ -120,6 +121,7 @@ public final class LogsQueryClientBuilder {
      * @param tokenCredential the tokenCredential value.
      * @return the {@link LogsQueryClientBuilder}.
      */
+    @Override
     public LogsQueryClientBuilder credential(TokenCredential tokenCredential) {
         innerLogBuilder.credential(tokenCredential);
         return this;

@@ -4,6 +4,7 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.TokenCredentialSupport;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
@@ -97,7 +98,7 @@ import static com.azure.core.util.CoreUtils.getApplicationId;
  * @see ConfigurationClient
  */
 @ServiceClientBuilder(serviceClients = {ConfigurationAsyncClient.class, ConfigurationClient.class})
-public final class ConfigurationClientBuilder {
+public final class ConfigurationClientBuilder implements TokenCredentialSupport<ConfigurationClientBuilder> {
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
 
     private static final String CLIENT_NAME;
@@ -318,6 +319,7 @@ public final class ConfigurationClientBuilder {
      * @return The updated ConfigurationClientBuilder object.
      * @throws NullPointerException If {@code credential} is null.
      */
+    @Override
     public ConfigurationClientBuilder credential(TokenCredential tokenCredential) {
         // token credential can not be null value
         Objects.requireNonNull(tokenCredential);

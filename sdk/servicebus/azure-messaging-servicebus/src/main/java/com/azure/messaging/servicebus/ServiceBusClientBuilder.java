@@ -331,6 +331,7 @@ public final class ServiceBusClientBuilder {
      *
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
+    // TODO kasobol-msft
     public ServiceBusClientBuilder credential(String fullyQualifiedNamespace, TokenCredential credential) {
 
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,

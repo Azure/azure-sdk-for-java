@@ -4,6 +4,7 @@
 package com.azure.mixedreality.remoterendering;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.TokenCredentialSupport;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -31,7 +32,7 @@ import java.util.UUID;
 
 /** A builder for creating instances of RemoteRenderingClient and RemoteRenderingAsyncClient. */
 @ServiceClientBuilder(serviceClients = {RemoteRenderingClient.class, RemoteRenderingAsyncClient.class})
-public final class RemoteRenderingClientBuilder {
+public final class RemoteRenderingClientBuilder implements TokenCredentialSupport<RemoteRenderingClientBuilder> {
 
     private final ClientLogger logger = new ClientLogger(RemoteRenderingClientBuilder.class);
 
@@ -142,6 +143,7 @@ public final class RemoteRenderingClientBuilder {
      * @return the RemoteRenderingClientBuilder.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
+    @Override
     public RemoteRenderingClientBuilder credential(TokenCredential tokenCredential) {
         this.stsBuilder.credential(Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null."));
         return this;

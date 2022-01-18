@@ -4,6 +4,7 @@
 package com.azure.digitaltwins.core;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.TokenCredentialSupport;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
@@ -38,7 +39,7 @@ import java.util.Objects;
  * #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired client.
  */
 @ServiceClientBuilder(serviceClients = {DigitalTwinsClient.class, DigitalTwinsAsyncClient.class})
-public final class DigitalTwinsClientBuilder {
+public final class DigitalTwinsClientBuilder implements TokenCredentialSupport<DigitalTwinsClientBuilder> {
     private static final String[] ADT_PUBLIC_SCOPE = new String[]{"https://digitaltwins.azure.net" + "/.default"};
 
     // This is the name of the properties file in this repo that contains the default properties
@@ -224,6 +225,7 @@ public final class DigitalTwinsClientBuilder {
      * @param tokenCredential the authentication token provider.
      * @return the updated DigitalTwinsClientBuilder instance for fluent building.
      */
+    @Override
     public DigitalTwinsClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
         return this;

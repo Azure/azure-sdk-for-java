@@ -4,6 +4,7 @@
 package com.azure.data.schemaregistry;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.TokenCredentialSupport;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
@@ -92,7 +93,7 @@ import java.util.Objects;
  * <!-- end com.azure.data.schemaregistry.schemaregistryasyncclient.retrypolicy.instantiation -->
  */
 @ServiceClientBuilder(serviceClients = {SchemaRegistryAsyncClient.class, SchemaRegistryClient.class})
-public class SchemaRegistryClientBuilder {
+public class SchemaRegistryClientBuilder implements TokenCredentialSupport<SchemaRegistryClientBuilder> {
     private final ClientLogger logger = new ClientLogger(SchemaRegistryClientBuilder.class);
 
     private static final String DEFAULT_SCOPE = "https://eventhubs.azure.net/.default";
@@ -203,6 +204,7 @@ public class SchemaRegistryClientBuilder {
      * @return The updated {@link SchemaRegistryClientBuilder} object.
      * @throws NullPointerException If {@code credential} is {@code null}
      */
+    @Override
     public SchemaRegistryClientBuilder credential(TokenCredential credential) {
         this.credential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         return this;

@@ -359,6 +359,7 @@ public class EventHubClientBuilder {
      * @throws NullPointerException if {@code fullyQualifiedNamespace}, {@code eventHubName}, {@code credentials} is
      *     null.
      */
+    // TODO kasobol-msft
     public EventHubClientBuilder credential(String fullyQualifiedNamespace, String eventHubName,
         TokenCredential credential) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
