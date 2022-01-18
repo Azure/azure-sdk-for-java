@@ -148,7 +148,7 @@ class OrderByUtils {
                                     {
                                         // If reverse rid is enabled on the backend then fallback to the old way of doing it.
                                         // So if it's ORDER BY c.age ASC, c.name DESC the _rids are ASC
-                                        // If ti's ORDER BY c.age DESC, c.name DESC the _rids are DESC
+                                        // If it's ORDER BY c.age DESC, c.name DESC the _rids are DESC
                                         if (sortOrders.get(0) == SortOrder.Descending)
                                         {
                                             cmp = -cmp;
