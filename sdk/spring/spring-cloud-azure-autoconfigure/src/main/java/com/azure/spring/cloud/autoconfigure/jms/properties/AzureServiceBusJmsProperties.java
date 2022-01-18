@@ -16,7 +16,6 @@ import java.time.Duration;
 /**
  * {@link ConfigurationProperties} for configuring Azure Service Bus JMS.
  */
-@ConfigurationProperties(prefix = AzureServiceBusJmsProperties.PREFIX)
 public class AzureServiceBusJmsProperties implements InitializingBean {
 
     public static final String PREFIX = "spring.jms.servicebus";

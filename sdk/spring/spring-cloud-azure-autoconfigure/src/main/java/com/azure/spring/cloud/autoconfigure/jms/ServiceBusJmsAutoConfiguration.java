@@ -3,21 +3,30 @@
 
 package com.azure.spring.cloud.autoconfigure.jms;
 
+import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
+import com.azure.spring.core.connectionstring.ConnectionStringProvider;
+import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
+import com.azure.spring.core.service.AzureServiceType;
 import org.apache.qpid.jms.JmsConnectionExtensions;
 import org.apache.qpid.jms.JmsConnectionFactory;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration;
 import org.springframework.boot.autoconfigure.jms.JmsProperties;
 import org.springframework.boot.autoconfigure.jms.JndiConnectionFactoryAutoConfiguration;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.env.Environment;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.util.StringUtils;
 
 import javax.jms.ConnectionFactory;
 import java.util.HashMap;
@@ -32,9 +41,10 @@ import static com.azure.spring.core.AzureSpringIdentifier.AZURE_SPRING_SERVICE_B
 @AutoConfigureBefore(JmsAutoConfiguration.class)
 @AutoConfigureAfter(JndiConnectionFactoryAutoConfiguration.class)
 @ConditionalOnClass({ ConnectionFactory.class, JmsConnectionFactory.class, JmsTemplate.class })
-@EnableConfigurationProperties({ AzureServiceBusJmsProperties.class, JmsProperties.class })
+@EnableConfigurationProperties(JmsProperties.class)
 @Import({ ServiceBusJmsConnectionFactoryConfiguration.class, ServiceBusJmsContainerConfiguration.class })
 public class ServiceBusJmsAutoConfiguration {
+
     @Bean
     @ConditionalOnExpression("'premium'.equalsIgnoreCase('${spring.jms.servicebus.pricing-tier}')")
     ServiceBusJmsConnectionFactoryCustomizer amqpOpenPropertiesCustomizer(AzureServiceBusJmsProperties serviceBusJmsProperties) {
@@ -46,5 +56,26 @@ public class ServiceBusJmsAutoConfiguration {
             factory.setExtension(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES.toString(),
                 (connection, uri) -> properties);
         };
+    }
+
+    @Bean
+    @ConditionalOnAnyProperty({ "spring.jms.servicebus.connection-string", "spring.cloud.azure.servicebus.connection-string" })
+    @ConditionalOnMissingBean(value = AzureServiceType.ServiceBus.class, parameterizedContainer =
+        ConnectionStringProvider.class)
+    public StaticConnectionStringProvider<AzureServiceType.ServiceBus> staticServiceBusJmsConnectionStringProvider(Environment environment) {
+        String connectionString = environment.getProperty("spring.jms.servicebus.connection-string");
+        if (!StringUtils.hasText(connectionString)) {
+            connectionString = environment.getProperty("spring.cloud.azure.servicebus.connection-string");
+        }
+        return new StaticConnectionStringProvider<>(AzureServiceType.SERVICE_BUS, connectionString);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConfigurationProperties(prefix = AzureServiceBusJmsProperties.PREFIX)
+    AzureServiceBusJmsProperties azureServiceBusJmsProperties(ObjectProvider<ConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProvider) {
+        final AzureServiceBusJmsProperties prop = new AzureServiceBusJmsProperties();
+        connectionStringProvider.orderedStream().findFirst().ifPresent(p -> prop.setConnectionString(p.getConnectionString()));
+        return prop;
     }
 }
