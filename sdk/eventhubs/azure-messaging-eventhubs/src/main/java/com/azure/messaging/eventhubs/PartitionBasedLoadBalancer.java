@@ -153,7 +153,7 @@ final class PartitionBasedLoadBalancer {
             .repeat(() -> LoadBalancingStrategy.GREEDY == loadBalancingStrategy && morePartitionsToClaim.get())
             .subscribe(ignored -> { },
                 ex -> {
-                    logger.warning(Messages.LOAD_BALANCING_FAILED, ex.getMessage(), ex);
+                    logger.warning(Messages.LOAD_BALANCING_FAILED, ex);
                     ErrorContext errorContext = new ErrorContext(partitionAgnosticContext, ex);
                     processError.accept(errorContext);
                     isLoadBalancerRunning.set(false);

@@ -96,7 +96,7 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
             }
             logger.atInfo()
                 .addKeyValue(PARTITION_ID_KEY, this.partitionId)
-                .log("Closed consumer.", this.partitionId);
+                .log("Closed consumer.");
         }
     }
 
