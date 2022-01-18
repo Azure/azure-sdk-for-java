@@ -244,9 +244,8 @@
           "justification": "Adding a final method to an abstract class that is rarely extended. New final method uses an unlikely name that wouldn't be found in sub-types."
         },
         {
-          "regex": true,
-          "code": "java\\.method\\.finalMethodAddedToNonFinalClass",
-          "new": "method java\\.util\\.function\\.Predicate<C> com\\.azure\\.core\\.util\\.paging\\.ContinuablePagedFlux<C, T, P extends com\\.azure\\.core\\.util\\.paging\\.ContinuablePage<C extends java\\.lang\\.Object, T extends java\\.lang\\.Object>>::getContinuationPredicate\\(\\).*",
+          "code": "java.method.finalMethodAddedToNonFinalClass",
+          "new": "method java.util.function.Predicate<C> com.azure.core.util.paging.ContinuablePagedFlux<C, T, P extends com.azure.core.util.paging.ContinuablePage<C, T>>::getContinuationPredicate() @ com.azure.core.http.rest.PagedFlux<T>",
           "justification": "Adding a final method to an abstract class that is rarely extended. New final method uses an unlikely name that wouldn't be found in sub-types."
         }
       ]
