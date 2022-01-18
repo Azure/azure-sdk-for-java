@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.CosmosDbConnectionMode;
 import com.azure.resourcemanager.datafactory.models.CosmosDbServicePrincipalCredentialType;
+import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -103,6 +104,12 @@ public final class CosmosDbLinkedServiceTypeProperties {
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
+
+    /*
+     * The credential reference containing authentication information.
+     */
+    @JsonProperty(value = "credential")
+    private CredentialReference credential;
 
     /**
      * Get the connectionString property: The connection string. Type: string, SecureString or
@@ -354,6 +361,26 @@ public final class CosmosDbLinkedServiceTypeProperties {
     }
 
     /**
+     * Get the credential property: The credential reference containing authentication information.
+     *
+     * @return the credential value.
+     */
+    public CredentialReference credential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     *
+     * @param credential the credential value to set.
+     * @return the CosmosDbLinkedServiceTypeProperties object itself.
+     */
+    public CosmosDbLinkedServiceTypeProperties withCredential(CredentialReference credential) {
+        this.credential = credential;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -364,6 +391,9 @@ public final class CosmosDbLinkedServiceTypeProperties {
         }
         if (servicePrincipalCredential() != null) {
             servicePrincipalCredential().validate();
+        }
+        if (credential() != null) {
+            credential().validate();
         }
     }
 }

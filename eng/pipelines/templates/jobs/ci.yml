@@ -34,6 +34,9 @@ parameters:
   - name: PreBuildSteps
     type: object
     default: []
+  - name: MavenVerifyAdditionalOptions
+    type: string
+    default: ''
 
 jobs:
   - job: 'Build'
@@ -175,6 +178,16 @@ jobs:
           ArtifactPath: $(Build.ArtifactStagingDirectory)
           ArtifactName: '$(ArtifactName)'
 
+      - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
+        displayName: 'Generate SBOM'
+        inputs:
+          BuildDropPath: $(Build.ArtifactStagingDirectory)
+
+      - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+        parameters:
+          ArtifactPath: '$(Build.ArtifactStagingDirectory)/_manifest'
+          ArtifactName: 'manifest'
+
       - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml
         parameters:
           Artifacts: ${{parameters.Artifacts}}
@@ -297,7 +310,7 @@ jobs:
         displayName: 'Run SpotBugs, Checkstyle, RevApi, and Javadoc'
         inputs:
           mavenPomFile: pom.xml
-          options: '$(DefaultOptions) --no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme -pl $(ProjectList)'
+          options: '$(DefaultOptions) --no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme -Dmaven.main.skip=true -Dmaven.test.skip=true ${{ parameters.MavenVerifyAdditionalOptions }} -pl $(ProjectList)'
           mavenOptions: '$(MemoryOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaBuildVersion)

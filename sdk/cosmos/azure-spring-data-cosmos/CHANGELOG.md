@@ -1,5 +1,20 @@
 ## Release History
 
+### 3.18.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
+### 3.17.0 (2022-01-14)
+#### Features Added
+* Updated `Spring Boot` to version `2.6.2`.
+* Updated `azure-cosmos` to version `4.25.0`.
+
 ### 3.16.0 (2021-12-21)
 #### Features Added
 * Updated `azure-cosmos` to version `4.24.0`.

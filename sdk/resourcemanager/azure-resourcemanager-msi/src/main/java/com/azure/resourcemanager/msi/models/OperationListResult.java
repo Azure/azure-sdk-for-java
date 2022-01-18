@@ -11,26 +11,27 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of operations supported by Microsoft.ManagedIdentity Resource Provider. */
+/** Operations List. A list of operations supported by Microsoft.ManagedIdentity Resource Provider. */
 @Fluent
 public final class OperationListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationListResult.class);
 
     /*
-     * A list of operations supported by Microsoft.ManagedIdentity Resource
-     * Provider.
+     * Operations List. A list of operations supported by
+     * Microsoft.ManagedIdentity Resource Provider.
      */
     @JsonProperty(value = "value")
     private List<OperationInner> value;
 
     /*
-     * The url to get the next page of results, if any.
+     * Next Link The url to get the next page of results, if any.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
-     * Get the value property: A list of operations supported by Microsoft.ManagedIdentity Resource Provider.
+     * Get the value property: Operations List. A list of operations supported by Microsoft.ManagedIdentity Resource
+     * Provider.
      *
      * @return the value value.
      */
@@ -39,7 +40,8 @@ public final class OperationListResult {
     }
 
     /**
-     * Set the value property: A list of operations supported by Microsoft.ManagedIdentity Resource Provider.
+     * Set the value property: Operations List. A list of operations supported by Microsoft.ManagedIdentity Resource
+     * Provider.
      *
      * @param value the value value to set.
      * @return the OperationListResult object itself.
@@ -50,7 +52,7 @@ public final class OperationListResult {
     }
 
     /**
-     * Get the nextLink property: The url to get the next page of results, if any.
+     * Get the nextLink property: Next Link The url to get the next page of results, if any.
      *
      * @return the nextLink value.
      */
@@ -59,7 +61,7 @@ public final class OperationListResult {
     }
 
     /**
-     * Set the nextLink property: The url to get the next page of results, if any.
+     * Set the nextLink property: Next Link The url to get the next page of results, if any.
      *
      * @param nextLink the nextLink value to set.
      * @return the OperationListResult object itself.

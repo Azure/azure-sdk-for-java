@@ -270,7 +270,8 @@ public class AttestationSamples {
             .endpoint(endpoint)
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
-        PolicyResult result = adminClient.setAttestationPolicy(AttestationType.TPM, "version=1.0; authorizationrules{=>permit();};issuancerules{};");
+        PolicyResult result = adminClient.setAttestationPolicy(AttestationType.TPM,
+            "version=1.0; authorizationrules{=>permit();};issuancerules{};");
 
         if (result.getPolicyResolution() != PolicyModification.UPDATED) {
             System.out.printf("Unexpected resolution setting TPM policy: %s", result.getPolicyResolution().toString());
@@ -306,7 +307,8 @@ public class AttestationSamples {
             .endpoint(endpoint)
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
-        PolicyResult result = adminClient.setAttestationPolicy(AttestationType.TPM, "version=1.0; authorizationrules{=>permit();};issuancerules{};");
+        PolicyResult result = adminClient.setAttestationPolicy(AttestationType.TPM,
+            "version=1.0; authorizationrules{=>permit();};issuancerules{};");
 
         if (result.getPolicyResolution() != PolicyModification.UPDATED) {
             System.out.printf("Unexpected resolution setting TPM policy: %s", result.getPolicyResolution().toString());
@@ -342,7 +344,8 @@ public class AttestationSamples {
             .endpoint(endpoint)
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
-        PolicyResult result = adminClient.setAttestationPolicy(AttestationType.TPM, "version=1.0; authorizationrules{=>permit();};issuancerules{};");
+        PolicyResult result = adminClient.setAttestationPolicy(AttestationType.TPM,
+            "version=1.0; authorizationrules{=>permit();};issuancerules{};");
 
         if (result.getPolicyResolution() != PolicyModification.UPDATED) {
             System.out.printf("Unexpected resolution setting TPM policy: %s", result.getPolicyResolution().toString());
@@ -379,7 +382,8 @@ public class AttestationSamples {
             .endpoint(endpoint)
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
-        PolicyResult result = adminClient.setAttestationPolicy(AttestationType.TPM, "version=1.0; authorizationrules{=>permit();};issuancerules{};");
+        PolicyResult result = adminClient.setAttestationPolicy(AttestationType.TPM,
+            "version=1.0; authorizationrules{=>permit();};issuancerules{};");
 
         if (result.getPolicyResolution() != PolicyModification.UPDATED) {
             System.out.printf("Unexpected resolution setting TPM policy: %s", result.getPolicyResolution().toString());

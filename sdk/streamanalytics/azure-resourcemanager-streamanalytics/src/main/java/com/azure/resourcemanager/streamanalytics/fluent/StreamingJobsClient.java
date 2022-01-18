@@ -11,6 +11,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.streamanalytics.fluent.models.StreamingJobInner;
+import com.azure.resourcemanager.streamanalytics.models.ScaleStreamingJobParameters;
 import com.azure.resourcemanager.streamanalytics.models.StartStreamingJobParameters;
 import com.azure.resourcemanager.streamanalytics.models.StreamingJobsGetByResourceGroupResponse;
 import com.azure.resourcemanager.streamanalytics.models.StreamingJobsUpdateResponse;
@@ -33,7 +34,7 @@ public interface StreamingJobsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a streaming job object, containing all information associated with the named streaming job.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<StreamingJobInner>, StreamingJobInner> beginCreateOrReplace(
         String resourceGroupName, String jobName, StreamingJobInner streamingJob, String ifMatch, String ifNoneMatch);
 
@@ -54,7 +55,7 @@ public interface StreamingJobsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a streaming job object, containing all information associated with the named streaming job.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<StreamingJobInner>, StreamingJobInner> beginCreateOrReplace(
         String resourceGroupName,
         String jobName,
@@ -174,7 +175,7 @@ public interface StreamingJobsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String jobName);
 
     /**
@@ -188,7 +189,7 @@ public interface StreamingJobsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String jobName, Context context);
 
     /**
@@ -314,7 +315,7 @@ public interface StreamingJobsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String jobName, StartStreamingJobParameters startJobParameters);
 
@@ -330,7 +331,7 @@ public interface StreamingJobsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String jobName, StartStreamingJobParameters startJobParameters, Context context);
 
@@ -385,7 +386,7 @@ public interface StreamingJobsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String jobName);
 
     /**
@@ -400,7 +401,7 @@ public interface StreamingJobsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String jobName, Context context);
 
     /**
@@ -429,4 +430,75 @@ public interface StreamingJobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void stop(String resourceGroupName, String jobName, Context context);
+
+    /**
+     * Scales a streaming job when the job is running.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param scaleJobParameters Parameters applicable to a scale streaming job operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginScale(
+        String resourceGroupName, String jobName, ScaleStreamingJobParameters scaleJobParameters);
+
+    /**
+     * Scales a streaming job when the job is running.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param scaleJobParameters Parameters applicable to a scale streaming job operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginScale(
+        String resourceGroupName, String jobName, ScaleStreamingJobParameters scaleJobParameters, Context context);
+
+    /**
+     * Scales a streaming job when the job is running.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param scaleJobParameters Parameters applicable to a scale streaming job operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void scale(String resourceGroupName, String jobName, ScaleStreamingJobParameters scaleJobParameters);
+
+    /**
+     * Scales a streaming job when the job is running.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void scale(String resourceGroupName, String jobName);
+
+    /**
+     * Scales a streaming job when the job is running.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param scaleJobParameters Parameters applicable to a scale streaming job operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void scale(
+        String resourceGroupName, String jobName, ScaleStreamingJobParameters scaleJobParameters, Context context);
 }

@@ -674,7 +674,7 @@
           <plugin>
             <groupId>org.revapi</groupId>
             <artifactId>revapi-maven-plugin</artifactId>
-            <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+            <version>0.14.6</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
             <configuration>
               <analysisConfigurationFiles>
                 <configurationFile>
@@ -803,6 +803,7 @@
         <module>sdk/netapp</module>
         <module>sdk/notificationhubs</module>
         <module>sdk/operationsmanagement</module>
+        <module>sdk/parents</module>
         <module>sdk/peering</module>
         <module>sdk/policyinsights</module>
         <module>sdk/postgresql</module>

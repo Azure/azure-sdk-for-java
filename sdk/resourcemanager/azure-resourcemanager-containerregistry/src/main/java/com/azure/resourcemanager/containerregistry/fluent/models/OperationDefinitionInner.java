@@ -40,6 +40,14 @@ public final class OperationDefinitionInner {
     @JsonProperty(value = "properties")
     private OperationPropertiesDefinition innerProperties;
 
+    /*
+     * This property indicates if the operation is an action or a data action
+     * ref:
+     * https://docs.microsoft.com/en-us/azure/role-based-access-control/role-definitions#management-and-data-operations
+     */
+    @JsonProperty(value = "isDataAction")
+    private Boolean isDataAction;
+
     /**
      * Get the origin property: The origin information of the container registry operation.
      *
@@ -107,6 +115,28 @@ public final class OperationDefinitionInner {
      */
     private OperationPropertiesDefinition innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the isDataAction property: This property indicates if the operation is an action or a data action ref:
+     * https://docs.microsoft.com/en-us/azure/role-based-access-control/role-definitions#management-and-data-operations.
+     *
+     * @return the isDataAction value.
+     */
+    public Boolean isDataAction() {
+        return this.isDataAction;
+    }
+
+    /**
+     * Set the isDataAction property: This property indicates if the operation is an action or a data action ref:
+     * https://docs.microsoft.com/en-us/azure/role-based-access-control/role-definitions#management-and-data-operations.
+     *
+     * @param isDataAction the isDataAction value to set.
+     * @return the OperationDefinitionInner object itself.
+     */
+    public OperationDefinitionInner withIsDataAction(Boolean isDataAction) {
+        this.isDataAction = isDataAction;
+        return this;
     }
 
     /**

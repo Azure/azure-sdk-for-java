@@ -1,5 +1,20 @@
 ## Release History
 
+### 4.26.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
+### 4.25.0 (2022-01-14)
+#### Key Bug Fixes
+* Fixed `NullPointerException` in bulk mode for deleted/recreated containers.
+* Added missing exception cause in case of `InternalServerException`.
+
 ### 4.24.0 (2021-12-21)
 #### Features Added
 * Added implementation for `CosmosAuthorizationTokenResolver`.
