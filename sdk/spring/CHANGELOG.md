@@ -106,6 +106,16 @@ Upgrade dependency according to spring-boot-dependencies:2.6.1 and spring-cloud-
 
 ### Other Changes
 
+## 1.0.0 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 4.0.0-beta.2 (2021-11-22)
 
 
