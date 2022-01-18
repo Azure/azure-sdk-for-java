@@ -38,27 +38,27 @@ This section includes changes in the `spring-cloud-azure-autoconfigure` module.
 - Fix Cosmos properties `spring.cloud.azure.cosmos.proxy.*` not set correctly [#25690](https://github.com/Azure/azure-sdk-for-java/issues/25690).
 - Fix `PoolAcquirePendingLimitException` when using `EventProcessorClient` or `spring-cloud-azure-stream-binder-eventhubs` [#26027](https://github.com/Azure/azure-sdk-for-java/issues/26027).
 
-### Spring Cloud Stream Event Hubs
+### Spring Cloud Stream Event Hubs Binder
 This section includes changes in `spring-cloud-azure-stream-binder-eventhubs` module.
 
 #### Breaking Changes
 - For the batch consuming mode, change the message header names converted from batched messages [#26291](https://github.com/Azure/azure-sdk-for-java/pull/26291).
-  * Change message header from `EventHubsHeaders#ENQUEUED_TIME` to `EventHubsHeaders#BATCH_CONVERTED_ENQUEUED_TIME`.
-  * Change message header from `EventHubsHeaders#OFFSET` to `EventHubsHeaders#BATCH_CONVERTED_OFFSET`.
-  * Change message header from `EventHubsHeaders#SEQUENCE_NUMBER` to `EventHubsHeaders#BATCH_CONVERTED_SEQUENCE_NUMBER`.
-  * Change message header from `EventHubsHeaders#PARTITION_KEY` to `EventHubsHeaders#BATCH_CONVERTED_PARTITION_KEY`.
-  
-  The above class `EventHubsHeaders` is in package `com.azure.spring.eventhubs.support`.
-- When publish messages to Event Hubs, ignore all message headers converted from batched messages [#26291](https://github.com/Azure/azure-sdk-for-java/pull/26291).
+  * Change message header from `azure_eventhub_enqueued_time` to `azure_eventhub_batch_converted_enqueued_time`.
+  * Change message header from `azure_eventhub_offset` to `azure_eventhub_batch_converted_offset`.
+  * Change message header from `azure_eventhub_sequence_number` to `azure_eventhub_batch_converted_sequence_number`.
+  * Change message header from `azure_partition_key` to `azure_batch_converted_partition_key`.
+- When publish messages to Event Hubs, ignore all message headers converted from batched messages [#26213](https://github.com/Azure/azure-sdk-for-java/issues/26213).
 
   Headers include:
-  * EventHubsHeaders#BATCH_CONVERTED_ENQUEUED_TIME
-  * EventHubsHeaders#BATCH_CONVERTED_OFFSET
-  * EventHubsHeaders#BATCH_CONVERTED_SEQUENCE_NUMBER
-  * EventHubsHeaders#BATCH_CONVERTED_PARTITION_KEY
-  * EventHubsHeaders#BATCH_CONVERTED_SYSTEM_PROPERTIES
-  * EventHubsHeaders#BATCH_CONVERTED_APPLICATION_PROPERTIES
-
+  * `azure_eventhub_batch_converted_enqueued_time`
+  * `azure_eventhub_batch_converted_offset`
+  * `azure_eventhub_batch_converted_sequence_number`
+  * `azure_batch_converted_partition_key`
+  * `azure_eventhub_batch_converted_system_properties`
+  * `azure_eventhub_batch_converted_application_properties`
+- Expose message header `azure_eventhub_last_enqueued_event_properties` [#25960](https://github.com/Azure/azure-sdk-for-java/issues/25960).
+- Improve logging information when converting between `com.azure.messaging.eventhubs.EventData` and `org.springframework.messaging.Message` [#26291](https://github.com/Azure/azure-sdk-for-java/pull/26291).
+- Fix `PoolAcquirePendingLimitException` when using `EventHubsProcessorContainer` [#26027](https://github.com/Azure/azure-sdk-for-java/issues/26027).
 ### Spring Integration Event Hubs
 
 This section includes changes in `spring-messaging-azure-eventhubs` and `spring-integration-azure-eventhubs` modules.
