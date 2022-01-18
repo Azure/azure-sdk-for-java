@@ -4,7 +4,7 @@
 package com.azure.search.documents;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.TokenCredentialSupport;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -79,7 +79,7 @@ import static com.azure.search.documents.implementation.util.Utility.getDefaultS
  * @see SearchAsyncClient
  */
 @ServiceClientBuilder(serviceClients = {SearchClient.class, SearchAsyncClient.class})
-public final class SearchClientBuilder implements TokenCredentialSupport<SearchClientBuilder> {
+public final class SearchClientBuilder implements TokenCredentialTrait<SearchClientBuilder> {
     private static final boolean DEFAULT_AUTO_FLUSH = true;
     private static final int DEFAULT_INITIAL_BATCH_ACTION_COUNT = 512;
     private static final Duration DEFAULT_FLUSH_INTERVAL = Duration.ofSeconds(60);

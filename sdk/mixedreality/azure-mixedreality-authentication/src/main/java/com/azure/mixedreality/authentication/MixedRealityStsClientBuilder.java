@@ -4,7 +4,7 @@
 package com.azure.mixedreality.authentication;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.TokenCredentialSupport;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -45,7 +45,7 @@ import java.util.UUID;
  * @see MixedRealityStsClient
  */
 @ServiceClientBuilder(serviceClients = {MixedRealityStsClient.class, MixedRealityStsAsyncClient.class})
-public final class MixedRealityStsClientBuilder implements TokenCredentialSupport<MixedRealityStsClientBuilder> {
+public final class MixedRealityStsClientBuilder implements TokenCredentialTrait<MixedRealityStsClientBuilder> {
     private static final String MIXED_REALITY_STS_PROPERTIES = "azure-mixedreality-authentication.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";

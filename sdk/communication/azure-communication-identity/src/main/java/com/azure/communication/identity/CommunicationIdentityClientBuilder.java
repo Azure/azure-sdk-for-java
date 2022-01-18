@@ -8,7 +8,7 @@ import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.identity.implementation.CommunicationIdentityClientImpl;
 import com.azure.communication.identity.implementation.CommunicationIdentityClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.TokenCredentialSupport;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
@@ -36,7 +36,7 @@ import java.util.Objects;
  * CommunicationIdentityClientBuilder that creates CommunicationIdentityAsyncClient and CommunicationIdentityClient.
  */
 @ServiceClientBuilder(serviceClients = {CommunicationIdentityClient.class, CommunicationIdentityAsyncClient.class})
-public final class CommunicationIdentityClientBuilder implements TokenCredentialSupport<CommunicationIdentityClientBuilder> {
+public final class CommunicationIdentityClientBuilder implements TokenCredentialTrait<CommunicationIdentityClientBuilder> {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 

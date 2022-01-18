@@ -4,7 +4,7 @@
 package com.azure.mixedreality.remoterendering;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.TokenCredentialSupport;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -32,7 +32,7 @@ import java.util.UUID;
 
 /** A builder for creating instances of RemoteRenderingClient and RemoteRenderingAsyncClient. */
 @ServiceClientBuilder(serviceClients = {RemoteRenderingClient.class, RemoteRenderingAsyncClient.class})
-public final class RemoteRenderingClientBuilder implements TokenCredentialSupport<RemoteRenderingClientBuilder> {
+public final class RemoteRenderingClientBuilder implements TokenCredentialTrait<RemoteRenderingClientBuilder> {
 
     private final ClientLogger logger = new ClientLogger(RemoteRenderingClientBuilder.class);
 

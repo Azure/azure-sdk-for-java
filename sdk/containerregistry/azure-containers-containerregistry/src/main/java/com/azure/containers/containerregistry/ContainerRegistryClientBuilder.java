@@ -4,7 +4,7 @@ package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.TokenCredentialSupport;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -107,7 +107,7 @@ import java.util.Objects;
         RegistryArtifactAsync.class,
         RegistryArtifact.class
     })
-public final class ContainerRegistryClientBuilder implements TokenCredentialSupport<ContainerRegistryClientBuilder> {
+public final class ContainerRegistryClientBuilder implements TokenCredentialTrait<ContainerRegistryClientBuilder> {
     private final ClientLogger logger = new ClientLogger(ContainerRegistryClientBuilder.class);
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();

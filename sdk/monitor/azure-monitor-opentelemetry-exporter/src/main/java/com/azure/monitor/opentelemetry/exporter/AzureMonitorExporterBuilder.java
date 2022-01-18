@@ -3,7 +3,7 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
-import com.azure.core.client.traits.TokenCredentialSupport;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -34,7 +34,7 @@ import java.util.Objects;
  * This class provides a fluent builder API to instantiate {@link AzureMonitorTraceExporter} that implements
  * {@link SpanExporter} interface defined by OpenTelemetry API specification.
  */
-public final class AzureMonitorExporterBuilder implements TokenCredentialSupport<AzureMonitorExporterBuilder> {
+public final class AzureMonitorExporterBuilder implements TokenCredentialTrait<AzureMonitorExporterBuilder> {
     private static final String APPLICATIONINSIGHTS_CONNECTION_STRING = "APPLICATIONINSIGHTS_CONNECTION_STRING";
     private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE = "https://monitor.azure.com//.default";
     private static final SerializerAdapter SERIALIZER_ADAPTER;

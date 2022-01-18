@@ -4,7 +4,7 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.TokenCredentialSupport;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -47,7 +47,7 @@ import java.util.Objects;
  * </ul>
  */
 @ServiceClientBuilder(serviceClients = {DataLakeFileSystemClient.class, DataLakeFileSystemAsyncClient.class})
-public class DataLakeFileSystemClientBuilder implements TokenCredentialSupport<DataLakeFileSystemClientBuilder> {
+public class DataLakeFileSystemClientBuilder implements TokenCredentialTrait<DataLakeFileSystemClientBuilder> {
     private final ClientLogger logger = new ClientLogger(DataLakeFileSystemClientBuilder.class);
 
     private final BlobContainerClientBuilder blobContainerClientBuilder;

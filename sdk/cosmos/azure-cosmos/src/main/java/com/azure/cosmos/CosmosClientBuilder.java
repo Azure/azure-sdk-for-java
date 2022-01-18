@@ -3,7 +3,7 @@
 package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.TokenCredentialSupport;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.implementation.ApiType;
@@ -89,7 +89,7 @@ import java.util.Objects;
  * </pre>
  */
 @ServiceClientBuilder(serviceClients = {CosmosClient.class, CosmosAsyncClient.class})
-public class CosmosClientBuilder implements TokenCredentialSupport<CosmosClientBuilder> {
+public class CosmosClientBuilder implements TokenCredentialTrait<CosmosClientBuilder> {
     private Configs configs = new Configs();
     private String serviceEndpoint;
     private String keyOrResourceToken;

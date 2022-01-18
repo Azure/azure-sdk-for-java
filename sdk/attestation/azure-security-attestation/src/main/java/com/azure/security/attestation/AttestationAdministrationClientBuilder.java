@@ -4,7 +4,7 @@
 package com.azure.security.attestation;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.TokenCredentialSupport;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -98,7 +98,7 @@ import java.util.Objects;
             AttestationAdministrationClient.class,
             AttestationAdministrationAsyncClient.class,
         })
-public final class AttestationAdministrationClientBuilder implements TokenCredentialSupport<AttestationAdministrationClientBuilder> {
+public final class AttestationAdministrationClientBuilder implements TokenCredentialTrait<AttestationAdministrationClientBuilder> {
     private static final String SDK_NAME = "name";
 
     private static final String SDK_VERSION = "version";

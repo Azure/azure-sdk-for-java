@@ -4,7 +4,7 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.TokenCredentialSupport;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -64,7 +64,7 @@ import java.util.Objects;
  * @see SearchIndexerAsyncClient
  */
 @ServiceClientBuilder(serviceClients = {SearchIndexerClient.class, SearchIndexerAsyncClient.class})
-public class SearchIndexerClientBuilder implements TokenCredentialSupport<SearchIndexerClientBuilder> {
+public class SearchIndexerClientBuilder implements TokenCredentialTrait<SearchIndexerClientBuilder> {
     private final ClientLogger logger = new ClientLogger(SearchIndexerClientBuilder.class);
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();

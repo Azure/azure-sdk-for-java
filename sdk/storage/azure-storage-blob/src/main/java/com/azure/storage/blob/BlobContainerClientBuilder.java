@@ -4,7 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.TokenCredentialSupport;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -50,7 +50,7 @@ import java.util.Objects;
  * </ul>
  */
 @ServiceClientBuilder(serviceClients = {BlobContainerClient.class, BlobContainerAsyncClient.class})
-public final class BlobContainerClientBuilder implements TokenCredentialSupport<BlobContainerClientBuilder> {
+public final class BlobContainerClientBuilder implements TokenCredentialTrait<BlobContainerClientBuilder> {
     private final ClientLogger logger = new ClientLogger(BlobContainerClientBuilder.class);
 
     private String endpoint;

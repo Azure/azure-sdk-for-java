@@ -4,7 +4,7 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.TokenCredentialSupport;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver;
@@ -52,7 +52,7 @@ import reactor.core.publisher.Mono;
  */
 @ServiceClientBuilder(serviceClients = {KeyEncryptionKeyClient.class, KeyEncryptionKeyAsyncClient.class})
 public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyResolver, AsyncKeyEncryptionKeyResolver,
-    TokenCredentialSupport<KeyEncryptionKeyClientBuilder> {
+    TokenCredentialTrait<KeyEncryptionKeyClientBuilder> {
     private final ClientLogger logger = new ClientLogger(KeyEncryptionKeyClientBuilder.class);
     private final CryptographyClientBuilder builder;
 

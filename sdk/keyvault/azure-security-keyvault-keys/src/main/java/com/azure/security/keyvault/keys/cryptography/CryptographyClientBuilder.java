@@ -4,7 +4,7 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.TokenCredentialSupport;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
@@ -118,7 +118,7 @@ import java.util.Map;
  * @see CryptographyClient
  */
 @ServiceClientBuilder(serviceClients = CryptographyClient.class)
-public final class CryptographyClientBuilder implements TokenCredentialSupport<CryptographyClientBuilder> {
+public final class CryptographyClientBuilder implements TokenCredentialTrait<CryptographyClientBuilder> {
     private final ClientLogger logger = new ClientLogger(CryptographyClientBuilder.class);
 
     // This is properties file's name.

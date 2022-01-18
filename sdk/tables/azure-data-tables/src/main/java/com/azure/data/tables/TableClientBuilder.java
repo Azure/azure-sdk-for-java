@@ -3,7 +3,7 @@
 package com.azure.data.tables;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.TokenCredentialSupport;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
@@ -67,7 +67,7 @@ import static com.azure.data.tables.BuilderHelper.validateCredentials;
  * @see TableClient
  */
 @ServiceClientBuilder(serviceClients = {TableClient.class, TableAsyncClient.class})
-public final class TableClientBuilder implements TokenCredentialSupport<TableClientBuilder> {
+public final class TableClientBuilder implements TokenCredentialTrait<TableClientBuilder> {
     private static final SerializerAdapter TABLES_SERIALIZER = new TablesJacksonSerializer();
     private static final TablesMultipartSerializer TRANSACTIONAL_BATCH_SERIALIZER = new TablesMultipartSerializer();
 

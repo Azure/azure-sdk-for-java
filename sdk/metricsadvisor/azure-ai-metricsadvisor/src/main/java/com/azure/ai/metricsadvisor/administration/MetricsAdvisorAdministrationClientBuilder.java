@@ -8,7 +8,7 @@ import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAd
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.ai.metricsadvisor.MetricsAdvisorServiceVersion;
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.TokenCredentialSupport;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpClient;
@@ -103,7 +103,7 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = {MetricsAdvisorAdministrationAsyncClient.class,
     MetricsAdvisorAdministrationClient.class})
-public final class MetricsAdvisorAdministrationClientBuilder implements TokenCredentialSupport<MetricsAdvisorAdministrationClientBuilder> {
+public final class MetricsAdvisorAdministrationClientBuilder implements TokenCredentialTrait<MetricsAdvisorAdministrationClientBuilder> {
 
     private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
     private static final String CONTENT_TYPE_HEADER_VALUE = ContentType.APPLICATION_JSON;

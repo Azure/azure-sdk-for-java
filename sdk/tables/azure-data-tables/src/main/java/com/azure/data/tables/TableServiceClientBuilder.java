@@ -3,7 +3,7 @@
 package com.azure.data.tables;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.TokenCredentialSupport;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
@@ -65,7 +65,7 @@ import static com.azure.data.tables.BuilderHelper.validateCredentials;
  * @see TableServiceClient
  */
 @ServiceClientBuilder(serviceClients = {TableServiceClient.class, TableServiceAsyncClient.class})
-public final class TableServiceClientBuilder implements TokenCredentialSupport<TableServiceClientBuilder> {
+public final class TableServiceClientBuilder implements TokenCredentialTrait<TableServiceClientBuilder> {
     private final ClientLogger logger = new ClientLogger(TableServiceClientBuilder.class);
     private final SerializerAdapter serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();

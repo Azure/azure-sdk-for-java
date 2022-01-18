@@ -4,7 +4,7 @@
 package com.azure.data.schemaregistry;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.TokenCredentialSupport;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
@@ -93,7 +93,7 @@ import java.util.Objects;
  * <!-- end com.azure.data.schemaregistry.schemaregistryasyncclient.retrypolicy.instantiation -->
  */
 @ServiceClientBuilder(serviceClients = {SchemaRegistryAsyncClient.class, SchemaRegistryClient.class})
-public class SchemaRegistryClientBuilder implements TokenCredentialSupport<SchemaRegistryClientBuilder> {
+public class SchemaRegistryClientBuilder implements TokenCredentialTrait<SchemaRegistryClientBuilder> {
     private final ClientLogger logger = new ClientLogger(SchemaRegistryClientBuilder.class);
 
     private static final String DEFAULT_SCOPE = "https://eventhubs.azure.net/.default";

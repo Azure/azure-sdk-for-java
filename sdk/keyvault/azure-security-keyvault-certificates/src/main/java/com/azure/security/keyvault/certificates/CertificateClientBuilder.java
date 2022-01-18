@@ -4,7 +4,7 @@
 package com.azure.security.keyvault.certificates;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.TokenCredentialSupport;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
@@ -103,7 +103,7 @@ import java.util.Map;
  * @see CertificateClient
  */
 @ServiceClientBuilder(serviceClients = {CertificateClient.class, CertificateAsyncClient.class})
-public final class CertificateClientBuilder implements TokenCredentialSupport<CertificateClientBuilder> {
+public final class CertificateClientBuilder implements TokenCredentialTrait<CertificateClientBuilder> {
     private final ClientLogger logger = new ClientLogger(CertificateClientBuilder.class);
     // This is properties file's name.
     private static final String AZURE_KEY_VAULT_CERTIFICATES_PROPERTIES = "azure-key-vault-certificates.properties";

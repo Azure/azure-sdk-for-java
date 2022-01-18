@@ -8,7 +8,7 @@ import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilde
 import com.azure.ai.formrecognizer.implementation.util.Constants;
 import com.azure.ai.formrecognizer.implementation.util.Utility;
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.TokenCredentialSupport;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -87,7 +87,7 @@ import java.util.Objects;
  * @see DocumentAnalysisClient
  */
 @ServiceClientBuilder(serviceClients = {DocumentAnalysisAsyncClient.class, DocumentAnalysisClient.class})
-public final class DocumentAnalysisClientBuilder implements TokenCredentialSupport<DocumentAnalysisClientBuilder> {
+public final class DocumentAnalysisClientBuilder implements TokenCredentialTrait<DocumentAnalysisClientBuilder> {
     private final ClientLogger logger = new ClientLogger(DocumentAnalysisClientBuilder.class);
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();

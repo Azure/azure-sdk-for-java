@@ -4,7 +4,7 @@
 package com.azure.messaging.webpubsub;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.TokenCredentialSupport;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -86,7 +86,7 @@ import java.util.Objects;
  * @see WebPubSubServiceClient
  */
 @ServiceClientBuilder(serviceClients = {WebPubSubServiceAsyncClient.class, WebPubSubServiceClient.class})
-public final class WebPubSubServiceClientBuilder implements TokenCredentialSupport<WebPubSubServiceClientBuilder> {
+public final class WebPubSubServiceClientBuilder implements TokenCredentialTrait<WebPubSubServiceClientBuilder> {
     private static final String WPS_DEFAULT_SCOPE = "https://webpubsub.azure.com/.default";
     private final ClientLogger logger = new ClientLogger(WebPubSubServiceClientBuilder.class);
 

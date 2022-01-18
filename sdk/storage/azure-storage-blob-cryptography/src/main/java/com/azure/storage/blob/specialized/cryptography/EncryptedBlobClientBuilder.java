@@ -4,7 +4,7 @@
 package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.TokenCredentialSupport;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
@@ -87,7 +87,7 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
  * </ul>
  */
 @ServiceClientBuilder(serviceClients = {EncryptedBlobAsyncClient.class, EncryptedBlobClient.class})
-public final class EncryptedBlobClientBuilder implements TokenCredentialSupport<EncryptedBlobClientBuilder> {
+public final class EncryptedBlobClientBuilder implements TokenCredentialTrait<EncryptedBlobClientBuilder> {
     private final ClientLogger logger = new ClientLogger(EncryptedBlobClientBuilder.class);
     private static final Map<String, String> PROPERTIES =
         CoreUtils.getProperties("azure-storage-blob-cryptography.properties");

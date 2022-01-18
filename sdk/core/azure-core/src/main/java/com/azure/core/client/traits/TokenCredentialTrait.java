@@ -10,7 +10,7 @@ import com.azure.core.credential.TokenCredential;
  *
  * @param <TBuilder> the type of client builder.
  */
-public interface TokenCredentialSupport<TBuilder extends TokenCredentialSupport<TBuilder>> {
+public interface TokenCredentialTrait<TBuilder extends TokenCredentialTrait<TBuilder>> {
 
     /**
      * Sets the {@link TokenCredential} used to authenticate HTTP requests.

@@ -3,7 +3,7 @@
 package com.azure.storage.queue;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.TokenCredentialSupport;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -116,7 +116,7 @@ import java.util.function.Function;
  * @see StorageSharedKeyCredential
  */
 @ServiceClientBuilder(serviceClients = {QueueServiceClient.class, QueueServiceAsyncClient.class})
-public final class QueueServiceClientBuilder implements TokenCredentialSupport<QueueServiceClientBuilder> {
+public final class QueueServiceClientBuilder implements TokenCredentialTrait<QueueServiceClientBuilder> {
     private final ClientLogger logger = new ClientLogger(QueueServiceClientBuilder.class);
 
     private String endpoint;

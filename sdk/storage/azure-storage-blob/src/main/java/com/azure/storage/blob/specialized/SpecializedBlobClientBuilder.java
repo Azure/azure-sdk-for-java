@@ -4,7 +4,7 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.TokenCredentialSupport;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -58,7 +58,7 @@ import java.util.Objects;
     BlockBlobClient.class, BlockBlobAsyncClient.class,
     PageBlobClient.class, PageBlobAsyncClient.class
 })
-public final class SpecializedBlobClientBuilder implements TokenCredentialSupport<SpecializedBlobClientBuilder> {
+public final class SpecializedBlobClientBuilder implements TokenCredentialTrait<SpecializedBlobClientBuilder> {
     private final ClientLogger logger = new ClientLogger(SpecializedBlobClientBuilder.class);
 
     private String endpoint;
