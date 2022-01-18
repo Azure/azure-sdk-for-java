@@ -111,7 +111,7 @@ private object CosmosTableSchemaInferrer
             .CosmosQueryRequestOptionsHelper
             .getCosmosQueryRequestOptionsAccessor
             .disallowQueryPlanRetrieval(queryOptions)
-          queryOptions.setMaxDegreeOfParallelism(1);
+          queryOptions.setMaxDegreeOfParallelism(1)
           queryOptions.setFeedRange(FeedRange.forFullRange())
 
           cosmosReadConfig.customQuery match {
@@ -211,7 +211,16 @@ private object CosmosTableSchemaInferrer
 
   // scalastyle:on
   private def inferDataTypeFromArrayNode(node: ArrayNode, allowNullForInferredProperties: Boolean): Option[DataType] = {
-    Option(node.get(0)).map(firstElement => inferDataTypeFromJsonNode(firstElement, allowNullForInferredProperties))
+    val notNullElements = node.elements.asScala
+      .filter(element  => !element.isNull)
+
+    if (notNullElements.isEmpty) {
+      None
+    } else {
+      Some(notNullElements
+        .map(element => inferDataTypeFromJsonNode(element, allowNullForInferredProperties))
+        .reduce((el1, el2) => compatibleType(el1, el2)))
+    }
   }
 
   /**
