@@ -70,6 +70,10 @@ public class EnvironmentCredential implements TokenCredential {
                 } else if (verifyNotNull(certPath)) {
                     // 1.2 Attempt ClientCertificateCredential
                     logger.info("Azure Identity => EnvironmentCredential invoking ClientCertificateCredential");
+                    String sendCertificateChainEnv = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_SEND_CERTIFICATE_CHAIN);
+                    if ("true".equalsIgnoreCase(sendCertificateChainEnv) || "1".equals(sendCertificateChainEnv)) {
+                        identityClientOptions.setIncludeX5c(true);
+                    }
                     targetCredential = new ClientCertificateCredential(tenantId, clientId, certPath, null, null,
                             identityClientOptions);
                 } else {
