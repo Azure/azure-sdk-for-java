@@ -60,6 +60,12 @@ azure-spring-boot-starter-active-directory, azure-spring-boot-starter-storage an
 
 #### Choose Version According to Spring Boot Version
 
+##### Version Mapping Between Spring Cloud And Spring Boot
+
+Please refer to [Release train Spring Boot compatibility](https://spring.io/projects/spring-cloud) to get information about which version of Spring Cloud maps to which version of Spring Boot.
+
+##### Get Spring Cloud For Azure Version By Spring Boot Version
+
 | Spring Boot Version | Spring Cloud for Azure    |
 | ------------------- | ------------------------- |
 | 2.5.x               | 2.12.0                    |
