@@ -4,6 +4,8 @@
 package com.azure.spring.cloud.autoconfigure.jms;
 
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
+import com.azure.spring.core.connectionstring.ConnectionStringProvider;
+import com.azure.spring.core.service.AzureServiceType;
 import org.apache.qpid.jms.JmsConnectionFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -30,6 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.boot.autoconfigure.jms.JmsProperties.AcknowledgeMode.CLIENT;
 
 class ServiceBusJmsAutoConfigurationTests {
@@ -286,6 +289,54 @@ class ServiceBusJmsAutoConfigurationTests {
                     assertThat(context).doesNotHaveBean(ServiceBusJmsConnectionFactory.class);
                     assertThat(context).doesNotHaveBean(CachingConnectionFactory.class);
                 }
+            );
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "basic", "standard", "premium" })
+    void connectionStringProviderCase1(String pricingTier) {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.jms.servicebus.pricing-tier=" + pricingTier,
+                "spring.jms.servicebus.connection-string=" + CONNECTION_STRING
+            )
+            .run(context -> {
+                    assertThat(context).hasSingleBean(ConnectionStringProvider.class);
+                    assertThat(context).hasSingleBean(AzureServiceBusJmsProperties.class);
+                }
+            );
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "basic", "standard", "premium" })
+    void connectionStringProviderCase2(String pricingTier) {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.jms.servicebus.pricing-tier=" + pricingTier,
+                "spring.cloud.azure.servicebus.connection-string=" + CONNECTION_STRING
+            )
+            .run(context -> {
+                    assertThat(context).hasSingleBean(ConnectionStringProvider.class);
+                    assertThat(context).hasSingleBean(AzureServiceBusJmsProperties.class);
+                }
+            );
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "basic", "standard", "premium" })
+    void connectionStringProviderCase3(String pricingTier) {
+        @SuppressWarnings("unchecked")
+        ConnectionStringProvider<AzureServiceType.ServiceBus> mockArm = mock(ConnectionStringProvider.class);
+        when(mockArm.getConnectionString()).thenReturn(CONNECTION_STRING);
+        this.contextRunner
+            .withPropertyValues(
+                "spring.jms.servicebus.pricing-tier=" + pricingTier
+            )
+            .withBean(ConnectionStringProvider.class, () -> mockArm)
+            .run(context -> {
+                assertThat(context).hasSingleBean(ConnectionStringProvider.class);
+                assertThat(context).hasSingleBean(AzureServiceBusJmsProperties.class);
+            }
             );
     }
 }
