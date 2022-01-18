@@ -3,7 +3,7 @@
 package com.azure.data.tables;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.TokenCredentialSupport;
+import com.azure.core.client.traits.TokenCredentialSupport;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;

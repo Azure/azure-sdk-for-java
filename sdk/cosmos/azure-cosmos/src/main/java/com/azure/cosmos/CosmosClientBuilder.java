@@ -3,7 +3,7 @@
 package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.TokenCredentialSupport;
+import com.azure.core.client.traits.TokenCredentialSupport;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.implementation.ApiType;

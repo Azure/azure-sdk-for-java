@@ -3,7 +3,7 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
-import com.azure.core.client.TokenCredentialSupport;
+import com.azure.core.client.traits.TokenCredentialSupport;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
