@@ -20,7 +20,7 @@ Upgrade dependency according to spring-boot-dependencies:2.6.1 and spring-cloud-
 6. Property name "spring.cloud.azure.active-directory.graph-membership-uri" changed to "spring.cloud.azure.active-directory.profile.environment.microsoft-graph-endpoint" and "spring.cloud.azure.active-directory.user-group.use-transitive-members".
 7. Remove artifact id `spring-cloud-azure-stream-binder-test`.
 8. Remove `StorageQueueOperation`.
-9. Deprecate configure checkpoint mode for StorageQueueTemplate, and support only MANUAL mode.
+9. Remove configuration of checkpoint mode for StorageQueueTemplate, and support only MANUAL mode.
 10. Remove auto creating Storage Queue when send/receive messages via `StorageQueueTemplate`.
 ### Bugs Fixed
 

@@ -6,7 +6,7 @@
 - Support StorageQueueMessageConverter as a bean to support customize ObjectMapper.
 ### Breaking Changes
 - Remove `StorageQueueOperation`.
-- Deprecate configure checkpoint mode for StorageQueueTemplate, and support only MANUAL mode.
+- Remove configuration of checkpoint mode for StorageQueueTemplate, and support only MANUAL mode.
 - Remove auto creating Storage Queue when send/receive messages via `StorageQueueTemplate`.
 ### Bugs Fixed
 

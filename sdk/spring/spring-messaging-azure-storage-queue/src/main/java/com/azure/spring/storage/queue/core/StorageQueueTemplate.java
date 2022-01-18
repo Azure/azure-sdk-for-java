@@ -143,26 +143,4 @@ public class StorageQueueTemplate implements SendOperation {
         LOG.info("StorageQueueTemplate messagePayloadType becomes: {}", this.messagePayloadType);
     }
 
-    /**
-     * Get the {@code checkpointMode}. Deprecated from version 4.0.0-beta.3, MANUAL checkpoint mode is used by default.
-     * @return the {@code checkpointMode.MANUAL}.
-     * @deprecated deprecated from version 4.0.0-beta.3, only MANUAL checkpoint mode is supported.
-     */
-    @Deprecated
-    public CheckpointMode getCheckpointMode() {
-        return CheckpointMode.MANUAL;
-    }
-
-    /**
-     * Set the {@code checkpointMode}. Deprecated from version 4.0.0-beta.3, MANUAL checkpoint mode is used by default
-     * and configuration is not supported.
-     * @param checkpointMode the {@code checkpointMode}
-     * @throws IllegalStateException for configuration is not supported.
-     * @deprecated deprecated from version 4.0.0-beta.3, only MANUAL checkpoint mode is supported.
-     */
-    @Deprecated
-    public void setCheckpointMode(CheckpointMode checkpointMode) {
-        throw new IllegalStateException("Configuration of checkpoint mode is not supported, the MANUAL checkpoint mode is applied");
-    }
-
 }

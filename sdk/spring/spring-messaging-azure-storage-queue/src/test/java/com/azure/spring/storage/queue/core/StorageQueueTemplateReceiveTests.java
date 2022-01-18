@@ -10,7 +10,6 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
 import com.azure.spring.messaging.AzureHeaders;
-import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.messaging.checkpoint.Checkpointer;
 import com.azure.spring.storage.queue.core.factory.StorageQueueClientFactory;
 import com.azure.storage.queue.QueueAsyncClient;
@@ -28,7 +27,6 @@ import reactor.core.publisher.Mono;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -122,15 +120,6 @@ public class StorageQueueTemplateReceiveTests {
         checkpointFuture.block();
 
         verify(this.mockClient, times(1)).deleteMessage(messageId, popReceipt);
-    }
-
-    @Test
-    public void testShouldNotSetCheckpointMode() {
-        assertThrows(IllegalStateException.class, () -> template.setCheckpointMode(CheckpointMode.BATCH));
-        assertThrows(IllegalStateException.class, () -> template.setCheckpointMode(CheckpointMode.PARTITION_COUNT));
-        assertThrows(IllegalStateException.class, () -> template.setCheckpointMode(CheckpointMode.TIME));
-        assertThrows(IllegalStateException.class, () -> template.setCheckpointMode(CheckpointMode.RECORD));
-        assertThrows(IllegalStateException.class, () -> template.setCheckpointMode(CheckpointMode.MANUAL));
     }
 
     private void verifyQueueStorageExceptionThrown(Mono<Message<?>> mono) {
