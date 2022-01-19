@@ -7,9 +7,17 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-- Fixed lock renewal delay behavior, renewal delay is more relaxed, with it happening at half the remaining time now. Issue [25259](https://github.com/Azure/azure-sdk-for-java/issues/25259).
 
 ### Other Changes
+
+## 7.5.2 (2022-01-14)
+
+### Bugs Fixed
+- Fixed lock renewal delay behavior, renewal delay is more relaxed, with it happening at half the remaining time now. Issue [25259](https://github.com/Azure/azure-sdk-for-java/issues/25259).
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.23.1` to `1.24.1`.
+- Upgraded `azure-core-amqp` from `2.3.5` to `2.3.7`.
 
 ## 7.5.1 (2021-12-08)
 ### Bugs Fixed

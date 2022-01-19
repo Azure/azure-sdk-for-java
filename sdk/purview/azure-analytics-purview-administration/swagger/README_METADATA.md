@@ -14,4 +14,5 @@ title: PurviewMetadataClient
 service-name: PurviewMetadata
 service-versions:
   - 2021-07-01-preview
+generate-samples: true
 ```
