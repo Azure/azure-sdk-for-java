@@ -19,6 +19,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.annotation.ServiceClientProtocol;
+import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
@@ -133,7 +134,7 @@ import java.util.regex.Pattern;
  */
 @ServiceClientBuilder(serviceClients = {EventHubProducerAsyncClient.class, EventHubProducerClient.class,
     EventHubConsumerAsyncClient.class, EventHubConsumerClient.class}, protocol = ServiceClientProtocol.AMQP)
-public class EventHubClientBuilder {
+public class EventHubClientBuilder implements ClientOptionsTrait<EventHubClientBuilder> {
 
     // Default number of events to fetch when creating the consumer.
     static final int DEFAULT_PREFETCH_COUNT = 500;
@@ -243,6 +244,7 @@ public class EventHubClientBuilder {
      * @param clientOptions The client options.
      * @return The updated {@link EventHubClientBuilder} object.
      */
+    @Override
     public EventHubClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;

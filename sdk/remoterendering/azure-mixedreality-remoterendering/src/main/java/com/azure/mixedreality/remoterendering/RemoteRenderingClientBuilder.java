@@ -4,6 +4,8 @@
 package com.azure.mixedreality.remoterendering;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
@@ -32,7 +34,10 @@ import java.util.UUID;
 
 /** A builder for creating instances of RemoteRenderingClient and RemoteRenderingAsyncClient. */
 @ServiceClientBuilder(serviceClients = {RemoteRenderingClient.class, RemoteRenderingAsyncClient.class})
-public final class RemoteRenderingClientBuilder implements TokenCredentialTrait<RemoteRenderingClientBuilder> {
+public final class RemoteRenderingClientBuilder implements
+    TokenCredentialTrait<RemoteRenderingClientBuilder>,
+    HttpConfigTrait<RemoteRenderingClientBuilder>,
+    ClientOptionsTrait<RemoteRenderingClientBuilder> {
 
     private final ClientLogger logger = new ClientLogger(RemoteRenderingClientBuilder.class);
 
@@ -183,6 +188,7 @@ public final class RemoteRenderingClientBuilder implements TokenCredentialTrait<
      * @param httpClient the httpClient value.
      * @return the RemoteRenderingClientBuilder.
      */
+    @Override
     public RemoteRenderingClientBuilder httpClient(HttpClient httpClient) {
         builder.httpClient(Objects.requireNonNull(httpClient, "'httpClient' cannot be null."));
         return this;
@@ -194,6 +200,7 @@ public final class RemoteRenderingClientBuilder implements TokenCredentialTrait<
      * @param httpLogOptions the httpLogOptions value.
      * @return the RemoteRenderingClientBuilder.
      */
+    @Override
     public RemoteRenderingClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         Objects.requireNonNull(httpLogOptions, "'httpLogOptions' cannot be null.");
 
@@ -208,6 +215,7 @@ public final class RemoteRenderingClientBuilder implements TokenCredentialTrait<
      * @param pipeline the pipeline value.
      * @return the RemoteRenderingClientBuilder.
      */
+    @Override
     public RemoteRenderingClientBuilder pipeline(HttpPipeline pipeline) {
         builder.pipeline(Objects.requireNonNull(pipeline, "'pipeline' cannot be null."));
         return this;
@@ -241,6 +249,7 @@ public final class RemoteRenderingClientBuilder implements TokenCredentialTrait<
      * @param customPolicy The custom Http pipeline policy to add.
      * @return the RemoteRenderingClientBuilder.
      */
+    @Override
     public RemoteRenderingClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         builder.addPolicy(Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null."));
         return this;
@@ -267,6 +276,7 @@ public final class RemoteRenderingClientBuilder implements TokenCredentialTrait<
      * @param clientOptions the {@link ClientOptions} to be set on the client.
      * @return The RemoteRenderingClientBuilder.
      */
+    @Override
     public RemoteRenderingClientBuilder clientOptions(ClientOptions clientOptions) {
         Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
         this.stsBuilder.clientOptions(clientOptions);

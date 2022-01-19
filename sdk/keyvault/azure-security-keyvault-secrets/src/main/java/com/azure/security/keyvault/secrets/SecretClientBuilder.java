@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.secrets;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
@@ -101,7 +102,8 @@ import java.util.Map;
 @ServiceClientBuilder(serviceClients = SecretClient.class)
 public final class SecretClientBuilder implements
     TokenCredentialTrait<SecretClientBuilder>,
-    HttpConfigTrait<SecretClientBuilder> {
+    HttpConfigTrait<SecretClientBuilder>,
+    ClientOptionsTrait<SecretClientBuilder> {
     private final ClientLogger logger = new ClientLogger(SecretClientBuilder.class);
     // This is properties file's name.
     private static final String AZURE_KEY_VAULT_SECRETS = "azure-key-vault-secrets.properties";
@@ -410,6 +412,7 @@ public final class SecretClientBuilder implements
      *
      * @return The updated {@link SecretClientBuilder} object.
      */
+    @Override
     public SecretClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
 

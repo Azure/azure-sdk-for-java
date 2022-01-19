@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.keys;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
@@ -100,7 +101,8 @@ import java.util.Map;
 @ServiceClientBuilder(serviceClients = KeyClient.class)
 public final class KeyClientBuilder implements
     TokenCredentialTrait<KeyClientBuilder>,
-    HttpConfigTrait<KeyClientBuilder> {
+    HttpConfigTrait<KeyClientBuilder>,
+    ClientOptionsTrait<KeyClientBuilder> {
     private final ClientLogger logger = new ClientLogger(KeyClientBuilder.class);
     // This is properties file's name.
     private static final String AZURE_KEY_VAULT_KEYS = "azure-key-vault-keys.properties";
@@ -407,6 +409,7 @@ public final class KeyClientBuilder implements
      *
      * @return The updated {@link KeyClientBuilder} object.
      */
+    @Override
     public KeyClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
 

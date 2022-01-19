@@ -7,6 +7,7 @@ import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClien
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
@@ -39,7 +40,8 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {PhoneNumbersClient.class, PhoneNumbersAsyncClient.class})
 public final class PhoneNumbersClientBuilder implements
     TokenCredentialTrait<PhoneNumbersClientBuilder>,
-    HttpConfigTrait<PhoneNumbersClientBuilder> {
+    HttpConfigTrait<PhoneNumbersClientBuilder>,
+    ClientOptionsTrait<PhoneNumbersClientBuilder> {
     private static final Map<String, String> PROPERTIES =
         CoreUtils.getProperties("azure-communication-phonenumbers.properties");
     private static final String SDK_NAME = "name";
@@ -188,6 +190,7 @@ public final class PhoneNumbersClientBuilder implements
      * @return The updated {@link PhoneNumbersClientBuilder} object.
      * @throws NullPointerException If {@code clientOptions} is {@code null}.
      */
+    @Override
     public PhoneNumbersClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
         return this;

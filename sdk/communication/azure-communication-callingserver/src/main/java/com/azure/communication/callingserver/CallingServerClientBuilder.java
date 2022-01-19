@@ -8,6 +8,7 @@ import com.azure.communication.callingserver.implementation.AzureCommunicationCa
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
@@ -65,7 +66,8 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = { CallingServerClient.class, CallingServerAsyncClient.class })
 public final class CallingServerClientBuilder implements
     TokenCredentialTrait<CallingServerClientBuilder>,
-    HttpConfigTrait<CallingServerClientBuilder> {
+    HttpConfigTrait<CallingServerClientBuilder>,
+    ClientOptionsTrait<CallingServerClientBuilder> {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final String APP_CONFIG_PROPERTIES = "azure-communication-callingserver.properties";
@@ -312,6 +314,7 @@ public final class CallingServerClientBuilder implements
      * @param clientOptions object to be applied.
      * @return Updated {@link CallingServerClientBuilder} object.
      */
+    @Override
     public CallingServerClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;

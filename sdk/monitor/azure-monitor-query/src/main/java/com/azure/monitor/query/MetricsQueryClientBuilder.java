@@ -4,6 +4,7 @@
 package com.azure.monitor.query;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
@@ -45,7 +46,8 @@ import com.azure.monitor.query.implementation.metricsnamespaces.MetricsNamespace
 @ServiceClientBuilder(serviceClients = {MetricsQueryClient.class, MetricsQueryAsyncClient.class})
 public final class MetricsQueryClientBuilder implements
     TokenCredentialTrait<MetricsQueryClientBuilder>,
-    HttpConfigTrait<MetricsQueryClientBuilder> {
+    HttpConfigTrait<MetricsQueryClientBuilder>,
+    ClientOptionsTrait<MetricsQueryClientBuilder> {
 
     private final MonitorManagementClientImplBuilder innerMetricsBuilder = new MonitorManagementClientImplBuilder();
     private final MetricsDefinitionsClientImplBuilder innerMetricsDefinitionsBuilder =
@@ -163,6 +165,7 @@ public final class MetricsQueryClientBuilder implements
      * @param clientOptions The {@link ClientOptions}.
      * @return the {@link MetricsQueryClientBuilder}
      */
+    @Override
     public MetricsQueryClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;

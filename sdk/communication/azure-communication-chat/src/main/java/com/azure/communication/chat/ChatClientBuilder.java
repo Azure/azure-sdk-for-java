@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.List;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -34,7 +35,9 @@ import com.azure.core.util.CoreUtils;
  * Builder for creating clients of Azure Communication Service Chat
  */
 @ServiceClientBuilder(serviceClients = {ChatAsyncClient.class, ChatClient.class})
-public final class ChatClientBuilder implements HttpConfigTrait<ChatClientBuilder> {
+public final class ChatClientBuilder implements
+    HttpConfigTrait<ChatClientBuilder>,
+    ClientOptionsTrait<ChatClientBuilder> {
 
     private String endpoint;
     private HttpClient httpClient;
@@ -91,6 +94,7 @@ public final class ChatClientBuilder implements HttpConfigTrait<ChatClientBuilde
      * @param clientOptions The client options.
      * @return The updated ChatClientBuilder object.
      */
+    @Override
     public ChatClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;

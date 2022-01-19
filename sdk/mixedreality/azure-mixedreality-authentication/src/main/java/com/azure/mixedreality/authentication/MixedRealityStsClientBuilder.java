@@ -4,6 +4,7 @@
 package com.azure.mixedreality.authentication;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
@@ -48,7 +49,8 @@ import java.util.UUID;
 @ServiceClientBuilder(serviceClients = {MixedRealityStsClient.class, MixedRealityStsAsyncClient.class})
 public final class MixedRealityStsClientBuilder implements
     TokenCredentialTrait<MixedRealityStsClientBuilder>,
-    HttpConfigTrait<MixedRealityStsClientBuilder> {
+    HttpConfigTrait<MixedRealityStsClientBuilder>,
+    ClientOptionsTrait<MixedRealityStsClientBuilder> {
     private static final String MIXED_REALITY_STS_PROPERTIES = "azure-mixedreality-authentication.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
@@ -211,6 +213,7 @@ public final class MixedRealityStsClientBuilder implements
      * @param clientOptions the {@link ClientOptions} to be set on the client.
      * @return The updated {@link MixedRealityStsClientBuilder} object.
      */
+    @Override
     public MixedRealityStsClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
 

@@ -9,6 +9,7 @@ import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilde
 import com.azure.ai.formrecognizer.implementation.util.Constants;
 import com.azure.ai.formrecognizer.implementation.util.Utility;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
@@ -88,7 +89,8 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {DocumentModelAdministrationAsyncClient.class, DocumentModelAdministrationClient.class})
 public final class DocumentModelAdministrationClientBuilder implements
     TokenCredentialTrait<DocumentModelAdministrationClientBuilder>,
-    HttpConfigTrait<DocumentModelAdministrationClientBuilder> {
+    HttpConfigTrait<DocumentModelAdministrationClientBuilder>,
+    ClientOptionsTrait<DocumentModelAdministrationClientBuilder> {
     private final ClientLogger logger = new ClientLogger(DocumentModelAdministrationClientBuilder.class);
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -252,6 +254,7 @@ public final class DocumentModelAdministrationClientBuilder implements
      * @param clientOptions The client options.
      * @return The updated DocumentModelAdministrationClientBuilder object.
      */
+    @Override
     public DocumentModelAdministrationClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;

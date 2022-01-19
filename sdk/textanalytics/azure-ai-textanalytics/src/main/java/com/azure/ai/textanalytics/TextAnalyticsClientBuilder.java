@@ -7,6 +7,7 @@ import com.azure.ai.textanalytics.implementation.Constants;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
@@ -101,7 +102,8 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {TextAnalyticsAsyncClient.class, TextAnalyticsClient.class})
 public final class TextAnalyticsClientBuilder implements
     TokenCredentialTrait<TextAnalyticsClientBuilder>,
-    HttpConfigTrait<TextAnalyticsClientBuilder> {
+    HttpConfigTrait<TextAnalyticsClientBuilder>,
+    ClientOptionsTrait<TextAnalyticsClientBuilder> {
     private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
     private static final String NAME = "name";
     private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
@@ -350,6 +352,7 @@ public final class TextAnalyticsClientBuilder implements
      * @param clientOptions The client options.
      * @return The updated TextAnalyticsClientBuilder object.
      */
+    @Override
     public TextAnalyticsClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;

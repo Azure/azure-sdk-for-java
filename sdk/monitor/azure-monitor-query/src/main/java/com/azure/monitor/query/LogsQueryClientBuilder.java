@@ -4,6 +4,7 @@
 package com.azure.monitor.query;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
@@ -43,7 +44,8 @@ import com.azure.monitor.query.implementation.logs.AzureLogAnalyticsImplBuilder;
 @ServiceClientBuilder(serviceClients = {LogsQueryClient.class, LogsQueryAsyncClient.class})
 public final class LogsQueryClientBuilder implements
     TokenCredentialTrait<LogsQueryClientBuilder>,
-    HttpConfigTrait<LogsQueryClientBuilder> {
+    HttpConfigTrait<LogsQueryClientBuilder>,
+    ClientOptionsTrait<LogsQueryClientBuilder> {
     private final ClientLogger logger = new ClientLogger(LogsQueryClientBuilder.class);
     private final AzureLogAnalyticsImplBuilder innerLogBuilder = new AzureLogAnalyticsImplBuilder();
     private ClientOptions clientOptions;
@@ -139,6 +141,7 @@ public final class LogsQueryClientBuilder implements
      * @param clientOptions The {@link ClientOptions}.
      * @return the {@link LogsQueryClientBuilder}.
      */
+    @Override
     public LogsQueryClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;

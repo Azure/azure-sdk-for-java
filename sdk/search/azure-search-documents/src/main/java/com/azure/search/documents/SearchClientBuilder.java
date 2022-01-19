@@ -4,6 +4,7 @@
 package com.azure.search.documents;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
@@ -82,7 +83,8 @@ import static com.azure.search.documents.implementation.util.Utility.getDefaultS
 @ServiceClientBuilder(serviceClients = {SearchClient.class, SearchAsyncClient.class})
 public final class SearchClientBuilder implements
     TokenCredentialTrait<SearchClientBuilder>,
-    HttpConfigTrait<SearchClientBuilder> {
+    HttpConfigTrait<SearchClientBuilder>,
+    ClientOptionsTrait<SearchClientBuilder> {
     private static final boolean DEFAULT_AUTO_FLUSH = true;
     private static final int DEFAULT_INITIAL_BATCH_ACTION_COUNT = 512;
     private static final Duration DEFAULT_FLUSH_INTERVAL = Duration.ofSeconds(60);
@@ -272,6 +274,7 @@ public final class SearchClientBuilder implements
      * @param clientOptions The client options.
      * @return The updated SearchClientBuilder object.
      */
+    @Override
     public SearchClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;

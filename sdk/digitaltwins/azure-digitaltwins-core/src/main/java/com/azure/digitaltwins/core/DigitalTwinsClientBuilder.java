@@ -4,6 +4,7 @@
 package com.azure.digitaltwins.core;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
@@ -42,7 +43,8 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {DigitalTwinsClient.class, DigitalTwinsAsyncClient.class})
 public final class DigitalTwinsClientBuilder implements
     TokenCredentialTrait<DigitalTwinsClientBuilder>,
-    HttpConfigTrait<DigitalTwinsClientBuilder> {
+    HttpConfigTrait<DigitalTwinsClientBuilder>,
+    ClientOptionsTrait<DigitalTwinsClientBuilder> {
     private static final String[] ADT_PUBLIC_SCOPE = new String[]{"https://digitaltwins.azure.net" + "/.default"};
 
     // This is the name of the properties file in this repo that contains the default properties
@@ -360,6 +362,7 @@ public final class DigitalTwinsClientBuilder implements
      * @param clientOptions the {@link ClientOptions} to be set on the client.
      * @return The updated KeyClientBuilder object.
      */
+    @Override
     public DigitalTwinsClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;

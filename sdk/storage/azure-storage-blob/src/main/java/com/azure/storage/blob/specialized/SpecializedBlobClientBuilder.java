@@ -4,6 +4,7 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureSasCredential;
@@ -61,7 +62,8 @@ import java.util.Objects;
 })
 public final class SpecializedBlobClientBuilder implements
     TokenCredentialTrait<SpecializedBlobClientBuilder>,
-    HttpConfigTrait<SpecializedBlobClientBuilder> {
+    HttpConfigTrait<SpecializedBlobClientBuilder>,
+    ClientOptionsTrait<SpecializedBlobClientBuilder> {
     private final ClientLogger logger = new ClientLogger(SpecializedBlobClientBuilder.class);
 
     private String endpoint;
@@ -632,6 +634,7 @@ public final class SpecializedBlobClientBuilder implements
      * @return the updated SpecializedBlobClientBuilder object
      * @throws NullPointerException If {@code clientOptions} is {@code null}.
      */
+    @Override
     public SpecializedBlobClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
         return this;

@@ -8,6 +8,7 @@ import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImpl;
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
@@ -39,7 +40,8 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {SmsClient.class, SmsAsyncClient.class})
 public final class SmsClientBuilder implements
     TokenCredentialTrait<SmsClientBuilder>,
-    HttpConfigTrait<SmsClientBuilder> {
+    HttpConfigTrait<SmsClientBuilder>,
+    ClientOptionsTrait<SmsClientBuilder> {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final String APP_CONFIG_PROPERTIES = "azure-communication-sms.properties";
@@ -243,6 +245,7 @@ public final class SmsClientBuilder implements
      * @param clientOptions object to be applied
      * @return SmsClientBuilder
      */
+    @Override
     public SmsClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;

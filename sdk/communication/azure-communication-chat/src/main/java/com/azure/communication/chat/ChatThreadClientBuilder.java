@@ -8,6 +8,7 @@ import com.azure.communication.chat.implementation.AzureCommunicationChatService
 import com.azure.communication.chat.implementation.CommunicationBearerTokenCredential;
 import com.azure.communication.common.CommunicationTokenCredential;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -33,7 +34,9 @@ import java.util.Objects;
  * Builder for creating clients of Azure Communication Service Chat Threads
  */
 @ServiceClientBuilder(serviceClients = {ChatThreadAsyncClient.class, ChatThreadClient.class})
-public final class ChatThreadClientBuilder implements HttpConfigTrait<ChatThreadClientBuilder> {
+public final class ChatThreadClientBuilder implements
+    HttpConfigTrait<ChatThreadClientBuilder>,
+    ClientOptionsTrait<ChatThreadClientBuilder> {
 
     private String chatThreadId;
     private String endpoint;
@@ -91,6 +94,7 @@ public final class ChatThreadClientBuilder implements HttpConfigTrait<ChatThread
      * @param clientOptions The client options.
      * @return The updated ChatThreadClientBuilder object.
      */
+    @Override
     public ChatThreadClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;

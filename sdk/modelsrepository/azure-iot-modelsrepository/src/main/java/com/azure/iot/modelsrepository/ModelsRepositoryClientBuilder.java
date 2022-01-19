@@ -4,6 +4,7 @@
 package com.azure.iot.modelsrepository;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
@@ -37,7 +38,9 @@ import java.util.Objects;
  * #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired client.
  */
 @ServiceClientBuilder(serviceClients = {ModelsRepositoryClient.class, ModelsRepositoryAsyncClient.class})
-public final class ModelsRepositoryClientBuilder implements HttpConfigTrait<ModelsRepositoryClientBuilder> {
+public final class ModelsRepositoryClientBuilder implements
+    HttpConfigTrait<ModelsRepositoryClientBuilder>,
+    ClientOptionsTrait<ModelsRepositoryClientBuilder> {
     // This is the name of the properties file in this repo that contains the default properties
     private static final String MODELS_REPOSITORY_PROPERTIES = "azure-iot-modelsrepository.properties";
 
@@ -330,6 +333,7 @@ public final class ModelsRepositoryClientBuilder implements HttpConfigTrait<Mode
      * @param clientOptions the {@link ClientOptions} to be set on the client.
      * @return The updated KeyClientBuilder object.
      */
+    @Override
     public ModelsRepositoryClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;

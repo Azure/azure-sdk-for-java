@@ -8,6 +8,7 @@ import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAd
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.ai.metricsadvisor.MetricsAdvisorServiceVersion;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
@@ -106,7 +107,8 @@ import java.util.Objects;
     MetricsAdvisorAdministrationClient.class})
 public final class MetricsAdvisorAdministrationClientBuilder implements
     TokenCredentialTrait<MetricsAdvisorAdministrationClientBuilder>,
-    HttpConfigTrait<MetricsAdvisorAdministrationClientBuilder> {
+    HttpConfigTrait<MetricsAdvisorAdministrationClientBuilder>,
+    ClientOptionsTrait<MetricsAdvisorAdministrationClientBuilder> {
 
     private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
     private static final String CONTENT_TYPE_HEADER_VALUE = ContentType.APPLICATION_JSON;
@@ -335,6 +337,7 @@ public final class MetricsAdvisorAdministrationClientBuilder implements
      * @param clientOptions The client options.
      * @return The updated MetricsAdvisorAdministrationClientBuilder object.
      */
+    @Override
     public MetricsAdvisorAdministrationClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;

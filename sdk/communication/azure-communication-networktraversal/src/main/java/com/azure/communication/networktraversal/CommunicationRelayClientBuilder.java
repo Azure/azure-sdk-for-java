@@ -8,6 +8,7 @@ import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.networktraversal.implementation.CommunicationNetworkingClientImpl;
 import com.azure.communication.networktraversal.implementation.CommunicationNetworkingClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
@@ -39,7 +40,8 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {CommunicationRelayClient.class, CommunicationRelayAsyncClient.class})
 public final class CommunicationRelayClientBuilder implements
     TokenCredentialTrait<CommunicationRelayClientBuilder>,
-    HttpConfigTrait<CommunicationRelayClientBuilder> {
+    HttpConfigTrait<CommunicationRelayClientBuilder>,
+    ClientOptionsTrait<CommunicationRelayClientBuilder> {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
@@ -149,12 +151,13 @@ public final class CommunicationRelayClientBuilder implements
         return this;
     }
 
-        /**
+    /**
      * Sets the client options for all the requests made through the client.
      *
      * @param clientOptions {@link ClientOptions}.
      * @return The updated {@link CommunicationRelayClientBuilder} object.
      */
+    @Override
     public CommunicationRelayClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;

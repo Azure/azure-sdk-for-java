@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
@@ -67,7 +68,8 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {SearchIndexerClient.class, SearchIndexerAsyncClient.class})
 public class SearchIndexerClientBuilder implements
     TokenCredentialTrait<SearchIndexerClientBuilder>,
-    HttpConfigTrait<SearchIndexerClientBuilder> {
+    HttpConfigTrait<SearchIndexerClientBuilder>,
+    ClientOptionsTrait<SearchIndexerClientBuilder> {
     private final ClientLogger logger = new ClientLogger(SearchIndexerClientBuilder.class);
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -203,6 +205,7 @@ public class SearchIndexerClientBuilder implements
      * @param clientOptions The client options.
      * @return The updated SearchIndexerClientBuilder object.
      */
+    @Override
     public SearchIndexerClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;

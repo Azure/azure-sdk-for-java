@@ -4,6 +4,7 @@
 package com.azure.data.schemaregistry;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
@@ -96,7 +97,8 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {SchemaRegistryAsyncClient.class, SchemaRegistryClient.class})
 public class SchemaRegistryClientBuilder implements
     TokenCredentialTrait<SchemaRegistryClientBuilder>,
-    HttpConfigTrait<SchemaRegistryClientBuilder> {
+    HttpConfigTrait<SchemaRegistryClientBuilder>,
+    ClientOptionsTrait<SchemaRegistryClientBuilder> {
     private final ClientLogger logger = new ClientLogger(SchemaRegistryClientBuilder.class);
 
     private static final String DEFAULT_SCOPE = "https://eventhubs.azure.net/.default";
@@ -226,6 +228,7 @@ public class SchemaRegistryClientBuilder implements
      * @param clientOptions {@link ClientOptions}.
      * @return The updated SchemaRegistryClientBuilder object.
      */
+    @Override
     public SchemaRegistryClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;

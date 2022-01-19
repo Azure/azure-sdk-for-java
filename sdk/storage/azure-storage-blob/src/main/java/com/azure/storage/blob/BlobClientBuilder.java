@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureSasCredential;
@@ -53,7 +54,8 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {BlobClient.class, BlobAsyncClient.class})
 public final class BlobClientBuilder implements
     TokenCredentialTrait<BlobClientBuilder>,
-    HttpConfigTrait<BlobClientBuilder> {
+    HttpConfigTrait<BlobClientBuilder>,
+    ClientOptionsTrait<BlobClientBuilder> {
     private final ClientLogger logger = new ClientLogger(BlobClientBuilder.class);
 
     private String endpoint;
@@ -471,6 +473,7 @@ public final class BlobClientBuilder implements
      * @return the updated BlobClientBuilder object
      * @throws NullPointerException If {@code clientOptions} is {@code null}.
      */
+    @Override
     public BlobClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
         return this;

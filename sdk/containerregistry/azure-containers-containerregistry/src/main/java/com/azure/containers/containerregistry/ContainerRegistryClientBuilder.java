@@ -4,6 +4,7 @@ package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
@@ -110,7 +111,8 @@ import java.util.Objects;
     })
 public final class ContainerRegistryClientBuilder implements
     TokenCredentialTrait<ContainerRegistryClientBuilder>,
-    HttpConfigTrait<ContainerRegistryClientBuilder> {
+    HttpConfigTrait<ContainerRegistryClientBuilder>,
+    ClientOptionsTrait<ContainerRegistryClientBuilder> {
     private final ClientLogger logger = new ClientLogger(ContainerRegistryClientBuilder.class);
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
@@ -232,6 +234,7 @@ public final class ContainerRegistryClientBuilder implements
      *
      * @return the updated {@link ContainerRegistryClientBuilder} object
      */
+    @Override
     public ContainerRegistryClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;

@@ -3,6 +3,7 @@
 package com.azure.storage.queue;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureSasCredential;
@@ -124,7 +125,8 @@ import java.util.function.Function;
 @ServiceClientBuilder(serviceClients = {QueueClient.class, QueueAsyncClient.class})
 public final class QueueClientBuilder implements
     TokenCredentialTrait<QueueClientBuilder>,
-    HttpConfigTrait<QueueClientBuilder> {
+    HttpConfigTrait<QueueClientBuilder>,
+    ClientOptionsTrait<QueueClientBuilder> {
     private final ClientLogger logger = new ClientLogger(QueueClientBuilder.class);
 
     private String endpoint;
@@ -453,6 +455,7 @@ public final class QueueClientBuilder implements
      * @return the updated QueueClientBuilder object
      * @throws NullPointerException If {@code clientOptions} is {@code null}.
      */
+    @Override
     public QueueClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
         return this;

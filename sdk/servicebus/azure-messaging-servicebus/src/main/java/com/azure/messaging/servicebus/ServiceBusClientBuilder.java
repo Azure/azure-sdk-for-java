@@ -19,6 +19,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.annotation.ServiceClientProtocol;
+import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
@@ -173,7 +174,7 @@ import java.util.regex.Pattern;
 @ServiceClientBuilder(serviceClients = {ServiceBusReceiverAsyncClient.class, ServiceBusSenderAsyncClient.class,
     ServiceBusSenderClient.class, ServiceBusReceiverClient.class, ServiceBusProcessorClient.class},
     protocol = ServiceClientProtocol.AMQP)
-public final class ServiceBusClientBuilder {
+public final class ServiceBusClientBuilder implements ClientOptionsTrait<ServiceBusClientBuilder> {
     private static final AmqpRetryOptions DEFAULT_RETRY =
         new AmqpRetryOptions().setTryTimeout(ServiceBusConstants.OPERATION_TIMEOUT);
 
@@ -229,6 +230,7 @@ public final class ServiceBusClientBuilder {
      *
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
+    @Override
     public ServiceBusClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;

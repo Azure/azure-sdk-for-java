@@ -4,6 +4,7 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpClient;
@@ -117,7 +118,9 @@ import java.util.Objects;
  * @see StorageSharedKeyCredential
  */
 @ServiceClientBuilder(serviceClients = {ShareServiceClient.class, ShareServiceAsyncClient.class})
-public final class ShareServiceClientBuilder implements HttpConfigTrait<ShareServiceClientBuilder> {
+public final class ShareServiceClientBuilder implements
+    HttpConfigTrait<ShareServiceClientBuilder>,
+    ClientOptionsTrait<ShareServiceClientBuilder> {
     private final ClientLogger logger = new ClientLogger(ShareServiceClientBuilder.class);
 
     private String endpoint;
@@ -416,6 +419,7 @@ public final class ShareServiceClientBuilder implements HttpConfigTrait<ShareSer
      * @return the updated ShareServiceClientBuilder object
      * @throws NullPointerException If {@code clientOptions} is {@code null}.
      */
+    @Override
     public ShareServiceClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
         return this;

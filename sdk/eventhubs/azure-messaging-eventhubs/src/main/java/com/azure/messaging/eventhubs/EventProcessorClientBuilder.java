@@ -8,6 +8,7 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
@@ -96,7 +97,7 @@ import java.util.function.Supplier;
  * @see EventHubConsumerAsyncClient
  */
 @ServiceClientBuilder(serviceClients = EventProcessorClient.class)
-public class EventProcessorClientBuilder {
+public class EventProcessorClientBuilder implements ClientOptionsTrait<EventProcessorClientBuilder> {
     /**
      * Default load balancing update interval.
      */
@@ -316,6 +317,7 @@ public class EventProcessorClientBuilder {
      * @param clientOptions The client options.
      * @return The updated {@link EventProcessorClientBuilder} object.
      */
+    @Override
     public EventProcessorClientBuilder clientOptions(ClientOptions clientOptions) {
         eventHubClientBuilder.clientOptions(clientOptions);
         return this;

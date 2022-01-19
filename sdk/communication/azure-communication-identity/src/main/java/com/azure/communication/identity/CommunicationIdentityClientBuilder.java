@@ -8,6 +8,7 @@ import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.identity.implementation.CommunicationIdentityClientImpl;
 import com.azure.communication.identity.implementation.CommunicationIdentityClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
@@ -39,7 +40,8 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {CommunicationIdentityClient.class, CommunicationIdentityAsyncClient.class})
 public final class CommunicationIdentityClientBuilder implements
     TokenCredentialTrait<CommunicationIdentityClientBuilder>,
-    HttpConfigTrait<CommunicationIdentityClientBuilder> {
+    HttpConfigTrait<CommunicationIdentityClientBuilder>,
+    ClientOptionsTrait<CommunicationIdentityClientBuilder> {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
@@ -151,13 +153,14 @@ public final class CommunicationIdentityClientBuilder implements
         return this;
     }
 
-        /**
+    /**
      * Sets the client options for all the requests made through the client.
      *
      * @param clientOptions {@link ClientOptions}.
      * @return The updated {@link CommunicationIdentityClientBuilder} object.
      * @throws NullPointerException If {@code clientOptions} is {@code null}.
      */
+    @Override
     public CommunicationIdentityClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
         return this;

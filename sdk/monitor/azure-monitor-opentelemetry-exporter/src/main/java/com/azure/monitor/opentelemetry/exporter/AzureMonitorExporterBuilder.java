@@ -3,6 +3,7 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
+import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
@@ -37,7 +38,8 @@ import java.util.Objects;
  */
 public final class AzureMonitorExporterBuilder implements
     TokenCredentialTrait<AzureMonitorExporterBuilder>,
-    HttpConfigTrait<AzureMonitorExporterBuilder> {
+    HttpConfigTrait<AzureMonitorExporterBuilder>,
+    ClientOptionsTrait<AzureMonitorExporterBuilder> {
     private static final String APPLICATIONINSIGHTS_CONNECTION_STRING = "APPLICATIONINSIGHTS_CONNECTION_STRING";
     private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE = "https://monitor.azure.com//.default";
     private static final SerializerAdapter SERIALIZER_ADAPTER;
@@ -170,6 +172,7 @@ public final class AzureMonitorExporterBuilder implements
      * @param clientOptions The client options.
      * @return The updated {@link AzureMonitorExporterBuilder} object.
      */
+    @Override
     public AzureMonitorExporterBuilder clientOptions(ClientOptions clientOptions) {
         restServiceClientBuilder.clientOptions(clientOptions);
         return this;

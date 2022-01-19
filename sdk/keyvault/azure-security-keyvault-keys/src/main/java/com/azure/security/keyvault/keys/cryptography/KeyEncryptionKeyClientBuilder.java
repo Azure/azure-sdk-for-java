@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
@@ -54,7 +55,8 @@ import reactor.core.publisher.Mono;
 @ServiceClientBuilder(serviceClients = {KeyEncryptionKeyClient.class, KeyEncryptionKeyAsyncClient.class})
 public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyResolver, AsyncKeyEncryptionKeyResolver,
     TokenCredentialTrait<KeyEncryptionKeyClientBuilder>,
-    HttpConfigTrait<KeyEncryptionKeyClientBuilder> {
+    HttpConfigTrait<KeyEncryptionKeyClientBuilder>,
+    ClientOptionsTrait<KeyEncryptionKeyClientBuilder> {
     private final ClientLogger logger = new ClientLogger(KeyEncryptionKeyClientBuilder.class);
     private final CryptographyClientBuilder builder;
 
@@ -318,6 +320,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
      */
+    @Override
     public KeyEncryptionKeyClientBuilder clientOptions(ClientOptions clientOptions) {
         builder.clientOptions(clientOptions);
 
