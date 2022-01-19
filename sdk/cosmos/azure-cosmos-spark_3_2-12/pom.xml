@@ -462,7 +462,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>flatten-maven-plugin</artifactId>
-        <version>1.2.7</version> <!-- {x-version-update;cosmos_org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
+        <version>1.2.7</version> <!-- {x-version-update;org.codehaus.mojo:flatten-maven-plugin;external_dependency} -->
         <configuration>
           <updatePomFile>true</updatePomFile>
           <flattenMode>ossrh</flattenMode>
