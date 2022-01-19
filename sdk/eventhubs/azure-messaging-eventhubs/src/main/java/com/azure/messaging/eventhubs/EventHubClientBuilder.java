@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.client.traits.AmqpConfigTrait;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
@@ -137,6 +138,7 @@ import java.util.regex.Pattern;
     EventHubConsumerAsyncClient.class, EventHubConsumerClient.class}, protocol = ServiceClientProtocol.AMQP)
 public class EventHubClientBuilder implements
     TokenCredentialTrait<EventHubClientBuilder>,
+    AmqpConfigTrait<EventHubClientBuilder>,
     ClientOptionsTrait<EventHubClientBuilder> {
 
     // Default number of events to fetch when creating the consumer.
@@ -526,6 +528,7 @@ public class EventHubClientBuilder implements
      *
      * @return The updated {@link EventHubClientBuilder} object.
      */
+    @Override
     public EventHubClientBuilder proxyOptions(ProxyOptions proxyOptions) {
         this.proxyOptions = proxyOptions;
         return this;
@@ -539,6 +542,7 @@ public class EventHubClientBuilder implements
      *
      * @return The updated {@link EventHubClientBuilder} object.
      */
+    @Override
     public EventHubClientBuilder transportType(AmqpTransportType transport) {
         this.transport = transport;
         return this;
@@ -550,8 +554,23 @@ public class EventHubClientBuilder implements
      * @param retryOptions The retry policy to use.
      *
      * @return The updated {@link EventHubClientBuilder} object.
+     * @deprecated Replaced by {@link #retryOptions(AmqpRetryOptions)}.
      */
+    @Deprecated
     public EventHubClientBuilder retry(AmqpRetryOptions retryOptions) {
+        this.retryOptions = retryOptions;
+        return this;
+    }
+
+    /**
+     * Sets the retry policy for {@link EventHubAsyncClient}. If not specified, the default retry options are used.
+     *
+     * @param retryOptions The retry policy to use.
+     *
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    @Override
+    public EventHubClientBuilder retryOptions(AmqpRetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
     }

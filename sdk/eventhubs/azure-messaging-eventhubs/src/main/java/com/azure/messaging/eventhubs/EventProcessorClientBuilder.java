@@ -6,6 +6,7 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.client.traits.AmqpConfigTrait;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ClientOptionsTrait;
@@ -100,6 +101,7 @@ import java.util.function.Supplier;
 @ServiceClientBuilder(serviceClients = EventProcessorClient.class)
 public class EventProcessorClientBuilder implements
     TokenCredentialTrait<EventProcessorClientBuilder>,
+    AmqpConfigTrait<EventProcessorClientBuilder>,
     ClientOptionsTrait<EventProcessorClientBuilder> {
     /**
      * Default load balancing update interval.
@@ -327,6 +329,7 @@ public class EventProcessorClientBuilder implements
      * @param proxyOptions The proxy options to use.
      * @return The updated {@link EventProcessorClientBuilder} object.
      */
+    @Override
     public EventProcessorClientBuilder proxyOptions(ProxyOptions proxyOptions) {
         eventHubClientBuilder.proxyOptions(proxyOptions);
         return this;
@@ -339,6 +342,7 @@ public class EventProcessorClientBuilder implements
      * @param transport The transport type to use.
      * @return The updated {@link EventProcessorClientBuilder} object.
      */
+    @Override
     public EventProcessorClientBuilder transportType(AmqpTransportType transport) {
         eventHubClientBuilder.transportType(transport);
         return this;
@@ -349,9 +353,23 @@ public class EventProcessorClientBuilder implements
      *
      * @param retryOptions The retry policy to use.
      * @return The updated {@link EventProcessorClientBuilder} object.
+     * @deprecated Replaced by {@link #retryOptions(AmqpRetryOptions)}.
      */
+    @Deprecated
     public EventProcessorClientBuilder retry(AmqpRetryOptions retryOptions) {
-        eventHubClientBuilder.retry(retryOptions);
+        eventHubClientBuilder.retryOptions(retryOptions);
+        return this;
+    }
+
+    /**
+     * Sets the retry policy for {@link EventHubAsyncClient}. If not specified, the default retry options are used.
+     *
+     * @param retryOptions The retry policy to use.
+     * @return The updated {@link EventProcessorClientBuilder} object.
+     */
+    @Override
+    public EventProcessorClientBuilder retryOptions(AmqpRetryOptions retryOptions) {
+        eventHubClientBuilder.retryOptions(retryOptions);
         return this;
     }
 

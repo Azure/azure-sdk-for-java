@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.client.traits.AmqpConfigTrait;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
@@ -177,6 +178,7 @@ import java.util.regex.Pattern;
     protocol = ServiceClientProtocol.AMQP)
 public final class ServiceBusClientBuilder implements
     TokenCredentialTrait<ServiceBusClientBuilder>,
+    AmqpConfigTrait<ServiceBusClientBuilder>,
     ClientOptionsTrait<ServiceBusClientBuilder> {
     private static final AmqpRetryOptions DEFAULT_RETRY =
         new AmqpRetryOptions().setTryTimeout(ServiceBusConstants.OPERATION_TIMEOUT);
@@ -456,6 +458,7 @@ public final class ServiceBusClientBuilder implements
      *
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
+    @Override
     public ServiceBusClientBuilder proxyOptions(ProxyOptions proxyOptions) {
         this.proxyOptions = proxyOptions;
         return this;
@@ -479,6 +482,7 @@ public final class ServiceBusClientBuilder implements
      *
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
+    @Override
     public ServiceBusClientBuilder retryOptions(AmqpRetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
@@ -504,6 +508,7 @@ public final class ServiceBusClientBuilder implements
      *
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
+    @Override
     public ServiceBusClientBuilder transportType(AmqpTransportType transportType) {
         this.transport = transportType;
         return this;
