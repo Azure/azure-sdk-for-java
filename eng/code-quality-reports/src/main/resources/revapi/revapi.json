@@ -156,6 +156,18 @@
         },
         {
           "regex": true,
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "(class|enum) com\\.azure\\.messaging\\.eventgrid\\.*",
+          "justification": "SDK classes are allowed to be exposed by dependencies using them."
+        },
+        {
+          "regex": true,
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "(interface|enum) io\\.cloudevents.*",
+          "justification": "Azure Event Grid cloud native cloud event is allowed to use CloudEvents types in public APIs as it implements interfaces defined by CloudEvents"
+        },
+        {
+          "regex": true,
           "code": "java\\.annotation\\.added",
           "old": ".*",
           "annotationType": "com\\.azure\\.core\\.annotation\\.Service(Method|Client)",
