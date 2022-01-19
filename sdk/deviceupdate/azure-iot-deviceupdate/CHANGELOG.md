@@ -2,6 +2,10 @@
 
 ## 1.0.0-beta.2 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
 This is a new version of client SDK. Changes are
 
 - Remove models, use `BinaryData` as request and response payload.
@@ -9,6 +13,11 @@ This is a new version of client SDK. Changes are
 - Add `RequestOptions` to client method parameters.
 - Return type of client method is always `Response` except paging and long-running operations.
 - Allow users to set `ServiceVersion` in client builder.
+
+### Bugs Fixed
+
+### Other Changes
+
 
 ## 1.0.0-beta.1 (2021-03-02)
 This is the initial release of Azure Device Update for IoT Hub library. For more information, please see the [README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/deviceupdate/azure-iot-deviceupdate/README.md) 
