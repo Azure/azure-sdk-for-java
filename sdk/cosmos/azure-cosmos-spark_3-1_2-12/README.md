@@ -10,9 +10,9 @@ https://github.com/Azure/azure-sdk-for-java/issues/new
 
 ### Documentation
 
-- [Getting started](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/quick-start.md)
-- [Catalog API](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/catalog-api.md)
-- [Configuration Parameter Reference](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/configuration-reference.md)
+- [Getting started](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3_2-12/docs/quick-start.md)
+- [Catalog API](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3_2-12/docs/catalog-api.md)
+- [Configuration Parameter Reference](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3_2-12/docs/configuration-reference.md)
 
 [//]: # (//TODO: moderakh add more sections)
 [//]: # (//TODO: moderakh Enable Client Logging)
@@ -24,8 +24,10 @@ https://github.com/Azure/azure-sdk-for-java/issues/new
 
 ### Version Compatibility
 
+#### azure-cosmos-spark_3-1_2-12
 | Connector     | Supported Spark Versions | Minimum Java Version | Supported Scala Versions | Supported Databricks Runtimes |
 | ------------- | ------------------------ | -------------------- | -----------------------  | ----------------------------- |
+| 4.6.0         | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
 | 4.5.3         | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
 | 4.5.2         | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
 | 4.5.1         | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
@@ -41,6 +43,11 @@ https://github.com/Azure/azure-sdk-for-java/issues/new
 | 4.0.0-beta.3  | 3.1.1                    | 8                    | 2.12                     | 8.\*                          |
 | 4.0.0-beta.2  | 3.1.1                    | 8                    | 2.12                     | 8.\*                          |
 | 4.0.0-beta.1  | 3.1.1                    | 8                    | 2.12                     | 8.\*                          |
+
+#### azure-cosmos-spark_3-2_2-12
+| Connector     | Supported Spark Versions | Minimum Java Version | Supported Scala Versions | Supported Databricks Runtimes |
+| ------------- | ------------------------ | -------------------- | -----------------------  | ----------------------------- |
+| 4.6.0         | 3.2.0 - 3.2.1            | 8                    | 2.12                     | 10.\*                         |
 
 ### Download
 

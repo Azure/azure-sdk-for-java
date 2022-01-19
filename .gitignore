@@ -96,3 +96,7 @@ scalastyle-output.xml
 # Emacs #
 
 #changebundle.txt#
+
+# Flatten-pom
+.flattened-pom.xml
+flatter.pom
