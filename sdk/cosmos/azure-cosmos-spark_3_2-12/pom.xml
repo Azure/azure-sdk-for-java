@@ -462,7 +462,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>flatten-maven-plugin</artifactId>
-        <version>1.2.7</version> <!-- {x-version-update;org.codehaus.mojo:flatten-maven-plugin;external_dependency} -->
+        <version>1.2.7</version> <!-- {x-version-update;cosmos_org.codehaus.mojo:flatten-maven-plugin;external_dependency} -->
         <configuration>
           <updatePomFile>true</updatePomFile>
           <flattenMode>ossrh</flattenMode>
@@ -488,7 +488,7 @@
       <plugin>
         <groupId>com.coderplus.maven.plugins</groupId>
         <artifactId>copy-rename-maven-plugin</artifactId>
-        <version>1.0</version> <!-- {x-version-update;cosmos_com.coderplus.maven.plugins:copy-rename-maven-plugin;external_dependency} -->
+        <version>1.0.1</version> <!-- {x-version-update;cosmos_com.coderplus.maven.plugins:copy-rename-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>copy-file</id>
