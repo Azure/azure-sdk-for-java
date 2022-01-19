@@ -93,9 +93,9 @@ public class EventGridCloudNativeEventPublisherTests extends TestBase {
         // When publishing to an Event Grid domain with cloud events, the cloud event source is used as the domain topic.
         // The Event Grid service doesn't support using an absolute URI for a domain topic, so you would need to do
         // something like the following to integrate with the cloud native cloud events:
-        builder.endpoint(System.getenv("AZURE_EVENTGRID_CLOUDEVENT_DOMAIN_ENDPOINT"))
+        builder.endpoint(getEndpoint("AZURE_EVENTGRID_CLOUDEVENT_DOMAIN_ENDPOINT"))
             // Event Grid Domain endpoint with CloudEvent Schema
-            .credential(new AzureKeyCredential(System.getenv("AZURE_EVENTGRID_CLOUDEVENT_DOMAIN_KEY")));
+            .credential(getKey("AZURE_EVENTGRID_CLOUDEVENT_DOMAIN_KEY"));
 
         EventGridPublisherAsyncClient<com.azure.core.models.CloudEvent> egClientAsync =
             builder.buildCloudEventPublisherAsyncClient();

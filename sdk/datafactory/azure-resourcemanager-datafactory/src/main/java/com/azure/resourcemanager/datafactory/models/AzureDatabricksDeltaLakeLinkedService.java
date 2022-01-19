@@ -168,6 +168,54 @@ public final class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
     }
 
     /**
+     * Get the credential property: The credential reference containing authentication information.
+     *
+     * @return the credential value.
+     */
+    public CredentialReference credential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().credential();
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     *
+     * @param credential the credential value to set.
+     * @return the AzureDatabricksDeltaLakeLinkedService object itself.
+     */
+    public AzureDatabricksDeltaLakeLinkedService withCredential(CredentialReference credential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureDatabricksDetltaLakeLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withCredential(credential);
+        return this;
+    }
+
+    /**
+     * Get the workspaceResourceId property: Workspace resource id for databricks REST API. Type: string (or Expression
+     * with resultType string).
+     *
+     * @return the workspaceResourceId value.
+     */
+    public Object workspaceResourceId() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().workspaceResourceId();
+    }
+
+    /**
+     * Set the workspaceResourceId property: Workspace resource id for databricks REST API. Type: string (or Expression
+     * with resultType string).
+     *
+     * @param workspaceResourceId the workspaceResourceId value to set.
+     * @return the AzureDatabricksDeltaLakeLinkedService object itself.
+     */
+    public AzureDatabricksDeltaLakeLinkedService withWorkspaceResourceId(Object workspaceResourceId) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureDatabricksDetltaLakeLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withWorkspaceResourceId(workspaceResourceId);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

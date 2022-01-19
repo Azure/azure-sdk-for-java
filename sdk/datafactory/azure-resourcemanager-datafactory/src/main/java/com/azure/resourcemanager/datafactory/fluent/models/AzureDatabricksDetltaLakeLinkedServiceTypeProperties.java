@@ -6,6 +6,7 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -45,6 +46,19 @@ public final class AzureDatabricksDetltaLakeLinkedServiceTypeProperties {
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
+
+    /*
+     * The credential reference containing authentication information.
+     */
+    @JsonProperty(value = "credential")
+    private CredentialReference credential;
+
+    /*
+     * Workspace resource id for databricks REST API. Type: string (or
+     * Expression with resultType string).
+     */
+    @JsonProperty(value = "workspaceResourceId")
+    private Object workspaceResourceId;
 
     /**
      * Get the domain property: &lt;REGION&gt;.azuredatabricks.net, domain name of your Databricks deployment. Type:
@@ -137,6 +151,48 @@ public final class AzureDatabricksDetltaLakeLinkedServiceTypeProperties {
     }
 
     /**
+     * Get the credential property: The credential reference containing authentication information.
+     *
+     * @return the credential value.
+     */
+    public CredentialReference credential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     *
+     * @param credential the credential value to set.
+     * @return the AzureDatabricksDetltaLakeLinkedServiceTypeProperties object itself.
+     */
+    public AzureDatabricksDetltaLakeLinkedServiceTypeProperties withCredential(CredentialReference credential) {
+        this.credential = credential;
+        return this;
+    }
+
+    /**
+     * Get the workspaceResourceId property: Workspace resource id for databricks REST API. Type: string (or Expression
+     * with resultType string).
+     *
+     * @return the workspaceResourceId value.
+     */
+    public Object workspaceResourceId() {
+        return this.workspaceResourceId;
+    }
+
+    /**
+     * Set the workspaceResourceId property: Workspace resource id for databricks REST API. Type: string (or Expression
+     * with resultType string).
+     *
+     * @param workspaceResourceId the workspaceResourceId value to set.
+     * @return the AzureDatabricksDetltaLakeLinkedServiceTypeProperties object itself.
+     */
+    public AzureDatabricksDetltaLakeLinkedServiceTypeProperties withWorkspaceResourceId(Object workspaceResourceId) {
+        this.workspaceResourceId = workspaceResourceId;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -151,6 +207,9 @@ public final class AzureDatabricksDetltaLakeLinkedServiceTypeProperties {
         }
         if (accessToken() != null) {
             accessToken().validate();
+        }
+        if (credential() != null) {
+            credential().validate();
         }
     }
 }
