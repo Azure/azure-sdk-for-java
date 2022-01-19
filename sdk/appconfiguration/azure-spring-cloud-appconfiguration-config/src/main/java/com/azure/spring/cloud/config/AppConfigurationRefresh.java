@@ -112,6 +112,16 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
     private boolean refreshStores() {
         boolean didRefresh = false;
         if (running.compareAndSet(false, true)) {
+            if (StateHolder.getNextForcedRefresh() != null && new Date().after(StateHolder.getNextForcedRefresh())) {
+                this.eventDataInfo = "Minimum refresh period reached. Refreshing configurations.";
+                
+                LOGGER.info(eventDataInfo);
+
+                RefreshEventData eventData = new RefreshEventData(eventDataInfo);
+                publisher.publishEvent(new RefreshEvent(this, eventData, eventData.getMessage()));
+                running.set(false);
+                return true;
+            }
             BaseAppConfigurationPolicy.setWatchRequests(true);
             Map<String, AppConfigurationStoreHealth> clientHealthUpdate = new HashMap<>();
             configStores.stream().forEach(store -> {

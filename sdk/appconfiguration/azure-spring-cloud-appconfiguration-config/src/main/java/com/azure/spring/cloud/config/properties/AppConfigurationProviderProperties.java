@@ -26,19 +26,32 @@ public class AppConfigurationProviderProperties {
      * Prefix for the libraries internal configurations.
      */
     public static final String CONFIG_PREFIX = "spring.cloud.appconfiguration";
+
     private static final Date startDate = new Date();
+
     @NotEmpty
     @Value("${version:1.0}")
     private String version;
+
     @NotNull
     @Value("${maxRetries:2}")
     private int maxRetries;
+
     @NotNull
     @Value("${maxRetryTime:60}")
     private int maxRetryTime;
+
     @NotNull
     @Value("${prekillTime:5}")
     private int prekillTime;
+
+    @NotNull
+    @Value("${defaultMinBackoff:30}")
+    private int defaultMinBackoff;
+
+    @NotNull
+    @Value("${defaultMaxBackoff:600}")
+    private int defaultMaxBackoff;
 
     /**
      * @return the apiVersion
@@ -101,6 +114,34 @@ public class AppConfigurationProviderProperties {
      */
     public Date getStartDate() {
         return new Date(startDate.getTime());
+    }
+
+    /**
+     * @return the defaultMinBackoff
+     */
+    public int getDefaultMinBackoff() {
+        return defaultMinBackoff;
+    }
+
+    /**
+     * @param defaultMinBackoff the defaultMinBackoff to set
+     */
+    public void setDefaultMinBackoff(int defaultMinBackoff) {
+        this.defaultMinBackoff = defaultMinBackoff;
+    }
+
+    /**
+     * @return the defaultMaxBackoff
+     */
+    public int getDefaultMaxBackoff() {
+        return defaultMaxBackoff;
+    }
+
+    /**
+     * @param defaultMaxBackoff the defaultMaxBackoff to set
+     */
+    public void setDefaultMaxBackoff(int defaultMaxBackoff) {
+        this.defaultMaxBackoff = defaultMaxBackoff;
     }
 
 }

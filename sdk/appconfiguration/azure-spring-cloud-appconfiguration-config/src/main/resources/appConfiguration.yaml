@@ -5,4 +5,5 @@ spring:
       maxRetries: 2
       maxRetryTime: 60
       preKillTime: 5
-
+      defaultMinBackoff: 30
+      defaultmaxBackoff: 600

@@ -24,6 +24,12 @@ class State {
         nextRefreshCheck = calendar.getTime();
         this.key = key;
     }
+    
+    State(State oldState, Date newRefresh, String key) {
+        this.watchKeys = oldState.getWatchKeys();
+        this.nextRefreshCheck = newRefresh;
+        this.key = key;
+    }
 
     /**
      * @return the watchKeys

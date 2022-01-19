@@ -29,6 +29,7 @@ import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperti
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreSelects;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
 import com.azure.spring.cloud.config.properties.ConfigStore;
+import com.azure.spring.cloud.config.refresh.CalculatedBackoffTime;
 import com.azure.spring.cloud.config.stores.ClientStore;
 
 /**
@@ -67,7 +68,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
      * @param clients Clients for connecting to Azure App Configuration.
      * @param keyVaultCredentialProvider optional provider for Key Vault Credentials
      * @param keyVaultClientProvider optional provider for modifying the Key Vault Client
-     * @param keyVaultSecretProvider optional provider for loading  secrets instead of connecting to Key Vault
+     * @param keyVaultSecretProvider optional provider for loading secrets instead of connecting to Key Vault
      */
     public AppConfigurationPropertySourceLocator(AppConfigurationProperties properties,
         AppConfigurationProviderProperties appProperties, ClientStore clients,
@@ -115,6 +116,9 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         }
         configloaded.set(true);
         startup.set(false);
+        
+        // Loading configurations worked. Setting attempts to zero.
+        CalculatedBackoffTime.resetAttempts();
         return composite;
     }
 
@@ -145,10 +149,18 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
             LOGGER.debug("PropertySource context.");
         } catch (Exception e) {
-            if (store.isFailFast() || !startup.get()) {
+            if (store.isFailFast()) {
                 LOGGER.error(
                     "Fail fast is set and there was an error reading configuration from Azure App "
                         + "Configuration store " + store.getEndpoint() + ".");
+                ReflectionUtils.rethrowRuntimeException(e);
+            } else if (!startup.get()) {
+                LOGGER.error(
+                    "Refreshing failed while reading configuration from Azure App Configuration store "
+                        + store.getEndpoint() + ".");
+                
+                // The next refresh will happen sooner if refresh interval is long.
+                StateHolder.resetAll(properties.getRefreshInterval(), appProperties);
                 ReflectionUtils.rethrowRuntimeException(e);
             } else {
                 LOGGER.warn(
@@ -172,7 +184,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
      * it needs to be in the last one.
      * @return a list of AppConfigurationPropertySources
      */
-    private List<AppConfigurationPropertySource> create(ConfigStore store, List<String> profiles, boolean initFeatures, FeatureSet featureSet)
+    private List<AppConfigurationPropertySource> create(ConfigStore store, List<String> profiles, boolean initFeatures,
+        FeatureSet featureSet)
         throws Exception {
         List<AppConfigurationPropertySource> sourceList = new ArrayList<>();
 
@@ -220,6 +233,11 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                 StateHolder.setStateFeatureFlag(store.getEndpoint(), watchKeysFeatures,
                     store.getMonitoring().getFeatureFlagRefreshInterval());
                 StateHolder.setLoadStateFeatureFlag(store.getEndpoint(), true);
+            }
+
+            // If this configuration is set, a forced refresh will happen on the refresh interval.
+            if (properties.getRefreshInterval() != null) {
+                StateHolder.setNextForcedRefresh(properties.getRefreshInterval());
             }
 
             StateHolder.setState(store.getEndpoint(), watchKeysSettings, store.getMonitoring().getRefreshInterval());
