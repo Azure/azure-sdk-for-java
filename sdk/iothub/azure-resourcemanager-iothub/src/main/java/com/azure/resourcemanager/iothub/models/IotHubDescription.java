@@ -330,7 +330,7 @@ public interface IotHubDescription {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the Job Response object.
+     * @return the properties of the Job Response object along with {@link Response}.
      */
     Response<JobResponse> exportDevicesWithResponse(ExportDevicesRequest exportDevicesParameters, Context context);
 
@@ -359,7 +359,7 @@ public interface IotHubDescription {
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the Job Response object.
+     * @return the properties of the Job Response object along with {@link Response}.
      */
     Response<JobResponse> importDevicesWithResponse(ImportDevicesRequest importDevicesParameters, Context context);
 }

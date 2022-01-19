@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iothub.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.iothub.fluent.models.SharedAccessSignatureAuthorizationRuleInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -114,6 +115,7 @@ public final class IotHubProperties {
      * while making create or update calls for the IoT hub.
      */
     @JsonProperty(value = "eventHubEndpoints")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, EventHubProperties> eventHubEndpoints;
 
     /*
@@ -132,6 +134,7 @@ public final class IotHubProperties {
      * an error to be thrown.
      */
     @JsonProperty(value = "storageEndpoints")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, StorageEndpointProperties> storageEndpoints;
 
     /*
@@ -139,6 +142,7 @@ public final class IotHubProperties {
      * queue.
      */
     @JsonProperty(value = "messagingEndpoints")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, MessagingEndpointProperties> messagingEndpoints;
 
     /*
