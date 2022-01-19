@@ -20,6 +20,7 @@ import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.annotation.ServiceClientProtocol;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
@@ -174,7 +175,9 @@ import java.util.regex.Pattern;
 @ServiceClientBuilder(serviceClients = {ServiceBusReceiverAsyncClient.class, ServiceBusSenderAsyncClient.class,
     ServiceBusSenderClient.class, ServiceBusReceiverClient.class, ServiceBusProcessorClient.class},
     protocol = ServiceClientProtocol.AMQP)
-public final class ServiceBusClientBuilder implements ClientOptionsTrait<ServiceBusClientBuilder> {
+public final class ServiceBusClientBuilder implements
+    TokenCredentialTrait<ServiceBusClientBuilder>,
+    ClientOptionsTrait<ServiceBusClientBuilder> {
     private static final AmqpRetryOptions DEFAULT_RETRY =
         new AmqpRetryOptions().setTryTimeout(ServiceBusConstants.OPERATION_TIMEOUT);
 
@@ -234,6 +237,31 @@ public final class ServiceBusClientBuilder implements ClientOptionsTrait<Service
     public ServiceBusClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
+    }
+
+    /**
+     * Sets the fully-qualified namespace for the Service Bus.
+     *
+     * @param fullyQualifiedNamespace The fully-qualified namespace for the Service Bus.
+     *
+     * @return The updated {@link ServiceBusClientBuilder} object.
+     */
+    public ServiceBusClientBuilder fullyQualifiedNamespace(String fullyQualifiedNamespace) {
+        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
+            "'fullyQualifiedNamespace' cannot be null.");
+        if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
+        }
+        return this;
+    }
+
+    private String getFullyQualifiedNamespace() {
+        if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
+        }
+        return fullyQualifiedNamespace;
     }
 
     /**
@@ -333,7 +361,6 @@ public final class ServiceBusClientBuilder implements ClientOptionsTrait<Service
      *
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
-    // TODO kasobol-msft
     public ServiceBusClientBuilder credential(String fullyQualifiedNamespace, TokenCredential credential) {
 
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
@@ -345,6 +372,23 @@ public final class ServiceBusClientBuilder implements ClientOptionsTrait<Service
                 new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
         }
 
+        return this;
+    }
+
+    /**
+     * Sets the credential by using a {@link TokenCredential} for the Service Bus resource.
+     * <a href="https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity">
+     *     azure-identity</a> has multiple {@link TokenCredential} implementations that can be used to authenticate
+     *     the access to the Service Bus resource.
+     *
+     * @param credential The token credential to use for authentication. Access controls may be specified by the
+     * ServiceBus namespace or the requested Service Bus entity, depending on Azure configuration.
+     *
+     * @return The updated {@link ServiceBusClientBuilder} object.
+     */
+    @Override
+    public ServiceBusClientBuilder credential(TokenCredential credential) {
+        this.credentials = Objects.requireNonNull(credential, "'credential' cannot be null.");
         return this;
     }
 
@@ -609,7 +653,7 @@ public final class ServiceBusClientBuilder implements ClientOptionsTrait<Service
         final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
         final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
 
-        return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType,
+        return new ConnectionOptions(getFullyQualifiedNamespace(), credentials, authorizationType,
             ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
             options, verificationMode, product, clientVersion);
     }

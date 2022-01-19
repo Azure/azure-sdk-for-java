@@ -7,6 +7,7 @@ import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
 import com.azure.core.http.HttpClient;
@@ -83,6 +84,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {ServiceBusAdministrationClient.class,
     ServiceBusAdministrationAsyncClient.class})
 public final class ServiceBusAdministrationClientBuilder implements
+    TokenCredentialTrait<ServiceBusAdministrationClientBuilder>,
     HttpConfigTrait<ServiceBusAdministrationClientBuilder>,
     ClientOptionsTrait<ServiceBusAdministrationClientBuilder> {
     private static final String CLIENT_NAME;
@@ -268,7 +270,6 @@ public final class ServiceBusAdministrationClientBuilder implements
      *
      * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
      */
-    // TODO kasobol-msft
     public ServiceBusAdministrationClientBuilder credential(String fullyQualifiedNamespace,
         TokenCredential credential) {
         this.endpoint = Objects.requireNonNull(fullyQualifiedNamespace,
@@ -280,6 +281,19 @@ public final class ServiceBusAdministrationClientBuilder implements
                 new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
         }
 
+        return this;
+    }
+
+    /**
+     * Sets the credential used to authenticate HTTP requests to the Service Bus namespace.
+     *
+     * @param credential {@link TokenCredential} to be used for authentication.
+     *
+     * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
+     */
+    @Override
+    public ServiceBusAdministrationClientBuilder credential(TokenCredential credential) {
+        this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         return this;
     }
 
