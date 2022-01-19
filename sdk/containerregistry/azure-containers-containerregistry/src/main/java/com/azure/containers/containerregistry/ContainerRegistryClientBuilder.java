@@ -4,6 +4,7 @@ package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -107,7 +108,9 @@ import java.util.Objects;
         RegistryArtifactAsync.class,
         RegistryArtifact.class
     })
-public final class ContainerRegistryClientBuilder implements TokenCredentialTrait<ContainerRegistryClientBuilder> {
+public final class ContainerRegistryClientBuilder implements
+    TokenCredentialTrait<ContainerRegistryClientBuilder>,
+    HttpConfigTrait<ContainerRegistryClientBuilder> {
     private final ClientLogger logger = new ClientLogger(ContainerRegistryClientBuilder.class);
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
@@ -180,6 +183,7 @@ public final class ContainerRegistryClientBuilder implements TokenCredentialTrai
      * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return The updated {@link ContainerRegistryClientBuilder} object.
      */
+    @Override
     public ContainerRegistryClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
@@ -208,6 +212,7 @@ public final class ContainerRegistryClientBuilder implements TokenCredentialTrai
      * @param httpClient The HTTP client to use for requests.
      * @return The updated {@link ContainerRegistryClientBuilder} object.
      */
+    @Override
     public ContainerRegistryClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
             logger.info("HttpClient is being set to 'null' when it was previously configured.");
@@ -254,6 +259,7 @@ public final class ContainerRegistryClientBuilder implements TokenCredentialTrai
      * @param httpLogOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return The updated {@link ContainerRegistryClientBuilder} object.
      */
+    @Override
     public ContainerRegistryClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
@@ -282,6 +288,7 @@ public final class ContainerRegistryClientBuilder implements TokenCredentialTrai
      * @return The updated ContainerRegistryClientBuilder object.
      * @throws NullPointerException If {@code policy} is null.
      */
+    @Override
     public ContainerRegistryClientBuilder addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy, "'policy' cannot be null.");
 

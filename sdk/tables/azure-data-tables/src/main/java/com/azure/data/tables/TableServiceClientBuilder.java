@@ -3,6 +3,7 @@
 package com.azure.data.tables;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
@@ -65,7 +66,9 @@ import static com.azure.data.tables.BuilderHelper.validateCredentials;
  * @see TableServiceClient
  */
 @ServiceClientBuilder(serviceClients = {TableServiceClient.class, TableServiceAsyncClient.class})
-public final class TableServiceClientBuilder implements TokenCredentialTrait<TableServiceClientBuilder> {
+public final class TableServiceClientBuilder implements
+    TokenCredentialTrait<TableServiceClientBuilder>,
+    HttpConfigTrait<TableServiceClientBuilder> {
     private final ClientLogger logger = new ClientLogger(TableServiceClientBuilder.class);
     private final SerializerAdapter serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -236,6 +239,7 @@ public final class TableServiceClientBuilder implements TokenCredentialTrait<Tab
      *
      * @return The updated {@link TableServiceClientBuilder}.
      */
+    @Override
     public TableServiceClientBuilder pipeline(HttpPipeline pipeline) {
         this.httpPipeline = pipeline;
 
@@ -361,6 +365,7 @@ public final class TableServiceClientBuilder implements TokenCredentialTrait<Tab
      *
      * @return The updated {@link TableServiceClientBuilder}.
      */
+    @Override
     public TableServiceClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
             logger.warning("'httpClient' is being set to 'null' when it was previously configured.");
@@ -380,6 +385,7 @@ public final class TableServiceClientBuilder implements TokenCredentialTrait<Tab
      *
      * @return The updated {@link TableServiceClientBuilder}.
      */
+    @Override
     public TableServiceClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;
 
@@ -397,6 +403,7 @@ public final class TableServiceClientBuilder implements TokenCredentialTrait<Tab
      *
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
+    @Override
     public TableServiceClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         if (pipelinePolicy == null) {
             throw logger.logExceptionAsError(new NullPointerException("'pipelinePolicy' cannot be null."));

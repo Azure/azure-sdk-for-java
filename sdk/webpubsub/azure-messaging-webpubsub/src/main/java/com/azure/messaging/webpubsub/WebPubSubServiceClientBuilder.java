@@ -4,6 +4,7 @@
 package com.azure.messaging.webpubsub;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -86,7 +87,9 @@ import java.util.Objects;
  * @see WebPubSubServiceClient
  */
 @ServiceClientBuilder(serviceClients = {WebPubSubServiceAsyncClient.class, WebPubSubServiceClient.class})
-public final class WebPubSubServiceClientBuilder implements TokenCredentialTrait<WebPubSubServiceClientBuilder> {
+public final class WebPubSubServiceClientBuilder implements
+    TokenCredentialTrait<WebPubSubServiceClientBuilder>,
+    HttpConfigTrait<WebPubSubServiceClientBuilder> {
     private static final String WPS_DEFAULT_SCOPE = "https://webpubsub.azure.com/.default";
     private final ClientLogger logger = new ClientLogger(WebPubSubServiceClientBuilder.class);
 
@@ -230,6 +233,7 @@ public final class WebPubSubServiceClientBuilder implements TokenCredentialTrait
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return The updated {@link WebPubSubServiceClientBuilder} object.
      */
+    @Override
     public WebPubSubServiceClientBuilder httpLogOptions(final HttpLogOptions logOptions) {
         httpLogOptions = logOptions;
         return this;
@@ -242,6 +246,7 @@ public final class WebPubSubServiceClientBuilder implements TokenCredentialTrait
      * @return The updated {@link WebPubSubServiceClientBuilder} object.
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
+    @Override
     public WebPubSubServiceClientBuilder addPolicy(final HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy);
         policies.add(policy);
@@ -254,6 +259,7 @@ public final class WebPubSubServiceClientBuilder implements TokenCredentialTrait
      * @param client The HTTP client to use for requests.
      * @return The updated {@link WebPubSubServiceClientBuilder} object.
      */
+    @Override
     public WebPubSubServiceClientBuilder httpClient(final HttpClient client) {
         if (this.httpClient != null && client == null) {
             logger.info("HttpClient is being set to 'null' when it was previously configured.");
@@ -273,6 +279,7 @@ public final class WebPubSubServiceClientBuilder implements TokenCredentialTrait
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return The updated {@link WebPubSubServiceClientBuilder} object.
      */
+    @Override
     public WebPubSubServiceClientBuilder pipeline(final HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");

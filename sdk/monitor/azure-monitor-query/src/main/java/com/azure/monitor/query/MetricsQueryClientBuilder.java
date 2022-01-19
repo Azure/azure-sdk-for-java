@@ -4,6 +4,7 @@
 package com.azure.monitor.query;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -42,7 +43,9 @@ import com.azure.monitor.query.implementation.metricsnamespaces.MetricsNamespace
  * <!-- end com.azure.monitor.query.MetricsQueryClient.instantiation -->
  */
 @ServiceClientBuilder(serviceClients = {MetricsQueryClient.class, MetricsQueryAsyncClient.class})
-public final class MetricsQueryClientBuilder implements TokenCredentialTrait<MetricsQueryClientBuilder> {
+public final class MetricsQueryClientBuilder implements
+    TokenCredentialTrait<MetricsQueryClientBuilder>,
+    HttpConfigTrait<MetricsQueryClientBuilder> {
 
     private final MonitorManagementClientImplBuilder innerMetricsBuilder = new MonitorManagementClientImplBuilder();
     private final MetricsDefinitionsClientImplBuilder innerMetricsDefinitionsBuilder =
@@ -71,6 +74,7 @@ public final class MetricsQueryClientBuilder implements TokenCredentialTrait<Met
      * @param pipeline the pipeline value.
      * @return the MetricsClientBuilder.
      */
+    @Override
     public MetricsQueryClientBuilder pipeline(HttpPipeline pipeline) {
         innerMetricsBuilder.pipeline(pipeline);
         innerMetricsDefinitionsBuilder.pipeline(pipeline);
@@ -83,6 +87,7 @@ public final class MetricsQueryClientBuilder implements TokenCredentialTrait<Met
      * @param httpClient the httpClient value.
      * @return the MetricsClientBuilder.
      */
+    @Override
     public MetricsQueryClientBuilder httpClient(HttpClient httpClient) {
         innerMetricsBuilder.httpClient(httpClient);
         innerMetricsDefinitionsBuilder.httpClient(httpClient);
@@ -107,6 +112,7 @@ public final class MetricsQueryClientBuilder implements TokenCredentialTrait<Met
      * @param httpLogOptions the httpLogOptions value.
      * @return the MetricsClientBuilder.
      */
+    @Override
     public MetricsQueryClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         innerMetricsBuilder.httpLogOptions(httpLogOptions);
         innerMetricsDefinitionsBuilder.httpLogOptions(httpLogOptions);
@@ -131,6 +137,7 @@ public final class MetricsQueryClientBuilder implements TokenCredentialTrait<Met
      * @param customPolicy The custom Http pipeline policy to add.
      * @return the MetricsClientBuilder.
      */
+    @Override
     public MetricsQueryClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         innerMetricsBuilder.addPolicy(customPolicy);
         innerMetricsDefinitionsBuilder.addPolicy(customPolicy);

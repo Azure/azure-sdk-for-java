@@ -8,6 +8,7 @@ import com.azure.communication.chat.implementation.AzureCommunicationChatService
 import com.azure.communication.chat.implementation.CommunicationBearerTokenCredential;
 import com.azure.communication.common.CommunicationTokenCredential;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -32,7 +33,7 @@ import java.util.Objects;
  * Builder for creating clients of Azure Communication Service Chat Threads
  */
 @ServiceClientBuilder(serviceClients = {ChatThreadAsyncClient.class, ChatThreadClient.class})
-public final class ChatThreadClientBuilder {
+public final class ChatThreadClientBuilder implements HttpConfigTrait<ChatThreadClientBuilder> {
 
     private String chatThreadId;
     private String endpoint;
@@ -66,6 +67,7 @@ public final class ChatThreadClientBuilder {
      * @param httpClient HttpClient to use
      * @return the updated ChatThreadClientBuilder object
      */
+    @Override
     public ChatThreadClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
         return this;
@@ -101,6 +103,7 @@ public final class ChatThreadClientBuilder {
      *                       AzureKeyCredentialPolicy, UserAgentPolicy, RetryPolicy, and CookiePolicy
      * @return the updated ChatThreadClientBuilder object
      */
+    @Override
     public ChatThreadClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         this.customPolicies.add(Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null."));
         return this;
@@ -125,6 +128,7 @@ public final class ChatThreadClientBuilder {
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return the updated ChatThreadClientBuilder object
      */
+    @Override
     public ChatThreadClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
@@ -154,6 +158,7 @@ public final class ChatThreadClientBuilder {
      * @param httpPipeline HttpPipeline to use for sending service requests and receiving responses.
      * @return the updated ChatThreadClientBuilder object
      */
+    @Override
     public ChatThreadClientBuilder pipeline(HttpPipeline httpPipeline) {
         this.httpPipeline = httpPipeline;
         return this;

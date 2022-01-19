@@ -8,6 +8,7 @@ import com.azure.communication.callingserver.implementation.AzureCommunicationCa
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -62,7 +63,9 @@ import java.util.Objects;
  * <!-- end com.azure.communication.callingserver.CallingServerClientBuilder.pipeline.instantiation -->
  */
 @ServiceClientBuilder(serviceClients = { CallingServerClient.class, CallingServerAsyncClient.class })
-public final class CallingServerClientBuilder implements TokenCredentialTrait<CallingServerClientBuilder> {
+public final class CallingServerClientBuilder implements
+    TokenCredentialTrait<CallingServerClientBuilder>,
+    HttpConfigTrait<CallingServerClientBuilder> {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final String APP_CONFIG_PROPERTIES = "azure-communication-callingserver.properties";
@@ -100,6 +103,7 @@ public final class CallingServerClientBuilder implements TokenCredentialTrait<Ca
      * credential and httpClient fields must be set.
      * @return CallingServerClientBuilder object.
      */
+    @Override
     public CallingServerClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = Objects.requireNonNull(pipeline, "'pipeline' cannot be null.");
         return this;
@@ -175,6 +179,7 @@ public final class CallingServerClientBuilder implements TokenCredentialTrait<Ca
      * HTTP requests/responses.
      * @return The updated {@link CallingServerClientBuilder} object.
      */
+    @Override
     public CallingServerClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
@@ -202,6 +207,7 @@ public final class CallingServerClientBuilder implements TokenCredentialTrait<Ca
      * @param httpClient httpClient to use, overridden by the pipeline field.
      * @return Updated {@link CallingServerClientBuilder} object.
      */
+    @Override
     public CallingServerClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
         return this;
@@ -214,6 +220,7 @@ public final class CallingServerClientBuilder implements TokenCredentialTrait<Ca
      *                     AzureKeyCredentialPolicy, UserAgentPolicy, RetryPolicy, and CookiePolicy.
      * @return Updated {@link CallingServerClientBuilder} object.
      */
+    @Override
     public CallingServerClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         this.customPolicies.add(Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null."));
         return this;

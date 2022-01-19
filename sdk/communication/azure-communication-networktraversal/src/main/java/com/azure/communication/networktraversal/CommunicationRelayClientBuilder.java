@@ -8,6 +8,7 @@ import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.networktraversal.implementation.CommunicationNetworkingClientImpl;
 import com.azure.communication.networktraversal.implementation.CommunicationNetworkingClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.AzureKeyCredential;
@@ -36,7 +37,9 @@ import java.util.Objects;
  * CommunicationRelayClientBuilder that creates CommunicationRelayAsyncClient and CommunicationRelayClient.
  */
 @ServiceClientBuilder(serviceClients = {CommunicationRelayClient.class, CommunicationRelayAsyncClient.class})
-public final class CommunicationRelayClientBuilder implements TokenCredentialTrait<CommunicationRelayClientBuilder> {
+public final class CommunicationRelayClientBuilder implements
+    TokenCredentialTrait<CommunicationRelayClientBuilder>,
+    HttpConfigTrait<CommunicationRelayClientBuilder> {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
@@ -75,6 +78,7 @@ public final class CommunicationRelayClientBuilder implements TokenCredentialTra
      * supplied, the credential and httpClient fields must be set
      * @return CommunicationRelayClientBuilder
      */
+    @Override
     public CommunicationRelayClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
@@ -126,6 +130,7 @@ public final class CommunicationRelayClientBuilder implements TokenCredentialTra
      * field.
      * @return CommunicationRelayClientBuilder
      */
+    @Override
     public CommunicationRelayClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
@@ -138,6 +143,7 @@ public final class CommunicationRelayClientBuilder implements TokenCredentialTra
      * AzureKeyCredentialPolicy, UserAgentPolicy, RetryPolicy, and CookiePolicy
      * @return CommunicationRelayClientBuilder
      */
+    @Override
     public CommunicationRelayClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         this.customPolicies.add(customPolicy);
         return this;
@@ -171,6 +177,7 @@ public final class CommunicationRelayClientBuilder implements TokenCredentialTra
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return the updated CommunicationRelayClientBuilder object
      */
+    @Override
     public CommunicationRelayClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;
         return this;

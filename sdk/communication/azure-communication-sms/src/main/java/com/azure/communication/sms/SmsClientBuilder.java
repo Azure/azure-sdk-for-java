@@ -8,6 +8,7 @@ import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImpl;
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -36,7 +37,9 @@ import java.util.Objects;
  * SmsClientBuilder that creates SmsAsyncClient and SmsClient.
  */
 @ServiceClientBuilder(serviceClients = {SmsClient.class, SmsAsyncClient.class})
-public final class SmsClientBuilder implements TokenCredentialTrait<SmsClientBuilder> {
+public final class SmsClientBuilder implements
+    TokenCredentialTrait<SmsClientBuilder>,
+    HttpConfigTrait<SmsClientBuilder> {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final String APP_CONFIG_PROPERTIES = "azure-communication-sms.properties";
@@ -72,6 +75,7 @@ public final class SmsClientBuilder implements TokenCredentialTrait<SmsClientBui
      * supplied, the credential and httpClient fields must be set
      * @return SmsClientBuilder
      */
+    @Override
     public SmsClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = Objects.requireNonNull(pipeline, "'pipeline' cannot be null.");
         return this;
@@ -147,6 +151,7 @@ public final class SmsClientBuilder implements TokenCredentialTrait<SmsClientBui
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return the updated SmsClientBuilder object
      */
+    @Override
     public SmsClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
@@ -175,6 +180,7 @@ public final class SmsClientBuilder implements TokenCredentialTrait<SmsClientBui
      * field.
      * @return SmsClientBuilder
      */
+    @Override
     public SmsClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
         return this;
@@ -187,6 +193,7 @@ public final class SmsClientBuilder implements TokenCredentialTrait<SmsClientBui
      *                       AzureKeyCredentialPolicy, UserAgentPolicy, RetryPolicy, and CookiePolicy
      * @return SmsClientBuilder
      */
+    @Override
     public SmsClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         this.customPolicies.add(Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null."));
         return this;

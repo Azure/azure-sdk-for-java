@@ -3,6 +3,7 @@
 package com.azure.data.tables;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
@@ -67,7 +68,9 @@ import static com.azure.data.tables.BuilderHelper.validateCredentials;
  * @see TableClient
  */
 @ServiceClientBuilder(serviceClients = {TableClient.class, TableAsyncClient.class})
-public final class TableClientBuilder implements TokenCredentialTrait<TableClientBuilder> {
+public final class TableClientBuilder implements
+    TokenCredentialTrait<TableClientBuilder>,
+    HttpConfigTrait<TableClientBuilder> {
     private static final SerializerAdapter TABLES_SERIALIZER = new TablesJacksonSerializer();
     private static final TablesMultipartSerializer TRANSACTIONAL_BATCH_SERIALIZER = new TablesMultipartSerializer();
 
@@ -243,6 +246,7 @@ public final class TableClientBuilder implements TokenCredentialTrait<TableClien
      *
      * @return The updated {@link TableClientBuilder}.
      */
+    @Override
     public TableClientBuilder pipeline(HttpPipeline pipeline) {
         this.httpPipeline = pipeline;
 
@@ -368,6 +372,7 @@ public final class TableClientBuilder implements TokenCredentialTrait<TableClien
      *
      * @return The updated {@link TableClientBuilder}.
      */
+    @Override
     public TableClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
             logger.warning("'httpClient' is being set to 'null' when it was previously configured.");
@@ -387,6 +392,7 @@ public final class TableClientBuilder implements TokenCredentialTrait<TableClien
      *
      * @return The updated {@link TableClientBuilder}.
      */
+    @Override
     public TableClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;
 
@@ -404,6 +410,7 @@ public final class TableClientBuilder implements TokenCredentialTrait<TableClien
      *
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
+    @Override
     public TableClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         if (pipelinePolicy == null) {
             throw logger.logExceptionAsError(new NullPointerException("'pipelinePolicy' cannot be null."));

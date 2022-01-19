@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
@@ -50,7 +51,9 @@ import java.util.Objects;
  * </ul>
  */
 @ServiceClientBuilder(serviceClients = {BlobContainerClient.class, BlobContainerAsyncClient.class})
-public final class BlobContainerClientBuilder implements TokenCredentialTrait<BlobContainerClientBuilder> {
+public final class BlobContainerClientBuilder implements
+    TokenCredentialTrait<BlobContainerClientBuilder>,
+    HttpConfigTrait<BlobContainerClientBuilder> {
     private final ClientLogger logger = new ClientLogger(BlobContainerClientBuilder.class);
 
     private String endpoint;
@@ -344,6 +347,7 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
      * @param httpClient HttpClient to use for requests.
      * @return the updated BlobContainerClientBuilder object
      */
+    @Override
     public BlobContainerClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
             logger.info("'httpClient' is being set to 'null' when it was previously configured.");
@@ -361,6 +365,7 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
      * @return the updated BlobContainerClientBuilder object
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
+    @Override
     public BlobContainerClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null");
         if (pipelinePolicy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
@@ -378,6 +383,7 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
      * @return the updated BlobContainerClientBuilder object
      * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
+    @Override
     public BlobContainerClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
@@ -435,6 +441,7 @@ public final class BlobContainerClientBuilder implements TokenCredentialTrait<Bl
      * @param httpPipeline HttpPipeline to use for sending service requests and receiving responses.
      * @return the updated BlobContainerClientBuilder object
      */
+    @Override
     public BlobContainerClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");

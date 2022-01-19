@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.administration;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -66,7 +67,9 @@ import java.util.Map;
  * @see KeyVaultAccessControlAsyncClient
  */
 @ServiceClientBuilder(serviceClients = {KeyVaultAccessControlClient.class, KeyVaultAccessControlAsyncClient.class})
-public final class KeyVaultAccessControlClientBuilder implements TokenCredentialTrait<KeyVaultAccessControlClientBuilder> {
+public final class KeyVaultAccessControlClientBuilder implements
+    TokenCredentialTrait<KeyVaultAccessControlClientBuilder>,
+    HttpConfigTrait<KeyVaultAccessControlClientBuilder> {
     // This is the properties file name.
     private static final String AZURE_KEY_VAULT_RBAC = "azure-key-vault-administration.properties";
     private static final String SDK_NAME = "name";
@@ -241,6 +244,7 @@ public final class KeyVaultAccessControlClientBuilder implements TokenCredential
      *
      * @return The updated {@link KeyVaultAccessControlClientBuilder} object.
      */
+    @Override
     public KeyVaultAccessControlClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         httpLogOptions = logOptions;
 
@@ -257,6 +261,7 @@ public final class KeyVaultAccessControlClientBuilder implements TokenCredential
      *
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
+    @Override
     public KeyVaultAccessControlClientBuilder addPolicy(HttpPipelinePolicy policy) {
         if (policy == null) {
             throw logger.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
@@ -278,6 +283,7 @@ public final class KeyVaultAccessControlClientBuilder implements TokenCredential
      *
      * @return The updated {@link KeyVaultAccessControlClientBuilder} object.
      */
+    @Override
     public KeyVaultAccessControlClientBuilder httpClient(HttpClient client) {
         this.httpClient = client;
 
@@ -295,6 +301,7 @@ public final class KeyVaultAccessControlClientBuilder implements TokenCredential
      *
      * @return The updated {@link KeyVaultAccessControlClientBuilder} object.
      */
+    @Override
     public KeyVaultAccessControlClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
 

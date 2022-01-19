@@ -4,6 +4,7 @@
 package com.azure.search.documents;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -79,7 +80,9 @@ import static com.azure.search.documents.implementation.util.Utility.getDefaultS
  * @see SearchAsyncClient
  */
 @ServiceClientBuilder(serviceClients = {SearchClient.class, SearchAsyncClient.class})
-public final class SearchClientBuilder implements TokenCredentialTrait<SearchClientBuilder> {
+public final class SearchClientBuilder implements
+    TokenCredentialTrait<SearchClientBuilder>,
+    HttpConfigTrait<SearchClientBuilder> {
     private static final boolean DEFAULT_AUTO_FLUSH = true;
     private static final int DEFAULT_INITIAL_BATCH_ACTION_COUNT = 512;
     private static final Duration DEFAULT_FLUSH_INTERVAL = Duration.ofSeconds(60);
@@ -248,6 +251,7 @@ public final class SearchClientBuilder implements TokenCredentialTrait<SearchCli
      * @param logOptions The logging configuration for HTTP requests and responses.
      * @return The updated SearchClientBuilder object.
      */
+    @Override
     public SearchClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         httpLogOptions = logOptions;
         return this;
@@ -283,6 +287,7 @@ public final class SearchClientBuilder implements TokenCredentialTrait<SearchCli
      * @return The updated SearchClientBuilder object.
      * @throws NullPointerException If {@code policy} is null.
      */
+    @Override
     public SearchClientBuilder addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy, "'policy' cannot be null.");
 
@@ -313,6 +318,7 @@ public final class SearchClientBuilder implements TokenCredentialTrait<SearchCli
      * @param client The HTTP client that will handle sending requests and receiving responses.
      * @return The updated SearchClientBuilder object.
      */
+    @Override
     public SearchClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
             logger.info("HttpClient is being set to 'null' when it was previously configured.");
@@ -331,6 +337,7 @@ public final class SearchClientBuilder implements TokenCredentialTrait<SearchCli
      * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return The updated SearchClientBuilder object.
      */
+    @Override
     public SearchClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");

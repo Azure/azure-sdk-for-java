@@ -3,6 +3,7 @@
 package com.azure.storage.queue;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
@@ -121,7 +122,9 @@ import java.util.function.Function;
  * @see StorageSharedKeyCredential
  */
 @ServiceClientBuilder(serviceClients = {QueueClient.class, QueueAsyncClient.class})
-public final class QueueClientBuilder implements TokenCredentialTrait<QueueClientBuilder> {
+public final class QueueClientBuilder implements
+    TokenCredentialTrait<QueueClientBuilder>,
+    HttpConfigTrait<QueueClientBuilder> {
     private final ClientLogger logger = new ClientLogger(QueueClientBuilder.class);
 
     private String endpoint;
@@ -351,6 +354,7 @@ public final class QueueClientBuilder implements TokenCredentialTrait<QueueClien
      * @param httpClient HttpClient to use for requests.
      * @return the updated QueueClientBuilder object
      */
+    @Override
     public QueueClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
             logger.info("'httpClient' is being set to 'null' when it was previously configured.");
@@ -368,6 +372,7 @@ public final class QueueClientBuilder implements TokenCredentialTrait<QueueClien
      * @return the updated QueueClientBuilder object
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
+    @Override
     public QueueClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null");
         if (pipelinePolicy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
@@ -385,6 +390,7 @@ public final class QueueClientBuilder implements TokenCredentialTrait<QueueClien
      * @return the updated QueueClientBuilder object
      * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
+    @Override
     public QueueClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
@@ -430,6 +436,7 @@ public final class QueueClientBuilder implements TokenCredentialTrait<QueueClien
      * @param httpPipeline HttpPipeline to use for sending service requests and receiving responses.
      * @return the updated QueueClientBuilder object
      */
+    @Override
     public QueueClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");

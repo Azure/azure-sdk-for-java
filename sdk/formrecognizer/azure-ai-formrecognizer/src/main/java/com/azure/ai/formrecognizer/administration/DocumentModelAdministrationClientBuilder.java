@@ -9,6 +9,7 @@ import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilde
 import com.azure.ai.formrecognizer.implementation.util.Constants;
 import com.azure.ai.formrecognizer.implementation.util.Utility;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -85,7 +86,9 @@ import java.util.Objects;
  * @see DocumentModelAdministrationClient
  */
 @ServiceClientBuilder(serviceClients = {DocumentModelAdministrationAsyncClient.class, DocumentModelAdministrationClient.class})
-public final class DocumentModelAdministrationClientBuilder implements TokenCredentialTrait<DocumentModelAdministrationClientBuilder> {
+public final class DocumentModelAdministrationClientBuilder implements
+    TokenCredentialTrait<DocumentModelAdministrationClientBuilder>,
+    HttpConfigTrait<DocumentModelAdministrationClientBuilder> {
     private final ClientLogger logger = new ClientLogger(DocumentModelAdministrationClientBuilder.class);
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -227,6 +230,7 @@ public final class DocumentModelAdministrationClientBuilder implements TokenCred
      *
      * @return The updated DocumentModelAdministrationClientBuilder object.
      */
+    @Override
     public DocumentModelAdministrationClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;
         return this;
@@ -261,6 +265,7 @@ public final class DocumentModelAdministrationClientBuilder implements TokenCred
      * @return The updated DocumentModelAdministrationClientBuilder object.
      * @throws NullPointerException If {@code policy} is null.
      */
+    @Override
     public DocumentModelAdministrationClientBuilder addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy, "'policy' cannot be null.");
 
@@ -279,6 +284,7 @@ public final class DocumentModelAdministrationClientBuilder implements TokenCred
      *
      * @return The updated DocumentModelAdministrationClientBuilder object.
      */
+    @Override
     public DocumentModelAdministrationClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
             logger.info("HttpClient is being set to 'null' when it was previously configured.");
@@ -299,6 +305,7 @@ public final class DocumentModelAdministrationClientBuilder implements TokenCred
      *
      * @return The updated DocumentModelAdministrationClientBuilder object.
      */
+    @Override
     public DocumentModelAdministrationClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");

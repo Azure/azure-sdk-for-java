@@ -7,6 +7,7 @@ import com.azure.ai.textanalytics.implementation.Constants;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -98,7 +99,9 @@ import java.util.Objects;
  * @see TextAnalyticsClient
  */
 @ServiceClientBuilder(serviceClients = {TextAnalyticsAsyncClient.class, TextAnalyticsClient.class})
-public final class TextAnalyticsClientBuilder implements TokenCredentialTrait<TextAnalyticsClientBuilder> {
+public final class TextAnalyticsClientBuilder implements
+    TokenCredentialTrait<TextAnalyticsClientBuilder>,
+    HttpConfigTrait<TextAnalyticsClientBuilder> {
     private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
     private static final String NAME = "name";
     private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
@@ -326,6 +329,7 @@ public final class TextAnalyticsClientBuilder implements TokenCredentialTrait<Te
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return The updated {@link TextAnalyticsClientBuilder} object.
      */
+    @Override
     public TextAnalyticsClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;
         return this;
@@ -358,6 +362,7 @@ public final class TextAnalyticsClientBuilder implements TokenCredentialTrait<Te
      * @return The updated {@link TextAnalyticsClientBuilder} object.
      * @throws NullPointerException If {@code policy} is null.
      */
+    @Override
     public TextAnalyticsClientBuilder addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy, "'policy' cannot be null.");
 
@@ -376,6 +381,7 @@ public final class TextAnalyticsClientBuilder implements TokenCredentialTrait<Te
      * @param client The HTTP client to use for requests.
      * @return The updated {@link TextAnalyticsClientBuilder} object.
      */
+    @Override
     public TextAnalyticsClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
             logger.info("HttpClient is being set to 'null' when it was previously configured.");
@@ -395,6 +401,7 @@ public final class TextAnalyticsClientBuilder implements TokenCredentialTrait<Te
      * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return The updated {@link TextAnalyticsClientBuilder} object.
      */
+    @Override
     public TextAnalyticsClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");

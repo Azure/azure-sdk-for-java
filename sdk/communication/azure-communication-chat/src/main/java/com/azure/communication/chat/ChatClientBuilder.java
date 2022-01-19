@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.List;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -33,7 +34,7 @@ import com.azure.core.util.CoreUtils;
  * Builder for creating clients of Azure Communication Service Chat
  */
 @ServiceClientBuilder(serviceClients = {ChatAsyncClient.class, ChatClient.class})
-public final class ChatClientBuilder {
+public final class ChatClientBuilder implements HttpConfigTrait<ChatClientBuilder> {
 
     private String endpoint;
     private HttpClient httpClient;
@@ -66,6 +67,7 @@ public final class ChatClientBuilder {
      * @param httpClient HttpClient to use
      * @return the updated ChatClientBuilder object
      */
+    @Override
     public ChatClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
         return this;
@@ -101,6 +103,7 @@ public final class ChatClientBuilder {
      *                       AzureKeyCredentialPolicy, UserAgentPolicy, RetryPolicy, and CookiePolicy
      * @return the updated ChatClientBuilder object
      */
+    @Override
     public ChatClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         this.customPolicies.add(Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null."));
         return this;
@@ -125,6 +128,7 @@ public final class ChatClientBuilder {
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return the updated ChatClientBuilder object
      */
+    @Override
     public ChatClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
@@ -154,6 +158,7 @@ public final class ChatClientBuilder {
      * @param httpPipeline HttpPipeline to use for sending service requests and receiving responses.
      * @return the updated ChatClientBuilder object
      */
+    @Override
     public ChatClientBuilder pipeline(HttpPipeline httpPipeline) {
         this.httpPipeline = httpPipeline;
         return this;

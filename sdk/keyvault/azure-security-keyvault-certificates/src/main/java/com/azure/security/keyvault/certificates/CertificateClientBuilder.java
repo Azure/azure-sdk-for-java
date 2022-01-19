@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.certificates;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -103,7 +104,9 @@ import java.util.Map;
  * @see CertificateClient
  */
 @ServiceClientBuilder(serviceClients = {CertificateClient.class, CertificateAsyncClient.class})
-public final class CertificateClientBuilder implements TokenCredentialTrait<CertificateClientBuilder> {
+public final class CertificateClientBuilder implements
+    TokenCredentialTrait<CertificateClientBuilder>,
+    HttpConfigTrait<CertificateClientBuilder> {
     private final ClientLogger logger = new ClientLogger(CertificateClientBuilder.class);
     // This is properties file's name.
     private static final String AZURE_KEY_VAULT_CERTIFICATES_PROPERTIES = "azure-key-vault-certificates.properties";
@@ -289,6 +292,7 @@ public final class CertificateClientBuilder implements TokenCredentialTrait<Cert
      *
      * @return The updated {@link CertificateClientBuilder} object.
      */
+    @Override
     public CertificateClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         httpLogOptions = logOptions;
 
@@ -305,6 +309,7 @@ public final class CertificateClientBuilder implements TokenCredentialTrait<Cert
      *
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
+    @Override
     public CertificateClientBuilder addPolicy(HttpPipelinePolicy policy) {
         if (policy == null) {
             throw logger.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
@@ -326,6 +331,7 @@ public final class CertificateClientBuilder implements TokenCredentialTrait<Cert
      *
      * @return The updated {@link CertificateClientBuilder} object.
      */
+    @Override
     public CertificateClientBuilder httpClient(HttpClient client) {
         this.httpClient = client;
 
@@ -343,6 +349,7 @@ public final class CertificateClientBuilder implements TokenCredentialTrait<Cert
      *
      * @return The updated {@link CertificateClientBuilder} object.
      */
+    @Override
     public CertificateClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
 

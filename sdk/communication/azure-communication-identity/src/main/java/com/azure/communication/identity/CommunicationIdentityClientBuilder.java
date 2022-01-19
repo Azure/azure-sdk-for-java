@@ -8,6 +8,7 @@ import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.identity.implementation.CommunicationIdentityClientImpl;
 import com.azure.communication.identity.implementation.CommunicationIdentityClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.AzureKeyCredential;
@@ -36,7 +37,9 @@ import java.util.Objects;
  * CommunicationIdentityClientBuilder that creates CommunicationIdentityAsyncClient and CommunicationIdentityClient.
  */
 @ServiceClientBuilder(serviceClients = {CommunicationIdentityClient.class, CommunicationIdentityAsyncClient.class})
-public final class CommunicationIdentityClientBuilder implements TokenCredentialTrait<CommunicationIdentityClientBuilder> {
+public final class CommunicationIdentityClientBuilder implements
+    TokenCredentialTrait<CommunicationIdentityClientBuilder>,
+    HttpConfigTrait<CommunicationIdentityClientBuilder> {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
@@ -74,6 +77,7 @@ public final class CommunicationIdentityClientBuilder implements TokenCredential
      * supplied, the credential and httpClient fields must be set
      * @return CommunicationIdentityClientBuilder
      */
+    @Override
     public CommunicationIdentityClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = Objects.requireNonNull(pipeline, "'pipeline' cannot be null.");
         return this;
@@ -128,6 +132,7 @@ public final class CommunicationIdentityClientBuilder implements TokenCredential
      * field.
      * @return CommunicationIdentityClientBuilder
      */
+    @Override
     public CommunicationIdentityClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
         return this;
@@ -140,6 +145,7 @@ public final class CommunicationIdentityClientBuilder implements TokenCredential
      * AzureKeyCredentialPolicy, UserAgentPolicy, RetryPolicy, and CookiePolicy
      * @return CommunicationIdentityClientBuilder
      */
+    @Override
     public CommunicationIdentityClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         this.customPolicies.add(Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null."));
         return this;
@@ -174,6 +180,7 @@ public final class CommunicationIdentityClientBuilder implements TokenCredential
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return the updated CommunicationIdentityClientBuilder object
      */
+    @Override
     public CommunicationIdentityClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;

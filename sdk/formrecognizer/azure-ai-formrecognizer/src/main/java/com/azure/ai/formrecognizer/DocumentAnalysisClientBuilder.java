@@ -8,6 +8,7 @@ import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilde
 import com.azure.ai.formrecognizer.implementation.util.Constants;
 import com.azure.ai.formrecognizer.implementation.util.Utility;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -87,7 +88,8 @@ import java.util.Objects;
  * @see DocumentAnalysisClient
  */
 @ServiceClientBuilder(serviceClients = {DocumentAnalysisAsyncClient.class, DocumentAnalysisClient.class})
-public final class DocumentAnalysisClientBuilder implements TokenCredentialTrait<DocumentAnalysisClientBuilder> {
+public final class DocumentAnalysisClientBuilder implements TokenCredentialTrait<DocumentAnalysisClientBuilder>,
+    HttpConfigTrait<DocumentAnalysisClientBuilder> {
     private final ClientLogger logger = new ClientLogger(DocumentAnalysisClientBuilder.class);
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -229,6 +231,7 @@ public final class DocumentAnalysisClientBuilder implements TokenCredentialTrait
      *
      * @return The updated DocumentAnalysisClientBuilder object.
      */
+    @Override
     public DocumentAnalysisClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;
         return this;
@@ -263,6 +266,7 @@ public final class DocumentAnalysisClientBuilder implements TokenCredentialTrait
      * @return The updated DocumentAnalysisClientBuilder object.
      * @throws NullPointerException If {@code policy} is null.
      */
+    @Override
     public DocumentAnalysisClientBuilder addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy, "'policy' cannot be null.");
 
@@ -281,6 +285,7 @@ public final class DocumentAnalysisClientBuilder implements TokenCredentialTrait
      *
      * @return The updated DocumentAnalysisClientBuilder object.
      */
+    @Override
     public DocumentAnalysisClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
             logger.info("HttpClient is being set to 'null' when it was previously configured.");
@@ -301,6 +306,7 @@ public final class DocumentAnalysisClientBuilder implements TokenCredentialTrait
      *
      * @return The updated DocumentAnalysisClientBuilder object.
      */
+    @Override
     public DocumentAnalysisClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");

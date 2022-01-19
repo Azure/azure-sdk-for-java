@@ -4,6 +4,7 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
@@ -50,7 +51,9 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = {DataLakeFileClient.class, DataLakeFileAsyncClient.class,
     DataLakeDirectoryClient.class, DataLakeDirectoryAsyncClient.class})
-public final class DataLakePathClientBuilder implements TokenCredentialTrait<DataLakePathClientBuilder> {
+public final class DataLakePathClientBuilder implements
+    TokenCredentialTrait<DataLakePathClientBuilder>,
+    HttpConfigTrait<DataLakePathClientBuilder> {
 
     private final ClientLogger logger = new ClientLogger(DataLakePathClientBuilder.class);
     private final BlobClientBuilder blobClientBuilder;
@@ -365,6 +368,7 @@ public final class DataLakePathClientBuilder implements TokenCredentialTrait<Dat
      * @param httpClient HttpClient to use for requests.
      * @return the updated DataLakePathClientBuilder object
      */
+    @Override
     public DataLakePathClientBuilder httpClient(HttpClient httpClient) {
         blobClientBuilder.httpClient(httpClient);
         if (this.httpClient != null && httpClient == null) {
@@ -383,6 +387,7 @@ public final class DataLakePathClientBuilder implements TokenCredentialTrait<Dat
      * @return the updated DataLakePathClientBuilder object
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
+    @Override
     public DataLakePathClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         blobClientBuilder.addPolicy(pipelinePolicy);
         Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null");
@@ -410,6 +415,7 @@ public final class DataLakePathClientBuilder implements TokenCredentialTrait<Dat
      * @return the updated DataLakePathClientBuilder object
      * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
+    @Override
     public DataLakePathClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         blobClientBuilder.httpLogOptions(logOptions);
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
@@ -462,6 +468,7 @@ public final class DataLakePathClientBuilder implements TokenCredentialTrait<Dat
      * @param httpPipeline HttpPipeline to use for sending service requests and receiving responses.
      * @return the updated DataLakePathClientBuilder object
      */
+    @Override
     public DataLakePathClientBuilder pipeline(HttpPipeline httpPipeline) {
         blobClientBuilder.pipeline(httpPipeline);
         if (this.httpPipeline != null && httpPipeline == null) {

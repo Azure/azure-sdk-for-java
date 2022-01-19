@@ -4,6 +4,7 @@
 package com.azure.mixedreality.authentication;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -45,7 +46,9 @@ import java.util.UUID;
  * @see MixedRealityStsClient
  */
 @ServiceClientBuilder(serviceClients = {MixedRealityStsClient.class, MixedRealityStsAsyncClient.class})
-public final class MixedRealityStsClientBuilder implements TokenCredentialTrait<MixedRealityStsClientBuilder> {
+public final class MixedRealityStsClientBuilder implements
+    TokenCredentialTrait<MixedRealityStsClientBuilder>,
+    HttpConfigTrait<MixedRealityStsClientBuilder> {
     private static final String MIXED_REALITY_STS_PROPERTIES = "azure-mixedreality-authentication.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
@@ -117,6 +120,7 @@ public final class MixedRealityStsClientBuilder implements TokenCredentialTrait<
      * @param customPolicy An HttpPipelinePolicy object to be applied after the defaults.
      * @return The updated {@link MixedRealityStsClientBuilder} object.
      */
+    @Override
     public MixedRealityStsClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         this.customPolicies.add(Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null."));
 
@@ -277,6 +281,7 @@ public final class MixedRealityStsClientBuilder implements TokenCredentialTrait<
      * @param client The HTTP client to use for requests.
      * @return The updated ConfigurationClientBuilder object.
      */
+    @Override
     public MixedRealityStsClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
             logger.info("HttpClient is being set to 'null' when it was previously configured.");
@@ -293,6 +298,7 @@ public final class MixedRealityStsClientBuilder implements TokenCredentialTrait<
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return The updated {@link MixedRealityStsClientBuilder} object.
      */
+    @Override
     public MixedRealityStsClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
 
@@ -309,6 +315,7 @@ public final class MixedRealityStsClientBuilder implements TokenCredentialTrait<
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return The updated {@link MixedRealityStsClientBuilder} object.
      */
+    @Override
     public MixedRealityStsClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");

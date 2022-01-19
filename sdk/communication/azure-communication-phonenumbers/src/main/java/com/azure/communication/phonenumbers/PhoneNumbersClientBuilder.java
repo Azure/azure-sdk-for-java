@@ -7,6 +7,7 @@ import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClien
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -36,7 +37,9 @@ import java.util.Objects;
  * Builder for creating clients of Communication Service phone number configuration
  */
 @ServiceClientBuilder(serviceClients = {PhoneNumbersClient.class, PhoneNumbersAsyncClient.class})
-public final class PhoneNumbersClientBuilder implements TokenCredentialTrait<PhoneNumbersClientBuilder> {
+public final class PhoneNumbersClientBuilder implements
+    TokenCredentialTrait<PhoneNumbersClientBuilder>,
+    HttpConfigTrait<PhoneNumbersClientBuilder> {
     private static final Map<String, String> PROPERTIES =
         CoreUtils.getProperties("azure-communication-phonenumbers.properties");
     private static final String SDK_NAME = "name";
@@ -77,6 +80,7 @@ public final class PhoneNumbersClientBuilder implements TokenCredentialTrait<Pho
      * @param pipeline HttpPipeline to use
      * @return The updated {@link PhoneNumbersClientBuilder} object.
      */
+    @Override
     public PhoneNumbersClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
@@ -89,6 +93,7 @@ public final class PhoneNumbersClientBuilder implements TokenCredentialTrait<Pho
      * @return The updated {@link PhoneNumbersClientBuilder} object.
      * @throws NullPointerException If {@code httpClient} is {@code null}.
      */
+    @Override
     public PhoneNumbersClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
@@ -102,6 +107,7 @@ public final class PhoneNumbersClientBuilder implements TokenCredentialTrait<Pho
      * @param httpLogOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return the updated {@link PhoneNumbersClientBuilder} object.
      */
+    @Override
     public PhoneNumbersClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
@@ -169,6 +175,7 @@ public final class PhoneNumbersClientBuilder implements TokenCredentialTrait<Pho
      * @return The updated {@link PhoneNumbersClientBuilder} object.
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
+    @Override
     public PhoneNumbersClientBuilder addPolicy(HttpPipelinePolicy policy) {
         this.additionalPolicies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
         return this;

@@ -4,6 +4,7 @@
 package com.azure.data.schemaregistry;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -93,7 +94,9 @@ import java.util.Objects;
  * <!-- end com.azure.data.schemaregistry.schemaregistryasyncclient.retrypolicy.instantiation -->
  */
 @ServiceClientBuilder(serviceClients = {SchemaRegistryAsyncClient.class, SchemaRegistryClient.class})
-public class SchemaRegistryClientBuilder implements TokenCredentialTrait<SchemaRegistryClientBuilder> {
+public class SchemaRegistryClientBuilder implements
+    TokenCredentialTrait<SchemaRegistryClientBuilder>,
+    HttpConfigTrait<SchemaRegistryClientBuilder> {
     private final ClientLogger logger = new ClientLogger(SchemaRegistryClientBuilder.class);
 
     private static final String DEFAULT_SCOPE = "https://eventhubs.azure.net/.default";
@@ -160,6 +163,7 @@ public class SchemaRegistryClientBuilder implements TokenCredentialTrait<SchemaR
      * @param httpClient The HTTP client to use for requests.
      * @return The updated {@link SchemaRegistryClientBuilder} object.
      */
+    @Override
     public SchemaRegistryClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
@@ -173,6 +177,7 @@ public class SchemaRegistryClientBuilder implements TokenCredentialTrait<SchemaR
      * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return The updated {@link SchemaRegistryClientBuilder} object.
      */
+    @Override
     public SchemaRegistryClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
@@ -234,6 +239,7 @@ public class SchemaRegistryClientBuilder implements TokenCredentialTrait<SchemaR
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return The updated {@link SchemaRegistryClientBuilder} object.
      */
+    @Override
     public SchemaRegistryClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;
         return this;
@@ -270,6 +276,7 @@ public class SchemaRegistryClientBuilder implements TokenCredentialTrait<SchemaR
      * @return The updated {@link SchemaRegistryClientBuilder} object.
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
+    @Override
     public SchemaRegistryClientBuilder addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy, "'policy' cannot be null.");
 

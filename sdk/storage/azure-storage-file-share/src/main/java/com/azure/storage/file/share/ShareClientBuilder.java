@@ -4,6 +4,7 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -122,7 +123,7 @@ import java.util.Objects;
  * @see StorageSharedKeyCredential
  */
 @ServiceClientBuilder(serviceClients = {ShareClient.class, ShareAsyncClient.class})
-public class ShareClientBuilder {
+public class ShareClientBuilder implements HttpConfigTrait<ShareClientBuilder> {
     private final ClientLogger logger = new ClientLogger(ShareClientBuilder.class);
 
     private String endpoint;
@@ -372,6 +373,7 @@ public class ShareClientBuilder {
      * @param httpClient HttpClient to use for requests.
      * @return the updated ShareClientBuilder object
      */
+    @Override
     public ShareClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
             logger.info("'httpClient' is being set to 'null' when it was previously configured.");
@@ -389,6 +391,7 @@ public class ShareClientBuilder {
      * @return the updated ShareClientBuilder object
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
+    @Override
     public ShareClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null");
         if (pipelinePolicy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
@@ -406,6 +409,7 @@ public class ShareClientBuilder {
      * @return the updated ShareClientBuilder object
      * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
+    @Override
     public ShareClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
@@ -451,6 +455,7 @@ public class ShareClientBuilder {
      * @param httpPipeline HttpPipeline to use for sending service requests and receiving responses.
      * @return the updated ShareClientBuilder object
      */
+    @Override
     public ShareClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");

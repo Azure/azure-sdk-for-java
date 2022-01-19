@@ -4,6 +4,7 @@
 package com.azure.security.attestation;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -98,7 +99,9 @@ import java.util.Objects;
             AttestationAdministrationClient.class,
             AttestationAdministrationAsyncClient.class,
         })
-public final class AttestationAdministrationClientBuilder implements TokenCredentialTrait<AttestationAdministrationClientBuilder> {
+public final class AttestationAdministrationClientBuilder implements
+    TokenCredentialTrait<AttestationAdministrationClientBuilder>,
+    HttpConfigTrait<AttestationAdministrationClientBuilder> {
     private static final String SDK_NAME = "name";
 
     private static final String SDK_VERSION = "version";
@@ -167,6 +170,7 @@ public final class AttestationAdministrationClientBuilder implements TokenCreden
      * @param pipeline the pipeline value.
      * @return the AttestationClientBuilder.
      */
+    @Override
     public AttestationAdministrationClientBuilder pipeline(HttpPipeline pipeline) {
         clientImplBuilder.pipeline(pipeline);
         return this;
@@ -189,6 +193,7 @@ public final class AttestationAdministrationClientBuilder implements TokenCreden
      * @param httpClient the httpClient value.
      * @return the AttestationClientBuilder.
      */
+    @Override
     public AttestationAdministrationClientBuilder httpClient(HttpClient httpClient) {
         clientImplBuilder.httpClient(httpClient);
         return this;
@@ -211,6 +216,7 @@ public final class AttestationAdministrationClientBuilder implements TokenCreden
      * @param httpLogOptions the httpLogOptions value.
      * @return the AttestationClientBuilder.
      */
+    @Override
     public AttestationAdministrationClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         clientImplBuilder.httpLogOptions(httpLogOptions);
         return this;
@@ -233,6 +239,7 @@ public final class AttestationAdministrationClientBuilder implements TokenCreden
      * @param customPolicy The custom Http pipeline policy to add.
      * @return this {@link AttestationAdministrationClientBuilder}.
      */
+    @Override
     public AttestationAdministrationClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         clientImplBuilder.addPolicy(customPolicy);
         return this;

@@ -4,6 +4,7 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -98,7 +99,9 @@ import static com.azure.core.util.CoreUtils.getApplicationId;
  * @see ConfigurationClient
  */
 @ServiceClientBuilder(serviceClients = {ConfigurationAsyncClient.class, ConfigurationClient.class})
-public final class ConfigurationClientBuilder implements TokenCredentialTrait<ConfigurationClientBuilder> {
+public final class ConfigurationClientBuilder implements
+    TokenCredentialTrait<ConfigurationClientBuilder>,
+    HttpConfigTrait<ConfigurationClientBuilder> {
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
 
     private static final String CLIENT_NAME;
@@ -335,6 +338,7 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return The updated ConfigurationClientBuilder object.
      */
+    @Override
     public ConfigurationClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         httpLogOptions = logOptions;
         return this;
@@ -347,6 +351,7 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
      * @return The updated ConfigurationClientBuilder object.
      * @throws NullPointerException If {@code policy} is null.
      */
+    @Override
     public ConfigurationClientBuilder addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy, "'policy' cannot be null.");
 
@@ -365,6 +370,7 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
      * @param client The HTTP client to use for requests.
      * @return The updated ConfigurationClientBuilder object.
      */
+    @Override
     public ConfigurationClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
             logger.info("HttpClient is being set to 'null' when it was previously configured.");
@@ -384,6 +390,7 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return The updated ConfigurationClientBuilder object.
      */
+    @Override
     public ConfigurationClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");

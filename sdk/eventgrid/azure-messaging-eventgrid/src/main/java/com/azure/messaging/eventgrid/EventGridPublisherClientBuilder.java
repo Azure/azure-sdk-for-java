@@ -4,6 +4,7 @@
 package com.azure.messaging.eventgrid;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
@@ -47,7 +48,9 @@ import java.util.Objects;
  * @see CloudEvent
  */
 @ServiceClientBuilder(serviceClients = {EventGridPublisherClient.class, EventGridPublisherAsyncClient.class})
-public final class EventGridPublisherClientBuilder implements TokenCredentialTrait<EventGridPublisherClientBuilder> {
+public final class EventGridPublisherClientBuilder implements
+    TokenCredentialTrait<EventGridPublisherClientBuilder>,
+    HttpConfigTrait<EventGridPublisherClientBuilder> {
 
     private static final String AEG_SAS_KEY = "aeg-sas-key";
 
@@ -205,6 +208,7 @@ public final class EventGridPublisherClientBuilder implements TokenCredentialTra
      *
      * @return the builder itself.
      */
+    @Override
     public EventGridPublisherClientBuilder addPolicy(HttpPipelinePolicy httpPipelinePolicy) {
         this.policies.add(Objects.requireNonNull(httpPipelinePolicy));
         return this;
@@ -308,6 +312,7 @@ public final class EventGridPublisherClientBuilder implements TokenCredentialTra
      *
      * @return the builder itself.
      */
+    @Override
     public EventGridPublisherClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
             logger.info("Http client is set to null when it was not previously null");
@@ -322,6 +327,7 @@ public final class EventGridPublisherClientBuilder implements TokenCredentialTra
      *
      * @return the builder itself.
      */
+    @Override
     public EventGridPublisherClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
@@ -333,6 +339,7 @@ public final class EventGridPublisherClientBuilder implements TokenCredentialTra
      *
      * @return the builder itself.
      */
+    @Override
     public EventGridPublisherClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("Http client is set to null when it was not previously null");

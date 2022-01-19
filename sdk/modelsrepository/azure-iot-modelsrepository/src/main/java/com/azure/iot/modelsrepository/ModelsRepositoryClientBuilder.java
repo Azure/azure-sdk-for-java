@@ -4,6 +4,7 @@
 package com.azure.iot.modelsrepository;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
@@ -36,7 +37,7 @@ import java.util.Objects;
  * #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired client.
  */
 @ServiceClientBuilder(serviceClients = {ModelsRepositoryClient.class, ModelsRepositoryAsyncClient.class})
-public final class ModelsRepositoryClientBuilder {
+public final class ModelsRepositoryClientBuilder implements HttpConfigTrait<ModelsRepositoryClientBuilder> {
     // This is the name of the properties file in this repo that contains the default properties
     private static final String MODELS_REPOSITORY_PROPERTIES = "azure-iot-modelsrepository.properties";
 
@@ -244,6 +245,7 @@ public final class ModelsRepositoryClientBuilder {
      * @param httpClient HttpClient to use for requests.
      * @return the updated ModelsRepositoryClientBuilder instance for fluent building.
      */
+    @Override
     public ModelsRepositoryClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
@@ -256,6 +258,7 @@ public final class ModelsRepositoryClientBuilder {
      * @return the updated ModelsRepositoryClientBuilder instance for fluent building.
      * @throws NullPointerException If {@code httpLogOptions} is {@code null}.
      */
+    @Override
     public ModelsRepositoryClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;
         return this;
@@ -269,6 +272,7 @@ public final class ModelsRepositoryClientBuilder {
      * @return the updated ModelsRepositoryClientBuilder instance for fluent building.
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
+    @Override
     public ModelsRepositoryClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         this.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null"));
         return this;
@@ -296,6 +300,7 @@ public final class ModelsRepositoryClientBuilder {
      * @param httpPipeline HttpPipeline to use for sending service requests and receiving responses.
      * @return the updated ModelsRepositoryClientBuilder instance for fluent building.
      */
+    @Override
     public ModelsRepositoryClientBuilder pipeline(HttpPipeline httpPipeline) {
         this.httpPipeline = httpPipeline;
         return this;

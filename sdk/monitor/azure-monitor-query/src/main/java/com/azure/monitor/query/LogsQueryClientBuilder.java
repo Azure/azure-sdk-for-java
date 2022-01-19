@@ -4,6 +4,7 @@
 package com.azure.monitor.query;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -40,7 +41,9 @@ import com.azure.monitor.query.implementation.logs.AzureLogAnalyticsImplBuilder;
  * <!-- end com.azure.monitor.query.LogsQueryClient.instantiation -->
  */
 @ServiceClientBuilder(serviceClients = {LogsQueryClient.class, LogsQueryAsyncClient.class})
-public final class LogsQueryClientBuilder implements TokenCredentialTrait<LogsQueryClientBuilder> {
+public final class LogsQueryClientBuilder implements
+    TokenCredentialTrait<LogsQueryClientBuilder>,
+    HttpConfigTrait<LogsQueryClientBuilder> {
     private final ClientLogger logger = new ClientLogger(LogsQueryClientBuilder.class);
     private final AzureLogAnalyticsImplBuilder innerLogBuilder = new AzureLogAnalyticsImplBuilder();
     private ClientOptions clientOptions;
@@ -61,6 +64,7 @@ public final class LogsQueryClientBuilder implements TokenCredentialTrait<LogsQu
      * @param pipeline the pipeline value.
      * @return the {@link LogsQueryClientBuilder}.
      */
+    @Override
     public LogsQueryClientBuilder pipeline(HttpPipeline pipeline) {
         innerLogBuilder.pipeline(pipeline);
         return this;
@@ -71,6 +75,7 @@ public final class LogsQueryClientBuilder implements TokenCredentialTrait<LogsQu
      * @param httpClient the httpClient value.
      * @return the {@link LogsQueryClientBuilder}.
      */
+    @Override
     public LogsQueryClientBuilder httpClient(HttpClient httpClient) {
         innerLogBuilder.httpClient(httpClient);
         return this;
@@ -91,6 +96,7 @@ public final class LogsQueryClientBuilder implements TokenCredentialTrait<LogsQu
      * @param httpLogOptions the httpLogOptions value.
      * @return the {@link LogsQueryClientBuilder}.
      */
+    @Override
     public LogsQueryClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         innerLogBuilder.httpLogOptions(httpLogOptions);
         return this;
@@ -111,6 +117,7 @@ public final class LogsQueryClientBuilder implements TokenCredentialTrait<LogsQu
      * @param customPolicy The custom Http pipeline policy to add.
      * @return the {@link LogsQueryClientBuilder}.
      */
+    @Override
     public LogsQueryClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         innerLogBuilder.addPolicy(customPolicy);
         return this;

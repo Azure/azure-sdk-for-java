@@ -4,6 +4,7 @@
 package com.azure.digitaltwins.core;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -39,7 +40,9 @@ import java.util.Objects;
  * #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired client.
  */
 @ServiceClientBuilder(serviceClients = {DigitalTwinsClient.class, DigitalTwinsAsyncClient.class})
-public final class DigitalTwinsClientBuilder implements TokenCredentialTrait<DigitalTwinsClientBuilder> {
+public final class DigitalTwinsClientBuilder implements
+    TokenCredentialTrait<DigitalTwinsClientBuilder>,
+    HttpConfigTrait<DigitalTwinsClientBuilder> {
     private static final String[] ADT_PUBLIC_SCOPE = new String[]{"https://digitaltwins.azure.net" + "/.default"};
 
     // This is the name of the properties file in this repo that contains the default properties
@@ -254,6 +257,7 @@ public final class DigitalTwinsClientBuilder implements TokenCredentialTrait<Dig
      * @param httpClient HttpClient to use for requests.
      * @return the updated DigitalTwinsClientBuilder instance for fluent building.
      */
+    @Override
     public DigitalTwinsClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
@@ -266,6 +270,7 @@ public final class DigitalTwinsClientBuilder implements TokenCredentialTrait<Dig
      * @return the updated DigitalTwinsClientBuilder instance for fluent building.
      * @throws NullPointerException If {@code httpLogOptions} is {@code null}.
      */
+    @Override
     public DigitalTwinsClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;
         return this;
@@ -279,6 +284,7 @@ public final class DigitalTwinsClientBuilder implements TokenCredentialTrait<Dig
      * @return the updated DigitalTwinsClientBuilder instance for fluent building.
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
+    @Override
     public DigitalTwinsClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null.");
 
@@ -313,6 +319,7 @@ public final class DigitalTwinsClientBuilder implements TokenCredentialTrait<Dig
      * @param httpPipeline HttpPipeline to use for sending service requests and receiving responses.
      * @return the updated DigitalTwinsClientBuilder instance for fluent building.
      */
+    @Override
     public DigitalTwinsClientBuilder pipeline(HttpPipeline httpPipeline) {
         this.httpPipeline = httpPipeline;
         return this;

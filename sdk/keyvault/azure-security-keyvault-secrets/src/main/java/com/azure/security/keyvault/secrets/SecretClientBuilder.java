@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.secrets;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -98,7 +99,9 @@ import java.util.Map;
  * @see SecretAsyncClient
  */
 @ServiceClientBuilder(serviceClients = SecretClient.class)
-public final class SecretClientBuilder implements TokenCredentialTrait<SecretClientBuilder> {
+public final class SecretClientBuilder implements
+    TokenCredentialTrait<SecretClientBuilder>,
+    HttpConfigTrait<SecretClientBuilder> {
     private final ClientLogger logger = new ClientLogger(SecretClientBuilder.class);
     // This is properties file's name.
     private static final String AZURE_KEY_VAULT_SECRETS = "azure-key-vault-secrets.properties";
@@ -284,6 +287,7 @@ public final class SecretClientBuilder implements TokenCredentialTrait<SecretCli
      *
      * @return The updated {@link SecretClientBuilder} object.
      */
+    @Override
     public SecretClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         httpLogOptions = logOptions;
 
@@ -300,6 +304,7 @@ public final class SecretClientBuilder implements TokenCredentialTrait<SecretCli
      *
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
+    @Override
     public SecretClientBuilder addPolicy(HttpPipelinePolicy policy) {
         if (policy == null) {
             throw logger.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
@@ -321,6 +326,7 @@ public final class SecretClientBuilder implements TokenCredentialTrait<SecretCli
      *
      * @return The updated {@link SecretClientBuilder} object.
      */
+    @Override
     public SecretClientBuilder httpClient(HttpClient client) {
         this.httpClient = client;
 
@@ -337,6 +343,7 @@ public final class SecretClientBuilder implements TokenCredentialTrait<SecretCli
      *
      * @return The updated {@link SecretClientBuilder} object.
      */
+    @Override
     public SecretClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
 

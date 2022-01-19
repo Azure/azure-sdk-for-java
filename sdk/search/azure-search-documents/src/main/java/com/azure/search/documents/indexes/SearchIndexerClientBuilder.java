@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -64,7 +65,9 @@ import java.util.Objects;
  * @see SearchIndexerAsyncClient
  */
 @ServiceClientBuilder(serviceClients = {SearchIndexerClient.class, SearchIndexerAsyncClient.class})
-public class SearchIndexerClientBuilder implements TokenCredentialTrait<SearchIndexerClientBuilder> {
+public class SearchIndexerClientBuilder implements
+    TokenCredentialTrait<SearchIndexerClientBuilder>,
+    HttpConfigTrait<SearchIndexerClientBuilder> {
     private final ClientLogger logger = new ClientLogger(SearchIndexerClientBuilder.class);
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -179,6 +182,7 @@ public class SearchIndexerClientBuilder implements TokenCredentialTrait<SearchIn
      * @param logOptions The logging configuration for HTTP requests and responses.
      * @return The updated SearchIndexerClientBuilder object.
      */
+    @Override
     public SearchIndexerClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         httpLogOptions = logOptions;
         return this;
@@ -214,6 +218,7 @@ public class SearchIndexerClientBuilder implements TokenCredentialTrait<SearchIn
      * @return The updated SearchIndexerClientBuilder object.
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
+    @Override
     public SearchIndexerClientBuilder addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy, "'policy' cannot be null.");
 
@@ -232,6 +237,7 @@ public class SearchIndexerClientBuilder implements TokenCredentialTrait<SearchIn
      * @param client The HTTP client that will handle sending requests and receiving responses.
      * @return The updated SearchIndexerClientBuilder object.
      */
+    @Override
     public SearchIndexerClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
             logger.info("HttpClient is being set to 'null' when it was previously configured.");
@@ -250,6 +256,7 @@ public class SearchIndexerClientBuilder implements TokenCredentialTrait<SearchIn
      * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return The updated SearchIndexerClientBuilder object.
      */
+    @Override
     public SearchIndexerClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");

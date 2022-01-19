@@ -3,6 +3,7 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -64,7 +65,9 @@ import java.util.Objects;
  * @see SearchIndexAsyncClient
  */
 @ServiceClientBuilder(serviceClients = {SearchIndexClient.class, SearchIndexAsyncClient.class})
-public final class SearchIndexClientBuilder implements TokenCredentialTrait<SearchIndexClientBuilder> {
+public final class SearchIndexClientBuilder implements
+    TokenCredentialTrait<SearchIndexClientBuilder>,
+    HttpConfigTrait<SearchIndexClientBuilder> {
     private final ClientLogger logger = new ClientLogger(SearchIndexClientBuilder.class);
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -179,6 +182,7 @@ public final class SearchIndexClientBuilder implements TokenCredentialTrait<Sear
      * @param logOptions The logging configuration for HTTP requests and responses.
      * @return The updated SearchIndexClientBuilder object.
      */
+    @Override
     public SearchIndexClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         httpLogOptions = logOptions;
         return this;
@@ -214,6 +218,7 @@ public final class SearchIndexClientBuilder implements TokenCredentialTrait<Sear
      * @return The updated SearchIndexClientBuilder object.
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
+    @Override
     public SearchIndexClientBuilder addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy, "'policy' cannot be null.");
 
@@ -244,6 +249,7 @@ public final class SearchIndexClientBuilder implements TokenCredentialTrait<Sear
      * @param client The HTTP client that will handle sending requests and receiving responses.
      * @return The updated SearchIndexClientBuilder object.
      */
+    @Override
     public SearchIndexClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
             logger.info("HttpClient is being set to 'null' when it was previously configured.");
@@ -262,6 +268,7 @@ public final class SearchIndexClientBuilder implements TokenCredentialTrait<Sear
      * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return The updated SearchIndexClientBuilder object.
      */
+    @Override
     public SearchIndexClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");

@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -118,7 +119,9 @@ import java.util.Map;
  * @see CryptographyClient
  */
 @ServiceClientBuilder(serviceClients = CryptographyClient.class)
-public final class CryptographyClientBuilder implements TokenCredentialTrait<CryptographyClientBuilder> {
+public final class CryptographyClientBuilder implements
+    TokenCredentialTrait<CryptographyClientBuilder>,
+    HttpConfigTrait<CryptographyClientBuilder> {
     private final ClientLogger logger = new ClientLogger(CryptographyClientBuilder.class);
 
     // This is properties file's name.
@@ -351,6 +354,7 @@ public final class CryptographyClientBuilder implements TokenCredentialTrait<Cry
      *
      * @return The updated {@link CryptographyClientBuilder} object.
      */
+    @Override
     public CryptographyClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         httpLogOptions = logOptions;
 
@@ -366,6 +370,7 @@ public final class CryptographyClientBuilder implements TokenCredentialTrait<Cry
      *
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
+    @Override
     public CryptographyClientBuilder addPolicy(HttpPipelinePolicy policy) {
         if (policy == null) {
             throw logger.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
@@ -387,6 +392,7 @@ public final class CryptographyClientBuilder implements TokenCredentialTrait<Cry
      *
      * @return The updated {@link CryptographyClientBuilder} object.
      */
+    @Override
     public CryptographyClientBuilder httpClient(HttpClient client) {
         this.httpClient = client;
 
@@ -403,6 +409,7 @@ public final class CryptographyClientBuilder implements TokenCredentialTrait<Cry
      *
      * @return The updated {@link CryptographyClientBuilder} object.
      */
+    @Override
     public CryptographyClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
 

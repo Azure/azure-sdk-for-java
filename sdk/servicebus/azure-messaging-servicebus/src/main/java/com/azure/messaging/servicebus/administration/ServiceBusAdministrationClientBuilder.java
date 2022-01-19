@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus.administration;
 
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
 import com.azure.core.http.HttpClient;
@@ -80,7 +81,8 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = {ServiceBusAdministrationClient.class,
     ServiceBusAdministrationAsyncClient.class})
-public final class ServiceBusAdministrationClientBuilder {
+public final class ServiceBusAdministrationClientBuilder implements
+    HttpConfigTrait<ServiceBusAdministrationClientBuilder> {
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
 
@@ -176,6 +178,7 @@ public final class ServiceBusAdministrationClientBuilder {
      * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
+    @Override
     public ServiceBusAdministrationClientBuilder addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy);
         if (policy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
@@ -285,6 +288,7 @@ public final class ServiceBusAdministrationClientBuilder {
      *
      * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
      */
+    @Override
     public ServiceBusAdministrationClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
             logger.info("HttpClient is being set to 'null' when it was previously configured.");
@@ -303,6 +307,7 @@ public final class ServiceBusAdministrationClientBuilder {
      *
      * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
      */
+    @Override
     public ServiceBusAdministrationClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         httpLogOptions = logOptions;
         return this;
@@ -336,6 +341,7 @@ public final class ServiceBusAdministrationClientBuilder {
      *
      * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
      */
+    @Override
     public ServiceBusAdministrationClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");

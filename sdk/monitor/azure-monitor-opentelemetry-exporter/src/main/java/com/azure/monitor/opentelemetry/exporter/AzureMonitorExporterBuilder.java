@@ -3,6 +3,7 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -34,7 +35,9 @@ import java.util.Objects;
  * This class provides a fluent builder API to instantiate {@link AzureMonitorTraceExporter} that implements
  * {@link SpanExporter} interface defined by OpenTelemetry API specification.
  */
-public final class AzureMonitorExporterBuilder implements TokenCredentialTrait<AzureMonitorExporterBuilder> {
+public final class AzureMonitorExporterBuilder implements
+    TokenCredentialTrait<AzureMonitorExporterBuilder>,
+    HttpConfigTrait<AzureMonitorExporterBuilder> {
     private static final String APPLICATIONINSIGHTS_CONNECTION_STRING = "APPLICATIONINSIGHTS_CONNECTION_STRING";
     private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE = "https://monitor.azure.com//.default";
     private static final SerializerAdapter SERIALIZER_ADAPTER;
@@ -88,6 +91,7 @@ public final class AzureMonitorExporterBuilder implements TokenCredentialTrait<A
      * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return The updated {@link AzureMonitorExporterBuilder} object.
      */
+    @Override
     public AzureMonitorExporterBuilder pipeline(HttpPipeline httpPipeline) {
         restServiceClientBuilder.pipeline(httpPipeline);
         return this;
@@ -99,6 +103,7 @@ public final class AzureMonitorExporterBuilder implements TokenCredentialTrait<A
      * @param client The HTTP client to use for requests.
      * @return The updated {@link AzureMonitorExporterBuilder} object.
      */
+    @Override
     public AzureMonitorExporterBuilder httpClient(HttpClient client) {
         restServiceClientBuilder.httpClient(client);
         return this;
@@ -112,6 +117,7 @@ public final class AzureMonitorExporterBuilder implements TokenCredentialTrait<A
      *
      * @return The updated {@link AzureMonitorExporterBuilder} object.
      */
+    @Override
     public AzureMonitorExporterBuilder httpLogOptions(HttpLogOptions logOptions) {
         restServiceClientBuilder.httpLogOptions(logOptions);
         return this;
@@ -137,6 +143,7 @@ public final class AzureMonitorExporterBuilder implements TokenCredentialTrait<A
      * @return The updated {@link AzureMonitorExporterBuilder} object.
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
+    @Override
     public AzureMonitorExporterBuilder addPolicy(HttpPipelinePolicy policy) {
         restServiceClientBuilder.addPolicy(Objects.requireNonNull(policy, "'policy' cannot be null."));
         return this;

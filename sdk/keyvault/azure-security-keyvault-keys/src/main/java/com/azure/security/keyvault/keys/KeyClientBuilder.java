@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.keys;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -97,7 +98,9 @@ import java.util.Map;
  * @see KeyClient
  */
 @ServiceClientBuilder(serviceClients = KeyClient.class)
-public final class KeyClientBuilder implements TokenCredentialTrait<KeyClientBuilder> {
+public final class KeyClientBuilder implements
+    TokenCredentialTrait<KeyClientBuilder>,
+    HttpConfigTrait<KeyClientBuilder> {
     private final ClientLogger logger = new ClientLogger(KeyClientBuilder.class);
     // This is properties file's name.
     private static final String AZURE_KEY_VAULT_KEYS = "azure-key-vault-keys.properties";
@@ -281,6 +284,7 @@ public final class KeyClientBuilder implements TokenCredentialTrait<KeyClientBui
      *
      * @return The updated {@link KeyClientBuilder} object.
      */
+    @Override
     public KeyClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         httpLogOptions = logOptions;
 
@@ -297,6 +301,7 @@ public final class KeyClientBuilder implements TokenCredentialTrait<KeyClientBui
      *
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
+    @Override
     public KeyClientBuilder addPolicy(HttpPipelinePolicy policy) {
         if (policy == null) {
             throw logger.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
@@ -318,6 +323,7 @@ public final class KeyClientBuilder implements TokenCredentialTrait<KeyClientBui
      *
      * @return The updated {@link KeyClientBuilder} object.
      */
+    @Override
     public KeyClientBuilder httpClient(HttpClient client) {
         this.httpClient = client;
 
@@ -334,6 +340,7 @@ public final class KeyClientBuilder implements TokenCredentialTrait<KeyClientBui
      *
      * @return The updated {@link KeyClientBuilder} object.
      */
+    @Override
     public KeyClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
 

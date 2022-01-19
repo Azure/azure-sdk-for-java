@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.administration;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -65,7 +66,9 @@ import java.util.Map;
  * @see KeyVaultBackupAsyncClient
  */
 @ServiceClientBuilder(serviceClients = {KeyVaultBackupClient.class, KeyVaultBackupAsyncClient.class})
-public final class KeyVaultBackupClientBuilder implements TokenCredentialTrait<KeyVaultBackupClientBuilder> {
+public final class KeyVaultBackupClientBuilder implements
+    TokenCredentialTrait<KeyVaultBackupClientBuilder>,
+    HttpConfigTrait<KeyVaultBackupClientBuilder> {
     // This is the properties file name.
     private static final String AZURE_KEY_VAULT_RBAC = "azure-key-vault-administration.properties";
     private static final String SDK_NAME = "name";
@@ -240,6 +243,7 @@ public final class KeyVaultBackupClientBuilder implements TokenCredentialTrait<K
      *
      * @return The updated {@link KeyVaultBackupClientBuilder} object.
      */
+    @Override
     public KeyVaultBackupClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         httpLogOptions = logOptions;
 
@@ -256,6 +260,7 @@ public final class KeyVaultBackupClientBuilder implements TokenCredentialTrait<K
      *
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
+    @Override
     public KeyVaultBackupClientBuilder addPolicy(HttpPipelinePolicy policy) {
         if (policy == null) {
             throw logger.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
@@ -277,6 +282,7 @@ public final class KeyVaultBackupClientBuilder implements TokenCredentialTrait<K
      *
      * @return The updated {@link KeyVaultBackupClientBuilder} object.
      */
+    @Override
     public KeyVaultBackupClientBuilder httpClient(HttpClient client) {
         this.httpClient = client;
 
@@ -294,6 +300,7 @@ public final class KeyVaultBackupClientBuilder implements TokenCredentialTrait<K
      *
      * @return The updated {@link KeyVaultBackupClientBuilder} object.
      */
+    @Override
     public KeyVaultBackupClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
 

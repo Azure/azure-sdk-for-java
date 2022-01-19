@@ -7,6 +7,7 @@ import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAd
 import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2ImplBuilder;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.ContentType;
@@ -99,7 +100,9 @@ import java.util.Objects;
  * @see MetricsAdvisorClient
  */
 @ServiceClientBuilder(serviceClients = {MetricsAdvisorAsyncClient.class, MetricsAdvisorClient.class})
-public final class MetricsAdvisorClientBuilder implements TokenCredentialTrait<MetricsAdvisorClientBuilder> {
+public final class MetricsAdvisorClientBuilder implements
+    TokenCredentialTrait<MetricsAdvisorClientBuilder>,
+    HttpConfigTrait<MetricsAdvisorClientBuilder> {
 
     private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
     private static final String CONTENT_TYPE_HEADER_VALUE = ContentType.APPLICATION_JSON;
@@ -315,6 +318,7 @@ public final class MetricsAdvisorClientBuilder implements TokenCredentialTrait<M
      *
      * @return The updated MetricsAdvisorClientBuilder object.
      */
+    @Override
     public MetricsAdvisorClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;
         return this;
@@ -339,6 +343,7 @@ public final class MetricsAdvisorClientBuilder implements TokenCredentialTrait<M
      * @return The updated MetricsAdvisorClientBuilder object.
      * @throws NullPointerException If {@code policy} is null.
      */
+    @Override
     public MetricsAdvisorClientBuilder addPolicy(HttpPipelinePolicy policy) {
         policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
         return this;
@@ -351,6 +356,7 @@ public final class MetricsAdvisorClientBuilder implements TokenCredentialTrait<M
      *
      * @return The updated MetricsAdvisorClientBuilder object.
      */
+    @Override
     public MetricsAdvisorClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
             logger.info("HttpClient is being set to 'null' when it was previously configured.");
@@ -371,6 +377,7 @@ public final class MetricsAdvisorClientBuilder implements TokenCredentialTrait<M
      *
      * @return The updated MetricsAdvisorClientBuilder object.
      */
+    @Override
     public MetricsAdvisorClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
