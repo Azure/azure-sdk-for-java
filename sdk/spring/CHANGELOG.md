@@ -1,30 +1,130 @@
 # Release History
 
-## 4.0.0-beta.3 (Unreleased)
-- Supported spring-boot version: 2.6.0 - 2.6.1
-- Supported spring-cloud version: 2021.0.0
+## 4.0.0-beta.3 (2022-01-18)
+Please refer to [Spring Cloud Azure Migration Guide for 4.0](https://microsoft.github.io/spring-cloud-azure/4.0.0-beta.3/4.0.0-beta.3/reference/html/appendix.html#migration-guide-for-4-0) to learn how to migrate to version 4.0.
 
-### Features Added
-- Support StorageQueueMessageConverter as a bean to support customize ObjectMapper.
-- Support EventHubsMessageConverter as a bean to support customize ObjectMapper.
+- Support Spring Boot version: 2.5.5+ and 2.6.0 - 2.6.1.
+- Support Spring Cloud version: 2020.0.3+ and 2021.0.0.
 
 ### Dependency Updates
-Upgrade dependency according to spring-boot-dependencies:2.6.1 and spring-cloud-dependencies:2021.0.0
+Upgrade dependency according to spring-boot-dependencies:2.6.1 and spring-cloud-dependencies:2021.0.0.
 
-### Breaking Changes
-1. Property name "spring.cloud.azure.active-directory.tenant-id" changed to "spring.cloud.azure.active-directory.profile.tenant-id".
-2. Property name "spring.cloud.azure.active-directory.client-id" changed to "spring.cloud.azure.active-directory.credential.client-id".
-3. Property name "spring.cloud.azure.active-directory.client-secret" changed to "spring.cloud.azure.active-directory.credential.client-secret".
-4. Property name "spring.cloud.azure.active-directory.base-uri" changed to "spring.cloud.azure.active-directory.profile.environment.active-directory-endpoint".
-5. Property name "spring.cloud.azure.active-directory.graph-base-uri" changed to "spring.cloud.azure.active-directory.profile.environment.microsoft-graph-endpoint".
-6. Property name "spring.cloud.azure.active-directory.graph-membership-uri" changed to "spring.cloud.azure.active-directory.profile.environment.microsoft-graph-endpoint" and "spring.cloud.azure.active-directory.user-group.use-transitive-members".
-7. Remove artifact id `spring-cloud-azure-stream-binder-test`.
-8. Remove `StorageQueueOperation`.
-9. Remove configuration of checkpoint mode for StorageQueueTemplate, and support only MANUAL mode.
-10. Remove auto creating Storage Queue when send/receive messages via `StorageQueueTemplate`.
-### Bugs Fixed
+### Spring Cloud Azure AutoConfigure
+This section includes changes in the `spring-cloud-azure-autoconfigure` module.
+
+#### Features Added
+- Enable `Caching` and `Pooling` ConnectionFactory autoconfiguration for Service Bus JMS [#26072](https://github.com/Azure/azure-sdk-for-java/issues/26072).
+- Support all configuration options of the initial position when processing an event hub [#26434](https://github.com/Azure/azure-sdk-for-java/issues/26434).
+- Support autoconfiguration of `QueueClient` by adding configuration property `spring.cloud.azure.storage.queue.queue-name` [#26382](https://github.com/Azure/azure-sdk-for-java/pull/26382).
+- Improve the `spring-configuration-metadata.json` [#26292](https://github.com/Azure/azure-sdk-for-java/issues/26292), [#26274](https://github.com/Azure/azure-sdk-for-java/pull/26274).
+- Support `StorageQueueMessageConverter` as a bean to support customize ObjectMapper [#26200](https://github.com/Azure/azure-sdk-for-java/pull/26200).
+- Support `EventHubsMessageConverter` as a bean to support customize ObjectMapper [#26200](https://github.com/Azure/azure-sdk-for-java/pull/26200).
+
+#### Breaking Changes
+- Change AAD configuration properties to use the namespace for credential and environment properties [#25646](https://github.com/Azure/azure-sdk-for-java/issues/25646).
+  * Property name "spring.cloud.azure.active-directory.tenant-id" changed to "spring.cloud.azure.active-directory.profile.tenant-id".
+  * Property name "spring.cloud.azure.active-directory.client-id" changed to "spring.cloud.azure.active-directory.credential.client-id".
+  * Property name "spring.cloud.azure.active-directory.client-secret" changed to "spring.cloud.azure.active-directory.credential.client-secret".
+  * Property name "spring.cloud.azure.active-directory.base-uri" changed to "spring.cloud.azure.active-directory.profile.environment.active-directory-endpoint".
+  * Property name "spring.cloud.azure.active-directory.graph-base-uri" changed to "spring.cloud.azure.active-directory.profile.environment.microsoft-graph-endpoint".
+  * Property name "spring.cloud.azure.active-directory.graph-membership-uri" changed to "spring.cloud.azure.active-directory.profile.environment.microsoft-graph-endpoint" and "spring.cloud.azure.active-directory.user-group.use-transitive-members".
+- Change AAD B2C configuration properties to use the namespace for credential and environment properties [#25799](https://github.com/Azure/azure-sdk-for-java/pull/25799).
+- Change Event Hubs processor configuration properties `spring.cloud.azure.eventhbs.processor.partition-ownership-expiration-interval` to `spring.cloud.azure.eventhbs.processor.load-balancing.partition-ownership-expiration-interval` [#25851](https://github.com/Azure/azure-sdk-for-java/pull/25851).
+- Change Event Hubs configuration properties `spring.cloud.azure.eventhubs.fqdn` to `spring.cloud.azure.eventhubs.fully-qualified-namespace` [#25851](https://github.com/Azure/azure-sdk-for-java/pull/25851).
+- Rename all `*CP` classes to `*ConfigurationProperties` [#26209](https://github.com/Azure/azure-sdk-for-java/pull/26209).
+
+#### Bugs Fixed
+- Fix global HTTP client properties `spring.cloud.azure.client.http.*` not set correctly [#26190](https://github.com/Azure/azure-sdk-for-java/issues/26190).
+- Fix Cosmos properties `spring.cloud.azure.cosmos.proxy.*` not set correctly [#25690](https://github.com/Azure/azure-sdk-for-java/issues/25690).
+- Fix `PoolAcquirePendingLimitException` when using `EventProcessorClient` or `spring-cloud-azure-stream-binder-eventhubs` [#26027](https://github.com/Azure/azure-sdk-for-java/issues/26027).
+
+### Spring Cloud Stream Event Hubs Binder
+This section includes changes in `spring-cloud-azure-stream-binder-eventhubs` module.
+
+#### Breaking Changes
+- For the batch consuming mode, change the message header names converted from batched messages [#26291](https://github.com/Azure/azure-sdk-for-java/pull/26291).
+  * Change message header from `azure_eventhub_enqueued_time` to `azure_eventhub_batch_converted_enqueued_time`.
+  * Change message header from `azure_eventhub_offset` to `azure_eventhub_batch_converted_offset`.
+  * Change message header from `azure_eventhub_sequence_number` to `azure_eventhub_batch_converted_sequence_number`.
+  * Change message header from `azure_partition_key` to `azure_batch_converted_partition_key`.
+- When publish messages to Event Hubs, ignore all message headers converted from batched messages [#26213](https://github.com/Azure/azure-sdk-for-java/issues/26213).
+
+  Headers include:
+  * `azure_eventhub_batch_converted_enqueued_time`
+  * `azure_eventhub_batch_converted_offset`
+  * `azure_eventhub_batch_converted_sequence_number`
+  * `azure_batch_converted_partition_key`
+  * `azure_eventhub_batch_converted_system_properties`
+  * `azure_eventhub_batch_converted_application_properties`
+- Expose message header `azure_eventhub_last_enqueued_event_properties` [#25960](https://github.com/Azure/azure-sdk-for-java/issues/25960).
+- Improve logging information when converting between `com.azure.messaging.eventhubs.EventData` and `org.springframework.messaging.Message` [#26291](https://github.com/Azure/azure-sdk-for-java/pull/26291).
+- Fix `PoolAcquirePendingLimitException` when using `EventHubsProcessorContainer` [#26027](https://github.com/Azure/azure-sdk-for-java/issues/26027).
+### Spring Integration Event Hubs
+
+This section includes changes in `spring-messaging-azure-eventhubs` and `spring-integration-azure-eventhubs` modules.
+
+#### Features Added
+- Expose message header `azure_eventhub_last_enqueued_event_properties` in `spring-integration-azure-eventhubs` module [#25960](https://github.com/Azure/azure-sdk-for-java/issues/25960).
+
+#### Breaking Changes
+- Refactor `spring-messaging-azure-eventhubs` message converter [#26291](https://github.com/Azure/azure-sdk-for-java/pull/26291).
+  * Rename `EventHubBatchMessageConverter` to `EventHubsBatchMessageConverter`.
+  * Refactor `EventHubsBatchMessageConverter` by disabling the ability of converting Spring Message to EventData.
+  * Improve logging information when converting between `com.azure.messaging.eventhubs.EventData` and `org.springframework.messaging.Message`.
+- Change `DefaultEventHubsNamespaceProcessorFactory` constructor parameter type from `PropertiesSupplier<Tuple2<String, String>, ProcessorProperties>` to `PropertiesSupplier<ConsumerIdentifier, ProcessorProperties>` [#26200](https://github.com/Azure/azure-sdk-for-java/pull/26200).
+
+#### Bugs Fixed
+- Fix `PoolAcquirePendingLimitException` when using `EventHubsProcessorContainer` [#26027](https://github.com/Azure/azure-sdk-for-java/issues/26027).
+- Fix `EventHubsTemplate` not sending all messages in a collection [#24445](https://github.com/Azure/azure-sdk-for-java/issues/24445).
+
+
+### Spring Integration Service Bus
+
+This section includes changes in `spring-messaging-azure-servicebus` and `spring-integration-azure-servicebus` modules.
+
+#### Breaking Changes
+- Change `DefaultServiceBusNamespaceProcessorFactory` constructor parameter type from `PropertiesSupplier<Tuple2<String, String>, ProcessorProperties>` to `PropertiesSupplier<ConsumerIdentifier, ProcessorProperties>` [#26200](https://github.com/Azure/azure-sdk-for-java/pull/26200).
+- Refactor `ServiceBusInboundChannelAdapter` constructors [#26200](https://github.com/Azure/azure-sdk-for-java/pull/26200).
+
+### Spring Integration Storage Queue
+This section includes changes in `spring-messaging-azure-storage-queue` and `spring-integration-azure-storage-queue` modules.
+
+#### Breaking Changes
+
+- Refactor `spring-messaging-azure-storage-queue` module [#26273](https://github.com/Azure/azure-sdk-for-java/issues/26273).
+  * Remove `StorageQueueOperation`.
+  * Remove configuration of checkpoint mode for `StorageQueueTemplate`, and support only MANUAL mode.
+  * Remove auto creating Storage Queue when send/receive messages via `StorageQueueTemplate`.
+
+### Spring Cloud Azure Core
+
+This section includes changes in `spring-cloud-azure-core`, `spring-cloud-azure-service`, and `spring-cloud-azure-resourcemanager` modules.
+
+#### Breaking Changes
+- Refactor `spring-cloud-azure-core` module [#25851](https://github.com/Azure/azure-sdk-for-java/pull/25851).
+  * Support JPMS.
+- Refactor `spring-cloud-azure-service` module [#25851](https://github.com/Azure/azure-sdk-for-java/pull/25851).
+  * Move all `*BuilderFactory` to `*.implementation.*` packages [#26404](https://github.com/Azure/azure-sdk-for-java/issues/26404).
+  * Support JPMS [#25851](https://github.com/Azure/azure-sdk-for-java/pull/25851).
+- Refactor `spring-cloud-azure-resourcemanager` module [#25851](https://github.com/Azure/azure-sdk-for-java/pull/25851).
+  * Rename `com.azure.spring.resourcemanager.provisioner` to `com.azure.spring.resourcemanager.provisioning` [#26472](https://github.com/Azure/azure-sdk-for-java/pull/26472).
+  * Support JPMS [#25851](https://github.com/Azure/azure-sdk-for-java/pull/25851).
+
+#### Bugs Fixed
+- Fix exception thrown by `AzureStorageFileProtocolResolver` and `AzureStorageBlobProtocolResolver` when target file, directory or container does not exist [#25916](https://github.com/Azure/azure-sdk-for-java/issues/25916).
 
 ### Other Changes
+- Refactor the test structure and increase the test coverage [#23773](https://github.com/Azure/azure-sdk-for-java/issues/23773), [#26175](https://github.com/Azure/azure-sdk-for-java/issues/26175).
+- Improve Java code documentation [#24332](https://github.com/Azure/azure-sdk-for-java/issues/24332).
+- Improve User-Agent headers for Spring Cloud Azure libraries [#25892](https://github.com/Azure/azure-sdk-for-java/issues/25892), [#26122](https://github.com/Azure/azure-sdk-for-java/pull/26122).
+- Improve [Sample Projects](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.0.0-beta.3).
+  * Switch to `DefaultAzureCredential` [#25652](https://github.com/Azure/azure-sdk-for-java/issues/25652).
+  * Provision resources using **Terraform** [#25652](https://github.com/Azure/azure-sdk-for-java/issues/25652).
+  * Unify names of Sample Projects [#26308](https://github.com/Azure/azure-sdk-for-java/issues/26308).
+- Improve [Spring Cloud Azure Reference Doc](https://microsoft.github.io/spring-cloud-azure/4.0.0-beta.3/4.0.0-beta.3/reference/html/index.html).
+  * Make sure all contents were in original README files are included [#25921](https://github.com/Azure/azure-sdk-for-java/issues/25921).
+  * Add RBAC description [#25973](https://github.com/Azure/azure-sdk-for-java/issues/25973).
+
 
 ## 1.0.0 (Unreleased)
 
@@ -267,7 +367,7 @@ Please refer to [Spring Cloud Azure Migration Guide for 4.0][Spring-Cloud-Azure-
 - Drop API of `ServiceBusQueueOperation#abandon` and `ServiceBusQueueOperation#deadletter`.
 - Combine the original `ServiceBusQueueTemplate#subscribe` and `ServiceBusTopicTemplate#subscribe` as `ServiceBusProcessorClient#subscribe`.
 - Deprecate the interface of `SubscribeOperation`.
-- Add new API of `setDefaultEntityType` for ServiceBusTemplate, the default entity type of a ServiceBusTemplate is required when no bean of `PropertiesSupplier<String, ProducerProperties>` is provided for the `ProducerProperties#entityType`.
+- Add new API of `setDefaultEntityType` for ServiceBusTemplate, the default entity type of `ServiceBusTemplate` is required when no bean of `PropertiesSupplier<String, ProducerProperties>` is provided for the `ProducerProperties#entityType`.
 - Drop class of `ServiceBusQueueInboundChannelAdapter` and `ServiceBusTopicInboundChannelAdapter` and combine them as `ServiceBusInboundChannelAdapter`.
 - Class of `DefaultMessageHandler` is moved from `com.azure.spring.integration.core` to package `com.azure.spring.integration.handler`
 
@@ -286,7 +386,7 @@ Please refer to [Spring Cloud Azure Migration Guide for 4.0][Spring-Cloud-Azure-
 - Drop API of `ServiceBusQueueOperation#abandon` and `ServiceBusQueueOperation#deadletter`.
 - Combine the original `ServiceBusQueueTemplate#subscribe` and `ServiceBusTopicTemplate#subscribe` as `ServiceBusProcessorClient#subscribe`.
 - Deprecate the interface of `SubscribeOperation`.
-- Add new API of `setDefaultEntityType` for ServiceBusTemplate, the default entity type of a ServiceBusTemplate is required when no bean of `PropertiesSupplier<String, ProducerProperties>` is provided for the `ProducerProperties#entityType`.
+- Add new API of `setDefaultEntityType` for ServiceBusTemplate, the default entity type of `ServiceBusTemplate` is required when no bean of `PropertiesSupplier<String, ProducerProperties>` is provided for the `ProducerProperties#entityType`.
 - Drop class of `ServiceBusQueueInboundChannelAdapter` and `ServiceBusTopicInboundChannelAdapter` and combine them as `ServiceBusInboundChannelAdapter`.
 - Class of `DefaultMessageHandler` is moved from `com.azure.spring.integration.core` to package `com.azure.spring.integration.handler`
 
