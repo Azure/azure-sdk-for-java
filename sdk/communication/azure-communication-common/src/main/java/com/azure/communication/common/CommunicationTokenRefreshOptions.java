@@ -18,9 +18,13 @@ public final class CommunicationTokenRefreshOptions {
     /**
      * Creates a CommunicationTokenRefreshOptions object
      *
-     * @param tokenRefresher The callback function that acquires a fresh token from the Communication Identity API, e.g. by calling the CommunicationIdentityClient
-     * @param refreshProactively Determines whether the token should be proactively renewed prior to its expiry or on demand.
-     * @deprecated Use {@link #CommunicationTokenRefreshOptions(Supplier)} instead and chain fluent setter {@link #setRefreshProactively(boolean)}
+     * @param tokenRefresher     The callback function that acquires a fresh token
+     *                           from the Communication Identity API, e.g. by
+     *                           calling the CommunicationIdentityClient
+     * @param refreshProactively Determines whether the token should be proactively
+     *                           renewed prior to its expiry or on demand.
+     * @deprecated Use {@link #CommunicationTokenRefreshOptions(Supplier)} instead
+     *             and chain fluent setter {@link #setRefreshProactively(boolean)}
      */
     @Deprecated
     public CommunicationTokenRefreshOptions(Supplier<Mono<String>> tokenRefresher, boolean refreshProactively) {
@@ -30,14 +34,19 @@ public final class CommunicationTokenRefreshOptions {
     /**
      * Creates a CommunicationTokenRefreshOptions object
      *
-     * @param tokenRefresher The callback function that acquires a fresh token from the Communication Identity API, e.g. by calling the CommunicationIdentityClient
-     * @param refreshProactively Determines whether the token should be proactively renewed prior to its expiry or on demand.
-     * @param initialToken The optional serialized JWT token
+     * @param tokenRefresher     The callback function that acquires a fresh token
+     *                           from the Communication Identity API, e.g. by
+     *                           calling the CommunicationIdentityClient
+     * @param refreshProactively Determines whether the token should be proactively
+     *                           renewed prior to its expiry or on demand.
+     * @param initialToken       The optional serialized JWT token
      * @deprecated Use {@link #CommunicationTokenRefreshOptions(Supplier)} instead
-     * and chain fluent setters {@link #setRefreshProactively(boolean)}, {@link #setInitialToken(String)}
+     *             and chain fluent setters {@link #setRefreshProactively(boolean)},
+     *             {@link #setInitialToken(String)}
      */
     @Deprecated
-    public CommunicationTokenRefreshOptions(Supplier<Mono<String>> tokenRefresher, boolean refreshProactively, String initialToken) {
+    public CommunicationTokenRefreshOptions(Supplier<Mono<String>> tokenRefresher, boolean refreshProactively,
+            String initialToken) {
         this.tokenRefresher = tokenRefresher;
         this.refreshProactively = refreshProactively;
         this.initialToken = initialToken;
@@ -46,7 +55,11 @@ public final class CommunicationTokenRefreshOptions {
     /**
      * Creates a CommunicationTokenRefreshOptions object
      *
-     * @param tokenRefresher The callback function that acquires a fresh token from the Communication Identity API, e.g. by calling the CommunicationIdentityClient
+     * @param tokenRefresher The callback function that acquires a fresh token from
+     *                       the Communication Identity API, e.g. by calling the
+     *                       CommunicationIdentityClient
+     *                       The returned token must be valid (its expiration date
+     *                       must be set in the future).
      */
     public CommunicationTokenRefreshOptions(Supplier<Mono<String>> tokenRefresher) {
         this.tokenRefresher = tokenRefresher;
@@ -69,9 +82,10 @@ public final class CommunicationTokenRefreshOptions {
     }
 
     /**
-     * Set whether the token should be proactively renewed prior to its expiry or on demand.
+     * Set whether the token should be proactively renewed prior to its expiry or on
+     * demand.
      *
-     * @param  refreshProactively the refreshProactively value to set.
+     * @param refreshProactively the refreshProactively value to set.
      * @return the CommunicationTokenRefreshOptions object itself.
      */
     public CommunicationTokenRefreshOptions setRefreshProactively(boolean refreshProactively) {
@@ -89,7 +103,7 @@ public final class CommunicationTokenRefreshOptions {
     /**
      * Set the optional serialized JWT token
      *
-     * @param  initialToken the initialToken value to set.
+     * @param initialToken the initialToken value to set.
      * @return the CommunicationTokenRefreshOptions object itself.
      */
     public CommunicationTokenRefreshOptions setInitialToken(String initialToken) {
