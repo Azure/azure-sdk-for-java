@@ -270,11 +270,12 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
 
     /**
      * Disposes of the receiver when an exception is encountered.
-     * <br/>
+     * <p>
      * While {@link ReactorReceiver#closeAsync()} exposes disposal API through {@link AsyncCloseable}
      * contract, this API performs the same disposal with additional
      * contextual information. For example, the context may indicate if the resource needs to be disposed of
      * internally when there is an error in the link, session or connection.
+     * </p>
      *
      * @param message Message to log.
      * @param errorCondition Error condition associated with close operation.

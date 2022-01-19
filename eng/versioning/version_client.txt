@@ -66,7 +66,6 @@ com.azure:azure-containers-containerregistry;1.0.0;1.1.0-beta.1
 com.azure:azure-containers-containerregistry-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core;1.24.1;1.25.0-beta.1
 com.azure:azure-core-amqp;2.3.7;2.4.0-beta.1
-unreleased_com.azure:azure-core-amqp;2.4.0-beta.1
 com.azure:azure-core-amqp-experimental;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core-experimental;1.0.0-beta.23;1.0.0-beta.24
 com.azure:azure-core-http-jdk-httpclient;1.0.0-beta.1;1.0.0-beta.1
@@ -342,6 +341,7 @@ com.azure.tools:azure-sdk-archetype;1.0.0;1.0.0
 # In the pom, the version update tag after the version should name the unreleased package and the dependency version:
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
 
+unreleased_com.azure:azure-core-amqp;2.4.0-beta.1
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid
