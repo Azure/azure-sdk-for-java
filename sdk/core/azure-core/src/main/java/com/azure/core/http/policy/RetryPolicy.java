@@ -9,7 +9,8 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.ImplUtils;
-import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationProperty;
+import com.azure.core.util.ImmutableConfiguration;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -27,6 +28,7 @@ import static com.azure.core.util.CoreUtils.isNullOrEmpty;
 /**
  * A pipeline policy that retries when a recoverable HTTP error or exception occurs.
  */
+//@Configurable(prefix="http-retry")
 public class RetryPolicy implements HttpPipelinePolicy {
     private final ClientLogger logger = new ClientLogger(RetryPolicy.class);
 
@@ -34,6 +36,10 @@ public class RetryPolicy implements HttpPipelinePolicy {
     private final String retryAfterHeader;
     private final ChronoUnit retryAfterTimeUnit;
 
+    private static final String CONFIG_PREFIX = "http-retry";
+    private final static ConfigurationProperty<String> RETRY_MODE_CONFIG = ConfigurationProperty.stringProperty(CONFIG_PREFIX, "mode", null, "exponential");
+    private final static ConfigurationProperty<String> RETRY_AFTER_HEADER_CONFIG = ConfigurationProperty.stringProperty(CONFIG_PREFIX, "retry-after-header", null, null);
+    private final static ConfigurationProperty<ChronoUnit> RETRY_AFTER_TIME_UNIT_CONFIG = new ConfigurationProperty<>(CONFIG_PREFIX, "retry-after-time-unit", value -> ChronoUnit.valueOf(value), false, null, null);
     /**
      * Creates {@link RetryPolicy} using {@link ExponentialBackoff#ExponentialBackoff()} as the {@link RetryStrategy}.
      */
@@ -90,38 +96,25 @@ public class RetryPolicy implements HttpPipelinePolicy {
         this(retryStrategy, null, null);
     }
 
-    public static RetryPolicy fromConfiguration(Configuration configuration, RetryPolicy defaultPolicy) {
+    public static RetryPolicy fromConfiguration(ImmutableConfiguration configuration, RetryPolicy defaultPolicy) {
         if (configuration == null || configuration == NONE) {
             return defaultPolicy;
         }
 
-        String retryHeader = configuration.get("http.retry.retry-after-header");
-        String retryAfterTimeUnitStr = configuration.get("http.retry.retry-after-time-unit");
-        String retryStrategyStr = configuration.get("http.retry.strategy");
-
-        if (retryStrategyStr == null && retryHeader == null && retryAfterTimeUnitStr == null) {
+        if (!configuration.containsAny(RETRY_MODE_CONFIG, RETRY_AFTER_HEADER_CONFIG, RETRY_AFTER_TIME_UNIT_CONFIG)) {
             return defaultPolicy;
         }
 
-        if (retryStrategyStr == null) {
-            // TODO(configuration): log error and fail
-        }
-
+        String retryMode = configuration.get(RETRY_MODE_CONFIG);
         RetryStrategy retryStrategy;
-        if ("fixed".equals(retryStrategyStr)) {
+        if ("fixed".equals(retryMode)) {
             retryStrategy = FixedDelay.fromConfiguration(configuration, null);
             // throw if null
         } else {
             retryStrategy = ExponentialBackoff.fromConfiguration(configuration, new ExponentialBackoff());
         }
 
-        ChronoUnit retryAfterUnit = null;
-        if (retryAfterTimeUnitStr != null) {
-            retryAfterUnit = ChronoUnit.valueOf(retryAfterTimeUnitStr);
-            // TODO(configuration) fail on error
-        }
-
-        return  new RetryPolicy(retryStrategy, retryHeader, retryAfterUnit);
+        return  new RetryPolicy(retryStrategy, configuration.get(RETRY_AFTER_HEADER_CONFIG), configuration.get(RETRY_AFTER_TIME_UNIT_CONFIG));
     }
 
     /**

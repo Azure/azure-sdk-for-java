@@ -3,8 +3,10 @@
 
 package com.azure.core.http.policy;
 
-import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationProperty;
+import com.azure.core.util.ImmutableConfiguration;
 import com.azure.core.util.logging.ClientLogger;
+
 import java.time.Duration;
 import java.util.Objects;
 
@@ -14,6 +16,10 @@ import static com.azure.core.util.Configuration.NONE;
  * A fixed-delay implementation of {@link RetryStrategy} that has a fixed delay duration between each retry attempt.
  */
 public class FixedDelay implements RetryStrategy {
+    private static final String CONFIG_PREFIX = "http-retry.fixed";
+    private final static ConfigurationProperty<Integer> MAX_RETRIES_CONFIG = ConfigurationProperty.integerProperty(CONFIG_PREFIX, "max-retries",  null, null);
+    private final static ConfigurationProperty<Duration> RETRY_DELAY_CONFIG = ConfigurationProperty.durationProperty(CONFIG_PREFIX, "delay", null, null);
+
     private final int maxRetries;
     private final Duration delay;
 
@@ -42,24 +48,15 @@ public class FixedDelay implements RetryStrategy {
         return delay;
     }
 
-    static RetryStrategy fromConfiguration(Configuration configuration, RetryStrategy defaultStrategy) {
+    static RetryStrategy fromConfiguration(ImmutableConfiguration configuration, RetryStrategy defaultStrategy) {
         if (configuration == null || configuration == NONE) {
             return defaultStrategy;
         }
 
-        String maxRetriesStr = configuration.get("http.retry.strategy.fixed.max-retries");
-        String delayStr = configuration.get( "http.retry.strategy.fixed.delay");
-
-        if (maxRetriesStr == null || delayStr == null) {
+        if(!configuration.contains(MAX_RETRIES_CONFIG) || !configuration.contains(RETRY_DELAY_CONFIG)) {
             // TODO(configuration) log error and fail
         }
 
-        int maxRetries = Integer.parseInt(maxRetriesStr);
-        // TODO(configuration) fail on error
-
-        Duration delay = Duration.parse(delayStr);
-        // TODO(configuration) fail on error
-
-        return new FixedDelay(maxRetries, delay);
+        return new FixedDelay(configuration.get(MAX_RETRIES_CONFIG), configuration.get(RETRY_DELAY_CONFIG));
     }
 }

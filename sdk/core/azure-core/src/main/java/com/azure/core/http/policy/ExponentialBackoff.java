@@ -4,14 +4,15 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationProperty;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.ImmutableConfiguration;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static com.azure.core.util.Configuration.NONE;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RETRY_COUNT;
 
 /**
@@ -26,6 +27,7 @@ public class ExponentialBackoff implements RetryStrategy {
     private static final Duration DEFAULT_MAX_DELAY = Duration.ofSeconds(8);
 
     static {
+        // TODO (configuration) move logging and range validation to common config code
         String envDefaultMaxRetries = Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_REQUEST_RETRY_COUNT);
 
         int defaultMaxRetries = 3;
@@ -44,6 +46,11 @@ public class ExponentialBackoff implements RetryStrategy {
         DEFAULT_MAX_RETRIES = defaultMaxRetries;
     }
 
+    private static String CONFIG_PREFIX = "http-retry.exponential";
+    private final static ConfigurationProperty<Integer> MAX_RETRIES_CONFIG = ConfigurationProperty.integerProperty(CONFIG_PREFIX, "max-retries",  PROPERTY_AZURE_REQUEST_RETRY_COUNT, DEFAULT_MAX_RETRIES);
+    private final static ConfigurationProperty<Duration> BASE_DELAY_CONFIG = ConfigurationProperty.durationProperty(CONFIG_PREFIX, "base-delay", null, DEFAULT_BASE_DELAY);
+    private final static ConfigurationProperty<Duration> MAX_DELAY_CONFIG = ConfigurationProperty.durationProperty(CONFIG_PREFIX, "max-delay", null, DEFAULT_MAX_DELAY);
+
     private final int maxRetries;
     private final long baseDelayNanos;
     private final long maxDelayNanos;
@@ -61,38 +68,16 @@ public class ExponentialBackoff implements RetryStrategy {
     /**
      * Caller must only call this method if they are sure that user specified retry policy options
      */
-    static RetryStrategy fromConfiguration(Configuration configuration, RetryStrategy defaultStrategy) {
-        if (configuration == null || configuration == NONE) {
+    static RetryStrategy fromConfiguration(ImmutableConfiguration configuration, RetryStrategy defaultStrategy) {
+        if (configuration == null) {
             return defaultStrategy;
         }
 
-        String maxRetriesStr = configuration.get("http.retry.strategy.exponential.max-retries");
-        String baseDelayStr = configuration.get( "http.retry.strategy.exponential.base-delay");
-        String maxDelayStr = configuration.get("http.retry.strategy.exponential.max-delay");
-
-        if (maxRetriesStr == null && maxDelayStr == null && baseDelayStr == null) {
+        if (!configuration.containsAny(MAX_RETRIES_CONFIG, BASE_DELAY_CONFIG, MAX_DELAY_CONFIG)) {
             return defaultStrategy;
         }
 
-        int maxRetries = DEFAULT_MAX_RETRIES;
-        if (maxRetriesStr != null) {
-            maxRetries = Integer.parseInt(maxRetriesStr);
-            // TODO(configuration) fail on error
-        }
-
-        Duration baseDelay = DEFAULT_BASE_DELAY;
-        if (baseDelayStr != null) {
-            baseDelay = Duration.parse(baseDelayStr);
-            // TODO(configuration) fail on error
-        }
-
-        Duration maxDelay = DEFAULT_MAX_DELAY;
-        if (maxDelayStr != null) {
-            maxDelay = Duration.parse(maxDelayStr);
-            // TODO(configuration) fail on error
-        }
-
-        return new ExponentialBackoff(maxRetries, baseDelay, maxDelay);
+        return new ExponentialBackoff(configuration.get(MAX_RETRIES_CONFIG), configuration.get(BASE_DELAY_CONFIG), configuration.get(MAX_DELAY_CONFIG));
     }
 
     /**
