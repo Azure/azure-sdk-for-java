@@ -3,6 +3,7 @@
 ## 4.0.0-beta.4 (Unreleased)
 
 ### Features Added
+- Added support for currency type field value.
 
 ### Breaking Changes
 

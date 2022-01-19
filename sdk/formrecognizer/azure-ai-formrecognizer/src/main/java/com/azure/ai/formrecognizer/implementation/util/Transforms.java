@@ -25,6 +25,7 @@ import com.azure.ai.formrecognizer.implementation.models.OperationInfo;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.models.BoundingRegion;
+import com.azure.ai.formrecognizer.models.CurrencyValue;
 import com.azure.ai.formrecognizer.models.DocumentEntity;
 import com.azure.ai.formrecognizer.models.DocumentField;
 import com.azure.ai.formrecognizer.models.DocumentFieldType;
@@ -475,6 +476,17 @@ public class Transforms {
                     .forEach((key, innerMapDocumentField)
                         -> documentFieldMap.put(key, toDocumentField(innerMapDocumentField)));
                 DocumentFieldHelper.setValueObject(documentField, documentFieldMap);
+            }
+        } else if (com.azure.ai.formrecognizer.implementation.models.DocumentFieldType.CURRENCY.equals(
+            innerDocumentField.getType())) {
+            if (innerDocumentField.getValueCurrency() == null) {
+                DocumentFieldHelper.setValueCurrency(documentField, null);
+            } else {
+                CurrencyValue currencyValue = new CurrencyValue();
+                CurrencyValueHelper.setAmount(currencyValue, innerDocumentField.getValueCurrency().getAmount());
+                CurrencyValueHelper.setCurrencySymbol(currencyValue,
+                    innerDocumentField.getValueCurrency().getCurrencySymbol());
+                DocumentFieldHelper.setValueCurrency(documentField, currencyValue);
             }
         }
     }
