@@ -9,6 +9,7 @@ import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
@@ -97,7 +98,9 @@ import java.util.function.Supplier;
  * @see EventHubConsumerAsyncClient
  */
 @ServiceClientBuilder(serviceClients = EventProcessorClient.class)
-public class EventProcessorClientBuilder implements ClientOptionsTrait<EventProcessorClientBuilder> {
+public class EventProcessorClientBuilder implements
+    TokenCredentialTrait<EventProcessorClientBuilder>,
+    ClientOptionsTrait<EventProcessorClientBuilder> {
     /**
      * Default load balancing update interval.
      */
@@ -130,6 +133,35 @@ public class EventProcessorClientBuilder implements ClientOptionsTrait<EventProc
      */
     public EventProcessorClientBuilder() {
         eventHubClientBuilder = new EventHubClientBuilder();
+    }
+
+    /**
+     * Sets the fully qualified name for the Event Hubs namespace.
+     *
+     * @param fullyQualifiedNamespace The fully qualified name for the Event Hubs namespace. This is likely to be
+     *     similar to <strong>{@literal "{your-namespace}.servicebus.windows.net}"</strong>.
+     *
+     * @return The updated {@link EventProcessorClientBuilder} object.
+     * @throws IllegalArgumentException if {@code fullyQualifiedNamespace} is an empty string.
+     * @throws NullPointerException if {@code fullyQualifiedNamespace} is null.
+     */
+    public EventProcessorClientBuilder fullyQualifiedNamespace(String fullyQualifiedNamespace) {
+        eventHubClientBuilder.fullyQualifiedNamespace(fullyQualifiedNamespace);
+        return this;
+    }
+
+    /**
+     * Sets the name of the Event Hub to connect the client to.
+     *
+     * @param eventHubName The name of the Event Hub to connect the client to.
+
+     * @return The updated {@link EventProcessorClientBuilder} object.
+     * @throws IllegalArgumentException if {@code eventHubName} is an empty string.
+     * @throws NullPointerException if {@code eventHubName} is null.
+     */
+    public EventProcessorClientBuilder eventHubName(String eventHubName) {
+        eventHubClientBuilder.eventHubName(eventHubName);
+        return this;
     }
 
     /**
@@ -206,10 +238,24 @@ public class EventProcessorClientBuilder implements ClientOptionsTrait<EventProc
      * @throws NullPointerException if {@code fullyQualifiedNamespace}, {@code eventHubName}, {@code credentials} is
      * null.
      */
-    // TODO kasobol-msft
     public EventProcessorClientBuilder credential(String fullyQualifiedNamespace, String eventHubName,
         TokenCredential credential) {
         eventHubClientBuilder.credential(fullyQualifiedNamespace, eventHubName, credential);
+        return this;
+    }
+
+    /**
+     * Sets the credential information for which Event Hub instance to connect to, and how to authorize against it.
+     *
+     * @param credential The token credential to use for authorization. Access controls may be specified by the Event
+     * Hubs namespace or the requested Event Hub, depending on Azure configuration.
+     * @return The updated {@link EventProcessorClientBuilder} object.
+     * @throws NullPointerException if {@code credential} is
+     * null.
+     */
+    @Override
+    public EventProcessorClientBuilder credential(TokenCredential credential) {
+        eventHubClientBuilder.credential(credential);
         return this;
     }
 

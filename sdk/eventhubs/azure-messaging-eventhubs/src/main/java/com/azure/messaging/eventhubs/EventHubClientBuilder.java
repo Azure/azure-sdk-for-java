@@ -20,6 +20,7 @@ import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.annotation.ServiceClientProtocol;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
@@ -134,7 +135,9 @@ import java.util.regex.Pattern;
  */
 @ServiceClientBuilder(serviceClients = {EventHubProducerAsyncClient.class, EventHubProducerClient.class,
     EventHubConsumerAsyncClient.class, EventHubConsumerClient.class}, protocol = ServiceClientProtocol.AMQP)
-public class EventHubClientBuilder implements ClientOptionsTrait<EventHubClientBuilder> {
+public class EventHubClientBuilder implements
+    TokenCredentialTrait<EventHubClientBuilder>,
+    ClientOptionsTrait<EventHubClientBuilder> {
 
     // Default number of events to fetch when creating the consumer.
     static final int DEFAULT_PREFETCH_COUNT = 500;
@@ -336,6 +339,58 @@ public class EventHubClientBuilder implements ClientOptionsTrait<EventHubClientB
     }
 
     /**
+     * Sets the fully qualified name for the Event Hubs namespace.
+     *
+     * @param fullyQualifiedNamespace The fully qualified name for the Event Hubs namespace. This is likely to be
+     *     similar to <strong>{@literal "{your-namespace}.servicebus.windows.net}"</strong>.
+     *
+     * @return The updated {@link EventHubClientBuilder} object.
+     * @throws IllegalArgumentException if {@code fullyQualifiedNamespace} is an empty string.
+     * @throws NullPointerException if {@code fullyQualifiedNamespace} is null.
+     */
+    public EventHubClientBuilder fullyQualifiedNamespace(String fullyQualifiedNamespace) {
+        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
+            "'fullyQualifiedNamespace' cannot be null.");
+        if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'host' cannot be an empty string."));
+        }
+        return this;
+    }
+
+    private String getFullyQualifiedNamespace() {
+        if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
+        }
+        return fullyQualifiedNamespace;
+    }
+
+    /**
+     * Sets the name of the Event Hub to connect the client to.
+     *
+     * @param eventHubName The name of the Event Hub to connect the client to.
+
+     * @return The updated {@link EventHubClientBuilder} object.
+     * @throws IllegalArgumentException if {@code eventHubName} is an empty string.
+     * @throws NullPointerException if {@code eventHubName} is null.
+     */
+    public EventHubClientBuilder eventHubName(String eventHubName) {
+        this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
+
+        if (CoreUtils.isNullOrEmpty(eventHubName)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
+        }
+        return this;
+    }
+
+    private String getEventHubName() {
+        if (CoreUtils.isNullOrEmpty(eventHubName)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
+        }
+        return eventHubName;
+    }
+
+    /**
      * Toggles the builder to use the same connection for producers or consumers that are built from this instance. By
      * default, a new connection is constructed and used created for each Event Hub consumer or producer created.
      *
@@ -361,7 +416,6 @@ public class EventHubClientBuilder implements ClientOptionsTrait<EventHubClientB
      * @throws NullPointerException if {@code fullyQualifiedNamespace}, {@code eventHubName}, {@code credentials} is
      *     null.
      */
-    // TODO kasobol-msft
     public EventHubClientBuilder credential(String fullyQualifiedNamespace, String eventHubName,
         TokenCredential credential) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
@@ -375,6 +429,21 @@ public class EventHubClientBuilder implements ClientOptionsTrait<EventHubClientB
             throw logger.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
         }
 
+        return this;
+    }
+
+    /**
+     * Sets the credential information for which Event Hub instance to connect to, and how to authorize against it.
+     *
+     * @param credential The token credential to use for authorization. Access controls may be specified by the
+     *     Event Hubs namespace or the requested Event Hub, depending on Azure configuration.
+     *
+     * @return The updated {@link EventHubClientBuilder} object.
+     * @throws NullPointerException if {@code credentials} is null.
+     */
+    @Override
+    public EventHubClientBuilder credential(TokenCredential credential) {
+        this.credentials = Objects.requireNonNull(credential, "'credential' cannot be null.");
         return this;
     }
 
@@ -760,7 +829,7 @@ public class EventHubClientBuilder implements ClientOptionsTrait<EventHubClientB
                 final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
 
                 final EventHubAmqpConnection connection = new EventHubReactorAmqpConnection(connectionId,
-                    connectionOptions, eventHubName, provider, handlerProvider, tokenManagerProvider,
+                    connectionOptions, getEventHubName(), provider, handlerProvider, tokenManagerProvider,
                     messageSerializer);
 
                 sink.next(connection);
@@ -768,7 +837,7 @@ public class EventHubClientBuilder implements ClientOptionsTrait<EventHubClientB
         });
 
         return connectionFlux.subscribeWith(new EventHubConnectionProcessor(
-            connectionOptions.getFullyQualifiedNamespace(), eventHubName, connectionOptions.getRetry()));
+            connectionOptions.getFullyQualifiedNamespace(), getEventHubName(), connectionOptions.getRetry()));
     }
 
     private ConnectionOptions getConnectionOptions() {
@@ -815,11 +884,11 @@ public class EventHubClientBuilder implements ClientOptionsTrait<EventHubClientB
         final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
 
         if (customEndpointAddress == null) {
-            return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType,
+            return new ConnectionOptions(getFullyQualifiedNamespace(), credentials, authorizationType,
                 ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
                 options, verificationMode, product, clientVersion);
         } else {
-            return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType,
+            return new ConnectionOptions(getFullyQualifiedNamespace(), credentials, authorizationType,
                 ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
                 options, verificationMode, product, clientVersion, customEndpointAddress.getHost(),
                 customEndpointAddress.getPort());
