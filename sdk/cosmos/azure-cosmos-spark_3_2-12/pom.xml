@@ -16,8 +16,6 @@
   <packaging>pom</packaging>
   <name>OLTP Spark Connector for Azure Cosmos DB SQL API</name>
   <description>OLTP Spark Connector for Azure Cosmos DB SQL API</description>
-  <url>https://github.com/Azure/azure-sdk-for-java/tree/feature/cosmos/spark30/sdk/cosmos/azure-cosmos-spark_3-1_2-12</url>
-
   <properties>
     <maven.build.timestamp.format>MM-dd-HH-mm-ss</maven.build.timestamp.format>
     <jacoco.min.branchcoverage>0.17</jacoco.min.branchcoverage>
@@ -314,6 +312,7 @@
         <version>3.2.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
         <executions>
           <execution>
+            <id>shade</id>
             <phase>package</phase>
             <goals>
               <goal>shade</goal>
@@ -455,11 +454,55 @@
 
               <!-- When true, it will attempt to shade the contents of the java source files when creating the sources jar. -->
               <shadeSourcesContent>true</shadeSourcesContent>
+              <createDependencyReducedPom>true</createDependencyReducedPom>
             </configuration>
           </execution>
         </executions>
       </plugin>
-
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>flatten-maven-plugin</artifactId>
+        <version>1.2.7</version> <!-- {x-version-update;cosmos_org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
+        <configuration>
+          <updatePomFile>true</updatePomFile>
+          <flattenMode>ossrh</flattenMode>
+          <flattenedPomFilename>flatter.pom</flattenedPomFilename>
+        </configuration>
+        <executions>
+          <execution>
+            <id>flattenOnVerify</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>flatten</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>flatten.cleanOnVerify</id>
+            <phase>clean</phase>
+            <goals>
+              <goal>clean</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.coderplus.maven.plugins</groupId>
+        <artifactId>copy-rename-maven-plugin</artifactId>
+        <version>1.0</version> <!-- {x-version-update;cosmos_com.coderplus.maven.plugins:copy-rename-maven-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>copy-file</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+            <configuration>
+              <sourceFile>flatter.pom</sourceFile>
+              <destinationFile>dependency-reduced-pom.xml</destinationFile>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
