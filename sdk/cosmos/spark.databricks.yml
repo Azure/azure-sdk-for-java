@@ -14,7 +14,7 @@ parameters:
 
 stages:
   - stage:
-    displayName: Spark Databricks integration
+    displayName: 'Spark Databricks integration ${{ parameters.SparkVersion }}'
     dependsOn: []
     jobs:
     - job:

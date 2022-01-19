@@ -211,8 +211,11 @@ private object CosmosTableSchemaInferrer
 
   // scalastyle:on
   private def inferDataTypeFromArrayNode(node: ArrayNode, allowNullForInferredProperties: Boolean): Option[DataType] = {
-    val notNullElements = node.elements.asScala
-      .filter(element  => !element.isNull)
+    val notNullElements =
+      node
+        .elements
+        .asScala
+        .filter(element  => !element.isNull)
 
     if (notNullElements.isEmpty) {
       None
