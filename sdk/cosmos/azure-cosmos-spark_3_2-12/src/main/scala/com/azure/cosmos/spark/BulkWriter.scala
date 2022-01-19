@@ -157,13 +157,12 @@ class BulkWriter(container: CosmosAsyncContainer,
                 captureIfFirstFailure(resp.getException)
                 cancelWork()
             }
-          } else if (!itemResponse.isSuccessStatusCode) {
+          } else if (Option(itemResponse).isEmpty || !itemResponse.isSuccessStatusCode) {
             handleNonSuccessfulStatusCode(context, itemOperation, itemResponse, isGettingRetried, None)
           } else {
             // no error case
             totalSuccessfulIngestionMetrics.getAndIncrement()
           }
-
         }
         finally {
           if (!isGettingRetried.get) {
@@ -277,19 +276,35 @@ class BulkWriter(container: CosmosAsyncContainer,
       case None => ""
     }
 
+    val effectiveStatusCode = Option(itemResponse) match {
+      case Some(r) => r.getStatusCode
+      case None => responseException match {
+        case Some(e) => e.getStatusCode
+        case None => CosmosConstants.StatusCodes.Timeout
+      }
+    }
+
+    val effectiveSubStatusCode = Option(itemResponse) match {
+      case Some(r) => r.getSubStatusCode
+      case None => responseException match {
+        case Some(e) => e.getSubStatusCode
+        case None => 0
+      }
+    }
+
     log.logDebug(s"encountered item operation response with status code " +
-      s"${itemResponse.getStatusCode}:${itemResponse.getSubStatusCode}, " +
+      s"$effectiveStatusCode:$effectiveSubStatusCode, " +
       s"Context: ${operationContext.toString} ${getThreadInfo}")
-    if (shouldIgnore(itemResponse.getStatusCode, itemResponse.getSubStatusCode, context)) {
+    if (shouldIgnore(effectiveStatusCode, effectiveSubStatusCode, context)) {
       log.logDebug(s"for itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}], " +
-        s"ignored encountered status code '${itemResponse.getStatusCode}:${itemResponse.getSubStatusCode}', " +
+        s"ignored encountered status code '$effectiveStatusCode:$effectiveSubStatusCode', " +
         s"Context: ${operationContext.toString}")
       totalSuccessfulIngestionMetrics.getAndIncrement()
       // work done
-    } else if (shouldRetry(itemResponse.getStatusCode, itemResponse.getSubStatusCode, context)) {
+    } else if (shouldRetry(effectiveStatusCode, effectiveSubStatusCode, context)) {
       // requeue
       log.logWarning(s"for itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}], " +
-        s"encountered status code '${itemResponse.getStatusCode}:${itemResponse.getSubStatusCode}', will retry! " +
+        s"encountered status code '$effectiveStatusCode:$effectiveSubStatusCode', will retry! " +
         s"attemptNumber=${context.attemptNumber}, exceptionMessage=${exceptionMessage},  " +
         s"Context: {${operationContext.toString}} ${getThreadInfo}")
 
@@ -302,7 +317,7 @@ class BulkWriter(container: CosmosAsyncContainer,
         SMono.empty
       })
 
-      if (Exceptions.isTimeout(itemResponse.getStatusCode)) {
+      if (Exceptions.isTimeout(effectiveStatusCode)) {
         deferredRetryMono
           .delaySubscription(
             Duration(
@@ -323,19 +338,19 @@ class BulkWriter(container: CosmosAsyncContainer,
       isGettingRetried.set(true)
     } else {
       log.logError(s"for itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}], " +
-        s"encountered status code '${itemResponse.getStatusCode}:${itemResponse.getSubStatusCode}', all retries exhausted! " +
+        s"encountered status code '$effectiveStatusCode:$effectiveSubStatusCode', all retries exhausted! " +
         s"attemptNumber=${context.attemptNumber}, exceptionMessage=${exceptionMessage}, " +
         s"Context: {${operationContext.toString} ${getThreadInfo}")
 
       val message = s"All retries exhausted for '${itemOperation.getOperationType}' bulk operation - " +
-        s"statusCode=[${itemResponse.getStatusCode}:${itemResponse.getSubStatusCode}] " +
+        s"statusCode=[$effectiveStatusCode:$effectiveSubStatusCode] " +
         s"itemId=[${context.itemId}], partitionKeyValue=[${context.partitionKeyValue}]"
 
       val exceptionToBeThrown = responseException match {
         case Some(e) =>
-          new BulkOperationFailedException(itemResponse.getStatusCode, itemResponse.getSubStatusCode, message, e)
+          new BulkOperationFailedException(effectiveStatusCode, effectiveSubStatusCode, message, e)
         case None =>
-          new BulkOperationFailedException(itemResponse.getStatusCode, itemResponse.getSubStatusCode, message, null)
+          new BulkOperationFailedException(effectiveStatusCode, effectiveSubStatusCode, message, null)
       }
 
       captureIfFirstFailure(exceptionToBeThrown)

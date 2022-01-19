@@ -10,14 +10,14 @@
     <relativePath>../azure-cosmos-spark_3_2-12</relativePath>
   </parent>
   <groupId>com.azure.cosmos.spark</groupId>
-  <artifactId>azure-cosmos-spark_3-1_2-12</artifactId>
+  <artifactId>azure-cosmos-spark_3-2_2-12</artifactId>
   <version>4.6.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3_2-12;current} -->
   <packaging>jar</packaging>
-  <url>https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-cosmos-spark_3-1_2-12</url>
+  <url>https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-cosmos-spark_3-2_2-12</url>
   <scm>
-    <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git/sdk/cosmos/azure-cosmos-spark_3-1_2-12</connection>
+    <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git/sdk/cosmos/azure-cosmos-spark_3-2_2-12</connection>
     <developerConnection></developerConnection>
-    <url>https://github.com/Azure/azure-sdk-for-java/sdk/cosmos/azure-cosmos-spark_3-1_2-12</url>
+    <url>https://github.com/Azure/azure-sdk-for-java/sdk/cosmos/azure-cosmos-spark_3-2_2-12</url>
   </scm>
   <build>
     <plugins>
@@ -72,13 +72,13 @@
     <dependency>
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-sql_2.12</artifactId>
-      <version>3.1.1</version> <!-- {x-version-update;cosmos-spark_3-1_org.apache.spark:spark-sql_2.12;external_dependency} -->
+      <version>3.2.0</version> <!-- {x-version-update;cosmos-spark_3-2_org.apache.spark:spark-sql_2.12;external_dependency} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-hive_2.12</artifactId>
-      <version>3.1.1</version> <!-- {x-version-update;cosmos-spark_3-1_org.apache.spark:spark-hive_2.12;external_dependency} -->
+      <version>3.2.0</version> <!-- {x-version-update;cosmos-spark_3-2_org.apache.spark:spark-hive_2.12;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

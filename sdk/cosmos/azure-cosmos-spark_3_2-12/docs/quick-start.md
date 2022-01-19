@@ -12,13 +12,22 @@ You can use any other Spark 3.1.1 spark offering as well, also you should be abl
   [free account](https://azure.microsoft.com/try/cosmosdb/).
   Alternatively, you can use the
   [use Azure Cosmos DB Emulator](https://docs.microsoft.com/azure/cosmos-db/local-emulator) for development and testing.
-- [Azure Databricks  Runtime 9.1 LTS with Spark 3.1.2](https://docs.microsoft.com/azure/databricks/release-notes/runtime/9.1)
+- For Spark 3.1:
+  - [Azure Databricks  Runtime 9.1 LTS with Spark 3.1.2](https://docs.microsoft.com/azure/databricks/release-notes/runtime/9.1)
+- For Spark 3.2:
+    - [Azure Databricks  Runtime 10.2 with Spark 3.2.0](https://docs.microsoft.com/azure/databricks/release-notes/runtime/10.2)
+    
 - (Optional) [SLF4J binding](https://www.slf4j.org/manual.html) is used to associate a
   specific logging framework with SLF4J.
 
 SLF4J is only needed if you plan to use logging, please also download an SLF4J binding which will link the SLF4J API with the logging implementation of your choice. See the [SLF4J user manual](https://www.slf4j.org/manual.html) for more information.
 
-Install Cosmos DB Spark Connector, in your spark Cluster [azure-cosmos-spark_3-1_2-12-4.5.3.jar](https://search.maven.org/artifact/com.azure.cosmos.spark/azure-cosmos-spark_3-1_2-12/4.5.2/jar)
+For Spark 3.1:
+- Install Cosmos DB Spark Connector, in your spark Cluster [azure-cosmos-spark_3-1_2-12-4.6.0.jar](https://search.maven.org/artifact/com.azure.cosmos.spark/azure-cosmos-spark_3-1_2-12/4.6.0/jar)
+
+For Spark 3.2:
+- Install Cosmos DB Spark Connector, in your spark Cluster [azure-cosmos-spark_3-2_2-12-4.6.0.jar](https://search.maven.org/artifact/com.azure.cosmos.spark/azure-cosmos-spark_3-2_2-12/4.6.0/jar)
+
 
 The getting started guide is based on PySpark however you can use the equivalent scala version as well, and you can run the following code snippet in an Azure Databricks PySpark notebook.
 
@@ -57,7 +66,7 @@ spark.sql("CREATE TABLE IF NOT EXISTS cosmosCatalog.{}.{} using cosmos.oltp TBLP
 
 When creating containers with the Catalog API you can set the throughput and [partition key path](https://docs.microsoft.com/azure/cosmos-db/partitioning-overview#choose-partitionkey) for the container to be created.
 
-For more details, see the full [Catalog API](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/catalog-api.md) documentation.
+For more details, see the full [Catalog API](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3_2-12/docs/catalog-api.md) documentation.
 
 ### Ingesting data
 
@@ -75,7 +84,7 @@ spark.createDataFrame((("cat-alive", "Schrodinger cat", 2, True), ("cat-dead", "
 
 Note that `id` is a mandatory field for Cosmos DB.
 
-For more details related to ingesting data, see the full [write configuration](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/configuration-reference.md#write-config) documentation.
+For more details related to ingesting data, see the full [write configuration](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3_2-12/docs/configuration-reference.md#write-config) documentation.
 
 ### Querying data
 
@@ -92,7 +101,7 @@ df.filter(col("isAlive") == True)\
  .show()
 ```
 
-For more details related to querying data, see the full [query configuration](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/configuration-reference.md#query-config) documentation.
+For more details related to querying data, see the full [query configuration](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3_2-12/docs/configuration-reference.md#query-config) documentation.
 
 ### Schema inference
 
@@ -132,4 +141,4 @@ df = spark.read.format("cosmos.oltp").options(**cfg)\
 df.printSchema()
 ```
 
-For more details related to schema inference, see the full [schema inference configuration](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/configuration-reference.md#schema-inference-config) documentation.
+For more details related to schema inference, see the full [schema inference configuration](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3_2-12/docs/configuration-reference.md#schema-inference-config) documentation.
