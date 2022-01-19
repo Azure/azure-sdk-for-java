@@ -57,6 +57,7 @@
 
         <!-- Event Grid -->
         <module>sdk/eventgrid/azure-messaging-eventgrid</module>
+        <module>sdk/eventgrid/azure-messaging-eventgrid-cloudnative-cloudevents</module>
 
         <!-- Event Hubs -->
         <module>sdk/eventhubs/azure-messaging-eventhubs</module>
