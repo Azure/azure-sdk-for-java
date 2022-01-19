@@ -75,7 +75,12 @@ public final class AzureSasCredentialPolicy implements HttpPipelinePolicy {
         return next.process();
     }
 
-    public String getSasSignature() {
+    /**
+     * Returns the signature stored by this credential's policy.
+     *
+     * @return The signature stored by this credential's policy
+     */
+    public String getSignature() {
         return credential.getSignature();
     }
 }

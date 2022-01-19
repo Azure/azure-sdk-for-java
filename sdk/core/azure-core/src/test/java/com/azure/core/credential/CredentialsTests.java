@@ -159,11 +159,11 @@ public class CredentialsTests {
         AzureSasCredential credential = new AzureSasCredential("foo");
         AzureSasCredentialPolicy policy = new AzureSasCredentialPolicy(credential);
 
-        Assertions.assertEquals("foo", policy.getSasSignature());
+        Assertions.assertEquals("foo", policy.getSignature());
 
         credential.update("bar");
 
-        Assertions.assertEquals("bar", policy.getSasSignature());
+        Assertions.assertEquals("bar", policy.getSignature());
     }
 
 
