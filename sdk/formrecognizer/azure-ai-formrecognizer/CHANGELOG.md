@@ -3,6 +3,8 @@
 ## 4.0.0-beta.4 (Unreleased)
 
 ### Features Added
+- Added support for users to optionally specify tags when building a model using `tags` attribute
+on `BuildModelOptions` model.
 
 ### Breaking Changes
 

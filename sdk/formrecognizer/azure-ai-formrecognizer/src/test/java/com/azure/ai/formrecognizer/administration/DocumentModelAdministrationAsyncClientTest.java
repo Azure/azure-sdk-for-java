@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.DocumentAnalysisAsyncClient;
 import com.azure.ai.formrecognizer.DocumentAnalysisServiceVersion;
+import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.administration.models.CreateComposedModelOptions;
 import com.azure.ai.formrecognizer.administration.models.DocumentModel;
@@ -29,11 +30,14 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -194,6 +198,57 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
 
             validateDocumentModelData(createdModel1);
             client.deleteModel(createdModel1.getModelId()).block();
+        });
+    }
+
+    /**
+     * Verifies the result of building a document analysis  with Options.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void beginBuildModelWithOptions(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
+        client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
+        Map<String, String> expectedTags = new HashMap<String, String>();
+        expectedTags.put("createdBy", "java_test");
+        String expectedDescription = "optional desc";
+
+        buildModelRunner((trainingFilesUrl) -> {
+            SyncPoller<DocumentOperationResult, DocumentModel> syncPoller1 =
+                client.beginBuildModel(trainingFilesUrl, null,
+                        new BuildModelOptions()
+                            .setDescription(expectedDescription)
+                            .setTags(expectedTags))
+                    .setPollInterval(durationTestMode)
+                    .getSyncPoller();
+            syncPoller1.waitForCompletion();
+            DocumentModel createdModel = syncPoller1.getFinalResult();
+
+            validateDocumentModelData(createdModel);
+            Assertions.assertEquals(expectedDescription, createdModel.getDescription());
+            Assertions.assertEquals(expectedTags, createdModel.getTags());
+
+            client.deleteModel(createdModel.getModelId()).block();
+        });
+    }
+
+    /**
+     * Verifies that building a document model fails with an Invalid prefix.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void beginBuildModelFailsWithInvalidPrefix(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
+        client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
+
+        buildModelRunner((trainingFilesUrl) -> {
+            HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
+                () -> client.beginBuildModel(trainingFilesUrl, null,
+                        new BuildModelOptions().setPrefix("subfolder"))
+                    .setPollInterval(durationTestMode)
+                    .getSyncPoller()
+                    .getFinalResult());
+
+            ResponseError responseError = (ResponseError) httpResponseException.getValue();
+            Assertions.assertEquals("InvalidRequest", responseError.getCode());
         });
     }
 

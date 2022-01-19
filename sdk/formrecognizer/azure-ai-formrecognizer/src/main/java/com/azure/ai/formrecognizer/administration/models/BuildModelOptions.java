@@ -5,6 +5,8 @@ package com.azure.ai.formrecognizer.administration.models;
 
 import com.azure.core.annotation.Fluent;
 
+import java.util.Map;
+
 /**
  * Options that may be passed using build model APIs on Document Administration client.
  */
@@ -17,6 +19,11 @@ public final class BuildModelOptions {
      * for training.
      */
     private String prefix;
+
+    /*
+     * List of key-value tag attributes associated with the model.
+     */
+    private Map<String, String> tags;
 
     /**
      * Get the model description.
@@ -56,6 +63,26 @@ public final class BuildModelOptions {
      */
     public BuildModelOptions setPrefix(String prefix) {
         this.prefix = prefix;
+        return this;
+    }
+
+    /**
+     * Get the list of key-value tag attributes associated with the model.
+     *
+     * @return the tags value.
+     */
+    public Map<String, String> getTags() {
+        return tags;
+    }
+
+    /**
+     * Set the list of key-value tag attributes associated with the model.
+     *
+     * @param tags the tags value to set.
+     * @return the BuildDocumentModelOptions object itself.
+     */
+    public BuildModelOptions setTags(Map<String, String> tags) {
+        this.tags = tags;
         return this;
     }
 }

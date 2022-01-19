@@ -430,8 +430,10 @@ public final class DocumentModelAdministrationAsyncClient {
         copyAuthorizationOptions = copyAuthorizationOptions == null
             ? new CopyAuthorizationOptions() : copyAuthorizationOptions;
         modelId = modelId == null ? Utility.generateRandomModelID() : modelId;
-        AuthorizeCopyRequest authorizeCopyRequest = new AuthorizeCopyRequest().setModelId(modelId).setDescription(
-            copyAuthorizationOptions.getDescription());
+        AuthorizeCopyRequest authorizeCopyRequest
+            = new AuthorizeCopyRequest()
+            .setModelId(modelId)
+            .setDescription(copyAuthorizationOptions.getDescription());
 
         return service.authorizeCopyDocumentModelWithResponseAsync(authorizeCopyRequest, context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
@@ -477,7 +479,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * or has been cancelled. The completed operation returns the created {@link DocumentModel composed model}.
      * @throws DocumentModelOperationException If create composed model operation fails and model with
      * {@link OperationStatus#FAILED} is created.
-     * @throws NullPointerException If the list of {@code modelIDs} or {@code modelId} is null or empty.
+     * @throws NullPointerException If the list of {@code modelIDs} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DocumentOperationResult, DocumentModel> beginCreateComposedModel(
@@ -541,9 +543,9 @@ public final class DocumentModelAdministrationAsyncClient {
         try {
             if (CoreUtils.isNullOrEmpty(modelIDs)) {
                 throw logger.logExceptionAsError(new NullPointerException("'modelIDs' cannot be null or empty"));
-            } else if (CoreUtils.isNullOrEmpty(modelId)) {
-                throw logger.logExceptionAsError(new NullPointerException("'modelId' cannot be null or empty"));
             }
+            modelId = modelId == null ? Utility.generateRandomModelID() : modelId;
+
             createComposedModelOptions = getCreateComposeModelOptions(createComposedModelOptions);
 
             final ComposeDocumentModelRequest composeRequest = new ComposeDocumentModelRequest()
@@ -611,7 +613,7 @@ public final class DocumentModelAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DocumentOperationResult, DocumentModel> beginCopyModel(String modelId,
         CopyAuthorization target) {
-        return beginCopyModel(modelId, target, null);
+        return beginCopyModel(modelId, target);
     }
 
     PollerFlux<DocumentOperationResult, DocumentModel> beginCopyModel(String modelId,

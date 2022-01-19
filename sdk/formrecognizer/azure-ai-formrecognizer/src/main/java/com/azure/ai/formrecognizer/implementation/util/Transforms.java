@@ -311,6 +311,7 @@ public class Transforms {
         Map<String, DocTypeInfo> docTypeMap = getStringDocTypeInfoMap(modelInfo);
         DocumentModelHelper.setDocTypes(documentModel, docTypeMap);
         DocumentModelHelper.setCreatedOn(documentModel, modelInfo.getCreatedDateTime());
+        DocumentModelHelper.setTags(documentModel, modelInfo.getTags());
         return documentModel;
     }
 
@@ -504,6 +505,7 @@ public class Transforms {
                 DocumentModelInfoHelper.setModelId(documentModelInfo, modelSummary.getModelId());
                 DocumentModelInfoHelper.setDescription(documentModelInfo, modelSummary.getDescription());
                 DocumentModelInfoHelper.setCreatedOn(documentModelInfo, modelSummary.getCreatedDateTime());
+                DocumentModelInfoHelper.setTags(documentModelInfo, modelSummary.getTags());
                 return documentModelInfo;
             }).collect(Collectors.toList());
     }
