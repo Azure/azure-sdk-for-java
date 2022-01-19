@@ -1,5 +1,7 @@
 ## Release History
-### 4.6.0-beta.1 (Unreleased)
+### 4.6.0-beta.1 (2022-01-18)
+#### New Features
+* Added beta support for Spark 3.2
 
 ### NOTE: Below versions only exist for Spark 3.1 - 
 ***keeping the changelog here as reference only*** 
