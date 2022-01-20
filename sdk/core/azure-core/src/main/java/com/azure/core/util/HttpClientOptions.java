@@ -31,21 +31,29 @@ public final class HttpClientOptions extends ClientOptions {
     private static final Duration DEFAULT_CONNECTION_IDLE_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration NO_TIMEOUT = Duration.ZERO;
 
+    private static final ClientLogger LOGGER = new ClientLogger(HttpClientOptions.class);
     static {
-        ClientLogger logger = new ClientLogger(HttpClientOptions.class);
         Configuration configuration = Configuration.getGlobalConfiguration();
 
+        // we can't really remove this in favour of new configuration because of failure tolerant
+        // getDefaultTimeoutFromEnvironment.
         DEFAULT_CONNECT_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Duration.ofSeconds(10), logger);
+            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Duration.ofSeconds(10), LOGGER);
         DEFAULT_WRITE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
-            Duration.ofSeconds(60), logger);
+            Duration.ofSeconds(60), LOGGER);
         DEFAULT_RESPONSE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, Duration.ofSeconds(60), logger);
+            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, Duration.ofSeconds(60), LOGGER);
         DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
-            Duration.ofSeconds(60), logger);
+            Duration.ofSeconds(60), LOGGER);
     }
 
-    private final ClientLogger logger = new ClientLogger(HttpClientOptions.class);
+    private static final ConfigurationProperty<String> APPLICATION_ID_PROP = ConfigurationProperty.stringProperty("http-client.application-id", null, null, LOGGER, "client.application-id");
+    private static final ConfigurationProperty<Duration> CONNECT_TIMEOUT_PROP = ConfigurationProperty.durationProperty("http-client.connect-timeout", null, DEFAULT_CONNECT_TIMEOUT, LOGGER);
+    private static final ConfigurationProperty<Duration> WRITE_TIMEOUT_PROP = ConfigurationProperty.durationProperty("http-client.write-timeout", null, DEFAULT_WRITE_TIMEOUT, LOGGER);
+    private static final ConfigurationProperty<Duration> RESPONSE_TIMEOUT_PROP = ConfigurationProperty.durationProperty("http-client.response-timeout", null, DEFAULT_RESPONSE_TIMEOUT, LOGGER);
+    private static final ConfigurationProperty<Duration> READ_TIMEOUT_PROP = ConfigurationProperty.durationProperty("http-client.read-timeout", null, DEFAULT_READ_TIMEOUT, LOGGER);
+    private static final ConfigurationProperty<Duration> CONNECTION_IDLE_TIMEOUT_PROP = ConfigurationProperty.durationProperty("http-client.connection-idle-timeout", null, DEFAULT_CONNECTION_IDLE_TIMEOUT, LOGGER);
+    private static final ConfigurationProperty<Integer> CONNECTION_POOL_SIZE_PROP = ConfigurationProperty.integerProperty("http-client.maximum-connection-pool-size", null, null, LOGGER);
 
     private ProxyOptions proxyOptions;
     private Configuration configuration;
@@ -55,104 +63,6 @@ public final class HttpClientOptions extends ClientOptions {
     private Duration readTimeout;
     private Integer maximumConnectionPoolSize;
     private Duration connectionIdleTimeout;
-
-    public static ClientOptions fromConfiguration(Configuration configuration, ClientOptions defaultOptions) {
-        // TODO(configuration): copy-paste with loadconfig
-
-        String appId = configuration.get("http-client.application-id");
-        String headerStr = configuration.get("http-client.headers");
-        String connectTimeoutStr = configuration.get("http-client.connect-timeout");
-        String writeTimeoutStr = configuration.get("http-client.write-timeout");
-        String responseTimeoutStr = configuration.get("http-client.response-timeout");
-        String readTimeoutStr = configuration.get("http-client.read-timeout");
-        String connectIdleStr = configuration.get("http-client.connection-idle-timeout");
-        String maxPoolSizeStr = configuration.get("http-client.maximum-connection-pool-size");
-
-        boolean anyHttpClientSettingOn = appId != null ||
-            headerStr != null ||
-            connectTimeoutStr != null ||
-            writeTimeoutStr != null ||
-            responseTimeoutStr != null ||
-            readTimeoutStr != null ||
-            connectIdleStr != null ||
-            maxPoolSizeStr != null;
-
-        if (!anyHttpClientSettingOn) {
-            return ClientOptions.fromConfiguration(configuration.get("client.application-id"),
-                configuration.get("client.headers"),
-                () -> new ClientOptions(),
-                defaultOptions);
-        }
-
-        HttpClientOptions options = new HttpClientOptions();
-        ClientOptions.fromConfiguration(appId, headerStr, () -> options, defaultOptions);
-
-        // TODO (configuration) formats, copy-paste
-        if (connectTimeoutStr != null) {
-            options.setConnectTimeout(Duration.parse(connectTimeoutStr));
-        }
-
-        if (writeTimeoutStr != null) {
-            options.setWriteTimeout(Duration.parse(writeTimeoutStr));
-        }
-
-        if (responseTimeoutStr != null) {
-            options.setResponseTimeout(Duration.parse(responseTimeoutStr));
-        }
-
-        if (readTimeoutStr != null) {
-            options.setReadTimeout(Duration.parse(readTimeoutStr));
-        }
-
-        if (connectIdleStr != null) {
-            options.setConnectionIdleTimeout(Duration.parse(connectIdleStr));
-        }
-
-        if (maxPoolSizeStr != null) {
-            options.setMaximumConnectionPoolSize(Integer.valueOf(maxPoolSizeStr));
-        }
-
-        return options;
-    }
-
-    private void loadConfiguration(Configuration configuration) {
-
-        String appId = configuration.get("http-client.application-id", configuration.get("client.application-id"));
-        String headerStr = configuration.get("http-client.headers", configuration.get("client.headers"));
-
-        ClientOptions.fromConfiguration(appId, headerStr, () -> this, this);
-
-        if (connectTimeout == null) {
-            setConnectTimeout(getDefaultTimeoutFromEnvironment(configuration, "http-client.connect-timeout", DEFAULT_CONNECT_TIMEOUT, logger));
-        }
-
-        if (writeTimeout == null) {
-            setWriteTimeout(getDefaultTimeoutFromEnvironment(configuration, "http-client.write-timeout", DEFAULT_WRITE_TIMEOUT, logger));
-        }
-
-        if (responseTimeout == null) {
-            setResponseTimeout(getDefaultTimeoutFromEnvironment(configuration, "http-client.response-timeout", DEFAULT_RESPONSE_TIMEOUT, logger));
-        }
-
-        if (readTimeout == null) {
-            setReadTimeout(getDefaultTimeoutFromEnvironment(configuration, "http-client.read-timeout", DEFAULT_READ_TIMEOUT, logger));
-        }
-
-        if (connectionIdleTimeout == null) {
-            setConnectionIdleTimeout(getDefaultTimeoutFromEnvironment(configuration, "http-client.connection-idle-timeout", DEFAULT_CONNECTION_IDLE_TIMEOUT, logger));
-        }
-
-        if (maximumConnectionPoolSize == null) {
-            Integer defaultPoolSize = null;
-            Integer maxPoolSize = configuration.get("http-client.maximum-connection-pool-size", defaultPoolSize);
-            if (maxPoolSize != null) {
-                setMaximumConnectionPoolSize(maxPoolSize);
-            }
-        }
-
-        // TODO(configuration) should we move createUnresolved to config property instead of control flag?
-        setProxyOptions(ProxyOptions.fromConfiguration(configuration, false, this.proxyOptions));
-    }
 
     @Override
     public HttpClientOptions setApplicationId(String applicationId) {
@@ -188,6 +98,14 @@ public final class HttpClientOptions extends ClientOptions {
         return proxyOptions;
     }
 
+    public static ClientOptions fromConfiguration(Configuration configuration, ClientOptions defaultOptions) {
+        if (!ConfigurationHelpers.containsAny(configuration, APPLICATION_ID_PROP, CONNECT_TIMEOUT_PROP, WRITE_TIMEOUT_PROP, RESPONSE_TIMEOUT_PROP, CONNECTION_IDLE_TIMEOUT_PROP, CONNECTION_POOL_SIZE_PROP)) {
+            return defaultOptions;
+        }
+
+        return new HttpClientOptions().setConfiguration(configuration);
+    }
+
     /**
      * Sets the configuration store that the {@link HttpClient} will use.
      *
@@ -195,7 +113,9 @@ public final class HttpClientOptions extends ClientOptions {
      * @return The updated HttpClientOptions object.
      *
      * TODO(configuration) we should avoid API like this - options should have factory method and be fully defined in Configuration
-     * thisn promotes mixed code and no-code configuration and hard to manage.
+     * this promotes mixed code and no-code configuration and hard to manage.
+     *
+     * @Deprecated
      */
     public HttpClientOptions setConfiguration(Configuration configuration) {
         this.configuration = configuration;
@@ -406,7 +326,7 @@ public final class HttpClientOptions extends ClientOptions {
      */
     public HttpClientOptions setMaximumConnectionPoolSize(Integer maximumConnectionPoolSize) {
         if (maximumConnectionPoolSize != null && maximumConnectionPoolSize <= 0) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'maximumConnectionPoolSize' cannot be less than 1."));
         }
 
@@ -479,5 +399,62 @@ public final class HttpClientOptions extends ClientOptions {
 
         // Return the maximum of the timeout period and the minimum allowed timeout period.
         return configuredTimeout.compareTo(MINIMUM_TIMEOUT) > 0 ? configuredTimeout : MINIMUM_TIMEOUT;
+    }
+
+    private void loadConfiguration(Configuration configuration) {
+
+        if (this.getApplicationId() == null) {
+            String applicationId = configuration.get(APPLICATION_ID_PROP);
+            if (applicationId != null) {
+                setApplicationId(applicationId);
+            }
+        }
+
+        if (connectTimeout == null) {
+            Duration connectTimeout = configuration.get(CONNECT_TIMEOUT_PROP);
+            if (connectTimeout != null) {
+                setConnectTimeout(connectTimeout);
+            }
+        }
+
+        if (writeTimeout == null) {
+            Duration writeTimeout = configuration.get(WRITE_TIMEOUT_PROP);
+            if (writeTimeout != null) {
+                setWriteTimeout(writeTimeout);
+            }
+        }
+
+        if (responseTimeout == null) {
+            Duration responseTimeout = configuration.get(RESPONSE_TIMEOUT_PROP);
+            if (responseTimeout != null) {
+                setResponseTimeout(responseTimeout);
+            }
+        }
+
+        if (readTimeout == null) {
+            Duration readTimeout = configuration.get(READ_TIMEOUT_PROP);
+            if (readTimeout != null) {
+                setReadTimeout(readTimeout);
+            }
+        }
+
+        if (connectTimeout == null) {
+            Duration connectIdleTimeout = configuration.get(CONNECTION_IDLE_TIMEOUT_PROP);
+            if (connectIdleTimeout != null) {
+                setConnectTimeout(connectIdleTimeout);
+            }
+        }
+
+        if (maximumConnectionPoolSize == null) {
+            Integer poolSize = configuration.get(CONNECTION_POOL_SIZE_PROP);
+            if (poolSize != null) {
+                setMaximumConnectionPoolSize(poolSize);
+            }
+        }
+
+        if (proxyOptions == null) {
+            // ProxyOptions.fromConfiguration is never null
+            setProxyOptions(ProxyOptions.fromConfiguration(configuration));
+        }
     }
 }

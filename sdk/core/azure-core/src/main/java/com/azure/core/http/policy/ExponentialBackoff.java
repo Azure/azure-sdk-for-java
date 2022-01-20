@@ -4,9 +4,9 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationHelpers;
 import com.azure.core.util.ConfigurationProperty;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.ImmutableConfiguration;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
@@ -21,6 +21,8 @@ import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RETRY_COU
  * provided max delay duration.
  */
 public class ExponentialBackoff implements RetryStrategy {
+
+    private static final ClientLogger LOGGER = new ClientLogger(RetryStrategy.class);
     private static final double JITTER_FACTOR = 0.05;
     private static final int DEFAULT_MAX_RETRIES;
     private static final Duration DEFAULT_BASE_DELAY = Duration.ofMillis(800);
@@ -46,10 +48,9 @@ public class ExponentialBackoff implements RetryStrategy {
         DEFAULT_MAX_RETRIES = defaultMaxRetries;
     }
 
-    private static String CONFIG_PREFIX = "http-retry.exponential";
-    private final static ConfigurationProperty<Integer> MAX_RETRIES_CONFIG = ConfigurationProperty.integerProperty(CONFIG_PREFIX, "max-retries",  PROPERTY_AZURE_REQUEST_RETRY_COUNT, DEFAULT_MAX_RETRIES);
-    private final static ConfigurationProperty<Duration> BASE_DELAY_CONFIG = ConfigurationProperty.durationProperty(CONFIG_PREFIX, "base-delay", null, DEFAULT_BASE_DELAY);
-    private final static ConfigurationProperty<Duration> MAX_DELAY_CONFIG = ConfigurationProperty.durationProperty(CONFIG_PREFIX, "max-delay", null, DEFAULT_MAX_DELAY);
+    private final static ConfigurationProperty<Integer> MAX_RETRIES_CONFIG = ConfigurationProperty.integerProperty("http-retry.exponential.max-retries",  PROPERTY_AZURE_REQUEST_RETRY_COUNT, DEFAULT_MAX_RETRIES, LOGGER);
+    private final static ConfigurationProperty<Duration> BASE_DELAY_CONFIG = ConfigurationProperty.durationProperty("http-retry.exponential.base-delay", null, DEFAULT_BASE_DELAY, LOGGER);
+    private final static ConfigurationProperty<Duration> MAX_DELAY_CONFIG = ConfigurationProperty.durationProperty("http-retry.exponential.max-delay", null, DEFAULT_MAX_DELAY, LOGGER);
 
     private final int maxRetries;
     private final long baseDelayNanos;
@@ -68,12 +69,12 @@ public class ExponentialBackoff implements RetryStrategy {
     /**
      * Caller must only call this method if they are sure that user specified retry policy options
      */
-    static RetryStrategy fromConfiguration(ImmutableConfiguration configuration, RetryStrategy defaultStrategy) {
+    static RetryStrategy fromConfiguration(Configuration configuration, RetryStrategy defaultStrategy) {
         if (configuration == null) {
             return defaultStrategy;
         }
 
-        if (!configuration.containsAny(MAX_RETRIES_CONFIG, BASE_DELAY_CONFIG, MAX_DELAY_CONFIG)) {
+        if (!ConfigurationHelpers.containsAny(configuration, MAX_RETRIES_CONFIG, BASE_DELAY_CONFIG, MAX_DELAY_CONFIG)) {
             return defaultStrategy;
         }
 

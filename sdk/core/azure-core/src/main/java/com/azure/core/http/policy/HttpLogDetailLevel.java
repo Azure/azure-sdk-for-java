@@ -4,9 +4,8 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
-
-import static com.azure.core.util.Configuration.getGlobalConfiguration;
+import com.azure.core.util.ConfigurationProperty;
+import com.azure.core.util.logging.ClientLogger;
 
 /**
  * The level of detail to log on HTTP messages.
@@ -45,31 +44,29 @@ public enum HttpLogDetailLevel {
     static final String BODY_AND_HEADERS_VALUE = "body_and_headers";
     static final String BODYANDHEADERS_VALUE = "bodyandheaders";
 
-    static final HttpLogDetailLevel ENVIRONMENT_HTTP_LOG_DETAIL_LEVEL = fromConfiguration(getGlobalConfiguration());
+    private static final ConfigurationProperty.ValueProcessor<HttpLogDetailLevel> LOG_LEVEL_CONVERTER = new ConfigurationProperty.ValueProcessor<HttpLogDetailLevel>() {
+        @Override
+        public HttpLogDetailLevel processAndConvert(String value, HttpLogDetailLevel defaultValue, String propertyName, ClientLogger logger) {
+            HttpLogDetailLevel logDetailLevel = defaultValue;
+            if (BASIC_VALUE.equalsIgnoreCase(value)) {
+                logDetailLevel = BASIC;
+            } else if (HEADERS_VALUE.equalsIgnoreCase(value)) {
+                logDetailLevel = HEADERS;
+            } else if (BODY_VALUE.equalsIgnoreCase(value)) {
+                logDetailLevel = BODY;
+            } else if (BODY_AND_HEADERS_VALUE.equalsIgnoreCase(value)
+                || BODYANDHEADERS_VALUE.equalsIgnoreCase(value)) {
+                logDetailLevel = BODY_AND_HEADERS;
+            }
 
-    static HttpLogDetailLevel fromConfiguration(Configuration configuration) {
-        String defaultValue = null;
-        String detailLevel = configuration.get(Configuration.PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL, defaultValue);
-        if (CoreUtils.isNullOrEmpty(detailLevel)) {
-            detailLevel = configuration.get("http.logging.level", "none");
+            return logDetailLevel;
         }
+    };
 
-        HttpLogDetailLevel logDetailLevel;
-        if (BASIC_VALUE.equalsIgnoreCase(detailLevel)) {
-            logDetailLevel = BASIC;
-        } else if (HEADERS_VALUE.equalsIgnoreCase(detailLevel)) {
-            logDetailLevel = HEADERS;
-        } else if (BODY_VALUE.equalsIgnoreCase(detailLevel)) {
-            logDetailLevel = BODY;
-        } else if (BODY_AND_HEADERS_VALUE.equalsIgnoreCase(detailLevel)
-            || BODYANDHEADERS_VALUE.equalsIgnoreCase(detailLevel)) {
-            logDetailLevel = BODY_AND_HEADERS;
-        } else {
-            logDetailLevel = NONE;
-        }
+    static final ConfigurationProperty<HttpLogDetailLevel> LOG_LEVEL_PROP = new ConfigurationProperty<>("http.logging.level", LOG_LEVEL_CONVERTER, false,
+        Configuration.PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL, NONE, null, new ClientLogger(HttpLogDetailLevel.class));
 
-        return logDetailLevel;
-    }
+    static final HttpLogDetailLevel ENVIRONMENT_HTTP_LOG_DETAIL_LEVEL = Configuration.getGlobalConfiguration().get(LOG_LEVEL_PROP);
 
     /**
      * @return a value indicating whether a request's URL should be logged.

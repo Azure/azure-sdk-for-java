@@ -4,6 +4,7 @@
 package com.azure.core.util;
 
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -20,8 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
 
 /**
  * Tests the configuration API.
@@ -32,26 +31,16 @@ public class ConfigurationTests {
     private static final String UNEXPECTED_VALUE = "notMyConfigurationValueDef456";
     private static final String DEFAULT_VALUE = "theDefaultValueGhi789";
 
+    private static final ClientLogger LOGGER = new ClientLogger(ConfigurationTests.class);
     /**
      * Verifies that a runtime parameter is able to be retrieved.
      */
     @Test
     public void runtimeConfigurationFound() {
-        Configuration configuration = spy(Configuration.class);
-        when(configuration.loadFromProperties(MY_CONFIGURATION)).thenReturn(EXPECTED_VALUE);
-        when(configuration.loadFromEnvironment(MY_CONFIGURATION)).thenReturn(null);
-
-        assertEquals(EXPECTED_VALUE, configuration.get(MY_CONFIGURATION));
-    }
-
-    /**
-     * Verifies that an environment variable is able to be retrieved.
-     */
-    @Test
-    public void environmentConfigurationFound() {
-        Configuration configuration = spy(Configuration.class);
-        when(configuration.loadFromProperties(MY_CONFIGURATION)).thenReturn(null);
-        when(configuration.loadFromEnvironment(MY_CONFIGURATION)).thenReturn(EXPECTED_VALUE);
+        // TODO test env source
+        Configuration configuration = new ConfigurationProvider(new TestConfigurationSource()
+            .put(MY_CONFIGURATION, EXPECTED_VALUE))
+            .getClientSection(null);
 
         assertEquals(EXPECTED_VALUE, configuration.get(MY_CONFIGURATION));
     }
@@ -65,25 +54,15 @@ public class ConfigurationTests {
         assertNull(configuration.get(MY_CONFIGURATION));
     }
 
-    /**
-     * Verifies that runtime parameters are preferred over environment variables.
-     */
-    @Test
-    public void runtimeConfigurationPreferredOverEnvironmentConfiguration() {
-        Configuration configuration = spy(Configuration.class);
-        when(configuration.loadFromProperties(MY_CONFIGURATION)).thenReturn(EXPECTED_VALUE);
-        when(configuration.loadFromEnvironment(MY_CONFIGURATION)).thenReturn(UNEXPECTED_VALUE);
-
-        assertEquals(EXPECTED_VALUE, configuration.get(MY_CONFIGURATION));
-    }
 
     /**
      * Verifies that a found configuration value is preferred over the default value.
      */
     @Test
     public void foundConfigurationPreferredOverDefault() {
-        Configuration configuration = spy(Configuration.class);
-        when(configuration.loadFromEnvironment(MY_CONFIGURATION)).thenReturn(EXPECTED_VALUE);
+        Configuration configuration = new ConfigurationProvider(new TestConfigurationSource()
+            .put(MY_CONFIGURATION, EXPECTED_VALUE))
+            .getClientSection(null);
 
         assertEquals(EXPECTED_VALUE, configuration.get(MY_CONFIGURATION, DEFAULT_VALUE));
     }
@@ -103,8 +82,9 @@ public class ConfigurationTests {
      */
     @Test
     public void foundConfigurationIsConverted() {
-        Configuration configuration = spy(Configuration.class);
-        when(configuration.loadFromProperties(MY_CONFIGURATION)).thenReturn(EXPECTED_VALUE);
+        Configuration configuration = new ConfigurationProvider(new TestConfigurationSource()
+            .put(MY_CONFIGURATION, EXPECTED_VALUE))
+            .getClientSection(null);
 
         assertEquals(EXPECTED_VALUE.toUpperCase(), configuration.get(MY_CONFIGURATION, String::toUpperCase));
     }
@@ -118,10 +98,12 @@ public class ConfigurationTests {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     public void cloneConfiguration() {
-        Configuration configuration = new Configuration()
+        Configuration configuration = new ConfigurationProvider(new TestConfigurationSource()
             .put("variable1", "value1")
-            .put("variable2", "value2");
+            .put("variable2", "value2"))
+            .getClientSection(null);
 
         Configuration configurationClone = configuration.clone();
 
@@ -146,8 +128,9 @@ public class ConfigurationTests {
     @ParameterizedTest
     @MethodSource("getOrDefaultSupplier")
     public void getOrDefault(String configurationValue, Object defaultValue, Object expectedValue) {
-        Configuration configuration = new Configuration()
-            .put("getOrDefault", configurationValue);
+        Configuration configuration = new ConfigurationProvider(new TestConfigurationSource()
+            .put("getOrDefault", configurationValue))
+            .getClientSection(null);
 
         assertEquals(expectedValue, configuration.get("getOrDefault", defaultValue));
     }
@@ -173,12 +156,12 @@ public class ConfigurationTests {
     @Test
     public void getProperty() {
         ConfigurationProvider provider = new ConfigurationProvider(new TestConfigurationSource("appconfiguration.prop", "local-prop-value"));
-        ImmutableConfiguration defaults = provider.getDefaultsSection(null);
-        ImmutableConfiguration appconfigSection = provider.getClientSection("appconfiguration", defaults);
+        Configuration defaults = provider.getClientSection(null);
+        Configuration appconfigSection = provider.getClientSection("appconfiguration");
 
-        ConfigurationProperty<String> localProp = ConfigurationProperty.stringLocalProperty("prop", null);
-        ConfigurationProperty<String> localPropFullName = ConfigurationProperty.stringLocalProperty("appconfiguration.prop", null);
-        ConfigurationProperty<String> globalProp = ConfigurationProperty.stringGlobalProperty("prop", null);
+        ConfigurationProperty<String> localProp = ConfigurationProperty.stringLocalProperty("prop", null, LOGGER);
+        ConfigurationProperty<String> localPropFullName = ConfigurationProperty.stringLocalProperty("appconfiguration.prop", null, LOGGER);
+        ConfigurationProperty<String> globalProp = ConfigurationProperty.stringProperty("prop", null, null, LOGGER);
 
         assertNull(defaults.get(localProp));
         assertEquals("local-prop-value", appconfigSection.get(localProp));
@@ -193,11 +176,11 @@ public class ConfigurationTests {
     @Test
     public void getMissingProperty() {
         ConfigurationProvider provider = new ConfigurationProvider(new TestConfigurationSource("az.appconfiguration.prop", "local-prop-value"));
-        ImmutableConfiguration defaults = provider.getDefaultsSection("az");
-        ImmutableConfiguration appconfigSection = provider.getClientSection("az.appconfiguration", defaults);
+        Configuration defaults = provider.getClientSection("az");
+        Configuration appconfigSection = provider.getClientSection("az.appconfiguration");
 
-        ConfigurationProperty<String> localProp = ConfigurationProperty.stringLocalProperty("foo", null);
-        ConfigurationProperty<String> localPropFullName = ConfigurationProperty.stringLocalProperty("storage.prop", null);
+        ConfigurationProperty<String> localProp = ConfigurationProperty.stringLocalProperty("foo", null, LOGGER);
+        ConfigurationProperty<String> localPropFullName = ConfigurationProperty.stringLocalProperty("storage.prop", null, LOGGER);
 
         assertNull(defaults.get(localProp));
         assertNull(defaults.get(localPropFullName));
@@ -209,12 +192,12 @@ public class ConfigurationTests {
     @Test
     public void localPropertyGoesFirst() {
         ConfigurationProvider provider = new ConfigurationProvider(new TestConfigurationSource("az.appconfiguration.prop", "local", "az.prop", "global"));
-        ImmutableConfiguration defaults = provider.getDefaultsSection("az");
-        ImmutableConfiguration appconfigSection = provider.getClientSection("az.appconfiguration", defaults);
+        Configuration defaults = provider.getClientSection("az");
+        Configuration appconfigSection = provider.getClientSection("az.appconfiguration");
 
-        ConfigurationProperty<String> localProp = ConfigurationProperty.stringLocalProperty("prop", null);
-        ConfigurationProperty<String> localPropFullName = ConfigurationProperty.stringLocalProperty("appconfiguration.prop", null);
-        ConfigurationProperty<String> globalProp = ConfigurationProperty.stringGlobalProperty("prop", null);
+        ConfigurationProperty<String> localProp = ConfigurationProperty.stringLocalProperty("prop", null, LOGGER);
+        ConfigurationProperty<String> localPropFullName = ConfigurationProperty.stringLocalProperty("appconfiguration.prop", null, LOGGER);
+        ConfigurationProperty<String> globalProp = ConfigurationProperty.stringProperty("prop", null, null, LOGGER);
 
         assertEquals("global", defaults.get(localProp));
         assertEquals("local", defaults.get(localPropFullName));
@@ -227,12 +210,12 @@ public class ConfigurationTests {
 
     @Test
     public void getGlobalProperty() {
-        ConfigurationProvider provider = new ConfigurationProvider(new TestConfigurationSource("az.storage.prop", "local", "az.prop", "global"));
-        ImmutableConfiguration defaults = provider.getDefaultsSection("az");
-        ImmutableConfiguration appconfigSection = provider.getClientSection("az.appconfiguration", defaults);
+        ConfigurationProvider provider = new ConfigurationProvider(new TestConfigurationSource("az.storage.prop", "local", "az.prop", "global"), "az");
+        Configuration defaults = provider.getClientSection("az");
+        Configuration appconfigSection = provider.getClientSection("az.appconfiguration");
 
-        ConfigurationProperty<String> globalProp = ConfigurationProperty.stringGlobalProperty("prop", null);
-        ConfigurationProperty<String> globalPropFullName = ConfigurationProperty.stringGlobalProperty("appconfiguration.prop", null);
+        ConfigurationProperty<String> globalProp = ConfigurationProperty.stringProperty("prop", null, null, LOGGER);
+        ConfigurationProperty<String> globalPropFullName = ConfigurationProperty.stringProperty("appconfiguration.prop", null, null, LOGGER);
 
         assertEquals("global", defaults.get(globalProp));
         assertNull(defaults.get(globalPropFullName));
@@ -246,14 +229,14 @@ public class ConfigurationTests {
         ConfigurationProvider provider = new ConfigurationProvider(new TestConfigurationSource()
             .put("http-retry.mode", "fixed")
             .put("appconfiguration.http-retry.fixed.max-retries", "1")
-            .put("appconfiguration.http-retry.fixed.delay", "PT1S"));
+            .put("appconfiguration.http-retry.fixed.delay", "1000"));
 
-        ImmutableConfiguration defaults = provider.getDefaultsSection(null);
-        ImmutableConfiguration appconfigSection = provider.getClientSection("appconfiguration", defaults);
+        Configuration defaults = provider.getClientSection(null);
+        Configuration appconfigSection = provider.getClientSection("appconfiguration");
 
-        ConfigurationProperty<String> globalProp = ConfigurationProperty.stringGlobalProperty("http-retry.mode", null);
-        ConfigurationProperty<String> globalMissingProp = ConfigurationProperty.stringGlobalProperty("mode", null);
-        ConfigurationProperty<String> globalMaxTries = ConfigurationProperty.stringGlobalProperty("http-retry.fixed.max-retries", null);
+        ConfigurationProperty<String> globalProp = ConfigurationProperty.stringProperty("http-retry.mode", null, null, LOGGER);
+        ConfigurationProperty<String> globalMissingProp = ConfigurationProperty.stringProperty("mode", null, null, LOGGER);
+        ConfigurationProperty<String> globalMaxTries = ConfigurationProperty.stringProperty("http-retry.fixed.max-retries", null, null, LOGGER);
 
         assertNull(defaults.get(globalMissingProp));
         assertEquals("fixed", defaults.get(globalProp));
@@ -270,9 +253,9 @@ public class ConfigurationTests {
 /*
     @Test
     public void getPropertySanityTODO() {
-        ImmutableConfiguration configuration = Configuration.fromSource(new TestConfigurationSource("az.appconfiguration.prop", "local-prop-value", "az.prop", "global"), "az");
+        Configuration configuration = Configuration.fromSource(new TestConfigurationSource("az.appconfiguration.prop", "local-prop-value", "az.prop", "global"), "az");
 
-        ImmutableConfiguration appconfigSection = configuration.getSection("appconfiguration");
+        Configuration appconfigSection = configuration.getSection("appconfiguration");
 
         ConfigurationProperty<String> appconfigProp = new ConfigurationProperty<>("prop", v -> v, true, null, null);
         ConfigurationProperty<String> globalProp = new ConfigurationProperty<>("prop", v -> v, false, null, null);
@@ -283,8 +266,8 @@ public class ConfigurationTests {
         assertEquals("local-prop-value", appconfigSection.get(appconfigProp));
         assertEquals("local-prop-value", appconfigSection.get(globalProp));
 
-        ImmutableConfiguration configuration2 = Configuration.fromSource(new TestConfigurationSource("az.prop", "global"), "az");
-        ImmutableConfiguration appconfigSection2 = configuration2.getSection("appconfiguration");
+        Configuration configuration2 = Configuration.fromSource(new TestConfigurationSource("az.prop", "global"), "az");
+        Configuration appconfigSection2 = configuration2.getSection("appconfiguration");
         assertEquals("global", configuration2.get(globalProp));
         assertNull(configuration2.get(appconfigProp));
         assertNull(appconfigSection2.get(appconfigProp));
@@ -294,7 +277,7 @@ public class ConfigurationTests {
 
     @Test
     public void readComplexObjectSanityCheck() throws Exception {
-        ImmutableConfiguration configuration = new ImmutableConfiguration(new TestConfigurationSource()
+        Configuration configuration = new Configuration(new TestConfigurationSource()
             .put("http-retry.mode", "exponential")
             .put("http-retry.exponential.max-retries", "7")
             .put("http-retry.exponential.base-delay", "PT1S")
@@ -303,7 +286,7 @@ public class ConfigurationTests {
 
         RetryPolicy retryPolicy = RetryPolicy.fromConfiguration(configuration, null);
 
-        ImmutableConfiguration appconfig = new ImmutableConfiguration(new TestConfigurationSource()
+        Configuration appconfig = new Configuration(new TestConfigurationSource()
                 .put("http-retry.mode", "fixed")
                 .put("appconfiguration.http-retry.fixed.max-retries", "1")
                 .put("appconfiguration.http-retry.fixed.delay", "PT1S"), null)

@@ -102,6 +102,7 @@ public class ProxyOptionsTests {
         assertEquals(expectedNonProxyHosts, proxyOptions.getNonProxyHosts());
     }
 
+    @SuppressWarnings("deprecation")
     private static Stream<Arguments> loadFromEnvironmentSupplier() {
         return Stream.of(
             // Basic Azure HTTPS proxy.
@@ -207,6 +208,7 @@ public class ProxyOptionsTests {
         assertNull(fromConfiguration(configuration, true));
     }
 
+    @SuppressWarnings("deprecation")
     private static Stream<Arguments> systemProxiesRequireUseSystemProxiesSupplier() {
         return Stream.of(
             // Java HTTPS configuration without 'java.net.useSystemProxies' set.
@@ -217,6 +219,7 @@ public class ProxyOptionsTests {
         );
     }
 
+    @SuppressWarnings("deprecation")
     private static Configuration createJavaConfiguration(int port, String username, String password,
         String nonProxyHosts, boolean isHttps) {
         Configuration configuration = new Configuration()
@@ -236,6 +239,7 @@ public class ProxyOptionsTests {
         return configuration;
     }
 
+    @SuppressWarnings("deprecation")
     private static Configuration putIfNotNull(Configuration configuration, String name, String value) {
         /*
          * If the passed value is null attempt to use the global configuration value. This is done as the Configuration
@@ -258,6 +262,7 @@ public class ProxyOptionsTests {
             "Expected Pattern '%s' to match '%s'.", pattern.pattern(), host));
     }
 
+    @SuppressWarnings("deprecation")
     private static Stream<Arguments> nonProxyHostsSupplier() {
         String javaNonProxyHosts = String.join("|", "localhost", "127.0.0.1", "*.prod.linkedin.com",
             "*.azure.linkedin.com", "*.blob.core.windows.net");
@@ -334,6 +339,7 @@ public class ProxyOptionsTests {
         assertEquals("(" + nonProxyHosts + ")", ProxyOptions.sanitizeNoProxy(nonProxyHosts));
     }
 
+    @SuppressWarnings("deprecation")
     private static Configuration setJavaSystemProxyPrerequisiteToTrue(Configuration configuration) {
         return configuration.put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
     }

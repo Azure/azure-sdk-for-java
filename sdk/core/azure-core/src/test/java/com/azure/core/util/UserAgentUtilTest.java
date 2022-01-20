@@ -3,10 +3,10 @@
 
 package com.azure.core.util;
 
+import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for {@link UserAgentUtil}.
@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 public class UserAgentUtilTest {
 
     @Test
+    @SuppressWarnings("deprecation")
     void testUserAgentStringFormat() {
         String javaVersion = System.getProperty("java.version");
         String osName = System.getProperty("os.name");

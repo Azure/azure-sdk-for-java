@@ -21,7 +21,7 @@ public class HttpLogDetailLevelTests {
     @ParameterizedTest
     @MethodSource("fromConfigurationSupplier")
     public void fromConfiguration(Configuration configuration, HttpLogDetailLevel expected) {
-        assertEquals(expected, HttpLogDetailLevel.fromConfiguration(configuration));
+        assertEquals(expected, configuration.get(HttpLogDetailLevel.LOG_LEVEL_PROP));
     }
 
     private static Stream<Arguments> fromConfigurationSupplier() {
@@ -89,6 +89,7 @@ public class HttpLogDetailLevelTests {
         );
     }
 
+    @SuppressWarnings("deprecation")
     private static Configuration makeConfiguration(String detailLevelValue) {
         return new Configuration().put(Configuration.PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL, detailLevelValue);
     }

@@ -24,11 +24,13 @@ class NoopConfiguration extends Configuration {
     }
 
     @Override
+    @Deprecated
     public NoopConfiguration put(String name, String value) {
         return this;
     }
 
     @Override
+    @Deprecated
     public String remove(String name) {
         return null;
     }

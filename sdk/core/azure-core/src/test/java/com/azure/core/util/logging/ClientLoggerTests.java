@@ -926,11 +926,13 @@ public class ClientLoggerTests {
         return stringWriter.toString();
     }
 
+    @SuppressWarnings("deprecation")
     private void setupLogLevel(int logLevelToSet) {
         originalLogLevel = Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_LOG_LEVEL);
         Configuration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(logLevelToSet));
     }
 
+    @SuppressWarnings("deprecation")
     private void setPropertyToOriginalOrClear(String originalValue) {
         if (CoreUtils.isNullOrEmpty(originalValue)) {
             Configuration.getGlobalConfiguration().remove(PROPERTY_AZURE_LOG_LEVEL);

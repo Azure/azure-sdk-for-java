@@ -5,6 +5,8 @@ package com.azure.core.http.policy;
 
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationHelpers;
+import com.azure.core.util.ConfigurationProperty;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -28,7 +30,7 @@ public class HttpLogOptions {
     private HttpRequestLogger requestLogger;
     private HttpResponseLogger responseLogger;
 
-    private final ClientLogger logger = new ClientLogger(HttpLogOptions.class);
+    private final static ClientLogger LOGGER = new ClientLogger(HttpLogOptions.class);
 
     private static final int MAX_APPLICATION_ID_LENGTH = 24;
     private static final String INVALID_APPLICATION_ID_LENGTH = "'applicationId' length cannot be greater than "
@@ -59,40 +61,35 @@ public class HttpLogOptions {
         "User-Agent"
     );
 
+    private static final ConfigurationProperty<String> APPLICATION_ID_PROP = ConfigurationProperty.stringProperty("http.logging.application-id", null, null, LOGGER);
+    private static final ConfigurationProperty<Boolean> PRETTY_PRINT_BODY_PROP = ConfigurationProperty.booleanProperty("http.logging.pretty-print-body", null, false, LOGGER);
+
     public static HttpLogOptions fromConfiguration(Configuration configuration, HttpLogOptions defaultOptions) {
         if (configuration == Configuration.NONE || configuration == null) {
             return defaultOptions;
         }
 
-        // Only use system proxies when the prerequisite property is 'true'.
-        String applicationId = configuration.get("http.logging.application-id");
-        boolean prettyPrint = configuration.get("http.logging.pretty-print-body", false);
-        String headers = configuration.get("http.logging.allowed-header-names");
-        String queryParams = configuration.get("http.logging.allowed-query-param-names");
-        HttpLogDetailLevel logLevel = HttpLogDetailLevel.fromConfiguration(configuration);
-
-        if (applicationId == null && !prettyPrint && headers == null && queryParams == null && logLevel == HttpLogDetailLevel.NONE) {
-            // nothing about http log options is defined
+        if (!ConfigurationHelpers.containsAny(configuration, APPLICATION_ID_PROP, PRETTY_PRINT_BODY_PROP)) {
             return defaultOptions;
         }
 
-        // TODO(configuration): validate and fail on error
         HttpLogOptions httpLogOptions = new HttpLogOptions();
-        if (CoreUtils.isNullOrEmpty(applicationId)) {
+
+        String applicationId = configuration.get(APPLICATION_ID_PROP);
+        if (applicationId != null) {
             httpLogOptions.setApplicationId(applicationId);
         }
 
-        httpLogOptions.setLogLevel(logLevel);
-        httpLogOptions.setPrettyPrintBody(prettyPrint);
-
-        if (!CoreUtils.isNullOrEmpty(headers)) {
-            httpLogOptions.setAllowedHeaderNames(new HashSet<>(Arrays.asList(headers.split(","))));
+        HttpLogDetailLevel logLevel = configuration.get(HttpLogDetailLevel.LOG_LEVEL_PROP);;
+        if (logLevel != null) {
+            httpLogOptions.setLogLevel(logLevel);
         }
 
-        if (!CoreUtils.isNullOrEmpty(queryParams)) {
-            httpLogOptions.setAllowedQueryParamNames(new HashSet<>(Arrays.asList(queryParams.split(","))));
-        }
+        // there is no real validation for boolean anyway
+        httpLogOptions.setPrettyPrintBody(configuration.get(PRETTY_PRINT_BODY_PROP));
 
+        // skipping headers and query params as they need more parsing
+        // and should be rather configured in code
         return httpLogOptions;
     }
 
@@ -228,9 +225,9 @@ public class HttpLogOptions {
     public HttpLogOptions setApplicationId(final String applicationId) {
         if (!CoreUtils.isNullOrEmpty(applicationId)) {
             if (applicationId.length() > MAX_APPLICATION_ID_LENGTH) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_LENGTH));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_LENGTH));
             } else if (applicationId.contains(" ")) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_SPACE));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_SPACE));
             }
         }
 

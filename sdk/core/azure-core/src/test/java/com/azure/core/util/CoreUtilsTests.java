@@ -249,6 +249,7 @@ public class CoreUtilsTests {
             defaultTimeout, logger));
     }
 
+    @SuppressWarnings("deprecation")
     private static Stream<Arguments> getDefaultTimeoutFromEnvironmentSupplier() {
         ClientLogger logger = new ClientLogger(CoreUtilsTests.class);
 

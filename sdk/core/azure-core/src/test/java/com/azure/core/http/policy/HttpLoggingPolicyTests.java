@@ -93,6 +93,7 @@ public class HttpLoggingPolicyTests {
      */
     @ParameterizedTest
     @MethodSource("redactQueryParametersSupplier")
+    @SuppressWarnings("deprecation")
     public void redactQueryParameters(String requestUrl, String expectedQueryString,
         Set<String> allowedQueryParameters) {
         HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -294,11 +295,13 @@ public class HttpLoggingPolicyTests {
         assertTrue(logString.contains("Try count: 2"));
     }
 
+    @SuppressWarnings("deprecation")
     private void setupLogLevel(int logLevelToSet) {
         originalLogLevel = Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_LOG_LEVEL);
         Configuration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(logLevelToSet));
     }
 
+    @SuppressWarnings("deprecation")
     private void setPropertyToOriginalOrClear(String originalValue) {
         if (CoreUtils.isNullOrEmpty(originalValue)) {
             Configuration.getGlobalConfiguration().remove(PROPERTY_AZURE_LOG_LEVEL);

@@ -9,8 +9,10 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.ImplUtils;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationHelpers;
 import com.azure.core.util.ConfigurationProperty;
-import com.azure.core.util.ImmutableConfiguration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -30,16 +32,40 @@ import static com.azure.core.util.CoreUtils.isNullOrEmpty;
  */
 //@Configurable(prefix="http-retry")
 public class RetryPolicy implements HttpPipelinePolicy {
-    private final ClientLogger logger = new ClientLogger(RetryPolicy.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RetryPolicy.class);
 
     private final RetryStrategy retryStrategy;
     private final String retryAfterHeader;
     private final ChronoUnit retryAfterTimeUnit;
 
-    private static final String CONFIG_PREFIX = "http-retry";
-    private final static ConfigurationProperty<String> RETRY_MODE_CONFIG = ConfigurationProperty.stringProperty(CONFIG_PREFIX, "mode", null, "exponential");
-    private final static ConfigurationProperty<String> RETRY_AFTER_HEADER_CONFIG = ConfigurationProperty.stringProperty(CONFIG_PREFIX, "retry-after-header", null, null);
-    private final static ConfigurationProperty<ChronoUnit> RETRY_AFTER_TIME_UNIT_CONFIG = new ConfigurationProperty<>(CONFIG_PREFIX, "retry-after-time-unit", value -> ChronoUnit.valueOf(value), false, null, null);
+    private final static ConfigurationProperty<String> RETRY_MODE_CONFIG = ConfigurationProperty.stringProperty("http-retry.mode", null, "exponential", LOGGER);
+    private final static ConfigurationProperty<String> RETRY_AFTER_HEADER_CONFIG = ConfigurationProperty.stringProperty("http-retry.retry-after-header", null, null, LOGGER);
+
+    private static final ConfigurationProperty.ValueProcessor<ChronoUnit> CHRONOUNIT_CONVERTER = new ConfigurationProperty.ValueProcessor<ChronoUnit>() {
+        @Override
+        public ChronoUnit processAndConvert(String value, ChronoUnit defaultValue, String propertyName, ClientLogger logger) {
+            logger.atVerbose()
+                .addKeyValue("property", propertyName)
+                .addKeyValue("value", value)
+                .log("Read property.");
+
+            if (CoreUtils.isNullOrEmpty(value)) {
+                return defaultValue;
+            }
+
+            try {
+                return ChronoUnit.valueOf(value);
+            } catch (IllegalArgumentException ex) {
+                throw logger.atError()
+                    .addKeyValue("property", propertyName)
+                    .addKeyValue("value", value)
+                    .log(ex);
+            }
+        }
+    };
+
+    private final static ConfigurationProperty<ChronoUnit> RETRY_AFTER_TIME_UNIT_CONFIG = new ConfigurationProperty<>("http-retry.retry-after-time-unit", CHRONOUNIT_CONVERTER, false, null, null, null, LOGGER);
+
     /**
      * Creates {@link RetryPolicy} using {@link ExponentialBackoff#ExponentialBackoff()} as the {@link RetryStrategy}.
      */
@@ -96,12 +122,12 @@ public class RetryPolicy implements HttpPipelinePolicy {
         this(retryStrategy, null, null);
     }
 
-    public static RetryPolicy fromConfiguration(ImmutableConfiguration configuration, RetryPolicy defaultPolicy) {
+    public static RetryPolicy fromConfiguration(Configuration configuration, RetryPolicy defaultPolicy) {
         if (configuration == null || configuration == NONE) {
             return defaultPolicy;
         }
 
-        if (!configuration.containsAny(RETRY_MODE_CONFIG, RETRY_AFTER_HEADER_CONFIG, RETRY_AFTER_TIME_UNIT_CONFIG)) {
+        if (!ConfigurationHelpers.containsAny(configuration, RETRY_MODE_CONFIG, RETRY_AFTER_HEADER_CONFIG, RETRY_AFTER_TIME_UNIT_CONFIG)) {
             return defaultPolicy;
         }
 
@@ -114,7 +140,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
             retryStrategy = ExponentialBackoff.fromConfiguration(configuration, new ExponentialBackoff());
         }
 
-        return  new RetryPolicy(retryStrategy, configuration.get(RETRY_AFTER_HEADER_CONFIG), configuration.get(RETRY_AFTER_TIME_UNIT_CONFIG));
+        return new RetryPolicy(retryStrategy, configuration.get(RETRY_AFTER_HEADER_CONFIG), configuration.get(RETRY_AFTER_TIME_UNIT_CONFIG));
     }
 
     /**
@@ -137,8 +163,10 @@ public class RetryPolicy implements HttpPipelinePolicy {
                 if (shouldRetry(httpResponse, tryCount)) {
                     final Duration delayDuration = determineDelayDuration(httpResponse, tryCount, retryStrategy,
                         retryAfterHeader, retryAfterTimeUnit);
-                    logger.verbose("[Retrying] Try count: {}, Delay duration in seconds: {}", tryCount,
-                        delayDuration.getSeconds());
+                    LOGGER.atVerbose()
+                        .addKeyValue("tryCount", tryCount)
+                        .addKeyValue("delaySec", delayDuration.getSeconds())
+                        .log("Retrying.");
 
                     Flux<ByteBuffer> responseBody = httpResponse.getBody();
                     if (responseBody == null) {
@@ -152,18 +180,25 @@ public class RetryPolicy implements HttpPipelinePolicy {
                     }
                 } else {
                     if (tryCount >= retryStrategy.getMaxRetries()) {
-                        logger.info("Retry attempts have been exhausted after {} attempts.", tryCount);
+                        LOGGER.atInfo()
+                            .addKeyValue("tryCount", tryCount)
+                            .log("Retry attempts have been exhausted.");
                     }
                     return Mono.just(httpResponse);
                 }
             })
             .onErrorResume(err -> {
                 if (shouldRetryException(err, tryCount)) {
-                    logger.verbose("[Error Resume] Try count: {}, Error: {}", tryCount, err);
+                    LOGGER.atVerbose()
+                        .addKeyValue("tryCount", tryCount)
+                        .log("Error Resume.", err);
+
                     return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
                         .delaySubscription(retryStrategy.calculateRetryDelay(tryCount));
                 } else {
-                    logger.info("Retry attempts have been exhausted after {} attempts.", tryCount, err);
+                    LOGGER.atInfo()
+                        .addKeyValue("tryCount", tryCount)
+                        .log("Retry attempts have been exhausted.", err);
                     return Mono.error(err);
                 }
             });

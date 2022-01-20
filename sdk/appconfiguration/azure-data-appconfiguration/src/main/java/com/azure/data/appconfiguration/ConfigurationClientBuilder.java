@@ -25,6 +25,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationProperty;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
@@ -115,7 +116,7 @@ public final class ConfigurationClientBuilder {
             .set("Accept", "application/vnd.microsoft.azconfig.kv+json"));
     }
 
-    private final ClientLogger logger = new ClientLogger(ConfigurationClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConfigurationClientBuilder.class);
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
 
@@ -219,7 +220,7 @@ public final class ConfigurationClientBuilder {
             policies.add(new ConfigurationCredentialsPolicy(credential));
         } else {
             // Throw exception that credential and tokenCredential cannot be null
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("Missing credential information while building a client."));
         }
         policies.add(syncTokenPolicy);
@@ -256,7 +257,7 @@ public final class ConfigurationClientBuilder {
         try {
             new URL(endpoint);
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
         }
         this.endpoint = endpoint;
         return this;
@@ -293,18 +294,18 @@ public final class ConfigurationClientBuilder {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
 
         if (connectionString.isEmpty()) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'connectionString' cannot be an empty string."));
         }
 
         try {
             this.credential = new ConfigurationClientCredentials(connectionString);
         } catch (InvalidKeyException err) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "The secret contained within the connection string is invalid and cannot instantiate the HMAC-SHA256"
                     + " algorithm.", err));
         } catch (NoSuchAlgorithmException err) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("HMAC-SHA256 MAC algorithm cannot be instantiated.", err));
         }
 
@@ -366,7 +367,7 @@ public final class ConfigurationClientBuilder {
      */
     public ConfigurationClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
-            logger.info("HttpClient is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpClient is being set to 'null' when it was previously configured.");
         }
 
         this.httpClient = client;
@@ -385,12 +386,15 @@ public final class ConfigurationClientBuilder {
      */
     public ConfigurationClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
-            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
 
         this.pipeline = pipeline;
         return this;
     }
+
+    private static final ConfigurationProperty<String> ENDPOINT_PROP = ConfigurationProperty.stringLocalProperty("endpoint", null, LOGGER);
+    private static final ConfigurationProperty<String> CONNECTION_STRING_PROP = ConfigurationProperty.stringLocalProperty("connection-string", null, LOGGER);
 
     /**
      * Sets the configuration store that is used during construction of the service client.
@@ -402,22 +406,42 @@ public final class ConfigurationClientBuilder {
      * @return The updated ConfigurationClientBuilder object.
      */
     public ConfigurationClientBuilder configuration(Configuration configuration) {
-        this.configuration = configuration.getSection("appconfiguration");
+        this.configuration = configuration;
 
-        // will populate ClientOptions or HttpClientOptions depending on config
-        clientOptions(HttpClientOptions.fromConfiguration(this.configuration, this.clientOptions));
-
-        httpLogOptions(HttpLogOptions.fromConfiguration(this.configuration, this.httpLogOptions));
-
-        endpoint(this.configuration.get("appconfiguration.endpoint", this.endpoint));
-
-        String connectionString =  this.configuration.get("appconfiguration.connection-string");
-        if (connectionString != null) {
-            connectionString(connectionString);
+        if (this.clientOptions == null) {
+            ClientOptions configClientOptions = HttpClientOptions.fromConfiguration(this.configuration, null);
+            if (configClientOptions != null) {
+                clientOptions(configClientOptions);
+            }
         }
 
-        retryPolicy(RetryPolicy.fromConfiguration(this.configuration, null));
-        serviceVersion(this.configuration.get("appconfiguration.service-version", this.version));
+        if (this.httpLogOptions == null) {
+            HttpLogOptions configHttpLogOptions = HttpLogOptions.fromConfiguration(this.configuration, null);
+            if (configHttpLogOptions != null) {
+                httpLogOptions(configHttpLogOptions);
+            }
+        }
+
+        if (this.endpoint == null) {
+            String configConnectionString = this.configuration.get(CONNECTION_STRING_PROP);
+            if (configConnectionString != null) {
+                connectionString(configConnectionString);
+            }
+        }
+
+        if (this.endpoint == null) {
+            String configEndpoint = this.configuration.get(ENDPOINT_PROP);
+            if (configEndpoint != null) {
+                endpoint(configEndpoint);
+            }
+        }
+
+        if (retryPolicy == null) {
+            RetryPolicy configRetryPolicy = RetryPolicy.fromConfiguration(this.configuration, null);
+            if (configRetryPolicy != null) {
+                retryPolicy(configRetryPolicy);
+            }
+        }
 
         // TODO(configuration) credential
         return this;

@@ -34,6 +34,7 @@ public class LoggingBenchmark {
     ClientLogger logger;
 
     @Setup
+    @SuppressWarnings("deprecation")
     public void setup() {
         Configuration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(LogLevel.WARNING));
         this.logger = new ClientLogger(LoggingBenchmark.class);

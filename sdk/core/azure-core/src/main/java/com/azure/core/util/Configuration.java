@@ -3,6 +3,9 @@
 
 package com.azure.core.util;
 
+import com.azure.core.util.logging.ClientLogger;
+import reactor.core.Exceptions;
+
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
@@ -217,24 +220,33 @@ public class Configuration implements Cloneable {
     public static final Configuration NONE = new NoopConfiguration();
 
     private final ConcurrentMap<String, String> configurations;
-    private final ConfigurationSource source;
+    private final String path;
+    private final Configuration fallback;
+    private final ClientLogger logger;
 
     /**
      * Constructs a configuration containing the known Azure properties constants.
      */
     public Configuration() {
-        this(ENVIRONMENT_SOURCE);
+        this.configurations = loadBaseConfiguration(ENVIRONMENT_SOURCE);
+        this.path = null;
+        this.fallback = null;
+        // global configuration can't have logger :(
+        this.logger = null;
     }
 
-    // test constructor
-    Configuration(ConfigurationSource source) {
-        this.source = source;
-        this.configurations = loadBaseConfiguration(source);
+    Configuration(String path, ConcurrentMap<String, String> configurations, Configuration fallback) {
+        this.configurations = configurations;
+        this.fallback = fallback;
+        this.path = path;
+        this.logger = new ClientLogger(Configuration.class);
     }
 
-    private Configuration(ConcurrentMap<String, String> configurations, ConfigurationSource source) {
-        this.configurations = new ConcurrentHashMap<>(configurations);
-        this.source = source;
+    private Configuration(Configuration original) {
+        this.configurations = new ConcurrentHashMap<>(original.configurations);
+        this.path = original.path;
+        this.fallback = original.fallback;
+        this.logger = new ClientLogger(Configuration.class);
     }
 
     /**
@@ -314,7 +326,7 @@ public class Configuration implements Cloneable {
             return value;
         }
 
-        value = source.getValue(name);
+        value = ENVIRONMENT_SOURCE.getValue(name);
         if (value != null) {
             configurations.put(name, value);
             return value;
@@ -371,7 +383,65 @@ public class Configuration implements Cloneable {
      */
     @SuppressWarnings("CloneDoesntCallSuperClone")
     public Configuration clone() {
-        return new Configuration(configurations, source);
+        return new Configuration(this);
+    }
+
+    public boolean contains(ConfigurationProperty<?> property) {
+        return getWithFallback(property) != null;
+    }
+
+    public <T> T get(ConfigurationProperty<T> property) {
+        String valueStr = getWithFallback(property);
+        if (valueStr == null) {
+            return property.getDefaultValue();
+        }
+
+        try {
+            return property.getConverter().apply(valueStr);
+        } catch (Throwable t) {
+            throw logger.logThrowableAsError(Exceptions.propagate(t));
+        }
+    }
+
+    private String getLocalProperty(String name, String[] aliases) {
+        // TODO this can be optimized with smarter index
+        String absoluteName = path == null ? name : path + "." + name;
+        String value = configurations.get(absoluteName);
+
+        if (value != null) {
+            return value;
+        }
+
+        for(String alias : aliases) {
+            absoluteName = path == null ? alias : path + "." + alias;
+            value = configurations.get(absoluteName);
+            if (value != null) {
+                return value;
+            }
+        }
+
+        return null;
+    }
+
+
+    private <T> String getWithFallback(ConfigurationProperty<T> property) {
+        String value = getLocalProperty(property.getName(), property.getAliases());
+        if (value != null) {
+            return value;
+        }
+
+        if (!property.isLocal() && fallback != null) {
+            value = fallback.getLocalProperty(property.getName(), property.getAliases());
+            if (value != null) {
+                return value;
+            }
+        }
+
+        if (property.getEnvironmentVariableName() != null) {
+            return get(property.getEnvironmentVariableName());
+        }
+
+        return null;
     }
 
     /*
