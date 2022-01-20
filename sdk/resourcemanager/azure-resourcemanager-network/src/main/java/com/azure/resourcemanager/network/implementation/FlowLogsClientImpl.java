@@ -306,7 +306,7 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
         return this
             .client
             .<FlowLogInner, FlowLogInner>getLroResult(
-                mono, this.client.getHttpPipeline(), FlowLogInner.class, FlowLogInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), FlowLogInner.class, FlowLogInner.class, this.client.getContext());
     }
 
     /**
@@ -952,7 +952,8 @@ public final class FlowLogsClientImpl implements FlowLogsClient {
             deleteWithResponseAsync(resourceGroupName, networkWatcherName, flowLogName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

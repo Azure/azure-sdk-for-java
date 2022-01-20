@@ -1162,7 +1162,8 @@ public final class NetworkInterfacesClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, networkInterfaceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1603,7 +1604,7 @@ public final class NetworkInterfacesClientImpl
                 this.client.getHttpPipeline(),
                 NetworkInterfaceInner.class,
                 NetworkInterfaceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2327,7 +2328,7 @@ public final class NetworkInterfacesClientImpl
                 this.client.getHttpPipeline(),
                 EffectiveRouteListResultInner.class,
                 EffectiveRouteListResultInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2580,7 +2581,7 @@ public final class NetworkInterfacesClientImpl
                 this.client.getHttpPipeline(),
                 EffectiveNetworkSecurityGroupListResultInner.class,
                 EffectiveNetworkSecurityGroupListResultInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

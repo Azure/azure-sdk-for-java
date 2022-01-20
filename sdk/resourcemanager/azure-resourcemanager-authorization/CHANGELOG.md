@@ -1,6 +1,6 @@
 # Release History
 
-## 2.10.0-beta.1 (Unreleased)
+## 2.12.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,22 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.11.0 (2022-01-17)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of authentication to `2020-08-01-preview`
+
+## 2.10.0 (2021-11-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources
 
 ## 2.9.0 (2021-10-21)
 

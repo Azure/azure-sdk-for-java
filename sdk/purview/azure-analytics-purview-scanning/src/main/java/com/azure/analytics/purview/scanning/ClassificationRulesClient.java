@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.scanning;
 
 import com.azure.analytics.purview.scanning.implementation.ClassificationRulesImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -13,18 +14,18 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
 
 /** Initializes a new instance of the synchronous PurviewScanningClient type. */
 @ServiceClient(builder = PurviewScanningClientBuilder.class)
 public final class ClassificationRulesClient {
-    private final ClassificationRulesImpl serviceClient;
+    @Generated private final ClassificationRulesImpl serviceClient;
 
     /**
      * Initializes an instance of ClassificationRules client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     ClassificationRulesClient(ClassificationRulesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -51,15 +52,13 @@ public final class ClassificationRulesClient {
      *
      * @param classificationRuleName The classificationRuleName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return a classification rule.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a classification rule along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(
-            String classificationRuleName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getWithResponse(classificationRuleName, requestOptions, context);
+    public Response<BinaryData> getWithResponse(String classificationRuleName, RequestOptions requestOptions) {
+        return this.serviceClient.getWithResponse(classificationRuleName, requestOptions);
     }
 
     /**
@@ -93,15 +92,14 @@ public final class ClassificationRulesClient {
      *
      * @param classificationRuleName The classificationRuleName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> upsertWithResponse(
-            String classificationRuleName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.upsertWithResponse(classificationRuleName, requestOptions, context);
+    public Response<BinaryData> createOrUpdateWithResponse(
+            String classificationRuleName, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateWithResponse(classificationRuleName, requestOptions);
     }
 
     /**
@@ -126,15 +124,13 @@ public final class ClassificationRulesClient {
      *
      * @param classificationRuleName The classificationRuleName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteWithResponse(
-            String classificationRuleName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.deleteWithResponse(classificationRuleName, requestOptions, context);
+    public Response<BinaryData> deleteWithResponse(String classificationRuleName, RequestOptions requestOptions) {
+        return this.serviceClient.deleteWithResponse(classificationRuleName, requestOptions);
     }
 
     /**
@@ -164,14 +160,13 @@ public final class ClassificationRulesClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listAll(RequestOptions requestOptions, Context context) {
-        return this.serviceClient.listAll(requestOptions, context);
+    public PagedIterable<BinaryData> listAll(RequestOptions requestOptions) {
+        return this.serviceClient.listAll(requestOptions);
     }
 
     /**
@@ -202,15 +197,14 @@ public final class ClassificationRulesClient {
      *
      * @param classificationRuleName The classificationRuleName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listVersionsByClassificationRuleName(
-            String classificationRuleName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.listVersionsByClassificationRuleName(classificationRuleName, requestOptions, context);
+            String classificationRuleName, RequestOptions requestOptions) {
+        return this.serviceClient.listVersionsByClassificationRuleName(classificationRuleName, requestOptions);
     }
 
     /**
@@ -254,18 +248,14 @@ public final class ClassificationRulesClient {
      * @param classificationRuleName The classificationRuleName parameter.
      * @param classificationRuleVersion The classificationRuleVersion parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> tagClassificationVersionWithResponse(
-            String classificationRuleName,
-            int classificationRuleVersion,
-            RequestOptions requestOptions,
-            Context context) {
+            String classificationRuleName, int classificationRuleVersion, RequestOptions requestOptions) {
         return this.serviceClient.tagClassificationVersionWithResponse(
-                classificationRuleName, classificationRuleVersion, requestOptions, context);
+                classificationRuleName, classificationRuleVersion, requestOptions);
     }
 }

@@ -441,85 +441,12 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
             @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicyStatesQueryResults>> listQueryResultsForManagementGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicyStatesQueryResults>> listQueryResultsForSubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicyStatesQueryResults>> listQueryResultsForResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicyStatesQueryResults>> listQueryResultsForResourceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicyStatesQueryResults>> listQueryResultsForPolicySetDefinitionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicyStatesQueryResults>> listQueryResultsForPolicyDefinitionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicyStatesQueryResults>> listQueryResultsForSubscriptionLevelPolicyAssignmentNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicyStatesQueryResults>> listQueryResultsForResourceGroupLevelPolicyAssignmentNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<PolicyStatesQueryResults>> nextLink(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
@@ -740,7 +667,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                     filter,
                     apply,
                     skipToken),
-            nextLink -> listQueryResultsForManagementGroupNextSinglePageAsync(nextLink));
+            nextLink -> nextLinkSinglePageAsync(nextLink));
     }
 
     /**
@@ -778,7 +705,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                     filter,
                     apply,
                     skipToken),
-            nextLink -> listQueryResultsForManagementGroupNextSinglePageAsync(nextLink));
+            nextLink -> nextLinkSinglePageAsync(nextLink));
     }
 
     /**
@@ -833,7 +760,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                     apply,
                     skipToken,
                     context),
-            nextLink -> listQueryResultsForManagementGroupNextSinglePageAsync(nextLink, context));
+            nextLink -> nextLinkSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1325,7 +1252,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
             () ->
                 listQueryResultsForSubscriptionSinglePageAsync(
                     policyStatesResource, subscriptionId, top, orderBy, select, from, to, filter, apply, skipToken),
-            nextLink -> listQueryResultsForSubscriptionNextSinglePageAsync(nextLink));
+            nextLink -> nextLinkSinglePageAsync(nextLink));
     }
 
     /**
@@ -1354,7 +1281,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
             () ->
                 listQueryResultsForSubscriptionSinglePageAsync(
                     policyStatesResource, subscriptionId, top, orderBy, select, from, to, filter, apply, skipToken),
-            nextLink -> listQueryResultsForSubscriptionNextSinglePageAsync(nextLink));
+            nextLink -> nextLinkSinglePageAsync(nextLink));
     }
 
     /**
@@ -1409,7 +1336,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                     apply,
                     skipToken,
                     context),
-            nextLink -> listQueryResultsForSubscriptionNextSinglePageAsync(nextLink, context));
+            nextLink -> nextLinkSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1910,7 +1837,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                     filter,
                     apply,
                     skipToken),
-            nextLink -> listQueryResultsForResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> nextLinkSinglePageAsync(nextLink));
     }
 
     /**
@@ -1950,7 +1877,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                     filter,
                     apply,
                     skipToken),
-            nextLink -> listQueryResultsForResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> nextLinkSinglePageAsync(nextLink));
     }
 
     /**
@@ -2008,7 +1935,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                     apply,
                     skipToken,
                     context),
-            nextLink -> listQueryResultsForResourceGroupNextSinglePageAsync(nextLink, context));
+            nextLink -> nextLinkSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2546,7 +2473,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
             () ->
                 listQueryResultsForResourceSinglePageAsync(
                     policyStatesResource, resourceId, top, orderBy, select, from, to, filter, apply, expand, skipToken),
-            nextLink -> listQueryResultsForResourceNextSinglePageAsync(nextLink));
+            nextLink -> nextLinkSinglePageAsync(nextLink));
     }
 
     /**
@@ -2576,7 +2503,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
             () ->
                 listQueryResultsForResourceSinglePageAsync(
                     policyStatesResource, resourceId, top, orderBy, select, from, to, filter, apply, expand, skipToken),
-            nextLink -> listQueryResultsForResourceNextSinglePageAsync(nextLink));
+            nextLink -> nextLinkSinglePageAsync(nextLink));
     }
 
     /**
@@ -2634,7 +2561,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                     expand,
                     skipToken,
                     context),
-            nextLink -> listQueryResultsForResourceNextSinglePageAsync(nextLink, context));
+            nextLink -> nextLinkSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2979,12 +2906,13 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginTriggerSubscriptionEvaluationAsync(String subscriptionId) {
         Mono<Response<Flux<ByteBuffer>>> mono = triggerSubscriptionEvaluationWithResponseAsync(subscriptionId);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2997,7 +2925,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginTriggerSubscriptionEvaluationAsync(
         String subscriptionId, Context context) {
         context = this.client.mergeContext(context);
@@ -3016,7 +2944,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTriggerSubscriptionEvaluation(String subscriptionId) {
         return beginTriggerSubscriptionEvaluationAsync(subscriptionId).getSyncPoller();
     }
@@ -3031,7 +2959,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTriggerSubscriptionEvaluation(
         String subscriptionId, Context context) {
         return beginTriggerSubscriptionEvaluationAsync(subscriptionId, context).getSyncPoller();
@@ -3179,14 +3107,15 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginTriggerResourceGroupEvaluationAsync(
         String subscriptionId, String resourceGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             triggerResourceGroupEvaluationWithResponseAsync(subscriptionId, resourceGroupName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -3200,7 +3129,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginTriggerResourceGroupEvaluationAsync(
         String subscriptionId, String resourceGroupName, Context context) {
         context = this.client.mergeContext(context);
@@ -3221,7 +3150,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTriggerResourceGroupEvaluation(
         String subscriptionId, String resourceGroupName) {
         return beginTriggerResourceGroupEvaluationAsync(subscriptionId, resourceGroupName).getSyncPoller();
@@ -3238,7 +3167,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTriggerResourceGroupEvaluation(
         String subscriptionId, String resourceGroupName, Context context) {
         return beginTriggerResourceGroupEvaluationAsync(subscriptionId, resourceGroupName, context).getSyncPoller();
@@ -3544,7 +3473,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                     filter,
                     apply,
                     skipToken),
-            nextLink -> listQueryResultsForPolicySetDefinitionNextSinglePageAsync(nextLink));
+            nextLink -> nextLinkSinglePageAsync(nextLink));
     }
 
     /**
@@ -3584,7 +3513,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                     filter,
                     apply,
                     skipToken),
-            nextLink -> listQueryResultsForPolicySetDefinitionNextSinglePageAsync(nextLink));
+            nextLink -> nextLinkSinglePageAsync(nextLink));
     }
 
     /**
@@ -3642,7 +3571,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                     apply,
                     skipToken,
                     context),
-            nextLink -> listQueryResultsForPolicySetDefinitionNextSinglePageAsync(nextLink, context));
+            nextLink -> nextLinkSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -4212,7 +4141,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                     filter,
                     apply,
                     skipToken),
-            nextLink -> listQueryResultsForPolicyDefinitionNextSinglePageAsync(nextLink));
+            nextLink -> nextLinkSinglePageAsync(nextLink));
     }
 
     /**
@@ -4252,7 +4181,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                     filter,
                     apply,
                     skipToken),
-            nextLink -> listQueryResultsForPolicyDefinitionNextSinglePageAsync(nextLink));
+            nextLink -> nextLinkSinglePageAsync(nextLink));
     }
 
     /**
@@ -4310,7 +4239,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                     apply,
                     skipToken,
                     context),
-            nextLink -> listQueryResultsForPolicyDefinitionNextSinglePageAsync(nextLink, context));
+            nextLink -> nextLinkSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -4876,7 +4805,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                     filter,
                     apply,
                     skipToken),
-            nextLink -> listQueryResultsForSubscriptionLevelPolicyAssignmentNextSinglePageAsync(nextLink));
+            nextLink -> nextLinkSinglePageAsync(nextLink));
     }
 
     /**
@@ -4916,7 +4845,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                     filter,
                     apply,
                     skipToken),
-            nextLink -> listQueryResultsForSubscriptionLevelPolicyAssignmentNextSinglePageAsync(nextLink));
+            nextLink -> nextLinkSinglePageAsync(nextLink));
     }
 
     /**
@@ -4974,7 +4903,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                     apply,
                     skipToken,
                     context),
-            nextLink -> listQueryResultsForSubscriptionLevelPolicyAssignmentNextSinglePageAsync(nextLink, context));
+            nextLink -> nextLinkSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -5560,7 +5489,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                     filter,
                     apply,
                     skipToken),
-            nextLink -> listQueryResultsForResourceGroupLevelPolicyAssignmentNextSinglePageAsync(nextLink));
+            nextLink -> nextLinkSinglePageAsync(nextLink));
     }
 
     /**
@@ -5605,7 +5534,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                     filter,
                     apply,
                     skipToken),
-            nextLink -> listQueryResultsForResourceGroupLevelPolicyAssignmentNextSinglePageAsync(nextLink));
+            nextLink -> nextLinkSinglePageAsync(nextLink));
     }
 
     /**
@@ -5666,7 +5595,7 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
                     apply,
                     skipToken,
                     context),
-            nextLink -> listQueryResultsForResourceGroupLevelPolicyAssignmentNextSinglePageAsync(nextLink, context));
+            nextLink -> nextLinkSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -6040,23 +5969,12 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @return query results.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicyStateInner>> listQueryResultsForManagementGroupNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<PolicyStateInner>> nextLinkSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listQueryResultsForManagementGroupNext(nextLink, this.client.getEndpoint(), accept, context))
+            .withContext(context -> service.nextLink(nextLink, context))
             .<PagedResponse<PolicyStateInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -6080,552 +5998,13 @@ public final class PolicyStatesClientImpl implements PolicyStatesClient {
      * @return query results.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicyStateInner>> listQueryResultsForManagementGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<PolicyStateInner>> nextLinkSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listQueryResultsForManagementGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicyStateInner>> listQueryResultsForSubscriptionNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service.listQueryResultsForSubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PolicyStateInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicyStateInner>> listQueryResultsForSubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listQueryResultsForSubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicyStateInner>> listQueryResultsForResourceGroupNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service.listQueryResultsForResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PolicyStateInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicyStateInner>> listQueryResultsForResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listQueryResultsForResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicyStateInner>> listQueryResultsForResourceNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service.listQueryResultsForResourceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PolicyStateInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicyStateInner>> listQueryResultsForResourceNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listQueryResultsForResourceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicyStateInner>> listQueryResultsForPolicySetDefinitionNextSinglePageAsync(
-        String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listQueryResultsForPolicySetDefinitionNext(
-                            nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PolicyStateInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicyStateInner>> listQueryResultsForPolicySetDefinitionNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listQueryResultsForPolicySetDefinitionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicyStateInner>> listQueryResultsForPolicyDefinitionNextSinglePageAsync(
-        String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listQueryResultsForPolicyDefinitionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PolicyStateInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicyStateInner>> listQueryResultsForPolicyDefinitionNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listQueryResultsForPolicyDefinitionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicyStateInner>>
-        listQueryResultsForSubscriptionLevelPolicyAssignmentNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listQueryResultsForSubscriptionLevelPolicyAssignmentNext(
-                            nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PolicyStateInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicyStateInner>>
-        listQueryResultsForSubscriptionLevelPolicyAssignmentNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listQueryResultsForSubscriptionLevelPolicyAssignmentNext(
-                nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicyStateInner>>
-        listQueryResultsForResourceGroupLevelPolicyAssignmentNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listQueryResultsForResourceGroupLevelPolicyAssignmentNext(
-                            nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PolicyStateInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PolicyStateInner>>
-        listQueryResultsForResourceGroupLevelPolicyAssignmentNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listQueryResultsForResourceGroupLevelPolicyAssignmentNext(
-                nextLink, this.client.getEndpoint(), accept, context)
+            .nextLink(nextLink, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

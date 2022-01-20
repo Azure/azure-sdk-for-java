@@ -309,7 +309,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
                 this.client.getHttpPipeline(),
                 HubVirtualNetworkConnectionInner.class,
                 HubVirtualNetworkConnectionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -626,7 +626,8 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
             deleteWithResponseAsync(resourceGroupName, virtualHubName, connectionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

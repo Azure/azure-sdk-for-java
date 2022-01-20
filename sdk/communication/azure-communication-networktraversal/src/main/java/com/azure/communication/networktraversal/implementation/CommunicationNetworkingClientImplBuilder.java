@@ -191,7 +191,7 @@ public final class CommunicationNetworkingClientImplBuilder {
      */
     public CommunicationNetworkingClientImpl buildClient() {
         if (apiVersion == null) {
-            this.apiVersion = "2021-06-21-preview";
+            this.apiVersion = "2021-10-08-preview";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();

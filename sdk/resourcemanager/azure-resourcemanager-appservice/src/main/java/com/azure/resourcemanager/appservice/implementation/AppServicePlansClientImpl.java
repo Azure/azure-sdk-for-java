@@ -1189,7 +1189,7 @@ public final class AppServicePlansClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service plan.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AppServicePlanInner>, AppServicePlanInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String name, AppServicePlanInner appServicePlan) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1201,7 +1201,7 @@ public final class AppServicePlansClientImpl
                 this.client.getHttpPipeline(),
                 AppServicePlanInner.class,
                 AppServicePlanInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1216,7 +1216,7 @@ public final class AppServicePlansClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service plan.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AppServicePlanInner>, AppServicePlanInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String name, AppServicePlanInner appServicePlan, Context context) {
         context = this.client.mergeContext(context);
@@ -1239,7 +1239,7 @@ public final class AppServicePlansClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service plan.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AppServicePlanInner>, AppServicePlanInner> beginCreateOrUpdate(
         String resourceGroupName, String name, AppServicePlanInner appServicePlan) {
         return beginCreateOrUpdateAsync(resourceGroupName, name, appServicePlan).getSyncPoller();
@@ -1257,7 +1257,7 @@ public final class AppServicePlansClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service plan.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AppServicePlanInner>, AppServicePlanInner> beginCreateOrUpdate(
         String resourceGroupName, String name, AppServicePlanInner appServicePlan, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, name, appServicePlan, context).getSyncPoller();

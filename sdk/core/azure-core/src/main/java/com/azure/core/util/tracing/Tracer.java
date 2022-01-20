@@ -188,7 +188,7 @@ public interface Tracer {
      * &#47;&#47; context when process kind MESSAGE
      * Context updatedReceiveContext = tracer.start&#40;&quot;EventHubs.receive&quot;, traceContext,
      *     ProcessKind.MESSAGE&#41;;
-     * System.out.printf&#40;&quot;Diagnostic Id: %s%n&quot;, updatedReceiveContext.getData&#40;diagnosticIdKey&#41;.get&#40;&#41;.toString&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Diagnostic Id: %s%n&quot;, updatedReceiveContext.getData&#40;diagnosticIdKey&#41;.get&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.core.util.tracing.start#string-context-processKind-MESSAGE -->
      *
@@ -283,7 +283,8 @@ public interface Tracer {
      * Context contextWithName = tracer.setSpanName&#40;&quot;keyvault.setsecret&quot;, Context.NONE&#41;;
      * Context traceContext = tracer.start&#40;&quot;placeholder&quot;, contextWithName&#41;;
      *
-     * System.out.printf&#40;&quot;OpenTelemetry Context with started `keyvault.setsecret` span:  %s%n&quot;, traceContext.getData&#40;PARENT_TRACE_CONTEXT_KEY&#41;.get&#40;&#41;.toString&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;OpenTelemetry Context with started `keyvault.setsecret` span: %s%n&quot;,
+     *     traceContext.getData&#40;PARENT_TRACE_CONTEXT_KEY&#41;.get&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.core.util.tracing.setSpanName#string-context -->
      *

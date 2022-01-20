@@ -274,6 +274,15 @@ public interface VirtualMachineScaleSet
      */
     VirtualMachineScaleSetNetworkInterface getNetworkInterfaceByInstanceId(String instanceId, String name);
 
+    /**
+     * Gets a network interface associated with a virtual machine scale set instance.
+     *
+     * @param instanceId the virtual machine scale set vm instance ID
+     * @param name the network interface name
+     * @return the network interface
+     */
+    Mono<VirtualMachineScaleSetNetworkInterface> getNetworkInterfaceByInstanceIdAsync(String instanceId, String name);
+
     /** @return the network interfaces associated with all virtual machine instances in a scale set */
     PagedIterable<VirtualMachineScaleSetNetworkInterface> listNetworkInterfaces();
 
@@ -388,6 +397,13 @@ public interface VirtualMachineScaleSet
     Plan plan();
 
     /**
+     * Get orchestration mode of the Virtual Machine Scale Set.
+     * Scale set orchestration modes allow you to have greater control over how virtual machine instances are managed by the scale set.
+     * @return the orchestration mode of the virtual machine scale set
+     */
+    OrchestrationMode orchestrationMode();
+
+    /**
      * The virtual machine scale set stages shared between managed and unmanaged based virtual machine scale set
      * definitions.
      */
@@ -455,8 +471,31 @@ public interface VirtualMachineScaleSet
         interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithSku> {
         }
 
+        /**
+         * The stage of a virtual machine scale set definition allowing to specify orchestration mode for the virtual machine scale set.
+         *
+         */
+        interface WithOrchestrationMode {
+            /**
+             * Specifies the virtual machine scale set's orchestration mode to be Flexible and fault domain count to default 1.
+             * Virtual machine scale sets with Flexible orchestration allows you to combine the scalability of virtual
+             * machine scale sets in Uniform orchestration mode with the regional availability guarantees of availability sets.
+             * @return The next stage of the definition
+             */
+            DefinitionShared withFlexibleOrchestrationMode();
+
+            /**
+             * Specifies the virtual machine scale set's orchestration mode to be Flexible.
+             * Virtual machine scale sets with Flexible orchestration allows you to combine the scalability of virtual
+             * machine scale sets in Uniform orchestration mode with the regional availability guarantees of availability sets.
+             * @param faultDomainCount By default, when you add a VM to a Flexible scale set, Azure evenly spreads instances across fault domains.
+             * @return The next stage of the definition
+             */
+            DefinitionShared withFlexibleOrchestrationMode(int faultDomainCount);
+        }
+
         /** The stage of a virtual machine scale set definition allowing to specify SKU for the virtual machines. */
-        interface WithSku {
+        interface WithSku extends WithOrchestrationMode {
             /**
              * Specifies the SKU for the virtual machines in the scale set.
              *
@@ -532,6 +571,7 @@ public interface VirtualMachineScaleSet
             WithNetworkSubnet withAdditionalCapabilities(AdditionalCapabilities additionalCapabilities);
         }
 
+
         /**
          * The stage of a virtual machine scale set definition allowing to specify the virtual network subnet for the
          * primary network configuration.
@@ -560,8 +600,6 @@ public interface VirtualMachineScaleSet
              * <p>By default, all the backends and inbound NAT pools of the load balancer will be associated with the
              * primary network interface of the scale set virtual machines.
              *
-             * <p>
-             *
              * @param loadBalancer an existing Internet-facing load balancer
              * @return the next stage of the definition
              */
@@ -588,8 +626,6 @@ public interface VirtualMachineScaleSet
              * <p>By default all the backends and inbound NAT pools of the load balancer will be associated with the
              * primary network interface of the virtual machines in the scale set, unless subset of them is selected in
              * the next stages.
-             *
-             * <p>
              *
              * @param loadBalancer an existing internal load balancer
              * @return the next stage of the definition
@@ -1022,6 +1058,11 @@ public interface VirtualMachineScaleSet
          * for the resource to be created, but also allows for any other optional settings to be specified.
          */
         interface WithWindowsCreateManagedOrUnmanaged extends WithWindowsCreateManaged {
+            /**
+             * Enables unmanaged disks.
+             *
+             * @return the next stage of the definition
+             */
             WithWindowsCreateUnmanaged withUnmanagedDisks();
         }
 

@@ -10,6 +10,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy;
@@ -36,7 +37,6 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -389,9 +389,10 @@ public class CertificateClientTest extends CertificateClientTestBase {
                 client.beginCreateCertificate(certName, CertificatePolicy.getDefault());
             certPoller.poll();
             certPoller.cancelOperation();
-            certPoller.waitForCompletion();
+            certPoller.waitUntil(LongRunningOperationStatus.USER_CANCELLED);
             KeyVaultCertificateWithPolicy certificate = certPoller.getFinalResult();
-            assertEquals(false, certificate.getProperties().isEnabled());
+            assertFalse(certificate.getProperties().isEnabled());
+            certPoller.waitForCompletion();
         });
     }
 

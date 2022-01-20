@@ -39,14 +39,16 @@ public class ClientSideRequestStatistics {
     private Set<URI> failedReplicas;
     private Instant requestStartTimeUTC;
     private Instant requestEndTimeUTC;
-    private Set<URI> regionsContacted;
+    private Set<String> regionsContacted;
+    private Set<URI> locationEndpointsContacted;
     private RetryContext retryContext;
     private GatewayStatistics gatewayStatistics;
     private RequestTimeline gatewayRequestTimeline;
     private MetadataDiagnosticsContext metadataDiagnosticsContext;
     private SerializationDiagnosticsContext serializationDiagnosticsContext;
+    private GlobalEndpointManager globalEndpointManager;
 
-    public ClientSideRequestStatistics(DiagnosticsClientContext diagnosticsClientContext) {
+    public ClientSideRequestStatistics(DiagnosticsClientContext diagnosticsClientContext, GlobalEndpointManager globalEndpointManager) {
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.requestStartTimeUTC = Instant.now();
         this.requestEndTimeUTC = Instant.now();
@@ -56,9 +58,11 @@ public class ClientSideRequestStatistics {
         this.contactedReplicas = Collections.synchronizedList(new ArrayList<>());
         this.failedReplicas = Collections.synchronizedSet(new HashSet<>());
         this.regionsContacted = Collections.synchronizedSet(new HashSet<>());
+        this.locationEndpointsContacted = Collections.synchronizedSet(new HashSet<>());
         this.metadataDiagnosticsContext = new MetadataDiagnosticsContext();
         this.serializationDiagnosticsContext = new SerializationDiagnosticsContext();
         this.retryContext = new RetryContext();
+        this.globalEndpointManager = globalEndpointManager;
     }
 
     public Duration getDuration() {
@@ -98,7 +102,8 @@ public class ClientSideRequestStatistics {
             }
 
             if (locationEndPoint != null) {
-                this.regionsContacted.add(locationEndPoint);
+                this.regionsContacted.add(this.globalEndpointManager.getRegionName(locationEndPoint, request.getOperationType()));
+                this.locationEndpointsContacted.add(locationEndPoint);
             }
 
             if (storeResponseStatistics.requestOperationType == OperationType.Head
@@ -127,8 +132,10 @@ public class ClientSideRequestStatistics {
             this.recordRetryContextEndTime();
 
             if (locationEndPoint != null) {
-                this.regionsContacted.add(locationEndPoint);
+                this.regionsContacted.add(this.globalEndpointManager.getRegionName(locationEndPoint, rxDocumentServiceRequest.getOperationType()));
+                this.locationEndpointsContacted.add(locationEndPoint);
             }
+
             this.gatewayStatistics = new GatewayStatistics();
             if (rxDocumentServiceRequest != null) {
                 this.gatewayStatistics.operationType = rxDocumentServiceRequest.getOperationType();
@@ -223,15 +230,23 @@ public class ClientSideRequestStatistics {
         this.failedReplicas = Collections.synchronizedSet(failedReplicas);
     }
 
-    public Set<URI> getRegionsContacted() {
+    public Set<String> getContactedRegionNames() {
         return regionsContacted;
     }
 
-    public void setRegionsContacted(Set<URI> regionsContacted) {
+    public void setRegionsContacted(Set<String> regionsContacted) {
         this.regionsContacted = Collections.synchronizedSet(regionsContacted);
     }
 
-    public MetadataDiagnosticsContext getMetadataDiagnosticsContext() {
+    public Set<URI> getLocationEndpointsContacted() {
+        return locationEndpointsContacted;
+    }
+
+    public void setLocationEndpointsContacted(Set<URI> locationEndpointsContacted) {
+        this.locationEndpointsContacted = locationEndpointsContacted;
+    }
+
+    public MetadataDiagnosticsContext getMetadataDiagnosticsContext(){
         return this.metadataDiagnosticsContext;
     }
 

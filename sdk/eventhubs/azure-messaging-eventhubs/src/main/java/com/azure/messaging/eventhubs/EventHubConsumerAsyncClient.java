@@ -38,24 +38,100 @@ import static com.azure.core.util.FluxUtil.monoError;
  * or all partitions in the context of a specific consumer group.
  *
  * <p><strong>Creating an {@link EventHubConsumerAsyncClient}</strong></p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation}
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation -->
+ * <pre>
+ * &#47;&#47; The required parameters are `consumerGroup` and a way to authenticate with Event Hubs using credentials.
+ * EventHubConsumerAsyncClient consumer = new EventHubClientBuilder&#40;&#41;
+ *     .connectionString&#40;&quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;&quot;
+ *         + &quot;SharedAccessKey=&#123;key&#125;;EntityPath=&#123;eh-name&#125;&quot;&#41;
+ *     .consumerGroup&#40;&quot;consumer-group-name&quot;&#41;
+ *     .buildAsyncConsumerClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation -->
  *
  * <p><strong>Consuming events a single partition from Event Hub</strong></p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition}
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition -->
+ * <pre>
+ * &#47;&#47; Obtain partitionId from EventHubConsumerAsyncClient.getPartitionIds&#40;&#41;
+ * String partitionId = &quot;0&quot;;
+ * EventPosition startingPosition = EventPosition.latest&#40;&#41;;
+ *
+ * &#47;&#47; Keep a reference to `subscription`. When the program is finished receiving events, call
+ * &#47;&#47; subscription.dispose&#40;&#41;. This will stop fetching events from the Event Hub.
+ * Disposable subscription = consumer.receiveFromPartition&#40;partitionId, startingPosition&#41;
+ *     .subscribe&#40;partitionEvent -&gt; &#123;
+ *         PartitionContext partitionContext = partitionEvent.getPartitionContext&#40;&#41;;
+ *         EventData event = partitionEvent.getData&#40;&#41;;
+ *
+ *         System.out.printf&#40;&quot;Received event from partition '%s'%n&quot;, partitionContext.getPartitionId&#40;&#41;&#41;;
+ *         System.out.printf&#40;&quot;Contents of event as string: '%s'%n&quot;, event.getBodyAsString&#40;&#41;&#41;;
+ *     &#125;, error -&gt; System.err.print&#40;error.toString&#40;&#41;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition -->
  *
  * <p><strong>Viewing latest partition information</strong></p>
  * <p>Latest partition information as events are received can by setting
  * {@link ReceiveOptions#setTrackLastEnqueuedEventProperties(boolean) setTrackLastEnqueuedEventProperties} to
  * {@code true}. As events come in, explore the {@link PartitionEvent} object.
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receiveFromPartition#string-eventposition-receiveoptions}
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receiveFromPartition#string-eventposition-receiveoptions -->
+ * <pre>
+ * &#47;&#47; Set `setTrackLastEnqueuedEventProperties` to true to get the last enqueued information from the partition for
+ * &#47;&#47; each event that is received.
+ * ReceiveOptions receiveOptions = new ReceiveOptions&#40;&#41;
+ *     .setTrackLastEnqueuedEventProperties&#40;true&#41;;
+ *
+ * &#47;&#47; Receives events from partition &quot;0&quot; as they come in.
+ * consumer.receiveFromPartition&#40;&quot;0&quot;, EventPosition.earliest&#40;&#41;, receiveOptions&#41;
+ *     .subscribe&#40;partitionEvent -&gt; &#123;
+ *         LastEnqueuedEventProperties properties = partitionEvent.getLastEnqueuedEventProperties&#40;&#41;;
+ *         System.out.printf&#40;&quot;Information received at %s. Last enqueued sequence number: %s%n&quot;,
+ *             properties.getRetrievalTime&#40;&#41;,
+ *             properties.getSequenceNumber&#40;&#41;&#41;;
+ *     &#125;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receiveFromPartition#string-eventposition-receiveoptions -->
  *
  * <p><strong>Rate limiting consumption of events from Event Hub</strong></p>
  * <p>For event consumers that need to limit the number of events they receive at a given time, they can use
  * {@link BaseSubscriber#request(long)}.</p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition-basesubscriber}
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition-basesubscriber -->
+ * <pre>
+ * consumer.receiveFromPartition&#40;partitionId, EventPosition.latest&#40;&#41;&#41;.subscribe&#40;new BaseSubscriber&lt;PartitionEvent&gt;&#40;&#41; &#123;
+ *     private static final int NUMBER_OF_EVENTS = 5;
+ *     private final AtomicInteger currentNumberOfEvents = new AtomicInteger&#40;&#41;;
+ *
+ *     &#64;Override
+ *     protected void hookOnSubscribe&#40;Subscription subscription&#41; &#123;
+ *         &#47;&#47; Tell the Publisher we only want 5 events at a time.
+ *         request&#40;NUMBER_OF_EVENTS&#41;;
+ *     &#125;
+ *
+ *     &#64;Override
+ *     protected void hookOnNext&#40;PartitionEvent value&#41; &#123;
+ *         &#47;&#47; Process the EventData
+ *
+ *         &#47;&#47; If the number of events we have currently received is a multiple of 5, that means we have reached the
+ *         &#47;&#47; last event the Publisher will provide to us. Invoking request&#40;long&#41; here, tells the Publisher that
+ *         &#47;&#47; the subscriber is ready to get more events from upstream.
+ *         if &#40;currentNumberOfEvents.incrementAndGet&#40;&#41; % 5 == 0&#41; &#123;
+ *             request&#40;NUMBER_OF_EVENTS&#41;;
+ *         &#125;
+ *     &#125;
+ * &#125;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition-basesubscriber -->
  *
  * <p><strong>Receiving from all partitions</strong></p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#boolean}
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#boolean -->
+ * <pre>
+ * &#47;&#47; Receives events from all partitions from the beginning of each partition.
+ * consumer.receive&#40;true&#41;.subscribe&#40;partitionEvent -&gt; &#123;
+ *     PartitionContext context = partitionEvent.getPartitionContext&#40;&#41;;
+ *     EventData event = partitionEvent.getData&#40;&#41;;
+ *     System.out.printf&#40;&quot;Event %s is from partition %s%n.&quot;, event.getSequenceNumber&#40;&#41;, context.getPartitionId&#40;&#41;&#41;;
+ * &#125;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#boolean -->
  */
 @ServiceClient(builder = EventHubClientBuilder.class, isAsync = true)
 public class EventHubConsumerAsyncClient implements Closeable {

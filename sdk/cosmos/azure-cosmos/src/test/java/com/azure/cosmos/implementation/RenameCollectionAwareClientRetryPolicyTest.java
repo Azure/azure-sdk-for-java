@@ -45,7 +45,7 @@ public class RenameCollectionAwareClientRetryPolicyTest {
                 .shouldRetry(false)
                 .build());
 
-        Mockito.verifyZeroInteractions(endpointManager);
+        Mockito.verifyNoInteractions(endpointManager);
     }
 
     @Test(groups = "unit", timeOut = TIMEOUT)

@@ -470,7 +470,7 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
                 this.client.getHttpPipeline(),
                 VirtualHubRouteTableV2Inner.class,
                 VirtualHubRouteTableV2Inner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -776,7 +776,8 @@ public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteT
             deleteWithResponseAsync(resourceGroupName, virtualHubName, routeTableName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

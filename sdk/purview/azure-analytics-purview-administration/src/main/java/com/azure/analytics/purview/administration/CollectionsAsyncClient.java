@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.administration;
 
 import com.azure.analytics.purview.administration.implementation.CollectionsImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -18,13 +19,14 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewAccountClient type. */
 @ServiceClient(builder = PurviewAccountClientBuilder.class, isAsync = true)
 public final class CollectionsAsyncClient {
-    private final CollectionsImpl serviceClient;
+    @Generated private final CollectionsImpl serviceClient;
 
     /**
      * Initializes an instance of Collections client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     CollectionsAsyncClient(CollectionsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -65,10 +67,10 @@ public final class CollectionsAsyncClient {
      *
      * @param collectionName The collectionName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return a collection.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a collection along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getCollectionWithResponse(String collectionName, RequestOptions requestOptions) {
         return this.serviceClient.getCollectionWithResponseAsync(collectionName, requestOptions);
@@ -134,14 +136,14 @@ public final class CollectionsAsyncClient {
      * @param collectionName The collectionName parameter.
      * @param collection Collection resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return collection resource.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return collection resource along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> upsertCollectionWithResponse(
+    public Mono<Response<BinaryData>> createOrUpdateCollectionWithResponse(
             String collectionName, BinaryData collection, RequestOptions requestOptions) {
-        return this.serviceClient.upsertCollectionWithResponseAsync(collectionName, collection, requestOptions);
+        return this.serviceClient.createOrUpdateCollectionWithResponseAsync(collectionName, collection, requestOptions);
     }
 
     /**
@@ -157,10 +159,10 @@ public final class CollectionsAsyncClient {
      *
      * @param collectionName The collectionName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the completion.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteCollectionWithResponse(String collectionName, RequestOptions requestOptions) {
         return this.serviceClient.deleteCollectionWithResponseAsync(collectionName, requestOptions);
@@ -208,10 +210,10 @@ public final class CollectionsAsyncClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return paged list of collections.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listCollections(RequestOptions requestOptions) {
         return this.serviceClient.listCollectionsAsync(requestOptions);
@@ -246,10 +248,10 @@ public final class CollectionsAsyncClient {
      *
      * @param collectionName The collectionName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return paged list of collections.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listChildCollectionNames(String collectionName, RequestOptions requestOptions) {
         return this.serviceClient.listChildCollectionNamesAsync(collectionName, requestOptions);
@@ -281,10 +283,11 @@ public final class CollectionsAsyncClient {
      *
      * @param collectionName The collectionName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the parent name and parent friendly name chains that represent the collection path.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the parent name and parent friendly name chains that represent the collection path along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getCollectionPathWithResponse(
             String collectionName, RequestOptions requestOptions) {

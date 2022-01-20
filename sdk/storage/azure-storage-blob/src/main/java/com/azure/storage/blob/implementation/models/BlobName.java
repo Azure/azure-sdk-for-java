@@ -22,8 +22,7 @@ public final class BlobName {
     /*
      * The name of the blob.
      */
-    @JacksonXmlText
-    private String content;
+    @JacksonXmlText private String content;
 
     /**
      * Get the encoded property: Indicates if the blob name is encoded.

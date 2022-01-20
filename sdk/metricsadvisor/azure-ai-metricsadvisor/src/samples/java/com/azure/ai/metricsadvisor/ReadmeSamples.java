@@ -62,52 +62,61 @@ public class ReadmeSamples {
      * Code snippet for getting advisor client using MetricsAdvisorKeyCredential.
      */
     public void useMetricsAdvisorKeyCredential() {
+        // BEGIN: readme-sample-createMetricsAdvisorClient
         MetricsAdvisorKeyCredential credential = new MetricsAdvisorKeyCredential("subscription_key", "api_key");
         MetricsAdvisorClient metricsAdvisorClient = new MetricsAdvisorClientBuilder()
             .endpoint("{endpoint}")
             .credential(credential)
             .buildClient();
+        // END: readme-sample-createMetricsAdvisorClient
     }
 
     /**
      * Code snippet for getting administration client using MetricsAdvisorKeyCredential.
      */
     public void getMetricsAdvisorAdministrationClient() {
+        // BEGIN: readme-sample-createMetricsAdvisorAdministrationClient
         MetricsAdvisorKeyCredential credential = new MetricsAdvisorKeyCredential("subscription_key", "api_key");
         MetricsAdvisorAdministrationClient metricsAdvisorAdminClient =
             new MetricsAdvisorAdministrationClientBuilder()
                 .endpoint("{endpoint}")
                 .credential(credential)
                 .buildClient();
+        // END: readme-sample-createMetricsAdvisorAdministrationClient
     }
 
     /**
      * Code snippet for getting advisor client using AAD Authentication.
      */
     public void useAADAuthentication() {
+        // BEGIN: readme-sample-createMetricsAdvisorClientWithAAD
         TokenCredential credential = new DefaultAzureCredentialBuilder().build();
         MetricsAdvisorClient metricsAdvisorClient = new MetricsAdvisorClientBuilder()
             .endpoint("{endpoint}")
             .credential(credential)
             .buildClient();
+        // END: readme-sample-createMetricsAdvisorClientWithAAD
     }
 
     /**
      * Code snippet for getting administration client using AAD Authentication.
      */
     public void metricsAdvisorAdministrationClientAAD() {
+        // BEGIN: readme-sample-createMetricsAdvisorAdministrationClientWithAAD
         TokenCredential credential = new DefaultAzureCredentialBuilder().build();
         MetricsAdvisorAdministrationClient metricsAdvisorAdminClient =
             new MetricsAdvisorAdministrationClientBuilder()
                 .endpoint("{endpoint}")
                 .credential(credential)
                 .buildClient();
+        // END: readme-sample-createMetricsAdvisorAdministrationClientWithAAD
     }
 
     /**
      * Code snippet for creating a data feed.
      */
     public void createDataFeed() {
+        // BEGIN: readme-sample-createDataFeed
         DataFeed dataFeed = new DataFeed()
             .setName("dataFeedName")
             .setSource(new MySqlDataFeedSource("conn-string", "query"))
@@ -146,12 +155,14 @@ public class ReadmeSamples {
             System.out.printf("Data feed sql server query: %s%n",
                 ((SqlServerDataFeedSource) createdSqlDataFeed.getSource()).getQuery());
         }
+        // END: readme-sample-createDataFeed
     }
 
     /**
      * Code snippet for checking ingestion status.
      */
     public void checkIngestionStatus() {
+        // BEGIN: readme-sample-checkIngestionStatus
         String dataFeedId = "3d48er30-6e6e-4391-b78f-b00dfee1e6f5";
 
         metricsAdvisorAdminClient.listDataFeedIngestionStatus(
@@ -164,12 +175,14 @@ public class ReadmeSamples {
             System.out.printf("Timestamp value : %s%n", dataFeedIngestionStatus.getTimestamp());
             System.out.printf("Status : %s%n", dataFeedIngestionStatus.getStatus());
         });
+        // END: readme-sample-checkIngestionStatus
     }
 
     /**
      * Code snippet for configuring anomaly detection.
      */
     public void configureAnomalyDetection() {
+        // BEGIN: readme-sample-createAnomalyDetectionConfiguration
         String metricId = "3d48er30-6e6e-4391-b78f-b00dfee1e6f5";
 
         ChangeThresholdCondition changeThresholdCondition = new ChangeThresholdCondition(
@@ -201,12 +214,14 @@ public class ReadmeSamples {
                             .setSmartDetectionCondition(smartDetectionCondition)
                             .setConditionOperator(DetectionConditionOperator.OR))
             );
+        // END: readme-sample-createAnomalyDetectionConfiguration
     }
 
     /**
      * Code snippet for creating an email hook alert.
      */
     public void createHook() {
+        // BEGIN: readme-sample-createHook
         NotificationHook emailNotificationHook = new EmailNotificationHook("email Hook")
             .setDescription("my email Hook")
             .setEmailsToAlert(new ArrayList<String>() {{ add("alertme@alertme.com"); }})
@@ -220,12 +235,14 @@ public class ReadmeSamples {
         System.out.printf("Email Hook external Link: %s%n", createdEmailHook.getExternalLink());
         System.out.printf("Email Hook emails to alert: %s%n",
             String.join(",", createdEmailHook.getEmailsToAlert()));
+        // END: readme-sample-createHook
     }
 
     /**
      * Code snippet for configuring alert.
      */
     public void configureAlert() {
+        // BEGIN: readme-sample-createAnomalyAlertConfiguration
         String detectionConfigurationId1 = "9ol48er30-6e6e-4391-b78f-b00dfee1e6f5";
         String detectionConfigurationId2 = "3e58er30-6e6e-4391-b78f-b00dfee1e6f5";
         String hookId1 = "5f48er30-6e6e-4391-b78f-b00dfee1e6f5";
@@ -247,12 +264,14 @@ public class ReadmeSamples {
                         ))
                     .setCrossMetricsOperator(MetricAlertConfigurationsOperator.AND)
                     .setHookIdsToAlert(Arrays.asList(hookId1, hookId2)));
+        // END: readme-sample-createAnomalyAlertConfiguration
     }
 
     /**
      * Code snippet for querying anomaly detection.
      */
     public void queryAlertsForDetection() {
+        // BEGIN: readme-sample-listAnomaliesForAlert
         String alertConfigurationId = "9ol48er30-6e6e-4391-b78f-b00dfee1e6f5";
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
@@ -274,27 +293,32 @@ public class ReadmeSamples {
                         System.out.printf("DataPoint Anomaly related series key: %s%n", anomaly.getSeriesKey().asMap());
                     });
             });
+        // END: readme-sample-listAnomaliesForAlert
     }
 
     /**
      * Code snippet for handling exception
      */
     public void handlingException() {
+        // BEGIN: readme-sample-handlingException
         try {
             metricsAdvisorClient.getFeedback("non_existing_feedback_id");
         } catch (HttpResponseException e) {
             System.out.println(e.getMessage());
         }
+        // END: readme-sample-handlingException
     }
 
     /**
      * Code snippet for getting async client using the MetricsAdvisorKeyCredential authentication.
      */
     public void useMetricsAdvisorKeyCredentialAsyncClient() {
+        // BEGIN: readme-sample-asyncClient
         MetricsAdvisorKeyCredential credential = new MetricsAdvisorKeyCredential("subscription_key", "api_key");
         MetricsAdvisorAsyncClient metricsAdvisorAsyncClient = new MetricsAdvisorClientBuilder()
             .credential(credential)
             .endpoint("{endpoint}")
             .buildAsyncClient();
+        // END: readme-sample-asyncClient
     }
 }

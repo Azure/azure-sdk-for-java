@@ -589,7 +589,11 @@ public final class SyncMembersClientImpl implements SyncMembersClient {
         return this
             .client
             .<SyncMemberInner, SyncMemberInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SyncMemberInner.class, SyncMemberInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                SyncMemberInner.class,
+                SyncMemberInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -953,7 +957,8 @@ public final class SyncMembersClientImpl implements SyncMembersClient {
             deleteWithResponseAsync(resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1308,7 +1313,11 @@ public final class SyncMembersClientImpl implements SyncMembersClient {
         return this
             .client
             .<SyncMemberInner, SyncMemberInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SyncMemberInner.class, SyncMemberInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                SyncMemberInner.class,
+                SyncMemberInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -2135,7 +2144,8 @@ public final class SyncMembersClientImpl implements SyncMembersClient {
                 resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

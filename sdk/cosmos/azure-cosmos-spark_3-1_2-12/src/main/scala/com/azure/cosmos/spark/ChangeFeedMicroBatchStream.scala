@@ -191,7 +191,6 @@ private class ChangeFeedMicroBatchStream
    * The source can return `null`, if there is no data to process or the source does not support
    * to this method.
    */
-  // TODO @fabianm mark this override when switching to Spark 3.2.0
   def reportLatestOffset(): Offset = {
     this.latestOffsetSnapshot.orNull
   }

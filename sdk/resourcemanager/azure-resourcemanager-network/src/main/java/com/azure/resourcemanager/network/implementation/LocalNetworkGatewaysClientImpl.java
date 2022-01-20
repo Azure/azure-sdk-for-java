@@ -300,7 +300,7 @@ public final class LocalNetworkGatewaysClientImpl
                 this.client.getHttpPipeline(),
                 LocalNetworkGatewayInner.class,
                 LocalNetworkGatewayInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -725,7 +725,8 @@ public final class LocalNetworkGatewaysClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, localNetworkGatewayName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

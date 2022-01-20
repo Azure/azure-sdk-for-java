@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.scanning;
 
 import com.azure.analytics.purview.scanning.implementation.ScanRulesetsImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -18,13 +19,14 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewScanningClient type. */
 @ServiceClient(builder = PurviewScanningClientBuilder.class, isAsync = true)
 public final class ScanRulesetsAsyncClient {
-    private final ScanRulesetsImpl serviceClient;
+    @Generated private final ScanRulesetsImpl serviceClient;
 
     /**
      * Initializes an instance of ScanRulesets client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     ScanRulesetsAsyncClient(ScanRulesetsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -54,10 +56,10 @@ public final class ScanRulesetsAsyncClient {
      *
      * @param scanRulesetName The scanRulesetName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return a scan ruleset.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a scan ruleset along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponse(String scanRulesetName, RequestOptions requestOptions) {
         return this.serviceClient.getWithResponseAsync(scanRulesetName, requestOptions);
@@ -100,14 +102,14 @@ public final class ScanRulesetsAsyncClient {
      *
      * @param scanRulesetName The scanRulesetName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> upsertWithResponse(
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
             String scanRulesetName, RequestOptions requestOptions) {
-        return this.serviceClient.upsertWithResponseAsync(scanRulesetName, requestOptions);
+        return this.serviceClient.createOrUpdateWithResponseAsync(scanRulesetName, requestOptions);
     }
 
     /**
@@ -135,10 +137,10 @@ public final class ScanRulesetsAsyncClient {
      *
      * @param scanRulesetName The scanRulesetName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteWithResponse(String scanRulesetName, RequestOptions requestOptions) {
         return this.serviceClient.deleteWithResponseAsync(scanRulesetName, requestOptions);
@@ -174,10 +176,10 @@ public final class ScanRulesetsAsyncClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listAll(RequestOptions requestOptions) {
         return this.serviceClient.listAllAsync(requestOptions);

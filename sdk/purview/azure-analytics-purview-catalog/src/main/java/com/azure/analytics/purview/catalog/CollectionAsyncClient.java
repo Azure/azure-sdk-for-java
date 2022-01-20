@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.catalog;
 
 import com.azure.analytics.purview.catalog.implementation.CollectionsImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -17,13 +18,14 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewCatalogClient type. */
 @ServiceClient(builder = PurviewCatalogClientBuilder.class, isAsync = true)
 public final class CollectionAsyncClient {
-    private final CollectionsImpl serviceClient;
+    @Generated private final CollectionsImpl serviceClient;
 
     /**
      * Initializes an instance of Collections client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     CollectionAsyncClient(CollectionsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -193,14 +195,14 @@ public final class CollectionAsyncClient {
      * @param collection the collection unique name.
      * @param entity Atlas entity with extended information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return entityMutationResponse.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return entityMutationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> upsertWithResponse(
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
             String collection, BinaryData entity, RequestOptions requestOptions) {
-        return this.serviceClient.upsertWithResponseAsync(collection, entity, requestOptions);
+        return this.serviceClient.createOrUpdateWithResponseAsync(collection, entity, requestOptions);
     }
 
     /**
@@ -370,14 +372,14 @@ public final class CollectionAsyncClient {
      * @param collection the collection unique name.
      * @param entities Atlas entities with extended information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return entityMutationResponse.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return entityMutationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> upsertBulkWithResponse(
+    public Mono<Response<BinaryData>> createOrUpdateBulkWithResponse(
             String collection, BinaryData entities, RequestOptions requestOptions) {
-        return this.serviceClient.upsertBulkWithResponseAsync(collection, entities, requestOptions);
+        return this.serviceClient.createOrUpdateBulkWithResponseAsync(collection, entities, requestOptions);
     }
 
     /**
@@ -474,10 +476,10 @@ public final class CollectionAsyncClient {
      * @param collection the collection unique name.
      * @param moveEntitiesRequest Entity guids to be moved to target collection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return entityMutationResponse.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return entityMutationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> moveEntitiesToCollectionWithResponse(
             String collection, BinaryData moveEntitiesRequest, RequestOptions requestOptions) {

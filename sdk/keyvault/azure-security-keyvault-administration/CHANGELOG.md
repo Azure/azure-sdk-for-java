@@ -1,16 +1,54 @@
 # Release History
 
-## 4.1.0-beta.3 (Unreleased)
+## 4.1.0-beta.5 (Unreleased)
 
 ### Features Added
-
-- Added support for multi-tenant authentication in clients.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.1.0-beta.4 (2022-01-13)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.24.1`
+- Upgraded `azure-core-http-netty` dependency to `1.11.6`
+
+## 4.0.6 (2022-01-12)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.24.1`
+- Upgraded `azure-core-http-netty` dependency to `1.11.6`
+
+## 4.1.0-beta.3 (2021-11-12)
+
+### Features Added
+
+- Added support for multi-tenant authentication in clients.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.22.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.2`
+
+## 4.0.5 (2021-11-12)
+
+### Features Added
+
+- Added support for multi-tenant authentication in clients.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.22.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.2`
 
 ## 4.1.0-beta.2 (2021-10-07)
 

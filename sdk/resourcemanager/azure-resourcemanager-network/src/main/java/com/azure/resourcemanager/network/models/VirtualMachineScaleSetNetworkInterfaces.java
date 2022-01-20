@@ -8,6 +8,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
+import reactor.core.publisher.Mono;
 
 /** Entry point to virtual machine scale set network interface management API. */
 @Fluent
@@ -21,6 +22,15 @@ public interface VirtualMachineScaleSetNetworkInterfaces
      * @return the network interface
      */
     VirtualMachineScaleSetNetworkInterface getByVirtualMachineInstanceId(String instanceId, String name);
+
+    /**
+     * Gets a network interface associated with a virtual machine scale set instance.
+     *
+     * @param instanceId the virtual machine scale set vm instance id
+     * @param name the network interface name
+     * @return the network interface
+     */
+    Mono<VirtualMachineScaleSetNetworkInterface> getByVirtualMachineInstanceIdAsync(String instanceId, String name);
 
     /**
      * Lists all the network interfaces associated with a virtual machine instance in the scale set.
