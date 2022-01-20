@@ -4,6 +4,7 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.credential.AzureSasCredential;
@@ -126,6 +127,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {ShareClient.class, ShareAsyncClient.class})
 public class ShareClientBuilder implements
     HttpConfigTrait<ShareClientBuilder>,
+    AzureSasCredentialTrait<ShareClientBuilder>,
     ClientOptionsTrait<ShareClientBuilder> {
     private final ClientLogger logger = new ClientLogger(ShareClientBuilder.class);
 
@@ -333,6 +335,7 @@ public class ShareClientBuilder implements
      * @return the updated ShareClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
+    @Override
     public ShareClientBuilder credential(AzureSasCredential credential) {
         this.azureSasCredential = Objects.requireNonNull(credential,
             "'credential' cannot be null.");

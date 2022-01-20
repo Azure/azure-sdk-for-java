@@ -4,6 +4,7 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
@@ -54,6 +55,7 @@ import java.util.Objects;
     DataLakeDirectoryClient.class, DataLakeDirectoryAsyncClient.class})
 public final class DataLakePathClientBuilder implements
     TokenCredentialTrait<DataLakePathClientBuilder>,
+    AzureSasCredentialTrait<DataLakePathClientBuilder>,
     HttpConfigTrait<DataLakePathClientBuilder>,
     ClientOptionsTrait<DataLakePathClientBuilder> {
 
@@ -273,6 +275,7 @@ public final class DataLakePathClientBuilder implements
      * @return the updated DataLakePathClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
+    @Override
     public DataLakePathClientBuilder credential(AzureSasCredential credential) {
         blobClientBuilder.credential(credential);
         this.azureSasCredential = Objects.requireNonNull(credential,

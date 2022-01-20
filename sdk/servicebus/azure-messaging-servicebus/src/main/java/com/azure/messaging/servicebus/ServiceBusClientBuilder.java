@@ -20,6 +20,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.annotation.ServiceClientProtocol;
+import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
@@ -178,6 +179,7 @@ import java.util.regex.Pattern;
     protocol = ServiceClientProtocol.AMQP)
 public final class ServiceBusClientBuilder implements
     TokenCredentialTrait<ServiceBusClientBuilder>,
+    AzureSasCredentialTrait<ServiceBusClientBuilder>,
     AmqpConfigTrait<ServiceBusClientBuilder>,
     ClientOptionsTrait<ServiceBusClientBuilder> {
     private static final AmqpRetryOptions DEFAULT_RETRY =
@@ -447,6 +449,22 @@ public final class ServiceBusClientBuilder implements
 
         this.credentials = new ServiceBusSharedKeyCredential(credential.getSignature());
 
+        return this;
+    }
+
+    /**
+     * Sets the credential with Shared Access Signature for the Service Bus resource.
+     * Refer to <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-sas">
+     *     Service Bus access control with Shared Access Signatures</a>.
+     *
+     * @param credential {@link AzureSasCredential} to be used for authentication.
+     *
+     * @return The updated {@link ServiceBusClientBuilder} object.
+     */
+    @Override
+    public ServiceBusClientBuilder credential(AzureSasCredential credential) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.credentials = new ServiceBusSharedKeyCredential(credential.getSignature());
         return this;
     }
 

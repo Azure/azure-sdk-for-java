@@ -4,6 +4,7 @@
 package com.azure.messaging.eventgrid;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
@@ -51,6 +52,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {EventGridPublisherClient.class, EventGridPublisherAsyncClient.class})
 public final class EventGridPublisherClientBuilder implements
     TokenCredentialTrait<EventGridPublisherClientBuilder>,
+    AzureSasCredentialTrait<EventGridPublisherClientBuilder>,
     HttpConfigTrait<EventGridPublisherClientBuilder>,
     ClientOptionsTrait<EventGridPublisherClientBuilder> {
 
@@ -271,6 +273,7 @@ public final class EventGridPublisherClientBuilder implements
      *
      * @return the builder itself.
      */
+    @Override
     public EventGridPublisherClientBuilder credential(AzureSasCredential credential) {
         this.sasToken = credential;
         return this;

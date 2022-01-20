@@ -4,6 +4,7 @@
 package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
@@ -91,6 +92,7 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
 @ServiceClientBuilder(serviceClients = {EncryptedBlobAsyncClient.class, EncryptedBlobClient.class})
 public final class EncryptedBlobClientBuilder implements
     TokenCredentialTrait<EncryptedBlobClientBuilder>,
+    AzureSasCredentialTrait<EncryptedBlobClientBuilder>,
     HttpConfigTrait<EncryptedBlobClientBuilder>,
     ClientOptionsTrait<EncryptedBlobClientBuilder> {
     private final ClientLogger logger = new ClientLogger(EncryptedBlobClientBuilder.class);
@@ -391,6 +393,7 @@ public final class EncryptedBlobClientBuilder implements
      * @return the updated EncryptedBlobClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
+    @Override
     public EncryptedBlobClientBuilder credential(AzureSasCredential credential) {
         this.azureSasCredential = Objects.requireNonNull(credential,
             "'credential' cannot be null.");
