@@ -6,12 +6,6 @@
 - Users can now purchase United Kingdom (GB) toll free and geographic phone numbers for PSTN Calling
 - Users can now purchase Denmark (DK) toll free and geographic phone numbers for PSTN Calling
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 1.0.6 (2021-11-18)
 
 ### Other Changes
