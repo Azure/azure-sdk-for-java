@@ -151,11 +151,9 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
             ArgumentMatchers.any(), ArgumentMatchers.anyBoolean());
         // Verifying we are not doing any extra partition key range refresh call to gateway.
         // getPartitionKeyRange method in PartitionKeyRangeCache is private , so verifying indirectly that there was no cache refresh
-        // with help of below two verifies
+        // with help of below verify
         Mockito.verify(spyPartitionKeyRangeCache, Mockito.times(feedRanges.size())).tryLookupAsync(ArgumentMatchers.any(), ArgumentMatchers.anyString(),
             ArgumentMatchers.nullable(CollectionRoutingMap.class), ArgumentMatchers.any());
-        Mockito.verify(spyPartitionKeyRangeCache, Mockito.times(feedRanges.size())).tryLookupAsync(ArgumentMatchers.any(), ArgumentMatchers.anyString(),
-            ArgumentMatchers.any(CollectionRoutingMap.class), ArgumentMatchers.any());
         // Verifying isInitialized is true
         assertThat(ReflectionUtils.isInitialized(cosmosAsyncContainer).get()).isTrue();
 
