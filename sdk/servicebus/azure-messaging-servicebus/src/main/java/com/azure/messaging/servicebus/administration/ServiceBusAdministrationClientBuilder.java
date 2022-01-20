@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus.administration;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
@@ -85,6 +86,7 @@ import java.util.Objects;
     ServiceBusAdministrationAsyncClient.class})
 public final class ServiceBusAdministrationClientBuilder implements
     TokenCredentialTrait<ServiceBusAdministrationClientBuilder>,
+    ConnectionStringTrait<ServiceBusAdministrationClientBuilder>,
     HttpConfigTrait<ServiceBusAdministrationClientBuilder>,
     ClientOptionsTrait<ServiceBusAdministrationClientBuilder> {
     private static final String CLIENT_NAME;
@@ -240,6 +242,7 @@ public final class ServiceBusAdministrationClientBuilder implements
      * @throws IllegalArgumentException If {@code connectionString} is an entity specific connection string, and not
      *     a {@code connectionString} for the Service Bus namespace.
      */
+    @Override
     public ServiceBusAdministrationClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
 

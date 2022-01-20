@@ -5,6 +5,7 @@ package com.azure.messaging.webpubsub;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
@@ -90,6 +91,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {WebPubSubServiceAsyncClient.class, WebPubSubServiceClient.class})
 public final class WebPubSubServiceClientBuilder implements
     TokenCredentialTrait<WebPubSubServiceClientBuilder>,
+    ConnectionStringTrait<WebPubSubServiceClientBuilder>,
     HttpConfigTrait<WebPubSubServiceClientBuilder>,
     ClientOptionsTrait<WebPubSubServiceClientBuilder> {
     private static final String WPS_DEFAULT_SCOPE = "https://webpubsub.azure.com/.default";
@@ -153,6 +155,7 @@ public final class WebPubSubServiceClientBuilder implements
      * @return The updated {@link WebPubSubServiceClientBuilder} object.
      * @throws NullPointerException If {@code connectionString} is {@code null}.
      */
+    @Override
     public WebPubSubServiceClientBuilder connectionString(final String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
         this.connectionString = connectionString;

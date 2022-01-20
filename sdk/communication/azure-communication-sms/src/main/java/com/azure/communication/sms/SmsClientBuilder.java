@@ -9,6 +9,7 @@ import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceIm
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
@@ -40,6 +41,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {SmsClient.class, SmsAsyncClient.class})
 public final class SmsClientBuilder implements
     TokenCredentialTrait<SmsClientBuilder>,
+    ConnectionStringTrait<SmsClientBuilder>,
     HttpConfigTrait<SmsClientBuilder>,
     ClientOptionsTrait<SmsClientBuilder> {
     private static final String SDK_NAME = "name";
@@ -114,6 +116,7 @@ public final class SmsClientBuilder implements
      * @param connectionString connection string for setting endpoint and initalizing AzureKeyCredential
      * @return SmsClientBuilder
      */
+     @Override
     public SmsClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
         CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);

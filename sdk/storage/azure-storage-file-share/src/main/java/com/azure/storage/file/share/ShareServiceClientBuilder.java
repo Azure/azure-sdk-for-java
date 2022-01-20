@@ -6,6 +6,7 @@ package com.azure.storage.file.share;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpClient;
@@ -121,6 +122,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {ShareServiceClient.class, ShareServiceAsyncClient.class})
 public final class ShareServiceClientBuilder implements
     HttpConfigTrait<ShareServiceClientBuilder>,
+    ConnectionStringTrait<ShareServiceClientBuilder>,
     AzureSasCredentialTrait<ShareServiceClientBuilder>,
     ClientOptionsTrait<ShareServiceClientBuilder> {
     private final ClientLogger logger = new ClientLogger(ShareServiceClientBuilder.class);
@@ -294,6 +296,7 @@ public final class ShareServiceClientBuilder implements
      * @return the updated ShareServiceClientBuilder
      * @throws IllegalArgumentException If {@code connectionString} is invalid.
      */
+    @Override
     public ShareServiceClientBuilder connectionString(String connectionString) {
         StorageConnectionString storageConnectionString
                 = StorageConnectionString.create(connectionString, logger);

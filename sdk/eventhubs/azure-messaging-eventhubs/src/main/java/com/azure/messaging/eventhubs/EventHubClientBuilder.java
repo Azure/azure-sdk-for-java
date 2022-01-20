@@ -22,6 +22,7 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.annotation.ServiceClientProtocol;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
@@ -139,6 +140,7 @@ import java.util.regex.Pattern;
     EventHubConsumerAsyncClient.class, EventHubConsumerClient.class}, protocol = ServiceClientProtocol.AMQP)
 public class EventHubClientBuilder implements
     TokenCredentialTrait<EventHubClientBuilder>,
+    ConnectionStringTrait<EventHubClientBuilder>,
     AzureSasCredentialTrait<EventHubClientBuilder>,
     AmqpConfigTrait<EventHubClientBuilder>,
     ClientOptionsTrait<EventHubClientBuilder> {
@@ -228,6 +230,7 @@ public class EventHubClientBuilder implements
      * @throws AzureException If the shared access signature token credential could not be created using the
      *     connection string.
      */
+    @Override
     public EventHubClientBuilder connectionString(String connectionString) {
         ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
         TokenCredential tokenCredential = getTokenCredential(properties);

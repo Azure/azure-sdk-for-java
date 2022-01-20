@@ -6,6 +6,7 @@ package com.azure.storage.blob.specialized.cryptography;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureSasCredential;
@@ -92,6 +93,7 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
 @ServiceClientBuilder(serviceClients = {EncryptedBlobAsyncClient.class, EncryptedBlobClient.class})
 public final class EncryptedBlobClientBuilder implements
     TokenCredentialTrait<EncryptedBlobClientBuilder>,
+    ConnectionStringTrait<EncryptedBlobClientBuilder>,
     AzureSasCredentialTrait<EncryptedBlobClientBuilder>,
     HttpConfigTrait<EncryptedBlobClientBuilder>,
     ClientOptionsTrait<EncryptedBlobClientBuilder> {
@@ -422,6 +424,7 @@ public final class EncryptedBlobClientBuilder implements
      * @return the updated EncryptedBlobClientBuilder
      * @throws IllegalArgumentException If {@code connectionString} is invalid.
      */
+    @Override
     public EncryptedBlobClientBuilder connectionString(String connectionString) {
         StorageConnectionString storageConnectionString
             = StorageConnectionString.create(connectionString, logger);

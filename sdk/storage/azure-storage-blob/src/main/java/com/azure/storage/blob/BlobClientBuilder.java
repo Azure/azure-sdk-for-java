@@ -6,6 +6,7 @@ package com.azure.storage.blob;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureSasCredential;
@@ -55,6 +56,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {BlobClient.class, BlobAsyncClient.class})
 public final class BlobClientBuilder implements
     TokenCredentialTrait<BlobClientBuilder>,
+    ConnectionStringTrait<BlobClientBuilder>,
     AzureSasCredentialTrait<BlobClientBuilder>,
     HttpConfigTrait<BlobClientBuilder>,
     ClientOptionsTrait<BlobClientBuilder> {
@@ -280,6 +282,7 @@ public final class BlobClientBuilder implements
      * @return the updated BlobClientBuilder
      * @throws IllegalArgumentException If {@code connectionString} in invalid.
      */
+    @Override
     public BlobClientBuilder connectionString(String connectionString) {
         StorageConnectionString storageConnectionString
                 = StorageConnectionString.create(connectionString, logger);

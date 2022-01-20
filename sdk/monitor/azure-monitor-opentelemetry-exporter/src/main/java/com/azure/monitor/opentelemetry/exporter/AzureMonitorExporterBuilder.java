@@ -4,6 +4,7 @@
 package com.azure.monitor.opentelemetry.exporter;
 
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
@@ -38,6 +39,7 @@ import java.util.Objects;
  */
 public final class AzureMonitorExporterBuilder implements
     TokenCredentialTrait<AzureMonitorExporterBuilder>,
+    ConnectionStringTrait<AzureMonitorExporterBuilder>,
     HttpConfigTrait<AzureMonitorExporterBuilder>,
     ClientOptionsTrait<AzureMonitorExporterBuilder> {
     private static final String APPLICATIONINSIGHTS_CONNECTION_STRING = "APPLICATIONINSIGHTS_CONNECTION_STRING";
@@ -185,6 +187,7 @@ public final class AzureMonitorExporterBuilder implements
      * @throws NullPointerException If the connection string is {@code null}.
      * @throws IllegalArgumentException If the connection string is invalid.
      */
+    @Override
     public AzureMonitorExporterBuilder connectionString(String connectionString) {
         Map<String, String> keyValues = extractKeyValuesFromConnectionString(connectionString);
         if (!keyValues.containsKey("InstrumentationKey")) {

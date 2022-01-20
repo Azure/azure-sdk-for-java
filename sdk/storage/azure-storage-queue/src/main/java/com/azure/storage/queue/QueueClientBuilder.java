@@ -5,6 +5,7 @@ package com.azure.storage.queue;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureSasCredential;
@@ -126,6 +127,7 @@ import java.util.function.Function;
 @ServiceClientBuilder(serviceClients = {QueueClient.class, QueueAsyncClient.class})
 public final class QueueClientBuilder implements
     TokenCredentialTrait<QueueClientBuilder>,
+    ConnectionStringTrait<QueueClientBuilder>,
     AzureSasCredentialTrait<QueueClientBuilder>,
     HttpConfigTrait<QueueClientBuilder>,
     ClientOptionsTrait<QueueClientBuilder> {
@@ -330,6 +332,7 @@ public final class QueueClientBuilder implements
      * @return the updated QueueClientBuilder
      * @throws IllegalArgumentException If {@code connectionString} is invalid.
      */
+    @Override
     public QueueClientBuilder connectionString(String connectionString) {
         StorageConnectionString storageConnectionString
                 = StorageConnectionString.create(connectionString, logger);

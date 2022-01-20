@@ -5,6 +5,7 @@ package com.azure.data.tables;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
@@ -72,6 +73,7 @@ import static com.azure.data.tables.BuilderHelper.validateCredentials;
 @ServiceClientBuilder(serviceClients = {TableClient.class, TableAsyncClient.class})
 public final class TableClientBuilder implements
     TokenCredentialTrait<TableClientBuilder>,
+    ConnectionStringTrait<TableClientBuilder>,
     AzureSasCredentialTrait<TableClientBuilder>,
     HttpConfigTrait<TableClientBuilder>,
     ClientOptionsTrait<TableClientBuilder> {
@@ -204,6 +206,7 @@ public final class TableClientBuilder implements
      * @throws NullPointerException If {@code connectionString} is {@code null}.
      * @throws IllegalArgumentException If {@code connectionString} isn't a valid connection string.
      */
+    @Override
     public TableClientBuilder connectionString(String connectionString) {
         if (connectionString == null) {
             throw logger.logExceptionAsError(new NullPointerException("'connectionString' cannot be null."));

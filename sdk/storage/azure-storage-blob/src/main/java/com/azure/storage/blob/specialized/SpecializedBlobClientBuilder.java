@@ -6,6 +6,7 @@ package com.azure.storage.blob.specialized;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureSasCredential;
@@ -63,6 +64,7 @@ import java.util.Objects;
 })
 public final class SpecializedBlobClientBuilder implements
     TokenCredentialTrait<SpecializedBlobClientBuilder>,
+    ConnectionStringTrait<SpecializedBlobClientBuilder>,
     AzureSasCredentialTrait<SpecializedBlobClientBuilder>,
     HttpConfigTrait<SpecializedBlobClientBuilder>,
     ClientOptionsTrait<SpecializedBlobClientBuilder> {
@@ -451,6 +453,7 @@ public final class SpecializedBlobClientBuilder implements
      * @return the updated SpecializedBlobClientBuilder
      * @throws IllegalArgumentException If {@code connectionString} in invalid.
      */
+    @Override
     public SpecializedBlobClientBuilder connectionString(String connectionString) {
         StorageConnectionString storageConnectionString
                 = StorageConnectionString.create(connectionString, logger);

@@ -5,6 +5,7 @@ package com.azure.data.appconfiguration;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
@@ -102,6 +103,7 @@ import static com.azure.core.util.CoreUtils.getApplicationId;
 @ServiceClientBuilder(serviceClients = {ConfigurationAsyncClient.class, ConfigurationClient.class})
 public final class ConfigurationClientBuilder implements
     TokenCredentialTrait<ConfigurationClientBuilder>,
+    ConnectionStringTrait<ConfigurationClientBuilder>,
     HttpConfigTrait<ConfigurationClientBuilder>,
     ClientOptionsTrait<ConfigurationClientBuilder> {
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
@@ -295,6 +297,7 @@ public final class ConfigurationClientBuilder implements
      * @throws IllegalArgumentException If {@code connectionString} is an empty string, the {@code connectionString}
      * secret is invalid, or the HMAC-SHA256 MAC algorithm cannot be instantiated.
      */
+    @Override
     public ConfigurationClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
 

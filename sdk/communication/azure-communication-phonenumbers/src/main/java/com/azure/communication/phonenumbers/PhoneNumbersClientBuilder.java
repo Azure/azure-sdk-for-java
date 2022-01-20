@@ -8,6 +8,7 @@ import com.azure.communication.common.implementation.CommunicationConnectionStri
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
@@ -40,6 +41,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {PhoneNumbersClient.class, PhoneNumbersAsyncClient.class})
 public final class PhoneNumbersClientBuilder implements
     TokenCredentialTrait<PhoneNumbersClientBuilder>,
+    ConnectionStringTrait<PhoneNumbersClientBuilder>,
     HttpConfigTrait<PhoneNumbersClientBuilder>,
     ClientOptionsTrait<PhoneNumbersClientBuilder> {
     private static final Map<String, String> PROPERTIES =
@@ -148,6 +150,7 @@ public final class PhoneNumbersClientBuilder implements
      * @return The updated {@link PhoneNumbersClientBuilder} object.
      * @throws NullPointerException If {@code connectionString} is {@code null}.
      */
+    @Override
     public PhoneNumbersClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
         CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);

@@ -22,6 +22,7 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.annotation.ServiceClientProtocol;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
@@ -179,6 +180,7 @@ import java.util.regex.Pattern;
     protocol = ServiceClientProtocol.AMQP)
 public final class ServiceBusClientBuilder implements
     TokenCredentialTrait<ServiceBusClientBuilder>,
+    ConnectionStringTrait<ServiceBusClientBuilder>,
     AzureSasCredentialTrait<ServiceBusClientBuilder>,
     AmqpConfigTrait<ServiceBusClientBuilder>,
     ClientOptionsTrait<ServiceBusClientBuilder> {

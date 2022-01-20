@@ -11,6 +11,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
@@ -102,6 +103,7 @@ import java.util.function.Supplier;
 @ServiceClientBuilder(serviceClients = EventProcessorClient.class)
 public class EventProcessorClientBuilder implements
     TokenCredentialTrait<EventProcessorClientBuilder>,
+    ConnectionStringTrait<EventProcessorClientBuilder>,
     AzureSasCredentialTrait<EventProcessorClientBuilder>,
     AmqpConfigTrait<EventProcessorClientBuilder>,
     ClientOptionsTrait<EventProcessorClientBuilder> {
@@ -191,6 +193,7 @@ public class EventProcessorClientBuilder implements
      * @throws AzureException If the shared access signature token credential could not be created using the connection
      * string.
      */
+    @Override
     public EventProcessorClientBuilder connectionString(String connectionString) {
         eventHubClientBuilder.connectionString(connectionString);
         return this;

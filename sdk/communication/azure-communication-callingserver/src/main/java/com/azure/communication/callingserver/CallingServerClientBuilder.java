@@ -9,6 +9,7 @@ import com.azure.communication.common.implementation.CommunicationConnectionStri
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
@@ -66,6 +67,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = { CallingServerClient.class, CallingServerAsyncClient.class })
 public final class CallingServerClientBuilder implements
     TokenCredentialTrait<CallingServerClientBuilder>,
+    ConnectionStringTrait<CallingServerClientBuilder>,
     HttpConfigTrait<CallingServerClientBuilder>,
     ClientOptionsTrait<CallingServerClientBuilder> {
     private static final String SDK_NAME = "name";
@@ -144,6 +146,7 @@ public final class CallingServerClientBuilder implements
      * @param connectionString connection string to set.
      * @return Updated {@link CallingServerClientBuilder} object.
      */
+    @Override
     public CallingServerClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
         this.connectionString = connectionString;

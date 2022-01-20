@@ -9,6 +9,7 @@ import com.azure.communication.identity.implementation.CommunicationIdentityClie
 import com.azure.communication.identity.implementation.CommunicationIdentityClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
@@ -40,6 +41,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {CommunicationIdentityClient.class, CommunicationIdentityAsyncClient.class})
 public final class CommunicationIdentityClientBuilder implements
     TokenCredentialTrait<CommunicationIdentityClientBuilder>,
+    ConnectionStringTrait<CommunicationIdentityClientBuilder>,
     HttpConfigTrait<CommunicationIdentityClientBuilder>,
     ClientOptionsTrait<CommunicationIdentityClientBuilder> {
     private static final String SDK_NAME = "name";
@@ -116,6 +118,7 @@ public final class CommunicationIdentityClientBuilder implements
      * @param connectionString connection string for setting endpoint and initalizing CommunicationClientCredential
      * @return CommunicationIdentityClientBuilder
      */
+    @Override
     public CommunicationIdentityClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
         CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);

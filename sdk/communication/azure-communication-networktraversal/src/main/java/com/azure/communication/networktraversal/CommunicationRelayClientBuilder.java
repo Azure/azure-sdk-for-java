@@ -9,6 +9,7 @@ import com.azure.communication.networktraversal.implementation.CommunicationNetw
 import com.azure.communication.networktraversal.implementation.CommunicationNetworkingClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
@@ -40,6 +41,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {CommunicationRelayClient.class, CommunicationRelayAsyncClient.class})
 public final class CommunicationRelayClientBuilder implements
     TokenCredentialTrait<CommunicationRelayClientBuilder>,
+    ConnectionStringTrait<CommunicationRelayClientBuilder>,
     HttpConfigTrait<CommunicationRelayClientBuilder>,
     ClientOptionsTrait<CommunicationRelayClientBuilder> {
     private static final String SDK_NAME = "name";
@@ -115,6 +117,7 @@ public final class CommunicationRelayClientBuilder implements
      * @param connectionString connection string for setting endpoint and initalizing CommunicationClientCredential
      * @return CommunicationRelayClientBuilder
      */
+    @Override
     public CommunicationRelayClientBuilder connectionString(String connectionString) {
         CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);
         String endpoint = connectionStringObject.getEndpoint();
