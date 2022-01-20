@@ -1,14 +1,209 @@
 # Release History
 
-## 1.1.0-beta.6 (Unreleased)
+## 1.1.0 (2022-01-20)
+
+- Azure Resource Manager EventGrid client library for Java. This package contains Microsoft Azure SDK for EventGrid Management SDK. Azure EventGrid Management Client. Package tag package-2021-12. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.ExtensionTopic` was added
 
-### Bugs Fixed
+* `models.SystemTopic` was added
 
-### Other Changes
+* `models.EventSubscriptionIdentity` was added
+
+* `models.StringNotBeginsWithAdvancedFilter` was added
+
+* `models.DeadLetterWithResourceIdentity` was added
+
+* `models.NumberInRangeAdvancedFilter` was added
+
+* `models.IsNotNullAdvancedFilter` was added
+
+* `models.SystemTopic$Definition` was added
+
+* `models.UserIdentityProperties` was added
+
+* `models.IsNullOrUndefinedAdvancedFilter` was added
+
+* `models.NumberNotInRangeAdvancedFilter` was added
+
+* `models.IdentityInfo` was added
+
+* `models.SystemTopic$UpdateStages` was added
+
+* `models.DeliveryAttributeListResult` was added
+
+* `models.DeliveryAttributeMapping` was added
+
+* `models.StringNotEndsWithAdvancedFilter` was added
+
+* `models.SystemTopicUpdateParameters` was added
+
+* `models.DeliveryAttributeMappingType` was added
+
+* `models.IdentityType` was added
+
+* `models.StaticDeliveryAttributeMapping` was added
+
+* `models.DeliveryWithResourceIdentity` was added
+
+* `models.TopicTypePropertiesSupportedScopesForSourceItem` was added
+
+* `models.DynamicDeliveryAttributeMapping` was added
+
+* `models.ExtensionTopics` was added
+
+* `models.SystemTopicsListResult` was added
+
+* `models.EventSubscriptionIdentityType` was added
+
+* `models.StringNotContainsAdvancedFilter` was added
+
+* `models.SystemTopic$Update` was added
+
+* `models.SystemTopic$DefinitionStages` was added
+
+* `models.SystemTopics` was added
+
+* `models.SystemTopicEventSubscriptions` was added
+
+#### `models.Topic` was modified
+
+* `identity()` was added
+* `disableLocalAuth()` was added
+
+#### `models.EventSubscriptionFilter` was modified
+
+* `enableAdvancedFilteringOnArrays()` was added
+* `withEnableAdvancedFilteringOnArrays(java.lang.Boolean)` was added
+
+#### `models.WebhookEventSubscriptionDestination` was modified
+
+* `deliveryAttributeMappings()` was added
+* `withDeliveryAttributeMappings(java.util.List)` was added
+
+#### `models.StorageQueueEventSubscriptionDestination` was modified
+
+* `withQueueMessageTimeToLiveInSeconds(java.lang.Long)` was added
+* `queueMessageTimeToLiveInSeconds()` was added
+
+#### `models.EventSubscription$Definition` was modified
+
+* `withDeliveryWithResourceIdentity(models.DeliveryWithResourceIdentity)` was added
+* `withDeadLetterWithResourceIdentity(models.DeadLetterWithResourceIdentity)` was added
+
+#### `models.ServiceBusQueueEventSubscriptionDestination` was modified
+
+* `withDeliveryAttributeMappings(java.util.List)` was added
+* `deliveryAttributeMappings()` was added
+
+#### `models.TopicUpdateParameters` was modified
+
+* `withIdentity(models.IdentityInfo)` was added
+* `identity()` was added
+* `disableLocalAuth()` was added
+* `withDisableLocalAuth(java.lang.Boolean)` was added
+
+#### `models.Domain$Update` was modified
+
+* `withAutoDeleteTopicWithLastSubscription(java.lang.Boolean)` was added
+* `withIdentity(models.IdentityInfo)` was added
+* `withDisableLocalAuth(java.lang.Boolean)` was added
+* `withAutoCreateTopicWithFirstSubscription(java.lang.Boolean)` was added
+
+#### `models.Topic$Definition` was modified
+
+* `withDisableLocalAuth(java.lang.Boolean)` was added
+* `withIdentity(models.IdentityInfo)` was added
+
+#### `models.ServiceBusTopicEventSubscriptionDestination` was modified
+
+* `withDeliveryAttributeMappings(java.util.List)` was added
+* `deliveryAttributeMappings()` was added
+
+#### `models.DomainUpdateParameters` was modified
+
+* `withAutoDeleteTopicWithLastSubscription(java.lang.Boolean)` was added
+* `autoCreateTopicWithFirstSubscription()` was added
+* `withDisableLocalAuth(java.lang.Boolean)` was added
+* `withIdentity(models.IdentityInfo)` was added
+* `disableLocalAuth()` was added
+* `identity()` was added
+* `autoDeleteTopicWithLastSubscription()` was added
+* `withAutoCreateTopicWithFirstSubscription(java.lang.Boolean)` was added
+
+#### `models.Topic$Update` was modified
+
+* `withIdentity(models.IdentityInfo)` was added
+* `withDisableLocalAuth(java.lang.Boolean)` was added
+
+#### `models.EventSubscription` was modified
+
+* `getDeliveryAttributes()` was added
+* `getDeliveryAttributesWithResponse(com.azure.core.util.Context)` was added
+* `deliveryWithResourceIdentity()` was added
+* `deadLetterWithResourceIdentity()` was added
+
+#### `models.AzureFunctionEventSubscriptionDestination` was modified
+
+* `deliveryAttributeMappings()` was added
+* `withDeliveryAttributeMappings(java.util.List)` was added
+
+#### `models.Domain` was modified
+
+* `identity()` was added
+* `disableLocalAuth()` was added
+* `autoCreateTopicWithFirstSubscription()` was added
+* `autoDeleteTopicWithLastSubscription()` was added
+
+#### `models.EventSubscription$Update` was modified
+
+* `withDeliveryWithResourceIdentity(models.DeliveryWithResourceIdentity)` was added
+* `withDeadLetterWithResourceIdentity(models.DeadLetterWithResourceIdentity)` was added
+
+#### `models.HybridConnectionEventSubscriptionDestination` was modified
+
+* `deliveryAttributeMappings()` was added
+* `withDeliveryAttributeMappings(java.util.List)` was added
+
+#### `models.TopicTypeInfo` was modified
+
+* `supportedScopesForSource()` was added
+
+#### `models.EventHubEventSubscriptionDestination` was modified
+
+* `deliveryAttributeMappings()` was added
+* `withDeliveryAttributeMappings(java.util.List)` was added
+
+#### `models.EventSubscriptions` was modified
+
+* `getDeliveryAttributes(java.lang.String,java.lang.String)` was added
+* `getDeliveryAttributesWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `EventGridManager` was modified
+
+* `systemTopicEventSubscriptions()` was added
+* `systemTopics()` was added
+* `extensionTopics()` was added
+
+#### `models.Domain$Definition` was modified
+
+* `withIdentity(models.IdentityInfo)` was added
+* `withAutoCreateTopicWithFirstSubscription(java.lang.Boolean)` was added
+* `withDisableLocalAuth(java.lang.Boolean)` was added
+* `withAutoDeleteTopicWithLastSubscription(java.lang.Boolean)` was added
+
+#### `EventGridManager$Configurable` was modified
+
+* `withScope(java.lang.String)` was added
+
+#### `models.EventSubscriptionUpdateParameters` was modified
+
+* `withDeadLetterWithResourceIdentity(models.DeadLetterWithResourceIdentity)` was added
+* `withDeliveryWithResourceIdentity(models.DeliveryWithResourceIdentity)` was added
+* `deadLetterWithResourceIdentity()` was added
+* `deliveryWithResourceIdentity()` was added
 
 ## 1.1.0-beta.5 (2021-12-14)
 
