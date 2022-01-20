@@ -223,6 +223,24 @@
         </executions>
       </plugin>
       <!-- END: Empty Java Doc & Sources -->
+
+      <plugin>
+        <groupId>com.azure.tools</groupId>
+        <artifactId>codesnippet-maven-plugin</artifactId>
+        <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>external-samples</id>
+            <goals>
+              <goal>update-codesnippet</goal>
+              <goal>verify-codesnippet</goal>
+            </goals>
+            <configuration>
+              <codesnippetRootDirectory>../azure-spring-boot/src/samples/java</codesnippetRootDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 </project>

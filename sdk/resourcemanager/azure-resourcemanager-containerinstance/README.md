@@ -46,8 +46,9 @@ AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
     .build();
-ContainerInstanceManager manager = ContainerInstanceManager
-    .authenticate(credential, profile);
+AzureResourceManager azure = AzureResourceManager
+    .authenticate(credential, profile)
+    .withDefaultSubscription();
 ```
 
 The sample code assumes global Azure. Please change `AzureEnvironment.AZURE` variable if otherwise.
