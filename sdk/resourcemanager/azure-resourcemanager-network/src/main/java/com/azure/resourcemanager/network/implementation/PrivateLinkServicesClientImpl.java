@@ -361,7 +361,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -411,7 +411,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -435,12 +435,13 @@ public final class PrivateLinkServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serviceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -454,7 +455,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serviceName, Context context) {
         context = this.client.mergeContext(context);
@@ -474,7 +475,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName) {
         return beginDeleteAsync(resourceGroupName, serviceName).getSyncPoller();
     }
@@ -490,7 +491,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, Context context) {
         return beginDeleteAsync(resourceGroupName, serviceName, context).getSyncPoller();
@@ -591,7 +592,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -643,7 +644,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -779,7 +780,7 @@ public final class PrivateLinkServicesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -836,7 +837,7 @@ public final class PrivateLinkServicesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -862,7 +863,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private link service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<PrivateLinkServiceInner>, PrivateLinkServiceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serviceName, PrivateLinkServiceInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -874,7 +875,7 @@ public final class PrivateLinkServicesClientImpl
                 this.client.getHttpPipeline(),
                 PrivateLinkServiceInner.class,
                 PrivateLinkServiceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -889,7 +890,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private link service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateLinkServiceInner>, PrivateLinkServiceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serviceName, PrivateLinkServiceInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -916,7 +917,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private link service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateLinkServiceInner>, PrivateLinkServiceInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceName, PrivateLinkServiceInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, serviceName, parameters).getSyncPoller();
@@ -934,7 +935,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private link service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateLinkServiceInner>, PrivateLinkServiceInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceName, PrivateLinkServiceInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, serviceName, parameters, context).getSyncPoller();
@@ -1041,7 +1042,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1095,7 +1096,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1199,7 +1200,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1241,7 +1242,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1349,7 +1350,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1407,7 +1408,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1560,7 +1561,7 @@ public final class PrivateLinkServicesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1627,7 +1628,7 @@ public final class PrivateLinkServicesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1757,7 +1758,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1813,7 +1814,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1839,14 +1840,15 @@ public final class PrivateLinkServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeletePrivateEndpointConnectionAsync(
         String resourceGroupName, String serviceName, String peConnectionName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deletePrivateEndpointConnectionWithResponseAsync(resourceGroupName, serviceName, peConnectionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1861,7 +1863,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeletePrivateEndpointConnectionAsync(
         String resourceGroupName, String serviceName, String peConnectionName, Context context) {
         context = this.client.mergeContext(context);
@@ -1883,7 +1885,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeletePrivateEndpointConnection(
         String resourceGroupName, String serviceName, String peConnectionName) {
         return beginDeletePrivateEndpointConnectionAsync(resourceGroupName, serviceName, peConnectionName)
@@ -1902,7 +1904,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeletePrivateEndpointConnection(
         String resourceGroupName, String serviceName, String peConnectionName, Context context) {
         return beginDeletePrivateEndpointConnectionAsync(resourceGroupName, serviceName, peConnectionName, context)
@@ -2012,7 +2014,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2071,7 +2073,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2197,7 +2199,7 @@ public final class PrivateLinkServicesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2248,7 +2250,7 @@ public final class PrivateLinkServicesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2272,7 +2274,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the CheckPrivateLinkServiceVisibility API service call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
         beginCheckPrivateLinkServiceVisibilityAsync(
             String location, CheckPrivateLinkServiceVisibilityRequest parameters) {
@@ -2285,7 +2287,7 @@ public final class PrivateLinkServicesClientImpl
                 this.client.getHttpPipeline(),
                 PrivateLinkServiceVisibilityInner.class,
                 PrivateLinkServiceVisibilityInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2299,7 +2301,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the CheckPrivateLinkServiceVisibility API service call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
         beginCheckPrivateLinkServiceVisibilityAsync(
             String location, CheckPrivateLinkServiceVisibilityRequest parameters, Context context) {
@@ -2326,7 +2328,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the CheckPrivateLinkServiceVisibility API service call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
         beginCheckPrivateLinkServiceVisibility(String location, CheckPrivateLinkServiceVisibilityRequest parameters) {
         return beginCheckPrivateLinkServiceVisibilityAsync(location, parameters).getSyncPoller();
@@ -2343,7 +2345,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the CheckPrivateLinkServiceVisibility API service call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
         beginCheckPrivateLinkServiceVisibility(
             String location, CheckPrivateLinkServiceVisibilityRequest parameters, Context context) {
@@ -2458,7 +2460,7 @@ public final class PrivateLinkServicesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2518,7 +2520,7 @@ public final class PrivateLinkServicesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2544,7 +2546,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the CheckPrivateLinkServiceVisibility API service call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
         beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(
             String location, String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters) {
@@ -2557,7 +2559,7 @@ public final class PrivateLinkServicesClientImpl
                 this.client.getHttpPipeline(),
                 PrivateLinkServiceVisibilityInner.class,
                 PrivateLinkServiceVisibilityInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2572,7 +2574,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the CheckPrivateLinkServiceVisibility API service call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
         beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(
             String location,
@@ -2604,7 +2606,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the CheckPrivateLinkServiceVisibility API service call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
         beginCheckPrivateLinkServiceVisibilityByResourceGroup(
             String location, String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters) {
@@ -2624,7 +2626,7 @@ public final class PrivateLinkServicesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the CheckPrivateLinkServiceVisibility API service call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
         beginCheckPrivateLinkServiceVisibilityByResourceGroup(
             String location,
@@ -2746,7 +2748,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2800,7 +2802,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2918,7 +2920,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2979,7 +2981,7 @@ public final class PrivateLinkServicesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

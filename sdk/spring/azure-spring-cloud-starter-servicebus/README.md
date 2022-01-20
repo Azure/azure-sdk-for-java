@@ -24,6 +24,8 @@ The Spring Cloud Service Bus starter helps developers to finish the auto-configu
 
 This project provides Spring Integration adaption with Azure Service Bus and the ability to auto-configure connection to Azure Service Bus.
 
+Note: CompletableFuture support APIs have been deprecated from version 2.10.0, and will be replaced by Reactor Core from version 4.0.0.
+Please refer to Javadoc for details.
 ### Configure ServiceBusMessageConverter to customize ObjectMapper
 `ServiceBusMessageConverter` is made as a configurable bean to allow users to customized `ObjectMapper`.
 
@@ -131,20 +133,16 @@ public ResponseEntity<String> sendMessage(@RequestParam String message) {
 > the value of the session id will eventually be used to overwrite the value of the partition key.
 
 ## Troubleshooting
-### Enable Spring logging
-Spring allow all the supported logging systems to set logger levels set in the Spring Environment (for example, in application.properties) by using 
-`logging.level.<logger-name>=<level>` where level is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. 
-The root logger can be configured by using logging.level.root.
+### Logging setting
+Please refer to [spring logging document] to get more information about logging.
 
-The following example shows potential logging settings in `application.properties`:
-
-```
+#### Logging setting examples
+- Example: Setting logging level of hibernate
+```properties
 logging.level.root=WARN
 logging.level.org.springframework.web=DEBUG
 logging.level.org.hibernate=ERROR
 ```
-
-For more information about setting logging in spring, please refer to the [official doc][spring_boot_logging].
 
 ## Next steps
 The following section provides sample projects illustrating how to use the starter in different cases.
@@ -162,7 +160,7 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-cloud-starter-servicebus
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springcloud.html#azure-spring-cloud-autoconfigure
 [sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/servicebus/azure-spring-integration-sample-servicebus
-[spring_boot_logging]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
+[spring logging document]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
 [spring_integration]: https://spring.io/projects/spring-integration
 [spring_cloud_starter_sample_with_service_bus]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/servicebus/azure-spring-integration-sample-servicebus
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist

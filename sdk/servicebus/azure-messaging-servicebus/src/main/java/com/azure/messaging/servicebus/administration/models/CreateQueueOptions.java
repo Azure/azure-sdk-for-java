@@ -12,11 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MAX_DURATION;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_DUPLICATE_DETECTION_DURATION;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_LOCK_DURATION;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_MAX_DELIVERY_COUNT;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_QUEUE_SIZE;
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MAX_DURATION;
 
 /**
  * Represents the set of options that can be specified for the creation of a queue.
@@ -38,6 +38,7 @@ public final class CreateQueueOptions {
     private String forwardDeadLetteredMessagesTo;
     private Duration lockDuration;
     private int maxDeliveryCount;
+    private long maxMessageSizeInKilobytes;
     private long maxSizeInMegabytes;
     private boolean requiresDuplicateDetection;
     private boolean requiresSession;
@@ -105,6 +106,7 @@ public final class CreateQueueOptions {
         this.lockDuration = queue.getLockDuration();
 
         this.maxDeliveryCount = queue.getMaxDeliveryCount();
+        this.maxMessageSizeInKilobytes = queue.getMaxMessageSizeInKilobytes();
         this.maxSizeInMegabytes = queue.getMaxSizeInMegabytes();
         this.requiresDuplicateDetection = queue.isDuplicateDetectionRequired();
         this.requiresSession = queue.isSessionRequired();
@@ -460,6 +462,30 @@ public final class CreateQueueOptions {
      */
     public CreateQueueOptions setUserMetadata(String userMetadata) {
         this.userMetadata = userMetadata;
+        return this;
+    }
+
+    /**
+     * Get the maxMessageSizeInKilobytes property: The maximum size of a message in kilobytes.
+     *
+     * @return the maxMessageSizeInKilobytes value.
+     */
+    public long getMaxMessageSizeInKilobytes() {
+        return this.maxMessageSizeInKilobytes;
+    }
+
+    /**
+     * Set the maxMessageSizeInKilobytes property: Represents the default maximum message size (in kilobytes)
+     * Option only available in premium tier. Default maximum in Standard tier is 256 KB, and 1 MB in premium tier.
+     * Larger message sizes are available in preview.
+     * Please see <a href=https://docs.microsoft.com/azure/service-bus-messaging/service-bus-premium-messaging#large-messages-support-preview>more info</a>
+     *
+     * @param maxMessageSizeInKilobytes the maxMessageSizeInKilobytes value to set.
+     *
+     * @return the CreateQueueOptions object itself.
+     */
+    public CreateQueueOptions setMaxMessageSizeInKilobytes(long maxMessageSizeInKilobytes) {
+        this.maxMessageSizeInKilobytes = maxMessageSizeInKilobytes;
         return this;
     }
 }

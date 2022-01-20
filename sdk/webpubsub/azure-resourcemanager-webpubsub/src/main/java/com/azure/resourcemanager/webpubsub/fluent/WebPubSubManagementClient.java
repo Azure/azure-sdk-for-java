@@ -67,6 +67,13 @@ public interface WebPubSubManagementClient {
     UsagesClient getUsages();
 
     /**
+     * Gets the WebPubSubHubsClient object to access its operations.
+     *
+     * @return the WebPubSubHubsClient object.
+     */
+    WebPubSubHubsClient getWebPubSubHubs();
+
+    /**
      * Gets the WebPubSubPrivateEndpointConnectionsClient object to access its operations.
      *
      * @return the WebPubSubPrivateEndpointConnectionsClient object.

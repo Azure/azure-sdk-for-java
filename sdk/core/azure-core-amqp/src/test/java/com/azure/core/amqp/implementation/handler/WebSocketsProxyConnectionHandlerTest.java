@@ -42,7 +42,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 @Execution(ExecutionMode.SAME_THREAD)
-@Isolated("Mutates global ProxySelector")
+@Isolated("Mutates the global ProxySelector")
 public class WebSocketsProxyConnectionHandlerTest {
     private static final String CONNECTION_ID = "some-connection-id";
     private static final String HOSTNAME = "event-hubs.windows.core.net";

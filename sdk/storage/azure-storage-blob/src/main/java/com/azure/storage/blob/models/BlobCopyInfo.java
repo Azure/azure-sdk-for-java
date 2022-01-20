@@ -22,6 +22,7 @@ public class BlobCopyInfo {
     private final String copyId;
     private final String copySource;
     private final CopyStatusType copyStatus;
+    private final String encryptionScope;
     private final String eTag;
     private final OffsetDateTime lastModified;
     private final String error;
@@ -61,6 +62,26 @@ public class BlobCopyInfo {
      */
     public BlobCopyInfo(String copySource, String copyId, CopyStatusType copyStatus, String eTag,
                         OffsetDateTime lastModified, String error, String versionId) {
+        this(copySource, copyId, copyStatus, eTag, lastModified, error, versionId, null);
+    }
+
+    /**
+     * Creates an instance of {@link BlobCopyInfo}.
+     *
+     * @param copyId The identifier of the copy operation.
+     * @param copySource The url of the source blob. The contents are being copied from this blob.
+     * @param copyStatus The status of the copy operation.
+     * @param error An error message for the copy operation. {@code null} if there are no errors.
+     * @param eTag If the copy is completed, contains the ETag of the destination blob. If the copy is not complete,
+     *     contains the ETag of the empty blob created.
+     * @param lastModified The date/time that the copy operation to the destination blob completed.
+     * @param versionId The version identifier of the destination blob.
+     * @param encryptionScope The encryptionScope that will be applied to the destination blob.
+     *
+     * @throws NullPointerException If {@code copyId}, {@code copySource}, {@code eTag}, or {@code copyStatus} is null.
+     */
+    public BlobCopyInfo(String copySource, String copyId, CopyStatusType copyStatus, String eTag,
+        OffsetDateTime lastModified, String error, String versionId, String encryptionScope) {
         this.copyId = Objects.requireNonNull(copyId, "'copyId' cannot be null.");
         this.copySource = Objects.requireNonNull(copySource, "'copySource' cannot be null.");
         this.copyStatus = Objects.requireNonNull(copyStatus, "'copyStatus' cannot be null.");
@@ -68,6 +89,7 @@ public class BlobCopyInfo {
         this.lastModified = lastModified;
         this.error = error;
         this.versionId = versionId;
+        this.encryptionScope = encryptionScope;
     }
 
     /**
@@ -135,5 +157,14 @@ public class BlobCopyInfo {
      */
     public String getVersionId() {
         return versionId;
+    }
+
+    /**
+     * Gets the encryption scope of the destination blob.
+     *
+     * @return The encryption scope of the destination blob.
+     */
+    public String getEncryptionScope() {
+        return encryptionScope;
     }
 }

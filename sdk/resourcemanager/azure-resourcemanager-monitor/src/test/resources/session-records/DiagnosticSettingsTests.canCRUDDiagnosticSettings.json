@@ -193,7 +193,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_1973404/providers/Microsoft.EventHub/namespaces/jmonitoreh384332?api-version=2017-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_1973404/providers/Microsoft.EventHub/namespaces/jmonitoreh384332?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.eventhubs/2.7.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "0fcfd13f-6ad2-41e5-8038-e07e71cd9f0c",
@@ -222,7 +222,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_1973404/providers/Microsoft.EventHub/namespaces/jmonitoreh384332?api-version=2017-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_1973404/providers/Microsoft.EventHub/namespaces/jmonitoreh384332?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "85f5fb4c-22a2-450c-8fc1-388182e8cca4"
@@ -250,7 +250,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_1973404/providers/Microsoft.EventHub/namespaces/jmonitoreh384332?api-version=2017-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_1973404/providers/Microsoft.EventHub/namespaces/jmonitoreh384332?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "0bc20ee5-f68a-45c7-a975-d2087a70a19c"
@@ -278,7 +278,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_1973404/providers/Microsoft.EventHub/namespaces/jmonitoreh384332/authorizationRules/mngRule1?api-version=2017-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_1973404/providers/Microsoft.EventHub/namespaces/jmonitoreh384332/authorizationRules/mngRule1?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.eventhubs/2.7.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "181d4885-3712-4d2e-a966-839d12d42e43",
@@ -307,7 +307,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_1973404/providers/Microsoft.EventHub/namespaces/jmonitoreh384332/authorizationRules/sndRule1?api-version=2017-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_1973404/providers/Microsoft.EventHub/namespaces/jmonitoreh384332/authorizationRules/sndRule1?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.eventhubs/2.7.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "f9d34c40-c52f-4ce8-895f-21246117a44b",
@@ -336,7 +336,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_1973404/providers/Microsoft.EventHub/namespaces/jmonitoreh384332/authorizationRules?api-version=2017-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_1973404/providers/Microsoft.EventHub/namespaces/jmonitoreh384332/authorizationRules?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.eventhubs/2.7.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c0fe4c97-249f-49a5-a8fe-af38e6e2adca",

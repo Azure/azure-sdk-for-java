@@ -62,7 +62,7 @@ public interface WorkspaceManagedSqlServerBlobAuditingPoliciesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a server blob auditing policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServerBlobAuditingPolicyInner>, ServerBlobAuditingPolicyInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,
@@ -82,7 +82,7 @@ public interface WorkspaceManagedSqlServerBlobAuditingPoliciesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a server blob auditing policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServerBlobAuditingPolicyInner>, ServerBlobAuditingPolicyInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,

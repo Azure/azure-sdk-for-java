@@ -29,7 +29,8 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logAnalytics operation status response.
+     * @return logAnalytics operation status response along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> exportRequestRateByIntervalWithResponseAsync(
@@ -44,9 +45,10 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logAnalytics operation status response.
+     * @return logAnalytics operation status response along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
         beginExportRequestRateByIntervalAsync(String location, RequestRateByIntervalInput parameters);
 
@@ -59,9 +61,10 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logAnalytics operation status response.
+     * @return logAnalytics operation status response along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
         beginExportRequestRateByInterval(String location, RequestRateByIntervalInput parameters);
 
@@ -75,9 +78,10 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logAnalytics operation status response.
+     * @return logAnalytics operation status response along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
         beginExportRequestRateByInterval(String location, RequestRateByIntervalInput parameters, Context context);
 
@@ -90,7 +94,7 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logAnalytics operation status response.
+     * @return logAnalytics operation status response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<LogAnalyticsOperationResultInner> exportRequestRateByIntervalAsync(
@@ -135,7 +139,8 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logAnalytics operation status response.
+     * @return logAnalytics operation status response along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> exportThrottledRequestsWithResponseAsync(
@@ -149,9 +154,10 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logAnalytics operation status response.
+     * @return logAnalytics operation status response along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
         beginExportThrottledRequestsAsync(String location, ThrottledRequestsInput parameters);
 
@@ -163,9 +169,10 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logAnalytics operation status response.
+     * @return logAnalytics operation status response along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
         beginExportThrottledRequests(String location, ThrottledRequestsInput parameters);
 
@@ -178,9 +185,10 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logAnalytics operation status response.
+     * @return logAnalytics operation status response along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LogAnalyticsOperationResultInner>, LogAnalyticsOperationResultInner>
         beginExportThrottledRequests(String location, ThrottledRequestsInput parameters, Context context);
 
@@ -192,7 +200,7 @@ public interface LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logAnalytics operation status response.
+     * @return logAnalytics operation status response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<LogAnalyticsOperationResultInner> exportThrottledRequestsAsync(

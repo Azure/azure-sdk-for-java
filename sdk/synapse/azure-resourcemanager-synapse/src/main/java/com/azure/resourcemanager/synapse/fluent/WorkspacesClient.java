@@ -80,7 +80,7 @@ public interface WorkspacesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a workspace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginUpdate(
         String resourceGroupName, String workspaceName, WorkspacePatchInfo workspacePatchInfo);
 
@@ -96,7 +96,7 @@ public interface WorkspacesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a workspace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginUpdate(
         String resourceGroupName, String workspaceName, WorkspacePatchInfo workspacePatchInfo, Context context);
 
@@ -141,7 +141,7 @@ public interface WorkspacesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a workspace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, WorkspaceInner workspaceInfo);
 
@@ -157,7 +157,7 @@ public interface WorkspacesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a workspace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, WorkspaceInner workspaceInfo, Context context);
 
@@ -201,7 +201,7 @@ public interface WorkspacesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginDelete(String resourceGroupName, String workspaceName);
 
     /**
@@ -215,7 +215,7 @@ public interface WorkspacesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginDelete(String resourceGroupName, String workspaceName, Context context);
 
     /**

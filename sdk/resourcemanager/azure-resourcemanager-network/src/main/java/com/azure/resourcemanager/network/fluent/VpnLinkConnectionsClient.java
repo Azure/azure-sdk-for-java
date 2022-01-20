@@ -48,7 +48,7 @@ public interface VpnLinkConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginResetConnectionAsync(
         String resourceGroupName, String gatewayName, String connectionName, String linkConnectionName);
 
@@ -64,7 +64,7 @@ public interface VpnLinkConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginResetConnection(
         String resourceGroupName, String gatewayName, String connectionName, String linkConnectionName);
 
@@ -81,7 +81,7 @@ public interface VpnLinkConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginResetConnection(
         String resourceGroupName,
         String gatewayName,
@@ -168,7 +168,7 @@ public interface VpnLinkConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<String>, String> beginGetIkeSasAsync(
         String resourceGroupName, String gatewayName, String connectionName, String linkConnectionName);
 
@@ -184,7 +184,7 @@ public interface VpnLinkConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<String>, String> beginGetIkeSas(
         String resourceGroupName, String gatewayName, String connectionName, String linkConnectionName);
 
@@ -201,7 +201,7 @@ public interface VpnLinkConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<String>, String> beginGetIkeSas(
         String resourceGroupName,
         String gatewayName,

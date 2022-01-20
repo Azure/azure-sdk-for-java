@@ -41,7 +41,7 @@ public class ChatApp {
         wsClient.connect(WEB_SOCKET_URL);
 
         // create an Azure Web Pub Sub client that connects to the default hub with no group specified
-        webPubsubServiceHubClient = new WebPubSubClientBuilder()
+        webPubsubServiceHubClient = new WebPubSubServiceClientBuilder()
             .connectionString(CONNECTION_STRING)
             .buildClient();
 

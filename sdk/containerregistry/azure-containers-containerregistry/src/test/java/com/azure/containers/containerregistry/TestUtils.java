@@ -163,8 +163,8 @@ public class TestUtils {
             return;
         }
 
-        importImageAsync(mode, repository, tags).block();
         try {
+            importImage(mode, REGISTRY_NAME, repository, tags, REGISTRY_ENDPOINT);
             Thread.sleep(SLEEP_TIME_IN_MILLISECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -218,13 +218,9 @@ public class TestUtils {
         }
     }
 
-    static Mono<Void> importImageAsync(TestMode mode, String repository, List<String> tags) {
-        return importImageAsync(mode, REGISTRY_NAME, repository, tags, REGISTRY_ENDPOINT);
-    }
-
-    static Mono<Void> importImageAsync(TestMode mode, String registryName, String repository, List<String> tags, String endpoint) {
+    static void importImage(TestMode mode, String registryName, String repository, List<String> tags, String endpoint) throws InterruptedException {
         if (mode == TestMode.PLAYBACK) {
-            return Mono.empty();
+            return;
         }
 
         String authority = getAuthority(endpoint);
@@ -235,13 +231,22 @@ public class TestUtils {
 
         ContainerRegistryManager manager = ContainerRegistryManager.authenticate(credential, profile);
 
-        return manager.serviceClient().getRegistries().importImageAsync(
-            RESOURCE_GROUP,
-            registryName,
-            new ImportImageParameters()
-                .withMode(ImportMode.FORCE)
-                .withSource(new ImportSource().withSourceImage(repository)
-                    .withRegistryUri(REGISTRY_URI))
-                .withTargetTags(tags));
+        int index = 0;
+        do {
+
+            try {
+                manager.serviceClient().getRegistries().importImage(
+                    RESOURCE_GROUP,
+                    registryName,
+                    new ImportImageParameters()
+                        .withMode(ImportMode.FORCE)
+                        .withSource(new ImportSource().withSourceImage(repository)
+                            .withRegistryUri(REGISTRY_URI))
+                        .withTargetTags(tags));
+                return;
+            } catch (Exception ex) {
+                Thread.sleep(SLEEP_TIME_IN_MILLISECONDS);
+            }
+        } while (++index < 3);
     }
 }

@@ -49,7 +49,12 @@ public class BlobCheckpointStore implements CheckpointStore {
     private static final String BLOB_PATH_SEPARATOR = "/";
     private static final String CHECKPOINT_PATH = "/checkpoint/";
     private static final String OWNERSHIP_PATH = "/ownership/";
+
+    /**
+     * An empty string.
+     */
     public static final String EMPTY_STRING = "";
+
     private static final ByteBuffer UPLOAD_DATA = ByteBuffer.wrap(EMPTY_STRING.getBytes(UTF_8));
 
     private final BlobContainerAsyncClient blobContainerAsyncClient;

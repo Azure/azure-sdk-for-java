@@ -60,7 +60,7 @@ import static org.mockito.Mockito.when;
  * Tests {@link ReactorHandlerProvider}.
  */
 @Execution(ExecutionMode.SAME_THREAD)
-@Isolated("Mutates global ProxySelector")
+@Isolated("Mutates the global ProxySelector")
 public class ReactorHandlerProviderTest {
     private static final String CONNECTION_ID = "test-connection-id";
     private static final String FULLY_QUALIFIED_DOMAIN_NAME = "my-hostname.windows.com";

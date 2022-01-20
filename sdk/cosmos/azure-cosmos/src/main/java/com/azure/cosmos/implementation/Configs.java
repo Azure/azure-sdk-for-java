@@ -235,7 +235,7 @@ public class Configs {
 
     public static boolean isQueryPlanCachingEnabled() {
         // Queryplan caching will be disabled by default
-        return getJVMConfigAsBoolean(QUERYPLAN_CACHING_ENABLED, false);
+        return getJVMConfigAsBoolean(QUERYPLAN_CACHING_ENABLED, true);
     }
 
     public static int getAddressRefreshResponseTimeoutInSeconds() {

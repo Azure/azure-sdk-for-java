@@ -16,18 +16,18 @@ import com.azure.data.schemaregistry.SchemaRegistryClient;
 @Immutable
 public final class SchemaProperties {
 
-    private final String schemaId;
-    private final SchemaFormat schemaFormat;
+    private final String id;
+    private final SchemaFormat format;
 
     /**
      * Initializes a new instance.
      *
-     * @param schemaId The schema id.
-     * @param schemaFormat The type of schema, e.g. avro, json.
+     * @param id The schema id.
+     * @param format The type of schema, e.g. avro, json.
      */
-    public SchemaProperties(String schemaId, SchemaFormat schemaFormat) {
-        this.schemaId = schemaId;
-        this.schemaFormat = schemaFormat;
+    public SchemaProperties(String id, SchemaFormat format) {
+        this.id = id;
+        this.format = format;
     }
 
     /**
@@ -35,8 +35,8 @@ public final class SchemaProperties {
      *
      * @return the unique identifier for this schema.
      */
-    public String getSchemaId() {
-        return schemaId;
+    public String getId() {
+        return id;
     }
 
     /**
@@ -44,6 +44,6 @@ public final class SchemaProperties {
      * @return schema type associated with the schema payload
      */
     public SchemaFormat getFormat() {
-        return schemaFormat;
+        return format;
     }
 }

@@ -660,7 +660,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String cacheName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, cacheName);
         return this
@@ -680,7 +680,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String cacheName, Context context) {
         context = this.client.mergeContext(context);
@@ -701,7 +701,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cacheName) {
         return beginDeleteAsync(resourceGroupName, cacheName).getSyncPoller();
     }
@@ -718,7 +718,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cacheName, Context context) {
         return beginDeleteAsync(resourceGroupName, cacheName, context).getSyncPoller();
     }
@@ -1063,7 +1063,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Cache instance.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CacheInner>, CacheInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String cacheName, CacheInner cache) {
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, cacheName, cache);
@@ -1087,7 +1087,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Cache instance.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CacheInner>, CacheInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String cacheName, CacheInner cache, Context context) {
         context = this.client.mergeContext(context);
@@ -1112,7 +1112,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Cache instance.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CacheInner>, CacheInner> beginCreateOrUpdate(
         String resourceGroupName, String cacheName, CacheInner cache) {
         return beginCreateOrUpdateAsync(resourceGroupName, cacheName, cache).getSyncPoller();
@@ -1132,7 +1132,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Cache instance.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CacheInner>, CacheInner> beginCreateOrUpdate(
         String resourceGroupName, String cacheName, CacheInner cache, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, cacheName, cache, context).getSyncPoller();
@@ -1555,7 +1555,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDebugInfoAsync(String resourceGroupName, String cacheName) {
         Mono<Response<Flux<ByteBuffer>>> mono = debugInfoWithResponseAsync(resourceGroupName, cacheName);
         return this
@@ -1575,7 +1575,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDebugInfoAsync(
         String resourceGroupName, String cacheName, Context context) {
         context = this.client.mergeContext(context);
@@ -1596,7 +1596,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDebugInfo(String resourceGroupName, String cacheName) {
         return beginDebugInfoAsync(resourceGroupName, cacheName).getSyncPoller();
     }
@@ -1613,7 +1613,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDebugInfo(
         String resourceGroupName, String cacheName, Context context) {
         return beginDebugInfoAsync(resourceGroupName, cacheName, context).getSyncPoller();
@@ -1794,7 +1794,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginFlushAsync(String resourceGroupName, String cacheName) {
         Mono<Response<Flux<ByteBuffer>>> mono = flushWithResponseAsync(resourceGroupName, cacheName);
         return this
@@ -1815,7 +1815,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginFlushAsync(
         String resourceGroupName, String cacheName, Context context) {
         context = this.client.mergeContext(context);
@@ -1837,7 +1837,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFlush(String resourceGroupName, String cacheName) {
         return beginFlushAsync(resourceGroupName, cacheName).getSyncPoller();
     }
@@ -1855,7 +1855,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFlush(String resourceGroupName, String cacheName, Context context) {
         return beginFlushAsync(resourceGroupName, cacheName, context).getSyncPoller();
     }
@@ -2036,7 +2036,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String cacheName) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, cacheName);
         return this
@@ -2056,7 +2056,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String cacheName, Context context) {
         context = this.client.mergeContext(context);
@@ -2077,7 +2077,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String cacheName) {
         return beginStartAsync(resourceGroupName, cacheName).getSyncPoller();
     }
@@ -2094,7 +2094,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String cacheName, Context context) {
         return beginStartAsync(resourceGroupName, cacheName, context).getSyncPoller();
     }
@@ -2271,7 +2271,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String cacheName) {
         Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(resourceGroupName, cacheName);
         return this
@@ -2291,7 +2291,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String cacheName, Context context) {
         context = this.client.mergeContext(context);
@@ -2312,7 +2312,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String cacheName) {
         return beginStopAsync(resourceGroupName, cacheName).getSyncPoller();
     }
@@ -2329,7 +2329,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String cacheName, Context context) {
         return beginStopAsync(resourceGroupName, cacheName, context).getSyncPoller();
     }
@@ -2507,7 +2507,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginUpgradeFirmwareAsync(String resourceGroupName, String cacheName) {
         Mono<Response<Flux<ByteBuffer>>> mono = upgradeFirmwareWithResponseAsync(resourceGroupName, cacheName);
         return this
@@ -2527,7 +2527,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginUpgradeFirmwareAsync(
         String resourceGroupName, String cacheName, Context context) {
         context = this.client.mergeContext(context);
@@ -2548,7 +2548,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpgradeFirmware(String resourceGroupName, String cacheName) {
         return beginUpgradeFirmwareAsync(resourceGroupName, cacheName).getSyncPoller();
     }
@@ -2565,7 +2565,7 @@ public final class CachesClientImpl implements CachesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpgradeFirmware(
         String resourceGroupName, String cacheName, Context context) {
         return beginUpgradeFirmwareAsync(resourceGroupName, cacheName, context).getSyncPoller();

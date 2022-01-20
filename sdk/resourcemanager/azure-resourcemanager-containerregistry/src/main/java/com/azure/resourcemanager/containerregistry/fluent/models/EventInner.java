@@ -68,6 +68,13 @@ public final class EventInner extends EventInfoInner {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public EventInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

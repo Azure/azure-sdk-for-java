@@ -1,14 +1,31 @@
 # Release History
 
-## 5.11.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 5.10.4 (2022-01-18)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.22.0` to `1.24.1`.
+- Upgraded `azure-core-amqp` from `2.3.3` to `2.3.7`.
+
+## 5.10.3 (2021-11-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.21.0` to `1.22.0`.
+- Upgraded `azure-core-amqp` from `2.3.3` to `2.3.4`.
+
+## 5.10.2 (2021-10-13)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.20.0` to `1.21.0`.
+- Upgraded `azure-core-amqp` from `2.3.2` to `2.3.3`.
 
 ## 5.10.1 (2021-09-20)
 

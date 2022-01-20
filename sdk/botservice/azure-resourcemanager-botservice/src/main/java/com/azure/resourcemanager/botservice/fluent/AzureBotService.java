@@ -85,4 +85,25 @@ public interface AzureBotService {
      * @return the HostSettingsClient object.
      */
     HostSettingsClient getHostSettings();
+
+    /**
+     * Gets the OperationResultsClient object to access its operations.
+     *
+     * @return the OperationResultsClient object.
+     */
+    OperationResultsClient getOperationResults();
+
+    /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    PrivateEndpointConnectionsClient getPrivateEndpointConnections();
+
+    /**
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the PrivateLinkResourcesClient object.
+     */
+    PrivateLinkResourcesClient getPrivateLinkResources();
 }

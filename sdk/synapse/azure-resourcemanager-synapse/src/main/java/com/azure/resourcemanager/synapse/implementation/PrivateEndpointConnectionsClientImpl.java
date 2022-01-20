@@ -462,7 +462,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateAsync(
         String resourceGroupName,
         String workspaceName,
@@ -493,7 +493,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateAsync(
         String resourceGroupName,
         String workspaceName,
@@ -525,7 +525,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreate(
         String resourceGroupName,
         String workspaceName,
@@ -548,7 +548,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreate(
         String resourceGroupName,
         String workspaceName,
@@ -774,7 +774,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationResourceInner>, OperationResourceInner> beginDeleteAsync(
         String resourceGroupName, String workspaceName, String privateEndpointConnectionName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -801,7 +801,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationResourceInner>, OperationResourceInner> beginDeleteAsync(
         String resourceGroupName, String workspaceName, String privateEndpointConnectionName, Context context) {
         context = this.client.mergeContext(context);
@@ -828,7 +828,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationResourceInner>, OperationResourceInner> beginDelete(
         String resourceGroupName, String workspaceName, String privateEndpointConnectionName) {
         return beginDeleteAsync(resourceGroupName, workspaceName, privateEndpointConnectionName).getSyncPoller();
@@ -846,7 +846,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationResourceInner>, OperationResourceInner> beginDelete(
         String resourceGroupName, String workspaceName, String privateEndpointConnectionName, Context context) {
         return beginDeleteAsync(resourceGroupName, workspaceName, privateEndpointConnectionName, context)

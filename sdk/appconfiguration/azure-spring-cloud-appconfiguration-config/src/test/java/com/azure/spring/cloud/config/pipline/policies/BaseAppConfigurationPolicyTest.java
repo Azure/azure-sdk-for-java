@@ -16,6 +16,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -25,7 +28,10 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 
-
+// This test class needs to be isolated and ran sequential as it uses BaseAppConfigurationPolicy.setWatchRequests
+// which mutates a global static and can result in race condition failures.
+@Isolated
+@Execution(ExecutionMode.SAME_THREAD)
 @ExtendWith(MockitoExtension.class)
 public class BaseAppConfigurationPolicyTest {
 

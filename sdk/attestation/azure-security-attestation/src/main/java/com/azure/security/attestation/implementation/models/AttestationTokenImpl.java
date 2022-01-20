@@ -218,13 +218,16 @@ public class AttestationTokenImpl implements AttestationToken {
     @Override
     public String getIssuer() {
         if (issuer.get() == null) {
-            JWTClaimsSet claimsSet;
-            try {
-                claimsSet = JWTClaimsSet.parse(payload.toJSONObject());
-            } catch (ParseException e) {
-                throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+            Map<String, Object> claimSet = payload.toJSONObject();
+            if (claimSet != null) {
+                JWTClaimsSet claimsSet;
+                try {
+                    claimsSet = JWTClaimsSet.parse(claimSet);
+                } catch (ParseException e) {
+                    throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+                }
+                issuer.set(claimsSet.getIssuer());
             }
-            issuer.set(claimsSet.getIssuer());
         }
         return issuer.get();
     }
@@ -234,13 +237,17 @@ public class AttestationTokenImpl implements AttestationToken {
     public Instant getIssuedAt() {
         if (issuedAt.get() == null) {
             Map<String, Object> claimSet = payload.toJSONObject();
-            Object iatObject = claimSet.get("iat");
-            if (!(iatObject instanceof Long)) {
-                throw logger.logExceptionAsError(new RuntimeException(String.format("Invalid type for IssuedAt: %s", iatObject.getClass().getName())));
-            }
+            if (claimSet != null) {
+                Object iatObject = claimSet.get("iat");
+                if (iatObject != null) {
+                    if (!(iatObject instanceof Long)) {
+                        throw logger.logExceptionAsError(new RuntimeException(String.format("Invalid type for IssuedAt: %s", iatObject.getClass().getName())));
+                    }
 
-            long iat = (long) iatObject;
-            issuedAt.set(Instant.ofEpochSecond(iat));
+                    long iat = (long) iatObject;
+                    issuedAt.set(Instant.ofEpochSecond(iat));
+                }
+            }
         }
         return issuedAt.get();
     }
@@ -250,13 +257,17 @@ public class AttestationTokenImpl implements AttestationToken {
     public Instant getExpiresOn() {
         if (expiresOn.get() == null) {
             Map<String, Object> claimSet = payload.toJSONObject();
-            Object expObject = claimSet.get("exp");
-            if (!(expObject instanceof Long)) {
-                throw logger.logExceptionAsError(new RuntimeException(String.format("Invalid type for ExpiresOn: %s", expiresOn.getClass().getName())));
-            }
+            if (claimSet != null) {
+                Object expObject = claimSet.get("exp");
+                if (expObject != null) {
+                    if (!(expObject instanceof Long)) {
+                        throw logger.logExceptionAsError(new RuntimeException(String.format("Invalid type for ExpiresOn: %s", expiresOn.getClass().getName())));
+                    }
 
-            long exp = (long) expObject;
-            expiresOn.set(Instant.ofEpochSecond(exp));
+                    long exp = (long) expObject;
+                    expiresOn.set(Instant.ofEpochSecond(exp));
+                }
+            }
         }
         return expiresOn.get();
     }
@@ -266,13 +277,17 @@ public class AttestationTokenImpl implements AttestationToken {
     public Instant getNotBefore() {
         if (notBeforeTime.get() == null) {
             Map<String, Object> claimSet = payload.toJSONObject();
-            Object nbfObject = claimSet.get("nbf");
-            if (!(nbfObject instanceof Long)) {
-                throw logger.logExceptionAsError(new RuntimeException(String.format("Invalid type for NotBefore: %s", nbfObject.getClass().getName())));
-            }
+            if (claimSet != null) {
+                Object nbfObject = claimSet.get("nbf");
+                if (nbfObject != null) {
+                    if (!(nbfObject instanceof Long)) {
+                        throw logger.logExceptionAsError(new RuntimeException(String.format("Invalid type for NotBefore: %s", nbfObject.getClass().getName())));
+                    }
 
-            long nbf = (long) nbfObject;
-            notBeforeTime.set(Instant.ofEpochSecond(nbf));
+                    long nbf = (long) nbfObject;
+                    notBeforeTime.set(Instant.ofEpochSecond(nbf));
+                }
+            }
         }
         return notBeforeTime.get();
     }
@@ -366,7 +381,7 @@ public class AttestationTokenImpl implements AttestationToken {
         try {
             jwt.set(JWSObject.parse(rawToken));
         } catch (ParseException e) {
-            logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
         AtomicReference<AttestationSigner> tokenSigner = new AtomicReference<>();
         List<AttestationSigner> candidateSigners = getCandidateSigners(signers);
@@ -424,7 +439,7 @@ public class AttestationTokenImpl implements AttestationToken {
             // We didn't find a candidate, so if the caller provided a list of candidates, use that
             // as the possible signers.
             if (signers != null && signers.size() != 0) {
-                signers.forEach(signer -> candidates.add(signer));
+                candidates.addAll(signers);
             } else {
                 // The caller didn't provide a set of signers, maybe there's one in the token itself.
                 if (this.getCertificateChain() != null) {

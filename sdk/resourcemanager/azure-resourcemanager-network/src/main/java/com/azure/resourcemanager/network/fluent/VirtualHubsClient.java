@@ -107,7 +107,7 @@ public interface VirtualHubsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VirtualHubInner>, VirtualHubInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String virtualHubName, VirtualHubInner virtualHubParameters);
 
@@ -122,7 +122,7 @@ public interface VirtualHubsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualHubInner>, VirtualHubInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualHubName, VirtualHubInner virtualHubParameters);
 
@@ -138,7 +138,7 @@ public interface VirtualHubsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualHubInner>, VirtualHubInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualHubName, VirtualHubInner virtualHubParameters, Context context);
 
@@ -271,7 +271,7 @@ public interface VirtualHubsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualHubName);
 
     /**
@@ -284,7 +284,7 @@ public interface VirtualHubsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHubName);
 
     /**
@@ -298,7 +298,7 @@ public interface VirtualHubsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHubName, Context context);
 
     /**
@@ -434,7 +434,7 @@ public interface VirtualHubsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the effective routes configured for the Virtual Hub resource or the specified resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginGetEffectiveVirtualHubRoutesAsync(
         String resourceGroupName, String virtualHubName, EffectiveRoutesParameters effectiveRoutesParameters);
 
@@ -449,7 +449,7 @@ public interface VirtualHubsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the effective routes configured for the Virtual Hub resource or the specified resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginGetEffectiveVirtualHubRoutes(
         String resourceGroupName, String virtualHubName, EffectiveRoutesParameters effectiveRoutesParameters);
 
@@ -465,7 +465,7 @@ public interface VirtualHubsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the effective routes configured for the Virtual Hub resource or the specified resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginGetEffectiveVirtualHubRoutes(
         String resourceGroupName,
         String virtualHubName,

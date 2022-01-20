@@ -73,11 +73,13 @@ import java.util.concurrent.atomic.AtomicInteger
 
 class BlobAPITest extends APISpec {
     BlobClient bc
+    BlobAsyncClient bcAsync
     String blobName
 
     def setup() {
         blobName = generateBlobName()
         bc = cc.getBlobClient(blobName)
+        bcAsync = ccAsync.getBlobAsyncClient(blobName)
         bc.getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
     }
 
@@ -3182,5 +3184,15 @@ class BlobAPITest extends APISpec {
         then:
         notThrown(BlobStorageException)
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
+    }
+
+    def "Specialized child client gets cached"() {
+        expect:
+        bc.getBlockBlobClient() == bc.getBlockBlobClient()
+        bc.getAppendBlobClient() == bc.getAppendBlobClient()
+        bc.getPageBlobClient() == bc.getPageBlobClient()
+        bcAsync.getBlockBlobAsyncClient() == bcAsync.getBlockBlobAsyncClient()
+        bcAsync.getAppendBlobAsyncClient() == bcAsync.getAppendBlobAsyncClient()
+        bcAsync.getPageBlobAsyncClient() == bcAsync.getPageBlobAsyncClient()
     }
 }

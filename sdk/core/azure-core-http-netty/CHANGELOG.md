@@ -10,6 +10,53 @@
 
 ### Other Changes
 
+## 1.11.6 (2022-01-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.0` to `1.24.1`.
+- Upgraded Netty from `4.1.70.Final` to `4.1.72.Final`.
+- Upgraded Reactor Netty from `1.0.13` to `1.0.14`.
+
+## 1.11.5 (2022-01-06)
+
+### Bugs Fixed
+- Set default `maxConnections` value to match the default used in `reactor-netty` when `HttpClientOptions` is set but 
+  `maximumConnectionPoolSize` is not specified. ([#26083](https://github.com/Azure/azure-sdk-for-java/pull/26083))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.23.1` to `1.24.0`.
+
+## 1.11.4 (2021-12-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.22.0` to `1.23.1`.
+- Upgraded Netty from `4.1.68.Final` to `4.1.70.Final`.
+- Upgraded Reactor Netty from `1.0.11` to `1.0.13`.
+
+## 1.11.3 (2021-11-23)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.22.0` to `1.23.0`.
+
+## 1.11.2 (2021-11-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.21.0` to `1.22.0`.
+
 ## 1.11.1 (2021-10-01)
 
 ### Bugs Fixed
@@ -21,7 +68,7 @@
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.20.0` to `1.21.0`.
-- Upgraded Netty from `4.1.67.Final` to `4.1.60.Final`.
+- Upgraded Netty from `4.1.67.Final` to `4.1.68.Final`.
 - Upgraded Reactor Netty from `1.0.10` to `1.0.11`.
 - 
 ## 1.11.0 (2021-09-07)

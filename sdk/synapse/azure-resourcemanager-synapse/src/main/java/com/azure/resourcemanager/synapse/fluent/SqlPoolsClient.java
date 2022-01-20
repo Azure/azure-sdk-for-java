@@ -96,7 +96,7 @@ public interface SqlPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sQL pool.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginCreate(
         String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolInner sqlPoolInfo);
 
@@ -113,7 +113,7 @@ public interface SqlPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sQL pool.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginCreate(
         String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolInner sqlPoolInfo, Context context);
 
@@ -160,7 +160,7 @@ public interface SqlPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginDelete(
         String resourceGroupName, String workspaceName, String sqlPoolName);
 
@@ -176,7 +176,7 @@ public interface SqlPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginDelete(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
 
@@ -247,7 +247,7 @@ public interface SqlPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginPause(
         String resourceGroupName, String workspaceName, String sqlPoolName);
 
@@ -263,7 +263,7 @@ public interface SqlPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginPause(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
 
@@ -307,7 +307,7 @@ public interface SqlPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginResume(
         String resourceGroupName, String workspaceName, String sqlPoolName);
 
@@ -323,7 +323,7 @@ public interface SqlPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginResume(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
 

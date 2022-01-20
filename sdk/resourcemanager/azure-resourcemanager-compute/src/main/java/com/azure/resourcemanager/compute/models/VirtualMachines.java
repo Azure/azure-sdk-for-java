@@ -52,6 +52,25 @@ public interface VirtualMachines
     Mono<Void> deallocateAsync(String groupName, String name);
 
     /**
+     * Shuts down the virtual machine and releases the compute resources.
+     *
+     * @param groupName the name of the resource group the virtual machine is in
+     * @param name the virtual machine name
+     * @param hibernate hibernate the virtual machine
+     */
+    void deallocate(String groupName, String name, boolean hibernate);
+
+    /**
+     * Shuts down the virtual machine and releases the compute resources asynchronously.
+     *
+     * @param groupName the name of the resource group the virtual machine is in
+     * @param name the virtual machine name
+     * @param hibernate hibernate the virtual machine
+     * @return a representation of the deferred computation of this call
+     */
+    Mono<Void> deallocateAsync(String groupName, String name, boolean hibernate);
+
+    /**
      * Generalizes the virtual machine.
      *
      * @param groupName the name of the resource group the virtual machine is in

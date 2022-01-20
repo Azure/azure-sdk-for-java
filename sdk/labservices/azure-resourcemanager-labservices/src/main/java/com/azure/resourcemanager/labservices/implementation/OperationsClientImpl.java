@@ -16,6 +16,10 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
@@ -23,7 +27,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.labservices.fluent.OperationsClient;
-import com.azure.resourcemanager.labservices.fluent.models.OperationResultInner;
+import com.azure.resourcemanager.labservices.fluent.models.OperationInner;
+import com.azure.resourcemanager.labservices.models.OperationListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in OperationsClient. */
@@ -34,184 +39,235 @@ public final class OperationsClientImpl implements OperationsClient {
     private final OperationsService service;
 
     /** The service client containing this operation class. */
-    private final ManagedLabsClientImpl client;
+    private final LabServicesClientImpl client;
 
     /**
      * Initializes an instance of OperationsClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    OperationsClientImpl(ManagedLabsClientImpl client) {
+    OperationsClientImpl(LabServicesClientImpl client) {
         this.service =
             RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ManagedLabsClientOperations to be used by the proxy service to
+     * The interface defining all the services for LabServicesClientOperations to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ManagedLabsClientOpe")
+    @ServiceInterface(name = "LabServicesClientOpe")
     private interface OperationsService {
         @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.LabServices/locations/{locationName}/operations"
-                + "/{operationName}")
+        @Get("/providers/Microsoft.LabServices/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OperationResultInner>> get(
+        Mono<Response<OperationListResult>> list(
             @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("locationName") String locationName,
-            @PathParam("operationName") String operationName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<OperationListResult>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
-     * Get operation.
+     * Returns a list of all operations.
      *
-     * @param locationName The name of the location.
-     * @param operationName The name of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation.
+     * @return a list of REST API operations supported by an Azure Resource Provider along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationResultInner>> getWithResponseAsync(String locationName, String operationName) {
+    private Mono<PagedResponse<OperationInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (locationName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
-        }
-        if (operationName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter operationName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            locationName,
-                            operationName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<OperationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Get operation.
+     * Returns a list of all operations.
      *
-     * @param locationName The name of the location.
-     * @param operationName The name of the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation.
+     * @return a list of REST API operations supported by an Azure Resource Provider along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationResultInner>> getWithResponseAsync(
-        String locationName, String operationName, Context context) {
+    private Mono<PagedResponse<OperationInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (locationName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
-        }
-        if (operationName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter operationName is required and cannot be null."));
-        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                locationName,
-                operationName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
-     * Get operation.
+     * Returns a list of all operations.
      *
-     * @param locationName The name of the location.
-     * @param operationName The name of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation.
+     * @return a list of REST API operations supported by an Azure Resource Provider.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationResultInner> getAsync(String locationName, String operationName) {
-        return getWithResponseAsync(locationName, operationName)
-            .flatMap(
-                (Response<OperationResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<OperationInner> listAsync() {
+        return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Get operation.
+     * Returns a list of all operations.
      *
-     * @param locationName The name of the location.
-     * @param operationName The name of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationResultInner get(String locationName, String operationName) {
-        return getAsync(locationName, operationName).block();
-    }
-
-    /**
-     * Get operation.
-     *
-     * @param locationName The name of the location.
-     * @param operationName The name of the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation.
+     * @return a list of REST API operations supported by an Azure Resource Provider.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<OperationInner> listAsync(Context context) {
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Returns a list of all operations.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of REST API operations supported by an Azure Resource Provider.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<OperationInner> list() {
+        return new PagedIterable<>(listAsync());
+    }
+
+    /**
+     * Returns a list of all operations.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of REST API operations supported by an Azure Resource Provider.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<OperationInner> list(Context context) {
+        return new PagedIterable<>(listAsync(context));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of REST API operations supported by an Azure Resource Provider along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OperationResultInner> getWithResponse(String locationName, String operationName, Context context) {
-        return getWithResponseAsync(locationName, operationName, context).block();
+    private Mono<PagedResponse<OperationInner>> listNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<OperationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of REST API operations supported by an Azure Resource Provider along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<OperationInner>> listNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

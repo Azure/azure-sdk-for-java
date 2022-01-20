@@ -14,9 +14,19 @@ public class TextAnalyticsException extends AzureException {
     private static final String ERROR_CODE = "ErrorCodeValue";
     private static final String TARGET = "target";
 
+    /**
+     * The service returned error code value.
+     */
     private final TextAnalyticsErrorCode errorCode;
+
+    /**
+     * The target for this exception.
+     */
     private final String target;
 
+    /**
+     * The error information list fot this exception.
+     */
     private IterableStream<TextAnalyticsError> errors;
 
     static {

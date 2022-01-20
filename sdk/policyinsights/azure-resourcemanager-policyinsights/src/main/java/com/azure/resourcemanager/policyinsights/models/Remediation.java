@@ -4,6 +4,9 @@
 
 package com.azure.resourcemanager.policyinsights.models;
 
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.policyinsights.fluent.models.RemediationInner;
 import java.time.OffsetDateTime;
@@ -30,6 +33,13 @@ public interface Remediation {
      * @return the type value.
      */
     String type();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the policyAssignmentId property: The resource ID of the policy assignment that should be remediated.
@@ -90,6 +100,46 @@ public interface Remediation {
     RemediationDeploymentSummary deploymentStatus();
 
     /**
+     * Gets the statusMessage property: The remediation status message. Provides additional details regarding the state
+     * of the remediation.
+     *
+     * @return the statusMessage value.
+     */
+    String statusMessage();
+
+    /**
+     * Gets the correlationId property: The remediation correlation Id. Can be used to find events related to the
+     * remediation in the activity log.
+     *
+     * @return the correlationId value.
+     */
+    String correlationId();
+
+    /**
+     * Gets the resourceCount property: Determines the max number of resources that can be remediated by the remediation
+     * job. If not provided, the default resource count is used.
+     *
+     * @return the resourceCount value.
+     */
+    Integer resourceCount();
+
+    /**
+     * Gets the parallelDeployments property: Determines how many resources to remediate at any given time. Can be used
+     * to increase or reduce the pace of the remediation. If not provided, the default parallel deployments value is
+     * used.
+     *
+     * @return the parallelDeployments value.
+     */
+    Integer parallelDeployments();
+
+    /**
+     * Gets the failureThreshold property: The remediation failure threshold settings.
+     *
+     * @return the failureThreshold value.
+     */
+    RemediationPropertiesFailureThreshold failureThreshold();
+
+    /**
      * Gets the inner com.azure.resourcemanager.policyinsights.fluent.models.RemediationInner object.
      *
      * @return the inner object.
@@ -123,7 +173,10 @@ public interface Remediation {
             extends DefinitionStages.WithPolicyAssignmentId,
                 DefinitionStages.WithPolicyDefinitionReferenceId,
                 DefinitionStages.WithResourceDiscoveryMode,
-                DefinitionStages.WithFilters {
+                DefinitionStages.WithFilters,
+                DefinitionStages.WithResourceCount,
+                DefinitionStages.WithParallelDeployments,
+                DefinitionStages.WithFailureThreshold {
             /**
              * Executes the create request.
              *
@@ -187,6 +240,42 @@ public interface Remediation {
              */
             WithCreate withFilters(RemediationFilters filters);
         }
+        /** The stage of the Remediation definition allowing to specify resourceCount. */
+        interface WithResourceCount {
+            /**
+             * Specifies the resourceCount property: Determines the max number of resources that can be remediated by
+             * the remediation job. If not provided, the default resource count is used..
+             *
+             * @param resourceCount Determines the max number of resources that can be remediated by the remediation
+             *     job. If not provided, the default resource count is used.
+             * @return the next definition stage.
+             */
+            WithCreate withResourceCount(Integer resourceCount);
+        }
+        /** The stage of the Remediation definition allowing to specify parallelDeployments. */
+        interface WithParallelDeployments {
+            /**
+             * Specifies the parallelDeployments property: Determines how many resources to remediate at any given time.
+             * Can be used to increase or reduce the pace of the remediation. If not provided, the default parallel
+             * deployments value is used..
+             *
+             * @param parallelDeployments Determines how many resources to remediate at any given time. Can be used to
+             *     increase or reduce the pace of the remediation. If not provided, the default parallel deployments
+             *     value is used.
+             * @return the next definition stage.
+             */
+            WithCreate withParallelDeployments(Integer parallelDeployments);
+        }
+        /** The stage of the Remediation definition allowing to specify failureThreshold. */
+        interface WithFailureThreshold {
+            /**
+             * Specifies the failureThreshold property: The remediation failure threshold settings.
+             *
+             * @param failureThreshold The remediation failure threshold settings.
+             * @return the next definition stage.
+             */
+            WithCreate withFailureThreshold(RemediationPropertiesFailureThreshold failureThreshold);
+        }
     }
     /**
      * Begins update for the Remediation resource.
@@ -200,7 +289,10 @@ public interface Remediation {
         extends UpdateStages.WithPolicyAssignmentId,
             UpdateStages.WithPolicyDefinitionReferenceId,
             UpdateStages.WithResourceDiscoveryMode,
-            UpdateStages.WithFilters {
+            UpdateStages.WithFilters,
+            UpdateStages.WithResourceCount,
+            UpdateStages.WithParallelDeployments,
+            UpdateStages.WithFailureThreshold {
         /**
          * Executes the update request.
          *
@@ -266,6 +358,42 @@ public interface Remediation {
              */
             Update withFilters(RemediationFilters filters);
         }
+        /** The stage of the Remediation update allowing to specify resourceCount. */
+        interface WithResourceCount {
+            /**
+             * Specifies the resourceCount property: Determines the max number of resources that can be remediated by
+             * the remediation job. If not provided, the default resource count is used..
+             *
+             * @param resourceCount Determines the max number of resources that can be remediated by the remediation
+             *     job. If not provided, the default resource count is used.
+             * @return the next definition stage.
+             */
+            Update withResourceCount(Integer resourceCount);
+        }
+        /** The stage of the Remediation update allowing to specify parallelDeployments. */
+        interface WithParallelDeployments {
+            /**
+             * Specifies the parallelDeployments property: Determines how many resources to remediate at any given time.
+             * Can be used to increase or reduce the pace of the remediation. If not provided, the default parallel
+             * deployments value is used..
+             *
+             * @param parallelDeployments Determines how many resources to remediate at any given time. Can be used to
+             *     increase or reduce the pace of the remediation. If not provided, the default parallel deployments
+             *     value is used.
+             * @return the next definition stage.
+             */
+            Update withParallelDeployments(Integer parallelDeployments);
+        }
+        /** The stage of the Remediation update allowing to specify failureThreshold. */
+        interface WithFailureThreshold {
+            /**
+             * Specifies the failureThreshold property: The remediation failure threshold settings.
+             *
+             * @param failureThreshold The remediation failure threshold settings.
+             * @return the next definition stage.
+             */
+            Update withFailureThreshold(RemediationPropertiesFailureThreshold failureThreshold);
+        }
     }
     /**
      * Refreshes the resource to sync with Azure.
@@ -281,4 +409,45 @@ public interface Remediation {
      * @return the refreshed resource.
      */
     Remediation refresh(Context context);
+
+    /**
+     * Gets all deployments for a remediation at resource group scope.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments for a remediation at resource group scope.
+     */
+    PagedIterable<RemediationDeployment> listDeploymentsAtResourceGroup();
+
+    /**
+     * Gets all deployments for a remediation at resource group scope.
+     *
+     * @param top Maximum number of records to return.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments for a remediation at resource group scope.
+     */
+    PagedIterable<RemediationDeployment> listDeploymentsAtResourceGroup(Integer top, Context context);
+
+    /**
+     * Cancels a remediation at resource group scope.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the remediation definition.
+     */
+    Remediation cancelAtResourceGroup();
+
+    /**
+     * Cancels a remediation at resource group scope.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the remediation definition.
+     */
+    Response<Remediation> cancelAtResourceGroupWithResponse(Context context);
 }

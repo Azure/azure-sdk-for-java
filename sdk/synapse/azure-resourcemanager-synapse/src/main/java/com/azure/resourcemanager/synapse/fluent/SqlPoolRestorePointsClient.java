@@ -58,7 +58,7 @@ public interface SqlPoolRestorePointsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return database restore points.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(
         String resourceGroupName,
         String workspaceName,
@@ -78,7 +78,7 @@ public interface SqlPoolRestorePointsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return database restore points.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(
         String resourceGroupName,
         String workspaceName,

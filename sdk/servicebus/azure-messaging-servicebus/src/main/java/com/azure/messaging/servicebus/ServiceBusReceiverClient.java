@@ -13,7 +13,7 @@ import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
+import reactor.core.publisher.Sinks;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -27,7 +27,21 @@ import java.util.function.Consumer;
  * topic on Azure Service Bus.
  *
  * <p><strong>Create an instance of receiver</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.instantiation}
+ * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverclient.instantiation -->
+ * <pre>
+ * &#47;&#47; The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
+ * &#47;&#47; The connectionString&#47;queueName must be set by the application. The 'connectionString' format is shown below.
+ * &#47;&#47; &quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;SharedAccessKey=&#123;key&#125;&quot;
+ * ServiceBusReceiverClient receiver = new ServiceBusClientBuilder&#40;&#41;
+ *     .connectionString&#40;connectionString&#41;
+ *     .receiver&#40;&#41;
+ *     .queueName&#40;queueName&#41;
+ *     .buildClient&#40;&#41;;
+ *
+ * &#47;&#47; Use the receiver and finally close it.
+ * receiver.close&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.servicebusreceiverclient.instantiation -->
  *
  * @see ServiceBusClientBuilder
  * @see ServiceBusReceiverAsyncClient To communicate with a Service Bus resource using an asynchronous client.
@@ -402,6 +416,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code maxMessages} is zero or a negative value.
      * @throws IllegalStateException if the receiver is already disposed.
      * @throws ServiceBusException if an error occurs while receiving messages.
+     * @see <a href="https://aka.ms/azsdk/java/servicebus/sync-receive/prefetch">Synchronous receive and prefetch</a>
      */
     public IterableStream<ServiceBusReceivedMessage> receiveMessages(int maxMessages) {
         return receiveMessages(maxMessages, operationTimeout);
@@ -420,6 +435,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code maxMessages} or {@code maxWaitTime} is zero or a negative value.
      * @throws IllegalStateException if the receiver is already disposed.
      * @throws ServiceBusException if an error occurs while receiving messages.
+     * @see <a href="https://aka.ms/azsdk/java/servicebus/sync-receive/prefetch">Synchronous receive and prefetch</a>
      */
     public IterableStream<ServiceBusReceivedMessage> receiveMessages(int maxMessages, Duration maxWaitTime) {
         if (maxMessages <= 0) {
@@ -433,10 +449,13 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
                 new IllegalArgumentException("'maxWaitTime' cannot be zero or less. maxWaitTime: " + maxWaitTime));
         }
 
-        final Flux<ServiceBusReceivedMessage> messages = Flux.create(emitter -> queueWork(maxMessages,
-            maxWaitTime, emitter));
+        // There are two subscribers to this emitter. One is the timeout between messages subscription in
+        // SynchronousReceiverWork.start() and the other is the IterableStream(emitter.asFlux());
+        // Since the subscriptions may happen at different times, we want to replay results to downstream subscribers.
+        final Sinks.Many<ServiceBusReceivedMessage> emitter = Sinks.many().replay().all();
+        queueWork(maxMessages, maxWaitTime, emitter);
 
-        return new IterableStream<>(messages);
+        return new IterableStream<>(emitter.asFlux());
     }
 
     /**
@@ -561,7 +580,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws ServiceBusException if the session lock cannot be renewed.
      */
     public OffsetDateTime renewSessionLock() {
-        return this.renewSessionLock(asyncClient.getReceiverOptions().getSessionId());
+        return asyncClient.renewSessionLock(asyncClient.getReceiverOptions().getSessionId()).block(operationTimeout);
     }
 
     /**
@@ -595,7 +614,17 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * operations that need to be in this transaction.
      *
      * <p><strong>Creating and using a transaction</strong></p>
-     * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.committransaction#servicebustransactioncontext}
+     * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverclient.committransaction#servicebustransactioncontext -->
+     * <pre>
+     * ServiceBusTransactionContext transaction = receiver.createTransaction&#40;&#41;;
+     *
+     * &#47;&#47; Process messages and associate operations with the transaction.
+     * ServiceBusReceivedMessage deferredMessage = receiver.receiveDeferredMessage&#40;sequenceNumber&#41;;
+     * receiver.complete&#40;deferredMessage, new CompleteOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;;
+     * receiver.abandon&#40;receivedMessage, new AbandonOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;;
+     * receiver.commitTransaction&#40;transaction&#41;;
+     * </pre>
+     * <!-- end com.azure.messaging.servicebus.servicebusreceiverclient.committransaction#servicebustransactioncontext -->
      *
      * @return A new {@link ServiceBusTransactionContext}.
      *
@@ -610,7 +639,17 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * Commits the transaction and all the operations associated with it.
      *
      * <p><strong>Creating and using a transaction</strong></p>
-     * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.committransaction#servicebustransactioncontext}
+     * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverclient.committransaction#servicebustransactioncontext -->
+     * <pre>
+     * ServiceBusTransactionContext transaction = receiver.createTransaction&#40;&#41;;
+     *
+     * &#47;&#47; Process messages and associate operations with the transaction.
+     * ServiceBusReceivedMessage deferredMessage = receiver.receiveDeferredMessage&#40;sequenceNumber&#41;;
+     * receiver.complete&#40;deferredMessage, new CompleteOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;;
+     * receiver.abandon&#40;receivedMessage, new AbandonOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;;
+     * receiver.commitTransaction&#40;transaction&#41;;
+     * </pre>
+     * <!-- end com.azure.messaging.servicebus.servicebusreceiverclient.committransaction#servicebustransactioncontext -->
      *
      * @param transactionContext The transaction to be commit.
      *
@@ -626,7 +665,17 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * Rollbacks the transaction given and all operations associated with it.
      *
      * <p><strong>Creating and using a transaction</strong></p>
-     * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.committransaction#servicebustransactioncontext}
+     * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverclient.committransaction#servicebustransactioncontext -->
+     * <pre>
+     * ServiceBusTransactionContext transaction = receiver.createTransaction&#40;&#41;;
+     *
+     * &#47;&#47; Process messages and associate operations with the transaction.
+     * ServiceBusReceivedMessage deferredMessage = receiver.receiveDeferredMessage&#40;sequenceNumber&#41;;
+     * receiver.complete&#40;deferredMessage, new CompleteOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;;
+     * receiver.abandon&#40;receivedMessage, new AbandonOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;;
+     * receiver.commitTransaction&#40;transaction&#41;;
+     * </pre>
+     * <!-- end com.azure.messaging.servicebus.servicebusreceiverclient.committransaction#servicebustransactioncontext -->
      *
      * @param transactionContext The transaction to be rollback.
      *
@@ -656,31 +705,32 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * entity.
      */
     private void queueWork(int maximumMessageCount, Duration maxWaitTime,
-                           FluxSink<ServiceBusReceivedMessage> emitter) {
-        final long id = idGenerator.getAndIncrement();
-        final int prefetch = asyncClient.getReceiverOptions().getPrefetchCount();
-        final int toRequest = prefetch != 0 ? Math.min(maximumMessageCount, prefetch) : maximumMessageCount;
-        final SynchronousReceiveWork work = new SynchronousReceiveWork(id,
-            toRequest,
-            maxWaitTime, emitter);
-        SynchronousMessageSubscriber messageSubscriber = synchronousMessageSubscriber.get();
-        if (messageSubscriber == null) {
-            SynchronousMessageSubscriber newSubscriber = new SynchronousMessageSubscriber(toRequest, work);
-            if (!synchronousMessageSubscriber.compareAndSet(null, newSubscriber)) {
-                newSubscriber.dispose();
-                SynchronousMessageSubscriber existing = synchronousMessageSubscriber.get();
-                existing.queueWork(work);
-            } else {
-                asyncClient.receiveMessagesNoBackPressure().subscribeWith(newSubscriber);
-            }
-        } else {
-            messageSubscriber.queueWork(work);
-        }
-        logger.verbose("[{}] Receive request queued up.", work.getId());
-    }
+        Sinks.Many<ServiceBusReceivedMessage> emitter) {
 
-    OffsetDateTime renewSessionLock(String sessionId) {
-        return asyncClient.renewSessionLock(sessionId).block(operationTimeout);
+        final long id = idGenerator.getAndIncrement();
+        final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maxWaitTime, emitter);
+        final SynchronousMessageSubscriber messageSubscriber = synchronousMessageSubscriber.get();
+
+        if (messageSubscriber != null) {
+            messageSubscriber.queueWork(work);
+            return;
+        }
+
+        final SynchronousMessageSubscriber newSubscriber = new SynchronousMessageSubscriber(work);
+
+        // NOTE: We asynchronously send the credit to the service as soon as receiveMessage() API is called (for first
+        // time).
+        // This means that there may be messages internally buffered before users start iterating the IterableStream.
+        // If users do not iterate through the stream and their lock duration expires, it is possible that the
+        // Service Bus message's delivery count will be incremented.
+        if (synchronousMessageSubscriber.compareAndSet(null, newSubscriber)) {
+            asyncClient.receiveMessagesNoBackPressure().subscribeWith(newSubscriber);
+        } else {
+            newSubscriber.dispose();
+            synchronousMessageSubscriber.get().queueWork(work);
+        }
+
+        logger.verbose("[{}] Receive request queued up.", work.getId());
     }
 
     void renewSessionLock(String sessionId, Duration maxLockRenewalDuration, Consumer<Throwable> onError) {

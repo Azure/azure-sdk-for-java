@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.streamanalytics.fluent.models.AzureSynapseOutputDataSourceProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -15,152 +15,25 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** Describes an Azure Synapse output data source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Microsoft.Sql/Server/DataWarehouse")
-@JsonFlatten
 @Fluent
-public class AzureSynapseOutputDataSource extends OutputDataSource {
+public final class AzureSynapseOutputDataSource extends OutputDataSource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureSynapseOutputDataSource.class);
 
     /*
-     * The name of the SQL server containing the Azure SQL database. Required
-     * on PUT (CreateOrReplace) requests.
-     */
-    @JsonProperty(value = "properties.server")
-    private String server;
-
-    /*
-     * The name of the Azure SQL database. Required on PUT (CreateOrReplace)
-     * requests.
-     */
-    @JsonProperty(value = "properties.database")
-    private String database;
-
-    /*
-     * The name of the table in the Azure SQL database. Required on PUT
-     * (CreateOrReplace) requests.
-     */
-    @JsonProperty(value = "properties.table")
-    private String table;
-
-    /*
-     * The user name that will be used to connect to the Azure SQL database.
+     * The properties that are associated with an Azure Synapse output.
      * Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "properties.user")
-    private String user;
-
-    /*
-     * The password that will be used to connect to the Azure SQL database.
-     * Required on PUT (CreateOrReplace) requests.
-     */
-    @JsonProperty(value = "properties.password")
-    private String password;
+    @JsonProperty(value = "properties")
+    private AzureSynapseOutputDataSourceProperties innerProperties;
 
     /**
-     * Get the server property: The name of the SQL server containing the Azure SQL database. Required on PUT
-     * (CreateOrReplace) requests.
+     * Get the innerProperties property: The properties that are associated with an Azure Synapse output. Required on
+     * PUT (CreateOrReplace) requests.
      *
-     * @return the server value.
+     * @return the innerProperties value.
      */
-    public String server() {
-        return this.server;
-    }
-
-    /**
-     * Set the server property: The name of the SQL server containing the Azure SQL database. Required on PUT
-     * (CreateOrReplace) requests.
-     *
-     * @param server the server value to set.
-     * @return the AzureSynapseOutputDataSource object itself.
-     */
-    public AzureSynapseOutputDataSource withServer(String server) {
-        this.server = server;
-        return this;
-    }
-
-    /**
-     * Get the database property: The name of the Azure SQL database. Required on PUT (CreateOrReplace) requests.
-     *
-     * @return the database value.
-     */
-    public String database() {
-        return this.database;
-    }
-
-    /**
-     * Set the database property: The name of the Azure SQL database. Required on PUT (CreateOrReplace) requests.
-     *
-     * @param database the database value to set.
-     * @return the AzureSynapseOutputDataSource object itself.
-     */
-    public AzureSynapseOutputDataSource withDatabase(String database) {
-        this.database = database;
-        return this;
-    }
-
-    /**
-     * Get the table property: The name of the table in the Azure SQL database. Required on PUT (CreateOrReplace)
-     * requests.
-     *
-     * @return the table value.
-     */
-    public String table() {
-        return this.table;
-    }
-
-    /**
-     * Set the table property: The name of the table in the Azure SQL database. Required on PUT (CreateOrReplace)
-     * requests.
-     *
-     * @param table the table value to set.
-     * @return the AzureSynapseOutputDataSource object itself.
-     */
-    public AzureSynapseOutputDataSource withTable(String table) {
-        this.table = table;
-        return this;
-    }
-
-    /**
-     * Get the user property: The user name that will be used to connect to the Azure SQL database. Required on PUT
-     * (CreateOrReplace) requests.
-     *
-     * @return the user value.
-     */
-    public String user() {
-        return this.user;
-    }
-
-    /**
-     * Set the user property: The user name that will be used to connect to the Azure SQL database. Required on PUT
-     * (CreateOrReplace) requests.
-     *
-     * @param user the user value to set.
-     * @return the AzureSynapseOutputDataSource object itself.
-     */
-    public AzureSynapseOutputDataSource withUser(String user) {
-        this.user = user;
-        return this;
-    }
-
-    /**
-     * Get the password property: The password that will be used to connect to the Azure SQL database. Required on PUT
-     * (CreateOrReplace) requests.
-     *
-     * @return the password value.
-     */
-    public String password() {
-        return this.password;
-    }
-
-    /**
-     * Set the password property: The password that will be used to connect to the Azure SQL database. Required on PUT
-     * (CreateOrReplace) requests.
-     *
-     * @param password the password value to set.
-     * @return the AzureSynapseOutputDataSource object itself.
-     */
-    public AzureSynapseOutputDataSource withPassword(String password) {
-        this.password = password;
-        return this;
+    private AzureSynapseOutputDataSourceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -171,5 +44,8 @@ public class AzureSynapseOutputDataSource extends OutputDataSource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

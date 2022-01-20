@@ -1,5 +1,56 @@
 # Release History
 
+## 3.12.1 (2022-01-06)
+This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.1.
+
+### Dependency Upgrades
+- Upgrade to [spring-boot-dependencies:2.6.1](https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-dependencies/2.6.1/spring-boot-dependencies-2.6.1.pom).
+- Upgrade Azure Spring versions to 3.12.0.
+- Upgrade to [Azure Identity 1.4.2](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/CHANGELOG.md#142-2021-11-24).
+- Upgrade to [Azure Key Vault JCA 2.4.0](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-jca/CHANGELOG.md).
+- Upgrade to [Azure Spring Data Cosmos 3.15.0](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-spring-data-cosmos/CHANGELOG.md#3160-2021-12-21).
+
+### Breaking Changes
+- Remove import of Azure SDK bom.
+
+### Bugs Fixed
+- Fix the bug of no dependency management of Azure SDK libraries.
+
+## 3.12.0 (2021-12-29)
+This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.1.
+
+### Dependency Upgrades
+- Upgrade to [spring-boot-dependencies:2.6.1](https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-dependencies/2.6.1/spring-boot-dependencies-2.6.1.pom).
+- Upgrade Azure Spring versions to 3.12.0.
+
+### Breaking Changes
+- Remove import of Azure SDK bom.
+
+## 3.11.0 (2021-11-26)
+This release is compatible with Spring Boot 2.5.0 - 2.5.4.
+
+### Dependency Upgrades
+- Upgrade Azure SDK bom version to 1.0.6.
+- Upgrade Azure Spring versions to 3.11.0.
+
+
+## 3.10.2 (2021-11-19)
+This release is compatible with Spring Boot 2.5.0 - 2.5.4.
+
+### Bugs Fixed
+Fix bug: the Spring Cloud Azure related dependencies in `azure-spring-boot-bom:3.10.1` are not released. 
+
+## 3.10.1 (2021-11-18)
+This release is compatible with Spring Boot 2.5.0 - 2.5.4.
+
+### Bugs Fixed
+Fix azure-sdk-bom's version error: It should be 1.0.5 instead of 1.0.4.
+
+## 3.10.0 (2021-11-03)
+This release is compatible with Spring Boot 2.5.0 - 2.5.4.
+### Dependency Upgrades
+- Upgrade to [Azure Spring Data Cosmos 3.13.1](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-spring-data-cosmos/CHANGELOG.md#3131-2021-10-27).
+
 ## 3.9.0 (2021-09-26)
 This release is compatible with Spring Boot 2.5.0 - 2.5.4.
 ### Dependency Upgrades

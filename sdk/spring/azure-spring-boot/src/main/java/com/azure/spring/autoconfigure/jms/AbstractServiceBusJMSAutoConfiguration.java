@@ -16,8 +16,16 @@ import javax.jms.ConnectionFactory;
  */
 public abstract class AbstractServiceBusJMSAutoConfiguration {
 
+    /**
+     * The Azure ServiceBus JMS properties
+     */
     protected final AzureServiceBusJMSProperties azureServiceBusJMSProperties;
 
+    /**
+     * Creates a new instance of {@link AbstractServiceBusJMSAutoConfiguration}.
+     *
+     * @param azureServiceBusJMSProperties the Azure ServiceBus JMS properties
+     */
     public AbstractServiceBusJMSAutoConfiguration(AzureServiceBusJMSProperties azureServiceBusJMSProperties) {
         this.azureServiceBusJMSProperties = azureServiceBusJMSProperties;
     }
@@ -69,9 +77,6 @@ public abstract class AbstractServiceBusJMSAutoConfiguration {
 
     private void configureTopicListenerContainerFactory(DefaultJmsListenerContainerFactory jmsListenerContainerFactory) {
         AzureServiceBusJMSProperties.Listener listener = azureServiceBusJMSProperties.getListener();
-        if (azureServiceBusJMSProperties.getTopicClientId() != null) {
-            jmsListenerContainerFactory.setClientId(azureServiceBusJMSProperties.getTopicClientId());
-        }
         if (listener.isReplyPubSubDomain() != null) {
             jmsListenerContainerFactory.setReplyPubSubDomain(listener.isReplyPubSubDomain());
         }

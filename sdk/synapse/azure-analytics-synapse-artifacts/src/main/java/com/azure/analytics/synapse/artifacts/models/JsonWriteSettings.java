@@ -20,7 +20,7 @@ public final class JsonWriteSettings extends FormatWriteSettings {
      * case-sensitive.
      */
     @JsonProperty(value = "filePattern")
-    private JsonWriteFilePattern filePattern;
+    private Object filePattern;
 
     /**
      * Get the filePattern property: File pattern of JSON. This setting controls the way a collection of JSON objects
@@ -28,7 +28,7 @@ public final class JsonWriteSettings extends FormatWriteSettings {
      *
      * @return the filePattern value.
      */
-    public JsonWriteFilePattern getFilePattern() {
+    public Object getFilePattern() {
         return this.filePattern;
     }
 
@@ -39,7 +39,7 @@ public final class JsonWriteSettings extends FormatWriteSettings {
      * @param filePattern the filePattern value to set.
      * @return the JsonWriteSettings object itself.
      */
-    public JsonWriteSettings setFilePattern(JsonWriteFilePattern filePattern) {
+    public JsonWriteSettings setFilePattern(Object filePattern) {
         this.filePattern = filePattern;
         return this;
     }

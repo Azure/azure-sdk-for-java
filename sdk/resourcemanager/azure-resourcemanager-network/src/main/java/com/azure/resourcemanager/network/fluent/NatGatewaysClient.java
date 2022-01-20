@@ -48,7 +48,7 @@ public interface NatGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String natGatewayName);
 
     /**
@@ -61,7 +61,7 @@ public interface NatGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String natGatewayName);
 
     /**
@@ -75,7 +75,7 @@ public interface NatGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String natGatewayName, Context context);
 
     /**
@@ -213,7 +213,7 @@ public interface NatGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nat Gateway resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<NatGatewayInner>, NatGatewayInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String natGatewayName, NatGatewayInner parameters);
 
@@ -228,7 +228,7 @@ public interface NatGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nat Gateway resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NatGatewayInner>, NatGatewayInner> beginCreateOrUpdate(
         String resourceGroupName, String natGatewayName, NatGatewayInner parameters);
 
@@ -244,7 +244,7 @@ public interface NatGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nat Gateway resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NatGatewayInner>, NatGatewayInner> beginCreateOrUpdate(
         String resourceGroupName, String natGatewayName, NatGatewayInner parameters, Context context);
 

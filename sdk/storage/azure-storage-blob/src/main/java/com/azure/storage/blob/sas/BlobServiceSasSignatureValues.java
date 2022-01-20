@@ -53,8 +53,16 @@ public final class BlobServiceSasSignatureValues {
     /**
      * Pin down to highest version that worked with string to sign defined here.
      */
-    private static final String VERSION_DEPRECATED_STRING_TO_SIGN = Configuration.getGlobalConfiguration()
-        .get(Constants.PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, BlobServiceVersion.V2019_12_12.getVersion());
+    private static final String VERSION_DEPRECATED_SHARED_KEY_SAS_STRING_TO_SIGN =
+        Configuration.getGlobalConfiguration()
+            .get(Constants.PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, BlobServiceVersion.V2020_10_02.getVersion());
+
+    /**
+     * Pin down to highest version that worked with string to sign defined here.
+     */
+    private static final String VERSION_DEPRECATED_USER_DELEGATION_SAS_STRING_TO_SIGN =
+        Configuration.getGlobalConfiguration()
+            .get(Constants.PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, BlobServiceVersion.V2019_12_12.getVersion());
 
     private SasProtocol protocol;
 
@@ -89,6 +97,8 @@ public final class BlobServiceSasSignatureValues {
     private String preauthorizedAgentObjectId; /* saoid */
 
     private String correlationId;
+
+    private String encryptionScope;
 
     /**
      * Creates an object with empty values for all fields.
@@ -589,9 +599,10 @@ public final class BlobServiceSasSignatureValues {
         final String canonicalName = getCanonicalName(storageSharedKeyCredentials.getAccountName());
         final String signature = storageSharedKeyCredentials.computeHmac256(stringToSign(canonicalName));
 
-        return new BlobServiceSasQueryParameters(VERSION, this.protocol, this.startTime, this.expiryTime,
-            this.sasIpRange, this.identifier, this.resource, this.permissions, signature, this.cacheControl,
-            this.contentDisposition, this.contentEncoding, this.contentLanguage, this.contentType, null /* delegate */);
+        return new BlobServiceSasQueryParameters(VERSION_DEPRECATED_SHARED_KEY_SAS_STRING_TO_SIGN, this.protocol,
+            this.startTime, this.expiryTime, this.sasIpRange, this.identifier, this.resource, this.permissions,
+            signature, this.cacheControl, this.contentDisposition, this.contentEncoding, this.contentLanguage,
+            this.contentType, null /* delegate */);
     }
 
     /**
@@ -641,10 +652,10 @@ public final class BlobServiceSasSignatureValues {
         String signature = StorageImplUtils.computeHMac256(
             delegationKey.getValue(), stringToSign(delegationKey, canonicalName));
 
-        return new BlobServiceSasQueryParameters(VERSION, this.protocol, this.startTime, this.expiryTime,
-            this.sasIpRange, null /* identifier */, this.resource, this.permissions, signature,
-            this.cacheControl, this.contentDisposition, this.contentEncoding, this.contentLanguage, this.contentType,
-            delegationKey);
+        return new BlobServiceSasQueryParameters(VERSION_DEPRECATED_USER_DELEGATION_SAS_STRING_TO_SIGN, this.protocol,
+            this.startTime, this.expiryTime, this.sasIpRange, null /* identifier */, this.resource, this.permissions,
+            signature, this.cacheControl, this.contentDisposition, this.contentEncoding, this.contentLanguage,
+            this.contentType, delegationKey);
     }
 
     /**
@@ -707,7 +718,7 @@ public final class BlobServiceSasSignatureValues {
             this.identifier == null ? "" : this.identifier,
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
-            VERSION, /* Pin down to version so old string to sign works. */
+            VERSION_DEPRECATED_SHARED_KEY_SAS_STRING_TO_SIGN, /* Pin down to version so old string to sign works. */
             resource,
             this.snapshotId == null ? "" : this.snapshotId,
             this.cacheControl == null ? "" : this.cacheControl,
@@ -732,7 +743,7 @@ public final class BlobServiceSasSignatureValues {
             key.getSignedVersion() == null ? "" : key.getSignedVersion(),
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
-            VERSION_DEPRECATED_STRING_TO_SIGN, /* Pin down to version so old string to sign works. */
+            VERSION_DEPRECATED_USER_DELEGATION_SAS_STRING_TO_SIGN, /* Pin down to version so old string to sign works. */
             resource,
             this.snapshotId == null ? "" : this.snapshotId,
             this.cacheControl == null ? "" : this.cacheControl,

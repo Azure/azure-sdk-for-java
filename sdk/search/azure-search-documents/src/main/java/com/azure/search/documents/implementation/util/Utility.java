@@ -32,7 +32,6 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
-import com.azure.search.documents.implementation.SearchIndexClientImplBuilder;
 import com.azure.search.documents.implementation.converters.IndexDocumentsResultConverter;
 import com.azure.search.documents.implementation.models.IndexBatch;
 import com.azure.search.documents.models.IndexBatchException;
@@ -177,13 +176,7 @@ public final class Utility {
 
     public static SearchIndexClientImpl buildRestClient(SearchServiceVersion serviceVersion, String endpoint,
         String indexName, HttpPipeline httpPipeline, SerializerAdapter adapter) {
-        return new SearchIndexClientImplBuilder()
-            .apiVersion(serviceVersion.getVersion())
-            .endpoint(endpoint)
-            .indexName(indexName)
-            .pipeline(httpPipeline)
-            .serializerAdapter(adapter)
-            .buildClient();
+        return new SearchIndexClientImpl(httpPipeline, adapter, endpoint, indexName, serviceVersion.getVersion());
     }
 
     public static synchronized String formatCoordinate(double coordinate) {

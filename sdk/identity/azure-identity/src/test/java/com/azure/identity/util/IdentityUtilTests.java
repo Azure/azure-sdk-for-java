@@ -24,7 +24,6 @@ public class IdentityUtilTests {
             .setScopes(Arrays.asList("http://vault.azure.net/.default"))
             .setTenantId(newTenant);
         IdentityClientOptions options = new IdentityClientOptions();
-        options.setAllowMultiTenantAuthentication(true);
 
         Assert.assertEquals(newTenant, IdentityUtil.resolveTenantId(currentTenant, trc, options));
     }
@@ -37,7 +36,7 @@ public class IdentityUtilTests {
             .setScopes(Arrays.asList("http://vault.azure.net/.default"))
             .setTenantId("newTenant");
         IdentityClientOptions options = new IdentityClientOptions();
-        options.setAllowMultiTenantAuthentication(false);
+        options.disableMultiTenantAuthentication();
 
         IdentityUtil.resolveTenantId(currentTenant, trc, options);
     }

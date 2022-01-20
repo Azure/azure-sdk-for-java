@@ -79,7 +79,7 @@ public interface EventSubscriptionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return event Subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdate(
         String scope, String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo);
 
@@ -104,7 +104,7 @@ public interface EventSubscriptionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return event Subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdate(
         String scope, String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo, Context context);
 
@@ -174,7 +174,7 @@ public interface EventSubscriptionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String scope, String eventSubscriptionName);
 
     /**
@@ -195,7 +195,7 @@ public interface EventSubscriptionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String scope, String eventSubscriptionName, Context context);
 
     /**
@@ -255,7 +255,7 @@ public interface EventSubscriptionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return event Subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdate(
         String scope,
         String eventSubscriptionName,
@@ -280,7 +280,7 @@ public interface EventSubscriptionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return event Subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdate(
         String scope,
         String eventSubscriptionName,

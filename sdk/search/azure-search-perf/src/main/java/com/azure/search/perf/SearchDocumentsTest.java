@@ -14,6 +14,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Performs searching operations.
  */
 public class SearchDocumentsTest extends ServiceTest<SearchPerfStressOptions> {
+    /**
+     * Creates the search operations performance test.
+     *
+     * @param options Performance test configuration options.
+     */
     public SearchDocumentsTest(SearchPerfStressOptions options) {
         super(options);
     }

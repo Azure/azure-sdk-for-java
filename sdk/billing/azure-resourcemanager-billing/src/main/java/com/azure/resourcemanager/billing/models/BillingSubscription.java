@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.resourcemanager.billing.fluent.models.BillingSubscriptionInner;
+import java.util.List;
 import java.util.UUID;
 
 /** An immutable client-side representation of BillingSubscription. */
@@ -136,6 +137,14 @@ public interface BillingSubscription {
      * @return the skuDescription value.
      */
     String skuDescription();
+
+    /**
+     * Gets the suspensionReasons property: The suspension reason for a subscription. Applies only to subscriptions in
+     * Microsoft Online Services Program billing accounts.
+     *
+     * @return the suspensionReasons value.
+     */
+    List<String> suspensionReasons();
 
     /**
      * Gets the inner com.azure.resourcemanager.billing.fluent.models.BillingSubscriptionInner object.

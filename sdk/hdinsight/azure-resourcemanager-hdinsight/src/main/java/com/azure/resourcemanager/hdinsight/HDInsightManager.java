@@ -28,6 +28,8 @@ import com.azure.resourcemanager.hdinsight.implementation.ExtensionsImpl;
 import com.azure.resourcemanager.hdinsight.implementation.HDInsightManagementClientBuilder;
 import com.azure.resourcemanager.hdinsight.implementation.LocationsImpl;
 import com.azure.resourcemanager.hdinsight.implementation.OperationsImpl;
+import com.azure.resourcemanager.hdinsight.implementation.PrivateEndpointConnectionsImpl;
+import com.azure.resourcemanager.hdinsight.implementation.PrivateLinkResourcesImpl;
 import com.azure.resourcemanager.hdinsight.implementation.ScriptActionsImpl;
 import com.azure.resourcemanager.hdinsight.implementation.ScriptExecutionHistoriesImpl;
 import com.azure.resourcemanager.hdinsight.implementation.VirtualMachinesImpl;
@@ -37,6 +39,8 @@ import com.azure.resourcemanager.hdinsight.models.Configurations;
 import com.azure.resourcemanager.hdinsight.models.Extensions;
 import com.azure.resourcemanager.hdinsight.models.Locations;
 import com.azure.resourcemanager.hdinsight.models.Operations;
+import com.azure.resourcemanager.hdinsight.models.PrivateEndpointConnections;
+import com.azure.resourcemanager.hdinsight.models.PrivateLinkResources;
 import com.azure.resourcemanager.hdinsight.models.ScriptActions;
 import com.azure.resourcemanager.hdinsight.models.ScriptExecutionHistories;
 import com.azure.resourcemanager.hdinsight.models.VirtualMachines;
@@ -65,6 +69,10 @@ public final class HDInsightManager {
     private Operations operations;
 
     private VirtualMachines virtualMachines;
+
+    private PrivateEndpointConnections privateEndpointConnections;
+
+    private PrivateLinkResources privateLinkResources;
 
     private final HDInsightManagementClient clientObject;
 
@@ -202,7 +210,7 @@ public final class HDInsightManager {
                 .append("-")
                 .append("com.azure.resourcemanager.hdinsight")
                 .append("/")
-                .append("1.0.0-beta.4");
+                .append("1.0.0-beta.5");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -312,6 +320,23 @@ public final class HDInsightManager {
             this.virtualMachines = new VirtualMachinesImpl(clientObject.getVirtualMachines(), this);
         }
         return virtualMachines;
+    }
+
+    /** @return Resource collection API of PrivateEndpointConnections. */
+    public PrivateEndpointConnections privateEndpointConnections() {
+        if (this.privateEndpointConnections == null) {
+            this.privateEndpointConnections =
+                new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
+        }
+        return privateEndpointConnections;
+    }
+
+    /** @return Resource collection API of PrivateLinkResources. */
+    public PrivateLinkResources privateLinkResources() {
+        if (this.privateLinkResources == null) {
+            this.privateLinkResources = new PrivateLinkResourcesImpl(clientObject.getPrivateLinkResources(), this);
+        }
+        return privateLinkResources;
     }
 
     /**

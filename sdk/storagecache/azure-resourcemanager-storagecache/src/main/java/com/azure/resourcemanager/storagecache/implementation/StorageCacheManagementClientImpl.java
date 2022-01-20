@@ -227,7 +227,7 @@ public final class StorageCacheManagementClientImpl implements StorageCacheManag
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-05-01";
+        this.apiVersion = "2021-09-01";
         this.operations = new OperationsClientImpl(this);
         this.skus = new SkusClientImpl(this);
         this.usageModels = new UsageModelsClientImpl(this);

@@ -281,7 +281,7 @@ public interface PublicIpAddressesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String publicIpAddressName);
 
     /**
@@ -294,7 +294,7 @@ public interface PublicIpAddressesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String publicIpAddressName);
 
     /**
@@ -308,7 +308,7 @@ public interface PublicIpAddressesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String publicIpAddressName, Context context);
 
@@ -448,7 +448,7 @@ public interface PublicIpAddressesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return public IP address resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<PublicIpAddressInner>, PublicIpAddressInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String publicIpAddressName, PublicIpAddressInner parameters);
 
@@ -463,7 +463,7 @@ public interface PublicIpAddressesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return public IP address resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PublicIpAddressInner>, PublicIpAddressInner> beginCreateOrUpdate(
         String resourceGroupName, String publicIpAddressName, PublicIpAddressInner parameters);
 
@@ -479,7 +479,7 @@ public interface PublicIpAddressesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return public IP address resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PublicIpAddressInner>, PublicIpAddressInner> beginCreateOrUpdate(
         String resourceGroupName, String publicIpAddressName, PublicIpAddressInner parameters, Context context);
 

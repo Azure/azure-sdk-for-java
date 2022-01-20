@@ -708,7 +708,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return event Subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdateAsync(
         String scope, String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -720,7 +720,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
                 this.client.getHttpPipeline(),
                 EventSubscriptionInner.class,
                 EventSubscriptionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -744,7 +744,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return event Subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdateAsync(
         String scope, String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo, Context context) {
         context = this.client.mergeContext(context);
@@ -780,7 +780,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return event Subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdate(
         String scope, String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo) {
         return beginCreateOrUpdateAsync(scope, eventSubscriptionName, eventSubscriptionInfo).getSyncPoller();
@@ -807,7 +807,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return event Subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdate(
         String scope, String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo, Context context) {
         return beginCreateOrUpdateAsync(scope, eventSubscriptionName, eventSubscriptionInfo, context).getSyncPoller();
@@ -1024,12 +1024,13 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String scope, String eventSubscriptionName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(scope, eventSubscriptionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1050,7 +1051,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String scope, String eventSubscriptionName, Context context) {
         context = this.client.mergeContext(context);
@@ -1077,7 +1078,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String scope, String eventSubscriptionName) {
         return beginDeleteAsync(scope, eventSubscriptionName).getSyncPoller();
     }
@@ -1100,7 +1101,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String scope, String eventSubscriptionName, Context context) {
         return beginDeleteAsync(scope, eventSubscriptionName, context).getSyncPoller();
     }
@@ -1332,7 +1333,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return event Subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdateAsync(
         String scope,
         String eventSubscriptionName,
@@ -1346,7 +1347,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
                 this.client.getHttpPipeline(),
                 EventSubscriptionInner.class,
                 EventSubscriptionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1368,7 +1369,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return event Subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdateAsync(
         String scope,
         String eventSubscriptionName,
@@ -1405,7 +1406,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return event Subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdate(
         String scope,
         String eventSubscriptionName,
@@ -1432,7 +1433,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return event Subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdate(
         String scope,
         String eventSubscriptionName,

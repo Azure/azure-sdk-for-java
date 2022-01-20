@@ -20,7 +20,7 @@ jobs:
         mavenPomFile: pom.xml
         goals: 'package'
         # The -Ppackage-assembly profile packages up both libraries into one package
-        options: '$(DefaultOptions) -Ppackage-assembly -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl com.azure:azure-cosmos,com.azure:azure-cosmos-benchmark -am'
+        options: '$(DefaultOptions) -Ppackage-assembly -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl com.azure:azure-cosmos,com.azure:azure-cosmos-benchmark -am'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: $(JavaBuildVersion)
         jdkArchitectureOption: 'x64'
@@ -38,14 +38,14 @@ jobs:
       inputs:
         SourceFolder: '$(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-benchmark/ctl'
         TargetFolder: $(Agent.TempDirectory)/ctl
-        
+
     - task: CopyFiles@2
       displayName: 'Copy benchmark jar for linkedin workload'
       inputs:
         SourceFolder: '$(build.sourcesdirectory)/sdk/cosmos/azure-cosmos-benchmark/target'
         Contents: '*'
         TargetFolder: $(Agent.TempDirectory)/ctl/linkedin
-        
+
     - task: CopyFiles@2
       displayName: 'Copy docker config files for linkedin workload'
       inputs:
@@ -64,7 +64,7 @@ jobs:
         Write-Host "Executing docker push $(ContainerRegistryUrl)/javactl/benchmark"
         docker push $(ContainerRegistryUrl)/javactl/benchmark
       displayName: 'Build and push docker image to registry'
-      
+
     # Below will build the image and push it to azure container registry for linkedin workload
     - pwsh: |
         cd $(Agent.TempDirectory)/ctl/linkedin

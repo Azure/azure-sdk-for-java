@@ -453,7 +453,7 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a server blob auditing policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServerBlobAuditingPolicyInner>, ServerBlobAuditingPolicyInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -485,7 +485,7 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a server blob auditing policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServerBlobAuditingPolicyInner>, ServerBlobAuditingPolicyInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -519,7 +519,7 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a server blob auditing policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerBlobAuditingPolicyInner>, ServerBlobAuditingPolicyInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,
@@ -542,7 +542,7 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a server blob auditing policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerBlobAuditingPolicyInner>, ServerBlobAuditingPolicyInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,

@@ -70,6 +70,18 @@ public final class StreamAnalyticsManagementClientImpl implements StreamAnalytic
         return this.endpoint;
     }
 
+    /** Api Version. */
+    private final String apiVersion;
+
+    /**
+     * Gets Api Version.
+     *
+     * @return the apiVersion value.
+     */
+    public String getApiVersion() {
+        return this.apiVersion;
+    }
+
     /** The HTTP pipeline to send requests through. */
     private final HttpPipeline httpPipeline;
 
@@ -106,16 +118,28 @@ public final class StreamAnalyticsManagementClientImpl implements StreamAnalytic
         return this.defaultPollInterval;
     }
 
-    /** The FunctionsClient object to access its operations. */
-    private final FunctionsClient functions;
+    /** The OperationsClient object to access its operations. */
+    private final OperationsClient operations;
 
     /**
-     * Gets the FunctionsClient object to access its operations.
+     * Gets the OperationsClient object to access its operations.
      *
-     * @return the FunctionsClient object.
+     * @return the OperationsClient object.
      */
-    public FunctionsClient getFunctions() {
-        return this.functions;
+    public OperationsClient getOperations() {
+        return this.operations;
+    }
+
+    /** The StreamingJobsClient object to access its operations. */
+    private final StreamingJobsClient streamingJobs;
+
+    /**
+     * Gets the StreamingJobsClient object to access its operations.
+     *
+     * @return the StreamingJobsClient object.
+     */
+    public StreamingJobsClient getStreamingJobs() {
+        return this.streamingJobs;
     }
 
     /** The InputsClient object to access its operations. */
@@ -142,30 +166,6 @@ public final class StreamAnalyticsManagementClientImpl implements StreamAnalytic
         return this.outputs;
     }
 
-    /** The StreamingJobsClient object to access its operations. */
-    private final StreamingJobsClient streamingJobs;
-
-    /**
-     * Gets the StreamingJobsClient object to access its operations.
-     *
-     * @return the StreamingJobsClient object.
-     */
-    public StreamingJobsClient getStreamingJobs() {
-        return this.streamingJobs;
-    }
-
-    /** The SubscriptionsClient object to access its operations. */
-    private final SubscriptionsClient subscriptions;
-
-    /**
-     * Gets the SubscriptionsClient object to access its operations.
-     *
-     * @return the SubscriptionsClient object.
-     */
-    public SubscriptionsClient getSubscriptions() {
-        return this.subscriptions;
-    }
-
     /** The TransformationsClient object to access its operations. */
     private final TransformationsClient transformations;
 
@@ -178,16 +178,28 @@ public final class StreamAnalyticsManagementClientImpl implements StreamAnalytic
         return this.transformations;
     }
 
-    /** The OperationsClient object to access its operations. */
-    private final OperationsClient operations;
+    /** The FunctionsClient object to access its operations. */
+    private final FunctionsClient functions;
 
     /**
-     * Gets the OperationsClient object to access its operations.
+     * Gets the FunctionsClient object to access its operations.
      *
-     * @return the OperationsClient object.
+     * @return the FunctionsClient object.
      */
-    public OperationsClient getOperations() {
-        return this.operations;
+    public FunctionsClient getFunctions() {
+        return this.functions;
+    }
+
+    /** The SubscriptionsClient object to access its operations. */
+    private final SubscriptionsClient subscriptions;
+
+    /**
+     * Gets the SubscriptionsClient object to access its operations.
+     *
+     * @return the SubscriptionsClient object.
+     */
+    public SubscriptionsClient getSubscriptions() {
+        return this.subscriptions;
     }
 
     /** The ClustersClient object to access its operations. */
@@ -236,13 +248,14 @@ public final class StreamAnalyticsManagementClientImpl implements StreamAnalytic
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.functions = new FunctionsClientImpl(this);
+        this.apiVersion = "2020-03-01";
+        this.operations = new OperationsClientImpl(this);
+        this.streamingJobs = new StreamingJobsClientImpl(this);
         this.inputs = new InputsClientImpl(this);
         this.outputs = new OutputsClientImpl(this);
-        this.streamingJobs = new StreamingJobsClientImpl(this);
-        this.subscriptions = new SubscriptionsClientImpl(this);
         this.transformations = new TransformationsClientImpl(this);
-        this.operations = new OperationsClientImpl(this);
+        this.functions = new FunctionsClientImpl(this);
+        this.subscriptions = new SubscriptionsClientImpl(this);
         this.clusters = new ClustersClientImpl(this);
         this.privateEndpoints = new PrivateEndpointsClientImpl(this);
     }

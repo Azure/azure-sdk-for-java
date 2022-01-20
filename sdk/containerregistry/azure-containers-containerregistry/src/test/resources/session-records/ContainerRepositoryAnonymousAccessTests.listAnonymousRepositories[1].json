@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.azurecr.io/oauth2/token",
+    "Uri" : "https://REDACTED.azurecr.io/oauth2/token?api-version=2021-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "60b4a037-c7a7-4026-90ab-2fbbced65bb3",
+      "x-ms-client-request-id" : "177e5e36-18bd-4ea9-af50-5539e3807a9b",
       "Content-Type" : "application/x-www-form-urlencoded"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Ms-Correlation-Request-Id" : "b4bed328-49fa-41a8-b164-03ba1d4a18fb",
+      "X-Ms-Correlation-Request-Id" : "c15d8d26-706d-4f7e-ac10-f10da69d75cb",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "openresty",
       "Connection" : "keep-alive",
-      "x-ms-ratelimit-remaining-calls-per-second" : "166.616667",
+      "x-ms-ratelimit-remaining-calls-per-second" : "166.65",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"access_token\":\"REDACTED\"}",
-      "Date" : "Fri, 06 Aug 2021 00:14:07 GMT",
+      "Date" : "Tue, 05 Oct 2021 01:58:27 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.azurecr.io/acr/v1/_catalog",
+    "Uri" : "https://REDACTED.azurecr.io/acr/v1/_catalog?api-version=2021-07-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "29423b73-0d65-48dd-b646-76754266a05d"
+      "x-ms-client-request-id" : "9f27db20-184d-472a-b40b-33e4ed437ec2"
     },
     "Response" : {
       "content-length" : "41",
@@ -35,9 +35,9 @@
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 06 Aug 2021 00:14:07 GMT",
+      "Date" : "Tue, 05 Oct 2021 01:58:27 GMT",
       "Docker-Distribution-Api-Version" : "registry/2.0",
-      "X-Ms-Correlation-Request-Id" : "5dad09b8-ff7b-4051-a2b5-8db1cf1710c6",
+      "X-Ms-Correlation-Request-Id" : "7b281a29-443d-4860-a02b-6723c70c5e6c",
       "Access-Control-Expose-Headers" : "Docker-Content-Digest,WWW-Authenticate,Link,X-Ms-Correlation-Request-Id",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains,max-age=31536000; includeSubDomains",
       "Body" : "{\"repositories\":[\"library/hello-world\"]}\n",

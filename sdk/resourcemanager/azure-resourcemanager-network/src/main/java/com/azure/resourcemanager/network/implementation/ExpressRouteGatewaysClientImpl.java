@@ -178,7 +178,7 @@ public final class ExpressRouteGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -212,7 +212,7 @@ public final class ExpressRouteGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -293,7 +293,7 @@ public final class ExpressRouteGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -338,7 +338,7 @@ public final class ExpressRouteGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -448,7 +448,7 @@ public final class ExpressRouteGatewaysClientImpl
         } else {
             putExpressRouteGatewayParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -513,7 +513,7 @@ public final class ExpressRouteGatewaysClientImpl
         } else {
             putExpressRouteGatewayParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -539,7 +539,7 @@ public final class ExpressRouteGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRoute gateway resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ExpressRouteGatewayInner>, ExpressRouteGatewayInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String expressRouteGatewayName,
@@ -554,7 +554,7 @@ public final class ExpressRouteGatewaysClientImpl
                 this.client.getHttpPipeline(),
                 ExpressRouteGatewayInner.class,
                 ExpressRouteGatewayInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -569,7 +569,7 @@ public final class ExpressRouteGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRoute gateway resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ExpressRouteGatewayInner>, ExpressRouteGatewayInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String expressRouteGatewayName,
@@ -600,7 +600,7 @@ public final class ExpressRouteGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRoute gateway resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteGatewayInner>, ExpressRouteGatewayInner> beginCreateOrUpdate(
         String resourceGroupName,
         String expressRouteGatewayName,
@@ -621,7 +621,7 @@ public final class ExpressRouteGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRoute gateway resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteGatewayInner>, ExpressRouteGatewayInner> beginCreateOrUpdate(
         String resourceGroupName,
         String expressRouteGatewayName,
@@ -763,7 +763,7 @@ public final class ExpressRouteGatewaysClientImpl
         } else {
             expressRouteGatewayParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -828,7 +828,7 @@ public final class ExpressRouteGatewaysClientImpl
         } else {
             expressRouteGatewayParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -854,7 +854,7 @@ public final class ExpressRouteGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRoute gateway resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ExpressRouteGatewayInner>, ExpressRouteGatewayInner> beginUpdateTagsAsync(
         String resourceGroupName, String expressRouteGatewayName, TagsObject expressRouteGatewayParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -866,7 +866,7 @@ public final class ExpressRouteGatewaysClientImpl
                 this.client.getHttpPipeline(),
                 ExpressRouteGatewayInner.class,
                 ExpressRouteGatewayInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -881,7 +881,7 @@ public final class ExpressRouteGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRoute gateway resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ExpressRouteGatewayInner>, ExpressRouteGatewayInner> beginUpdateTagsAsync(
         String resourceGroupName,
         String expressRouteGatewayName,
@@ -912,7 +912,7 @@ public final class ExpressRouteGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRoute gateway resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteGatewayInner>, ExpressRouteGatewayInner> beginUpdateTags(
         String resourceGroupName, String expressRouteGatewayName, TagsObject expressRouteGatewayParameters) {
         return beginUpdateTagsAsync(resourceGroupName, expressRouteGatewayName, expressRouteGatewayParameters)
@@ -931,7 +931,7 @@ public final class ExpressRouteGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRoute gateway resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteGatewayInner>, ExpressRouteGatewayInner> beginUpdateTags(
         String resourceGroupName,
         String expressRouteGatewayName,
@@ -1056,7 +1056,7 @@ public final class ExpressRouteGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1108,7 +1108,7 @@ public final class ExpressRouteGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1213,7 +1213,7 @@ public final class ExpressRouteGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1266,7 +1266,7 @@ public final class ExpressRouteGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1291,13 +1291,14 @@ public final class ExpressRouteGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String expressRouteGatewayName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, expressRouteGatewayName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1312,7 +1313,7 @@ public final class ExpressRouteGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String expressRouteGatewayName, Context context) {
         context = this.client.mergeContext(context);
@@ -1334,7 +1335,7 @@ public final class ExpressRouteGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String expressRouteGatewayName) {
         return beginDeleteAsync(resourceGroupName, expressRouteGatewayName).getSyncPoller();
     }
@@ -1351,7 +1352,7 @@ public final class ExpressRouteGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String expressRouteGatewayName, Context context) {
         return beginDeleteAsync(resourceGroupName, expressRouteGatewayName, context).getSyncPoller();

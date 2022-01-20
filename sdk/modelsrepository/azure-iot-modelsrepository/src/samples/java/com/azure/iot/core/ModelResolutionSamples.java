@@ -21,7 +21,7 @@ public class ModelResolutionSamples {
     public static void clientInitializationSamples() {
         // When no URI is provided for instantiation, the Azure IoT Models Repository global endpoint
         // https://devicemodels.azure.com/ is used and the model dependency resolution
-        // configuration is set to TryFromExpanded.
+        // configuration is set to Enabled.
         ModelsRepositoryAsyncClient asyncClient = new ModelsRepositoryClientBuilder()
             .buildAsyncClient();
 
@@ -70,7 +70,7 @@ public class ModelResolutionSamples {
             .buildAsyncClient();
 
         // The output of getModels will include at least the definition for the target dtmi.
-        // If the model dependency resolution configuration is not disabled, then models in which the
+        // If the model dependency resolution configuration is enabled, then models in which the
         // target dtmi depends on will also be included in the returned Map<String, String>.
         String targetDtmi = "dtmi:com:example:TemperatureController;1";
 
@@ -92,7 +92,7 @@ public class ModelResolutionSamples {
 
         // When given an Iterable of dtmis, the output of getModels() will include at
         // least the definitions of each dtmi enumerated in the Iterable.
-        // If the model dependency resolution configuration is not disabled, then models in which each
+        // If the model dependency resolution configuration is enabled, then models in which each
         // enumerated dtmi depends on will also be included in the returned Map<String, String>.
         Iterable<String> dtmis = Arrays.asList("dtmi:com:example:TemperatureController;1", "dtmi:com:example:azuresphere:sampledevice;1");
 
@@ -115,7 +115,7 @@ public class ModelResolutionSamples {
             .buildAsyncClient();
 
         // The output of getModels will include at least the definition for the target dtmi.
-        // If the model dependency resolution configuration is not disabled, then models in which the
+        // If the model dependency resolution configuration is enabled, then models in which the
         // target dtmi depends on will also be included in the returned Map<String, String>.
         String targetDtmi = "dtmi:com:example:TemperatureController;1";
 

@@ -5,6 +5,7 @@ package com.azure.communication.networktraversal;
 
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.identity.CommunicationIdentityClientBuilder;
+import com.azure.communication.identity.CommunicationIdentityServiceVersion;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -107,6 +108,7 @@ public class CommunicationRelayClientTestBase extends TestBase {
 
         builder
             .endpoint(communicationEndpoint)
+            .serviceVersion(CommunicationIdentityServiceVersion.V2021_03_07)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -144,6 +146,7 @@ public class CommunicationRelayClientTestBase extends TestBase {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder
             .connectionString(CONNECTION_STRING)
+            .serviceVersion(CommunicationIdentityServiceVersion.V2021_03_07)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {

@@ -239,7 +239,7 @@ public interface NetworkInterfacesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkInterfaceName);
 
     /**
@@ -252,7 +252,7 @@ public interface NetworkInterfacesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkInterfaceName);
 
     /**
@@ -266,7 +266,7 @@ public interface NetworkInterfacesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String networkInterfaceName, Context context);
 
@@ -406,7 +406,7 @@ public interface NetworkInterfacesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a network interface in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters);
 
@@ -421,7 +421,7 @@ public interface NetworkInterfacesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a network interface in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginCreateOrUpdate(
         String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters);
 
@@ -437,7 +437,7 @@ public interface NetworkInterfacesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a network interface in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginCreateOrUpdate(
         String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters, Context context);
 
@@ -640,7 +640,7 @@ public interface NetworkInterfacesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all route tables applied to a network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<EffectiveRouteListResultInner>, EffectiveRouteListResultInner>
         beginGetEffectiveRouteTableAsync(String resourceGroupName, String networkInterfaceName);
 
@@ -654,7 +654,7 @@ public interface NetworkInterfacesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all route tables applied to a network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EffectiveRouteListResultInner>, EffectiveRouteListResultInner> beginGetEffectiveRouteTable(
         String resourceGroupName, String networkInterfaceName);
 
@@ -669,7 +669,7 @@ public interface NetworkInterfacesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all route tables applied to a network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EffectiveRouteListResultInner>, EffectiveRouteListResultInner> beginGetEffectiveRouteTable(
         String resourceGroupName, String networkInterfaceName, Context context);
 
@@ -739,7 +739,7 @@ public interface NetworkInterfacesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network security groups applied to a network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<EffectiveNetworkSecurityGroupListResultInner>, EffectiveNetworkSecurityGroupListResultInner>
         beginListEffectiveNetworkSecurityGroupsAsync(String resourceGroupName, String networkInterfaceName);
 
@@ -753,7 +753,7 @@ public interface NetworkInterfacesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network security groups applied to a network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EffectiveNetworkSecurityGroupListResultInner>, EffectiveNetworkSecurityGroupListResultInner>
         beginListEffectiveNetworkSecurityGroups(String resourceGroupName, String networkInterfaceName);
 
@@ -768,7 +768,7 @@ public interface NetworkInterfacesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network security groups applied to a network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EffectiveNetworkSecurityGroupListResultInner>, EffectiveNetworkSecurityGroupListResultInner>
         beginListEffectiveNetworkSecurityGroups(String resourceGroupName, String networkInterfaceName, Context context);
 

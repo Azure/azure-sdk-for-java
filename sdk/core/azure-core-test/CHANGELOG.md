@@ -10,6 +10,44 @@
 
 ### Other Changes
 
+## 1.7.7 (2022-01-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.0` to `1.24.1`.
+
+## 1.7.6 (2022-01-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.23.1` to `1.24.0`.
+
+## 1.7.5 (2021-12-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.22.0` to `1.23.1`.
+
+## 1.7.4 (2021-11-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.21.0` to `1.22.0`.
+
+## 1.7.3 (2021-10-15)
+
+### Bugs Fixed
+
+- Fixed a bug where an exception may be thrown when recording test runs.
+
 ## 1.7.2 (2021-10-01)
 
 ### Other Changes

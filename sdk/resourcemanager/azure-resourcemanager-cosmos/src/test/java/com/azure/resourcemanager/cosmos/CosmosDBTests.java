@@ -266,7 +266,7 @@ public class CosmosDBTests extends ResourceManagerTestBase {
                 .withDataModelAzureTable()
                 .withEventualConsistency()
                 .withWriteReplication(Region.US_EAST)
-                .withReadReplication(Region.US_EAST2)
+                .withReadReplication(Region.US_WEST)
                 .withTag("tag1", "value1")
                 .create();
 

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.0-beta.2 (Unreleased)
+## 1.5.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,40 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.4.3 (2022-01-11)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.24.1
+
+
+## 1.4.2 (2021-11-24)
+
+### Bugs Fixed
+- Fixes the edge case scenario when MSI Tokens return both `expires_on` and `expires_in` fields populated for `ManagedIdentityCredential`.
+
+## 1.4.1 (2021-11-09)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.22.0
+
+#### Behavioral Changes
+- The `ManagedIdentityCredential` reads value of AZURE_POD_IDENTITY_TOKEN_URL environment variable from AZURE_POD_IDENTITY_AUTHORITY_HOST now.
+
+## 1.4.0 (2021-10-14)
+
+### Features Added
+- Added `tenantId` setter on `AzurePowerShellCredential` and `AzureCliCredential`
+
+### Breaking Changes from 1.4.0-beta.1
+Note the breaking changes below don't apply if you're upgrading from a previous released stable version.
+
+- Removed 'AzureApplicationCredential' and 'AzureApplicationCredentialBuilder'
+- Removed 'regionalAuthority' setter on `ClientSecretCredentialBuilder` and `ClientCertificateCredentialBuilder`
+- Removed `RegionalAuthority` enum class.
+- Removed `allowMultiTenantAuthentication` method from Credential Builders. The Multi Tenant Authentication is enabled by default now.
 
 ## 1.3.7 (2021-10-04)
 

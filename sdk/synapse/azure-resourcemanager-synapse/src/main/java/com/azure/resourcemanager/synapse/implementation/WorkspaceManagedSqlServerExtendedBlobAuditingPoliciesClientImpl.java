@@ -455,7 +455,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an extended server blob auditing policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -487,7 +487,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an extended server blob auditing policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -521,7 +521,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an extended server blob auditing policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -545,7 +545,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an extended server blob auditing policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
         beginCreateOrUpdate(
             String resourceGroupName,

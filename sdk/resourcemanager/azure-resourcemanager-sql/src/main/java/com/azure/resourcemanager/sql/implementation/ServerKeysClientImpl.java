@@ -629,7 +629,11 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
         return this
             .client
             .<ServerKeyInner, ServerKeyInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ServerKeyInner.class, ServerKeyInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                ServerKeyInner.class,
+                ServerKeyInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -922,7 +926,8 @@ public final class ServerKeysClientImpl implements ServerKeysClient {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serverName, keyName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

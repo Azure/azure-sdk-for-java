@@ -48,6 +48,10 @@ public final class GlobalReachConnectionImpl
         return this.innerModel().peerExpressRouteCircuit();
     }
 
+    public String expressRouteId() {
+        return this.innerModel().expressRouteId();
+    }
+
     public GlobalReachConnectionInner innerModel() {
         return this.innerObject;
     }
@@ -154,6 +158,11 @@ public final class GlobalReachConnectionImpl
 
     public GlobalReachConnectionImpl withPeerExpressRouteCircuit(String peerExpressRouteCircuit) {
         this.innerModel().withPeerExpressRouteCircuit(peerExpressRouteCircuit);
+        return this;
+    }
+
+    public GlobalReachConnectionImpl withExpressRouteId(String expressRouteId) {
+        this.innerModel().withExpressRouteId(expressRouteId);
         return this;
     }
 }

@@ -112,7 +112,7 @@ public interface VpnConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnConnection Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VpnConnectionInner>, VpnConnectionInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String gatewayName,
@@ -131,7 +131,7 @@ public interface VpnConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnConnection Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VpnConnectionInner>, VpnConnectionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String gatewayName,
@@ -151,7 +151,7 @@ public interface VpnConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnConnection Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VpnConnectionInner>, VpnConnectionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String gatewayName,
@@ -244,7 +244,7 @@ public interface VpnConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String gatewayName, String connectionName);
 
@@ -259,7 +259,7 @@ public interface VpnConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String gatewayName, String connectionName);
 
     /**
@@ -274,7 +274,7 @@ public interface VpnConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String gatewayName, String connectionName, Context context);
 
@@ -352,7 +352,7 @@ public interface VpnConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<String>, String> beginStartPacketCaptureAsync(
         String resourceGroupName,
         String gatewayName,
@@ -372,7 +372,7 @@ public interface VpnConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<String>, String> beginStartPacketCapture(
         String resourceGroupName,
         String gatewayName,
@@ -393,7 +393,7 @@ public interface VpnConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<String>, String> beginStartPacketCapture(
         String resourceGroupName,
         String gatewayName,
@@ -522,7 +522,7 @@ public interface VpnConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<String>, String> beginStopPacketCaptureAsync(
         String resourceGroupName,
         String gatewayName,
@@ -541,7 +541,7 @@ public interface VpnConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<String>, String> beginStopPacketCapture(
         String resourceGroupName,
         String gatewayName,
@@ -561,7 +561,7 @@ public interface VpnConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<String>, String> beginStopPacketCapture(
         String resourceGroupName,
         String gatewayName,

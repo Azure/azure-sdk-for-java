@@ -30,6 +30,20 @@ public interface PolicyMetadata {
     String name();
 
     /**
+     * Gets the description property: The description of the policy metadata.
+     *
+     * @return the description value.
+     */
+    String description();
+
+    /**
+     * Gets the requirements property: The requirements of the policy metadata.
+     *
+     * @return the requirements value.
+     */
+    String requirements();
+
+    /**
      * Gets the metadataId property: The policy metadata identifier.
      *
      * @return the metadataId value.
@@ -70,20 +84,6 @@ public interface PolicyMetadata {
      * @return the metadata value.
      */
     Object metadata();
-
-    /**
-     * Gets the description property: The description of the policy metadata.
-     *
-     * @return the description value.
-     */
-    String description();
-
-    /**
-     * Gets the requirements property: The requirements of the policy metadata.
-     *
-     * @return the requirements value.
-     */
-    String requirements();
 
     /**
      * Gets the inner com.azure.resourcemanager.policyinsights.fluent.models.PolicyMetadataInner object.

@@ -10,6 +10,7 @@ import com.azure.resourcemanager.storagecache.models.BlobNfsTarget;
 import com.azure.resourcemanager.storagecache.models.ClfsTarget;
 import com.azure.resourcemanager.storagecache.models.NamespaceJunction;
 import com.azure.resourcemanager.storagecache.models.Nfs3Target;
+import com.azure.resourcemanager.storagecache.models.OperationalStateType;
 import com.azure.resourcemanager.storagecache.models.ProvisioningStateType;
 import com.azure.resourcemanager.storagecache.models.StorageTargetType;
 import com.azure.resourcemanager.storagecache.models.UnknownTarget;
@@ -40,6 +41,12 @@ public final class StorageTargetProperties {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningStateType provisioningState;
+
+    /*
+     * Storage target operational state.
+     */
+    @JsonProperty(value = "state")
+    private OperationalStateType state;
 
     /*
      * Properties when targetType is nfs3.
@@ -113,6 +120,26 @@ public final class StorageTargetProperties {
      */
     public ProvisioningStateType provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the state property: Storage target operational state.
+     *
+     * @return the state value.
+     */
+    public OperationalStateType state() {
+        return this.state;
+    }
+
+    /**
+     * Set the state property: Storage target operational state.
+     *
+     * @param state the state value to set.
+     * @return the StorageTargetProperties object itself.
+     */
+    public StorageTargetProperties withState(OperationalStateType state) {
+        this.state = state;
+        return this;
     }
 
     /**

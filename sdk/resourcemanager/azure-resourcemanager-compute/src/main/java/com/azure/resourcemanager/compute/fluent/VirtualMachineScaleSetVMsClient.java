@@ -36,7 +36,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(
@@ -55,9 +55,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginReimageAsync(
         String resourceGroupName,
         String vmScaleSetName,
@@ -74,9 +74,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginReimage(
         String resourceGroupName,
         String vmScaleSetName,
@@ -94,9 +94,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginReimage(
         String resourceGroupName,
         String vmScaleSetName,
@@ -114,7 +114,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> reimageAsync(
@@ -132,7 +132,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> reimageAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
@@ -198,7 +198,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> reimageAllWithResponseAsync(
@@ -214,9 +214,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginReimageAllAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId);
 
@@ -230,9 +230,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginReimageAll(
         String resourceGroupName, String vmScaleSetName, String instanceId);
 
@@ -247,9 +247,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginReimageAll(
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context);
 
@@ -263,7 +263,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> reimageAllAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
@@ -307,7 +307,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deallocateWithResponseAsync(
@@ -323,9 +323,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId);
 
@@ -339,9 +339,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeallocate(
         String resourceGroupName, String vmScaleSetName, String instanceId);
 
@@ -356,9 +356,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeallocate(
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context);
 
@@ -372,7 +372,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deallocateAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
@@ -416,7 +416,8 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a virtual machine scale set virtual machine.
+     * @return describes a virtual machine scale set virtual machine along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -432,9 +433,10 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a virtual machine scale set virtual machine.
+     * @return describes a virtual machine scale set virtual machine along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VirtualMachineScaleSetVMInner>, VirtualMachineScaleSetVMInner> beginUpdateAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId, VirtualMachineScaleSetVMInner parameters);
 
@@ -448,9 +450,10 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a virtual machine scale set virtual machine.
+     * @return describes a virtual machine scale set virtual machine along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineScaleSetVMInner>, VirtualMachineScaleSetVMInner> beginUpdate(
         String resourceGroupName, String vmScaleSetName, String instanceId, VirtualMachineScaleSetVMInner parameters);
 
@@ -465,9 +468,10 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a virtual machine scale set virtual machine.
+     * @return describes a virtual machine scale set virtual machine along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineScaleSetVMInner>, VirtualMachineScaleSetVMInner> beginUpdate(
         String resourceGroupName,
         String vmScaleSetName,
@@ -485,7 +489,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a virtual machine scale set virtual machine.
+     * @return describes a virtual machine scale set virtual machine on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<VirtualMachineScaleSetVMInner> updateAsync(
@@ -539,7 +543,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -556,9 +560,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId, Boolean forceDeletion);
 
@@ -573,9 +577,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String vmScaleSetName, String instanceId, Boolean forceDeletion);
 
@@ -591,9 +595,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String vmScaleSetName, String instanceId, Boolean forceDeletion, Context context);
 
@@ -608,7 +612,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String vmScaleSetName, String instanceId, Boolean forceDeletion);
@@ -622,7 +626,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
@@ -683,7 +687,8 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine from a VM scale set.
+     * @return a virtual machine from a VM scale set along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<VirtualMachineScaleSetVMInner>> getWithResponseAsync(
@@ -700,7 +705,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine from a VM scale set.
+     * @return a virtual machine from a VM scale set on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<VirtualMachineScaleSetVMInner> getAsync(
@@ -715,7 +720,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine from a VM scale set.
+     * @return a virtual machine from a VM scale set on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<VirtualMachineScaleSetVMInner> getAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
@@ -746,7 +751,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine from a VM scale set.
+     * @return a virtual machine from a VM scale set along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VirtualMachineScaleSetVMInner> getWithResponse(
@@ -761,7 +766,8 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a virtual machine from a VM scale set.
+     * @return the status of a virtual machine from a VM scale set along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<VirtualMachineScaleSetVMInstanceViewInner>> getInstanceViewWithResponseAsync(
@@ -776,7 +782,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a virtual machine from a VM scale set.
+     * @return the status of a virtual machine from a VM scale set on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<VirtualMachineScaleSetVMInstanceViewInner> getInstanceViewAsync(
@@ -807,7 +813,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a virtual machine from a VM scale set.
+     * @return the status of a virtual machine from a VM scale set along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VirtualMachineScaleSetVMInstanceViewInner> getInstanceViewWithResponse(
@@ -894,7 +900,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> powerOffWithResponseAsync(
@@ -913,9 +919,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginPowerOffAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId, Boolean skipShutdown);
 
@@ -932,9 +938,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginPowerOff(
         String resourceGroupName, String vmScaleSetName, String instanceId, Boolean skipShutdown);
 
@@ -952,9 +958,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginPowerOff(
         String resourceGroupName, String vmScaleSetName, String instanceId, Boolean skipShutdown, Context context);
 
@@ -971,7 +977,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> powerOffAsync(String resourceGroupName, String vmScaleSetName, String instanceId, Boolean skipShutdown);
@@ -986,7 +992,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> powerOffAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
@@ -1050,7 +1056,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(
@@ -1065,9 +1071,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRestartAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId);
 
@@ -1080,9 +1086,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String vmScaleSetName, String instanceId);
 
     /**
@@ -1095,9 +1101,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestart(
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context);
 
@@ -1110,7 +1116,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> restartAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
@@ -1151,7 +1157,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
@@ -1166,9 +1172,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId);
 
@@ -1181,9 +1187,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String vmScaleSetName, String instanceId);
 
     /**
@@ -1196,9 +1202,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context);
 
@@ -1211,7 +1217,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> startAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
@@ -1252,7 +1258,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> redeployWithResponseAsync(
@@ -1267,9 +1273,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRedeployAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId);
 
@@ -1282,9 +1288,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRedeploy(
         String resourceGroupName, String vmScaleSetName, String instanceId);
 
@@ -1298,9 +1304,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRedeploy(
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context);
 
@@ -1313,7 +1319,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> redeployAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
@@ -1357,7 +1363,8 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SAS URIs of the console screenshot and serial log blobs.
+     * @return the SAS URIs of the console screenshot and serial log blobs along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<RetrieveBootDiagnosticsDataResultInner>> retrieveBootDiagnosticsDataWithResponseAsync(
@@ -1375,7 +1382,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SAS URIs of the console screenshot and serial log blobs.
+     * @return the SAS URIs of the console screenshot and serial log blobs on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RetrieveBootDiagnosticsDataResultInner> retrieveBootDiagnosticsDataAsync(
@@ -1390,7 +1397,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SAS URIs of the console screenshot and serial log blobs.
+     * @return the SAS URIs of the console screenshot and serial log blobs on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RetrieveBootDiagnosticsDataResultInner> retrieveBootDiagnosticsDataAsync(
@@ -1424,7 +1431,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SAS URIs of the console screenshot and serial log blobs.
+     * @return the SAS URIs of the console screenshot and serial log blobs along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RetrieveBootDiagnosticsDataResultInner> retrieveBootDiagnosticsDataWithResponse(
@@ -1443,7 +1450,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> performMaintenanceWithResponseAsync(
@@ -1458,9 +1465,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginPerformMaintenanceAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId);
 
@@ -1473,9 +1480,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginPerformMaintenance(
         String resourceGroupName, String vmScaleSetName, String instanceId);
 
@@ -1489,9 +1496,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginPerformMaintenance(
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context);
 
@@ -1504,7 +1511,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> performMaintenanceAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
@@ -1545,7 +1552,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> simulateEvictionWithResponseAsync(
@@ -1560,7 +1567,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> simulateEvictionAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
@@ -1588,7 +1595,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> simulateEvictionWithResponse(
@@ -1604,7 +1611,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> runCommandWithResponseAsync(
@@ -1620,9 +1627,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommandAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId, RunCommandInput parameters);
 
@@ -1636,9 +1643,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommand(
         String resourceGroupName, String vmScaleSetName, String instanceId, RunCommandInput parameters);
 
@@ -1653,9 +1660,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommand(
         String resourceGroupName,
         String vmScaleSetName,
@@ -1673,7 +1680,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RunCommandResultInner> runCommandAsync(

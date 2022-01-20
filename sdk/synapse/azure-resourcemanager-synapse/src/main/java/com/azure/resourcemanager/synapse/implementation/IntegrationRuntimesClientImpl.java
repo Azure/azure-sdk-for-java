@@ -848,7 +848,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration runtime resource type.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IntegrationRuntimeResourceInner>, IntegrationRuntimeResourceInner> beginCreateAsync(
         String resourceGroupName,
         String workspaceName,
@@ -883,7 +883,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration runtime resource type.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IntegrationRuntimeResourceInner>, IntegrationRuntimeResourceInner> beginCreateAsync(
         String resourceGroupName,
         String workspaceName,
@@ -919,7 +919,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration runtime resource type.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IntegrationRuntimeResourceInner>, IntegrationRuntimeResourceInner> beginCreate(
         String resourceGroupName,
         String workspaceName,
@@ -945,7 +945,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration runtime resource type.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IntegrationRuntimeResourceInner>, IntegrationRuntimeResourceInner> beginCreate(
         String resourceGroupName,
         String workspaceName,
@@ -1234,7 +1234,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String workspaceName, String integrationRuntimeName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1256,7 +1256,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
         context = this.client.mergeContext(context);
@@ -1278,7 +1278,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String workspaceName, String integrationRuntimeName) {
         return beginDeleteAsync(resourceGroupName, workspaceName, integrationRuntimeName).getSyncPoller();
@@ -1296,7 +1296,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
         return beginDeleteAsync(resourceGroupName, workspaceName, integrationRuntimeName, context).getSyncPoller();
@@ -1836,7 +1836,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration runtime status response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner>
         beginStartAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1863,7 +1863,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration runtime status response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner>
         beginStartAsync(
             String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
@@ -1891,7 +1891,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration runtime status response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner>
         beginStart(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
         return beginStartAsync(resourceGroupName, workspaceName, integrationRuntimeName).getSyncPoller();
@@ -1909,7 +1909,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration runtime status response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner>
         beginStart(String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
         return beginStartAsync(resourceGroupName, workspaceName, integrationRuntimeName, context).getSyncPoller();
@@ -2110,7 +2110,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String workspaceName, String integrationRuntimeName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2132,7 +2132,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
         context = this.client.mergeContext(context);
@@ -2154,7 +2154,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String workspaceName, String integrationRuntimeName) {
         return beginStopAsync(resourceGroupName, workspaceName, integrationRuntimeName).getSyncPoller();
@@ -2172,7 +2172,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
         return beginStopAsync(resourceGroupName, workspaceName, integrationRuntimeName, context).getSyncPoller();
@@ -2546,7 +2546,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginEnableInteractiveQueryAsync(
         String resourceGroupName, String workspaceName, String integrationRuntimeName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2568,7 +2568,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginEnableInteractiveQueryAsync(
         String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
         context = this.client.mergeContext(context);
@@ -2590,7 +2590,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginEnableInteractiveQuery(
         String resourceGroupName, String workspaceName, String integrationRuntimeName) {
         return beginEnableInteractiveQueryAsync(resourceGroupName, workspaceName, integrationRuntimeName)
@@ -2609,7 +2609,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginEnableInteractiveQuery(
         String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
         return beginEnableInteractiveQueryAsync(resourceGroupName, workspaceName, integrationRuntimeName, context)
@@ -2808,7 +2808,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDisableInteractiveQueryAsync(
         String resourceGroupName, String workspaceName, String integrationRuntimeName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2830,7 +2830,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDisableInteractiveQueryAsync(
         String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
         context = this.client.mergeContext(context);
@@ -2852,7 +2852,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDisableInteractiveQuery(
         String resourceGroupName, String workspaceName, String integrationRuntimeName) {
         return beginDisableInteractiveQueryAsync(resourceGroupName, workspaceName, integrationRuntimeName)
@@ -2871,7 +2871,7 @@ public final class IntegrationRuntimesClientImpl implements IntegrationRuntimesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDisableInteractiveQuery(
         String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
         return beginDisableInteractiveQueryAsync(resourceGroupName, workspaceName, integrationRuntimeName, context)

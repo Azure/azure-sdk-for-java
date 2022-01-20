@@ -12,15 +12,18 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.keys.cryptography.CryptographyClient;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
+import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyRotationPolicy;
+import com.azure.security.keyvault.keys.models.KeyRotationPolicyAction;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -51,7 +54,11 @@ public class KeyClientTest extends KeyClientTestBase {
     }
 
     protected void createKeyClient(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        HttpPipeline httpPipeline = getHttpPipeline(httpClient);
+        createKeyClient(httpClient, serviceVersion, null);
+    }
+
+    protected void createKeyClient(HttpClient httpClient, KeyServiceVersion serviceVersion, String testTenantId) {
+        HttpPipeline httpPipeline = getHttpPipeline(httpClient, testTenantId);
         KeyAsyncClient asyncClient = spy(new KeyClientBuilder()
             .vaultUrl(getEndpoint())
             .pipeline(httpPipeline)
@@ -72,6 +79,19 @@ public class KeyClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     public void setKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyClient(httpClient, serviceVersion);
+        setKeyRunner((expected) -> assertKeyEquals(expected, client.createKey(expected)));
+    }
+
+    /**
+     * Tests that a key can be created in the key vault while using a different tenant ID than the one that will be
+     * provided in the authentication challenge.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void setKeyWithMultipleTenants(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyClient(httpClient, serviceVersion, testResourceNamer.randomUuid());
+        setKeyRunner((expected) -> assertKeyEquals(expected, client.createKey(expected)));
+        KeyVaultCredentialPolicy.clearCache(); // Ensure we don't have anything cached and try again.
         setKeyRunner((expected) -> assertKeyEquals(expected, client.createKey(expected)));
     }
 
@@ -135,11 +155,15 @@ public class KeyClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     public void updateKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyClient(httpClient, serviceVersion);
-        updateKeyRunner((original, updated) -> {
-            assertKeyEquals(original, client.createKey(original));
-            KeyVaultKey keyToUpdate = client.getKey(original.getName());
-            client.updateKeyProperties(keyToUpdate.getProperties().setExpiresOn(updated.getExpiresOn()));
-            assertKeyEquals(updated, client.getKey(original.getName()));
+        updateKeyRunner((createKeyOptions, updateKeyOptions) -> {
+            KeyVaultKey createdKey = client.createKey(createKeyOptions);
+
+            assertKeyEquals(createKeyOptions, createdKey);
+
+            KeyVaultKey updatedKey =
+                client.updateKeyProperties(createdKey.getProperties().setExpiresOn(updateKeyOptions.getExpiresOn()));
+
+            assertKeyEquals(updateKeyOptions, updatedKey);
         });
     }
 
@@ -150,11 +174,15 @@ public class KeyClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     public void updateDisabledKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyClient(httpClient, serviceVersion);
-        updateDisabledKeyRunner((original, updated) -> {
-            assertKeyEquals(original, client.createKey(original));
-            KeyVaultKey keyToUpdate = client.getKey(original.getName());
-            client.updateKeyProperties(keyToUpdate.getProperties().setExpiresOn(updated.getExpiresOn()));
-            assertKeyEquals(updated, client.getKey(original.getName()));
+        updateDisabledKeyRunner((createKeyOptions, updateKeyOptions) -> {
+            KeyVaultKey createdKey = client.createKey(createKeyOptions);
+
+            assertKeyEquals(createKeyOptions, createdKey);
+
+            KeyVaultKey updatedKey =
+                client.updateKeyProperties(createdKey.getProperties().setExpiresOn(updateKeyOptions.getExpiresOn()));
+
+            assertKeyEquals(updateKeyOptions, updatedKey);
         });
     }
 
@@ -467,24 +495,6 @@ public class KeyClientTest extends KeyClientTestBase {
     }
 
     /**
-     * Tests that an RSA key with a public exponent can be created in the key vault.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
-    public void createRsaKeyWithPublicExponent(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        createKeyClient(httpClient, serviceVersion);
-        createRsaKeyWithPublicExponentRunner((createRsaKeyOptions) -> {
-            KeyVaultKey rsaKey = client.createRsaKey(createRsaKeyOptions);
-
-            assertKeyEquals(createRsaKeyOptions, rsaKey);
-            // TODO: Investigate why the KV service sets the JWK's "e" parameter to "AQAB" instead of "Aw".
-            /*assertEquals(BigInteger.valueOf(createRsaKeyOptions.getPublicExponent()),
-                toBigInteger(rsaKey.getKey().getE()));*/
-            assertEquals(createRsaKeyOptions.getKeySize(), rsaKey.getKey().getN().length * 8);
-        });
-    }
-
-    /**
      * Tests that an existing key can be released.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -522,6 +532,7 @@ public class KeyClientTest extends KeyClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
+    @DisabledIfSystemProperty(named = "IS_SKIP_ROTATION_POLICY_TEST", matches = "true")
     public void getKeyRotationPolicyOfNonExistentKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyClient(httpClient, serviceVersion);
 
@@ -535,6 +546,7 @@ public class KeyClientTest extends KeyClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
+    @DisabledIfSystemProperty(named = "IS_SKIP_ROTATION_POLICY_TEST", matches = "true")
     public void getKeyRotationPolicyWithNoPolicySet(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         // Key Rotation is not yet enabled in Managed HSM.
         Assumptions.assumeTrue(!isHsmEnabled);
@@ -552,7 +564,10 @@ public class KeyClientTest extends KeyClientTestBase {
         assertNull(keyRotationPolicy.getCreatedOn());
         assertNull(keyRotationPolicy.getUpdatedOn());
         assertNull(keyRotationPolicy.getExpiryTime());
-        assertNull(keyRotationPolicy.getLifetimeActions());
+        assertEquals(1, keyRotationPolicy.getLifetimeActions().size());
+        assertEquals(KeyRotationPolicyAction.NOTIFY, keyRotationPolicy.getLifetimeActions().get(0).getType());
+        assertEquals("P30D", keyRotationPolicy.getLifetimeActions().get(0).getTimeBeforeExpiry());
+        assertNull(keyRotationPolicy.getLifetimeActions().get(0).getTimeAfterCreate());
     }
 
     /**
@@ -560,6 +575,7 @@ public class KeyClientTest extends KeyClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
+    @DisabledIfSystemProperty(named = "IS_SKIP_ROTATION_POLICY_TEST", matches = "true")
     public void updateGetKeyRotationPolicyWithMinimumProperties(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         // Key Rotation is not yet enabled in Managed HSM.
         Assumptions.assumeTrue(!isHsmEnabled);
@@ -581,6 +597,7 @@ public class KeyClientTest extends KeyClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
+    @DisabledIfSystemProperty(named = "IS_SKIP_ROTATION_POLICY_TEST", matches = "true")
     public void updateGetKeyRotationPolicyWithAllProperties(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         // Key Rotation is not yet enabled in Managed HSM.
         Assumptions.assumeTrue(!isHsmEnabled);
@@ -602,6 +619,7 @@ public class KeyClientTest extends KeyClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
+    @DisabledIfSystemProperty(named = "IS_SKIP_ROTATION_POLICY_TEST", matches = "true")
     public void rotateKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         // Key Rotation is not yet enabled in Managed HSM.
         Assumptions.assumeTrue(!isHsmEnabled);

@@ -54,7 +54,7 @@ public interface VirtualMachinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestartHosts(
         String resourceGroupName, String clusterName, List<String> hosts);
 
@@ -70,7 +70,7 @@ public interface VirtualMachinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestartHosts(
         String resourceGroupName, String clusterName, List<String> hosts, Context context);
 

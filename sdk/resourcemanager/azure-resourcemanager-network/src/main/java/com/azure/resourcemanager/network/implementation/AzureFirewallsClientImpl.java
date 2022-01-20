@@ -217,7 +217,7 @@ public final class AzureFirewallsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -268,7 +268,7 @@ public final class AzureFirewallsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -292,12 +292,13 @@ public final class AzureFirewallsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String azureFirewallName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, azureFirewallName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -311,7 +312,7 @@ public final class AzureFirewallsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String azureFirewallName, Context context) {
         context = this.client.mergeContext(context);
@@ -331,7 +332,7 @@ public final class AzureFirewallsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String azureFirewallName) {
         return beginDeleteAsync(resourceGroupName, azureFirewallName).getSyncPoller();
     }
@@ -347,7 +348,7 @@ public final class AzureFirewallsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String azureFirewallName, Context context) {
         return beginDeleteAsync(resourceGroupName, azureFirewallName, context).getSyncPoller();
@@ -450,7 +451,7 @@ public final class AzureFirewallsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -501,7 +502,7 @@ public final class AzureFirewallsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -609,7 +610,7 @@ public final class AzureFirewallsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -667,7 +668,7 @@ public final class AzureFirewallsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -693,7 +694,7 @@ public final class AzureFirewallsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Firewall resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AzureFirewallInner>, AzureFirewallInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -701,7 +702,11 @@ public final class AzureFirewallsClientImpl
         return this
             .client
             .<AzureFirewallInner, AzureFirewallInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AzureFirewallInner.class, AzureFirewallInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                AzureFirewallInner.class,
+                AzureFirewallInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -716,7 +721,7 @@ public final class AzureFirewallsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Firewall resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AzureFirewallInner>, AzureFirewallInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -739,7 +744,7 @@ public final class AzureFirewallsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Firewall resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AzureFirewallInner>, AzureFirewallInner> beginCreateOrUpdate(
         String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, azureFirewallName, parameters).getSyncPoller();
@@ -757,7 +762,7 @@ public final class AzureFirewallsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Firewall resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AzureFirewallInner>, AzureFirewallInner> beginCreateOrUpdate(
         String resourceGroupName, String azureFirewallName, AzureFirewallInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, azureFirewallName, parameters, context).getSyncPoller();
@@ -876,7 +881,7 @@ public final class AzureFirewallsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -934,7 +939,7 @@ public final class AzureFirewallsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -960,7 +965,7 @@ public final class AzureFirewallsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Firewall resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AzureFirewallInner>, AzureFirewallInner> beginUpdateTagsAsync(
         String resourceGroupName, String azureFirewallName, TagsObject parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -968,7 +973,11 @@ public final class AzureFirewallsClientImpl
         return this
             .client
             .<AzureFirewallInner, AzureFirewallInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AzureFirewallInner.class, AzureFirewallInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                AzureFirewallInner.class,
+                AzureFirewallInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -983,7 +992,7 @@ public final class AzureFirewallsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Firewall resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AzureFirewallInner>, AzureFirewallInner> beginUpdateTagsAsync(
         String resourceGroupName, String azureFirewallName, TagsObject parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -1006,7 +1015,7 @@ public final class AzureFirewallsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Firewall resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AzureFirewallInner>, AzureFirewallInner> beginUpdateTags(
         String resourceGroupName, String azureFirewallName, TagsObject parameters) {
         return beginUpdateTagsAsync(resourceGroupName, azureFirewallName, parameters).getSyncPoller();
@@ -1024,7 +1033,7 @@ public final class AzureFirewallsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Firewall resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AzureFirewallInner>, AzureFirewallInner> beginUpdateTags(
         String resourceGroupName, String azureFirewallName, TagsObject parameters, Context context) {
         return beginUpdateTagsAsync(resourceGroupName, azureFirewallName, parameters, context).getSyncPoller();
@@ -1130,7 +1139,7 @@ public final class AzureFirewallsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1184,7 +1193,7 @@ public final class AzureFirewallsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1288,7 +1297,7 @@ public final class AzureFirewallsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1330,7 +1339,7 @@ public final class AzureFirewallsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

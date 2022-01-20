@@ -245,7 +245,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -287,7 +287,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -384,7 +384,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -438,7 +438,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -557,7 +557,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -608,7 +608,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -717,7 +717,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -778,7 +778,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -804,7 +804,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRouteCrossConnection resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ExpressRouteCrossConnectionInner>, ExpressRouteCrossConnectionInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName, String crossConnectionName, ExpressRouteCrossConnectionInner parameters) {
@@ -817,7 +817,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                 this.client.getHttpPipeline(),
                 ExpressRouteCrossConnectionInner.class,
                 ExpressRouteCrossConnectionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -832,7 +832,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRouteCrossConnection resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ExpressRouteCrossConnectionInner>, ExpressRouteCrossConnectionInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -863,7 +863,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRouteCrossConnection resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteCrossConnectionInner>, ExpressRouteCrossConnectionInner>
         beginCreateOrUpdate(
             String resourceGroupName, String crossConnectionName, ExpressRouteCrossConnectionInner parameters) {
@@ -882,7 +882,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRouteCrossConnection resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteCrossConnectionInner>, ExpressRouteCrossConnectionInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -1014,7 +1014,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
         } else {
             crossConnectionParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1075,7 +1075,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
         } else {
             crossConnectionParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1193,7 +1193,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1255,7 +1255,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1284,7 +1284,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
      * @return the currently advertised ARP table associated with the express route cross connection in a resource
      *     group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<
             PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>
         beginListArpTableAsync(
@@ -1298,7 +1298,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                 this.client.getHttpPipeline(),
                 ExpressRouteCircuitsArpTableListResultInner.class,
                 ExpressRouteCircuitsArpTableListResultInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1315,7 +1315,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
      * @return the currently advertised ARP table associated with the express route cross connection in a resource
      *     group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<
             PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>
         beginListArpTableAsync(
@@ -1350,7 +1350,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
      * @return the currently advertised ARP table associated with the express route cross connection in a resource
      *     group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>
         beginListArpTable(String resourceGroupName, String crossConnectionName, String peeringName, String devicePath) {
@@ -1371,7 +1371,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
      * @return the currently advertised ARP table associated with the express route cross connection in a resource
      *     group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>
         beginListArpTable(
@@ -1507,7 +1507,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1568,7 +1568,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1596,7 +1596,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the route table summary associated with the express route cross connection in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<
             PollResult<ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner>,
             ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner>
@@ -1613,7 +1613,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     this.client.getHttpPipeline(),
                     ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner.class,
                     ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner.class,
-                    Context.NONE);
+                    this.client.getContext());
     }
 
     /**
@@ -1629,7 +1629,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the route table summary associated with the express route cross connection in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<
             PollResult<ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner>,
             ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner>
@@ -1667,7 +1667,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the route table summary associated with the express route cross connection in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner>,
             ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner>
@@ -1690,7 +1690,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the route table summary associated with the express route cross connection in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner>,
             ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner>
@@ -1828,7 +1828,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1891,7 +1891,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1921,7 +1921,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
      * @return the currently advertised routes table associated with the express route cross connection in a resource
      *     group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<
             PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner>
         beginListRoutesTableAsync(
@@ -1936,7 +1936,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     this.client.getHttpPipeline(),
                     ExpressRouteCircuitsRoutesTableListResultInner.class,
                     ExpressRouteCircuitsRoutesTableListResultInner.class,
-                    Context.NONE);
+                    this.client.getContext());
     }
 
     /**
@@ -1954,7 +1954,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
      * @return the currently advertised routes table associated with the express route cross connection in a resource
      *     group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<
             PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner>
         beginListRoutesTableAsync(
@@ -1991,7 +1991,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
      * @return the currently advertised routes table associated with the express route cross connection in a resource
      *     group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner>
         beginListRoutesTable(
@@ -2015,7 +2015,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
      * @return the currently advertised routes table associated with the express route cross connection in a resource
      *     group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner>
         beginListRoutesTable(

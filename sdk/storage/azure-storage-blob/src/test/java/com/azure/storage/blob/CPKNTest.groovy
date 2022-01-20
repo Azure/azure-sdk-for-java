@@ -9,6 +9,8 @@ import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.CustomerProvidedKey
 
 import com.azure.storage.blob.models.PageRange
+import com.azure.storage.blob.models.PublicAccessType
+import com.azure.storage.blob.options.BlobCopyFromUrlOptions
 import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.AppendBlobClient
@@ -16,6 +18,7 @@ import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.blob.specialized.PageBlobClient
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 
 import java.time.OffsetDateTime
 
@@ -289,6 +292,21 @@ class CPKNTest extends APISpec {
         response.getStatusCode() == 201
         response.getValue().isServerEncrypted()
         response.getValue().getEncryptionScope() == scope1
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_12_06")
+    def "Sync copy encryption scope"() {
+        setup:
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        def blobSource = cc.getBlobClient(generateBlobName())
+        blobSource.upload(data.defaultBinaryData)
+
+        when:
+        cpknBlockBlob.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(blobSource.getBlobUrl()), null, null)
+
+        then:
+        cpknBlockBlob.getProperties().getEncryptionScope() == scope1
+        notThrown(BlobStorageException)
     }
 
     def "Service client builder check"() {

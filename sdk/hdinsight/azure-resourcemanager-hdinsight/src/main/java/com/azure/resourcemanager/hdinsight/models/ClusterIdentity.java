@@ -45,7 +45,7 @@ public class ClusterIdentity {
      */
     @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, ClusterIdentityUserAssignedIdentities> userAssignedIdentities;
+    private Map<String, UserAssignedIdentity> userAssignedIdentities;
 
     /**
      * Get the principalId property: The principal id of cluster identity. This property will only be provided for a
@@ -96,7 +96,7 @@ public class ClusterIdentity {
      *
      * @return the userAssignedIdentities value.
      */
-    public Map<String, ClusterIdentityUserAssignedIdentities> userAssignedIdentities() {
+    public Map<String, UserAssignedIdentity> userAssignedIdentities() {
         return this.userAssignedIdentities;
     }
 
@@ -108,8 +108,7 @@ public class ClusterIdentity {
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the ClusterIdentity object itself.
      */
-    public ClusterIdentity withUserAssignedIdentities(
-        Map<String, ClusterIdentityUserAssignedIdentities> userAssignedIdentities) {
+    public ClusterIdentity withUserAssignedIdentities(Map<String, UserAssignedIdentity> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }

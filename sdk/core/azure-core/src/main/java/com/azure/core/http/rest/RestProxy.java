@@ -24,6 +24,7 @@ import com.azure.core.implementation.serializer.HttpResponseDecoder.HttpDecodedR
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
@@ -121,18 +122,23 @@ public final class RestProxy implements InvocationHandler {
         try {
             final SwaggerMethodParser methodParser = getMethodParser(method);
             final HttpRequest request = createHttpRequest(methodParser, args);
-            Context context = methodParser.setContext(args)
-                .addData("caller-method", methodParser.getFullyQualifiedMethodName())
+            Context context = methodParser.setContext(args);
+
+            RequestOptions options = methodParser.setRequestOptions(args);
+            context = mergeRequestOptionsContext(context, options);
+
+            context = context.addData("caller-method", methodParser.getFullyQualifiedMethodName())
                 .addData("azure-eagerly-read-response", shouldEagerlyReadResponse(methodParser.getReturnType()));
             context = startTracingSpan(method, context);
 
-            if (request.getBody() != null) {
-                request.setBody(validateLength(request));
-            }
-
-            RequestOptions options = methodParser.setRequestOptions(args);
+            // If there is 'RequestOptions' apply its request callback operations before validating the body.
+            // This is because the callbacks may mutate the request body.
             if (options != null) {
                 options.getRequestCallback().accept(request);
+            }
+
+            if (request.getBody() != null) {
+                request.setBody(validateLength(request));
             }
 
             final Mono<HttpResponse> asyncResponse = send(request, context);
@@ -153,6 +159,19 @@ public final class RestProxy implements InvocationHandler {
         if (method.isAnnotationPresent(com.azure.core.annotation.ResumeOperation.class)) {
             throw logger.logExceptionAsError(Exceptions.propagate(new Exception("'ResumeOperation' isn't supported.")));
         }
+    }
+
+    static Context mergeRequestOptionsContext(Context context, RequestOptions options) {
+        if (options == null) {
+            return context;
+        }
+
+        Context optionsContext = options.getContext();
+        if (optionsContext != null && optionsContext != Context.NONE) {
+            context = CoreUtils.mergeContexts(context, optionsContext);
+        }
+
+        return context;
     }
 
     static Flux<ByteBuffer> validateLength(final HttpRequest request) {
@@ -398,7 +417,7 @@ public final class RestProxy implements InvocationHandler {
         // If the response was success or configured to not return an error status when the request fails, return the
         // decoded response.
         if (methodParser.isExpectedResponseStatusCode(responseStatusCode)
-            || (options != null && !options.isThrowOnError())) {
+            || (options != null && options.getErrorOptions().contains(ErrorOptions.NO_THROW))) {
             return Mono.just(decodedResponse);
         }
 

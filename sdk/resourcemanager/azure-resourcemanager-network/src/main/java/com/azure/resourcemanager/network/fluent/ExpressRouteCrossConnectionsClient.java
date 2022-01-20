@@ -178,7 +178,7 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRouteCrossConnection resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ExpressRouteCrossConnectionInner>, ExpressRouteCrossConnectionInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String crossConnectionName, ExpressRouteCrossConnectionInner parameters);
 
@@ -193,7 +193,7 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRouteCrossConnection resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRouteCrossConnectionInner>, ExpressRouteCrossConnectionInner> beginCreateOrUpdate(
         String resourceGroupName, String crossConnectionName, ExpressRouteCrossConnectionInner parameters);
 
@@ -209,7 +209,7 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRouteCrossConnection resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRouteCrossConnectionInner>, ExpressRouteCrossConnectionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String crossConnectionName,
@@ -356,7 +356,7 @@ public interface ExpressRouteCrossConnectionsClient
      * @return the currently advertised ARP table associated with the express route cross connection in a resource
      *     group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>
         beginListArpTableAsync(
             String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
@@ -374,7 +374,7 @@ public interface ExpressRouteCrossConnectionsClient
      * @return the currently advertised ARP table associated with the express route cross connection in a resource
      *     group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>
         beginListArpTable(String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
 
@@ -392,7 +392,7 @@ public interface ExpressRouteCrossConnectionsClient
      * @return the currently advertised ARP table associated with the express route cross connection in a resource
      *     group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>
         beginListArpTable(
             String resourceGroupName,
@@ -481,7 +481,7 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the route table summary associated with the express route cross connection in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<
             PollResult<ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner>,
             ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner>
@@ -500,7 +500,7 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the route table summary associated with the express route cross connection in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<
             PollResult<ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner>,
             ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner>
@@ -520,7 +520,7 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the route table summary associated with the express route cross connection in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<
             PollResult<ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner>,
             ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner>
@@ -612,7 +612,7 @@ public interface ExpressRouteCrossConnectionsClient
      * @return the currently advertised routes table associated with the express route cross connection in a resource
      *     group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<
             PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner>
         beginListRoutesTableAsync(
@@ -632,7 +632,7 @@ public interface ExpressRouteCrossConnectionsClient
      * @return the currently advertised routes table associated with the express route cross connection in a resource
      *     group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<
             PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner>
         beginListRoutesTable(
@@ -653,7 +653,7 @@ public interface ExpressRouteCrossConnectionsClient
      * @return the currently advertised routes table associated with the express route cross connection in a resource
      *     group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<
             PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner>
         beginListRoutesTable(

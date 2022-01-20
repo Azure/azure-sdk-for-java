@@ -14,7 +14,7 @@ import java.util.Arrays;
 /** Samples for EventSubscriptions Update. */
 public final class EventSubscriptionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_UpdateForCustomTopic.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/EventSubscriptions_UpdateForCustomTopic.json
      */
     /**
      * Sample code: EventSubscriptions_UpdateForCustomTopic.
@@ -44,7 +44,7 @@ public final class EventSubscriptionsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_UpdateForResource.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/EventSubscriptions_UpdateForResource.json
      */
     /**
      * Sample code: EventSubscriptions_UpdateForResource.
@@ -74,7 +74,7 @@ public final class EventSubscriptionsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_UpdateForResourceGroup.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/EventSubscriptions_UpdateForResourceGroup.json
      */
     /**
      * Sample code: EventSubscriptions_UpdateForResourceGroup.
@@ -107,7 +107,7 @@ public final class EventSubscriptionsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_UpdateForSubscription.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/EventSubscriptions_UpdateForSubscription.json
      */
     /**
      * Sample code: EventSubscriptions_UpdateForSubscription.

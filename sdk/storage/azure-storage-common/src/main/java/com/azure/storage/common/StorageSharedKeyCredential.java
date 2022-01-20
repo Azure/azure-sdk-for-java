@@ -60,7 +60,11 @@ public final class StorageSharedKeyCredential {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.common.StorageSharedKeyCredential.fromConnectionString#String}
+     * <!-- src_embed com.azure.storage.common.StorageSharedKeyCredential.fromConnectionString#String -->
+     * <pre>
+     * StorageSharedKeyCredential credential = StorageSharedKeyCredential.fromConnectionString&#40;connectionString&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.common.StorageSharedKeyCredential.fromConnectionString#String -->
      *
      * @param connectionString Connection string used to build the SharedKey credential.
      * @return a SharedKey credential if the connection string contains AccountName and AccountKey
@@ -147,7 +151,7 @@ public final class StorageSharedKeyCredential {
     private String buildStringToSign(URL requestURL, String httpMethod, HttpHeaders headers,
         boolean logStringToSign) {
         String contentLength = headers.getValue("Content-Length");
-        contentLength = contentLength.equals("0") ? "" : contentLength;
+        contentLength = "0".equals(contentLength) ? "" : contentLength;
 
         // If the x-ms-header exists ignore the Date header
         String dateHeader = (headers.getValue("x-ms-date") != null) ? ""

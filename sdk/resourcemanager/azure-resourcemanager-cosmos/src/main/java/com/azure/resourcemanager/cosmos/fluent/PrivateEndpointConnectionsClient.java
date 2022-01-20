@@ -153,7 +153,7 @@ public interface PrivateEndpointConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String accountName,
@@ -172,7 +172,7 @@ public interface PrivateEndpointConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String accountName,
@@ -192,7 +192,7 @@ public interface PrivateEndpointConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String accountName,
@@ -285,7 +285,7 @@ public interface PrivateEndpointConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String accountName, String privateEndpointConnectionName);
 
@@ -300,7 +300,7 @@ public interface PrivateEndpointConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String privateEndpointConnectionName);
 
@@ -316,7 +316,7 @@ public interface PrivateEndpointConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context);
 
