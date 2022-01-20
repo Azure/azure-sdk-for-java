@@ -262,6 +262,7 @@ class BulkWriter(container: CosmosAsyncContainer,
   }
 
   //scalastyle:off method.length
+  //scalastyle:off cyclomatic.complexity
   private[this] def handleNonSuccessfulStatusCode
   (
     context: OperationContext,
@@ -358,6 +359,7 @@ class BulkWriter(container: CosmosAsyncContainer,
     }
   }
   //scalastyle:on method.length
+  //scalastyle:on cyclomatic.complexity
 
   private[this] def throwIfCapturedExceptionExists(): Unit = {
     val errorSnapshot = errorCaptureFirstException.get()
