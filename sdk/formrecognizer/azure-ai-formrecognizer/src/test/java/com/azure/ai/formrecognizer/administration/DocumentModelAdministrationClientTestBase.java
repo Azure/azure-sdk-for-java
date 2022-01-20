@@ -107,6 +107,10 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestBase
         TestUtils.getTrainingDataContainerHelper(testRunner, interceptorManager.isPlaybackMode());
     }
 
+    void buildModelErrorRunner(Consumer<String> testRunner) {
+        TestUtils.getErrorTrainingDataContainerHelper(testRunner, interceptorManager.isPlaybackMode());
+    }
+
     void multipageTrainingRunner(Consumer<String> testRunner) {
         TestUtils.getMultipageTrainingContainerHelper(testRunner, interceptorManager.isPlaybackMode());
     }
