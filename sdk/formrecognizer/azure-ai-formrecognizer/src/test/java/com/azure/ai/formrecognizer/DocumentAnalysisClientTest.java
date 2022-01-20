@@ -9,6 +9,7 @@ import com.azure.ai.formrecognizer.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.models.DocumentField;
+import com.azure.ai.formrecognizer.models.DocumentModelOperationException;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -18,6 +19,7 @@ import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -597,6 +599,43 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                 adminClient.deleteModel(modelId);
 
                 validateBlankPdfData(syncPoller.getFinalResult());
+            }), BLANK_PDF);
+    }
+
+    /**
+     * Verifies throws a Document model operation exception when analyzing a custom document data for a blank PDF
+     * content type in PPE env.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled
+    public void analyzeCustomDocumentBlankPdfWithPPE(HttpClient httpClient,
+                                              DocumentAnalysisServiceVersion serviceVersion) {
+        // disabled for live tests as it occurs only in PPE
+        client = getDocumentAnalysisClient(httpClient, serviceVersion);
+        DocumentModelAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
+        dataRunner((data, dataLength) ->
+            buildModelRunner((trainingFilesUrl) -> {
+                SyncPoller<DocumentOperationResult, DocumentModel> buildModelPoller =
+                    adminClient
+                        .beginBuildModel(trainingFilesUrl, null)
+                        .setPollInterval(durationTestMode);
+                buildModelPoller.waitForCompletion();
+
+                String modelId = buildModelPoller.getFinalResult().getModelId();
+
+                DocumentModelOperationException exception = Assertions.assertThrows(
+                    DocumentModelOperationException.class,
+                    () -> client.beginAnalyzeDocument(
+                        modelId,
+                        data,
+                        dataLength)
+                    .setPollInterval(durationTestMode)
+                        .getFinalResult());
+                adminClient.deleteModel(modelId);
+                Assertions.assertEquals("InternalServerError", exception.getDocumentModelOperationError().getCode());
+
+                Assertions.assertEquals("An unexpected error occurred.", exception.getMessage());
             }), BLANK_PDF);
     }
 
