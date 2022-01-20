@@ -1,6 +1,20 @@
 # Release History
 
-## 2.11.0-beta.1 (Unreleased)
+## 2.12.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.11.0 (2022-01-17)
+
+### Bugs Fixed
+
+- Fixed issue where update of `CnameRecordSet` did not update `canonicalName`.
 
 ### Other Changes
 

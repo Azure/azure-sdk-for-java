@@ -135,9 +135,9 @@ public class AttestationClientJavaDocCodeSnippets {
     }
 
     public static void attestationOptionsSnippets2() {
-        BinaryData runtimeData = null;
+        BinaryData runtimeData = BinaryData.fromBytes(SampleCollateral.getRunTimeData());
         BinaryData inittimeData = null;
-        BinaryData openEnclaveReport = null;
+        BinaryData openEnclaveReport = BinaryData.fromBytes(SampleCollateral.getOpenEnclaveReport());
 
         AttestationOptions attestationOptions = new AttestationOptions(openEnclaveReport)
             .setRunTimeData(new AttestationData(runtimeData, AttestationDataInterpretation.JSON));
@@ -272,11 +272,6 @@ public class AttestationClientJavaDocCodeSnippets {
         Mono<AttestationResult> resultWithReport = client.attestOpenEnclave(openEnclaveReport);
         // END: com.azure.security.attestation.AttestationAsyncClient.attestOpenEnclaveWithReport
 
-        // BEGIN: com.azure.security.attestation.AttestationAsyncClient.attestOpenEnclaveWithResponseWithReport
-        Mono<Response<AttestationResult>> responseWithReport = client.attestOpenEnclaveWithResponse(openEnclaveReport);
-        // END: com.azure.security.attestation.AttestationAsyncClient.attestOpenEnclaveWithResponseWithReport
-
-
         // BEGIN: com.azure.security.attestation.AttestationAsyncClient.attestOpenEnclave
         Mono<AttestationResult> result = client.attestOpenEnclave(new AttestationOptions(openEnclaveReport)
             .setRunTimeData(new AttestationData(runtimeData, AttestationDataInterpretation.BINARY)));
@@ -335,11 +330,6 @@ public class AttestationClientJavaDocCodeSnippets {
         Mono<AttestationResult> resultWithReport = client.attestSgxEnclave(sgxQuote);
         // END: com.azure.security.attestation.AttestationAsyncClient.attestSgxEnclaveWithReport
 
-        // BEGIN: com.azure.security.attestation.AttestationAsyncClient.attestSgxEnclaveWithResponseWithReport
-        Mono<Response<AttestationResult>> responseWithReport = client.attestSgxEnclaveWithResponse(sgxQuote);
-        // END: com.azure.security.attestation.AttestationAsyncClient.attestSgxEnclaveWithResponseWithReport
-
-
         // BEGIN: com.azure.security.attestation.AttestationAsyncClient.attestSgxEnclave
         Mono<AttestationResult> result = client.attestSgxEnclave(new AttestationOptions(sgxQuote)
             .setRunTimeData(new AttestationData(runtimeData, AttestationDataInterpretation.BINARY)));
@@ -368,6 +358,14 @@ public class AttestationClientJavaDocCodeSnippets {
         // END: com.azure.security.attestation.AttestationAdministrationClient.getPolicy
         System.out.printf("Current SGX policy: %s\n", policy);
 
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationClient.getPolicyWithOptions
+        String policy2 = client.getAttestationPolicy(AttestationType.SGX_ENCLAVE,
+            new AttestationTokenValidationOptions()
+                .setValidationSlack(Duration.ofSeconds(10)));
+        System.out.printf("Current SGX policy: %s\n", policy2);
+        // END: com.azure.security.attestation.AttestationAdministrationClient.getPolicyWithOptions
+
+
         // BEGIN: com.azure.security.attestation.AttestationAdministrationClient.getPolicyWithResponse
         Response<String> response = client.getAttestationPolicyWithResponse(AttestationType.SGX_ENCLAVE, null,
             Context.NONE);
@@ -387,6 +385,13 @@ public class AttestationClientJavaDocCodeSnippets {
         Mono<String> policyMono = client.getAttestationPolicy(AttestationType.SGX_ENCLAVE);
         policyMono.subscribe(policy -> System.out.printf("Current SGX policy: %s\n", policy));
         // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.getPolicy
+
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.getPolicyWithOptions
+        Mono<String> policyMono2 = client.getAttestationPolicy(AttestationType.SGX_ENCLAVE,
+            new AttestationTokenValidationOptions()
+                .setValidationSlack(Duration.ofSeconds(10)));
+        policyMono2.subscribe(policy -> System.out.printf("Current SGX policy: %s\n", policy));
+        // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.getPolicyWithOptions
 
         // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.getPolicyWithResponse
         Mono<Response<String>> responseMono = client.getAttestationPolicyWithResponse(AttestationType.SGX_ENCLAVE, null);

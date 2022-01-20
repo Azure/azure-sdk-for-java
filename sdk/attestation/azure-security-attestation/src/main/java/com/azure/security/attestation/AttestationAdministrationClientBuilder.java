@@ -182,7 +182,7 @@ public final class AttestationAdministrationClientBuilder {
      *
      * Instantiating a synchronous Attestation client:
      * <br>
-     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClientBuilder.buildAsyncClient -->
+     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClientBuilder.buildClient -->
      * <pre>
      * AttestationAdministrationAsyncClient asyncClient = new AttestationAdministrationClientBuilder&#40;&#41;
      *     .endpoint&#40;endpoint&#41;
@@ -208,7 +208,7 @@ public final class AttestationAdministrationClientBuilder {
         try {
             new URL(endpoint);
         } catch (MalformedURLException ex) {
-            logger.logExceptionAsError(new IllegalArgumentException(ex));
+            throw logger.logExceptionAsError(new IllegalArgumentException(ex));
         }
         this.endpoint = endpoint;
         return this;
@@ -366,7 +366,6 @@ public final class AttestationAdministrationClientBuilder {
         this.tokenValidationOptions = tokenValidationOptions;
         return this;
     }
-
 
     /**
      * Builds an instance of AttestationClientImpl with the provided parameters.

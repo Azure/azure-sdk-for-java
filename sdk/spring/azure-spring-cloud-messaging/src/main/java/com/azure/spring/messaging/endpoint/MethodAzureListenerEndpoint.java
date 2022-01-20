@@ -66,22 +66,44 @@ public class MethodAzureListenerEndpoint extends AbstractAzureListenerEndpoint i
                     .append(this.method).append("'");
     }
 
+    /**
+     * Get the object instance that should manage this endpoint.
+     * @return the target bean instance.
+     */
     public Object getBean() {
         return bean;
     }
 
+    /**
+     * Set the object instance that should manage this endpoint.
+     * @param bean the target bean instance.
+     */
     public void setBean(Object bean) {
         this.bean = bean;
     }
 
+    /**
+     * Get the method to invoke to process a message managed by this endpoint.
+     * @return the method to invoke to process a message managed by this endpoint.
+     */
     public Method getMethod() {
         return method;
     }
 
+    /**
+     * Set the method to invoke to process a message managed by this endpoint.
+     * @param method the target method for the {@link #bean}.
+     */
     public void setMethod(Method method) {
         this.method = method;
     }
 
+    /**
+     * Set the {@link MessageHandlerMethodFactory} to use to build the
+     * {@link InvocableHandlerMethod} responsible to manage the invocation
+     * of this endpoint.
+     * @param messageHandlerMethodFactory the {@link MessageHandlerMethodFactory} instance.
+     */
     public void setMessageHandlerMethodFactory(MessageHandlerMethodFactory messageHandlerMethodFactory) {
         this.messageHandlerMethodFactory = messageHandlerMethodFactory;
     }
