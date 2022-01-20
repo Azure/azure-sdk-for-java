@@ -12,7 +12,7 @@
 
   <groupId>com.azure.cosmos.spark</groupId>
   <artifactId>azure-cosmos-spark_3_2-12</artifactId>
-  <version>1.0.0</version> <!-- dummy version - will never be published -->
+  <version>1.0.0</version>
   <packaging>pom</packaging>
   <name>OLTP Spark Connector for Azure Cosmos DB SQL API</name>
   <description>OLTP Spark Connector for Azure Cosmos DB SQL API</description>
