@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +36,13 @@ public final class DataFlowReference {
      */
     @JsonProperty(value = "datasetParameters")
     private Object datasetParameters;
+
+    /*
+     * Data flow parameters
+     */
+    @JsonProperty(value = "parameters")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, Object> parameters;
 
     /*
      * Data flow reference type.
@@ -103,6 +111,26 @@ public final class DataFlowReference {
      */
     public DataFlowReference withDatasetParameters(Object datasetParameters) {
         this.datasetParameters = datasetParameters;
+        return this;
+    }
+
+    /**
+     * Get the parameters property: Data flow parameters.
+     *
+     * @return the parameters value.
+     */
+    public Map<String, Object> parameters() {
+        return this.parameters;
+    }
+
+    /**
+     * Set the parameters property: Data flow parameters.
+     *
+     * @param parameters the parameters value to set.
+     * @return the DataFlowReference object itself.
+     */
+    public DataFlowReference withParameters(Map<String, Object> parameters) {
+        this.parameters = parameters;
         return this;
     }
 

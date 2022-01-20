@@ -131,9 +131,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         KeyPair rsaKey = assertDoesNotThrow(() -> createKeyPair("RSA"));
         X509Certificate cert = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate", rsaKey));
 
-        AttestationSigningKey signingKey = new AttestationSigningKey()
-            .setPrivateKey(rsaKey.getPrivate())
-            .setCertificate(cert);
+        AttestationSigningKey signingKey = new AttestationSigningKey(cert, rsaKey.getPrivate());
 
         assertDoesNotThrow(() -> signingKey.verify());
 
@@ -178,9 +176,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
 */
 
         // And make sure that the wrong key also throws a reasonable exception.
-        AttestationSigningKey signingKey2 = new AttestationSigningKey()
-                .setPrivateKey(rsaKeyWrongKey.getPrivate())
-                .setCertificate(cert)
+        AttestationSigningKey signingKey2 = new AttestationSigningKey(cert, rsaKeyWrongKey.getPrivate())
                 .setAllowWeakKey(true);
         assertThrows(IllegalArgumentException.class, () -> signingKey2.verify());
     }
@@ -239,9 +235,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         KeyPair rsaKey = assertDoesNotThrow(() -> createKeyPair("RSA"));
         X509Certificate cert = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate Secured", rsaKey));
 
-        AttestationSigningKey signingKey = new AttestationSigningKey()
-            .setPrivateKey(rsaKey.getPrivate())
-            .setCertificate(cert)
+        AttestationSigningKey signingKey = new AttestationSigningKey(cert, rsaKey.getPrivate())
             .setAllowWeakKey(true);
 
         String sourceObject = "{\"foo\": \"foo\", \"bar\": 10 }";
@@ -269,11 +263,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         PrivateKey key = getIsolatedSigningKey();
         X509Certificate cert = getIsolatedSigningCertificate();
 
-        AttestationSigningKey signingKey = new AttestationSigningKey()
-            .setPrivateKey(key)
-            .setCertificate(cert);
-
-
+        AttestationSigningKey signingKey = new AttestationSigningKey(cert, key);
         assertDoesNotThrow(() -> signingKey.verify());
 
         String sourceObject = "{\"foo\": \"foo\", \"bar\": 10 }";
@@ -294,9 +284,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         PrivateKey key = getIsolatedSigningKey();
         X509Certificate cert = getPolicySigningCertificate0();
 
-        AttestationSigningKey signingKey = new AttestationSigningKey()
-            .setPrivateKey(key)
-            .setCertificate(cert);
+        AttestationSigningKey signingKey = new AttestationSigningKey(cert, key);
 
         assertThrows(RuntimeException.class, () -> signingKey.verify());
 
@@ -306,9 +294,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
     void testCreateSecuredAttestationTokenFromObject() {
         KeyPair rsaKey = assertDoesNotThrow(() -> createKeyPair("RSA"));
         X509Certificate cert = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate Secured 2", rsaKey));
-        AttestationSigningKey signingKey = new AttestationSigningKey()
-            .setPrivateKey(rsaKey.getPrivate())
-            .setCertificate(cert)
+        AttestationSigningKey signingKey = new AttestationSigningKey(cert, rsaKey.getPrivate())
             .setAllowWeakKey(true);
 
 
@@ -469,9 +455,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
     void testCreateSecuredEmptyAttestationToken() {
         KeyPair rsaKey = assertDoesNotThrow(() -> createKeyPair("RSA"));
         X509Certificate cert = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate Secured 2", rsaKey));
-        AttestationSigningKey signingKey = new AttestationSigningKey()
-            .setPrivateKey(rsaKey.getPrivate())
-            .setCertificate(cert)
+        AttestationSigningKey signingKey = new AttestationSigningKey(cert, rsaKey.getPrivate())
             .setAllowWeakKey(true);
 
         AttestationToken newToken = AttestationTokenImpl.createSecuredToken(signingKey);

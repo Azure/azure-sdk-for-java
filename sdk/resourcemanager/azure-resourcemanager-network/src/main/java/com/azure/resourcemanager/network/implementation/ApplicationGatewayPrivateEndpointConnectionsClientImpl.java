@@ -278,7 +278,8 @@ public final class ApplicationGatewayPrivateEndpointConnectionsClientImpl
             deleteWithResponseAsync(resourceGroupName, applicationGatewayName, connectionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

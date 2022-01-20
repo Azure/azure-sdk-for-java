@@ -20,7 +20,7 @@ process change events that occur in your Blob Storage account at a low cost.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob-changefeed</artifactId>
-    <version>12.0.0-beta.12</version>
+    <version>12.0.0-beta.14</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -116,9 +116,9 @@ tasks, including:
 
 - [Create a `BlobChangefeedClient`](#create-a-blobchangefeedclient)
 - [Get events](#get-events)
-- [Get events between a start and end time](#get-events-start-end)
-- [Resume with a cursor](#get-events-cursor)
-- [Poll for events with a cursor](#poll-events-cursor)
+- [Get events between a start and end time](#get-events-between-a-start-and-end-time)
+- [Resume with a cursor](#resume-with-a-cursor)
+- [Poll for events with a cursor](#poll-for-events-with-a-cursor)
 
 ### Create a `BlobChangefeedClient`
 

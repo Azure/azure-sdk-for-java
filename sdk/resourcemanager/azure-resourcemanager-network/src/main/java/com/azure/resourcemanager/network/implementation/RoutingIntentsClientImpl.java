@@ -299,7 +299,11 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
         return this
             .client
             .<RoutingIntentInner, RoutingIntentInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RoutingIntentInner.class, RoutingIntentInner.class, this.client.getContext());
+                mono,
+                this.client.getHttpPipeline(),
+                RoutingIntentInner.class,
+                RoutingIntentInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -768,7 +772,8 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
             deleteWithResponseAsync(resourceGroupName, virtualHubName, routingIntentName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

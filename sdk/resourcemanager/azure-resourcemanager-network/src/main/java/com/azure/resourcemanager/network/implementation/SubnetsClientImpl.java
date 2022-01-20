@@ -305,7 +305,8 @@ public final class SubnetsClientImpl implements SubnetsClient {
             deleteWithResponseAsync(resourceGroupName, virtualNetworkName, subnetName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1106,7 +1107,8 @@ public final class SubnetsClientImpl implements SubnetsClient {
                 resourceGroupName, virtualNetworkName, subnetName, prepareNetworkPoliciesRequestParameters);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1450,7 +1452,8 @@ public final class SubnetsClientImpl implements SubnetsClient {
                 resourceGroupName, virtualNetworkName, subnetName, unprepareNetworkPoliciesRequestParameters);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

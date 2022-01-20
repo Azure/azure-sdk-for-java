@@ -15,6 +15,7 @@ import com.azure.resourcemanager.containerservice.models.ContainerServiceSshPubl
 import com.azure.resourcemanager.containerservice.models.CreationData;
 import com.azure.resourcemanager.containerservice.models.Expander;
 import com.azure.resourcemanager.containerservice.models.GpuInstanceProfile;
+import com.azure.resourcemanager.containerservice.models.IpFamily;
 import com.azure.resourcemanager.containerservice.models.LicenseType;
 import com.azure.resourcemanager.containerservice.models.LoadBalancerSku;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAadProfile;
@@ -49,7 +50,7 @@ import java.util.Map;
 /** Samples for ManagedClusters CreateOrUpdate. */
 public final class ManagedClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersCreate_HTTPProxy.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-10-01/examples/ManagedClustersCreate_HTTPProxy.json
      */
     /**
      * Sample code: Create Managed Cluster with HTTP proxy configured.
@@ -126,7 +127,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersCreate_EnabledFIPS.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-10-01/examples/ManagedClustersCreate_EnabledFIPS.json
      */
     /**
      * Sample code: Create Managed Cluster with FIPS enabled OS.
@@ -197,7 +198,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersCreate_SecurityProfile.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-10-01/examples/ManagedClustersCreate_SecurityProfile.json
      */
     /**
      * Sample code: Create Managed Cluster with Security Profile configured.
@@ -260,7 +261,93 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersCreate_PPG.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-10-01/examples/ManagedClustersCreate_DualStackNetworking.json
+     */
+    /**
+     * Sample code: Create/Update Managed Cluster with dual-stack networking.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createUpdateManagedClusterWithDualStackNetworking(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .kubernetesClusters()
+            .manager()
+            .serviceClient()
+            .getManagedClusters()
+            .createOrUpdate(
+                "rg1",
+                "clustername1",
+                new ManagedClusterInner()
+                    .withLocation("location1")
+                    .withTags(mapOf("archv2", "", "tier", "production"))
+                    .withSku(
+                        new ManagedClusterSku()
+                            .withName(ManagedClusterSkuName.BASIC)
+                            .withTier(ManagedClusterSkuTier.FREE))
+                    .withIdentity(
+                        new ManagedClusterIdentity()
+                            .withType(ResourceIdentityType.USER_ASSIGNED)
+                            .withUserAssignedIdentities(
+                                mapOf(
+                                    "/subscriptions/subid1/resourceGroups/rgName1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1",
+                                    new ManagedServiceIdentityUserAssignedIdentitiesValue())))
+                    .withKubernetesVersion("")
+                    .withDnsPrefix("dnsprefix1")
+                    .withAgentPoolProfiles(
+                        Arrays
+                            .asList(
+                                new ManagedClusterAgentPoolProfile()
+                                    .withCount(3)
+                                    .withVmSize("Standard_DS1_v2")
+                                    .withOsType(OSType.LINUX)
+                                    .withScaleDownMode(ScaleDownMode.DEALLOCATE)
+                                    .withType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                                    .withMode(AgentPoolMode.SYSTEM)
+                                    .withAvailabilityZones(Arrays.asList("1", "2", "3"))
+                                    .withEnableNodePublicIp(true)
+                                    .withName("nodepool1")))
+                    .withLinuxProfile(
+                        new ContainerServiceLinuxProfile()
+                            .withAdminUsername("azureuser")
+                            .withSsh(
+                                new ContainerServiceSshConfiguration()
+                                    .withPublicKeys(
+                                        Arrays.asList(new ContainerServiceSshPublicKey().withKeyData("keydata")))))
+                    .withWindowsProfile(
+                        new ManagedClusterWindowsProfile()
+                            .withAdminUsername("azureuser")
+                            .withAdminPassword("replacePassword1234$"))
+                    .withServicePrincipalProfile(
+                        new ManagedClusterServicePrincipalProfile().withClientId("clientid").withSecret("secret"))
+                    .withAddonProfiles(mapOf())
+                    .withEnableRbac(true)
+                    .withEnablePodSecurityPolicy(true)
+                    .withNetworkProfile(
+                        new ContainerServiceNetworkProfile()
+                            .withOutboundType(OutboundType.LOAD_BALANCER)
+                            .withLoadBalancerSku(LoadBalancerSku.STANDARD)
+                            .withLoadBalancerProfile(
+                                new ManagedClusterLoadBalancerProfile()
+                                    .withManagedOutboundIPs(
+                                        new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2)))
+                            .withIpFamilies(Arrays.asList(IpFamily.IPV4, IpFamily.IPV6)))
+                    .withAutoScalerProfile(
+                        new ManagedClusterPropertiesAutoScalerProfile()
+                            .withBalanceSimilarNodeGroups("true")
+                            .withExpander(Expander.PRIORITY)
+                            .withMaxNodeProvisionTime("15m")
+                            .withNewPodScaleUpDelay("1m")
+                            .withScanInterval("20s")
+                            .withScaleDownDelayAfterAdd("15m")
+                            .withSkipNodesWithSystemPods("false"))
+                    .withDiskEncryptionSetId(
+                        "/subscriptions/subid1/resourceGroups/rg1/providers/Microsoft.Compute/diskEncryptionSets/des"),
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-10-01/examples/ManagedClustersCreate_PPG.json
      */
     /**
      * Sample code: Create Managed Cluster with PPG.
@@ -332,7 +419,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersCreate_UpdateWithAHUB.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-10-01/examples/ManagedClustersCreate_UpdateWithAHUB.json
      */
     /**
      * Sample code: Create/Update Managed Cluster with EnableAHUB.
@@ -411,7 +498,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersCreate_PodIdentity.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-10-01/examples/ManagedClustersCreate_PodIdentity.json
      */
     /**
      * Sample code: Create Managed Cluster with PodIdentity enabled.
@@ -484,7 +571,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersCreate_DisableRunCommand.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-10-01/examples/ManagedClustersCreate_DisableRunCommand.json
      */
     /**
      * Sample code: Create Managed Cluster with RunCommand disabled.
@@ -555,7 +642,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersCreate_UserAssignedNATGateway.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-10-01/examples/ManagedClustersCreate_UserAssignedNATGateway.json
      */
     /**
      * Sample code: Create Managed Cluster with user-assigned NAT gateway as outbound type.
@@ -622,7 +709,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersCreate_Snapshot.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-10-01/examples/ManagedClustersCreate_Snapshot.json
      */
     /**
      * Sample code: Create Managed Cluster using an agent pool snapshot.
@@ -698,7 +785,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersCreate_OSSKU.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-10-01/examples/ManagedClustersCreate_OSSKU.json
      */
     /**
      * Sample code: Create Managed Cluster with OSSKU.
@@ -775,7 +862,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersCreate_Update.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-10-01/examples/ManagedClustersCreate_Update.json
      */
     /**
      * Sample code: Create/Update Managed Cluster.
@@ -859,7 +946,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersCreate_PrivateClusterFQDNSubdomain.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-10-01/examples/ManagedClustersCreate_PrivateClusterFQDNSubdomain.json
      */
     /**
      * Sample code: Create Managed Private Cluster with fqdn subdomain specified.
@@ -934,7 +1021,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersCreate_ManagedNATGateway.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-10-01/examples/ManagedClustersCreate_ManagedNATGateway.json
      */
     /**
      * Sample code: Create Managed Cluster with AKS-managed NAT gateway as outbound type.
@@ -1005,7 +1092,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersCreate_UpdateWithEnableAzureRBAC.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-10-01/examples/ManagedClustersCreate_UpdateWithEnableAzureRBAC.json
      */
     /**
      * Sample code: Create/Update AAD Managed Cluster with EnableAzureRBAC.
@@ -1078,7 +1165,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersCreate_EnableUltraSSD.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-10-01/examples/ManagedClustersCreate_EnableUltraSSD.json
      */
     /**
      * Sample code: Create Managed Cluster with UltraSSD enabled.
@@ -1149,7 +1236,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersCreate_UpdateWindowsGmsa.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-10-01/examples/ManagedClustersCreate_UpdateWindowsGmsa.json
      */
     /**
      * Sample code: Create/Update Managed Cluster with Windows gMSA enabled.
@@ -1229,7 +1316,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersCreate_GPUMIG.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-10-01/examples/ManagedClustersCreate_GPUMIG.json
      */
     /**
      * Sample code: Create Managed Cluster with GPUMIG.
@@ -1306,7 +1393,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersCreate_NodePublicIPPrefix.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-10-01/examples/ManagedClustersCreate_NodePublicIPPrefix.json
      */
     /**
      * Sample code: Create Managed Cluster with Node Public IP Prefix.
@@ -1379,7 +1466,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersCreate_EnableEncryptionAtHost.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-10-01/examples/ManagedClustersCreate_EnableEncryptionAtHost.json
      */
     /**
      * Sample code: Create Managed Cluster with EncryptionAtHost enabled.
@@ -1451,7 +1538,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-09-01/examples/ManagedClustersCreate_PrivateClusterPublicFQDN.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2021-10-01/examples/ManagedClustersCreate_PrivateClusterPublicFQDN.json
      */
     /**
      * Sample code: Create Managed Private Cluster with Public FQDN specified.

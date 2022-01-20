@@ -6,6 +6,7 @@ package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.streamanalytics.fluent.models.TransformationInner;
+import java.util.List;
 
 /** An immutable client-side representation of Transformation. */
 public interface Transformation {
@@ -17,11 +18,32 @@ public interface Transformation {
     String id();
 
     /**
+     * Gets the name property: Resource name.
+     *
+     * @return the name value.
+     */
+    String name();
+
+    /**
+     * Gets the type property: Resource type.
+     *
+     * @return the type value.
+     */
+    String type();
+
+    /**
      * Gets the streamingUnits property: Specifies the number of streaming units that the streaming job uses.
      *
      * @return the streamingUnits value.
      */
     Integer streamingUnits();
+
+    /**
+     * Gets the validStreamingUnits property: Specifies the valid streaming units a streaming job can scale to.
+     *
+     * @return the validStreamingUnits value.
+     */
+    List<Integer> validStreamingUnits();
 
     /**
      * Gets the query property: Specifies the query that will be run in the streaming job. You can learn more about the
@@ -40,20 +62,6 @@ public interface Transformation {
      * @return the etag value.
      */
     String etag();
-
-    /**
-     * Gets the name property: Resource name.
-     *
-     * @return the name value.
-     */
-    String name();
-
-    /**
-     * Gets the type property: Resource type.
-     *
-     * @return the type value.
-     */
-    String type();
 
     /**
      * Gets the inner com.azure.resourcemanager.streamanalytics.fluent.models.TransformationInner object.
@@ -87,9 +95,10 @@ public interface Transformation {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithStreamingUnits,
+            extends DefinitionStages.WithName,
+                DefinitionStages.WithStreamingUnits,
+                DefinitionStages.WithValidStreamingUnits,
                 DefinitionStages.WithQuery,
-                DefinitionStages.WithName,
                 DefinitionStages.WithIfMatch,
                 DefinitionStages.WithIfNoneMatch {
             /**
@@ -107,6 +116,16 @@ public interface Transformation {
              */
             Transformation create(Context context);
         }
+        /** The stage of the Transformation definition allowing to specify name. */
+        interface WithName {
+            /**
+             * Specifies the name property: Resource name.
+             *
+             * @param name Resource name.
+             * @return the next definition stage.
+             */
+            WithCreate withName(String name);
+        }
         /** The stage of the Transformation definition allowing to specify streamingUnits. */
         interface WithStreamingUnits {
             /**
@@ -117,6 +136,17 @@ public interface Transformation {
              * @return the next definition stage.
              */
             WithCreate withStreamingUnits(Integer streamingUnits);
+        }
+        /** The stage of the Transformation definition allowing to specify validStreamingUnits. */
+        interface WithValidStreamingUnits {
+            /**
+             * Specifies the validStreamingUnits property: Specifies the valid streaming units a streaming job can scale
+             * to..
+             *
+             * @param validStreamingUnits Specifies the valid streaming units a streaming job can scale to.
+             * @return the next definition stage.
+             */
+            WithCreate withValidStreamingUnits(List<Integer> validStreamingUnits);
         }
         /** The stage of the Transformation definition allowing to specify query. */
         interface WithQuery {
@@ -131,16 +161,6 @@ public interface Transformation {
              * @return the next definition stage.
              */
             WithCreate withQuery(String query);
-        }
-        /** The stage of the Transformation definition allowing to specify name. */
-        interface WithName {
-            /**
-             * Specifies the name property: Resource name.
-             *
-             * @param name Resource name.
-             * @return the next definition stage.
-             */
-            WithCreate withName(String name);
         }
         /** The stage of the Transformation definition allowing to specify ifMatch. */
         interface WithIfMatch {
@@ -179,10 +199,11 @@ public interface Transformation {
 
     /** The template for Transformation update. */
     interface Update
-        extends UpdateStages.WithStreamingUnits,
+        extends UpdateStages.WithName,
+            UpdateStages.WithStreamingUnits,
+            UpdateStages.WithValidStreamingUnits,
             UpdateStages.WithQuery,
-            UpdateStages.WithName,
-            UpdateStages.WithifMatch {
+            UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *
@@ -200,6 +221,16 @@ public interface Transformation {
     }
     /** The Transformation update stages. */
     interface UpdateStages {
+        /** The stage of the Transformation update allowing to specify name. */
+        interface WithName {
+            /**
+             * Specifies the name property: Resource name.
+             *
+             * @param name Resource name.
+             * @return the next definition stage.
+             */
+            Update withName(String name);
+        }
         /** The stage of the Transformation update allowing to specify streamingUnits. */
         interface WithStreamingUnits {
             /**
@@ -210,6 +241,17 @@ public interface Transformation {
              * @return the next definition stage.
              */
             Update withStreamingUnits(Integer streamingUnits);
+        }
+        /** The stage of the Transformation update allowing to specify validStreamingUnits. */
+        interface WithValidStreamingUnits {
+            /**
+             * Specifies the validStreamingUnits property: Specifies the valid streaming units a streaming job can scale
+             * to..
+             *
+             * @param validStreamingUnits Specifies the valid streaming units a streaming job can scale to.
+             * @return the next definition stage.
+             */
+            Update withValidStreamingUnits(List<Integer> validStreamingUnits);
         }
         /** The stage of the Transformation update allowing to specify query. */
         interface WithQuery {
@@ -225,18 +267,8 @@ public interface Transformation {
              */
             Update withQuery(String query);
         }
-        /** The stage of the Transformation update allowing to specify name. */
-        interface WithName {
-            /**
-             * Specifies the name property: Resource name.
-             *
-             * @param name Resource name.
-             * @return the next definition stage.
-             */
-            Update withName(String name);
-        }
         /** The stage of the Transformation update allowing to specify ifMatch. */
-        interface WithifMatch {
+        interface WithIfMatch {
             /**
              * Specifies the ifMatch property: The ETag of the transformation. Omit this value to always overwrite the
              * current transformation. Specify the last-seen ETag value to prevent accidentally overwriting concurrent
@@ -247,7 +279,7 @@ public interface Transformation {
              *     changes.
              * @return the next definition stage.
              */
-            Update ifMatch(String ifMatch);
+            Update withIfMatch(String ifMatch);
         }
     }
     /**

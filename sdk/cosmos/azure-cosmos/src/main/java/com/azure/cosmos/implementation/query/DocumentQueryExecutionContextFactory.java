@@ -6,6 +6,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.Resource;
@@ -92,13 +93,29 @@ public class DocumentQueryExecutionContextFactory {
 
         Instant startTime = Instant.now();
         Mono<PartitionedQueryExecutionInfo> queryExecutionInfoMono;
+
+        if (ImplementationBridgeHelpers
+            .CosmosQueryRequestOptionsHelper
+            .getCosmosQueryRequestOptionsAccessor()
+            .isQueryPlanRetrievalDisallowed(cosmosQueryRequestOptions)) {
+
+            Instant endTime = Instant.now(); // endTime for query plan diagnostics
+
+            return getTargetRangesFromEmptyQueryPlan(
+                cosmosQueryRequestOptions,
+                collection,
+                queryExecutionContext,
+                startTime,
+                endTime);
+        }
+
         if (queryPlanCachingEnabled &&
                 isScopedToSinglePartition(cosmosQueryRequestOptions) &&
                 queryPlanCache.containsKey(query.getQueryText())) {
             Instant endTime = Instant.now(); // endTime for query plan diagnostics
             PartitionedQueryExecutionInfo partitionedQueryExecutionInfo = queryPlanCache.get(query.getQueryText());
             if (partitionedQueryExecutionInfo != null) {
-                logger.info("Skipping query plan round trip by using the cached plan");
+                logger.debug("Skipping query plan round trip by using the cached plan");
                 return getTargetRangesFromQueryPlan(cosmosQueryRequestOptions, collection, queryExecutionContext,
                                                     partitionedQueryExecutionInfo, startTime, endTime);
             }
@@ -164,6 +181,37 @@ public class DocumentQueryExecutionContextFactory {
                         ranges,
                         partitionedQueryExecutionInfo.getQueryInfo());
                 });
+    }
+
+    private static <T extends Resource> Mono<Pair<List<Range<String>>, QueryInfo>> getTargetRangesFromEmptyQueryPlan(
+        CosmosQueryRequestOptions cosmosQueryRequestOptions,
+        DocumentCollection collection,
+        DefaultDocumentQueryExecutionContext<T> queryExecutionContext,
+        Instant planFetchStartTime,
+        Instant planFetchEndTime) {
+
+        if (cosmosQueryRequestOptions == null ||
+            cosmosQueryRequestOptions.getFeedRange() == null) {
+
+            throw new IllegalStateException(
+                "Query plan retrieval must not be suppressed when not using FeedRanges");
+        }
+
+        QueryInfo queryInfo = QueryInfo.EMPTY;
+        queryInfo.setQueryPlanDiagnosticsContext(
+            new QueryInfo.QueryPlanDiagnosticsContext(
+                planFetchStartTime,
+                planFetchEndTime));
+
+        FeedRange userProvidedFeedRange = cosmosQueryRequestOptions.getFeedRange();
+
+        return queryExecutionContext
+            .getTargetRange(
+                collection.getResourceId(),
+                FeedRangeInternal.convert(userProvidedFeedRange))
+            .map(range -> Pair.of(
+                Collections.singletonList(range),
+                queryInfo));
     }
 
     private static void tryCacheQueryPlan(

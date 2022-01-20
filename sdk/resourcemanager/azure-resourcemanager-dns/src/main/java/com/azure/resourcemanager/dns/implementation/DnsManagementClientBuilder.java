@@ -19,12 +19,13 @@ import java.time.Duration;
 @ServiceClientBuilder(serviceClients = {DnsManagementClientImpl.class})
 public final class DnsManagementClientBuilder {
     /*
-     * The ID of the target subscription.
+     * Specifies the Azure subscription ID, which uniquely identifies the
+     * Microsoft Azure subscription.
      */
     private String subscriptionId;
 
     /**
-     * Sets The ID of the target subscription.
+     * Sets Specifies the Azure subscription ID, which uniquely identifies the Microsoft Azure subscription.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the DnsManagementClientBuilder.

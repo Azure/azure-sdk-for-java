@@ -6,6 +6,7 @@ package com.azure.analytics.purview.administration.implementation;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
+import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -59,6 +60,7 @@ public final class ResourceSetRulesImpl {
     @ServiceInterface(name = "PurviewAccountClient")
     private interface ResourceSetRulesService {
         @Get("/resourceSetRuleConfigs/defaultResourceSetRuleConfig")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getResourceSetRule(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
@@ -66,6 +68,7 @@ public final class ResourceSetRulesImpl {
                 Context context);
 
         @Put("/resourceSetRuleConfigs/defaultResourceSetRuleConfig")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> createOrUpdateResourceSetRule(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
@@ -74,6 +77,7 @@ public final class ResourceSetRulesImpl {
                 Context context);
 
         @Delete("/resourceSetRuleConfigs/defaultResourceSetRuleConfig")
+        @ExpectedResponses({200, 204})
         Mono<Response<Void>> deleteResourceSetRule(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
@@ -81,6 +85,7 @@ public final class ResourceSetRulesImpl {
                 Context context);
 
         @Get("/resourceSetRuleConfigs")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> listResourceSetRules(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
@@ -88,6 +93,7 @@ public final class ResourceSetRulesImpl {
                 Context context);
 
         @Get("{nextLink}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> listResourceSetRulesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
@@ -208,9 +214,8 @@ public final class ResourceSetRulesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return a resource set config service model.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a resource set config service model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getResourceSetRuleWithResponseAsync(RequestOptions requestOptions) {
@@ -337,9 +342,8 @@ public final class ResourceSetRulesImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return a resource set config service model.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a resource set config service model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getResourceSetRuleWithResponseAsync(
@@ -461,9 +465,8 @@ public final class ResourceSetRulesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return a resource set config service model.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a resource set config service model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getResourceSetRuleWithResponse(RequestOptions requestOptions) {
@@ -685,9 +688,9 @@ public final class ResourceSetRulesImpl {
      *
      * @param resourceSetRuleConfig ResourceSetRuleConfig implementation class.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return resourceSetRuleConfig implementation class.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return resourceSetRuleConfig implementation class along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateResourceSetRuleWithResponseAsync(
@@ -918,9 +921,9 @@ public final class ResourceSetRulesImpl {
      * @param resourceSetRuleConfig ResourceSetRuleConfig implementation class.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return resourceSetRuleConfig implementation class.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return resourceSetRuleConfig implementation class along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateResourceSetRuleWithResponseAsync(
@@ -1148,9 +1151,8 @@ public final class ResourceSetRulesImpl {
      *
      * @param resourceSetRuleConfig ResourceSetRuleConfig implementation class.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return resourceSetRuleConfig implementation class.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return resourceSetRuleConfig implementation class along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateResourceSetRuleWithResponse(
@@ -1170,9 +1172,8 @@ public final class ResourceSetRulesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the completion.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteResourceSetRuleWithResponseAsync(RequestOptions requestOptions) {
@@ -1198,9 +1199,8 @@ public final class ResourceSetRulesImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the completion.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteResourceSetRuleWithResponseAsync(RequestOptions requestOptions, Context context) {
@@ -1220,9 +1220,8 @@ public final class ResourceSetRulesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteResourceSetRuleWithResponse(RequestOptions requestOptions) {
@@ -1349,9 +1348,9 @@ public final class ResourceSetRulesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return a resource set config service model.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a resource set config service model along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listResourceSetRulesSinglePageAsync(RequestOptions requestOptions) {
@@ -1494,9 +1493,9 @@ public final class ResourceSetRulesImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return a resource set config service model.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a resource set config service model along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listResourceSetRulesSinglePageAsync(
@@ -1637,8 +1636,7 @@ public final class ResourceSetRulesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return a resource set config service model.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1769,8 +1767,7 @@ public final class ResourceSetRulesImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return a resource set config service model.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1900,8 +1897,7 @@ public final class ResourceSetRulesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return a resource set config service model.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -2021,9 +2017,9 @@ public final class ResourceSetRulesImpl {
      *
      * @param nextLink The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return paged list of account resources.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return paged list of account resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listResourceSetRulesNextSinglePageAsync(
@@ -2156,9 +2152,9 @@ public final class ResourceSetRulesImpl {
      * @param nextLink The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return paged list of account resources.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return paged list of account resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listResourceSetRulesNextSinglePageAsync(

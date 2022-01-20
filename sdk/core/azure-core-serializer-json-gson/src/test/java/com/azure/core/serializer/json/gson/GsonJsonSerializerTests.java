@@ -171,9 +171,9 @@ public class GsonJsonSerializerTests {
 
             while (in.hasNext()) {
                 String nodeName = in.nextName();
-                if (nodeName.equalsIgnoreCase("name") && in.peek() == JsonToken.STRING) {
+                if ("name".equalsIgnoreCase(nodeName) && in.peek() == JsonToken.STRING) {
                     name = in.nextString();
-                } else if (nodeName.equalsIgnoreCase("age")) {
+                } else if ("age".equalsIgnoreCase(nodeName)) {
                     age = in.nextInt();
                 } else {
                     in.skipValue();

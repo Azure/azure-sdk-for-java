@@ -24,6 +24,12 @@ public class AADOAuth2AuthorizationRequestResolver implements OAuth2Authorizatio
 
     private final AADAuthenticationProperties properties;
 
+    /**
+     * Creates a new instance of {@link AADOAuth2AuthorizationRequestResolver}.
+     *
+     * @param clientRegistrationRepository the client registration repository
+     * @param properties the AAD authentication properties
+     */
     public AADOAuth2AuthorizationRequestResolver(ClientRegistrationRepository clientRegistrationRepository,
                                                  AADAuthenticationProperties properties) {
         this.defaultResolver = new DefaultOAuth2AuthorizationRequestResolver(

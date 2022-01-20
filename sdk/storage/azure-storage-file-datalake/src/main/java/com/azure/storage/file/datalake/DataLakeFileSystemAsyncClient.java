@@ -85,7 +85,9 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  */
 @ServiceClient(builder = DataLakeFileSystemClientBuilder.class, isAsync = true)
 public class DataLakeFileSystemAsyncClient {
-
+    /**
+     * Special file system name for the root file system in the Storage account.
+     */
     public static final String ROOT_FILESYSTEM_NAME = "$root";
 
     private static final String ROOT_DIRECTORY_NAME = "";

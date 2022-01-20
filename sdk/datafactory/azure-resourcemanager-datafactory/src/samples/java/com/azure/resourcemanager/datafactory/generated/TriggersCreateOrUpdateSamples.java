@@ -7,9 +7,15 @@ package com.azure.resourcemanager.datafactory.generated;
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.datafactory.models.Trigger;
+import com.azure.resourcemanager.datafactory.models.PipelineReference;
+import com.azure.resourcemanager.datafactory.models.RecurrenceFrequency;
+import com.azure.resourcemanager.datafactory.models.ScheduleTrigger;
+import com.azure.resourcemanager.datafactory.models.ScheduleTriggerRecurrence;
+import com.azure.resourcemanager.datafactory.models.TriggerPipelineReference;
 import com.azure.resourcemanager.datafactory.models.TriggerResource;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,25 +36,29 @@ public final class TriggersCreateOrUpdateSamples {
             .define("exampleTrigger")
             .withExistingFactory("exampleResourceGroup", "exampleFactoryName")
             .withProperties(
-                new Trigger()
-                    .withAdditionalProperties(
-                        mapOf(
-                            "typeProperties",
-                            SerializerFactory
-                                .createDefaultManagementSerializerAdapter()
-                                .deserialize(
-                                    "{\"recurrence\":{\"endTime\":\"2018-06-16T00:55:13.8441801Z\",\"frequency\":\"Minute\",\"interval\":4,\"startTime\":\"2018-06-16T00:39:13.8441801Z\",\"timeZone\":\"UTC\"}}",
-                                    Object.class,
-                                    SerializerEncoding.JSON),
-                            "pipelines",
-                            SerializerFactory
-                                .createDefaultManagementSerializerAdapter()
-                                .deserialize(
-                                    "[{\"parameters\":{\"OutputBlobNameList\":[\"exampleoutput.csv\"]},\"pipelineReference\":{\"type\":\"PipelineReference\",\"referenceName\":\"examplePipeline\"}}]",
-                                    Object.class,
-                                    SerializerEncoding.JSON),
-                            "type",
-                            "ScheduleTrigger")))
+                new ScheduleTrigger()
+                    .withPipelines(
+                        Arrays
+                            .asList(
+                                new TriggerPipelineReference()
+                                    .withPipelineReference(new PipelineReference().withReferenceName("examplePipeline"))
+                                    .withParameters(
+                                        mapOf(
+                                            "OutputBlobNameList",
+                                            SerializerFactory
+                                                .createDefaultManagementSerializerAdapter()
+                                                .deserialize(
+                                                    "[\"exampleoutput.csv\"]",
+                                                    Object.class,
+                                                    SerializerEncoding.JSON)))))
+                    .withRecurrence(
+                        new ScheduleTriggerRecurrence()
+                            .withFrequency(RecurrenceFrequency.MINUTE)
+                            .withInterval(4)
+                            .withStartTime(OffsetDateTime.parse("2018-06-16T00:39:13.8441801Z"))
+                            .withEndTime(OffsetDateTime.parse("2018-06-16T00:55:13.8441801Z"))
+                            .withTimeZone("UTC")
+                            .withAdditionalProperties(mapOf())))
             .create();
     }
 
@@ -70,26 +80,30 @@ public final class TriggersCreateOrUpdateSamples {
         resource
             .update()
             .withProperties(
-                new Trigger()
+                new ScheduleTrigger()
                     .withDescription("Example description")
-                    .withAdditionalProperties(
-                        mapOf(
-                            "typeProperties",
-                            SerializerFactory
-                                .createDefaultManagementSerializerAdapter()
-                                .deserialize(
-                                    "{\"recurrence\":{\"endTime\":\"2018-06-16T00:55:14.905167Z\",\"frequency\":\"Minute\",\"interval\":4,\"startTime\":\"2018-06-16T00:39:14.905167Z\",\"timeZone\":\"UTC\"}}",
-                                    Object.class,
-                                    SerializerEncoding.JSON),
-                            "pipelines",
-                            SerializerFactory
-                                .createDefaultManagementSerializerAdapter()
-                                .deserialize(
-                                    "[{\"parameters\":{\"OutputBlobNameList\":[\"exampleoutput.csv\"]},\"pipelineReference\":{\"type\":\"PipelineReference\",\"referenceName\":\"examplePipeline\"}}]",
-                                    Object.class,
-                                    SerializerEncoding.JSON),
-                            "type",
-                            "ScheduleTrigger")))
+                    .withPipelines(
+                        Arrays
+                            .asList(
+                                new TriggerPipelineReference()
+                                    .withPipelineReference(new PipelineReference().withReferenceName("examplePipeline"))
+                                    .withParameters(
+                                        mapOf(
+                                            "OutputBlobNameList",
+                                            SerializerFactory
+                                                .createDefaultManagementSerializerAdapter()
+                                                .deserialize(
+                                                    "[\"exampleoutput.csv\"]",
+                                                    Object.class,
+                                                    SerializerEncoding.JSON)))))
+                    .withRecurrence(
+                        new ScheduleTriggerRecurrence()
+                            .withFrequency(RecurrenceFrequency.MINUTE)
+                            .withInterval(4)
+                            .withStartTime(OffsetDateTime.parse("2018-06-16T00:39:14.905167Z"))
+                            .withEndTime(OffsetDateTime.parse("2018-06-16T00:55:14.905167Z"))
+                            .withTimeZone("UTC")
+                            .withAdditionalProperties(mapOf())))
             .apply();
     }
 

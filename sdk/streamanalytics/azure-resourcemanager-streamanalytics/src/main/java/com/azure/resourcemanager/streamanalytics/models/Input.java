@@ -144,7 +144,7 @@ public interface Input {
     Input.Update update();
 
     /** The template for Input update. */
-    interface Update extends UpdateStages.WithProperties, UpdateStages.WithName, UpdateStages.WithifMatch {
+    interface Update extends UpdateStages.WithProperties, UpdateStages.WithName, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *
@@ -185,7 +185,7 @@ public interface Input {
             Update withName(String name);
         }
         /** The stage of the Input update allowing to specify ifMatch. */
-        interface WithifMatch {
+        interface WithIfMatch {
             /**
              * Specifies the ifMatch property: The ETag of the input. Omit this value to always overwrite the current
              * input. Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes..
@@ -194,7 +194,7 @@ public interface Input {
              *     last-seen ETag value to prevent accidentally overwriting concurrent changes.
              * @return the next definition stage.
              */
-            Update ifMatch(String ifMatch);
+            Update withIfMatch(String ifMatch);
         }
     }
     /**
@@ -211,4 +211,42 @@ public interface Input {
      * @return the refreshed resource.
      */
     Input refresh(Context context);
+
+    /**
+     * Tests whether an input’s datasource is reachable and usable by the Azure Stream Analytics service.
+     *
+     * @param input If the input specified does not already exist, this parameter must contain the full input definition
+     *     intended to be tested. If the input specified already exists, this parameter can be left null to test the
+     *     existing input as is or if specified, the properties specified will overwrite the corresponding properties in
+     *     the existing input (exactly like a PATCH operation) and the resulting input will be tested.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes the status of the test operation along with error information, if applicable.
+     */
+    ResourceTestStatus test(InputInner input);
+
+    /**
+     * Tests whether an input’s datasource is reachable and usable by the Azure Stream Analytics service.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes the status of the test operation along with error information, if applicable.
+     */
+    ResourceTestStatus test();
+
+    /**
+     * Tests whether an input’s datasource is reachable and usable by the Azure Stream Analytics service.
+     *
+     * @param input If the input specified does not already exist, this parameter must contain the full input definition
+     *     intended to be tested. If the input specified already exists, this parameter can be left null to test the
+     *     existing input as is or if specified, the properties specified will overwrite the corresponding properties in
+     *     the existing input (exactly like a PATCH operation) and the resulting input will be tested.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes the status of the test operation along with error information, if applicable.
+     */
+    ResourceTestStatus test(InputInner input, Context context);
 }

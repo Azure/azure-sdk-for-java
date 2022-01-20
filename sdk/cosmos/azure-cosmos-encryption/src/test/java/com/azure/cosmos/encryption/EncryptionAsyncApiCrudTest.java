@@ -431,6 +431,9 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
             responseItem = replaceResponse.getItem();
             validateResponse(encryptionPojo, responseItem);
 
+            // First query fail on core sdk as there will be no pkrange cache, and collection cache have wrong information of collection rid,
+            // pkrange call will fail will null pointer, therefore querying before deleting the container making sure we have pkrange cache to begin with
+            encryptionAsyncContainerOriginal.queryItems(querySpec, null, EncryptionPojo.class).byPage().blockFirst().getResults();
             //Deleting and creating container
             encryptionAsyncContainerOriginal.getCosmosAsyncContainer().delete().block();
             createEncryptionContainer(cosmosEncryptionAsyncDatabase, clientEncryptionPolicy, containerId);
