@@ -10,6 +10,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.Disk;
@@ -518,6 +519,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
      * @throws IOException
      * @throws ManagementException
      */
+    @DoNotRecord(skipInPlayback = true)
     @Test
     public void testVMImages() throws ManagementException, IOException {
         PagedIterable<VirtualMachinePublisher> publishers =
@@ -1276,16 +1278,6 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
             azureResourceManager.containerGroups().listOperations().stream().collect(Collectors.toSet());
         // Number of supported operation can change hence don't assert with a predefined number.
         Assertions.assertTrue(containerGroupOperations.size() > 0);
-    }
-
-    @Disabled("Cannot run test due to unknown parameter")
-    @Test
-    public void testContainerInstanceWithPrivateIpAddress() throws Exception {
-        // LIVE ONLY TEST BECAUSE IT REQUIRES SUBSCRIPTION ID
-        if (!isPlaybackMode()) {
-            new TestContainerInstanceWithPrivateIpAddress()
-                .runTest(azureResourceManager.containerGroups(), azureResourceManager.resourceGroups(), azureResourceManager.subscriptionId());
-        }
     }
 
     @Test

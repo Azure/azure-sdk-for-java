@@ -195,9 +195,9 @@ class ServiceBusManagementSerializerTest {
         final String contents = getContents("QueueDescriptionFeed-Paged.xml");
         final List<ResponseLink> responseLinks = Arrays.asList(
             new ResponseLink().setRel("self")
-                .setHref("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&enrich=false&$skip=0&$top=5"),
+                .setHref("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2021-05&enrich=false&$skip=0&$top=5"),
             new ResponseLink().setRel("next")
-                .setHref("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&enrich=false&%24skip=5&%24top=5")
+                .setHref("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2021-05&enrich=false&%24skip=5&%24top=5")
         );
 
         final String queueName = "q-0";
@@ -216,33 +216,33 @@ class ServiceBusManagementSerializerTest {
         final QueueDescription queueProperties = EntityHelper.getQueueDescription(options);
 
         final QueueDescriptionEntry entry1 = new QueueDescriptionEntry()
-            .setBase("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&enrich=false&$skip=0&$top=5")
-            .setId("https://sb-java.servicebus.windows.net/q-0?api-version=2017-04")
+            .setBase("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2021-05&enrich=false&$skip=0&$top=5")
+            .setId("https://sb-java.servicebus.windows.net/q-0?api-version=2021-05")
             .setTitle(getResponseTitle("q-0"))
             .setPublished(OffsetDateTime.parse("2020-03-05T07:17:04Z"))
             .setUpdated(OffsetDateTime.parse("2020-01-05T07:17:04Z"))
             .setAuthor(new ResponseAuthor().setName("sb-java"))
-            .setLink(new ResponseLink().setRel("self").setHref("../q-0?api-version=2017-04"))
+            .setLink(new ResponseLink().setRel("self").setHref("../q-0?api-version=2021-05"))
             .setContent(new QueueDescriptionEntryContent().setType("application/xml")
                 .setQueueDescription(queueProperties));
         final QueueDescriptionEntry entry2 = new QueueDescriptionEntry()
-            .setBase("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&enrich=false&$skip=0&$top=5")
-            .setId("https://sb-java.servicebus.windows.net/q-1?api-version=2017-04")
+            .setBase("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2021-05&enrich=false&$skip=0&$top=5")
+            .setId("https://sb-java.servicebus.windows.net/q-1?api-version=2021-05")
             .setTitle(getResponseTitle("q-1"))
             .setPublished(OffsetDateTime.parse("2020-06-10T07:16:25Z"))
             .setUpdated(OffsetDateTime.parse("2020-06-15T07:16:25Z"))
             .setAuthor(new ResponseAuthor().setName("sb-java2"))
-            .setLink(new ResponseLink().setRel("self").setHref("../q-1?api-version=2017-04"))
+            .setLink(new ResponseLink().setRel("self").setHref("../q-1?api-version=2021-05"))
             .setContent(new QueueDescriptionEntryContent().setType("application/xml")
                 .setQueueDescription(queueProperties));
         final QueueDescriptionEntry entry3 = new QueueDescriptionEntry()
-            .setBase("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&enrich=false&$skip=0&$top=5")
-            .setId("https://sb-java.servicebus.windows.net/q-2?api-version=2017-04")
+            .setBase("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2021-05&enrich=false&$skip=0&$top=5")
+            .setId("https://sb-java.servicebus.windows.net/q-2?api-version=2021-05")
             .setTitle(getResponseTitle("q-2"))
             .setPublished(OffsetDateTime.parse("2020-06-05T07:17:06Z"))
             .setUpdated(OffsetDateTime.parse("2020-06-05T07:17:06Z"))
             .setAuthor(new ResponseAuthor().setName("sb-java3"))
-            .setLink(new ResponseLink().setRel("self").setHref("../q-2?api-version=2017-04"))
+            .setLink(new ResponseLink().setRel("self").setHref("../q-2?api-version=2021-05"))
             .setContent(new QueueDescriptionEntryContent().setType("application/xml")
                 .setQueueDescription(queueProperties));
 
@@ -430,7 +430,7 @@ class ServiceBusManagementSerializerTest {
         final String contents = getContents("SubscriptionDescriptionFeed.xml");
         final List<ResponseLink> responseLinks = Collections.singletonList(
             new ResponseLink().setRel("self")
-                .setHref("https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2017-04&enrich=false&$skip=0&$top=100")
+                .setHref("https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2021-05&enrich=false&$skip=0&$top=100")
         );
 
         final String topicName = "topic";
@@ -458,29 +458,29 @@ class ServiceBusManagementSerializerTest {
             subscription1, subscription2, subscription3);
 
         final SubscriptionDescriptionEntry entry1 = new SubscriptionDescriptionEntry()
-            .setId("https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-0?api-version=2017-04")
+            .setId("https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-0?api-version=2021-05")
             .setTitle(getResponseTitle(subscriptionName1))
             .setPublished(OffsetDateTime.parse("2020-06-22T23:47:53Z"))
             .setUpdated(OffsetDateTime.parse("2020-06-23T23:47:53Z"))
-            .setLink(new ResponseLink().setRel("self").setHref("Subscriptions/subscription-0?api-version=2017-04"))
+            .setLink(new ResponseLink().setRel("self").setHref("Subscriptions/subscription-0?api-version=2021-05"))
             .setContent(new SubscriptionDescriptionEntryContent()
                 .setType("application/xml")
                 .setSubscriptionDescription(subscription1));
         final SubscriptionDescriptionEntry entry2 = new SubscriptionDescriptionEntry()
-            .setId("https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-0?api-version=2017-04")
+            .setId("https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-0?api-version=2021-05")
             .setTitle(getResponseTitle(subscriptionName2))
             .setPublished(OffsetDateTime.parse("2020-06-22T23:47:53Z"))
             .setUpdated(OffsetDateTime.parse("2020-05-22T23:47:53Z"))
-            .setLink(new ResponseLink().setRel("self").setHref("Subscriptions/subscription-session-0?api-version=2017-04"))
+            .setLink(new ResponseLink().setRel("self").setHref("Subscriptions/subscription-session-0?api-version=2021-05"))
             .setContent(new SubscriptionDescriptionEntryContent()
                 .setType("application/xml")
                 .setSubscriptionDescription(subscription2));
         final SubscriptionDescriptionEntry entry3 = new SubscriptionDescriptionEntry()
-            .setId("https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-1?api-version=2017-04")
+            .setId("https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-1?api-version=2021-05")
             .setTitle(getResponseTitle(subscriptionName3))
             .setPublished(OffsetDateTime.parse("2020-06-22T23:47:54Z"))
             .setUpdated(OffsetDateTime.parse("2020-04-22T23:47:54Z"))
-            .setLink(new ResponseLink().setRel("self").setHref("Subscriptions/subscription-session-1?api-version=2017-04"))
+            .setLink(new ResponseLink().setRel("self").setHref("Subscriptions/subscription-session-1?api-version=2021-05"))
             .setContent(new SubscriptionDescriptionEntryContent()
                 .setType("application/xml")
                 .setSubscriptionDescription(subscription3));
@@ -553,7 +553,7 @@ class ServiceBusManagementSerializerTest {
                 .setCompatibilityLevel("20")
                 .setSqlExpression("type = \"TestType\""));
         final RuleDescriptionEntry expected = new RuleDescriptionEntry()
-            .setId("sb://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/Rules/foo?api-version=2017-04&enrich=false")
+            .setId("sb://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/Rules/foo?api-version=2021-05&enrich=false")
             .setPublished(OffsetDateTime.parse("2020-08-28T04:32:20Z"))
             .setUpdated(OffsetDateTime.parse("2020-08-28T04:34:20Z"))
             .setContent(new RuleDescriptionEntryContent()
@@ -584,7 +584,7 @@ class ServiceBusManagementSerializerTest {
                 .setCompatibilityLevel("20")
                 .setSqlExpression("type = \"TestType\""));
         final RuleDescriptionEntry expected = new RuleDescriptionEntry()
-            .setId("https://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/Rules/foo?api-version=2017-04")
+            .setId("https://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/Rules/foo?api-version=2021-05")
             .setPublished(OffsetDateTime.parse("2020-08-28T04:51:24Z"))
             .setUpdated(OffsetDateTime.parse("2020-08-28T04:54:24Z"))
             .setContent(new RuleDescriptionEntryContent()
@@ -612,7 +612,7 @@ class ServiceBusManagementSerializerTest {
             .setFilter(new CorrelationFilterImpl()
                 .setLabel("matching-label"));
         final RuleDescriptionEntry expected = new RuleDescriptionEntry()
-            .setId("sb://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/Rules/correl?api-version=2017-04&enrich=false")
+            .setId("sb://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/Rules/correl?api-version=2021-05&enrich=false")
             .setPublished(OffsetDateTime.parse("2020-08-28T04:32:50Z"))
             .setUpdated(OffsetDateTime.parse("2020-08-28T04:34:50Z"))
             .setContent(new RuleDescriptionEntryContent()
@@ -640,7 +640,7 @@ class ServiceBusManagementSerializerTest {
             .setAction(new EmptyRuleActionImpl())
             .setFilter(new TrueFilterImpl().setCompatibilityLevel("20").setSqlExpression("1=1"));
         final RuleDescriptionEntry defaultRuleEntry = new RuleDescriptionEntry()
-            .setId("https://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/rules/$Default?api-version=2017-04")
+            .setId("https://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/rules/$Default?api-version=2021-05")
             .setPublished(OffsetDateTime.parse("2020-08-12T18:48:00Z"))
             .setUpdated(OffsetDateTime.parse("2020-08-12T18:48:00Z"))
             .setContent(new RuleDescriptionEntryContent()
@@ -654,7 +654,7 @@ class ServiceBusManagementSerializerTest {
             .setFilter(new CorrelationFilterImpl()
                 .setLabel("matching-label"));
         final RuleDescriptionEntry correlationEntry = new RuleDescriptionEntry()
-            .setId("https://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/rules/correl?api-version=2017-04")
+            .setId("https://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/rules/correl?api-version=2021-05")
             .setPublished(OffsetDateTime.parse("2020-08-28T04:32:50Z"))
             .setUpdated(OffsetDateTime.parse("2020-08-28T04:32:50Z"))
             .setContent(new RuleDescriptionEntryContent()
@@ -671,7 +671,7 @@ class ServiceBusManagementSerializerTest {
                 .setCompatibilityLevel("20")
                 .setSqlExpression("type = \"TestType\""));
         final RuleDescriptionEntry sqlRuleEntry = new RuleDescriptionEntry()
-            .setId("https://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/rules/foo?api-version=2017-04")
+            .setId("https://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/rules/foo?api-version=2021-05")
             .setPublished(OffsetDateTime.parse("2020-08-28T04:32:20Z"))
             .setUpdated(OffsetDateTime.parse("2020-08-28T04:32:20Z"))
             .setContent(new RuleDescriptionEntryContent()
@@ -681,7 +681,7 @@ class ServiceBusManagementSerializerTest {
         final List<RuleDescriptionEntry> expectedEntries = Arrays.asList(defaultRuleEntry, correlationEntry, sqlRuleEntry);
         final RuleDescriptionFeed expected = new RuleDescriptionFeed()
             .setEntry(expectedEntries)
-            .setId("https://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/rules?api-version=2017-04&enrich=false&$skip=0&$top=100")
+            .setId("https://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/rules?api-version=2021-05&enrich=false&$skip=0&$top=100")
             .setUpdated(OffsetDateTime.parse("2020-08-28T14:59:16Z"));
 
         // Act
@@ -738,12 +738,12 @@ class ServiceBusManagementSerializerTest {
             .setRuleDescription(description)
             .setType("application/xml");
         final RuleDescriptionEntry expected = new RuleDescriptionEntry()
-            .setId("https://sb-java.servicebus.windows.net/topic-1/Subscriptions/subscription/Rules/connies-bar?api-version=2017-04")
+            .setId("https://sb-java.servicebus.windows.net/topic-1/Subscriptions/subscription/Rules/connies-bar?api-version=2021-05")
             .setPublished(OffsetDateTime.parse("2020-10-05T23:31:21Z"))
             .setUpdated(OffsetDateTime.parse("2020-10-05T23:30:21Z"))
             .setLink(new ResponseLink()
                 .setRel("self")
-                .setHref("https://sb-java.servicebus.windows.net/topic-1/Subscriptions/subscription/Rules/connies-bar?api-version=2017-04"))
+                .setHref("https://sb-java.servicebus.windows.net/topic-1/Subscriptions/subscription/Rules/connies-bar?api-version=2021-05"))
             .setContent(content);
 
         // Act

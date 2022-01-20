@@ -9,6 +9,8 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.CreationData;
+import com.azure.resourcemanager.containerservice.models.OSType;
+import com.azure.resourcemanager.containerservice.models.Ossku;
 import com.azure.resourcemanager.containerservice.models.SnapshotType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -109,6 +111,60 @@ public final class SnapshotInner extends Resource {
         }
         this.innerProperties().withSnapshotType(snapshotType);
         return this;
+    }
+
+    /**
+     * Get the kubernetesVersion property: The version of Kubernetes.
+     *
+     * @return the kubernetesVersion value.
+     */
+    public String kubernetesVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().kubernetesVersion();
+    }
+
+    /**
+     * Get the nodeImageVersion property: The version of node image.
+     *
+     * @return the nodeImageVersion value.
+     */
+    public String nodeImageVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().nodeImageVersion();
+    }
+
+    /**
+     * Get the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
+     *
+     * @return the osType value.
+     */
+    public OSType osType() {
+        return this.innerProperties() == null ? null : this.innerProperties().osType();
+    }
+
+    /**
+     * Get the osSku property: Specifies an OS SKU. This value must not be specified if OSType is Windows.
+     *
+     * @return the osSku value.
+     */
+    public Ossku osSku() {
+        return this.innerProperties() == null ? null : this.innerProperties().osSku();
+    }
+
+    /**
+     * Get the vmSize property: The size of the VM.
+     *
+     * @return the vmSize value.
+     */
+    public String vmSize() {
+        return this.innerProperties() == null ? null : this.innerProperties().vmSize();
+    }
+
+    /**
+     * Get the enableFips property: Whether to use a FIPS-enabled OS.
+     *
+     * @return the enableFips value.
+     */
+    public Boolean enableFips() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableFips();
     }
 
     /**

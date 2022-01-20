@@ -22,7 +22,7 @@ public final class CredentialReference {
      * Credential reference type.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "CredentialReference";
 
     /*
      * Reference credential name.

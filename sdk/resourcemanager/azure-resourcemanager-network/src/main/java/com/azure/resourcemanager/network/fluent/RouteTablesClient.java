@@ -48,7 +48,7 @@ public interface RouteTablesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String routeTableName);
 
     /**
@@ -61,7 +61,7 @@ public interface RouteTablesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String routeTableName);
 
     /**
@@ -75,7 +75,7 @@ public interface RouteTablesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String routeTableName, Context context);
 
     /**
@@ -213,7 +213,7 @@ public interface RouteTablesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return route table resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<RouteTableInner>, RouteTableInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String routeTableName, RouteTableInner parameters);
 
@@ -228,7 +228,7 @@ public interface RouteTablesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return route table resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RouteTableInner>, RouteTableInner> beginCreateOrUpdate(
         String resourceGroupName, String routeTableName, RouteTableInner parameters);
 
@@ -244,7 +244,7 @@ public interface RouteTablesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return route table resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RouteTableInner>, RouteTableInner> beginCreateOrUpdate(
         String resourceGroupName, String routeTableName, RouteTableInner parameters, Context context);
 

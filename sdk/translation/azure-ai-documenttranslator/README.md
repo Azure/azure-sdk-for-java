@@ -35,8 +35,7 @@ In order to interact with the Document Translator service, you'll need to create
 You can obtain the endpoint and API key from the resource information in the [Azure Portal][azure_portal] from your Document Translator resource. The endpoint is of format `https://<NAME-OF-YOUR-RESOURCE>.cognitiveservices.azure.com`. 
 
 ##### Example
-<!-- embedme ./src/samples/java/com/azure/ai/documenttranslator/ReadmeSamples.java#L21-L29 -->
-```java
+```java readme-sample-createBatchDocumentTranslationRestClient
 String endpoint = String.format("https://%s.cognitiveservices.azure.com/translator/text/batch/v1.0-preview.1",
     "<document-translator-resource-name>");
 String apiKey = "<document-translator-api-key>";

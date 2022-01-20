@@ -29,6 +29,12 @@ public class AADWebApplicationConfiguration {
     @Autowired
     private AADAuthenticationProperties properties;
 
+    /**
+     * Declare OAuth2UserService bean.
+     *
+     * @param properties the AAD authentication properties
+     * @return OAuth2UserService bean
+     */
     @Bean
     @ConditionalOnMissingBean
     public OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService(AADAuthenticationProperties properties) {

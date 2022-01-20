@@ -10,7 +10,6 @@ import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeyLessE
 import com.azure.security.keyvault.jca.implementation.signature.AbstractKeyVaultKeyLessSignature;
 
 import java.lang.reflect.InvocationTargetException;
-import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.security.Provider;
 import java.util.Arrays;
@@ -55,7 +54,7 @@ public final class KeyVaultJcaProvider extends Provider {
      */
     @SuppressWarnings("removal")
     private void initialize() {
-        AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+        java.security.AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
             putService(
                 new Provider.Service(
                     this,

@@ -1,14 +1,18 @@
 ## Release History
 
-### 1.0.0-beta.9 (Unreleased)
+### 1.0.0-beta.10 (2022-01-14)
+#### New Features
+* Added `Patch API` for encryption.
+* Updated `azure-cosmos` to version `4.25.0`.
 
-#### Features Added
+### 1.0.0-beta.9 (2021-10-14)
+#### New Features
+* Added support for transaction batch.
+* Added support for aggregate query.
+* Updated `azure-cosmos` to version `4.20.0`.
 
-#### Breaking Changes
-
-#### Bugs Fixed
-
-#### Other Changes
+#### Key Bug Fixes
+* Fixed Json property name of ClientEncryptionKeyProperties.
 
 ### 1.0.0-beta.8 (2021-09-09)
 #### New Features

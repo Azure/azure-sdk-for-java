@@ -37,6 +37,13 @@ public interface DomainAvailability {
     String type();
 
     /**
+     * Gets the kind property: The Kind of the resource.
+     *
+     * @return the kind value.
+     */
+    String kind();
+
+    /**
      * Gets the inner com.azure.resourcemanager.cognitiveservices.fluent.models.DomainAvailabilityInner object.
      *
      * @return the inner object.

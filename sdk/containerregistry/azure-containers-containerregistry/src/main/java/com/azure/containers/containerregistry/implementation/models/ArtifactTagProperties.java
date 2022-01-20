@@ -51,34 +51,28 @@ public class ArtifactTagProperties {
     private OffsetDateTime lastUpdatedOn;
 
     /*
-     * Is signed
-     */
-    @JsonProperty(value = "tag.signed")
-    private Boolean signed;
-
-    /*
      * Delete enabled
      */
     @JsonProperty(value = "tag.changeableAttributes.deleteEnabled")
-    private Boolean canDelete;
+    private Boolean deleteEnabled;
 
     /*
      * Write enabled
      */
     @JsonProperty(value = "tag.changeableAttributes.writeEnabled")
-    private Boolean canWrite;
+    private Boolean writeEnabled;
 
     /*
      * List enabled
      */
     @JsonProperty(value = "tag.changeableAttributes.listEnabled")
-    private Boolean canList;
+    private Boolean listEnabled;
 
     /*
      * Read enabled
      */
     @JsonProperty(value = "tag.changeableAttributes.readEnabled")
-    private Boolean canRead;
+    private Boolean readEnabled;
 
     /**
      * Get the registryLoginServer property: Registry login server name. This is likely to be similar to
@@ -136,102 +130,82 @@ public class ArtifactTagProperties {
     }
 
     /**
-     * Get the signed property: Is signed.
+     * Get the deleteEnabled property: Delete enabled.
      *
-     * @return the signed value.
+     * @return the deleteEnabled value.
      */
-    public Boolean isSigned() {
-        return this.signed;
+    public Boolean isDeleteEnabled() {
+        return this.deleteEnabled;
     }
 
     /**
-     * Set the signed property: Is signed.
+     * Set the deleteEnabled property: Delete enabled.
      *
-     * @param signed the signed value to set.
+     * @param deleteEnabled the deleteEnabled value to set.
      * @return the ArtifactTagProperties object itself.
      */
-    public ArtifactTagProperties setSigned(Boolean signed) {
-        this.signed = signed;
+    public ArtifactTagProperties setDeleteEnabled(Boolean deleteEnabled) {
+        this.deleteEnabled = deleteEnabled;
         return this;
     }
 
     /**
-     * Get the canDelete property: Delete enabled.
+     * Get the writeEnabled property: Write enabled.
      *
-     * @return the canDelete value.
+     * @return the writeEnabled value.
      */
-    public Boolean isCanDelete() {
-        return this.canDelete;
+    public Boolean isWriteEnabled() {
+        return this.writeEnabled;
     }
 
     /**
-     * Set the canDelete property: Delete enabled.
+     * Set the writeEnabled property: Write enabled.
      *
-     * @param canDelete the canDelete value to set.
+     * @param writeEnabled the writeEnabled value to set.
      * @return the ArtifactTagProperties object itself.
      */
-    public ArtifactTagProperties setCanDelete(Boolean canDelete) {
-        this.canDelete = canDelete;
+    public ArtifactTagProperties setWriteEnabled(Boolean writeEnabled) {
+        this.writeEnabled = writeEnabled;
         return this;
     }
 
     /**
-     * Get the canWrite property: Write enabled.
+     * Get the listEnabled property: List enabled.
      *
-     * @return the canWrite value.
+     * @return the listEnabled value.
      */
-    public Boolean isCanWrite() {
-        return this.canWrite;
+    public Boolean isListEnabled() {
+        return this.listEnabled;
     }
 
     /**
-     * Set the canWrite property: Write enabled.
+     * Set the listEnabled property: List enabled.
      *
-     * @param canWrite the canWrite value to set.
+     * @param listEnabled the listEnabled value to set.
      * @return the ArtifactTagProperties object itself.
      */
-    public ArtifactTagProperties setCanWrite(Boolean canWrite) {
-        this.canWrite = canWrite;
+    public ArtifactTagProperties setListEnabled(Boolean listEnabled) {
+        this.listEnabled = listEnabled;
         return this;
     }
 
     /**
-     * Get the canList property: List enabled.
+     * Get the readEnabled property: Read enabled.
      *
-     * @return the canList value.
+     * @return the readEnabled value.
      */
-    public Boolean isCanList() {
-        return this.canList;
+    public Boolean isReadEnabled() {
+        return this.readEnabled;
     }
 
     /**
-     * Set the canList property: List enabled.
+     * Set the readEnabled property: Read enabled.
      *
-     * @param canList the canList value to set.
+     * @param readEnabled the readEnabled value to set.
      * @return the ArtifactTagProperties object itself.
      */
-    public ArtifactTagProperties setCanList(Boolean canList) {
-        this.canList = canList;
-        return this;
-    }
-
-    /**
-     * Get the canRead property: Read enabled.
-     *
-     * @return the canRead value.
-     */
-    public Boolean isCanRead() {
-        return this.canRead;
-    }
-
-    /**
-     * Set the canRead property: Read enabled.
-     *
-     * @param canRead the canRead value to set.
-     * @return the ArtifactTagProperties object itself.
-     */
-    public ArtifactTagProperties setCanRead(Boolean canRead) {
-        this.canRead = canRead;
+    public ArtifactTagProperties setReadEnabled(Boolean readEnabled) {
+        this.readEnabled = readEnabled;
         return this;
     }
 }

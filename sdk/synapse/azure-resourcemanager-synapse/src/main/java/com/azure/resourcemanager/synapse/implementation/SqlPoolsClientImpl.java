@@ -697,7 +697,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sQL pool.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginCreateAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolInner sqlPoolInfo) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -721,7 +721,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sQL pool.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginCreateAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolInner sqlPoolInfo, Context context) {
         context = this.client.mergeContext(context);
@@ -745,7 +745,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sQL pool.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginCreate(
         String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolInner sqlPoolInfo) {
         return beginCreateAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo).getSyncPoller();
@@ -764,7 +764,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sQL pool.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginCreate(
         String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolInner sqlPoolInfo, Context context) {
         return beginCreateAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo, context).getSyncPoller();
@@ -965,7 +965,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Object>, Object> beginDeleteAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName);
@@ -987,7 +987,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Object>, Object> beginDeleteAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
         context = this.client.mergeContext(context);
@@ -1009,7 +1009,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Object>, Object> beginDelete(
         String resourceGroupName, String workspaceName, String sqlPoolName) {
         return beginDeleteAsync(resourceGroupName, workspaceName, sqlPoolName).getSyncPoller();
@@ -1027,7 +1027,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Object>, Object> beginDelete(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
         return beginDeleteAsync(resourceGroupName, workspaceName, sqlPoolName, context).getSyncPoller();
@@ -1403,7 +1403,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Object>, Object> beginPauseAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName) {
         Mono<Response<Flux<ByteBuffer>>> mono = pauseWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName);
@@ -1425,7 +1425,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Object>, Object> beginPauseAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
         context = this.client.mergeContext(context);
@@ -1447,7 +1447,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Object>, Object> beginPause(
         String resourceGroupName, String workspaceName, String sqlPoolName) {
         return beginPauseAsync(resourceGroupName, workspaceName, sqlPoolName).getSyncPoller();
@@ -1465,7 +1465,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Object>, Object> beginPause(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
         return beginPauseAsync(resourceGroupName, workspaceName, sqlPoolName, context).getSyncPoller();
@@ -1659,7 +1659,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Object>, Object> beginResumeAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName) {
         Mono<Response<Flux<ByteBuffer>>> mono = resumeWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName);
@@ -1681,7 +1681,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Object>, Object> beginResumeAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
         context = this.client.mergeContext(context);
@@ -1703,7 +1703,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Object>, Object> beginResume(
         String resourceGroupName, String workspaceName, String sqlPoolName) {
         return beginResumeAsync(resourceGroupName, workspaceName, sqlPoolName).getSyncPoller();
@@ -1721,7 +1721,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Object>, Object> beginResume(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
         return beginResumeAsync(resourceGroupName, workspaceName, sqlPoolName, context).getSyncPoller();

@@ -5,34 +5,30 @@
 package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.notificationhubs.fluent.models.WnsCredentialProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Description of a NotificationHub WnsCredential. */
-@JsonFlatten
 @Fluent
-public class WnsCredential {
+public final class WnsCredential {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WnsCredential.class);
 
     /*
-     * The package ID for this credential.
+     * Properties of NotificationHub WnsCredential.
      */
-    @JsonProperty(value = "properties.packageSid")
-    private String packageSid;
+    @JsonProperty(value = "properties")
+    private WnsCredentialProperties innerProperties;
 
-    /*
-     * The secret key.
+    /**
+     * Get the innerProperties property: Properties of NotificationHub WnsCredential.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.secretKey")
-    private String secretKey;
-
-    /*
-     * The Windows Live endpoint.
-     */
-    @JsonProperty(value = "properties.windowsLiveEndpoint")
-    private String windowsLiveEndpoint;
+    private WnsCredentialProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the packageSid property: The package ID for this credential.
@@ -40,7 +36,7 @@ public class WnsCredential {
      * @return the packageSid value.
      */
     public String packageSid() {
-        return this.packageSid;
+        return this.innerProperties() == null ? null : this.innerProperties().packageSid();
     }
 
     /**
@@ -50,7 +46,10 @@ public class WnsCredential {
      * @return the WnsCredential object itself.
      */
     public WnsCredential withPackageSid(String packageSid) {
-        this.packageSid = packageSid;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WnsCredentialProperties();
+        }
+        this.innerProperties().withPackageSid(packageSid);
         return this;
     }
 
@@ -60,7 +59,7 @@ public class WnsCredential {
      * @return the secretKey value.
      */
     public String secretKey() {
-        return this.secretKey;
+        return this.innerProperties() == null ? null : this.innerProperties().secretKey();
     }
 
     /**
@@ -70,7 +69,10 @@ public class WnsCredential {
      * @return the WnsCredential object itself.
      */
     public WnsCredential withSecretKey(String secretKey) {
-        this.secretKey = secretKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WnsCredentialProperties();
+        }
+        this.innerProperties().withSecretKey(secretKey);
         return this;
     }
 
@@ -80,7 +82,7 @@ public class WnsCredential {
      * @return the windowsLiveEndpoint value.
      */
     public String windowsLiveEndpoint() {
-        return this.windowsLiveEndpoint;
+        return this.innerProperties() == null ? null : this.innerProperties().windowsLiveEndpoint();
     }
 
     /**
@@ -90,7 +92,10 @@ public class WnsCredential {
      * @return the WnsCredential object itself.
      */
     public WnsCredential withWindowsLiveEndpoint(String windowsLiveEndpoint) {
-        this.windowsLiveEndpoint = windowsLiveEndpoint;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WnsCredentialProperties();
+        }
+        this.innerProperties().withWindowsLiveEndpoint(windowsLiveEndpoint);
         return this;
     }
 
@@ -100,5 +105,8 @@ public class WnsCredential {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

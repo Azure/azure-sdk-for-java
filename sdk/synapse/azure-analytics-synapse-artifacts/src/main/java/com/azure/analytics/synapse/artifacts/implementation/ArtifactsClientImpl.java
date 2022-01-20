@@ -26,18 +26,6 @@ public final class ArtifactsClientImpl {
         return this.endpoint;
     }
 
-    /** Api Version. */
-    private final String apiVersion;
-
-    /**
-     * Gets Api Version.
-     *
-     * @return the apiVersion value.
-     */
-    public String getApiVersion() {
-        return this.apiVersion;
-    }
-
     /** The HTTP pipeline to send requests through. */
     private final HttpPipeline httpPipeline;
 
@@ -62,76 +50,52 @@ public final class ArtifactsClientImpl {
         return this.serializerAdapter;
     }
 
-    /** The LinkedServicesImpl object to access its operations. */
-    private final LinkedServicesImpl linkedServices;
+    /** The KqlScriptsImpl object to access its operations. */
+    private final KqlScriptsImpl kqlScripts;
 
     /**
-     * Gets the LinkedServicesImpl object to access its operations.
+     * Gets the KqlScriptsImpl object to access its operations.
      *
-     * @return the LinkedServicesImpl object.
+     * @return the KqlScriptsImpl object.
      */
-    public LinkedServicesImpl getLinkedServices() {
-        return this.linkedServices;
+    public KqlScriptsImpl getKqlScripts() {
+        return this.kqlScripts;
     }
 
-    /** The DatasetsImpl object to access its operations. */
-    private final DatasetsImpl datasets;
+    /** The KqlScriptsOperationsImpl object to access its operations. */
+    private final KqlScriptsOperationsImpl kqlScriptsOperations;
 
     /**
-     * Gets the DatasetsImpl object to access its operations.
+     * Gets the KqlScriptsOperationsImpl object to access its operations.
      *
-     * @return the DatasetsImpl object.
+     * @return the KqlScriptsOperationsImpl object.
      */
-    public DatasetsImpl getDatasets() {
-        return this.datasets;
+    public KqlScriptsOperationsImpl getKqlScriptsOperations() {
+        return this.kqlScriptsOperations;
     }
 
-    /** The PipelinesImpl object to access its operations. */
-    private final PipelinesImpl pipelines;
+    /** The SparkConfigurationsImpl object to access its operations. */
+    private final SparkConfigurationsImpl sparkConfigurations;
 
     /**
-     * Gets the PipelinesImpl object to access its operations.
+     * Gets the SparkConfigurationsImpl object to access its operations.
      *
-     * @return the PipelinesImpl object.
+     * @return the SparkConfigurationsImpl object.
      */
-    public PipelinesImpl getPipelines() {
-        return this.pipelines;
+    public SparkConfigurationsImpl getSparkConfigurations() {
+        return this.sparkConfigurations;
     }
 
-    /** The PipelineRunsImpl object to access its operations. */
-    private final PipelineRunsImpl pipelineRuns;
+    /** The BigDataPoolsImpl object to access its operations. */
+    private final BigDataPoolsImpl bigDataPools;
 
     /**
-     * Gets the PipelineRunsImpl object to access its operations.
+     * Gets the BigDataPoolsImpl object to access its operations.
      *
-     * @return the PipelineRunsImpl object.
+     * @return the BigDataPoolsImpl object.
      */
-    public PipelineRunsImpl getPipelineRuns() {
-        return this.pipelineRuns;
-    }
-
-    /** The TriggersImpl object to access its operations. */
-    private final TriggersImpl triggers;
-
-    /**
-     * Gets the TriggersImpl object to access its operations.
-     *
-     * @return the TriggersImpl object.
-     */
-    public TriggersImpl getTriggers() {
-        return this.triggers;
-    }
-
-    /** The TriggerRunsImpl object to access its operations. */
-    private final TriggerRunsImpl triggerRuns;
-
-    /**
-     * Gets the TriggerRunsImpl object to access its operations.
-     *
-     * @return the TriggerRunsImpl object.
-     */
-    public TriggerRunsImpl getTriggerRuns() {
-        return this.triggerRuns;
+    public BigDataPoolsImpl getBigDataPools() {
+        return this.bigDataPools;
     }
 
     /** The DataFlowsImpl object to access its operations. */
@@ -158,76 +122,16 @@ public final class ArtifactsClientImpl {
         return this.dataFlowDebugSessions;
     }
 
-    /** The SqlScriptsImpl object to access its operations. */
-    private final SqlScriptsImpl sqlScripts;
+    /** The DatasetsImpl object to access its operations. */
+    private final DatasetsImpl datasets;
 
     /**
-     * Gets the SqlScriptsImpl object to access its operations.
+     * Gets the DatasetsImpl object to access its operations.
      *
-     * @return the SqlScriptsImpl object.
+     * @return the DatasetsImpl object.
      */
-    public SqlScriptsImpl getSqlScripts() {
-        return this.sqlScripts;
-    }
-
-    /** The SparkJobDefinitionsImpl object to access its operations. */
-    private final SparkJobDefinitionsImpl sparkJobDefinitions;
-
-    /**
-     * Gets the SparkJobDefinitionsImpl object to access its operations.
-     *
-     * @return the SparkJobDefinitionsImpl object.
-     */
-    public SparkJobDefinitionsImpl getSparkJobDefinitions() {
-        return this.sparkJobDefinitions;
-    }
-
-    /** The NotebooksImpl object to access its operations. */
-    private final NotebooksImpl notebooks;
-
-    /**
-     * Gets the NotebooksImpl object to access its operations.
-     *
-     * @return the NotebooksImpl object.
-     */
-    public NotebooksImpl getNotebooks() {
-        return this.notebooks;
-    }
-
-    /** The NotebookOperationResultsImpl object to access its operations. */
-    private final NotebookOperationResultsImpl notebookOperationResults;
-
-    /**
-     * Gets the NotebookOperationResultsImpl object to access its operations.
-     *
-     * @return the NotebookOperationResultsImpl object.
-     */
-    public NotebookOperationResultsImpl getNotebookOperationResults() {
-        return this.notebookOperationResults;
-    }
-
-    /** The SparkConfigurationsImpl object to access its operations. */
-    private final SparkConfigurationsImpl sparkConfigurations;
-
-    /**
-     * Gets the SparkConfigurationsImpl object to access its operations.
-     *
-     * @return the SparkConfigurationsImpl object.
-     */
-    public SparkConfigurationsImpl getSparkConfigurations() {
-        return this.sparkConfigurations;
-    }
-
-    /** The BigDataPoolsImpl object to access its operations. */
-    private final BigDataPoolsImpl bigDataPools;
-
-    /**
-     * Gets the BigDataPoolsImpl object to access its operations.
-     *
-     * @return the BigDataPoolsImpl object.
-     */
-    public BigDataPoolsImpl getBigDataPools() {
-        return this.bigDataPools;
+    public DatasetsImpl getDatasets() {
+        return this.datasets;
     }
 
     /** The WorkspaceGitRepoManagementsImpl object to access its operations. */
@@ -266,28 +170,76 @@ public final class ArtifactsClientImpl {
         return this.libraries;
     }
 
-    /** The OperationResultsImpl object to access its operations. */
-    private final OperationResultsImpl operationResults;
+    /** The LinkedServicesImpl object to access its operations. */
+    private final LinkedServicesImpl linkedServices;
 
     /**
-     * Gets the OperationResultsImpl object to access its operations.
+     * Gets the LinkedServicesImpl object to access its operations.
      *
-     * @return the OperationResultsImpl object.
+     * @return the LinkedServicesImpl object.
      */
-    public OperationResultsImpl getOperationResults() {
-        return this.operationResults;
+    public LinkedServicesImpl getLinkedServices() {
+        return this.linkedServices;
     }
 
-    /** The OperationStatusImpl object to access its operations. */
-    private final OperationStatusImpl operationStatus;
+    /** The NotebooksImpl object to access its operations. */
+    private final NotebooksImpl notebooks;
 
     /**
-     * Gets the OperationStatusImpl object to access its operations.
+     * Gets the NotebooksImpl object to access its operations.
      *
-     * @return the OperationStatusImpl object.
+     * @return the NotebooksImpl object.
      */
-    public OperationStatusImpl getOperationStatus() {
-        return this.operationStatus;
+    public NotebooksImpl getNotebooks() {
+        return this.notebooks;
+    }
+
+    /** The NotebookOperationResultsImpl object to access its operations. */
+    private final NotebookOperationResultsImpl notebookOperationResults;
+
+    /**
+     * Gets the NotebookOperationResultsImpl object to access its operations.
+     *
+     * @return the NotebookOperationResultsImpl object.
+     */
+    public NotebookOperationResultsImpl getNotebookOperationResults() {
+        return this.notebookOperationResults;
+    }
+
+    /** The PipelinesImpl object to access its operations. */
+    private final PipelinesImpl pipelines;
+
+    /**
+     * Gets the PipelinesImpl object to access its operations.
+     *
+     * @return the PipelinesImpl object.
+     */
+    public PipelinesImpl getPipelines() {
+        return this.pipelines;
+    }
+
+    /** The PipelineRunsImpl object to access its operations. */
+    private final PipelineRunsImpl pipelineRuns;
+
+    /**
+     * Gets the PipelineRunsImpl object to access its operations.
+     *
+     * @return the PipelineRunsImpl object.
+     */
+    public PipelineRunsImpl getPipelineRuns() {
+        return this.pipelineRuns;
+    }
+
+    /** The SparkJobDefinitionsImpl object to access its operations. */
+    private final SparkJobDefinitionsImpl sparkJobDefinitions;
+
+    /**
+     * Gets the SparkJobDefinitionsImpl object to access its operations.
+     *
+     * @return the SparkJobDefinitionsImpl object.
+     */
+    public SparkJobDefinitionsImpl getSparkJobDefinitions() {
+        return this.sparkJobDefinitions;
     }
 
     /** The SqlPoolsImpl object to access its operations. */
@@ -300,6 +252,42 @@ public final class ArtifactsClientImpl {
      */
     public SqlPoolsImpl getSqlPools() {
         return this.sqlPools;
+    }
+
+    /** The SqlScriptsImpl object to access its operations. */
+    private final SqlScriptsImpl sqlScripts;
+
+    /**
+     * Gets the SqlScriptsImpl object to access its operations.
+     *
+     * @return the SqlScriptsImpl object.
+     */
+    public SqlScriptsImpl getSqlScripts() {
+        return this.sqlScripts;
+    }
+
+    /** The TriggersImpl object to access its operations. */
+    private final TriggersImpl triggers;
+
+    /**
+     * Gets the TriggersImpl object to access its operations.
+     *
+     * @return the TriggersImpl object.
+     */
+    public TriggersImpl getTriggers() {
+        return this.triggers;
+    }
+
+    /** The TriggerRunsImpl object to access its operations. */
+    private final TriggerRunsImpl triggerRuns;
+
+    /**
+     * Gets the TriggerRunsImpl object to access its operations.
+     *
+     * @return the TriggerRunsImpl object.
+     */
+    public TriggerRunsImpl getTriggerRuns() {
+        return this.triggerRuns;
     }
 
     /** The WorkspacesImpl object to access its operations. */
@@ -318,16 +306,14 @@ public final class ArtifactsClientImpl {
      * Initializes an instance of ArtifactsClient client.
      *
      * @param endpoint The workspace development endpoint, for example https://myworkspace.dev.azuresynapse.net.
-     * @param apiVersion Api Version.
      */
-    public ArtifactsClientImpl(String endpoint, String apiVersion) {
+    public ArtifactsClientImpl(String endpoint) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint,
-                apiVersion);
+                endpoint);
     }
 
     /**
@@ -335,10 +321,9 @@ public final class ArtifactsClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint The workspace development endpoint, for example https://myworkspace.dev.azuresynapse.net.
-     * @param apiVersion Api Version.
      */
-    public ArtifactsClientImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
+    public ArtifactsClientImpl(HttpPipeline httpPipeline, String endpoint) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
     }
 
     /**
@@ -347,34 +332,31 @@ public final class ArtifactsClientImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint The workspace development endpoint, for example https://myworkspace.dev.azuresynapse.net.
-     * @param apiVersion Api Version.
      */
-    public ArtifactsClientImpl(
-            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
+    public ArtifactsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
-        this.apiVersion = apiVersion;
-        this.linkedServices = new LinkedServicesImpl(this);
-        this.datasets = new DatasetsImpl(this);
-        this.pipelines = new PipelinesImpl(this);
-        this.pipelineRuns = new PipelineRunsImpl(this);
-        this.triggers = new TriggersImpl(this);
-        this.triggerRuns = new TriggerRunsImpl(this);
-        this.dataFlows = new DataFlowsImpl(this);
-        this.dataFlowDebugSessions = new DataFlowDebugSessionsImpl(this);
-        this.sqlScripts = new SqlScriptsImpl(this);
-        this.sparkJobDefinitions = new SparkJobDefinitionsImpl(this);
-        this.notebooks = new NotebooksImpl(this);
-        this.notebookOperationResults = new NotebookOperationResultsImpl(this);
+        this.kqlScripts = new KqlScriptsImpl(this);
+        this.kqlScriptsOperations = new KqlScriptsOperationsImpl(this);
         this.sparkConfigurations = new SparkConfigurationsImpl(this);
         this.bigDataPools = new BigDataPoolsImpl(this);
+        this.dataFlows = new DataFlowsImpl(this);
+        this.dataFlowDebugSessions = new DataFlowDebugSessionsImpl(this);
+        this.datasets = new DatasetsImpl(this);
         this.workspaceGitRepoManagements = new WorkspaceGitRepoManagementsImpl(this);
         this.integrationRuntimes = new IntegrationRuntimesImpl(this);
         this.libraries = new LibrariesImpl(this);
-        this.operationResults = new OperationResultsImpl(this);
-        this.operationStatus = new OperationStatusImpl(this);
+        this.linkedServices = new LinkedServicesImpl(this);
+        this.notebooks = new NotebooksImpl(this);
+        this.notebookOperationResults = new NotebookOperationResultsImpl(this);
+        this.pipelines = new PipelinesImpl(this);
+        this.pipelineRuns = new PipelineRunsImpl(this);
+        this.sparkJobDefinitions = new SparkJobDefinitionsImpl(this);
         this.sqlPools = new SqlPoolsImpl(this);
+        this.sqlScripts = new SqlScriptsImpl(this);
+        this.triggers = new TriggersImpl(this);
+        this.triggerRuns = new TriggerRunsImpl(this);
         this.workspaces = new WorkspacesImpl(this);
     }
 }

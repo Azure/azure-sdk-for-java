@@ -20,6 +20,9 @@ public class CosmosSliceImpl<T> extends SliceImpl<T> {
     //  For any query, CosmosDB returns documents less than or equal to page size
     //  Depending on the number of RUs, the number of returned documents can change
     //  Storing the offset of current page, helps to check hasNext and next values
+    /**
+     * Offset
+     */
     private final long offset;
 
     /**

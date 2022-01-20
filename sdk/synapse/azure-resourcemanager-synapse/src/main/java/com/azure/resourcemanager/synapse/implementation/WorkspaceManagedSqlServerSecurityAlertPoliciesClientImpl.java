@@ -454,7 +454,7 @@ public final class WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspace managed Sql server security alert policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServerSecurityAlertPolicyInner>, ServerSecurityAlertPolicyInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -486,7 +486,7 @@ public final class WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspace managed Sql server security alert policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServerSecurityAlertPolicyInner>, ServerSecurityAlertPolicyInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -520,7 +520,7 @@ public final class WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspace managed Sql server security alert policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerSecurityAlertPolicyInner>, ServerSecurityAlertPolicyInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,
@@ -543,7 +543,7 @@ public final class WorkspaceManagedSqlServerSecurityAlertPoliciesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspace managed Sql server security alert policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerSecurityAlertPolicyInner>, ServerSecurityAlertPolicyInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,

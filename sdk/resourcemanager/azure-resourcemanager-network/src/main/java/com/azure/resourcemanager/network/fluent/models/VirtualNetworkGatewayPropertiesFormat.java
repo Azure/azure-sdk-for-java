@@ -69,6 +69,12 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     private Boolean active;
 
     /*
+     * disableIPSecReplayProtection flag.
+     */
+    @JsonProperty(value = "disableIPSecReplayProtection")
+    private Boolean disableIpSecReplayProtection;
+
+    /*
      * The reference to the LocalNetworkGateway resource which represents local
      * network site having default routes. Assign Null value in case of
      * removing existing default site setting.
@@ -290,6 +296,27 @@ public final class VirtualNetworkGatewayPropertiesFormat {
      */
     public VirtualNetworkGatewayPropertiesFormat withActive(Boolean active) {
         this.active = active;
+        return this;
+    }
+
+    /**
+     * Get the disableIpSecReplayProtection property: disableIPSecReplayProtection flag.
+     *
+     * @return the disableIpSecReplayProtection value.
+     */
+    public Boolean disableIpSecReplayProtection() {
+        return this.disableIpSecReplayProtection;
+    }
+
+    /**
+     * Set the disableIpSecReplayProtection property: disableIPSecReplayProtection flag.
+     *
+     * @param disableIpSecReplayProtection the disableIpSecReplayProtection value to set.
+     * @return the VirtualNetworkGatewayPropertiesFormat object itself.
+     */
+    public VirtualNetworkGatewayPropertiesFormat withDisableIpSecReplayProtection(
+        Boolean disableIpSecReplayProtection) {
+        this.disableIpSecReplayProtection = disableIpSecReplayProtection;
         return this;
     }
 

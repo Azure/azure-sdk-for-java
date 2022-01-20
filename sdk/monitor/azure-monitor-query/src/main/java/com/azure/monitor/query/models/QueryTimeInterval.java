@@ -15,18 +15,54 @@ import java.util.Objects;
  */
 @Immutable
 public final class QueryTimeInterval {
+    /**
+     * Time interval of all time.
+     */
     public static final QueryTimeInterval ALL = new QueryTimeInterval(OffsetDateTime.MIN, OffsetDateTime.MAX);
 
+    /**
+     * Time interval of the last 5 minutes.
+     */
     public static final QueryTimeInterval LAST_5_MINUTES = new QueryTimeInterval(Duration.ofMinutes(5));
+
+    /**
+     * Time interval of the last 30 minutes.
+     */
     public static final QueryTimeInterval LAST_30_MINUTES = new QueryTimeInterval(Duration.ofMinutes(30));
 
+    /**
+     * Time interval of the last hour.
+     */
     public static final QueryTimeInterval LAST_1_HOUR = new QueryTimeInterval(Duration.ofHours(1));
+
+    /**
+     * Time interval of the last 4 hours.
+     */
     public static final QueryTimeInterval LAST_4_HOURS = new QueryTimeInterval(Duration.ofHours(4));
+
+    /**
+     * Time interval of the last 12 hours.
+     */
     public static final QueryTimeInterval LAST_12_HOURS = new QueryTimeInterval(Duration.ofHours(12));
 
+    /**
+     * Time interval of the last day.
+     */
     public static final QueryTimeInterval LAST_DAY = new QueryTimeInterval(Duration.ofDays(1));
+
+    /**
+     * Time interval of the last 2 days.
+     */
     public static final QueryTimeInterval LAST_2_DAYS = new QueryTimeInterval(Duration.ofDays(2));
+
+    /**
+     * Time interval of the last 3 days.
+     */
     public static final QueryTimeInterval LAST_3_DAYS = new QueryTimeInterval(Duration.ofDays(3));
+
+    /**
+     * Time interval of the last 7 days.
+     */
     public static final QueryTimeInterval LAST_7_DAYS = new QueryTimeInterval(Duration.ofDays(7));
 
     private static final ClientLogger LOGGER = new ClientLogger(QueryTimeInterval.class);

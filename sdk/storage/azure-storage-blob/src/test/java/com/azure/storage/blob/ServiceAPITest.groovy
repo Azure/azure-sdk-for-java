@@ -333,6 +333,28 @@ class ServiceAPITest extends APISpec {
         containers.each { container -> container.delete() }
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
+    def "List system containers"() {
+        setup:
+        def retentionPolicy = new BlobRetentionPolicy().setDays(5).setEnabled(true)
+        def logging = new BlobAnalyticsLogging().setRead(true).setVersion("1.0")
+            .setRetentionPolicy(retentionPolicy)
+        def serviceProps = new BlobServiceProperties()
+            .setLogging(logging)
+
+        // Ensure $logs container exists. These will be reverted in test cleanup
+        primaryBlobServiceClient.setPropertiesWithResponse(serviceProps, null, null)
+
+        sleepIfRecord(30 * 1000) // allow the service properties to take effect
+
+        when:
+        def containers = primaryBlobServiceClient.listBlobContainers(
+            new ListBlobContainersOptions().setDetails(new BlobContainerListDetails().setRetrieveSystemContainers(true)), null)
+
+        then:
+        containers.any {item -> return item.getName() == BlobContainerClient.LOG_CONTAINER_NAME }
+    }
+
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Find blobs min"() {
         when:

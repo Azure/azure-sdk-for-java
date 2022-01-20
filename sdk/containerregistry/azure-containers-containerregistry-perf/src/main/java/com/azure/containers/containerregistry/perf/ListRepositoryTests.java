@@ -16,8 +16,16 @@ import static com.azure.containers.containerregistry.perf.core.Utils.TEST_PERF_T
 import static com.azure.containers.containerregistry.perf.core.Utils.TEST_PERF_TAG3_NAME;
 import static com.azure.containers.containerregistry.perf.core.Utils.TEST_PERF_TAG4_NAME;
 
+/**
+ * List repository performance test.
+ */
 public class ListRepositoryTests extends ServiceTest<PerfStressOptions> {
 
+    /**
+     * Creates the list repository performance test.
+     *
+     * @param options Performance test configuration options.
+     */
     public ListRepositoryTests(PerfStressOptions options) {
         super(options);
     }

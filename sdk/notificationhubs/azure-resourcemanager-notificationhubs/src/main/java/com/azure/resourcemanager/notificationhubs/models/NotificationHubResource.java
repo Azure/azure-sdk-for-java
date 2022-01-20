@@ -8,6 +8,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.notificationhubs.fluent.models.NotificationHubResourceInner;
+import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleProperties;
 import java.util.List;
 import java.util.Map;
 
@@ -47,6 +48,13 @@ public interface NotificationHubResource {
      * @return the tags value.
      */
     Map<String, String> tags();
+
+    /**
+     * Gets the sku property: The sku of the created namespace.
+     *
+     * @return the sku value.
+     */
+    Sku sku();
 
     /**
      * Gets the namePropertiesName property: The NotificationHub name.
@@ -110,13 +118,6 @@ public interface NotificationHubResource {
      * @return the baiduCredential value.
      */
     BaiduCredential baiduCredential();
-
-    /**
-     * Gets the sku property: The sku of the created namespace.
-     *
-     * @return the sku value.
-     */
-    Sku sku();
 
     /**
      * Gets the region of the resource.
@@ -186,6 +187,7 @@ public interface NotificationHubResource {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
+                DefinitionStages.WithSku,
                 DefinitionStages.WithNamePropertiesName,
                 DefinitionStages.WithRegistrationTtl,
                 DefinitionStages.WithAuthorizationRules,
@@ -194,8 +196,7 @@ public interface NotificationHubResource {
                 DefinitionStages.WithGcmCredential,
                 DefinitionStages.WithMpnsCredential,
                 DefinitionStages.WithAdmCredential,
-                DefinitionStages.WithBaiduCredential,
-                DefinitionStages.WithSku {
+                DefinitionStages.WithBaiduCredential {
             /**
              * Executes the create request.
              *
@@ -220,6 +221,16 @@ public interface NotificationHubResource {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
+        }
+        /** The stage of the NotificationHubResource definition allowing to specify sku. */
+        interface WithSku {
+            /**
+             * Specifies the sku property: The sku of the created namespace.
+             *
+             * @param sku The sku of the created namespace.
+             * @return the next definition stage.
+             */
+            WithCreate withSku(Sku sku);
         }
         /** The stage of the NotificationHubResource definition allowing to specify namePropertiesName. */
         interface WithNamePropertiesName {
@@ -311,16 +322,6 @@ public interface NotificationHubResource {
              */
             WithCreate withBaiduCredential(BaiduCredential baiduCredential);
         }
-        /** The stage of the NotificationHubResource definition allowing to specify sku. */
-        interface WithSku {
-            /**
-             * Specifies the sku property: The sku of the created namespace.
-             *
-             * @param sku The sku of the created namespace.
-             * @return the next definition stage.
-             */
-            WithCreate withSku(Sku sku);
-        }
     }
     /**
      * Begins update for the NotificationHubResource resource.
@@ -332,6 +333,7 @@ public interface NotificationHubResource {
     /** The template for NotificationHubResource update. */
     interface Update
         extends UpdateStages.WithTags,
+            UpdateStages.WithSku,
             UpdateStages.WithNamePropertiesName,
             UpdateStages.WithRegistrationTtl,
             UpdateStages.WithAuthorizationRules,
@@ -340,8 +342,7 @@ public interface NotificationHubResource {
             UpdateStages.WithGcmCredential,
             UpdateStages.WithMpnsCredential,
             UpdateStages.WithAdmCredential,
-            UpdateStages.WithBaiduCredential,
-            UpdateStages.WithSku {
+            UpdateStages.WithBaiduCredential {
         /**
          * Executes the update request.
          *
@@ -368,6 +369,16 @@ public interface NotificationHubResource {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
+        }
+        /** The stage of the NotificationHubResource update allowing to specify sku. */
+        interface WithSku {
+            /**
+             * Specifies the sku property: The sku of the created namespace.
+             *
+             * @param sku The sku of the created namespace.
+             * @return the next definition stage.
+             */
+            Update withSku(Sku sku);
         }
         /** The stage of the NotificationHubResource update allowing to specify namePropertiesName. */
         interface WithNamePropertiesName {
@@ -458,16 +469,6 @@ public interface NotificationHubResource {
              * @return the next definition stage.
              */
             Update withBaiduCredential(BaiduCredential baiduCredential);
-        }
-        /** The stage of the NotificationHubResource update allowing to specify sku. */
-        interface WithSku {
-            /**
-             * Specifies the sku property: The sku of the created namespace.
-             *
-             * @param sku The sku of the created namespace.
-             * @return the next definition stage.
-             */
-            Update withSku(Sku sku);
         }
     }
     /**

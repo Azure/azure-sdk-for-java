@@ -49,7 +49,7 @@ public interface FlowLogsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a flow log resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<FlowLogInner>, FlowLogInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String networkWatcherName, String flowLogName, FlowLogInner parameters);
 
@@ -65,7 +65,7 @@ public interface FlowLogsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a flow log resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FlowLogInner>, FlowLogInner> beginCreateOrUpdate(
         String resourceGroupName, String networkWatcherName, String flowLogName, FlowLogInner parameters);
 
@@ -82,7 +82,7 @@ public interface FlowLogsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a flow log resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FlowLogInner>, FlowLogInner> beginCreateOrUpdate(
         String resourceGroupName,
         String networkWatcherName,
@@ -297,7 +297,7 @@ public interface FlowLogsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String networkWatcherName, String flowLogName);
 
@@ -312,7 +312,7 @@ public interface FlowLogsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String networkWatcherName, String flowLogName);
 
@@ -328,7 +328,7 @@ public interface FlowLogsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String networkWatcherName, String flowLogName, Context context);
 

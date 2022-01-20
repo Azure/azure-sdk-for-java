@@ -12,10 +12,21 @@ import org.springframework.core.NestedRuntimeException;
  */
 public class StorageRuntimeException extends NestedRuntimeException {
 
+    /**
+     * Creates a new instance of {@link StorageRuntimeException}.
+     *
+     * @param msg the error message
+     */
     public StorageRuntimeException(String msg) {
         super(msg);
     }
 
+    /**
+     * Creates a new instance of {@link StorageRuntimeException}.
+     *
+     * @param msg the error message
+     * @param cause the cause
+     */
     public StorageRuntimeException(String msg, Throwable cause) {
         super(msg, cause);
     }

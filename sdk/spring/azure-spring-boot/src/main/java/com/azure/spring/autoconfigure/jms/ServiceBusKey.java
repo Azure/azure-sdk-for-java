@@ -17,14 +17,29 @@ public class ServiceBusKey {
         this.sharedAccessKey = sharedAccessKey;
     }
 
+    /**
+     * Gets the host.
+     *
+     * @return the host
+     */
     public String getHost() {
         return host;
     }
 
+    /**
+     * Gets the shared access key name.
+     *
+     * @return the shared access key name
+     */
     public String getSharedAccessKeyName() {
         return sharedAccessKeyName;
     }
 
+    /**
+     * Gets the shared access key.
+     *
+     * @return the shared access key
+     */
     public String getSharedAccessKey() {
         return sharedAccessKey;
     }

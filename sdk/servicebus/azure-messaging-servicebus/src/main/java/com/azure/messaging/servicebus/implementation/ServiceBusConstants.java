@@ -17,6 +17,9 @@ public class ServiceBusConstants {
     public static final String AZ_TRACING_NAMESPACE_VALUE = "Microsoft.ServiceBus";
     public static final String AZ_TRACING_SERVICE_NAME = "ServiceBus.";
 
+    public static final String SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME = "ServiceBusSupplementaryAuthorization";
+    public static final String SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME = "ServiceBusDlqSupplementaryAuthorization";
+
     /**
      * Represents the maximum ttl for a message or entity.
      */
@@ -45,4 +48,9 @@ public class ServiceBusConstants {
      * Represents the default topic size in megabytes.
      */
     public static final int DEFAULT_TOPIC_SIZE = 1024;
+
+    /**
+     * Represents the max lock renewal delay buffer in seconds.
+     */
+    public static final Duration MAX_RENEWAL_BUFFER_DURATION = Duration.ofSeconds(10);
 }

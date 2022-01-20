@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
 import com.azure.resourcemanager.cosmos.models.SqlUserDefinedFunctionGetPropertiesResource;
@@ -14,35 +13,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** An Azure Cosmos DB userDefinedFunction. */
-@JsonFlatten
 @Fluent
-public class SqlUserDefinedFunctionGetResultsInner extends ArmResourceProperties {
+public final class SqlUserDefinedFunctionGetResultsInner extends ArmResourceProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlUserDefinedFunctionGetResultsInner.class);
 
     /*
-     * The resource property.
+     * The properties of an Azure Cosmos DB userDefinedFunction
      */
-    @JsonProperty(value = "properties.resource")
-    private SqlUserDefinedFunctionGetPropertiesResource resource;
+    @JsonProperty(value = "properties")
+    private SqlUserDefinedFunctionGetProperties innerProperties;
 
     /**
-     * Get the resource property: The resource property.
+     * Get the innerProperties property: The properties of an Azure Cosmos DB userDefinedFunction.
      *
-     * @return the resource value.
+     * @return the innerProperties value.
      */
-    public SqlUserDefinedFunctionGetPropertiesResource resource() {
-        return this.resource;
-    }
-
-    /**
-     * Set the resource property: The resource property.
-     *
-     * @param resource the resource value to set.
-     * @return the SqlUserDefinedFunctionGetResultsInner object itself.
-     */
-    public SqlUserDefinedFunctionGetResultsInner withResource(SqlUserDefinedFunctionGetPropertiesResource resource) {
-        this.resource = resource;
-        return this;
+    private SqlUserDefinedFunctionGetProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -60,6 +47,29 @@ public class SqlUserDefinedFunctionGetResultsInner extends ArmResourceProperties
     }
 
     /**
+     * Get the resource property: The resource property.
+     *
+     * @return the resource value.
+     */
+    public SqlUserDefinedFunctionGetPropertiesResource resource() {
+        return this.innerProperties() == null ? null : this.innerProperties().resource();
+    }
+
+    /**
+     * Set the resource property: The resource property.
+     *
+     * @param resource the resource value to set.
+     * @return the SqlUserDefinedFunctionGetResultsInner object itself.
+     */
+    public SqlUserDefinedFunctionGetResultsInner withResource(SqlUserDefinedFunctionGetPropertiesResource resource) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlUserDefinedFunctionGetProperties();
+        }
+        this.innerProperties().withResource(resource);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -67,8 +77,8 @@ public class SqlUserDefinedFunctionGetResultsInner extends ArmResourceProperties
     @Override
     public void validate() {
         super.validate();
-        if (resource() != null) {
-            resource().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

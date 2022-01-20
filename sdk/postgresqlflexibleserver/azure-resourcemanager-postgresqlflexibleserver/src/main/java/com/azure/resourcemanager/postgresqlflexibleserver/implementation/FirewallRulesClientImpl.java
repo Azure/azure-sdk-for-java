@@ -278,7 +278,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a server firewall rule.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serverName, String firewallRuleName, FirewallRuleInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -302,7 +302,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a server firewall rule.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String serverName,
@@ -330,7 +330,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a server firewall rule.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String firewallRuleName, FirewallRuleInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, serverName, firewallRuleName, parameters).getSyncPoller();
@@ -349,7 +349,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a server firewall rule.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serverName,
@@ -563,7 +563,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serverName, String firewallRuleName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -585,7 +585,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serverName, String firewallRuleName, Context context) {
         context = this.client.mergeContext(context);
@@ -607,7 +607,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String firewallRuleName) {
         return beginDeleteAsync(resourceGroupName, serverName, firewallRuleName).getSyncPoller();
@@ -625,7 +625,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String firewallRuleName, Context context) {
         return beginDeleteAsync(resourceGroupName, serverName, firewallRuleName, context).getSyncPoller();

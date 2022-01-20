@@ -5,7 +5,6 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient;
 import com.azure.ai.formrecognizer.administration.models.DocumentModel;
-import com.azure.ai.formrecognizer.administration.models.FormRecognizerError;
 import com.azure.ai.formrecognizer.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.AnalyzedDocument;
@@ -13,12 +12,12 @@ import com.azure.ai.formrecognizer.models.DocumentField;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.models.ResponseError;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -72,12 +71,12 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
 
     private DocumentAnalysisClient getDocumentAnalysisClient(HttpClient httpClient,
                                                              DocumentAnalysisServiceVersion serviceVersion) {
-        return getDocumentAnalysisBuilder(httpClient, serviceVersion).buildClient();
+        return getDocumentAnalysisBuilder(httpClient, serviceVersion, false).buildClient();
     }
 
     private DocumentModelAdministrationClient getDocumentModelAdminClient(HttpClient httpClient,
                                                                           DocumentAnalysisServiceVersion serviceVersion) {
-        return getDocumentModelAdminClientBuilder(httpClient, serviceVersion).buildClient();
+        return getDocumentModelAdminClientBuilder(httpClient, serviceVersion, false).buildClient();
     }
 
     // Receipt recognition
@@ -192,9 +191,9 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                     () -> client.beginAnalyzeDocument("prebuilt-receipt", data, dataLength)
                         .setPollInterval(durationTestMode)
                         .getFinalResult());
-            FormRecognizerError errorInformation
-                = (FormRecognizerError) httpResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", errorInformation.getInnerError().getCode());
+            ResponseError responseError =
+                (ResponseError) httpResponseException.getValue();
+            Assertions.assertEquals("InvalidRequest", responseError.getCode());
         });
     }
 
@@ -379,9 +378,9 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                     () -> client.beginAnalyzeDocument("prebuilt-layout", data, dataLength)
                         .setPollInterval(durationTestMode)
                         .getFinalResult());
-            FormRecognizerError errorInformation
-                = (FormRecognizerError) errorResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", errorInformation.getInnerError().getCode());
+            ResponseError responseError =
+                (ResponseError) errorResponseException.getValue();
+            Assertions.assertEquals("InvalidRequest", responseError.getCode());
         });
     }
 
@@ -543,9 +542,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled
     public void analyzeCustomDocument(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
-        // TODO: (https://github.com/Azure/azure-sdk-for-java-pr/issues/1353)
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         DocumentModelAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) ->
@@ -576,10 +573,8 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled
     public void analyzeCustomDocumentBlankPdf(HttpClient httpClient,
                                               DocumentAnalysisServiceVersion serviceVersion) {
-        // TODO: (https://github.com/Azure/azure-sdk-for-java-pr/issues/1353)
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         DocumentModelAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) ->
@@ -610,10 +605,9 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled
     public void analyzeCustomDocumentWithNullData(HttpClient httpClient,
                                                   DocumentAnalysisServiceVersion serviceVersion) {
-        // TODO: (https://github.com/Azure/azure-sdk-for-java-pr/issues/1353)
+
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         DocumentModelAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) ->
@@ -655,38 +649,13 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
     }
 
     /**
-     * Verifies an exception thrown for an empty model id.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled
-    public void analyzeCustomDocumentWithEmptyModelId(HttpClient httpClient,
-                                                      DocumentAnalysisServiceVersion serviceVersion) {
-        // TODO: (https://github.com/Azure/azure-sdk-for-java-pr/issues/1353)
-        client = getDocumentAnalysisClient(httpClient, serviceVersion);
-
-        dataRunner((data, dataLength) -> {
-            HttpResponseException errorResponseException = Assertions.assertThrows(HttpResponseException.class,
-                () -> client.beginAnalyzeDocument("",
-                        data,
-                        dataLength)
-                    .setPollInterval(durationTestMode));
-            FormRecognizerError errorInformation
-                = (FormRecognizerError) errorResponseException.getValue();
-            Assertions.assertEquals(404, errorResponseException.getResponse().getStatusCode());
-            Assertions.assertEquals("ModelNotFound", errorInformation.getInnerError().getCode());
-        }, INVOICE_6_PDF);
-    }
-
-    /**
      * Verifies content type will be auto-detected when using custom form API with input stream data overload.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled
     public void analyzeCustomDocumentWithContentTypeAutoDetection(HttpClient httpClient,
                                                                   DocumentAnalysisServiceVersion serviceVersion) {
-        // TODO: (https://github.com/Azure/azure-sdk-for-java-pr/issues/1353)
+
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         DocumentModelAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
@@ -715,10 +684,9 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled
     public void analyzeCustomDocumentMultiPage(HttpClient httpClient,
                                                DocumentAnalysisServiceVersion serviceVersion) {
-        // TODO: (https://github.com/Azure/azure-sdk-for-java-pr/issues/1353)
+
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         DocumentModelAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) -> multipageTrainingRunner((trainingFilesUrl) -> {
@@ -744,10 +712,8 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled
     public void analyzeCustomDocumentWithSelectionMark(HttpClient httpClient,
                                                        DocumentAnalysisServiceVersion serviceVersion) {
-        // TODO: (https://github.com/Azure/azure-sdk-for-java-pr/issues/1353)
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         DocumentModelAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
         dataRunner((data, dataLength) ->
@@ -779,14 +745,11 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled
     public void analyzeCustomDocumentUrl(HttpClient httpClient,
                                          DocumentAnalysisServiceVersion serviceVersion) {
-        // null values reported
-        // TODO: (https://github.com/Azure/azure-sdk-for-java-pr/issues/1353)
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         DocumentModelAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
-        urlRunner((fileUrl) -> multipageTrainingRunner((trainingFilesUrl) -> {
+        urlRunner((fileUrl) -> buildModelRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentOperationResult, DocumentModel> buildModelPoller
                 = adminClient
                 .beginBuildModel(trainingFilesUrl, null)
@@ -855,12 +818,12 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                         INVALID_URL)
                     .setPollInterval(durationTestMode)
                     .getFinalResult());
-            final FormRecognizerError errorInformation
-                = (FormRecognizerError) httpResponseException.getValue();
+            final ResponseError responseError =
+                (ResponseError) httpResponseException.getValue();
 
             adminClient.deleteModel(createdModel.getModelId());
 
-            Assertions.assertEquals("InvalidContentSourceFormat", errorInformation.getInnerError().getCode());
+            Assertions.assertEquals("InvalidArgument", responseError.getCode());
         });
     }
 
@@ -893,9 +856,8 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             HttpResponseException errorResponseException = Assertions.assertThrows(HttpResponseException.class,
                 () -> client.beginAnalyzeDocumentFromUrl(NON_EXIST_MODEL_ID, fileUrl)
                     .setPollInterval(durationTestMode));
-            FormRecognizerError errorInformation
-                = (FormRecognizerError) errorResponseException.getValue();
-            Assertions.assertEquals("ModelNotFound", errorInformation.getInnerError().getCode());
+            ResponseError responseError = (ResponseError) errorResponseException.getValue();
+            Assertions.assertEquals("NotFound", responseError.getCode());
         }, CONTENT_FORM_JPG);
     }
 
@@ -904,10 +866,8 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled
     public void analyzeCustomDocumentDamagedPdf(HttpClient httpClient,
                                                 DocumentAnalysisServiceVersion serviceVersion) {
-        // TODO: (https://github.com/Azure/azure-sdk-for-java-pr/issues/1353)
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         DocumentModelAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
         damagedPdfDataRunner((data, dataLength) ->
@@ -927,18 +887,15 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                         .getFinalResult());
                 adminClient.deleteModel(modelId);
 
-                FormRecognizerError errorInformation
-                    = (FormRecognizerError) httpResponseException.getValue();
-                Assertions.assertEquals("Invalid input file.", errorInformation.getMessage());
+                ResponseError responseError = (ResponseError) httpResponseException.getValue();
+                Assertions.assertEquals("InvalidRequest", responseError.getCode());
             })));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled
     public void analyzeCustomDocumentUrlWithSelectionMark(HttpClient httpClient,
                                                           DocumentAnalysisServiceVersion serviceVersion) {
-        // TODO: (https://github.com/Azure/azure-sdk-for-java-pr/issues/1353)
         DocumentModelAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
         urlRunner(fileUrl -> selectionMarkTrainingRunner((trainingFilesUrl) -> {
             client = getDocumentAnalysisClient(httpClient, serviceVersion);
@@ -1057,9 +1014,8 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                 () -> client.beginAnalyzeDocument("prebuilt-businessCard", data, dataLength)
                     .setPollInterval(durationTestMode)
                     .getFinalResult());
-            FormRecognizerError errorInformation
-                = (FormRecognizerError) httpResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", errorInformation.getInnerError().getCode());
+            ResponseError responseError = (ResponseError) httpResponseException.getValue();
+            Assertions.assertEquals("InvalidRequest", responseError.getCode());
         });
     }
 
@@ -1231,9 +1187,8 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                 () -> client.beginAnalyzeDocument("prebuilt-invoice", data, dataLength)
                     .setPollInterval(durationTestMode)
                     .getFinalResult());
-            FormRecognizerError errorInformation
-                = (FormRecognizerError) httpResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", errorInformation.getInnerError().getCode());
+            ResponseError responseError = (ResponseError) httpResponseException.getValue();
+            Assertions.assertEquals("InvalidRequest", responseError.getCode());
         });
     }
 
@@ -1278,7 +1233,6 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/21687")
     public void analyzeInvoiceFromUrlWithEncodedBlankSpaceSourceUrl(HttpClient httpClient,
                                                                     DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
@@ -1441,9 +1395,8 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                         dataLength)
                     .setPollInterval(durationTestMode)
                     .getFinalResult());
-            FormRecognizerError errorInformation
-                = (FormRecognizerError) httpResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", errorInformation.getInnerError().getCode());
+            ResponseError responseError = (ResponseError) httpResponseException.getValue();
+            Assertions.assertEquals("InvalidRequest", responseError.getCode());
         });
     }
 
@@ -1478,9 +1431,8 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                 () -> client.beginAnalyzeDocumentFromUrl("prebuilt-idDocument", invalidSourceUrl)
                     .setPollInterval(durationTestMode)
                     .getFinalResult());
-            FormRecognizerError errorInformation
-                = (FormRecognizerError) errorResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", errorInformation.getInnerError().getCode());
+            ResponseError responseError = (ResponseError) errorResponseException.getValue();
+            Assertions.assertEquals("InvalidRequest", responseError.getCode());
         });
     }
 }

@@ -47,6 +47,24 @@ public final class JobManifestTasks {
     @JsonProperty(value = "extractiveSummarizationTasks")
     private List<ExtractiveSummarizationTask> extractiveSummarizationTasks;
 
+    /*
+     * The customEntityRecognitionTasks property.
+     */
+    @JsonProperty(value = "customEntityRecognitionTasks")
+    private List<CustomEntitiesTask> customEntityRecognitionTasks;
+
+    /*
+     * The customSingleClassificationTasks property.
+     */
+    @JsonProperty(value = "customSingleClassificationTasks")
+    private List<CustomSingleClassificationTask> customSingleClassificationTasks;
+
+    /*
+     * The customMultiClassificationTasks property.
+     */
+    @JsonProperty(value = "customMultiClassificationTasks")
+    private List<CustomMultiClassificationTask> customMultiClassificationTasks;
+
     /**
      * Get the entityRecognitionTasks property: The entityRecognitionTasks property.
      *
@@ -165,6 +183,68 @@ public final class JobManifestTasks {
     public JobManifestTasks setExtractiveSummarizationTasks(
             List<ExtractiveSummarizationTask> extractiveSummarizationTasks) {
         this.extractiveSummarizationTasks = extractiveSummarizationTasks;
+        return this;
+    }
+
+    /**
+     * Get the customEntityRecognitionTasks property: The customEntityRecognitionTasks property.
+     *
+     * @return the customEntityRecognitionTasks value.
+     */
+    public List<CustomEntitiesTask> getCustomEntityRecognitionTasks() {
+        return this.customEntityRecognitionTasks;
+    }
+
+    /**
+     * Set the customEntityRecognitionTasks property: The customEntityRecognitionTasks property.
+     *
+     * @param customEntityRecognitionTasks the customEntityRecognitionTasks value to set.
+     * @return the JobManifestTasks object itself.
+     */
+    public JobManifestTasks setCustomEntityRecognitionTasks(List<CustomEntitiesTask> customEntityRecognitionTasks) {
+        this.customEntityRecognitionTasks = customEntityRecognitionTasks;
+        return this;
+    }
+
+    /**
+     * Get the customSingleClassificationTasks property: The customSingleClassificationTasks property.
+     *
+     * @return the customSingleClassificationTasks value.
+     */
+    public List<CustomSingleClassificationTask> getCustomSingleClassificationTasks() {
+        return this.customSingleClassificationTasks;
+    }
+
+    /**
+     * Set the customSingleClassificationTasks property: The customSingleClassificationTasks property.
+     *
+     * @param customSingleClassificationTasks the customSingleClassificationTasks value to set.
+     * @return the JobManifestTasks object itself.
+     */
+    public JobManifestTasks setCustomSingleClassificationTasks(
+            List<CustomSingleClassificationTask> customSingleClassificationTasks) {
+        this.customSingleClassificationTasks = customSingleClassificationTasks;
+        return this;
+    }
+
+    /**
+     * Get the customMultiClassificationTasks property: The customMultiClassificationTasks property.
+     *
+     * @return the customMultiClassificationTasks value.
+     */
+    public List<CustomMultiClassificationTask> getCustomMultiClassificationTasks() {
+        return this.customMultiClassificationTasks;
+    }
+
+    /**
+     * Set the customMultiClassificationTasks property: The customMultiClassificationTasks property.
+     *
+     * @param customMultiClassificationTasks the customMultiClassificationTasks value to set.
+     * @return the JobManifestTasks object itself.
+     */
+    public JobManifestTasks setCustomMultiClassificationTasks(
+            List<CustomMultiClassificationTask> customMultiClassificationTasks) {
+        this.customMultiClassificationTasks = customMultiClassificationTasks;
         return this;
     }
 }

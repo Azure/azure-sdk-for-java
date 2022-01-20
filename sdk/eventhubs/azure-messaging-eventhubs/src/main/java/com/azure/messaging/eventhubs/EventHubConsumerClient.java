@@ -26,7 +26,16 @@ import java.util.concurrent.atomic.AtomicInteger;
  * a specific consumer group.
  *
  * <p><strong>Creating a synchronous consumer</strong></p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation}
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation -->
+ * <pre>
+ * &#47;&#47; The required parameters are `consumerGroup`, and a way to authenticate with Event Hubs using credentials.
+ * EventHubConsumerClient consumer = new EventHubClientBuilder&#40;&#41;
+ *     .connectionString&#40;&quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;&quot;
+ *         + &quot;SharedAccessKey=&#123;key&#125;;Entity-Path=&#123;hub-name&#125;&quot;&#41;
+ *     .consumerGroup&#40;&quot;$DEFAULT&quot;&#41;
+ *     .buildConsumerClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation -->
  *
  * <p><strong>Consuming events from a single partition</strong></p>
  * <p>Events from a single partition can be consumed using {@link #receiveFromPartition(String, int, EventPosition)} or
@@ -34,7 +43,35 @@ import java.util.concurrent.atomic.AtomicInteger;
  * completes and returns an {@link IterableStream} when either the maximum number of events is received, or the
  * timeout has elapsed.</p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-eventposition-duration}
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-eventposition-duration -->
+ * <pre>
+ * Instant twelveHoursAgo = Instant.now&#40;&#41;.minus&#40;Duration.ofHours&#40;12&#41;&#41;;
+ * EventPosition startingPosition = EventPosition.fromEnqueuedTime&#40;twelveHoursAgo&#41;;
+ * String partitionId = &quot;0&quot;;
+ *
+ * &#47;&#47; Reads events from partition '0' and returns the first 100 received or until the 30 seconds has elapsed.
+ * IterableStream&lt;PartitionEvent&gt; events = consumer.receiveFromPartition&#40;partitionId, 100,
+ *     startingPosition, Duration.ofSeconds&#40;30&#41;&#41;;
+ *
+ * Long lastSequenceNumber = -1L;
+ * for &#40;PartitionEvent partitionEvent : events&#41; &#123;
+ *     &#47;&#47; For each event, perform some sort of processing.
+ *     System.out.print&#40;&quot;Event received: &quot; + partitionEvent.getData&#40;&#41;.getSequenceNumber&#40;&#41;&#41;;
+ *     lastSequenceNumber = partitionEvent.getData&#40;&#41;.getSequenceNumber&#40;&#41;;
+ * &#125;
+ *
+ * &#47;&#47; Figure out what the next EventPosition to receive from is based on last event we processed in the stream.
+ * &#47;&#47; If lastSequenceNumber is -1L, then we didn't see any events the first time we fetched events from the
+ * &#47;&#47; partition.
+ * if &#40;lastSequenceNumber != -1L&#41; &#123;
+ *     EventPosition nextPosition = EventPosition.fromSequenceNumber&#40;lastSequenceNumber, false&#41;;
+ *
+ *     &#47;&#47; Gets the next set of events from partition '0' to consume and process.
+ *     IterableStream&lt;PartitionEvent&gt; nextEvents = consumer.receiveFromPartition&#40;partitionId, 100,
+ *         nextPosition, Duration.ofSeconds&#40;30&#41;&#41;;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-eventposition-duration -->
  */
 @ServiceClient(builder = EventHubClientBuilder.class)
 public class EventHubConsumerClient implements Closeable {

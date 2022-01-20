@@ -90,7 +90,7 @@ public interface DatastoresClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a datastore resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DatastoreInner>, DatastoreInner> beginCreateOrUpdate(
         String resourceGroupName,
         String privateCloudName,
@@ -112,7 +112,7 @@ public interface DatastoresClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a datastore resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DatastoreInner>, DatastoreInner> beginCreateOrUpdate(
         String resourceGroupName,
         String privateCloudName,
@@ -177,7 +177,7 @@ public interface DatastoresClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, String clusterName, String datastoreName);
 
@@ -194,7 +194,7 @@ public interface DatastoresClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, String clusterName, String datastoreName, Context context);
 

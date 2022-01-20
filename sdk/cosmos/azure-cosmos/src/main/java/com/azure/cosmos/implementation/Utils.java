@@ -83,7 +83,34 @@ public class Utils {
         Utils.simpleObjectMapper.configure(JsonParser.Feature.STRICT_DUPLICATE_DETECTION, true);
         Utils.simpleObjectMapper.configure(DeserializationFeature.ACCEPT_FLOAT_AS_INT, false);
 
-        Utils.simpleObjectMapper.registerModule(new AfterburnerModule());
+        int javaVersion = getJavaVersion();
+        // We will not register after burner for java 16+, due to its breaking changes
+        // https://github.com/Azure/azure-sdk-for-java/issues/23005
+        if (javaVersion != -1 && javaVersion < 16) {
+            Utils.simpleObjectMapper.registerModule(new AfterburnerModule());
+        }
+    }
+
+    private static int getJavaVersion() {
+        int version = -1;
+        try {
+            String completeJavaVersion = System.getProperty("java.version");
+            String[] versionElements = completeJavaVersion.split("\\.");
+            int versionFirstPart = Integer.parseInt(versionElements[0]);
+            // Java 8 or lower format is 1.6.0, 1.7.0, 1.7.0, 1.8.0
+            // Java 9 or higher format is 9.0, 10.0, 11.0
+            if (versionFirstPart == 1) {
+                version = Integer.parseInt(versionElements[1]);
+            } else {
+                version = versionFirstPart;
+            }
+            return version;
+        } catch (Exception ex) {
+            // Consumed the exception we got during parsing
+            // For unknown version we wil mark it as -1
+            logger.warn("Error while fetching java version", ex);
+            return version;
+        }
     }
 
     public static byte[] getUTF8BytesOrNull(String str) {

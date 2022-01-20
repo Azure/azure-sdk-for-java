@@ -46,6 +46,12 @@ public class AzureContextAutoConfiguration {
                                    .withDefaultSubscription();
     }
 
+    /**
+     * Create an {@link AzureProfile} bean.
+     *
+     * @param azureProperties The azure properties.
+     * @return An AzureProfile object.
+     */
     @Bean
     @ConditionalOnMissingBean
     public AzureProfile azureProfile(AzureProperties azureProperties) {
@@ -53,6 +59,12 @@ public class AzureContextAutoConfiguration {
             azureProperties.getEnvironment().getAzureEnvironment());
     }
 
+    /**
+     * Create a {@link TokenCredential} bean.
+     *
+     * @param environment The environment.
+     * @return A TokenCredential object.
+     */
     @Bean
     @ConditionalOnMissingBean
     public TokenCredential credential(Environment environment) {
@@ -61,6 +73,13 @@ public class AzureContextAutoConfiguration {
                                                    .build();
     }
 
+    /**
+     * Create a {@link ResourceGroupManager} bean.
+     *
+     * @param azureResourceManager The azure resource manager.
+     * @param azureProperties The azure properties.
+     * @return A ResourceGroupManager object.
+     */
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(AzureResourceManager.class)

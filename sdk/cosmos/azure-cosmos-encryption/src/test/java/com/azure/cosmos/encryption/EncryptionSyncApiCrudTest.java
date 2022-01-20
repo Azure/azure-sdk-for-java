@@ -35,7 +35,7 @@ public class EncryptionSyncApiCrudTest extends TestSuiteBase {
     private CosmosEncryptionClient cosmosEncryptionClient;
     private CosmosEncryptionContainer cosmosEncryptionContainer;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "clientBuildersWithSessionConsistency")
     public EncryptionSyncApiCrudTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

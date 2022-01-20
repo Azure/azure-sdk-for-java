@@ -9,6 +9,11 @@ import com.azure.core.credential.TokenCredential;
  */
 public interface AppConfigurationCredentialProvider {
 
+    /**
+     * Returns a Token Credential for connecting to the given endpoint.
+     * @param uri App Configuration endpoint
+     * @return TokenCredential for connecting to the uri.
+     */
     TokenCredential getAppConfigCredential(String uri);
 
 }

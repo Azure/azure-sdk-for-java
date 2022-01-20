@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.streamanalytics.fluent.models.EventHubOutputDataSourceProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -16,57 +16,95 @@ import java.util.List;
 /** Describes an Event Hub output data source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Microsoft.EventHub/EventHub")
-@JsonFlatten
 @Fluent
-public class EventHubV2OutputDataSource extends OutputDataSource {
+public final class EventHubV2OutputDataSource extends OutputDataSource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EventHubV2OutputDataSource.class);
 
     /*
-     * The namespace that is associated with the desired Event Hub, Service Bus
-     * Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace)
-     * requests.
+     * The properties that are associated with an Event Hub output. Required on
+     * PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "properties.serviceBusNamespace")
-    private String serviceBusNamespace;
+    @JsonProperty(value = "properties")
+    private EventHubOutputDataSourceProperties innerProperties;
 
-    /*
-     * The shared access policy name for the Event Hub, Service Bus Queue,
-     * Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
+    /**
+     * Get the innerProperties property: The properties that are associated with an Event Hub output. Required on PUT
+     * (CreateOrReplace) requests.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.sharedAccessPolicyName")
-    private String sharedAccessPolicyName;
+    private EventHubOutputDataSourceProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * The shared access policy key for the specified shared access policy.
-     * Required on PUT (CreateOrReplace) requests.
+    /**
+     * Get the partitionKey property: The key/column that is used to determine to which partition to send event data.
+     *
+     * @return the partitionKey value.
      */
-    @JsonProperty(value = "properties.sharedAccessPolicyKey")
-    private String sharedAccessPolicyKey;
+    public String partitionKey() {
+        return this.innerProperties() == null ? null : this.innerProperties().partitionKey();
+    }
 
-    /*
-     * Authentication Mode.
+    /**
+     * Set the partitionKey property: The key/column that is used to determine to which partition to send event data.
+     *
+     * @param partitionKey the partitionKey value to set.
+     * @return the EventHubV2OutputDataSource object itself.
      */
-    @JsonProperty(value = "properties.authenticationMode")
-    private AuthenticationMode authenticationMode;
+    public EventHubV2OutputDataSource withPartitionKey(String partitionKey) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventHubOutputDataSourceProperties();
+        }
+        this.innerProperties().withPartitionKey(partitionKey);
+        return this;
+    }
 
-    /*
-     * The name of the Event Hub. Required on PUT (CreateOrReplace) requests.
+    /**
+     * Get the propertyColumns property: The properties associated with this Event Hub output.
+     *
+     * @return the propertyColumns value.
      */
-    @JsonProperty(value = "properties.eventHubName")
-    private String eventHubName;
+    public List<String> propertyColumns() {
+        return this.innerProperties() == null ? null : this.innerProperties().propertyColumns();
+    }
 
-    /*
-     * The key/column that is used to determine to which partition to send
-     * event data.
+    /**
+     * Set the propertyColumns property: The properties associated with this Event Hub output.
+     *
+     * @param propertyColumns the propertyColumns value to set.
+     * @return the EventHubV2OutputDataSource object itself.
      */
-    @JsonProperty(value = "properties.partitionKey")
-    private String partitionKey;
+    public EventHubV2OutputDataSource withPropertyColumns(List<String> propertyColumns) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventHubOutputDataSourceProperties();
+        }
+        this.innerProperties().withPropertyColumns(propertyColumns);
+        return this;
+    }
 
-    /*
-     * The propertyColumns property.
+    /**
+     * Get the eventHubName property: The name of the Event Hub. Required on PUT (CreateOrReplace) requests.
+     *
+     * @return the eventHubName value.
      */
-    @JsonProperty(value = "properties.propertyColumns")
-    private List<String> propertyColumns;
+    public String eventHubName() {
+        return this.innerProperties() == null ? null : this.innerProperties().eventHubName();
+    }
+
+    /**
+     * Set the eventHubName property: The name of the Event Hub. Required on PUT (CreateOrReplace) requests.
+     *
+     * @param eventHubName the eventHubName value to set.
+     * @return the EventHubV2OutputDataSource object itself.
+     */
+    public EventHubV2OutputDataSource withEventHubName(String eventHubName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventHubOutputDataSourceProperties();
+        }
+        this.innerProperties().withEventHubName(eventHubName);
+        return this;
+    }
 
     /**
      * Get the serviceBusNamespace property: The namespace that is associated with the desired Event Hub, Service Bus
@@ -75,7 +113,7 @@ public class EventHubV2OutputDataSource extends OutputDataSource {
      * @return the serviceBusNamespace value.
      */
     public String serviceBusNamespace() {
-        return this.serviceBusNamespace;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceBusNamespace();
     }
 
     /**
@@ -86,7 +124,10 @@ public class EventHubV2OutputDataSource extends OutputDataSource {
      * @return the EventHubV2OutputDataSource object itself.
      */
     public EventHubV2OutputDataSource withServiceBusNamespace(String serviceBusNamespace) {
-        this.serviceBusNamespace = serviceBusNamespace;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventHubOutputDataSourceProperties();
+        }
+        this.innerProperties().withServiceBusNamespace(serviceBusNamespace);
         return this;
     }
 
@@ -97,7 +138,7 @@ public class EventHubV2OutputDataSource extends OutputDataSource {
      * @return the sharedAccessPolicyName value.
      */
     public String sharedAccessPolicyName() {
-        return this.sharedAccessPolicyName;
+        return this.innerProperties() == null ? null : this.innerProperties().sharedAccessPolicyName();
     }
 
     /**
@@ -108,7 +149,10 @@ public class EventHubV2OutputDataSource extends OutputDataSource {
      * @return the EventHubV2OutputDataSource object itself.
      */
     public EventHubV2OutputDataSource withSharedAccessPolicyName(String sharedAccessPolicyName) {
-        this.sharedAccessPolicyName = sharedAccessPolicyName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventHubOutputDataSourceProperties();
+        }
+        this.innerProperties().withSharedAccessPolicyName(sharedAccessPolicyName);
         return this;
     }
 
@@ -119,7 +163,7 @@ public class EventHubV2OutputDataSource extends OutputDataSource {
      * @return the sharedAccessPolicyKey value.
      */
     public String sharedAccessPolicyKey() {
-        return this.sharedAccessPolicyKey;
+        return this.innerProperties() == null ? null : this.innerProperties().sharedAccessPolicyKey();
     }
 
     /**
@@ -130,7 +174,10 @@ public class EventHubV2OutputDataSource extends OutputDataSource {
      * @return the EventHubV2OutputDataSource object itself.
      */
     public EventHubV2OutputDataSource withSharedAccessPolicyKey(String sharedAccessPolicyKey) {
-        this.sharedAccessPolicyKey = sharedAccessPolicyKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventHubOutputDataSourceProperties();
+        }
+        this.innerProperties().withSharedAccessPolicyKey(sharedAccessPolicyKey);
         return this;
     }
 
@@ -140,7 +187,7 @@ public class EventHubV2OutputDataSource extends OutputDataSource {
      * @return the authenticationMode value.
      */
     public AuthenticationMode authenticationMode() {
-        return this.authenticationMode;
+        return this.innerProperties() == null ? null : this.innerProperties().authenticationMode();
     }
 
     /**
@@ -150,67 +197,10 @@ public class EventHubV2OutputDataSource extends OutputDataSource {
      * @return the EventHubV2OutputDataSource object itself.
      */
     public EventHubV2OutputDataSource withAuthenticationMode(AuthenticationMode authenticationMode) {
-        this.authenticationMode = authenticationMode;
-        return this;
-    }
-
-    /**
-     * Get the eventHubName property: The name of the Event Hub. Required on PUT (CreateOrReplace) requests.
-     *
-     * @return the eventHubName value.
-     */
-    public String eventHubName() {
-        return this.eventHubName;
-    }
-
-    /**
-     * Set the eventHubName property: The name of the Event Hub. Required on PUT (CreateOrReplace) requests.
-     *
-     * @param eventHubName the eventHubName value to set.
-     * @return the EventHubV2OutputDataSource object itself.
-     */
-    public EventHubV2OutputDataSource withEventHubName(String eventHubName) {
-        this.eventHubName = eventHubName;
-        return this;
-    }
-
-    /**
-     * Get the partitionKey property: The key/column that is used to determine to which partition to send event data.
-     *
-     * @return the partitionKey value.
-     */
-    public String partitionKey() {
-        return this.partitionKey;
-    }
-
-    /**
-     * Set the partitionKey property: The key/column that is used to determine to which partition to send event data.
-     *
-     * @param partitionKey the partitionKey value to set.
-     * @return the EventHubV2OutputDataSource object itself.
-     */
-    public EventHubV2OutputDataSource withPartitionKey(String partitionKey) {
-        this.partitionKey = partitionKey;
-        return this;
-    }
-
-    /**
-     * Get the propertyColumns property: The propertyColumns property.
-     *
-     * @return the propertyColumns value.
-     */
-    public List<String> propertyColumns() {
-        return this.propertyColumns;
-    }
-
-    /**
-     * Set the propertyColumns property: The propertyColumns property.
-     *
-     * @param propertyColumns the propertyColumns value to set.
-     * @return the EventHubV2OutputDataSource object itself.
-     */
-    public EventHubV2OutputDataSource withPropertyColumns(List<String> propertyColumns) {
-        this.propertyColumns = propertyColumns;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventHubOutputDataSourceProperties();
+        }
+        this.innerProperties().withAuthenticationMode(authenticationMode);
         return this;
     }
 
@@ -222,5 +212,8 @@ public class EventHubV2OutputDataSource extends OutputDataSource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }
