@@ -4,6 +4,7 @@
 package com.azure.mixedreality.authentication;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
@@ -49,6 +50,7 @@ import java.util.UUID;
 @ServiceClientBuilder(serviceClients = {MixedRealityStsClient.class, MixedRealityStsAsyncClient.class})
 public final class MixedRealityStsClientBuilder implements
     TokenCredentialTrait<MixedRealityStsClientBuilder>,
+    AzureKeyCredentialTrait<MixedRealityStsClientBuilder>,
     HttpConfigTrait<MixedRealityStsClientBuilder>,
     ClientOptionsTrait<MixedRealityStsClientBuilder> {
     private static final String MIXED_REALITY_STS_PROPERTIES = "azure-mixedreality-authentication.properties";
@@ -244,6 +246,7 @@ public final class MixedRealityStsClientBuilder implements
      * @return The updated {@link MixedRealityStsClientBuilder} object.
      * @throws NullPointerException If {@code keyCredential} is null.
      */
+    @Override
     public MixedRealityStsClientBuilder credential(AzureKeyCredential keyCredential) {
         this.keyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
 

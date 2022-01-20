@@ -7,6 +7,7 @@ import com.azure.ai.textanalytics.implementation.Constants;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
@@ -102,6 +103,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {TextAnalyticsAsyncClient.class, TextAnalyticsClient.class})
 public final class TextAnalyticsClientBuilder implements
     TokenCredentialTrait<TextAnalyticsClientBuilder>,
+    AzureKeyCredentialTrait<TextAnalyticsClientBuilder>,
     HttpConfigTrait<TextAnalyticsClientBuilder>,
     ClientOptionsTrait<TextAnalyticsClientBuilder> {
     private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
@@ -304,6 +306,7 @@ public final class TextAnalyticsClientBuilder implements
      * @return The updated {@link TextAnalyticsClientBuilder} object.
      * @throws NullPointerException If {@code keyCredential} is null
      */
+    @Override
     public TextAnalyticsClientBuilder credential(AzureKeyCredential keyCredential) {
         this.credential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;

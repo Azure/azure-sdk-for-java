@@ -3,6 +3,7 @@
 package com.azure.data.tables;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
@@ -73,6 +74,7 @@ import static com.azure.data.tables.BuilderHelper.validateCredentials;
 @ServiceClientBuilder(serviceClients = {TableClient.class, TableAsyncClient.class})
 public final class TableClientBuilder implements
     TokenCredentialTrait<TableClientBuilder>,
+    AzureNamedKeyCredentialTrait<TableClientBuilder>,
     ConnectionStringTrait<TableClientBuilder>,
     AzureSasCredentialTrait<TableClientBuilder>,
     HttpConfigTrait<TableClientBuilder>,
@@ -340,6 +342,7 @@ public final class TableClientBuilder implements
      *
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
+    @Override
     public TableClientBuilder credential(AzureNamedKeyCredential credential) {
         if (credential == null) {
             throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));

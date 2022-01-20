@@ -20,6 +20,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.annotation.ServiceClientProtocol;
+import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
@@ -140,6 +141,7 @@ import java.util.regex.Pattern;
     EventHubConsumerAsyncClient.class, EventHubConsumerClient.class}, protocol = ServiceClientProtocol.AMQP)
 public class EventHubClientBuilder implements
     TokenCredentialTrait<EventHubClientBuilder>,
+    AzureNamedKeyCredentialTrait<EventHubClientBuilder>,
     ConnectionStringTrait<EventHubClientBuilder>,
     AzureSasCredentialTrait<EventHubClientBuilder>,
     AmqpConfigTrait<EventHubClientBuilder>,
@@ -487,6 +489,24 @@ public class EventHubClientBuilder implements
         this.credentials = new EventHubSharedKeyCredential(credential.getAzureNamedKey().getName(),
             credential.getAzureNamedKey().getKey(), ClientConstants.TOKEN_VALIDITY);
 
+        return this;
+    }
+
+    /**
+     * Sets the credential information for which Event Hub instance to connect to, and how to authorize against it.
+     *
+     * @param credential The shared access name and key credential to use for authorization.
+     *     Access controls may be specified by the Event Hubs namespace or the requested Event Hub,
+     *     depending on Azure configuration.
+     *
+     * @return The updated {@link EventHubClientBuilder} object.
+     * @throws NullPointerException if {@code credentials} is null.
+     */
+    @Override
+    public EventHubClientBuilder credential(AzureNamedKeyCredential credential) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.credentials = new EventHubSharedKeyCredential(credential.getAzureNamedKey().getName(),
+            credential.getAzureNamedKey().getKey(), ClientConstants.TOKEN_VALIDITY);
         return this;
     }
 

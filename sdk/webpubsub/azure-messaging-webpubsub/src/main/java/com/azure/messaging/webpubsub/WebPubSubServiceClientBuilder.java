@@ -4,6 +4,7 @@
 package com.azure.messaging.webpubsub;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
@@ -91,6 +92,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {WebPubSubServiceAsyncClient.class, WebPubSubServiceClient.class})
 public final class WebPubSubServiceClientBuilder implements
     TokenCredentialTrait<WebPubSubServiceClientBuilder>,
+    AzureKeyCredentialTrait<WebPubSubServiceClientBuilder>,
     ConnectionStringTrait<WebPubSubServiceClientBuilder>,
     HttpConfigTrait<WebPubSubServiceClientBuilder>,
     ClientOptionsTrait<WebPubSubServiceClientBuilder> {
@@ -187,6 +189,7 @@ public final class WebPubSubServiceClientBuilder implements
      * @param credential AzureKeyCredential used to authenticate HTTP requests.
      * @return The updated {@link WebPubSubServiceClientBuilder} object.
      */
+    @Override
     public WebPubSubServiceClientBuilder credential(final AzureKeyCredential credential) {
         this.credential = credential;
         return this;

@@ -9,6 +9,7 @@ import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.client.traits.AmqpConfigTrait;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
@@ -103,6 +104,7 @@ import java.util.function.Supplier;
 @ServiceClientBuilder(serviceClients = EventProcessorClient.class)
 public class EventProcessorClientBuilder implements
     TokenCredentialTrait<EventProcessorClientBuilder>,
+    AzureNamedKeyCredentialTrait<EventProcessorClientBuilder>,
     ConnectionStringTrait<EventProcessorClientBuilder>,
     AzureSasCredentialTrait<EventProcessorClientBuilder>,
     AmqpConfigTrait<EventProcessorClientBuilder>,
@@ -285,6 +287,22 @@ public class EventProcessorClientBuilder implements
     public EventProcessorClientBuilder credential(String fullyQualifiedNamespace, String eventHubName,
         AzureNamedKeyCredential credential) {
         eventHubClientBuilder.credential(fullyQualifiedNamespace, eventHubName, credential);
+        return this;
+    }
+
+    /**
+     * Sets the credential information for which Event Hub instance to connect to, and how to authorize against it.
+     *
+     * @param credential The shared access name and key credential to use for authorization.
+     *     Access controls may be specified by the Event Hubs namespace or the requested Event Hub,
+     *     depending on Azure configuration.
+     *
+     * @return The updated {@link EventProcessorClientBuilder} object.
+     * @throws NullPointerException if {@code credentials} is null.
+     */
+    @Override
+    public EventProcessorClientBuilder credential(AzureNamedKeyCredential credential) {
+        eventHubClientBuilder.credential(credential);
         return this;
     }
 

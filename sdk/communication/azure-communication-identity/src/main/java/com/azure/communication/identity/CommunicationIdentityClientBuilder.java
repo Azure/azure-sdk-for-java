@@ -8,6 +8,7 @@ import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.identity.implementation.CommunicationIdentityClientImpl;
 import com.azure.communication.identity.implementation.CommunicationIdentityClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
@@ -41,6 +42,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {CommunicationIdentityClient.class, CommunicationIdentityAsyncClient.class})
 public final class CommunicationIdentityClientBuilder implements
     TokenCredentialTrait<CommunicationIdentityClientBuilder>,
+    AzureKeyCredentialTrait<CommunicationIdentityClientBuilder>,
     ConnectionStringTrait<CommunicationIdentityClientBuilder>,
     HttpConfigTrait<CommunicationIdentityClientBuilder>,
     ClientOptionsTrait<CommunicationIdentityClientBuilder> {
@@ -107,6 +109,7 @@ public final class CommunicationIdentityClientBuilder implements
      * @return The updated {@link CommunicationIdentityClientBuilder} object.
      * @throws NullPointerException If {@code keyCredential} is null.
      */
+    @Override
     public CommunicationIdentityClientBuilder credential(AzureKeyCredential keyCredential)  {
         this.azureKeyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;

@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
@@ -68,6 +69,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {SearchIndexerClient.class, SearchIndexerAsyncClient.class})
 public class SearchIndexerClientBuilder implements
     TokenCredentialTrait<SearchIndexerClientBuilder>,
+    AzureKeyCredentialTrait<SearchIndexerClientBuilder>,
     HttpConfigTrait<SearchIndexerClientBuilder>,
     ClientOptionsTrait<SearchIndexerClientBuilder> {
     private final ClientLogger logger = new ClientLogger(SearchIndexerClientBuilder.class);
@@ -159,6 +161,7 @@ public class SearchIndexerClientBuilder implements
      * @param credential The {@link AzureKeyCredential} used to authenticate HTTP requests.
      * @return The updated SearchIndexerClientBuilder object.
      */
+    @Override
     public SearchIndexerClientBuilder credential(AzureKeyCredential credential) {
         this.azureKeyCredential = credential;
         return this;

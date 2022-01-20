@@ -4,6 +4,7 @@
 package com.azure.mixedreality.remoterendering;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
@@ -36,6 +37,7 @@ import java.util.UUID;
 @ServiceClientBuilder(serviceClients = {RemoteRenderingClient.class, RemoteRenderingAsyncClient.class})
 public final class RemoteRenderingClientBuilder implements
     TokenCredentialTrait<RemoteRenderingClientBuilder>,
+    AzureKeyCredentialTrait<RemoteRenderingClientBuilder>,
     HttpConfigTrait<RemoteRenderingClientBuilder>,
     ClientOptionsTrait<RemoteRenderingClientBuilder> {
 
@@ -136,6 +138,7 @@ public final class RemoteRenderingClientBuilder implements
      * @param accountKeyCredential the accountKeyCredential value.
      * @return the RemoteRenderingClientBuilder.
      */
+    @Override
     public RemoteRenderingClientBuilder credential(AzureKeyCredential accountKeyCredential) {
         this.stsBuilder.credential(Objects.requireNonNull(accountKeyCredential, "'accountKeyCredential' cannot be null."));
         return this;

@@ -7,6 +7,7 @@ import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClien
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
@@ -41,6 +42,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {PhoneNumbersClient.class, PhoneNumbersAsyncClient.class})
 public final class PhoneNumbersClientBuilder implements
     TokenCredentialTrait<PhoneNumbersClientBuilder>,
+    AzureKeyCredentialTrait<PhoneNumbersClientBuilder>,
     ConnectionStringTrait<PhoneNumbersClientBuilder>,
     HttpConfigTrait<PhoneNumbersClientBuilder>,
     ClientOptionsTrait<PhoneNumbersClientBuilder> {
@@ -124,6 +126,7 @@ public final class PhoneNumbersClientBuilder implements
      * @return The updated {@link PhoneNumbersClientBuilder} object.
      * @throws NullPointerException If {@code keyCredential} is null.
      */
+    @Override
     public PhoneNumbersClientBuilder credential(AzureKeyCredential keyCredential)  {
         this.azureKeyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;

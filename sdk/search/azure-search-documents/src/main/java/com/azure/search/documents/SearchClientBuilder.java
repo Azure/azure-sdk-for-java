@@ -4,6 +4,7 @@
 package com.azure.search.documents;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
@@ -83,6 +84,7 @@ import static com.azure.search.documents.implementation.util.Utility.getDefaultS
 @ServiceClientBuilder(serviceClients = {SearchClient.class, SearchAsyncClient.class})
 public final class SearchClientBuilder implements
     TokenCredentialTrait<SearchClientBuilder>,
+    AzureKeyCredentialTrait<SearchClientBuilder>,
     HttpConfigTrait<SearchClientBuilder>,
     ClientOptionsTrait<SearchClientBuilder> {
     private static final boolean DEFAULT_AUTO_FLUSH = true;
@@ -213,6 +215,7 @@ public final class SearchClientBuilder implements
      * @param credential The {@link AzureKeyCredential} used to authenticate HTTP requests.
      * @return The updated SearchClientBuilder object.
      */
+    @Override
     public SearchClientBuilder credential(AzureKeyCredential credential) {
         this.azureKeyCredential = credential;
         return this;

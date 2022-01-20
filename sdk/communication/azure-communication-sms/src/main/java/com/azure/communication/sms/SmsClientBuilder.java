@@ -8,6 +8,7 @@ import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImpl;
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
@@ -41,6 +42,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {SmsClient.class, SmsAsyncClient.class})
 public final class SmsClientBuilder implements
     TokenCredentialTrait<SmsClientBuilder>,
+    AzureKeyCredentialTrait<SmsClientBuilder>,
     ConnectionStringTrait<SmsClientBuilder>,
     HttpConfigTrait<SmsClientBuilder>,
     ClientOptionsTrait<SmsClientBuilder> {
@@ -105,6 +107,7 @@ public final class SmsClientBuilder implements
      * @return The updated {@link SmsClientBuilder} object.
      * @throws NullPointerException If {@code keyCredential} is null.
      */
+    @Override
     public SmsClientBuilder credential(AzureKeyCredential keyCredential)  {
         this.azureKeyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;

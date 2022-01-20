@@ -9,6 +9,7 @@ import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilde
 import com.azure.ai.formrecognizer.implementation.util.Constants;
 import com.azure.ai.formrecognizer.implementation.util.Utility;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
@@ -89,6 +90,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {DocumentModelAdministrationAsyncClient.class, DocumentModelAdministrationClient.class})
 public final class DocumentModelAdministrationClientBuilder implements
     TokenCredentialTrait<DocumentModelAdministrationClientBuilder>,
+    AzureKeyCredentialTrait<DocumentModelAdministrationClientBuilder>,
     HttpConfigTrait<DocumentModelAdministrationClientBuilder>,
     ClientOptionsTrait<DocumentModelAdministrationClientBuilder> {
     private final ClientLogger logger = new ClientLogger(DocumentModelAdministrationClientBuilder.class);
@@ -204,6 +206,7 @@ public final class DocumentModelAdministrationClientBuilder implements
      * @return The updated DocumentModelAdministrationClientBuilder object.
      * @throws NullPointerException If {@code azureKeyCredential} is null.
      */
+    @Override
     public DocumentModelAdministrationClientBuilder credential(AzureKeyCredential azureKeyCredential) {
         this.credential = Objects.requireNonNull(azureKeyCredential, "'azureKeyCredential' cannot be null.");
         return this;

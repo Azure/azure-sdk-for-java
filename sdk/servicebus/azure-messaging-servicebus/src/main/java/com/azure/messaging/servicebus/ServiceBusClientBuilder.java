@@ -20,6 +20,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.annotation.ServiceClientProtocol;
+import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
@@ -180,6 +181,7 @@ import java.util.regex.Pattern;
     protocol = ServiceClientProtocol.AMQP)
 public final class ServiceBusClientBuilder implements
     TokenCredentialTrait<ServiceBusClientBuilder>,
+    AzureNamedKeyCredentialTrait<ServiceBusClientBuilder>,
     ConnectionStringTrait<ServiceBusClientBuilder>,
     AzureSasCredentialTrait<ServiceBusClientBuilder>,
     AmqpConfigTrait<ServiceBusClientBuilder>,
@@ -425,6 +427,27 @@ public final class ServiceBusClientBuilder implements
         this.credentials = new ServiceBusSharedKeyCredential(credential.getAzureNamedKey().getName(),
             credential.getAzureNamedKey().getKey(), ServiceBusConstants.TOKEN_VALIDITY);
 
+        return this;
+    }
+
+    /**
+     * Sets the credential with the shared access policies for the Service Bus resource.
+     * You can find the shared access policies on the azure portal or Azure CLI.
+     * For instance, on the portal, "Shared Access policies" has 'policy' and its 'Primary Key' and 'Secondary Key'.
+     * The 'name' attribute of the {@link AzureNamedKeyCredential} is the 'policy' on portal and the 'key' attribute
+     * can be either 'Primary Key' or 'Secondary Key'.
+     * This method and {@link #connectionString(String)} take the same information in different forms. But it allows
+     * you to update the name and key.
+     *
+     * @param credential {@link AzureNamedKeyCredential} to be used for authentication.
+     *
+     * @return The updated {@link ServiceBusClientBuilder} object.
+     */
+    @Override
+    public ServiceBusClientBuilder credential(AzureNamedKeyCredential credential) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.credentials = new ServiceBusSharedKeyCredential(credential.getAzureNamedKey().getName(),
+            credential.getAzureNamedKey().getKey(), ServiceBusConstants.TOKEN_VALIDITY);
         return this;
     }
 

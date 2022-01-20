@@ -8,6 +8,7 @@ import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.networktraversal.implementation.CommunicationNetworkingClientImpl;
 import com.azure.communication.networktraversal.implementation.CommunicationNetworkingClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
@@ -41,6 +42,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {CommunicationRelayClient.class, CommunicationRelayAsyncClient.class})
 public final class CommunicationRelayClientBuilder implements
     TokenCredentialTrait<CommunicationRelayClientBuilder>,
+    AzureKeyCredentialTrait<CommunicationRelayClientBuilder>,
     ConnectionStringTrait<CommunicationRelayClientBuilder>,
     HttpConfigTrait<CommunicationRelayClientBuilder>,
     ClientOptionsTrait<CommunicationRelayClientBuilder> {
@@ -106,6 +108,7 @@ public final class CommunicationRelayClientBuilder implements
     * @param keyCredential The {@link AzureKeyCredential} used to authenticate HTTP requests.
      * @return The updated {@link CommunicationRelayClientBuilder} object.
      */
+    @Override
     public CommunicationRelayClientBuilder credential(AzureKeyCredential keyCredential)  {
         this.azureKeyCredential = keyCredential;
         return this;
