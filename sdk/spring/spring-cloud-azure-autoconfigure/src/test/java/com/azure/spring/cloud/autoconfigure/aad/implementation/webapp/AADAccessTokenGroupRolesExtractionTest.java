@@ -120,68 +120,6 @@ class AADAccessTokenGroupRolesExtractionTest {
     }
 
     @Test
-    void testWithEnableFullList() {
-        Set<String> allowedGroupIds = new HashSet<>();
-        allowedGroupIds.add(GROUP_ID_1);
-        List<String> allowedGroupNames = new ArrayList<>();
-        allowedGroupNames.add("group1");
-
-        AADAuthenticationProperties properties = getProperties();
-        properties.getUserGroup().setAllowedGroupIds(allowedGroupIds);
-        properties.getUserGroup().setAllowedGroupNames(allowedGroupNames);
-        properties.getUserGroup().setEnableFullList(true);
-
-        AADOAuth2UserService userService = new AADOAuth2UserService(properties, graphClient);
-        Set<String> groupRoles = userService.extractGroupRolesFromAccessToken(accessToken);
-        assertThat(groupRoles).hasSize(3);
-        assertThat(groupRoles).contains("ROLE_group1");
-        assertThat(groupRoles).contains("ROLE_" + GROUP_ID_1);
-        assertThat(groupRoles).contains("ROLE_" + GROUP_ID_2);
-    }
-
-    @Test
-    void testWithoutEnableFullList() {
-        List<String> allowedGroupNames = new ArrayList<>();
-        Set<String> allowedGroupIds = new HashSet<>();
-        allowedGroupIds.add(GROUP_ID_1);
-        allowedGroupNames.add("group1");
-
-        AADAuthenticationProperties properties = getProperties();
-        properties.getUserGroup().setEnableFullList(false);
-        properties.getUserGroup().setAllowedGroupIds(allowedGroupIds);
-        properties.getUserGroup().setAllowedGroupNames(allowedGroupNames);
-
-        AADOAuth2UserService userService = new AADOAuth2UserService(properties, graphClient);
-        Set<String> groupRoles = userService.extractGroupRolesFromAccessToken(accessToken);
-        assertThat(groupRoles).hasSize(2);
-        assertThat(groupRoles).contains("ROLE_group1");
-        assertThat(groupRoles).doesNotContain("ROLE_group2");
-        assertThat(groupRoles).contains("ROLE_" + GROUP_ID_1);
-        assertThat(groupRoles).doesNotContain("ROLE_" + GROUP_ID_2);
-    }
-
-    @Test
-    void testAllowedGroupIdsAllWithoutEnableFullList() {
-        Set<String> allowedGroupIds = new HashSet<>();
-        allowedGroupIds.add("all");
-        List<String> allowedGroupNames = new ArrayList<>();
-        allowedGroupNames.add("group1");
-
-        AADAuthenticationProperties properties = getProperties();
-        properties.getUserGroup().setAllowedGroupIds(allowedGroupIds);
-        properties.getUserGroup().setAllowedGroupNames(allowedGroupNames);
-        properties.getUserGroup().setEnableFullList(false);
-
-        AADOAuth2UserService userService = new AADOAuth2UserService(properties, graphClient);
-        Set<String> groupRoles = userService.extractGroupRolesFromAccessToken(accessToken);
-        assertThat(groupRoles).hasSize(3);
-        assertThat(groupRoles).contains("ROLE_group1");
-        assertThat(groupRoles).doesNotContain("ROLE_group2");
-        assertThat(groupRoles).contains("ROLE_" + GROUP_ID_1);
-        assertThat(groupRoles).contains("ROLE_" + GROUP_ID_2);
-    }
-
-    @Test
     void testIllegalGroupIdParam() {
         WebApplicationContextRunnerUtils
             .webApplicationContextRunner()

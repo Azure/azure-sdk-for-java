@@ -5,7 +5,6 @@ package com.azure.spring.cloud.autoconfigure.aadb2c.properties;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AADB2CConfigurationException;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -13,8 +12,6 @@ import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthorizationGrantType.CLIENT_CREDENTIALS;
 
@@ -33,8 +30,6 @@ public class AADB2CProperties implements InitializingBean {
      */
     public static final String PREFIX = "spring.cloud.azure.active-directory.b2c";
 
-    private static final String TENANT_NAME_PART_REGEX = "([A-Za-z0-9]+\\.)";
-
     /**
      * The default user flow key 'sign-up-or-sign-in'.
      */
@@ -44,13 +39,6 @@ public class AADB2CProperties implements InitializingBean {
      * The default user flow key 'password-reset'.
      */
     protected static final String DEFAULT_KEY_PASSWORD_RESET = "password-reset";
-
-    /**
-     * The name of the b2c tenant.
-     * @deprecated It's recommended to use 'baseUri' instead.
-     */
-    @Deprecated
-    private String tenant;
 
     /**
      * AAD B2C profile information.
@@ -82,8 +70,14 @@ public class AADB2CProperties implements InitializingBean {
      */
     private int jwtSizeLimit = RemoteJWKSet.DEFAULT_HTTP_SIZE_LIMIT; /* bytes */
 
+    /**
+     * Redirect url after logout.
+     */
     private String logoutSuccessUrl = DEFAULT_LOGOUT_SUCCESS_URL;
 
+    /**
+     * Additional parameters for authentication.
+     */
     private Map<String, Object> authenticateAdditionalParameters;
 
     /**
@@ -92,10 +86,8 @@ public class AADB2CProperties implements InitializingBean {
     private String userNameAttributeName;
 
     /**
-     * Telemetry data will be collected if true, or disable data collection.
+     * Reply url after get authorization code.
      */
-    private boolean allowTelemetry = true;
-
     private String replyUrl = "{baseUrl}/login/oauth2/code/";
 
     /**
@@ -108,6 +100,9 @@ public class AADB2CProperties implements InitializingBean {
      */
     private String loginFlow = DEFAULT_KEY_SIGN_UP_OR_SIGN_IN;
 
+    /**
+     * User flows
+     */
     private Map<String, String> userFlows = new HashMap<>();
 
     /**
@@ -127,8 +122,8 @@ public class AADB2CProperties implements InitializingBean {
      */
     private void validateWebappProperties() {
         if (!CollectionUtils.isEmpty(userFlows)) {
-            if (!StringUtils.hasText(tenant) && !StringUtils.hasText(baseUri)) {
-                throw new AADB2CConfigurationException("'tenant' and 'baseUri' at least configure one item.");
+            if (StringUtils.hasText(baseUri)) {
+                throw new AADB2CConfigurationException("'baseUri' must be configureed.");
             }
             if (!userFlows.keySet().contains(loginFlow)) {
                 throw new AADB2CConfigurationException("Sign in user flow key '"
@@ -201,10 +196,6 @@ public class AADB2CProperties implements InitializingBean {
      * @return the base URI
      */
     public String getBaseUri() {
-        // baseUri is empty and points to Global env by default
-        if (StringUtils.hasText(tenant) && !StringUtils.hasText(baseUri)) {
-            return String.format("https://%s.b2clogin.com/%s.onmicrosoft.com/", tenant, tenant);
-        }
         return baseUri;
     }
 
@@ -215,35 +206,6 @@ public class AADB2CProperties implements InitializingBean {
      */
     public void setBaseUri(String baseUri) {
         this.baseUri = baseUri;
-    }
-
-    /**
-     * Sets the tenant.
-     *
-     * @param tenant the tenant
-     */
-    public void setTenant(String tenant) {
-        this.tenant = tenant;
-    }
-
-    /**
-     * Get tenant name for Telemetry
-     * @return tenant name
-     * @throws AADB2CConfigurationException resolve tenant name failed
-     */
-    @DeprecatedConfigurationProperty(
-        reason = "Configuration updated to baseUri",
-        replacement = "spring.cloud.azure.active-directory.b2c.base-uri")
-    public String getTenant() {
-        if (StringUtils.hasText(baseUri)) {
-            Matcher matcher = Pattern.compile(TENANT_NAME_PART_REGEX).matcher(baseUri);
-            if (matcher.find()) {
-                String matched = matcher.group();
-                return matched.substring(0, matched.length() - 1);
-            }
-            throw new AADB2CConfigurationException("Unable to resolve the 'tenant' name.");
-        }
-        return tenant;
     }
 
     /**
@@ -334,28 +296,6 @@ public class AADB2CProperties implements InitializingBean {
      */
     public void setAuthenticateAdditionalParameters(Map<String, Object> authenticateAdditionalParameters) {
         this.authenticateAdditionalParameters = authenticateAdditionalParameters;
-    }
-
-    /**
-     * Whether telemetry is allowed.
-     *
-     * @return whether telemetry is allowed
-     * @deprecated Determined by HTTP header User-Agent instead
-     */
-    @Deprecated
-    @DeprecatedConfigurationProperty(
-        reason = "Deprecate the telemetry endpoint and use HTTP header User Agent instead.")
-    public boolean isAllowTelemetry() {
-        return allowTelemetry;
-    }
-
-    /**
-     * Sets whether telemetry is allowed.
-     *
-     * @param allowTelemetry whether telemetry is allowed
-     */
-    public void setAllowTelemetry(boolean allowTelemetry) {
-        this.allowTelemetry = allowTelemetry;
     }
 
     /**

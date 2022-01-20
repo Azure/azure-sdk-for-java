@@ -40,7 +40,7 @@ public class AADAuthenticationFilterPropertiesTest {
 
             assertThat(properties.getCredential().getClientId()).isEqualTo(TestConstants.CLIENT_ID);
             assertThat(properties.getCredential().getClientSecret()).isEqualTo(TestConstants.CLIENT_SECRET);
-            assertThat(properties.getActiveDirectoryGroups()
+            assertThat(properties.getUserGroup().getAllowedGroupNames()
                                  .toString()).isEqualTo(TestConstants.TARGETED_GROUPS.toString());
         }
     }
