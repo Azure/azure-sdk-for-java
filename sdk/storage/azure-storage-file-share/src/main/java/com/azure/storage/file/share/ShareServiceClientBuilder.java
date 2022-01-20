@@ -4,10 +4,12 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -123,6 +125,7 @@ import java.util.Objects;
 public final class ShareServiceClientBuilder implements
     HttpConfigTrait<ShareServiceClientBuilder>,
     ConnectionStringTrait<ShareServiceClientBuilder>,
+    AzureNamedKeyCredentialTrait<ShareServiceClientBuilder>,
     AzureSasCredentialTrait<ShareServiceClientBuilder>,
     ClientOptionsTrait<ShareServiceClientBuilder> {
     private final ClientLogger logger = new ClientLogger(ShareServiceClientBuilder.class);
@@ -258,6 +261,19 @@ public final class ShareServiceClientBuilder implements
         this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.sasToken = null;
         return this;
+    }
+
+    /**
+     * Sets the {@link AzureNamedKeyCredential} used to authorize requests sent to the service.
+     *
+     * @param credential {@link AzureNamedKeyCredential}.
+     * @return the updated ShareServiceClientBuilder
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     */
+    @Override
+    public ShareServiceClientBuilder credential(AzureNamedKeyCredential credential) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        return credential(StorageSharedKeyCredential.fromAzureNamedKeyCredential(credential));
     }
 
     /**

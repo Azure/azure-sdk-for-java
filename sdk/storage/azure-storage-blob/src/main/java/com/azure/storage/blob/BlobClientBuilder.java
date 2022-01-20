@@ -4,11 +4,13 @@
 package com.azure.storage.blob;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -57,6 +59,7 @@ import java.util.Objects;
 public final class BlobClientBuilder implements
     TokenCredentialTrait<BlobClientBuilder>,
     ConnectionStringTrait<BlobClientBuilder>,
+    AzureNamedKeyCredentialTrait<BlobClientBuilder>,
     AzureSasCredentialTrait<BlobClientBuilder>,
     HttpConfigTrait<BlobClientBuilder>,
     ClientOptionsTrait<BlobClientBuilder> {
@@ -213,6 +216,19 @@ public final class BlobClientBuilder implements
         this.tokenCredential = null;
         this.sasToken = null;
         return this;
+    }
+
+    /**
+     * Sets the {@link AzureNamedKeyCredential} used to authorize requests sent to the service.
+     *
+     * @param credential {@link AzureNamedKeyCredential}.
+     * @return the updated BlobClientBuilder
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     */
+    @Override
+    public BlobClientBuilder credential(AzureNamedKeyCredential credential) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        return credential(StorageSharedKeyCredential.fromAzureNamedKeyCredential(credential));
     }
 
     /**
