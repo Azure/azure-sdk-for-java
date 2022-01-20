@@ -4,7 +4,6 @@ package com.azure.search.documents.indexes;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelinePosition;
@@ -39,25 +38,11 @@ import java.util.Objects;
  *
  * <p><strong>Instantiating an asynchronous Search Index Client</strong></p>
  *
- * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.instantiation -->
- * <pre>
- * SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder&#40;&#41;
- *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
- *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.instantiation -->
+ * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.instantiation}
  *
  * <p><strong>Instantiating a synchronous Search Index Client</strong></p>
  *
- * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.instantiation -->
- * <pre>
- * SearchIndexClient searchIndexClient = new SearchIndexClientBuilder&#40;&#41;
- *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
- *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
- *     .buildClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.search.documents.indexes.SearchIndexClient.instantiation -->
+ * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.instantiation}
  *
  * @see SearchIndexClient
  * @see SearchIndexAsyncClient
@@ -69,9 +54,7 @@ public final class SearchIndexClientBuilder {
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
 
-    private AzureKeyCredential azureKeyCredential;
-    private TokenCredential tokenCredential;
-
+    private AzureKeyCredential credential;
     private SearchServiceVersion serviceVersion;
     private String endpoint;
     private HttpClient httpClient;
@@ -115,6 +98,7 @@ public final class SearchIndexClientBuilder {
      */
     public SearchIndexAsyncClient buildAsyncClient() {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
 
         SearchServiceVersion buildVersion = (serviceVersion == null)
             ? SearchServiceVersion.getLatest()
@@ -124,8 +108,10 @@ public final class SearchIndexClientBuilder {
             return new SearchIndexAsyncClient(endpoint, buildVersion, httpPipeline, jsonSerializer);
         }
 
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+
         HttpPipeline pipeline = Utility.buildHttpPipeline(clientOptions, httpLogOptions, configuration, retryPolicy,
-            azureKeyCredential, tokenCredential, perCallPolicies, perRetryPolicies, httpClient, logger);
+            credential, perCallPolicies, perRetryPolicies, httpClient);
 
         return new SearchIndexAsyncClient(endpoint, buildVersion, pipeline, jsonSerializer);
     }
@@ -152,20 +138,12 @@ public final class SearchIndexClientBuilder {
      *
      * @param credential The {@link AzureKeyCredential} used to authenticate HTTP requests.
      * @return The updated SearchIndexClientBuilder object.
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     * @throws IllegalArgumentException If {@link AzureKeyCredential#getKey()} is {@code null} or empty.
      */
     public SearchIndexClientBuilder credential(AzureKeyCredential credential) {
-        this.azureKeyCredential = credential;
-        return this;
-    }
-
-    /**
-     * Sets the {@link TokenCredential} used to authenticate HTTP requests.
-     *
-     * @param credential The {@link TokenCredential} used to authenticate HTTP requests.
-     * @return The updated SearchIndexClientBuilder object.
-     */
-    public SearchIndexClientBuilder credential(TokenCredential credential) {
-        this.tokenCredential = credential;
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.credential = credential;
         return this;
     }
 
