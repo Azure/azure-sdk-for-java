@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.labservices.implementation;
 
-import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.labservices.fluent.models.UserInner;
-import com.azure.resourcemanager.labservices.models.LatestOperationResult;
+import com.azure.resourcemanager.labservices.models.InvitationState;
+import com.azure.resourcemanager.labservices.models.InviteBody;
+import com.azure.resourcemanager.labservices.models.ProvisioningState;
+import com.azure.resourcemanager.labservices.models.RegistrationState;
 import com.azure.resourcemanager.labservices.models.User;
-import com.azure.resourcemanager.labservices.models.UserFragment;
+import com.azure.resourcemanager.labservices.models.UserUpdate;
 import java.time.Duration;
-import java.util.Collections;
-import java.util.Map;
+import java.time.OffsetDateTime;
 
 public final class UserImpl implements User, User.Definition, User.Update {
     private UserInner innerObject;
 
-    private final com.azure.resourcemanager.labservices.ManagedLabsManager serviceManager;
+    private final com.azure.resourcemanager.labservices.LabServicesManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -31,80 +33,60 @@ public final class UserImpl implements User, User.Definition, User.Update {
         return this.innerModel().type();
     }
 
-    public String location() {
-        return this.innerModel().location();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
+    public ProvisioningState provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
+    public String displayName() {
+        return this.innerModel().displayName();
     }
 
     public String email() {
         return this.innerModel().email();
     }
 
-    public String familyName() {
-        return this.innerModel().familyName();
+    public RegistrationState registrationState() {
+        return this.innerModel().registrationState();
     }
 
-    public String givenName() {
-        return this.innerModel().givenName();
+    public InvitationState invitationState() {
+        return this.innerModel().invitationState();
     }
 
-    public String tenantId() {
-        return this.innerModel().tenantId();
+    public OffsetDateTime invitationSent() {
+        return this.innerModel().invitationSent();
     }
 
     public Duration totalUsage() {
         return this.innerModel().totalUsage();
     }
 
-    public String provisioningState() {
-        return this.innerModel().provisioningState();
-    }
-
-    public String uniqueIdentifier() {
-        return this.innerModel().uniqueIdentifier();
-    }
-
-    public LatestOperationResult latestOperationResult() {
-        return this.innerModel().latestOperationResult();
-    }
-
-    public Region region() {
-        return Region.fromName(this.regionName());
-    }
-
-    public String regionName() {
-        return this.location();
+    public Duration additionalUsageQuota() {
+        return this.innerModel().additionalUsageQuota();
     }
 
     public UserInner innerModel() {
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.labservices.ManagedLabsManager manager() {
+    private com.azure.resourcemanager.labservices.LabServicesManager manager() {
         return this.serviceManager;
     }
 
     private String resourceGroupName;
 
-    private String labAccountName;
-
     private String labName;
 
     private String username;
 
-    private UserFragment updateUser;
+    private UserUpdate updateBody;
 
-    public UserImpl withExistingLab(String resourceGroupName, String labAccountName, String labName) {
+    public UserImpl withExistingLab(String resourceGroupName, String labName) {
         this.resourceGroupName = resourceGroupName;
-        this.labAccountName = labAccountName;
         this.labName = labName;
         return this;
     }
@@ -114,9 +96,7 @@ public final class UserImpl implements User, User.Definition, User.Update {
             serviceManager
                 .serviceClient()
                 .getUsers()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, labAccountName, labName, username, this.innerModel(), Context.NONE)
-                .getValue();
+                .createOrUpdate(resourceGroupName, labName, username, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -125,20 +105,18 @@ public final class UserImpl implements User, User.Definition, User.Update {
             serviceManager
                 .serviceClient()
                 .getUsers()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, labAccountName, labName, username, this.innerModel(), context)
-                .getValue();
+                .createOrUpdate(resourceGroupName, labName, username, this.innerModel(), context);
         return this;
     }
 
-    UserImpl(String name, com.azure.resourcemanager.labservices.ManagedLabsManager serviceManager) {
+    UserImpl(String name, com.azure.resourcemanager.labservices.LabServicesManager serviceManager) {
         this.innerObject = new UserInner();
         this.serviceManager = serviceManager;
         this.username = name;
     }
 
     public UserImpl update() {
-        this.updateUser = new UserFragment();
+        this.updateBody = new UserUpdate();
         return this;
     }
 
@@ -147,88 +125,63 @@ public final class UserImpl implements User, User.Definition, User.Update {
             serviceManager
                 .serviceClient()
                 .getUsers()
-                .updateWithResponse(resourceGroupName, labAccountName, labName, username, updateUser, Context.NONE)
-                .getValue();
+                .update(resourceGroupName, labName, username, updateBody, Context.NONE);
         return this;
     }
 
     public User apply(Context context) {
         this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getUsers()
-                .updateWithResponse(resourceGroupName, labAccountName, labName, username, updateUser, context)
-                .getValue();
+            serviceManager.serviceClient().getUsers().update(resourceGroupName, labName, username, updateBody, context);
         return this;
     }
 
-    UserImpl(UserInner innerObject, com.azure.resourcemanager.labservices.ManagedLabsManager serviceManager) {
+    UserImpl(UserInner innerObject, com.azure.resourcemanager.labservices.LabServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.labAccountName = Utils.getValueFromIdByName(innerObject.id(), "labaccounts");
         this.labName = Utils.getValueFromIdByName(innerObject.id(), "labs");
         this.username = Utils.getValueFromIdByName(innerObject.id(), "users");
     }
 
     public User refresh() {
-        String localExpand = null;
         this.innerObject =
             serviceManager
                 .serviceClient()
                 .getUsers()
-                .getWithResponse(resourceGroupName, labAccountName, labName, username, localExpand, Context.NONE)
+                .getWithResponse(resourceGroupName, labName, username, Context.NONE)
                 .getValue();
         return this;
     }
 
     public User refresh(Context context) {
-        String localExpand = null;
         this.innerObject =
             serviceManager
                 .serviceClient()
                 .getUsers()
-                .getWithResponse(resourceGroupName, labAccountName, labName, username, localExpand, context)
+                .getWithResponse(resourceGroupName, labName, username, context)
                 .getValue();
         return this;
     }
 
-    public UserImpl withRegion(Region location) {
-        this.innerModel().withLocation(location.toString());
+    public void invite(InviteBody body) {
+        serviceManager.users().invite(resourceGroupName, labName, username, body);
+    }
+
+    public void invite(InviteBody body, Context context) {
+        serviceManager.users().invite(resourceGroupName, labName, username, body, context);
+    }
+
+    public UserImpl withEmail(String email) {
+        this.innerModel().withEmail(email);
         return this;
     }
 
-    public UserImpl withRegion(String location) {
-        this.innerModel().withLocation(location);
-        return this;
-    }
-
-    public UserImpl withTags(Map<String, String> tags) {
+    public UserImpl withAdditionalUsageQuota(Duration additionalUsageQuota) {
         if (isInCreateMode()) {
-            this.innerModel().withTags(tags);
+            this.innerModel().withAdditionalUsageQuota(additionalUsageQuota);
             return this;
         } else {
-            this.updateUser.withTags(tags);
-            return this;
-        }
-    }
-
-    public UserImpl withProvisioningState(String provisioningState) {
-        if (isInCreateMode()) {
-            this.innerModel().withProvisioningState(provisioningState);
-            return this;
-        } else {
-            this.updateUser.withProvisioningState(provisioningState);
-            return this;
-        }
-    }
-
-    public UserImpl withUniqueIdentifier(String uniqueIdentifier) {
-        if (isInCreateMode()) {
-            this.innerModel().withUniqueIdentifier(uniqueIdentifier);
-            return this;
-        } else {
-            this.updateUser.withUniqueIdentifier(uniqueIdentifier);
+            this.updateBody.withAdditionalUsageQuota(additionalUsageQuota);
             return this;
         }
     }

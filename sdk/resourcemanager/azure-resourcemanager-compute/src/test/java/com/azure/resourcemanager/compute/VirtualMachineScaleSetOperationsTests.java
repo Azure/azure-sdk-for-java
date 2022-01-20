@@ -10,9 +10,11 @@ import com.azure.core.management.SubResource;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetInner;
 import com.azure.resourcemanager.compute.models.ImageReference;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
+import com.azure.resourcemanager.compute.models.OrchestrationMode;
 import com.azure.resourcemanager.compute.models.PowerState;
 import com.azure.resourcemanager.compute.models.PurchasePlan;
 import com.azure.resourcemanager.compute.models.ResourceIdentityType;
@@ -39,6 +41,7 @@ import com.azure.resourcemanager.network.models.LoadBalancerSkuType;
 import com.azure.resourcemanager.network.models.LoadBalancingRule;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
+import com.azure.resourcemanager.network.models.PublicIPSkuType;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterface;
@@ -1453,4 +1456,219 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         // force delete next 1 instance
         computeManager.virtualMachineScaleSets().deleteInstances(rgName, vmssName, Collections.singleton(vmss.virtualMachines().list().stream().findFirst().get().instanceId()), false);
     }
+
+    @Test
+    public void canCreateFlexibleVMSS() throws Exception {
+        // create vmss with flexible orchestration type
+        VirtualMachineScaleSetInner options = new VirtualMachineScaleSetInner();
+        options.withOrchestrationMode(OrchestrationMode.FLEXIBLE)
+            .withPlatformFaultDomainCount(1)
+            .withLocation(region.name());
+
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName)
+            .withRegion(region.name())
+            .create();
+
+        Network network =
+            this
+                .networkManager
+                .networks()
+                .define("vmssvnet")
+                .withRegion(region.name())
+                .withExistingResourceGroup(resourceGroup)
+                .withAddressSpace("10.0.0.0/28")
+                .withSubnet("subnet1", "10.0.0.0/28")
+                .create();
+        final String vmssName = generateRandomResourceName("vmss", 10);
+        LoadBalancer publicLoadBalancer = createHttpLoadBalancers(region, resourceGroup, "1", LoadBalancerSkuType.STANDARD, PublicIPSkuType.STANDARD, true);
+
+        VirtualMachineScaleSet vmss = this
+            .computeManager
+            .virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(region.name())
+            .withExistingResourceGroup(resourceGroup)
+            .withFlexibleOrchestrationMode()
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.CENTOS_8_3)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .create();
+
+        Assertions.assertNotNull(vmss.innerModel().virtualMachineProfile());
+        Assertions.assertNotNull(vmss.getPrimaryInternetFacingLoadBalancer());
+        Assertions.assertNotNull(vmss.getPrimaryNetwork());
+        Assertions.assertEquals(vmss.orchestrationMode(), OrchestrationMode.FLEXIBLE);
+
+    }
+
+    @Test
+    public void canUpdateVMSSInCreateOrUpdateMode() throws Exception {
+        // create vmss with empty profile
+        //create vmss with uniform orchestration type
+        String euapRegion = "eastus2euap";
+
+        final String vmssName = generateRandomResourceName("vmss", 10);
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName)
+            .withRegion(euapRegion)
+            .create();
+
+        VirtualMachineScaleSet vmss = this.computeManager
+            .virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(euapRegion)
+            .withExistingResourceGroup(resourceGroup)
+            .withFlexibleOrchestrationMode()
+            .create();
+
+        Assertions.assertEquals(vmss.orchestrationMode(), OrchestrationMode.FLEXIBLE);
+        Assertions.assertNull(vmss.innerModel().virtualMachineProfile());
+
+        Assertions.assertNull(vmss.getPrimaryNetwork());
+        Assertions.assertNull(vmss.storageProfile());
+        Assertions.assertNull(vmss.networkProfile());
+        Assertions.assertNull(vmss.virtualMachinePublicIpConfig());
+        Assertions.assertEquals(vmss.applicationGatewayBackendAddressPoolsIds().size(), 0);
+        Assertions.assertEquals(vmss.applicationSecurityGroupIds().size(), 0);
+        Assertions.assertNull(vmss.billingProfile());
+        Assertions.assertNull(vmss.bootDiagnosticsStorageUri());
+        Assertions.assertNull(vmss.getPrimaryInternalLoadBalancer());
+        Assertions.assertEquals(vmss.vhdContainers().size(), 0);
+
+        Assertions.assertEquals(vmss.listPrimaryInternalLoadBalancerBackends().size(), 0);
+        Assertions.assertEquals(vmss.listPrimaryInternalLoadBalancerInboundNatPools().size(), 0);
+        Assertions.assertEquals(vmss.listPrimaryInternetFacingLoadBalancerBackends().size(), 0);
+        Assertions.assertEquals(vmss.listPrimaryInternetFacingLoadBalancerInboundNatPools().size(), 0);
+        Assertions.assertEquals(vmss.primaryPublicIpAddressIds().size(), 0);
+
+        Assertions.assertFalse(vmss.isAcceleratedNetworkingEnabled());
+        Assertions.assertFalse(vmss.isBootDiagnosticsEnabled());
+        Assertions.assertFalse(vmss.isIpForwardingEnabled());
+        Assertions.assertNull(vmss.networkSecurityGroupId());
+        Assertions.assertFalse(vmss.isManagedDiskEnabled());
+
+        // update tag on vmss flex with no profile
+        vmss.update()
+            .withTag("tag1", "value1")
+            .apply();
+
+        Assertions.assertNotNull(vmss.tags());
+        Assertions.assertEquals(vmss.tags().get("tag1"), "value1");
+
+        Network network =
+            this
+                .networkManager
+                .networks()
+                .define("vmssvnet")
+                .withRegion(euapRegion)
+                .withExistingResourceGroup(resourceGroup)
+                .withAddressSpace("10.0.0.0/28")
+                .withSubnet("subnet1", "10.0.0.0/28")
+                .create();
+        LoadBalancer publicLoadBalancer = createHttpLoadBalancers(Region.fromName(euapRegion), resourceGroup, "1", LoadBalancerSkuType.STANDARD, PublicIPSkuType.STANDARD, true);
+        final String vmssVmDnsLabel = generateRandomResourceName("pip", 10);
+
+        // update vmss, attach profile
+        vmss = this.computeManager
+            .virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(euapRegion)
+            .withExistingResourceGroup(resourceGroup)
+            .withFlexibleOrchestrationMode()
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .withCapacity(1)
+            .withVirtualMachinePublicIp(vmssVmDnsLabel)
+            .create();
+        Assertions.assertNotNull(vmss.innerModel().virtualMachineProfile());
+        Assertions.assertEquals(vmss.orchestrationMode(), OrchestrationMode.FLEXIBLE);
+        Assertions.assertNotNull(vmss.getPrimaryInternetFacingLoadBalancer());
+        Assertions.assertNotNull(vmss.getPrimaryNetwork());
+
+        // update tag on vmss flex with profile
+        vmss = this.computeManager
+            .virtualMachineScaleSets()
+            .getById(vmss.id());
+        Assertions.assertNotNull(vmss);
+        vmss.update()
+            .withTag("tag1", "value2")
+            .apply();
+        Assertions.assertNotNull(vmss.innerModel().virtualMachineProfile());
+        Assertions.assertNotNull(vmss.tags());
+        Assertions.assertEquals(vmss.tags().get("tag1"), "value2");
+
+        Assertions.assertNotNull(vmss.getPrimaryNetwork());
+        Assertions.assertNotNull(vmss.storageProfile());
+        Assertions.assertNotNull(vmss.networkProfile());
+        Assertions.assertNotNull(vmss.virtualMachinePublicIpConfig());
+
+        Assertions.assertNotEquals(vmss.listPrimaryInternetFacingLoadBalancerBackends().size(), 0);
+        Assertions.assertEquals(vmss.listPrimaryInternetFacingLoadBalancerInboundNatPools().size(), 0);
+        Assertions.assertNotEquals(vmss.primaryPublicIpAddressIds().size(), 0);
+
+    }
+
+    @Test
+    public void canGetOrchestrationType() {
+
+        //create vmss with uniform orchestration type
+        String euapRegion = "eastus2euap";
+
+        final String vmssName = generateRandomResourceName("vmss", 10);
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName)
+            .withRegion(euapRegion)
+            .create();
+
+        Network network =
+            this
+                .networkManager
+                .networks()
+                .define("vmssvnet")
+                .withRegion(euapRegion)
+                .withExistingResourceGroup(resourceGroup)
+                .withAddressSpace("10.0.0.0/28")
+                .withSubnet("subnet1", "10.0.0.0/28")
+                .create();
+
+        VirtualMachineScaleSet vmss = this
+            .computeManager
+            .virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(euapRegion)
+            .withExistingResourceGroup(resourceGroup)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withoutPrimaryInternetFacingLoadBalancer()
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .withCapacity(1)    // 1 instances
+            .create();
+
+        Assertions.assertEquals(vmss.orchestrationMode(), OrchestrationMode.UNIFORM);
+
+        // create vmss with flexible orchestration type
+        final String vmssName2 = generateRandomResourceName("vmss", 10);
+        VirtualMachineScaleSet vmss2 = this
+            .computeManager
+            .virtualMachineScaleSets()
+            .define(vmssName2)
+            .withRegion(euapRegion)
+            .withExistingResourceGroup(rgName)
+            .withFlexibleOrchestrationMode()
+            .create();
+
+        Assertions.assertNotNull(vmss2);
+        Assertions.assertEquals(vmss2.orchestrationMode(), OrchestrationMode.FLEXIBLE);
+    }
+
 }

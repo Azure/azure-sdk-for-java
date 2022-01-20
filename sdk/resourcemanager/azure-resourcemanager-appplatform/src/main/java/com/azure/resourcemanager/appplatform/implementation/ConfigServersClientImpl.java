@@ -418,7 +418,7 @@ public final class ConfigServersClientImpl implements ConfigServersClient {
                 this.client.getHttpPipeline(),
                 ConfigServerResourceInner.class,
                 ConfigServerResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -735,7 +735,7 @@ public final class ConfigServersClientImpl implements ConfigServersClient {
                 this.client.getHttpPipeline(),
                 ConfigServerResourceInner.class,
                 ConfigServerResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1051,7 +1051,7 @@ public final class ConfigServersClientImpl implements ConfigServersClient {
                 this.client.getHttpPipeline(),
                 ConfigServerSettingsValidateResultInner.class,
                 ConfigServerSettingsValidateResultInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

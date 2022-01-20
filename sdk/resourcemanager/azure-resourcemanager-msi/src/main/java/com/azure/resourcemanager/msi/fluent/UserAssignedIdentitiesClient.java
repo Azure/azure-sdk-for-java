@@ -94,7 +94,7 @@ public interface UserAssignedIdentitiesClient
      *
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
-     * @param parameters Describes an identity resource.
+     * @param parameters Parameters to create or update the identity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -109,7 +109,7 @@ public interface UserAssignedIdentitiesClient
      *
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
-     * @param parameters Describes an identity resource.
+     * @param parameters Parameters to create or update the identity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -123,7 +123,7 @@ public interface UserAssignedIdentitiesClient
      *
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
-     * @param parameters Describes an identity resource.
+     * @param parameters Parameters to create or update the identity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -137,7 +137,7 @@ public interface UserAssignedIdentitiesClient
      *
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
-     * @param parameters Describes an identity resource.
+     * @param parameters Parameters to create or update the identity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -153,7 +153,7 @@ public interface UserAssignedIdentitiesClient
      *
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
-     * @param parameters Describes an identity resource.
+     * @param parameters Parameters to update the identity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -168,7 +168,7 @@ public interface UserAssignedIdentitiesClient
      *
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
-     * @param parameters Describes an identity resource.
+     * @param parameters Parameters to update the identity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -182,7 +182,7 @@ public interface UserAssignedIdentitiesClient
      *
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
-     * @param parameters Describes an identity resource.
+     * @param parameters Parameters to update the identity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -196,7 +196,7 @@ public interface UserAssignedIdentitiesClient
      *
      * @param resourceGroupName The name of the Resource Group to which the identity belongs.
      * @param resourceName The name of the identity resource.
-     * @param parameters Describes an identity resource.
+     * @param parameters Parameters to update the identity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

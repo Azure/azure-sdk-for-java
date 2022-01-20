@@ -1,6 +1,6 @@
 # Release History
 
-## 11.5.0-beta.5 (Unreleased)
+## 11.5.0-beta.6 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,21 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 11.5.0-beta.5 (2021-11-24)
+
+### Features Added
+
+- Added support for [Semantic Search](https://docs.microsoft.com/azure/search/semantic-search-overview). `SearchOptions` 
+  now support specifying `SemanticSettings` to influence the search behavior.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.21.0` to version `1.22.0`.
+- Upgraded `azure-core-http-netty` from `1.11.1` to version `1.11.2`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.8` to version `1.2.9`.
 
 ## 11.4.5 (2021-11-15)
 

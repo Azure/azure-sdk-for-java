@@ -499,7 +499,7 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
                 this.client.getHttpPipeline(),
                 BackupShortTermRetentionPolicyInner.class,
                 BackupShortTermRetentionPolicyInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -913,7 +913,7 @@ public final class BackupShortTermRetentionPoliciesClientImpl implements BackupS
                 this.client.getHttpPipeline(),
                 BackupShortTermRetentionPolicyInner.class,
                 BackupShortTermRetentionPolicyInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

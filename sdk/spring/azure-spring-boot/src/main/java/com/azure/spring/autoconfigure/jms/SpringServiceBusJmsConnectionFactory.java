@@ -11,6 +11,12 @@ import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactorySettings
  * A subclass of JmsConnectionFactory to set customized user agent.
  */
 public class SpringServiceBusJmsConnectionFactory extends ServiceBusJmsConnectionFactory {
+    /**
+     * Creates a new instance of {@link SpringServiceBusJmsConnectionFactory}.
+     *
+     * @param connectionString the connection string
+     * @param settings the ServiceBus JMS connection factory settings
+     */
     public SpringServiceBusJmsConnectionFactory(
         String connectionString,
         ServiceBusJmsConnectionFactorySettings settings

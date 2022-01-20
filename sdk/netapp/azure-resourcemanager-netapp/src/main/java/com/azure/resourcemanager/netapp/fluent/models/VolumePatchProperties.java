@@ -38,7 +38,8 @@ public final class VolumePatchProperties {
     private VolumePatchPropertiesExportPolicy exportPolicy;
 
     /*
-     * Maximum throughput in Mibps that can be achieved by this volume
+     * Maximum throughput in Mibps that can be achieved by this volume and this
+     * will be accepted as input only for manual qosType volume
      */
     @JsonProperty(value = "throughputMibps")
     private Float throughputMibps;
@@ -133,7 +134,8 @@ public final class VolumePatchProperties {
     }
 
     /**
-     * Get the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume.
+     * Get the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume and this will
+     * be accepted as input only for manual qosType volume.
      *
      * @return the throughputMibps value.
      */
@@ -142,7 +144,8 @@ public final class VolumePatchProperties {
     }
 
     /**
-     * Set the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume.
+     * Set the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume and this will
+     * be accepted as input only for manual qosType volume.
      *
      * @param throughputMibps the throughputMibps value to set.
      * @return the VolumePatchProperties object itself.

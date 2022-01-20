@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.22.0-beta.1 (Unreleased)
+### 4.26.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,38 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 4.25.0 (2022-01-14)
+#### Key Bug Fixes
+* Fixed `NullPointerException` in bulk mode for deleted/recreated containers.
+* Added missing exception cause in case of `InternalServerException`.
+
+### 4.24.0 (2021-12-21)
+#### Features Added
+* Added implementation for `CosmosAuthorizationTokenResolver`.
+* Scoped session token per partition level for gateway call.
+
+#### Key Bug Fixes
+* Fixed issue causing CosmosException with statusCode 0 to be thrown on connectivity issues for Gateway.
+* Addressed potential race condition in `ChangeFeedProcessor` when check-pointing current state.
+
+### 4.23.0 (2021-12-10)
+#### Features Added
+* Added `setMaxMicroBatchConcurrency` and `getMaxMicroBatchConcurrency` in `CosmosBulkExecutionOptions`.
+
+#### Key Bug Fixes
+* Bulk execution improvement triggering a flush when total payload size exceeds the max payload size limit.
+* Bulk execution improvement shortening the flush interval when the `Flux` of incoming operations signals completion.
+* Fixed metadata cache refresh scenario on collection recreate for gateway mode.
+
+### 4.22.0 (2021-12-03)
+#### Features Added
+* Added Beta API `getContactedRegionNames` in `CosmosDiagnostics`.
+
+#### Key Bug Fixes
+* Fixed `IllegalStateException` for `getFeedRanges` when container recreated with same name.
+* Made Cosmos spans CLIENT which will allow Azure Monitor to show HTTP calls nested under Cosmos spans.
+* Fixed `ConcurrentModificationException` when getting `NotFoundException` with session consistency.
 
 ### 4.21.1 (2021-11-13)
 #### Key Bug Fixes

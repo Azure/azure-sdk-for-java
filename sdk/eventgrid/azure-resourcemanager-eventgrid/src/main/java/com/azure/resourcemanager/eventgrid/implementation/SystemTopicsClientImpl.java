@@ -462,7 +462,11 @@ public final class SystemTopicsClientImpl implements SystemTopicsClient {
         return this
             .client
             .<SystemTopicInner, SystemTopicInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SystemTopicInner.class, SystemTopicInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                SystemTopicInner.class,
+                SystemTopicInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -704,7 +708,8 @@ public final class SystemTopicsClientImpl implements SystemTopicsClient {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, systemTopicName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -962,7 +967,11 @@ public final class SystemTopicsClientImpl implements SystemTopicsClient {
         return this
             .client
             .<SystemTopicInner, SystemTopicInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SystemTopicInner.class, SystemTopicInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                SystemTopicInner.class,
+                SystemTopicInner.class,
+                this.client.getContext());
     }
 
     /**

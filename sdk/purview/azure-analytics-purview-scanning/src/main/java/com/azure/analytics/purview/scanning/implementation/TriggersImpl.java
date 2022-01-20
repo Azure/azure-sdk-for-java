@@ -6,6 +6,7 @@ package com.azure.analytics.purview.scanning.implementation;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
+import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -50,6 +51,7 @@ public final class TriggersImpl {
     @ServiceInterface(name = "PurviewScanningClien")
     private interface TriggersService {
         @Get("/datasources/{dataSourceName}/scans/{scanName}/triggers/default")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getTrigger(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("dataSourceName") String dataSourceName,
@@ -59,6 +61,7 @@ public final class TriggersImpl {
                 Context context);
 
         @Put("/datasources/{dataSourceName}/scans/{scanName}/triggers/default")
+        @ExpectedResponses({200, 201})
         Mono<Response<BinaryData>> createTrigger(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("dataSourceName") String dataSourceName,
@@ -69,6 +72,7 @@ public final class TriggersImpl {
                 Context context);
 
         @Delete("/datasources/{dataSourceName}/scans/{scanName}/triggers/default")
+        @ExpectedResponses({200, 204})
         Mono<Response<BinaryData>> deleteTrigger(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("dataSourceName") String dataSourceName,
@@ -142,9 +146,8 @@ public final class TriggersImpl {
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return trigger information.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return trigger information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTriggerWithResponseAsync(
@@ -225,9 +228,8 @@ public final class TriggersImpl {
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return trigger information.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return trigger information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTriggerWithResponseAsync(
@@ -305,9 +307,8 @@ public final class TriggersImpl {
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return trigger information.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return trigger information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTriggerWithResponse(
@@ -430,9 +431,8 @@ public final class TriggersImpl {
      * @param scanName The scanName parameter.
      * @param body The body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createTriggerWithResponseAsync(
@@ -565,9 +565,8 @@ public final class TriggersImpl {
      * @param body The body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createTriggerWithResponseAsync(
@@ -697,9 +696,8 @@ public final class TriggersImpl {
      * @param scanName The scanName parameter.
      * @param body The body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createTriggerWithResponse(
@@ -771,9 +769,8 @@ public final class TriggersImpl {
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteTriggerWithResponseAsync(
@@ -854,9 +851,8 @@ public final class TriggersImpl {
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteTriggerWithResponseAsync(
@@ -934,9 +930,8 @@ public final class TriggersImpl {
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteTriggerWithResponse(

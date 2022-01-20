@@ -14,6 +14,11 @@ import com.azure.spring.cloud.context.core.util.Tuple;
  */
 public class ServiceBusTopicManager extends AzureManager<Topic, Tuple<ServiceBusNamespace, String>> {
 
+    /**
+     * Creates a new instance of {@link ServiceBusTopicManager}.
+     *
+     * @param azureProperties The Azure properties.
+     */
     public ServiceBusTopicManager(AzureProperties azureProperties) {
         super(azureProperties);
     }

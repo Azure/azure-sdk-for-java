@@ -116,7 +116,6 @@ public class ShareFileClient {
 
     /**
      * Opens a file input stream to download the file.
-     * <p>
      *
      * @return An <code>InputStream</code> object that represents the stream to use for reading from the file.
      * @throws ShareStorageException If a storage service error occurred.
@@ -127,7 +126,6 @@ public class ShareFileClient {
 
     /**
      * Opens a file input stream to download the specified range of the file.
-     * <p>
      *
      * @param range {@link ShareFileRange}
      * @return An <code>InputStream</code> object that represents the stream to use for reading from the file.

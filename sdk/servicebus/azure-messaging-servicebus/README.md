@@ -69,7 +69,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-servicebus</artifactId>
-    <version>7.3.0</version>
+    <version>7.5.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -116,7 +116,7 @@ platform. First, add the package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.2.5</version>
+    <version>1.4.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -376,6 +376,10 @@ exception occurred and if possible, how to mitigate this exception. A list of al
 The recommended way to solve the specific exception the AMQP exception represents is to follow the
 [Service Bus Messaging Exceptions][servicebus_messaging_exceptions] guidance.
 
+### Understanding the APIs behavior
+
+The document [here][sync_receivemessages_implcit_prefetch] provides insights into the expected behavior of synchronous `receiveMessages` API when using it to obtain more than one message (a.k.a. implicit prefetching).
+
 ## Next steps
 
 Beyond those discussed, the Azure Service Bus client library offers support for many additional scenarios to help take
@@ -426,5 +430,5 @@ Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.m
 [topic_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview#topics
 [wiki_identity]: https://github.com/Azure/azure-sdk-for-java/wiki/Identity-and-Authentication
 [known-issue-binarydata-notfound]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/known-issues.md#can-not-resolve-binarydata-or-noclassdeffounderror-version-700
-
+[sync_receivemessages_implcit_prefetch]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/servicebus/azure-messaging-servicebus/docs/SyncReceiveAndPrefetch.md
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fazure-messaging-servicebus%2FREADME.png)

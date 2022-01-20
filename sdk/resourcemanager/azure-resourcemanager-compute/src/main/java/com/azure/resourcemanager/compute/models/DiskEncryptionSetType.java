@@ -18,6 +18,10 @@ public final class DiskEncryptionSetType extends ExpandableStringEnum<DiskEncryp
     public static final DiskEncryptionSetType ENCRYPTION_AT_REST_WITH_PLATFORM_AND_CUSTOMER_KEYS =
         fromString("EncryptionAtRestWithPlatformAndCustomerKeys");
 
+    /** Static value ConfidentialVmEncryptedWithCustomerKey for DiskEncryptionSetType. */
+    public static final DiskEncryptionSetType CONFIDENTIAL_VM_ENCRYPTED_WITH_CUSTOMER_KEY =
+        fromString("ConfidentialVmEncryptedWithCustomerKey");
+
     /**
      * Creates or finds a DiskEncryptionSetType from its string representation.
      *

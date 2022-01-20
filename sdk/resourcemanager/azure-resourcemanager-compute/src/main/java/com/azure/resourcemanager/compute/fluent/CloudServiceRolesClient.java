@@ -24,7 +24,7 @@ public interface CloudServiceRolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role from a cloud service.
+     * @return a role from a cloud service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<CloudServiceRoleInner>> getWithResponseAsync(
@@ -39,7 +39,7 @@ public interface CloudServiceRolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role from a cloud service.
+     * @return a role from a cloud service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<CloudServiceRoleInner> getAsync(String roleName, String resourceGroupName, String cloudServiceName);
@@ -68,7 +68,7 @@ public interface CloudServiceRolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a role from a cloud service.
+     * @return a role from a cloud service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CloudServiceRoleInner> getWithResponse(

@@ -125,7 +125,6 @@ public final class ProtectableContainersClientImpl implements ProtectableContain
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -133,7 +132,7 @@ public final class ProtectableContainersClientImpl implements ProtectableContain
                     service
                         .list(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             vaultName,
                             resourceGroupName,
                             this.client.getSubscriptionId(),
@@ -191,13 +190,12 @@ public final class ProtectableContainersClientImpl implements ProtectableContain
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 vaultName,
                 resourceGroupName,
                 this.client.getSubscriptionId(),

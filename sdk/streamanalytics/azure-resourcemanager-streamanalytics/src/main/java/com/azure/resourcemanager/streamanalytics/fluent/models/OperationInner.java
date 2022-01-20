@@ -4,14 +4,14 @@
 
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.streamanalytics.models.OperationDisplay;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A Stream Analytics REST API operation. */
-@Immutable
+@Fluent
 public final class OperationInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);
 
@@ -20,6 +20,12 @@ public final class OperationInner {
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
+
+    /*
+     * Indicates whether the operation is a data action
+     */
+    @JsonProperty(value = "isDataAction")
+    private Boolean isDataAction;
 
     /*
      * Contains the localized display information for this particular operation
@@ -35,6 +41,26 @@ public final class OperationInner {
      */
     public String name() {
         return this.name;
+    }
+
+    /**
+     * Get the isDataAction property: Indicates whether the operation is a data action.
+     *
+     * @return the isDataAction value.
+     */
+    public Boolean isDataAction() {
+        return this.isDataAction;
+    }
+
+    /**
+     * Set the isDataAction property: Indicates whether the operation is a data action.
+     *
+     * @param isDataAction the isDataAction value to set.
+     * @return the OperationInner object itself.
+     */
+    public OperationInner withIsDataAction(Boolean isDataAction) {
+        this.isDataAction = isDataAction;
+        return this;
     }
 
     /**

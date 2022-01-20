@@ -19,7 +19,7 @@ This package allows you to interact with Azure Blob Storage through the standard
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob-nio</artifactId>
-    <version>12.0.0-beta.12</version>
+    <version>12.0.0-beta.14</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -194,7 +194,7 @@ to guarantee that the data is available to be read.
 try (OutputStream os = Files.newOutputStream(filePath)) {
     os.write(0);
 }
-``` 
+```
 
 ### Copy a file
 

@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
@@ -72,13 +73,13 @@ public final class BridgeInternal {
     private BridgeInternal() {}
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosDiagnostics createCosmosDiagnostics(DiagnosticsClientContext diagnosticsClientContext) {
-        return new CosmosDiagnostics(diagnosticsClientContext);
+    public static CosmosDiagnostics createCosmosDiagnostics(DiagnosticsClientContext diagnosticsClientContext, GlobalEndpointManager globalEndpointManager) {
+        return new CosmosDiagnostics(diagnosticsClientContext, globalEndpointManager);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static Set<URI> getRegionsContacted(CosmosDiagnostics cosmosDiagnostics) {
-        return cosmosDiagnostics.clientSideRequestStatistics().getRegionsContacted();
+    public static Set<String> getRegionsContacted(CosmosDiagnostics cosmosDiagnostics) {
+        return cosmosDiagnostics.clientSideRequestStatistics().getContactedRegionNames();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

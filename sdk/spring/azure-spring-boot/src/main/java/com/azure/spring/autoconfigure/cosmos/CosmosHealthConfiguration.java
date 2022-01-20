@@ -19,6 +19,11 @@ import org.springframework.context.annotation.Configuration;
 @AutoConfigureAfter(CosmosAutoConfiguration.class)
 public class CosmosHealthConfiguration {
 
+    /**
+     * Declare Cosmos HealthIndicator bean.
+     * @param cosmosAsyncClient the CosmosAsyncClient
+     * @return Cosmos HealthIndicator bean
+     */
     @Bean
     @ConditionalOnEnabledHealthIndicator("azure-cosmos")
     public HealthIndicator cosmosHealthContributor(CosmosAsyncClient cosmosAsyncClient) {

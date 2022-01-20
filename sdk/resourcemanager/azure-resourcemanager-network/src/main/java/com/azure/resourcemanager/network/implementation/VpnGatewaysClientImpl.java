@@ -516,7 +516,11 @@ public final class VpnGatewaysClientImpl
         return this
             .client
             .<VpnGatewayInner, VpnGatewayInner>getLroResult(
-                mono, this.client.getHttpPipeline(), VpnGatewayInner.class, VpnGatewayInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                VpnGatewayInner.class,
+                VpnGatewayInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -783,7 +787,11 @@ public final class VpnGatewaysClientImpl
         return this
             .client
             .<VpnGatewayInner, VpnGatewayInner>getLroResult(
-                mono, this.client.getHttpPipeline(), VpnGatewayInner.class, VpnGatewayInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                VpnGatewayInner.class,
+                VpnGatewayInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1028,7 +1036,8 @@ public final class VpnGatewaysClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, gatewayName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1258,7 +1267,11 @@ public final class VpnGatewaysClientImpl
         return this
             .client
             .<VpnGatewayInner, VpnGatewayInner>getLroResult(
-                mono, this.client.getHttpPipeline(), VpnGatewayInner.class, VpnGatewayInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                VpnGatewayInner.class,
+                VpnGatewayInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1508,7 +1521,7 @@ public final class VpnGatewaysClientImpl
         return this
             .client
             .<String, String>getLroResult(
-                mono, this.client.getHttpPipeline(), String.class, String.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), String.class, String.class, this.client.getContext());
     }
 
     /**
@@ -1817,7 +1830,7 @@ public final class VpnGatewaysClientImpl
         return this
             .client
             .<String, String>getLroResult(
-                mono, this.client.getHttpPipeline(), String.class, String.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), String.class, String.class, this.client.getContext());
     }
 
     /**
