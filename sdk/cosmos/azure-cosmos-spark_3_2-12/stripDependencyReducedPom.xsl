@@ -14,8 +14,9 @@
         </xsl:copy>
     </xsl:template>
 
-    <!-- TEMPLATE overriding the default to skip build and parent node (effectively deleting it) -->
+    <!-- TEMPLATE overriding the default to skip certain nodes (effectively deleting it) -->
     <xsl:template match="pom:parent" />
     <xsl:template match="pom:build" />
-
+    <xsl:template match="pom:profiles" />
+    <xsl:template match="pom:properties" />
 </xsl:stylesheet>
