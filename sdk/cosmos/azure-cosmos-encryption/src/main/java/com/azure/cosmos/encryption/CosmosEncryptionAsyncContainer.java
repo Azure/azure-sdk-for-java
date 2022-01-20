@@ -23,6 +23,7 @@ import com.azure.cosmos.implementation.batch.ItemBulkOperation;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
+import com.azure.cosmos.models.CosmosBulkItemResponse;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.query.Transformer;
 import com.azure.cosmos.models.CosmosBatch;
@@ -83,6 +84,8 @@ public class CosmosEncryptionAsyncContainer {
     ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.CosmosBatchRequestOptionsAccessor cosmosBatchRequestOptionsAccessor;
     ImplementationBridgeHelpers.CosmosPatchOperationsHelper.CosmosPatchOperationsAccessor cosmosPatchOperationsAccessor;
     ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.CosmosBulkExecutionOptionsAccessor cosmosBulkExecutionOptionsAccessor;
+    ImplementationBridgeHelpers.CosmosBulkItemResponseHelper.CosmosBulkItemResponseAccessor cosmosBulkItemResponseAccessor;
+    ImplementationBridgeHelpers.CosmosBulkOperationResponseHelper.CosmosBulkOperationResponseAccessor cosmosBulkOperationResponseAccessor;
 
     CosmosEncryptionAsyncContainer(CosmosAsyncContainer container,
                                    CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient) {
@@ -106,6 +109,8 @@ public class CosmosEncryptionAsyncContainer {
         this.cosmosBatchRequestOptionsAccessor = ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.getCosmosBatchRequestOptionsAccessor();
         this.cosmosPatchOperationsAccessor = ImplementationBridgeHelpers.CosmosPatchOperationsHelper.getCosmosPatchOperationsAccessor();
         this.cosmosBulkExecutionOptionsAccessor = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.getCosmosBulkExecutionOptionsAccessor();
+        this.cosmosBulkItemResponseAccessor = ImplementationBridgeHelpers.CosmosBulkItemResponseHelper.getCosmosBulkItemResponseAccessor();
+        this.cosmosBulkOperationResponseAccessor = ImplementationBridgeHelpers.CosmosBulkOperationResponseHelper.getCosmosBulkOperationResponseAccessor();
     }
 
     EncryptionProcessor getEncryptionProcessor() {
@@ -1156,19 +1161,32 @@ public class CosmosEncryptionAsyncContainer {
         List<Mono<CosmosItemOperation>> monoList = new ArrayList<>();
         operations.collectList().block().forEach(cosmosItemOperation -> {
             Mono<CosmosItemOperation> cosmosItemOperationMono = null;
-            ObjectNode objectNode = EncryptionUtils.getSimpleObjectMapper().valueToTree(cosmosItemOperation.getItem());
-            assert cosmosItemOperation instanceof ItemBulkOperation;
-            cosmosItemOperationMono =
-                this.encryptionProcessor.encryptObjectNode(objectNode).map(encryptedItem -> {
-                    return new ItemBulkOperation(
+            if (cosmosItemOperation.getItem() != null) {
+                ObjectNode objectNode = EncryptionUtils.getSimpleObjectMapper().valueToTree(cosmosItemOperation.getItem());
+                assert cosmosItemOperation instanceof ItemBulkOperation;
+                cosmosItemOperationMono =
+                    this.encryptionProcessor.encryptObjectNode(objectNode).map(encryptedItem -> {
+                        return new ItemBulkOperation(
+                            cosmosItemOperation.getOperationType(),
+                            cosmosItemOperation.getId(),
+                            cosmosItemOperation.getPartitionKeyValue(),
+                            ((ItemBulkOperation)cosmosItemOperation).getRequestOptions(),
+                            encryptedItem,
+                            cosmosItemOperation.getContext()
+                        );
+                    });
+            } else {
+                cosmosItemOperationMono = Mono.just(
+                    new ItemBulkOperation(
                         cosmosItemOperation.getOperationType(),
                         cosmosItemOperation.getId(),
                         cosmosItemOperation.getPartitionKeyValue(),
                         ((ItemBulkOperation)cosmosItemOperation).getRequestOptions(),
-                        encryptedItem,
+                        null,
                         cosmosItemOperation.getContext()
-                    );
-                });
+                    )
+                );
+            }
             monoList.add(cosmosItemOperationMono);
         });
 
@@ -1177,24 +1195,30 @@ public class CosmosEncryptionAsyncContainer {
 
         final CosmosBulkExecutionOptions cosmosBulkExecutionOptions = bulkOptions;
         setRequestHeaders(cosmosBulkExecutionOptions);
-        return this.container.executeBulkOperations(encryptedOperationListMono.flatMapMany(Flux::fromIterable), cosmosBulkExecutionOptions);
 
-
-//        return executeBulkOperationsHelper(encryptedOperationListMono.flatMapMany(Flux::fromIterable), cosmosBulkExecutionOptions, false);
+        return executeBulkOperationsHelper(encryptedOperationListMono.flatMapMany(Flux::fromIterable), cosmosBulkExecutionOptions, false);
     }
 
-//    private <TContext> Flux<CosmosBulkOperationResponse<TContext>> executeBulkOperationsHelper(Flux<CosmosItemOperation> operations,
-//                                                                                               CosmosBulkExecutionOptions bulkOptions,
-//                                                                                               boolean isRetry) {
-//        List<Mono<CosmosBulkOperationResponse>> monoResponseList = new ArrayList<>();
-//        return this.container.executeBulkOperations(operations, bulkOptions)
-//
-//        });
-//
-////        return this.container.executeBulkOperations(operations, bulkOptions).flatMap(cosmosBukOperationsResponse ->
-////            Mono.just(cosmosBukOperationsResponse).subscribeOn()
-////        })
-//    }
+    private <TContext> Flux<CosmosBulkOperationResponse<TContext>> executeBulkOperationsHelper(Flux<CosmosItemOperation> operations,
+                                                                                               CosmosBulkExecutionOptions bulkOptions,
+                                                                                               boolean isRetry) {
+        return this.container.executeBulkOperations(operations, bulkOptions).flatMap(cosmosBulkOperationResponse -> {
+
+            CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+            ObjectNode objectNode = this.cosmosBulkItemResponseAccessor.getResourceObject(cosmosBulkItemResponse);
+
+            if(objectNode != null) {
+                encryptionProcessor.decryptJsonNode(objectNode).subscribe(jsonNode -> {
+                    this.cosmosBulkItemResponseAccessor.setResourceObject(cosmosBulkItemResponse, (ObjectNode) jsonNode);
+                    this.cosmosBulkOperationResponseAccessor.setResponse(cosmosBulkOperationResponse, cosmosBulkItemResponse);
+                });
+            }
+
+            CosmosBulkOperationResponse<TContext> res = (CosmosBulkOperationResponse<TContext>) cosmosBulkOperationResponse;
+
+          return Flux.just(res);
+        });
+    }
 
 
     private void setRequestHeaders(CosmosItemRequestOptions requestOptions) {

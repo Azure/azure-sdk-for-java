@@ -15,22 +15,7 @@ import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
-import com.azure.cosmos.models.CosmosBatch;
-import com.azure.cosmos.models.CosmosBatchItemRequestOptions;
-import com.azure.cosmos.models.CosmosBatchOperationResult;
-import com.azure.cosmos.models.CosmosBatchRequestOptions;
-import com.azure.cosmos.models.CosmosBatchResponse;
-import com.azure.cosmos.models.CosmosBulkExecutionOptions;
-import com.azure.cosmos.models.CosmosBulkExecutionThresholdsState;
-import com.azure.cosmos.models.CosmosBulkItemResponse;
-import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
-import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.models.CosmosPatchOperations;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.*;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
@@ -260,6 +245,8 @@ public class ImplementationBridgeHelpers {
                                                  String name, String value);
 
             Map<String, String> getHeader(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
+
+            Map<String, String> getCustomOptions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
         }
     }
 
@@ -670,6 +657,31 @@ public class ImplementationBridgeHelpers {
         }
     }
 
+    public static final class CosmosBulkOperationResponseHelper {
+        private static CosmosBulkOperationResponseAccessor accessor;
+
+        private CosmosBulkOperationResponseHelper() {
+
+        }
+
+        static {
+            ensureClassLoaded(CosmosBulkOperationResponse.class);
+        }
+
+        public static CosmosBulkOperationResponseAccessor getCosmosBulkOperationResponseAccessor() { return accessor; }
+
+        public static void setCosmosBulkOperationResponseAccessor(CosmosBulkOperationResponseAccessor accessor) {
+            CosmosBulkOperationResponseHelper.accessor = accessor;
+        }
+
+        public interface CosmosBulkOperationResponseAccessor {
+
+            void setResponse(CosmosBulkOperationResponse cosmosBulkOperationResponse,
+                             CosmosBulkItemResponse cosmosBulkItemResponse);
+        }
+
+    }
+
     public static final class CosmosBulkItemResponseHelper {
         private static CosmosBulkItemResponseAccessor accessor;
 
@@ -690,6 +702,9 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosBulkItemResponseAccessor {
             ObjectNode getResourceObject(CosmosBulkItemResponse cosmosBulkItemResponse);
+
+            void setResourceObject(CosmosBulkItemResponse cosmosBulkItemResponse,
+                                   ObjectNode objectNode);
         }
     }
 

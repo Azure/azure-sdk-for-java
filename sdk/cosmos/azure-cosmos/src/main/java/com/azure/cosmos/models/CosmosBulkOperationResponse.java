@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import reactor.core.publisher.Flux;
 
 /**
@@ -13,7 +14,7 @@ import reactor.core.publisher.Flux;
 public final class CosmosBulkOperationResponse<TContext> {
 
     private final CosmosItemOperation operation;
-    private final CosmosBulkItemResponse response;
+    private CosmosBulkItemResponse response;
     private final Exception exception;
     private final TContext batchContext;
 
@@ -82,5 +83,20 @@ public final class CosmosBulkOperationResponse<TContext> {
      */
     public TContext getBatchContext() {
         return batchContext;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        ImplementationBridgeHelpers.CosmosBulkOperationResponseHelper.setCosmosBulkOperationResponseAccessor(
+            new ImplementationBridgeHelpers.CosmosBulkOperationResponseHelper.CosmosBulkOperationResponseAccessor() {
+
+                @Override
+                public void setResponse(CosmosBulkOperationResponse cosmosBulkOperationResponse, CosmosBulkItemResponse cosmosBulkItemResponse) {
+                    cosmosBulkOperationResponse.response = cosmosBulkItemResponse;
+                }
+            });
     }
 }

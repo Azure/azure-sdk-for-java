@@ -48,9 +48,18 @@ public final class CosmosBulkExecutionOptions {
     /**
      * Constructor
      * @param thresholdsState thresholds
+     * @param customOptions customOptions
      */
     public CosmosBulkExecutionOptions(CosmosBulkExecutionThresholdsState thresholdsState, Map<String, String> customOptions) {
         this(null, thresholdsState, customOptions);
+    }
+
+    /**
+     * Constructor
+     * @param thresholdsState thresholds
+     */
+    public CosmosBulkExecutionOptions(CosmosBulkExecutionThresholdsState thresholdsState) {
+        this(null, thresholdsState, null);
     }
 
     /**
@@ -290,6 +299,10 @@ public final class CosmosBulkExecutionOptions {
                     return cosmosBulkExecutionOptions.getHeaders();
                 }
 
+                @Override
+                public Map<String, String> getCustomOptions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions) {
+                    return cosmosBulkExecutionOptions.customOptions;
+                }
 
             });
     }
