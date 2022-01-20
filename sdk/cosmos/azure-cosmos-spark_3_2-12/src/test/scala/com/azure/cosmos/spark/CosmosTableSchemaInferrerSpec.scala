@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.sql.types.{
   ArrayType, BinaryType, BooleanType, DecimalType, DoubleType,
-  FloatType, LongType, NullType, StringType, StructType, IntegerType
+  FloatType, LongType, NullType, StringType, StructType, IntegerType, StructField
 }
 
 class CosmosTableSchemaInferrerSpec extends UnitSpec {
@@ -140,6 +140,64 @@ class CosmosTableSchemaInferrerSpec extends UnitSpec {
       docs, includeSystemProperties = true, includeTimestamp = true, allowNullForInferredProperties = false)
     schema.fields should have size 1
     schema.fields(0).dataType shouldBe ArrayType(StringType)
+    schema.fields(0).nullable shouldBe false
+  }
+
+  "array properties" should "handle null elements" in {
+    val colName1 = "testCol1"
+    val colVal1: Array[String] = Array(null, "element2")
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    val arrayObjectNode = objectMapper.createArrayNode()
+    colVal1.foreach(elem => arrayObjectNode.add(elem))
+    objectNode.set(colName1, arrayObjectNode)
+    val docs = List[ObjectNode](objectNode)
+
+    val schema = CosmosTableSchemaInferrer.inferSchema(
+      docs, includeSystemProperties = true, includeTimestamp = true, allowNullForInferredProperties = false)
+    schema.fields should have size 1
+    schema.fields(0).dataType shouldBe ArrayType(StringType)
+    schema.fields(0).nullable shouldBe false
+  }
+
+  "array properties" should "handle empty array" in {
+    val colName1 = "testCol1"
+    val colVal1: Array[String] = Array()
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    val arrayObjectNode = objectMapper.createArrayNode()
+    objectNode.set(colName1, arrayObjectNode)
+    val docs = List[ObjectNode](objectNode)
+
+    val schema = CosmosTableSchemaInferrer.inferSchema(
+      docs, includeSystemProperties = true, includeTimestamp = true, allowNullForInferredProperties = false)
+    schema.fields should have size 1
+    schema.fields(0).dataType shouldBe NullType
+    schema.fields(0).nullable shouldBe true
+  }
+
+  "nested array properties" should "handle different schema elements" in {
+
+    val jsonText = "{ \"Actions\": " +
+      "[{ \"Condition\": [] }," +
+      "{ \"Condition\": [{ \"BodyPath\": \"{{ step1.StatusCode }}\"," +
+      "\"Value\": \"400\" }] }," +
+      "{ \"Condition\": [{ \"BodyPath\": \"{{ step1.StatusCode }}\"," +
+      "\"Operation\": 2," +
+      "\"Value\": \"400\" }] }]}"
+
+    val objectNode = objectMapper.readTree(jsonText).asInstanceOf[ObjectNode]
+
+    val docs = List[ObjectNode](objectNode)
+
+    val schema = CosmosTableSchemaInferrer.inferSchema(
+      docs, includeSystemProperties = true, includeTimestamp = true, allowNullForInferredProperties = false)
+    schema.fields should have size 1
+    schema.fields(0).dataType shouldBe ArrayType(StructType(Seq(
+      StructField("Condition", ArrayType(StructType(Seq(
+        StructField("BodyPath", StringType),
+        StructField("Operation", IntegerType),
+        StructField("Value", StringType)
+      ))))
+    )))
     schema.fields(0).nullable shouldBe false
   }
 
