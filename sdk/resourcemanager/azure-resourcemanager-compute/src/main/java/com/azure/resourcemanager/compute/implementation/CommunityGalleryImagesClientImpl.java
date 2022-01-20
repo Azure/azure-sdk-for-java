@@ -81,7 +81,7 @@ public final class CommunityGalleryImagesClientImpl implements CommunityGalleryI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a community gallery image.
+     * @return a community gallery image along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CommunityGalleryImageInner>> getWithResponseAsync(
@@ -137,7 +137,7 @@ public final class CommunityGalleryImagesClientImpl implements CommunityGalleryI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a community gallery image.
+     * @return a community gallery image along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CommunityGalleryImageInner>> getWithResponseAsync(
@@ -189,7 +189,7 @@ public final class CommunityGalleryImagesClientImpl implements CommunityGalleryI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a community gallery image.
+     * @return a community gallery image on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CommunityGalleryImageInner> getAsync(
@@ -231,7 +231,7 @@ public final class CommunityGalleryImagesClientImpl implements CommunityGalleryI
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a community gallery image.
+     * @return a community gallery image along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunityGalleryImageInner> getWithResponse(
