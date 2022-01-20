@@ -7,7 +7,18 @@ package com.azure.monitor.query.models;
  * Enum to indicate the status of a logs query result.
  */
 public enum LogsQueryResultStatus {
+    /**
+     * Successful logs query result.
+     */
     SUCCESS,
+
+    /**
+     * Unsuccessful logs query result.
+     */
     FAILURE,
+
+    /**
+     * Partially successful logs query result.
+     */
     PARTIAL_FAILURE;
 }

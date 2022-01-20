@@ -6,6 +6,7 @@ package com.azure.identity;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClientOptions;
 
 import java.time.Duration;
@@ -91,14 +92,18 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
     }
 
     /**
-     * Allows to override the tenant being used in the authentication request
-     * via {@link com.azure.core.credential.TokenRequestContext#setTenantId(String)}.
+     * Sets the configuration store that is used during construction of the credential.
      *
-     * @return An updated instance of this builder.
+     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
+     * configuration store}.
+     *
+     * @param configuration The configuration store used to load Env variables and/or properties from.
+     *
+     * @return An updated instance of this builder with the configuration store set as specified.
      */
     @SuppressWarnings("unchecked")
-    public T allowMultiTenantAuthentication() {
-        this.identityClientOptions.setAllowMultiTenantAuthentication(true);
+    public T configuration(Configuration configuration) {
+        identityClientOptions.setConfiguration(configuration);
         return (T) this;
     }
 }

@@ -4,44 +4,31 @@
 
 package com.azure.resourcemanager.eventhubs.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for KeyType. */
-public enum KeyType {
-    /** Enum value PrimaryKey. */
-    PRIMARY_KEY("PrimaryKey"),
+public final class KeyType extends ExpandableStringEnum<KeyType> {
+    /** Static value PrimaryKey for KeyType. */
+    public static final KeyType PRIMARY_KEY = fromString("PrimaryKey");
 
-    /** Enum value SecondaryKey. */
-    SECONDARY_KEY("SecondaryKey");
-
-    /** The actual serialized value for a KeyType instance. */
-    private final String value;
-
-    KeyType(String value) {
-        this.value = value;
-    }
+    /** Static value SecondaryKey for KeyType. */
+    public static final KeyType SECONDARY_KEY = fromString("SecondaryKey");
 
     /**
-     * Parses a serialized value to a KeyType instance.
+     * Creates or finds a KeyType from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed KeyType object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding KeyType.
      */
     @JsonCreator
-    public static KeyType fromString(String value) {
-        KeyType[] items = KeyType.values();
-        for (KeyType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static KeyType fromString(String name) {
+        return fromString(name, KeyType.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known KeyType values. */
+    public static Collection<KeyType> values() {
+        return values(KeyType.class);
     }
 }

@@ -4,6 +4,7 @@
 package com.azure.identity;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.implementation.RegionalAuthority;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.util.HashMap;
@@ -44,15 +45,34 @@ public class OnBehalfOfCredentialBuilder extends AadCredentialBuilderBase<OnBeha
     }
 
     /**
-     * Sets the path and password of the PFX certificate for authenticating to AAD.
+     * Sets the path of the PEM certificate for authenticating to AAD.
      *
-     * @param certificatePath the password protected PFX file containing the certificate
-     * @param clientCertificatePassword the password protecting the PFX file
+     * @param pemCertificatePath the PEM file containing the certificate
      * @return An updated instance of this builder.
      */
-    public OnBehalfOfCredentialBuilder pfxCertificate(String certificatePath,
-                                                             String clientCertificatePassword) {
-        this.clientCertificatePath = certificatePath;
+    public OnBehalfOfCredentialBuilder pemCertificate(String pemCertificatePath) {
+        this.clientCertificatePath = pemCertificatePath;
+        return this;
+    }
+
+    /**
+     * Sets the path and password of the PFX certificate for authenticating to AAD.
+     *
+     * @param pfxCertificatePath the password protected PFX file containing the certificate
+     * @return An updated instance of this builder.
+     */
+    public OnBehalfOfCredentialBuilder pfxCertificate(String pfxCertificatePath) {
+        this.clientCertificatePath = pfxCertificatePath;
+        return this;
+    }
+
+    /**
+     * Sets the password of the client certificate for authenticating to AAD.
+     *
+     * @param clientCertificatePassword the password protecting the certificate
+     * @return An updated instance of this builder.
+     */
+    public OnBehalfOfCredentialBuilder clientCertificatePassword(String clientCertificatePassword) {
         this.clientCertificatePassword = clientCertificatePassword;
         return this;
     }
@@ -78,7 +98,7 @@ public class OnBehalfOfCredentialBuilder extends AadCredentialBuilderBase<OnBeha
      * @param regionalAuthority the regional authority
      * @return An updated instance of this builder with the regional authority configured.
      */
-    public OnBehalfOfCredentialBuilder regionalAuthority(RegionalAuthority regionalAuthority) {
+    OnBehalfOfCredentialBuilder regionalAuthority(RegionalAuthority regionalAuthority) {
         this.identityClientOptions.setRegionalAuthority(regionalAuthority);
         return this;
     }

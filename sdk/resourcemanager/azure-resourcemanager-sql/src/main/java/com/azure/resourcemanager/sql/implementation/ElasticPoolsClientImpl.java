@@ -1121,7 +1121,11 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
         return this
             .client
             .<ElasticPoolInner, ElasticPoolInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ElasticPoolInner.class, ElasticPoolInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                ElasticPoolInner.class,
+                ElasticPoolInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1412,7 +1416,8 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serverName, elasticPoolName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1694,7 +1699,11 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
         return this
             .client
             .<ElasticPoolInner, ElasticPoolInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ElasticPoolInner.class, ElasticPoolInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                ElasticPoolInner.class,
+                ElasticPoolInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1985,7 +1994,8 @@ public final class ElasticPoolsClientImpl implements ElasticPoolsClient {
             failoverWithResponseAsync(resourceGroupName, serverName, elasticPoolName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

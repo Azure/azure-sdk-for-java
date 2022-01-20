@@ -6,6 +6,7 @@ package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.webpubsub.fluent.models.PrivateEndpointConnectionInner;
+import java.util.List;
 
 /** An immutable client-side representation of PrivateEndpointConnection. */
 public interface PrivateEndpointConnection {
@@ -50,6 +51,13 @@ public interface PrivateEndpointConnection {
      * @return the privateEndpoint value.
      */
     PrivateEndpoint privateEndpoint();
+
+    /**
+     * Gets the groupIds property: Group IDs.
+     *
+     * @return the groupIds value.
+     */
+    List<String> groupIds();
 
     /**
      * Gets the privateLinkServiceConnectionState property: Connection state.

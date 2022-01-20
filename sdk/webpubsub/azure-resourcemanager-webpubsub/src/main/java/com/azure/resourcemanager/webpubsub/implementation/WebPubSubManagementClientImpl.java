@@ -23,6 +23,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.webpubsub.fluent.OperationsClient;
 import com.azure.resourcemanager.webpubsub.fluent.UsagesClient;
+import com.azure.resourcemanager.webpubsub.fluent.WebPubSubHubsClient;
 import com.azure.resourcemanager.webpubsub.fluent.WebPubSubManagementClient;
 import com.azure.resourcemanager.webpubsub.fluent.WebPubSubPrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.webpubsub.fluent.WebPubSubPrivateLinkResourcesClient;
@@ -155,6 +156,18 @@ public final class WebPubSubManagementClientImpl implements WebPubSubManagementC
         return this.usages;
     }
 
+    /** The WebPubSubHubsClient object to access its operations. */
+    private final WebPubSubHubsClient webPubSubHubs;
+
+    /**
+     * Gets the WebPubSubHubsClient object to access its operations.
+     *
+     * @return the WebPubSubHubsClient object.
+     */
+    public WebPubSubHubsClient getWebPubSubHubs() {
+        return this.webPubSubHubs;
+    }
+
     /** The WebPubSubPrivateEndpointConnectionsClient object to access its operations. */
     private final WebPubSubPrivateEndpointConnectionsClient webPubSubPrivateEndpointConnections;
 
@@ -214,10 +227,11 @@ public final class WebPubSubManagementClientImpl implements WebPubSubManagementC
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-06-01-preview";
+        this.apiVersion = "2021-10-01";
         this.operations = new OperationsClientImpl(this);
         this.webPubSubs = new WebPubSubsClientImpl(this);
         this.usages = new UsagesClientImpl(this);
+        this.webPubSubHubs = new WebPubSubHubsClientImpl(this);
         this.webPubSubPrivateEndpointConnections = new WebPubSubPrivateEndpointConnectionsClientImpl(this);
         this.webPubSubPrivateLinkResources = new WebPubSubPrivateLinkResourcesClientImpl(this);
         this.webPubSubSharedPrivateLinkResources = new WebPubSubSharedPrivateLinkResourcesClientImpl(this);

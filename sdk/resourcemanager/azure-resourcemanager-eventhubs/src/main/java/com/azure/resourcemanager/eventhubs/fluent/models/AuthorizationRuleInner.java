@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.models.AccessRights;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -14,16 +14,54 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Single item in a List or Get AuthorizationRule operation. */
-@JsonFlatten
 @Fluent
-public class AuthorizationRuleInner extends ProxyResource {
+public final class AuthorizationRuleInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AuthorizationRuleInner.class);
 
     /*
-     * The rights associated with the rule.
+     * Properties supplied to create or update AuthorizationRule
      */
-    @JsonProperty(value = "properties.rights")
-    private List<AccessRights> rights;
+    @JsonProperty(value = "properties")
+    private AuthorizationRuleProperties innerProperties;
+
+    /*
+     * The system meta data relating to this resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /*
+     * The geo-location where the resource lives
+     */
+    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
+    private String location;
+
+    /**
+     * Get the innerProperties property: Properties supplied to create or update AuthorizationRule.
+     *
+     * @return the innerProperties value.
+     */
+    private AuthorizationRuleProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: The system meta data relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the location property: The geo-location where the resource lives.
+     *
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
 
     /**
      * Get the rights property: The rights associated with the rule.
@@ -31,7 +69,7 @@ public class AuthorizationRuleInner extends ProxyResource {
      * @return the rights value.
      */
     public List<AccessRights> rights() {
-        return this.rights;
+        return this.innerProperties() == null ? null : this.innerProperties().rights();
     }
 
     /**
@@ -41,7 +79,10 @@ public class AuthorizationRuleInner extends ProxyResource {
      * @return the AuthorizationRuleInner object itself.
      */
     public AuthorizationRuleInner withRights(List<AccessRights> rights) {
-        this.rights = rights;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AuthorizationRuleProperties();
+        }
+        this.innerProperties().withRights(rights);
         return this;
     }
 
@@ -51,5 +92,8 @@ public class AuthorizationRuleInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

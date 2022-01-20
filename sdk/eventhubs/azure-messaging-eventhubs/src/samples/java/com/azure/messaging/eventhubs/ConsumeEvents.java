@@ -9,6 +9,7 @@ import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 
 import java.time.Duration;
+import java.util.Collections;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -95,7 +96,7 @@ public class ConsumeEvents {
         // We create 10 events to send to the service and block until the send has completed.
         Flux.range(0, NUMBER_OF_EVENTS).flatMap(number -> {
             String body = String.format("Hello world! Number: %s", number);
-            return producer.send(new EventData(body.getBytes(UTF_8)), sendOptions);
+            return producer.send(Collections.singletonList(new EventData(body.getBytes(UTF_8))), sendOptions);
         }).blockLast(OPERATION_TIMEOUT);
 
         try {

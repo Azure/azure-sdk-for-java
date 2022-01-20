@@ -31,7 +31,7 @@ import static com.azure.core.test.TestBase.getHttpClients;
 public final class TestUtils {
     // Duration
     public static final Duration ONE_NANO_DURATION = Duration.ofMillis(1);
-    
+
     public static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     public static final String NON_EXIST_MODEL_ID = "00000000-0000-0000-0000-000000000000";
 
@@ -56,7 +56,7 @@ public final class TestUtils {
     static final String INVALID_URL = "htttttttps://localhost:8080";
 
     static final String EXPECTED_MERCHANT_NAME = "Contoso";
-    static final String MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE = "'modelId' is required and cannot be null.";
+    static final String MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE = "'modelId' is required and cannot be null or empty";
     static final String FAKE_ENCODED_EMPTY_SPACE_URL = "https://fakeuri.com/blank%20space";
     public static final String INVALID_KEY = "invalid key";
     static final String INVALID_RECEIPT_URL = "https://invalid.blob.core.windows.net/fr/contoso-allinone.jpg";

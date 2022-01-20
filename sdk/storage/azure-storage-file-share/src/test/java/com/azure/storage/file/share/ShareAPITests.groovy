@@ -348,6 +348,7 @@ class ShareAPITests extends APISpec {
         shareProperties.getProvisionedEgressMBps()
         shareProperties.getProvisionedIngressMBps()
         shareProperties.getProvisionedIops()
+        shareProperties.getProvisionedBandwidthMiBps()
         shareProperties.getProtocols().toString() == enabledProtocol.toString()
         shareProperties.getRootSquash() == rootSquash
 

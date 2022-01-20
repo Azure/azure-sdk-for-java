@@ -597,7 +597,7 @@ public final class StorageAccountsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the storage account.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<StorageAccountInner>, StorageAccountInner> beginCreateAsync(
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, accountName, parameters);
@@ -608,7 +608,7 @@ public final class StorageAccountsClientImpl
                 this.client.getHttpPipeline(),
                 StorageAccountInner.class,
                 StorageAccountInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -628,7 +628,7 @@ public final class StorageAccountsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the storage account.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StorageAccountInner>, StorageAccountInner> beginCreateAsync(
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -656,7 +656,7 @@ public final class StorageAccountsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the storage account.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageAccountInner>, StorageAccountInner> beginCreate(
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
         return beginCreateAsync(resourceGroupName, accountName, parameters).getSyncPoller();
@@ -679,7 +679,7 @@ public final class StorageAccountsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the storage account.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageAccountInner>, StorageAccountInner> beginCreate(
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters, Context context) {
         return beginCreateAsync(resourceGroupName, accountName, parameters, context).getSyncPoller();
@@ -2494,12 +2494,13 @@ public final class StorageAccountsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginFailoverAsync(String resourceGroupName, String accountName) {
         Mono<Response<Flux<ByteBuffer>>> mono = failoverWithResponseAsync(resourceGroupName, accountName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2517,7 +2518,7 @@ public final class StorageAccountsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginFailoverAsync(
         String resourceGroupName, String accountName, Context context) {
         context = this.client.mergeContext(context);
@@ -2541,7 +2542,7 @@ public final class StorageAccountsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFailover(String resourceGroupName, String accountName) {
         return beginFailoverAsync(resourceGroupName, accountName).getSyncPoller();
     }
@@ -2561,7 +2562,7 @@ public final class StorageAccountsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFailover(
         String resourceGroupName, String accountName, Context context) {
         return beginFailoverAsync(resourceGroupName, accountName, context).getSyncPoller();
@@ -2770,7 +2771,7 @@ public final class StorageAccountsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return blob restore status.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<BlobRestoreStatusInner>, BlobRestoreStatusInner> beginRestoreBlobRangesAsync(
         String resourceGroupName, String accountName, BlobRestoreParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2782,7 +2783,7 @@ public final class StorageAccountsClientImpl
                 this.client.getHttpPipeline(),
                 BlobRestoreStatusInner.class,
                 BlobRestoreStatusInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2799,7 +2800,7 @@ public final class StorageAccountsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return blob restore status.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BlobRestoreStatusInner>, BlobRestoreStatusInner> beginRestoreBlobRangesAsync(
         String resourceGroupName, String accountName, BlobRestoreParameters parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -2828,7 +2829,7 @@ public final class StorageAccountsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return blob restore status.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BlobRestoreStatusInner>, BlobRestoreStatusInner> beginRestoreBlobRanges(
         String resourceGroupName, String accountName, BlobRestoreParameters parameters) {
         return beginRestoreBlobRangesAsync(resourceGroupName, accountName, parameters).getSyncPoller();
@@ -2848,7 +2849,7 @@ public final class StorageAccountsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return blob restore status.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BlobRestoreStatusInner>, BlobRestoreStatusInner> beginRestoreBlobRanges(
         String resourceGroupName, String accountName, BlobRestoreParameters parameters, Context context) {
         return beginRestoreBlobRangesAsync(resourceGroupName, accountName, parameters, context).getSyncPoller();

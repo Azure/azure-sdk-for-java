@@ -34,19 +34,61 @@ import java.util.UUID;
  *
  * <p><strong>Instantiating LeaseClients</strong></p>
  *
- * {@codesnippet com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder.syncInstantiationWithFileAndLeaseId}
+ * <!-- src_embed com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder.syncInstantiationWithFileAndLeaseId -->
+ * <pre>
+ * DataLakeLeaseClient dataLakeLeaseClient = new DataLakeLeaseClientBuilder&#40;&#41;
+ *     .fileClient&#40;fileClient&#41;
+ *     .leaseId&#40;leaseId&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder.syncInstantiationWithFileAndLeaseId -->
  *
- * {@codesnippet com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder.syncInstantiationWithDirectoryAndLeaseId}
+ * <!-- src_embed com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder.syncInstantiationWithDirectoryAndLeaseId -->
+ * <pre>
+ * DataLakeLeaseClient dataLakeLeaseClient = new DataLakeLeaseClientBuilder&#40;&#41;
+ *     .directoryClient&#40;directoryClient&#41;
+ *     .leaseId&#40;leaseId&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder.syncInstantiationWithDirectoryAndLeaseId -->
  *
- * {@codesnippet com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder.syncInstantiationWithFileSystemAndLeaseId}
+ * <!-- src_embed com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder.syncInstantiationWithFileSystemAndLeaseId -->
+ * <pre>
+ * DataLakeLeaseClient dataLakeLeaseClient = new DataLakeLeaseClientBuilder&#40;&#41;
+ *     .fileSystemClient&#40;dataLakeFileSystemClient&#41;
+ *     .leaseId&#40;leaseId&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder.syncInstantiationWithFileSystemAndLeaseId -->
  *
  * <p><strong>Instantiating LeaseAsyncClients</strong></p>
  *
- * {@codesnippet com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder.asyncInstantiationWithFileAndLeaseId}
+ * <!-- src_embed com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder.asyncInstantiationWithFileAndLeaseId -->
+ * <pre>
+ * DataLakeLeaseAsyncClient dataLakeLeaseAsyncClient = new DataLakeLeaseClientBuilder&#40;&#41;
+ *     .fileAsyncClient&#40;fileAsyncClient&#41;
+ *     .leaseId&#40;leaseId&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder.asyncInstantiationWithFileAndLeaseId -->
  *
- * {@codesnippet com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder.asyncInstantiationWithDirectoryAndLeaseId}
+ * <!-- src_embed com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder.asyncInstantiationWithDirectoryAndLeaseId -->
+ * <pre>
+ * DataLakeLeaseAsyncClient dataLakeLeaseAsyncClient = new DataLakeLeaseClientBuilder&#40;&#41;
+ *     .directoryAsyncClient&#40;directoryAsyncClient&#41;
+ *     .leaseId&#40;leaseId&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder.asyncInstantiationWithDirectoryAndLeaseId -->
  *
- * {@codesnippet com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder.asyncInstantiationWithFileSystemAndLeaseId}
+ * <!-- src_embed com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder.asyncInstantiationWithFileSystemAndLeaseId -->
+ * <pre>
+ * DataLakeLeaseAsyncClient dataLakeLeaseAsyncClient = new DataLakeLeaseClientBuilder&#40;&#41;
+ *     .fileSystemAsyncClient&#40;dataLakeFileSystemAsyncClient&#41;
+ *     .leaseId&#40;leaseId&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder.asyncInstantiationWithFileSystemAndLeaseId -->
  *
  * @see DataLakeLeaseClient
  * @see DataLakeLeaseAsyncClient

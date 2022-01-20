@@ -3,20 +3,20 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels:authorizeCopy?api-version=2021-09-30-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9d631ee5-8ff0-4615-a83e-a5e22e004fc7",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.2 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "860d3846-7124-4ebd-b763-8820301e96cc",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "247",
+      "x-envoy-upstream-service-time" : "400",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "7de27b90-5396-4960-a14e-26df8a7b3be8",
+      "apim-request-id" : "1b47b249-96ac-408c-852c-e78819794320",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\n  \"targetResourceId\": \"/subscriptions/2cd617ea-1866-46b1-90e3-fffb087ebf9b/resourceGroups/krpratic-rg2/providers/Microsoft.CognitiveServices/accounts/krpratic-form-canary-aad\",\n  \"targetResourceRegion\": \"centraluseuap\",\n  \"targetModelId\": \"java_copy_model_test\",\n  \"targetModelLocation\": \"https://krpratic-form-canary-aad.cognitiveservices.azure.com/formrecognizer/documentModels/java_copy_model_test?api-version=2021-09-30-preview\",\n  \"accessToken\": \"1f6aac86-18a1-441a-beb2-fe7669d38c77\",\n  \"expirationDateTime\": \"2021-09-28T03:28:09Z\"\n}",
-      "Date" : "Tue, 28 Sep 2021 02:28:09 GMT",
+      "Body" : "{\n  \"targetResourceId\": \"/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/shafang/providers/Microsoft.CognitiveServices/accounts/shafangFR\",\n  \"targetResourceRegion\": \"eastus\",\n  \"targetModelId\": \"java_copy_model_test\",\n  \"targetModelLocation\": \"https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/java_copy_model_test?api-version=2021-09-30-preview\",\n  \"accessToken\": \"5030d37b-471b-40bc-946b-9b08711c6713\",\n  \"expirationDateTime\": \"2021-10-08T21:53:21Z\"\n}",
+      "Date" : "Fri, 08 Oct 2021 20:53:21 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -24,18 +24,18 @@
     "Method" : "DELETE",
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/java_copy_model_test?api-version=2021-09-30-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b27a0ab9-1451-49e6-bc6a-fd2faa88f218"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.2 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "71e34c96-9476-4ec5-804a-6473a2034f8d"
     },
     "Response" : {
       "content-length" : "0",
-      "x-envoy-upstream-service-time" : "156",
+      "x-envoy-upstream-service-time" : "116",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "6da703d8-211d-4679-92f4-f3e6592035cd",
+      "apim-request-id" : "f35a74a3-3d20-4e86-a99a-ef248a488669",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "Date" : "Tue, 28 Sep 2021 02:28:09 GMT"
+      "Date" : "Fri, 08 Oct 2021 20:53:21 GMT"
     },
     "Exception" : null
   } ],

@@ -9,6 +9,9 @@ import com.azure.core.util.ServiceVersion;
  * The versions of Azure Metrics Advisor supported by this client library.
  */
 public enum MetricsAdvisorServiceVersion implements ServiceVersion {
+    /**
+     * Service version {@code v1.0}.
+     */
     V1_0("v1.0");
 
     private final String version;

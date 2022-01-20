@@ -220,6 +220,31 @@ public final class EventHubDataConnection extends DataConnectionInner {
     }
 
     /**
+     * Get the managedIdentityResourceId property: The resource ID of a managed identity (system or user assigned) to be
+     * used to authenticate with event hub.
+     *
+     * @return the managedIdentityResourceId value.
+     */
+    public String managedIdentityResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().managedIdentityResourceId();
+    }
+
+    /**
+     * Set the managedIdentityResourceId property: The resource ID of a managed identity (system or user assigned) to be
+     * used to authenticate with event hub.
+     *
+     * @param managedIdentityResourceId the managedIdentityResourceId value to set.
+     * @return the EventHubDataConnection object itself.
+     */
+    public EventHubDataConnection withManagedIdentityResourceId(String managedIdentityResourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventHubConnectionProperties();
+        }
+        this.innerProperties().withManagedIdentityResourceId(managedIdentityResourceId);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

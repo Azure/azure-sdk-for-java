@@ -19,6 +19,9 @@ import java.util.Map;
 @ConfigurationProperties("azure.activedirectory.resource-server")
 public class AADResourceServerProperties implements InitializingBean {
 
+    /**
+     * Default claim to authority prefix map
+     */
     public static final Map<String, String> DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP;
 
     static {
@@ -53,18 +56,38 @@ public class AADResourceServerProperties implements InitializingBean {
      */
     private Map<String, String> claimToAuthorityPrefixMap;
 
+    /**
+     * Gets the principal claim name.
+     *
+     * @return the principal claim name
+     */
     public String getPrincipalClaimName() {
         return principalClaimName;
     }
 
+    /**
+     * Sets the principal claim name.
+     *
+     * @param principalClaimName the principal claim name
+     */
     public void setPrincipalClaimName(String principalClaimName) {
         this.principalClaimName = principalClaimName;
     }
 
+    /**
+     * Gets the claim to authority prefix map.
+     *
+     * @return the claim to authority prefix map
+     */
     public Map<String, String> getClaimToAuthorityPrefixMap() {
         return claimToAuthorityPrefixMap;
     }
 
+    /**
+     * Sets the claim to authority prefix map.
+     *
+     * @param claimToAuthorityPrefixMap the claim to authority prefix map
+     */
     public void setClaimToAuthorityPrefixMap(Map<String, String> claimToAuthorityPrefixMap) {
         this.claimToAuthorityPrefixMap = claimToAuthorityPrefixMap;
     }

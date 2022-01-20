@@ -422,7 +422,7 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain Topic.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DomainTopicInner>, DomainTopicInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String domainName, String domainTopicName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -430,7 +430,11 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
         return this
             .client
             .<DomainTopicInner, DomainTopicInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DomainTopicInner.class, DomainTopicInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                DomainTopicInner.class,
+                DomainTopicInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -445,7 +449,7 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain Topic.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DomainTopicInner>, DomainTopicInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String domainName, String domainTopicName, Context context) {
         context = this.client.mergeContext(context);
@@ -468,7 +472,7 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain Topic.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DomainTopicInner>, DomainTopicInner> beginCreateOrUpdate(
         String resourceGroupName, String domainName, String domainTopicName) {
         return beginCreateOrUpdateAsync(resourceGroupName, domainName, domainTopicName).getSyncPoller();
@@ -486,7 +490,7 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain Topic.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DomainTopicInner>, DomainTopicInner> beginCreateOrUpdate(
         String resourceGroupName, String domainName, String domainTopicName, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, domainName, domainTopicName, context).getSyncPoller();
@@ -678,13 +682,14 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String domainName, String domainTopicName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, domainName, domainTopicName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -699,7 +704,7 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String domainName, String domainTopicName, Context context) {
         context = this.client.mergeContext(context);
@@ -721,7 +726,7 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String domainName, String domainTopicName) {
         return beginDeleteAsync(resourceGroupName, domainName, domainTopicName).getSyncPoller();
@@ -739,7 +744,7 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String domainName, String domainTopicName, Context context) {
         return beginDeleteAsync(resourceGroupName, domainName, domainTopicName, context).getSyncPoller();

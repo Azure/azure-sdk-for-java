@@ -38,8 +38,11 @@ private class ChangeFeedMicroBatchStream
   private val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
   private val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)
   private val changeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(config)
-  private val client = CosmosClientCache(clientConfiguration, Some(cosmosClientStateHandle))
-  private val container = ThroughputControlHelper.getContainer(config, containerConfig, client)
+  private val clientCacheItem = CosmosClientCache(
+    clientConfiguration,
+    Some(cosmosClientStateHandle),
+    s"ChangeFeedMicroBatchStream(streamId ${streamId})")
+  private val container = ThroughputControlHelper.getContainer(config, containerConfig, clientCacheItem.client)
   SparkUtils.safeOpenConnectionInitCaches(container, log)
 
   private var latestOffsetSnapshot: Option[ChangeFeedOffset] = None
@@ -188,7 +191,6 @@ private class ChangeFeedMicroBatchStream
    * The source can return `null`, if there is no data to process or the source does not support
    * to this method.
    */
-  // TODO @fabianm mark this override when switching to Spark 3.2.0
   def reportLatestOffset(): Offset = {
     this.latestOffsetSnapshot.orNull
   }
@@ -215,6 +217,7 @@ private class ChangeFeedMicroBatchStream
    * Stop this source and free any resources it has allocated.
    */
   override def stop(): Unit = {
+    clientCacheItem.close()
     log.logInfo(s"MicroBatch stream $streamId: stopped.")
   }
 }

@@ -81,6 +81,13 @@ public final class AzureWorkloadPointInTimeRestoreRequest extends AzureWorkloadR
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureWorkloadPointInTimeRestoreRequest withTargetVirtualMachineId(String targetVirtualMachineId) {
+        super.withTargetVirtualMachineId(targetVirtualMachineId);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

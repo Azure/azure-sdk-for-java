@@ -6,6 +6,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
+import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.AddressRepository;
@@ -37,8 +38,7 @@ public class ApplicationContextEventIT {
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
-    AddressRepository repository;
-
+    private AddressRepository repository;
     @Autowired
     private CosmosTemplate template;
     @Autowired
@@ -98,6 +98,14 @@ public class ApplicationContextEventIT {
     }
 
     @Test
+    public void shouldPublishAfterLoadEventForPagedQueries() {
+        repository.annotatedFindByCity(TEST_ADDRESS1_PARTITION1.getCity(), new CosmosPageRequest(0, 10, null));
+        assertThat(simpleCosmosMappingEventListener.onAfterLoadEvents).hasSize(2);
+        assertThat(simpleCosmosMappingEventListener.onAfterLoadEvents.get(0).getContainerName()).isEqualTo("Address");
+        assertThat(simpleCosmosMappingEventListener.onAfterLoadEvents.get(1).getContainerName()).isEqualTo("Address");
+    }
+
+    @Test
     public void shouldNotPublishAfterLoadEventForInserts() {
         repository.save(TEST_ADDRESS4_PARTITION3);
         assertThat(simpleCosmosMappingEventListener.onAfterLoadEvents.isEmpty()).isTrue();
@@ -120,4 +128,5 @@ public class ApplicationContextEventIT {
         repository.deleteByCity(TEST_ADDRESS1_PARTITION1.getCity());
         assertThat(simpleCosmosMappingEventListener.onAfterLoadEvents.isEmpty()).isTrue();
     }
+
 }

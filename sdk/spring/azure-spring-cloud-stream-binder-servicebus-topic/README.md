@@ -43,7 +43,7 @@ This binder implementation has no partition support even service bus topic suppo
 
 The binder provides the following configuration options:
 
-##### Spring Cloud Azure Properties
+#### Spring Cloud Azure Properties
 
 |Name | Description | Required | Default
 |:---|:---|:---|:---
@@ -61,7 +61,35 @@ spring.cloud.azure.servicebus.namespace | Service Bus Namespace. Auto creating i
 spring.cloud.azure.servicebus.transportType | Service Bus transportType, supported value of `AMQP` and `AMQP_WEB_SOCKETS` | No | `AMQP`
 spring.cloud.azure.servicebus.retry-Options | Service Bus retry options | No | Default value of AmqpRetryOptions
 
-##### Serivce Bus Topic Producer Properties
+#### Partition configuration
+
+The system will obtain the parameter `PartitionSupply` to send the message.
+
+The following are configuration items related to the producer:
+
+**_partition-count_**
+
+The number of target partitions for the data, if partitioning is enabled.
+
+Default: 1
+
+**_partition-key-extractor-name_**
+
+The name of the bean that implements `PartitionKeyExtractorStrategy`. 
+The partition handler will first use the `PartitionKeyExtractorStrategy#extractKey` method to obtain the partition key value.
+
+Default: null
+
+**_partition-key-expression_**
+
+A SpEL expression that determines how to partition outbound data. 
+When interface `PartitionKeyExtractorStrategy` is not implemented, it will be called in the method `PartitionHandler#extractKey`.
+
+Default: null
+
+For more information about setting partition for the producer properties, please refer to the [Producer Properties of Spring Cloud Stream][spring_cloud_stream_current_producer_properties].
+
+#### Service Bus Topic Producer Properties
 
 It supports the following configurations with the format of `spring.cloud.stream.servicebus.topic.bindings.<channelName>.producer`.
 
@@ -78,7 +106,7 @@ Effective only if `sync` is set to true. The amount of time to wait for a respon
 
 Default: `10000`
  
-##### Service Bus Topic Consumer Properties
+#### Service Bus Topic Consumer Properties
 
 It supports the following configurations with the format of `spring.cloud.stream.servicebus.topic.bindings.<channelName>.consumer`.
 
@@ -141,7 +169,7 @@ Enable auto-complete and auto-abandon of received messages.
 'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.
 
 Default: `true`
-##### Support for Service Bus Message Headers and Properties
+#### Support for Service Bus Message Headers and Properties
 The following table illustrates how Spring message headers are mapped to Service Bus message headers and properties.
 When creat a message, developers can specify the header or property of a Service Bus message by below constants.
 
@@ -165,7 +193,7 @@ ReplyToSessionId | com.azure.spring.integration.servicebus.converter.ServiceBusM
 **PartitionKey** | com.azure.spring.integration.core.AzureHeaders.PARTITION_KEY | String | 2
 
 ## Examples 
-## Usage examples
+### Usage examples
 **Example: Manually set the partition key for the message**
 
 This example demonstrates how to manually set the partition key for the message in the application.
@@ -183,6 +211,7 @@ spring:
         producer:
           partitionKeyExpression:  "'partitionKey-' + headers[<message-header-key>]"
 ```
+
 ```java
 @PostMapping("/messages")
 public ResponseEntity<String> sendMessage(@RequestParam String message) {
@@ -288,3 +317,4 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [src_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-stream-binder-servicebus-topic
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [Add azure-spring-cloud-dependencies]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-cloud-dependencies
+[spring_cloud_stream_current_producer_properties]: https://docs.spring.io/spring-cloud-stream/docs/current/reference/html/spring-cloud-stream.html#_producer_properties

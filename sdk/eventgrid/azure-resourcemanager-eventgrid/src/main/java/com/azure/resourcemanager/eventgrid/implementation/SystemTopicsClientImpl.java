@@ -454,7 +454,7 @@ public final class SystemTopicsClientImpl implements SystemTopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return eventGrid System Topic.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SystemTopicInner>, SystemTopicInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String systemTopicName, SystemTopicInner systemTopicInfo) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -462,7 +462,11 @@ public final class SystemTopicsClientImpl implements SystemTopicsClient {
         return this
             .client
             .<SystemTopicInner, SystemTopicInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SystemTopicInner.class, SystemTopicInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                SystemTopicInner.class,
+                SystemTopicInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -477,7 +481,7 @@ public final class SystemTopicsClientImpl implements SystemTopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return eventGrid System Topic.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SystemTopicInner>, SystemTopicInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String systemTopicName, SystemTopicInner systemTopicInfo, Context context) {
         context = this.client.mergeContext(context);
@@ -500,7 +504,7 @@ public final class SystemTopicsClientImpl implements SystemTopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return eventGrid System Topic.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SystemTopicInner>, SystemTopicInner> beginCreateOrUpdate(
         String resourceGroupName, String systemTopicName, SystemTopicInner systemTopicInfo) {
         return beginCreateOrUpdateAsync(resourceGroupName, systemTopicName, systemTopicInfo).getSyncPoller();
@@ -518,7 +522,7 @@ public final class SystemTopicsClientImpl implements SystemTopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return eventGrid System Topic.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SystemTopicInner>, SystemTopicInner> beginCreateOrUpdate(
         String resourceGroupName, String systemTopicName, SystemTopicInner systemTopicInfo, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, systemTopicName, systemTopicInfo, context).getSyncPoller();
@@ -699,12 +703,13 @@ public final class SystemTopicsClientImpl implements SystemTopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String systemTopicName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, systemTopicName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -718,7 +723,7 @@ public final class SystemTopicsClientImpl implements SystemTopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String systemTopicName, Context context) {
         context = this.client.mergeContext(context);
@@ -738,7 +743,7 @@ public final class SystemTopicsClientImpl implements SystemTopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String systemTopicName) {
         return beginDeleteAsync(resourceGroupName, systemTopicName).getSyncPoller();
     }
@@ -754,7 +759,7 @@ public final class SystemTopicsClientImpl implements SystemTopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String systemTopicName, Context context) {
         return beginDeleteAsync(resourceGroupName, systemTopicName, context).getSyncPoller();
@@ -954,7 +959,7 @@ public final class SystemTopicsClientImpl implements SystemTopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return eventGrid System Topic.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SystemTopicInner>, SystemTopicInner> beginUpdateAsync(
         String resourceGroupName, String systemTopicName, SystemTopicUpdateParameters systemTopicUpdateParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -962,7 +967,11 @@ public final class SystemTopicsClientImpl implements SystemTopicsClient {
         return this
             .client
             .<SystemTopicInner, SystemTopicInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SystemTopicInner.class, SystemTopicInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                SystemTopicInner.class,
+                SystemTopicInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -977,7 +986,7 @@ public final class SystemTopicsClientImpl implements SystemTopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return eventGrid System Topic.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SystemTopicInner>, SystemTopicInner> beginUpdateAsync(
         String resourceGroupName,
         String systemTopicName,
@@ -1003,7 +1012,7 @@ public final class SystemTopicsClientImpl implements SystemTopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return eventGrid System Topic.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SystemTopicInner>, SystemTopicInner> beginUpdate(
         String resourceGroupName, String systemTopicName, SystemTopicUpdateParameters systemTopicUpdateParameters) {
         return beginUpdateAsync(resourceGroupName, systemTopicName, systemTopicUpdateParameters).getSyncPoller();
@@ -1021,7 +1030,7 @@ public final class SystemTopicsClientImpl implements SystemTopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return eventGrid System Topic.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SystemTopicInner>, SystemTopicInner> beginUpdate(
         String resourceGroupName,
         String systemTopicName,

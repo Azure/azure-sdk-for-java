@@ -78,18 +78,22 @@ class PartitionSupervisorImpl implements PartitionSupervisor {
 
             this.childShutdownCts.cancel();
 
-            if (this.processor.getResultException() != null) {
-                throw this.processor.getResultException();
-            }
-
-            if (this.renewer.getResultException() != null) {
-                throw this.renewer.getResultException();
-            }
-
             closeReason = shutdownToken.isCancellationRequested() ?
                 ChangeFeedObserverCloseReason.SHUTDOWN :
                 ChangeFeedObserverCloseReason.UNKNOWN;
 
+            RuntimeException workerException = this.processor.getResultException();
+
+            // Priority must be given to any exception from the processor worker unless it is a task being cancelled.
+            if (workerException == null || workerException instanceof TaskCancelledException) {
+                if (this.renewer.getResultException() != null) {
+                    workerException = this.renewer.getResultException();
+                }
+            }
+
+            if (workerException != null) {
+                throw workerException;
+            }
         } catch (LeaseLostException llex) {
             closeReason = ChangeFeedObserverCloseReason.LEASE_LOST;
             this.resultException = llex;

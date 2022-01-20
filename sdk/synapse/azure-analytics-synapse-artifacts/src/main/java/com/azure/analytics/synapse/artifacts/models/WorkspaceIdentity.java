@@ -15,7 +15,7 @@ public final class WorkspaceIdentity {
      * 'SystemAssigned'.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "SystemAssigned";
 
     /*
      * The principal id of the identity.

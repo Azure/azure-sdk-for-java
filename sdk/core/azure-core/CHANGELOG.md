@@ -1,6 +1,6 @@
 # Release History
 
-## 1.22.0-beta.1 (Unreleased)
+## 1.25.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,90 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.24.1 (2022-01-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.4.12` to `3.4.13`.
+
+## 1.24.0 (2022-01-06)
+
+### Features Added
+
+- Added `ClientLogger` APIs (`atError`, `atWarning`, `atInfo`, `atVerbose`) that allow adding key-value pairs to log 
+  entries and `ClientLogger` constructor overloads that take context to apply to every log entry written with this logger 
+  instance. Logger writes entries that have context as JSON similar to `{"az.sdk.message":"on delivery","connectionId":"foo"}`
+
+### Bugs Fixed
+
+- Fixed a bug where the wrong full class name was being used in reflections. ([#25840](https://github.com/Azure/azure-sdk-for-java/pull/25840))
+- Fixed a bug where flattened deserialization wouldn't find the correct JSON node. ([#25164](https://github.com/Azure/azure-sdk-for-java/pull/25621))
+- Changed how non-proxy hosts was being handled as a regex. ([#25841](https://github.com/Azure/azure-sdk-for-java/pull/25841))
+- Fixed a bug where an errant log message would happen when using a newer version of Jackson. ([#26129](https://github.com/Azure/azure-sdk-for-java/pull/26129))
+- Fixed a bug where `PagedIterable` wouldn't terminate the same as `PagedFlux`. ([#26139](https://github.com/Azure/azure-sdk-for-java/pull/26139))
+- Fixed a bug where `MethodHandle.Lookup` retrieval didn't handle the unnamed module properly. ([#26268](https://github.com/Azure/azure-sdk-for-java/pull/26268))
+
+### Other Changes
+
+- Improved performance of logging.
+
+#### Dependency Updates
+
+- Upgraded Jackson from `2.13.0` to `2.13.1`.
+
+## 1.23.1 (2021-12-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Jackson from `2.12.5` to `2.13.0`.
+- Upgraded Reactor from `3.4.10` to `3.4.12`.
+
+## 1.23.0 (2021-11-22)
+
+### Breaking Changes
+- Removed `ErrorOptions`
+- Removed `setErrorOptions()` from `RequestOptions`
+
+## 1.22.0 (2021-11-05)
+
+### Features Added
+
+- Added `ReferenceManager` which is capable of performing `Cleaner`-like functionality by allowing a `Runnable` callback
+  to be triggered when an object reference is eligible for garbage collection.
+- Added `RequestOptions` which allows for a chained set of operations to be applied to an `HttpRequest` before being
+  sent through the `HttpPipeline`.
+- Added an `ETag` class which represents an HTTP ETag.
+- Added `getJavaClass` method to retrieve the representing instance of the `TypeReference` created.
+- Added support for HTTP method OPTIONS by adding an `Options` annotation.
+- Added a function to `CoreUtils` which merges two `Context`s together.
+- Added a new feature flag `AZURE_JACKSON_ADAPTER_USE_ACCESS_HELPER` which indicates to `JacksonAdapter` to wrap 
+  serialization calls in `AccessController.doPrivileged` to prevent `SecurityManager` exceptions when `JacksonAdapter`
+  has the prerequisite permissions.
+
+### Bugs Fixed
+
+- Fixed a bug where an initial length of 0 wasn't permitted when creating a `ByteBuffer` collector.
+- Fixed a bug where an exception type would be instantiated and never used in a hot path, reducing memory usage.
+- Fixed a bug where the content length of a serializable request body may return null when it is known (already serialized).
+
+### Other Changes
+
+- Improved performance of operations that merge or retrieve all values of `Context`.
+
+## 1.22.0-beta.1 (2021-10-12)
+
+### Features Added
+
+- Added a new way to create a `PollerFlux` from a `PollingStrategy`, including known strategies to poll Azure resources. ([#22795](https://github.com/Azure/azure-sdk-for-java/pull/22795))
+
+### Other Changes
+
+- Fixed a bug where `BinaryData.getLength` returns `null` when it should return valid length.
 
 ## 1.21.0 (2021-10-01)
 
@@ -32,6 +116,13 @@
 
 - Upgraded Jackson from `2.12.4` to `2.12.5`.
 - Upgraded Reactor from `3.4.9` to `3.4.10`.
+
+
+## 1.21.0-beta.1 (2021-09-08)
+
+### Features Added
+
+- Added a new way to create a `PollerFlux` from a `PollingStrategy`, including known strategies to poll Azure resources. ([#22795](https://github.com/Azure/azure-sdk-for-java/pull/22795))
 
 ## 1.20.0 (2021-09-07)
 
@@ -92,8 +183,8 @@
 
 ### Features Added
 
- - Added `RequestOptions` for protocol methods
- - Added support for `BinaryData` type as the request body or response body in `RestProxy`
+- Added `RequestOptions` for protocol methods
+- Added support for `BinaryData` type as the request body or response body in `RestProxy`
 
 ## 1.18.0 (2021-07-01)
 

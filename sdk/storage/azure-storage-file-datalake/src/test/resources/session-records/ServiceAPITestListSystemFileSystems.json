@@ -1,0 +1,66 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.blob.core.windows.net/5068d4e405068d4e40c3193082cd2fc92917d406fbe8?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.15.0-beta.1 azsdk-java-azure-storage-file-datalake/12.8.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "977a5009-881e-4bf7-89e6-38958f7c2f9c"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8D99B08938AF5EA",
+      "Last-Modified" : "Fri, 29 Oct 2021 18:18:58 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "e5c6b290-e01e-004e-48f1-ccf44a000000",
+      "x-ms-client-request-id" : "977a5009-881e-4bf7-89e6-38958f7c2f9c",
+      "Date" : "Fri, 29 Oct 2021 18:18:57 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.blob.core.windows.net?restype=service&comp=properties",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.15.0-beta.1 azsdk-java-azure-storage-file-datalake/12.8.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0edad788-f70d-41b3-8ae1-3b7f06802d81",
+      "Content-Type" : "application/xml"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "e5c6b305-e01e-004e-1ff1-ccf44a000000",
+      "x-ms-client-request-id" : "0edad788-f70d-41b3-8ae1-3b7f06802d81",
+      "Date" : "Fri, 29 Oct 2021 18:18:58 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://REDACTED.blob.core.windows.net?comp=list&include=system",
+    "Headers" : {
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.15.0-beta.1 azsdk-java-azure-storage-file-datalake/12.8.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ddcb7b1a-753b-4cff-87dd-8618e6c09c8e"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-10-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "e5c6e750-e01e-004e-7bf1-ccf44a000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"http://seanhnscanary.blob.core.windows.net/\"><Containers><Container><Name>$logs</Name><Properties><Last-Modified>Tue, 19 Oct 2021 19:22:29 GMT</Last-Modified><Etag>\"0x8D99335CAFF619E\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>5068d4e405068d4e40c3193082cd2fc92917d406fbe8</Name><Properties><Last-Modified>Fri, 29 Oct 2021 18:18:58 GMT</Last-Modified><Etag>\"0x8D99B08938AF5EA\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container><Container><Name>test-filesystem-60cbca8a-cd23-4553-921e-a941b544f412</Name><Properties><Last-Modified>Tue, 19 Oct 2021 22:07:29 GMT</Last-Modified><Etag>\"0x8D9934CD7EB6343\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><PublicAccess>container</PublicAccess><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><ImmutableStorageWithVersioningEnabled>false</ImmutableStorageWithVersioningEnabled></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "ddcb7b1a-753b-4cff-87dd-8618e6c09c8e",
+      "Date" : "Fri, 29 Oct 2021 18:19:28 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "5068d4e405068d4e40c3193082cd2fc92917d406fbe8" ]
+}

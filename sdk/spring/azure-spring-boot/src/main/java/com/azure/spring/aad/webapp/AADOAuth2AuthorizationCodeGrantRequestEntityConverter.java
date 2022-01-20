@@ -24,6 +24,11 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverter
 
     private final Set<String> azureClientAccessTokenScopes;
 
+    /**
+     * Creates a new instance of {@link AADOAuth2AuthorizationCodeGrantRequestEntityConverter}.
+     *
+     * @param azureClientAccessTokenScopes the Azure client access token scopes
+     */
     public AADOAuth2AuthorizationCodeGrantRequestEntityConverter(Set<String> azureClientAccessTokenScopes) {
         this.azureClientAccessTokenScopes = azureClientAccessTokenScopes;
     }

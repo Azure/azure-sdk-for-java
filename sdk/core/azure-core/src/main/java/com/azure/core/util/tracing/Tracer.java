@@ -19,8 +19,18 @@ public interface Tracer {
      * as the parent span for all spans the SDK creates.
      * <p>
      * If no span data is listed when the span is created it will default to using this span key as the parent span.
+     *
+     * @deprecated Deprecated in favor of PARENT_TRACE_CONTEXT_KEY, use it to propagate full io.opentelemetry.Context
      */
+    @Deprecated
     String PARENT_SPAN_KEY = "parent-span";
+
+    /**
+     * {@link Context} key to store trace context. This context will be used as a parent context
+     * for new spans and propagated in outgoing HTTP calls.
+     *
+     */
+    String PARENT_TRACE_CONTEXT_KEY = "trace-context";
 
     /**
      * Key for {@link Context} which indicates that the context contains the name for the user spans that are
@@ -87,12 +97,11 @@ public interface Tracer {
      * <p>Starts a tracing span with provided method name and explicit parent span</p>
      * <!-- src_embed com.azure.core.util.tracing.start#string-context -->
      * <pre>
-     * &#47;&#47; pass the current tracing span context to the calling method
-     * Context traceContext = new Context&#40;PARENT_SPAN_KEY, &quot;&lt;user-current-span&gt;&quot;&#41;;
-     * &#47;&#47; start a new tracing span with the given method name and explicit parent span
-     * Context updatedContext = tracer.start&#40;&quot;azure.keyvault.secrets&#47;setsecret&quot;, traceContext&#41;;
-     * System.out.printf&#40;&quot;Span returned in the context object: %s%n&quot;,
-     *     updatedContext.getData&#40;PARENT_SPAN_KEY&#41;.get&#40;&#41;&#41;;
+     * &#47;&#47; start a new tracing span with given name and parent context implicitly propagated
+     * &#47;&#47; in io.opentelemetry.context.Context.current&#40;&#41;
+     * Context traceContext = tracer.start&#40;&quot;keyvault.setsecret&quot;, Context.NONE&#41;;
+     * System.out.printf&#40;&quot;OpenTelemetry Context with started `keyvault.setsecret` span: %s%n&quot;,
+     *     traceContext.getData&#40;PARENT_TRACE_CONTEXT_KEY&#41;.get&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.core.util.tracing.start#string-context -->
      *
@@ -115,12 +124,12 @@ public interface Tracer {
      * <p>Starts a tracing span with provided method name and explicit parent span</p>
      * <!-- src_embed com.azure.core.util.tracing.start#options-context -->
      * <pre>
-     * &#47;&#47; start a new CLIENT tracing span with the given start options and explicit parent span
+     * &#47;&#47; start a new CLIENT tracing span with the given start options and explicit parent context
      * StartSpanOptions options = new StartSpanOptions&#40;SpanKind.CLIENT&#41;
      *     .setAttribute&#40;&quot;key&quot;, &quot;value&quot;&#41;;
-     * Context updatedClientSpanContext = tracer.start&#40;&quot;azure.keyvault.secrets&#47;setsecret&quot;, options, traceContext&#41;;
-     * System.out.printf&#40;&quot;Span returned in the context object: %s%n&quot;,
-     *     updatedClientSpanContext.getData&#40;PARENT_SPAN_KEY&#41;.get&#40;&#41;&#41;;
+     * Context updatedClientSpanContext = tracer.start&#40;&quot;keyvault.setsecret&quot;, options, traceContext&#41;;
+     * System.out.printf&#40;&quot;OpenTelemetry Context with started `keyvault.setsecret` span: %s%n&quot;,
+     *     updatedClientSpanContext.getData&#40;PARENT_TRACE_CONTEXT_KEY&#41;.get&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.core.util.tracing.start#options-context -->
      *
@@ -160,15 +169,14 @@ public interface Tracer {
      * <p>Starts a tracing span with provided method name and AMQP operation SEND</p>
      * <!-- src_embed com.azure.core.util.tracing.start#string-context-processKind-SEND -->
      * <pre>
-     * &#47;&#47; pass the current tracing span and request metadata to the calling method
-     * Context sendContext = new Context&#40;PARENT_SPAN_KEY, &quot;&lt;user-current-span&gt;&quot;&#41;
-     *     .addData&#40;ENTITY_PATH_KEY, &quot;entity-path&quot;&#41;.addData&#40;HOST_NAME_KEY, &quot;hostname&quot;&#41;;
+     * &#47;&#47; pass request metadata to the calling method
+     * Context sendContext = new Context&#40;ENTITY_PATH_KEY, &quot;entity-path&quot;&#41;.addData&#40;HOST_NAME_KEY, &quot;hostname&quot;&#41;;
      *
      * &#47;&#47; start a new tracing span with explicit parent, sets the request attributes on the span and sets the span
      * &#47;&#47; kind to client when process kind SEND
-     * Context updatedSendContext = tracer.start&#40;&quot;azure.eventhubs.send&quot;, sendContext, ProcessKind.SEND&#41;;
-     * System.out.printf&#40;&quot;Span returned in the context object: %s%n&quot;,
-     *     updatedSendContext.getData&#40;PARENT_SPAN_KEY&#41;.get&#40;&#41;&#41;;
+     * Context updatedSendContext = tracer.start&#40;&quot;eventhubs.send&quot;, sendContext, ProcessKind.SEND&#41;;
+     * System.out.printf&#40;&quot;OpenTelemetry Context with started `eventhubs.send` span: %s%n&quot;,
+     *     updatedSendContext.getData&#40;PARENT_TRACE_CONTEXT_KEY&#41;.get&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.core.util.tracing.start#string-context-processKind-SEND -->
      *
@@ -178,9 +186,9 @@ public interface Tracer {
      * String diagnosticIdKey = &quot;Diagnostic-Id&quot;;
      * &#47;&#47; start a new tracing span with explicit parent, sets the diagnostic Id &#40;traceparent headers&#41; on the current
      * &#47;&#47; context when process kind MESSAGE
-     * Context updatedReceiveContext = tracer.start&#40;&quot;azure.eventhubs.receive&quot;, traceContext,
+     * Context updatedReceiveContext = tracer.start&#40;&quot;EventHubs.receive&quot;, traceContext,
      *     ProcessKind.MESSAGE&#41;;
-     * System.out.printf&#40;&quot;Diagnostic Id: %s%n&quot;, updatedReceiveContext.getData&#40;diagnosticIdKey&#41;.get&#40;&#41;.toString&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Diagnostic Id: %s%n&quot;, updatedReceiveContext.getData&#40;diagnosticIdKey&#41;.get&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.core.util.tracing.start#string-context-processKind-MESSAGE -->
      *
@@ -188,11 +196,11 @@ public interface Tracer {
      * <!-- src_embed com.azure.core.util.tracing.start#string-context-processKind-PROCESS -->
      * <pre>
      * String spanImplContext = &quot;span-context&quot;;
-     * &#47;&#47; start a new tracing span with remote parent and uses the span in the current context to return a scope
+     * &#47;&#47; start a new tracing span with remote parent and uses current context to return a scope
      * &#47;&#47; when process kind PROCESS
-     * Context processContext = new Context&#40;PARENT_SPAN_KEY, &quot;&lt;user-current-span&gt;&quot;&#41;
+     * Context processContext = new Context&#40;PARENT_TRACE_CONTEXT_KEY, &quot;&lt;OpenTelemetry-context&gt;&quot;&#41;
      *     .addData&#40;spanImplContext, &quot;&lt;user-current-span-context&gt;&quot;&#41;;
-     * Context updatedProcessContext = tracer.start&#40;&quot;azure.eventhubs.process&quot;, processContext,
+     * Context updatedProcessContext = tracer.start&#40;&quot;EventHubs.process&quot;, processContext,
      *     ProcessKind.PROCESS&#41;;
      * System.out.printf&#40;&quot;Scope: %s%n&quot;, updatedProcessContext.getData&#40;&quot;scope&quot;&#41;.get&#40;&#41;&#41;;
      * </pre>
@@ -215,9 +223,9 @@ public interface Tracer {
      * response status code</p>
      * <!-- src_embed com.azure.core.util.tracing.end#int-throwable-context -->
      * <pre>
-     * &#47;&#47; context containing the current tracing span to end
+     * &#47;&#47; context containing the span to end
      * String openTelemetrySpanKey = &quot;openTelemetry-span&quot;;
-     * Context traceContext = new Context&#40;PARENT_SPAN_KEY, &quot;&lt;user-current-span&gt;&quot;&#41;;
+     * Context traceContext = new Context&#40;PARENT_TRACE_CONTEXT_KEY, &quot;&lt;user-current-span&gt;&quot;&#41;;
      *
      * &#47;&#47; completes the tracing span with the passed response status code
      * tracer.end&#40;200, null, traceContext&#41;;
@@ -239,7 +247,7 @@ public interface Tracer {
      * <p>Completes the tracing span with the corresponding OpenTelemetry status for the given status message</p>
      * <!-- src_embed com.azure.core.util.tracing.end#string-throwable-context -->
      * <pre>
-     * &#47;&#47; context containing the current tracing span to end
+     * &#47;&#47; context containing the current trace context to end
      * &#47;&#47; completes the tracing span with the passed status message
      * tracer.end&#40;&quot;success&quot;, null, traceContext&#41;;
      * </pre>
@@ -271,10 +279,12 @@ public interface Tracer {
      * <p>Retrieve the span name of the returned span</p>
      * <!-- src_embed com.azure.core.util.tracing.setSpanName#string-context -->
      * <pre>
-     * &#47;&#47; Sets the span name of the returned span on the context object, with key PARENT_SPAN_KEY
-     * String openTelemetrySpanKey = &quot;openTelemetry-span&quot;;
-     * Context context = tracer.setSpanName&#40;&quot;test-span-method&quot;, Context.NONE&#41;;
-     * System.out.printf&#40;&quot;Span name: %s%n&quot;, context.getData&#40;PARENT_SPAN_KEY&#41;.get&#40;&#41;.toString&#40;&#41;&#41;;
+     * &#47;&#47; Sets future span name - it will be used when span will be started on this context
+     * Context contextWithName = tracer.setSpanName&#40;&quot;keyvault.setsecret&quot;, Context.NONE&#41;;
+     * Context traceContext = tracer.start&#40;&quot;placeholder&quot;, contextWithName&#41;;
+     *
+     * System.out.printf&#40;&quot;OpenTelemetry Context with started `keyvault.setsecret` span: %s%n&quot;,
+     *     traceContext.getData&#40;PARENT_TRACE_CONTEXT_KEY&#41;.get&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.core.util.tracing.setSpanName#string-context -->
      *
@@ -294,10 +304,9 @@ public interface Tracer {
      * <p>Link multiple spans using their span context information</p>
      * <!-- src_embed com.azure.core.util.tracing.addLink#context -->
      * <pre>
-     * &#47;&#47; use the parent context containing the current tracing span to start a child span
-     * Context parentContext = new Context&#40;PARENT_SPAN_KEY, &quot;&lt;user-current-span&gt;&quot;&#41;;
-     * &#47;&#47; use the returned span context information of the current tracing span to link
-     * Context spanContext = tracer.start&#40;&quot;test.method&quot;, parentContext, ProcessKind.MESSAGE&#41;;
+     * &#47;&#47; start a new tracing span with given name and parent context implicitly propagated
+     * &#47;&#47; in io.opentelemetry.context.Context.current&#40;&#41;
+     * Context spanContext = tracer.start&#40;&quot;test.method&quot;, Context.NONE, ProcessKind.MESSAGE&#41;;
      *
      * &#47;&#47; Adds a link between multiple span's using the span context information of the Span
      * &#47;&#47; For each event processed, add a link with the created spanContext
@@ -341,9 +350,8 @@ public interface Tracer {
      * <!-- src_embed com.azure.core.util.tracing.getSpanBuilder#string-context -->
      * <pre>
      * &#47;&#47; Returns a span builder with the provided name
-     * String methodName = &quot;message-span&quot;;
-     * Context spanContext = tracer.getSharedSpanBuilder&#40;methodName, Context.NONE&#41;;
-     * System.out.printf&#40;&quot;Span context of the current tracing span: %s%n&quot;, spanContext.getData&#40;SPAN_BUILDER_KEY&#41;.get&#40;&#41;&#41;;
+     * Context spanContext = tracer.getSharedSpanBuilder&#40;&quot;message-span&quot;, Context.NONE&#41;;
+     * System.out.printf&#40;&quot;Builder of current span being built: %s%n&quot;, spanContext.getData&#40;SPAN_BUILDER_KEY&#41;.get&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.core.util.tracing.getSpanBuilder#string-context -->
      *
@@ -404,7 +412,7 @@ public interface Tracer {
      * <!-- src_embed com.azure.core.util.tracing.makeSpanCurrent#context -->
      * <pre>
      * &#47;&#47; Starts a span, makes it current and then stops it.
-     * Context traceContext = tracer.start&#40;&quot;EventHub.process&quot;, Context.NONE&#41;;
+     * Context traceContext = tracer.start&#40;&quot;EventHubs.process&quot;, Context.NONE&#41;;
      *
      * &#47;&#47; Make sure to always use try-with-resource statement with makeSpanCurrent
      * try &#40;AutoCloseable ignored = tracer.makeSpanCurrent&#40;traceContext&#41;&#41; &#123;

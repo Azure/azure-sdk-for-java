@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.confluent.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
@@ -18,9 +17,8 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** Organization resource. */
-@JsonFlatten
 @Fluent
-public class OrganizationResourceInner extends Resource {
+public final class OrganizationResourceInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OrganizationResourceInner.class);
 
     /*
@@ -30,40 +28,10 @@ public class OrganizationResourceInner extends Resource {
     private SystemData systemData;
 
     /*
-     * The creation time of the resource.
+     * Organization resource properties
      */
-    @JsonProperty(value = "properties.createdTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdTime;
-
-    /*
-     * Provision states for confluent RP
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisionState provisioningState;
-
-    /*
-     * Id of the Confluent organization.
-     */
-    @JsonProperty(value = "properties.organizationId", access = JsonProperty.Access.WRITE_ONLY)
-    private String organizationId;
-
-    /*
-     * SSO url for the Confluent organization.
-     */
-    @JsonProperty(value = "properties.ssoUrl", access = JsonProperty.Access.WRITE_ONLY)
-    private String ssoUrl;
-
-    /*
-     * Confluent offer detail
-     */
-    @JsonProperty(value = "properties.offerDetail", required = true)
-    private OfferDetail offerDetail;
-
-    /*
-     * Subscriber detail
-     */
-    @JsonProperty(value = "properties.userDetail", required = true)
-    private UserDetail userDetail;
+    @JsonProperty(value = "properties", required = true)
+    private OrganizationResourceProperties innerProperties = new OrganizationResourceProperties();
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
@@ -75,79 +43,12 @@ public class OrganizationResourceInner extends Resource {
     }
 
     /**
-     * Get the createdTime property: The creation time of the resource.
+     * Get the innerProperties property: Organization resource properties.
      *
-     * @return the createdTime value.
+     * @return the innerProperties value.
      */
-    public OffsetDateTime createdTime() {
-        return this.createdTime;
-    }
-
-    /**
-     * Get the provisioningState property: Provision states for confluent RP.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisionState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the organizationId property: Id of the Confluent organization.
-     *
-     * @return the organizationId value.
-     */
-    public String organizationId() {
-        return this.organizationId;
-    }
-
-    /**
-     * Get the ssoUrl property: SSO url for the Confluent organization.
-     *
-     * @return the ssoUrl value.
-     */
-    public String ssoUrl() {
-        return this.ssoUrl;
-    }
-
-    /**
-     * Get the offerDetail property: Confluent offer detail.
-     *
-     * @return the offerDetail value.
-     */
-    public OfferDetail offerDetail() {
-        return this.offerDetail;
-    }
-
-    /**
-     * Set the offerDetail property: Confluent offer detail.
-     *
-     * @param offerDetail the offerDetail value to set.
-     * @return the OrganizationResourceInner object itself.
-     */
-    public OrganizationResourceInner withOfferDetail(OfferDetail offerDetail) {
-        this.offerDetail = offerDetail;
-        return this;
-    }
-
-    /**
-     * Get the userDetail property: Subscriber detail.
-     *
-     * @return the userDetail value.
-     */
-    public UserDetail userDetail() {
-        return this.userDetail;
-    }
-
-    /**
-     * Set the userDetail property: Subscriber detail.
-     *
-     * @param userDetail the userDetail value to set.
-     * @return the OrganizationResourceInner object itself.
-     */
-    public OrganizationResourceInner withUserDetail(UserDetail userDetail) {
-        this.userDetail = userDetail;
-        return this;
+    private OrganizationResourceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -165,26 +66,100 @@ public class OrganizationResourceInner extends Resource {
     }
 
     /**
+     * Get the createdTime property: The creation time of the resource.
+     *
+     * @return the createdTime value.
+     */
+    public OffsetDateTime createdTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdTime();
+    }
+
+    /**
+     * Get the provisioningState property: ProvisioningState Provision states for confluent RP.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisionState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the organizationId property: Id of the Confluent organization.
+     *
+     * @return the organizationId value.
+     */
+    public String organizationId() {
+        return this.innerProperties() == null ? null : this.innerProperties().organizationId();
+    }
+
+    /**
+     * Get the ssoUrl property: SSO url for the Confluent organization.
+     *
+     * @return the ssoUrl value.
+     */
+    public String ssoUrl() {
+        return this.innerProperties() == null ? null : this.innerProperties().ssoUrl();
+    }
+
+    /**
+     * Get the offerDetail property: Confluent offer detail.
+     *
+     * @return the offerDetail value.
+     */
+    public OfferDetail offerDetail() {
+        return this.innerProperties() == null ? null : this.innerProperties().offerDetail();
+    }
+
+    /**
+     * Set the offerDetail property: Confluent offer detail.
+     *
+     * @param offerDetail the offerDetail value to set.
+     * @return the OrganizationResourceInner object itself.
+     */
+    public OrganizationResourceInner withOfferDetail(OfferDetail offerDetail) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OrganizationResourceProperties();
+        }
+        this.innerProperties().withOfferDetail(offerDetail);
+        return this;
+    }
+
+    /**
+     * Get the userDetail property: Subscriber detail.
+     *
+     * @return the userDetail value.
+     */
+    public UserDetail userDetail() {
+        return this.innerProperties() == null ? null : this.innerProperties().userDetail();
+    }
+
+    /**
+     * Set the userDetail property: Subscriber detail.
+     *
+     * @param userDetail the userDetail value to set.
+     * @return the OrganizationResourceInner object itself.
+     */
+    public OrganizationResourceInner withUserDetail(UserDetail userDetail) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OrganizationResourceProperties();
+        }
+        this.innerProperties().withUserDetail(userDetail);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (offerDetail() == null) {
+        if (innerProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property offerDetail in model OrganizationResourceInner"));
+                        "Missing required property innerProperties in model OrganizationResourceInner"));
         } else {
-            offerDetail().validate();
-        }
-        if (userDetail() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property userDetail in model OrganizationResourceInner"));
-        } else {
-            userDetail().validate();
+            innerProperties().validate();
         }
     }
 }

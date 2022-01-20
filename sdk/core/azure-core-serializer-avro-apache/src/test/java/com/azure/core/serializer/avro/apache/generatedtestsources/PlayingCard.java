@@ -71,9 +71,9 @@ public class PlayingCard extends org.apache.avro.specific.SpecificRecordBase imp
     return DECODER.decode(b);
   }
 
-  @Deprecated public boolean isFaceCard;
-  @Deprecated public int cardValue;
-  @Deprecated public com.azure.core.serializer.avro.apache.generatedtestsources.PlayingCardSuit playingCardSuit;
+   private boolean isFaceCard;
+   private int cardValue;
+   private com.azure.core.serializer.avro.apache.generatedtestsources.PlayingCardSuit playingCardSuit;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -102,7 +102,7 @@ public class PlayingCard extends org.apache.avro.specific.SpecificRecordBase imp
     case 0: return isFaceCard;
     case 1: return cardValue;
     case 2: return playingCardSuit;
-    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
+    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
@@ -113,7 +113,7 @@ public class PlayingCard extends org.apache.avro.specific.SpecificRecordBase imp
     case 0: isFaceCard = (java.lang.Boolean)value$; break;
     case 1: cardValue = (java.lang.Integer)value$; break;
     case 2: playingCardSuit = (com.azure.core.serializer.avro.apache.generatedtestsources.PlayingCardSuit)value$; break;
-    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
+    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 

@@ -22,7 +22,13 @@ import java.util.List;
  *
  * <p><strong>Instantiating a synchronous Metrics query Client</strong></p>
  *
- * {@codesnippet com.azure.monitor.query.MetricsQueryClient.instantiation}
+ * <!-- src_embed com.azure.monitor.query.MetricsQueryClient.instantiation -->
+ * <pre>
+ * MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder&#40;&#41;
+ *         .credential&#40;tokenCredential&#41;
+ *         .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.monitor.query.MetricsQueryClient.instantiation -->
  */
 @ServiceClient(builder = MetricsQueryClientBuilder.class)
 public final class MetricsQueryClient {
@@ -37,7 +43,22 @@ public final class MetricsQueryClient {
      *
      * <p><strong>Query metrics for an Azure resource</strong></p>
      *
-     * {@codesnippet com.azure.monitor.query.MetricsQueryClient.query#String-List}
+     * <!-- src_embed com.azure.monitor.query.MetricsQueryClient.query#String-List -->
+     * <pre>
+     * MetricsQueryResult response = metricsQueryClient.queryResource&#40;&quot;&#123;resource-id&#125;&quot;,
+     *         Arrays.asList&#40;&quot;&#123;metric-1&#125;&quot;, &quot;&#123;metric-2&#125;&quot;&#41;&#41;;
+     * for &#40;MetricResult metricResult : response.getMetrics&#40;&#41;&#41; &#123;
+     *     System.out.println&#40;&quot;Metric name &quot; + metricResult.getMetricName&#40;&#41;&#41;;
+     *
+     *     metricResult.getTimeSeries&#40;&#41;.stream&#40;&#41;
+     *             .flatMap&#40;timeSeriesElement -&gt; timeSeriesElement.getValues&#40;&#41;.stream&#40;&#41;&#41;
+     *             .forEach&#40;metricValue -&gt;
+     *                     System.out.println&#40;&quot;Time stamp: &quot; + metricValue.getTimeStamp&#40;&#41; + &quot;; Total:  &quot;
+     *                             + metricValue.getTotal&#40;&#41;&#41;&#41;;
+     * &#125;
+     *
+     * </pre>
+     * <!-- end com.azure.monitor.query.MetricsQueryClient.query#String-List -->
      *
      * @param resourceUri The resource URI for which the metrics is requested.
      * @param metricsNames The names of the metrics to query.

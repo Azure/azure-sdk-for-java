@@ -409,7 +409,7 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return quota limit.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginCreateOrUpdateAsync(
         String resourceName, String scope, CurrentQuotaLimitBaseInner createQuotaRequest) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -445,7 +445,7 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return quota limit.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginCreateOrUpdateAsync(
         String resourceName, String scope, CurrentQuotaLimitBaseInner createQuotaRequest, Context context) {
         context = this.client.mergeContext(context);
@@ -481,7 +481,7 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return quota limit.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginCreateOrUpdate(
         String resourceName, String scope, CurrentQuotaLimitBaseInner createQuotaRequest) {
         return beginCreateOrUpdateAsync(resourceName, scope, createQuotaRequest).getSyncPoller();
@@ -508,7 +508,7 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return quota limit.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginCreateOrUpdate(
         String resourceName, String scope, CurrentQuotaLimitBaseInner createQuotaRequest, Context context) {
         return beginCreateOrUpdateAsync(resourceName, scope, createQuotaRequest, context).getSyncPoller();
@@ -756,7 +756,7 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return quota limit.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginUpdateAsync(
         String resourceName, String scope, CurrentQuotaLimitBaseInner createQuotaRequest) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceName, scope, createQuotaRequest);
@@ -791,7 +791,7 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return quota limit.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginUpdateAsync(
         String resourceName, String scope, CurrentQuotaLimitBaseInner createQuotaRequest, Context context) {
         context = this.client.mergeContext(context);
@@ -827,7 +827,7 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return quota limit.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginUpdate(
         String resourceName, String scope, CurrentQuotaLimitBaseInner createQuotaRequest) {
         return beginUpdateAsync(resourceName, scope, createQuotaRequest).getSyncPoller();
@@ -854,7 +854,7 @@ public final class QuotasClientImpl implements QuotasClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return quota limit.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginUpdate(
         String resourceName, String scope, CurrentQuotaLimitBaseInner createQuotaRequest, Context context) {
         return beginUpdateAsync(resourceName, scope, createQuotaRequest, context).getSyncPoller();

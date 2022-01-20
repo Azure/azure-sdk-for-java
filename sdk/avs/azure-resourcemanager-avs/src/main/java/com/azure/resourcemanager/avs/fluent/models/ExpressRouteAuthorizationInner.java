@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.ExpressRouteAuthorizationProvisioningState;
@@ -13,28 +12,24 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** ExpressRoute Circuit Authorization. */
-@JsonFlatten
 @Immutable
-public class ExpressRouteAuthorizationInner extends ProxyResource {
+public final class ExpressRouteAuthorizationInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteAuthorizationInner.class);
 
     /*
-     * The state of the  ExpressRoute Circuit Authorization provisioning
+     * The properties of an ExpressRoute Circuit Authorization resource
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ExpressRouteAuthorizationProvisioningState provisioningState;
+    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    private ExpressRouteAuthorizationProperties innerProperties;
 
-    /*
-     * The ID of the ExpressRoute Circuit Authorization
+    /**
+     * Get the innerProperties property: The properties of an ExpressRoute Circuit Authorization resource.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.expressRouteAuthorizationId", access = JsonProperty.Access.WRITE_ONLY)
-    private String expressRouteAuthorizationId;
-
-    /*
-     * The key of the ExpressRoute Circuit Authorization
-     */
-    @JsonProperty(value = "properties.expressRouteAuthorizationKey", access = JsonProperty.Access.WRITE_ONLY)
-    private String expressRouteAuthorizationKey;
+    private ExpressRouteAuthorizationProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the provisioningState property: The state of the ExpressRoute Circuit Authorization provisioning.
@@ -42,7 +37,7 @@ public class ExpressRouteAuthorizationInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public ExpressRouteAuthorizationProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -51,7 +46,7 @@ public class ExpressRouteAuthorizationInner extends ProxyResource {
      * @return the expressRouteAuthorizationId value.
      */
     public String expressRouteAuthorizationId() {
-        return this.expressRouteAuthorizationId;
+        return this.innerProperties() == null ? null : this.innerProperties().expressRouteAuthorizationId();
     }
 
     /**
@@ -60,7 +55,30 @@ public class ExpressRouteAuthorizationInner extends ProxyResource {
      * @return the expressRouteAuthorizationKey value.
      */
     public String expressRouteAuthorizationKey() {
-        return this.expressRouteAuthorizationKey;
+        return this.innerProperties() == null ? null : this.innerProperties().expressRouteAuthorizationKey();
+    }
+
+    /**
+     * Get the expressRouteId property: The ID of the ExpressRoute Circuit.
+     *
+     * @return the expressRouteId value.
+     */
+    public String expressRouteId() {
+        return this.innerProperties() == null ? null : this.innerProperties().expressRouteId();
+    }
+
+    /**
+     * Set the expressRouteId property: The ID of the ExpressRoute Circuit.
+     *
+     * @param expressRouteId the expressRouteId value to set.
+     * @return the ExpressRouteAuthorizationInner object itself.
+     */
+    public ExpressRouteAuthorizationInner withExpressRouteId(String expressRouteId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteAuthorizationProperties();
+        }
+        this.innerProperties().withExpressRouteId(expressRouteId);
+        return this;
     }
 
     /**
@@ -69,5 +87,8 @@ public class ExpressRouteAuthorizationInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

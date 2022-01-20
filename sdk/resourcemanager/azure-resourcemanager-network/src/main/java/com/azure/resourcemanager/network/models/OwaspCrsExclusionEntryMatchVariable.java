@@ -20,6 +20,24 @@ public final class OwaspCrsExclusionEntryMatchVariable
     /** Static value RequestArgNames for OwaspCrsExclusionEntryMatchVariable. */
     public static final OwaspCrsExclusionEntryMatchVariable REQUEST_ARG_NAMES = fromString("RequestArgNames");
 
+    /** Static value RequestHeaderKeys for OwaspCrsExclusionEntryMatchVariable. */
+    public static final OwaspCrsExclusionEntryMatchVariable REQUEST_HEADER_KEYS = fromString("RequestHeaderKeys");
+
+    /** Static value RequestHeaderValues for OwaspCrsExclusionEntryMatchVariable. */
+    public static final OwaspCrsExclusionEntryMatchVariable REQUEST_HEADER_VALUES = fromString("RequestHeaderValues");
+
+    /** Static value RequestCookieKeys for OwaspCrsExclusionEntryMatchVariable. */
+    public static final OwaspCrsExclusionEntryMatchVariable REQUEST_COOKIE_KEYS = fromString("RequestCookieKeys");
+
+    /** Static value RequestCookieValues for OwaspCrsExclusionEntryMatchVariable. */
+    public static final OwaspCrsExclusionEntryMatchVariable REQUEST_COOKIE_VALUES = fromString("RequestCookieValues");
+
+    /** Static value RequestArgKeys for OwaspCrsExclusionEntryMatchVariable. */
+    public static final OwaspCrsExclusionEntryMatchVariable REQUEST_ARG_KEYS = fromString("RequestArgKeys");
+
+    /** Static value RequestArgValues for OwaspCrsExclusionEntryMatchVariable. */
+    public static final OwaspCrsExclusionEntryMatchVariable REQUEST_ARG_VALUES = fromString("RequestArgValues");
+
     /**
      * Creates or finds a OwaspCrsExclusionEntryMatchVariable from its string representation.
      *

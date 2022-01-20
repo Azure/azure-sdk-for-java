@@ -57,7 +57,7 @@ public interface TopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return eventGrid Topic.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TopicInner>, TopicInner> beginCreateOrUpdate(
         String resourceGroupName, String topicName, TopicInner topicInfo);
 
@@ -73,7 +73,7 @@ public interface TopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return eventGrid Topic.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TopicInner>, TopicInner> beginCreateOrUpdate(
         String resourceGroupName, String topicName, TopicInner topicInfo, Context context);
 
@@ -116,7 +116,7 @@ public interface TopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String topicName);
 
     /**
@@ -130,7 +130,7 @@ public interface TopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String topicName, Context context);
 
     /**
@@ -169,7 +169,7 @@ public interface TopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TopicInner>, TopicInner> beginUpdate(
         String resourceGroupName, String topicName, TopicUpdateParameters topicUpdateParameters);
 
@@ -185,7 +185,7 @@ public interface TopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TopicInner>, TopicInner> beginUpdate(
         String resourceGroupName, String topicName, TopicUpdateParameters topicUpdateParameters, Context context);
 
@@ -322,7 +322,7 @@ public interface TopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return shared access keys of the Topic.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TopicSharedAccessKeysInner>, TopicSharedAccessKeysInner> beginRegenerateKey(
         String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest);
 
@@ -338,7 +338,7 @@ public interface TopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return shared access keys of the Topic.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TopicSharedAccessKeysInner>, TopicSharedAccessKeysInner> beginRegenerateKey(
         String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest, Context context);
 

@@ -208,7 +208,8 @@ public final class ManagedInstanceTdeCertificatesClientImpl implements ManagedIn
             createWithResponseAsync(resourceGroupName, managedInstanceName, parameters);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

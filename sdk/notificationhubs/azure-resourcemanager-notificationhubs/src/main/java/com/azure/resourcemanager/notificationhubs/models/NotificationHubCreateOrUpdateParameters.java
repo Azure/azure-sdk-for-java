@@ -5,73 +5,25 @@
 package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.notificationhubs.fluent.models.NotificationHubProperties;
+import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** Parameters supplied to the CreateOrUpdate NotificationHub operation. */
-@JsonFlatten
 @Fluent
-public class NotificationHubCreateOrUpdateParameters extends Resource {
+public final class NotificationHubCreateOrUpdateParameters extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NotificationHubCreateOrUpdateParameters.class);
 
     /*
-     * The NotificationHub name.
+     * Properties of the NotificationHub.
      */
-    @JsonProperty(value = "properties.name")
-    private String namePropertiesName;
-
-    /*
-     * The RegistrationTtl of the created NotificationHub
-     */
-    @JsonProperty(value = "properties.registrationTtl")
-    private String registrationTtl;
-
-    /*
-     * The AuthorizationRules of the created NotificationHub
-     */
-    @JsonProperty(value = "properties.authorizationRules")
-    private List<SharedAccessAuthorizationRuleProperties> authorizationRules;
-
-    /*
-     * The ApnsCredential of the created NotificationHub
-     */
-    @JsonProperty(value = "properties.apnsCredential")
-    private ApnsCredential apnsCredential;
-
-    /*
-     * The WnsCredential of the created NotificationHub
-     */
-    @JsonProperty(value = "properties.wnsCredential")
-    private WnsCredential wnsCredential;
-
-    /*
-     * The GcmCredential of the created NotificationHub
-     */
-    @JsonProperty(value = "properties.gcmCredential")
-    private GcmCredential gcmCredential;
-
-    /*
-     * The MpnsCredential of the created NotificationHub
-     */
-    @JsonProperty(value = "properties.mpnsCredential")
-    private MpnsCredential mpnsCredential;
-
-    /*
-     * The AdmCredential of the created NotificationHub
-     */
-    @JsonProperty(value = "properties.admCredential")
-    private AdmCredential admCredential;
-
-    /*
-     * The BaiduCredential of the created NotificationHub
-     */
-    @JsonProperty(value = "properties.baiduCredential")
-    private BaiduCredential baiduCredential;
+    @JsonProperty(value = "properties", required = true)
+    private NotificationHubProperties innerProperties = new NotificationHubProperties();
 
     /*
      * The sku of the created namespace
@@ -80,184 +32,12 @@ public class NotificationHubCreateOrUpdateParameters extends Resource {
     private Sku sku;
 
     /**
-     * Get the namePropertiesName property: The NotificationHub name.
+     * Get the innerProperties property: Properties of the NotificationHub.
      *
-     * @return the namePropertiesName value.
+     * @return the innerProperties value.
      */
-    public String namePropertiesName() {
-        return this.namePropertiesName;
-    }
-
-    /**
-     * Set the namePropertiesName property: The NotificationHub name.
-     *
-     * @param namePropertiesName the namePropertiesName value to set.
-     * @return the NotificationHubCreateOrUpdateParameters object itself.
-     */
-    public NotificationHubCreateOrUpdateParameters withNamePropertiesName(String namePropertiesName) {
-        this.namePropertiesName = namePropertiesName;
-        return this;
-    }
-
-    /**
-     * Get the registrationTtl property: The RegistrationTtl of the created NotificationHub.
-     *
-     * @return the registrationTtl value.
-     */
-    public String registrationTtl() {
-        return this.registrationTtl;
-    }
-
-    /**
-     * Set the registrationTtl property: The RegistrationTtl of the created NotificationHub.
-     *
-     * @param registrationTtl the registrationTtl value to set.
-     * @return the NotificationHubCreateOrUpdateParameters object itself.
-     */
-    public NotificationHubCreateOrUpdateParameters withRegistrationTtl(String registrationTtl) {
-        this.registrationTtl = registrationTtl;
-        return this;
-    }
-
-    /**
-     * Get the authorizationRules property: The AuthorizationRules of the created NotificationHub.
-     *
-     * @return the authorizationRules value.
-     */
-    public List<SharedAccessAuthorizationRuleProperties> authorizationRules() {
-        return this.authorizationRules;
-    }
-
-    /**
-     * Set the authorizationRules property: The AuthorizationRules of the created NotificationHub.
-     *
-     * @param authorizationRules the authorizationRules value to set.
-     * @return the NotificationHubCreateOrUpdateParameters object itself.
-     */
-    public NotificationHubCreateOrUpdateParameters withAuthorizationRules(
-        List<SharedAccessAuthorizationRuleProperties> authorizationRules) {
-        this.authorizationRules = authorizationRules;
-        return this;
-    }
-
-    /**
-     * Get the apnsCredential property: The ApnsCredential of the created NotificationHub.
-     *
-     * @return the apnsCredential value.
-     */
-    public ApnsCredential apnsCredential() {
-        return this.apnsCredential;
-    }
-
-    /**
-     * Set the apnsCredential property: The ApnsCredential of the created NotificationHub.
-     *
-     * @param apnsCredential the apnsCredential value to set.
-     * @return the NotificationHubCreateOrUpdateParameters object itself.
-     */
-    public NotificationHubCreateOrUpdateParameters withApnsCredential(ApnsCredential apnsCredential) {
-        this.apnsCredential = apnsCredential;
-        return this;
-    }
-
-    /**
-     * Get the wnsCredential property: The WnsCredential of the created NotificationHub.
-     *
-     * @return the wnsCredential value.
-     */
-    public WnsCredential wnsCredential() {
-        return this.wnsCredential;
-    }
-
-    /**
-     * Set the wnsCredential property: The WnsCredential of the created NotificationHub.
-     *
-     * @param wnsCredential the wnsCredential value to set.
-     * @return the NotificationHubCreateOrUpdateParameters object itself.
-     */
-    public NotificationHubCreateOrUpdateParameters withWnsCredential(WnsCredential wnsCredential) {
-        this.wnsCredential = wnsCredential;
-        return this;
-    }
-
-    /**
-     * Get the gcmCredential property: The GcmCredential of the created NotificationHub.
-     *
-     * @return the gcmCredential value.
-     */
-    public GcmCredential gcmCredential() {
-        return this.gcmCredential;
-    }
-
-    /**
-     * Set the gcmCredential property: The GcmCredential of the created NotificationHub.
-     *
-     * @param gcmCredential the gcmCredential value to set.
-     * @return the NotificationHubCreateOrUpdateParameters object itself.
-     */
-    public NotificationHubCreateOrUpdateParameters withGcmCredential(GcmCredential gcmCredential) {
-        this.gcmCredential = gcmCredential;
-        return this;
-    }
-
-    /**
-     * Get the mpnsCredential property: The MpnsCredential of the created NotificationHub.
-     *
-     * @return the mpnsCredential value.
-     */
-    public MpnsCredential mpnsCredential() {
-        return this.mpnsCredential;
-    }
-
-    /**
-     * Set the mpnsCredential property: The MpnsCredential of the created NotificationHub.
-     *
-     * @param mpnsCredential the mpnsCredential value to set.
-     * @return the NotificationHubCreateOrUpdateParameters object itself.
-     */
-    public NotificationHubCreateOrUpdateParameters withMpnsCredential(MpnsCredential mpnsCredential) {
-        this.mpnsCredential = mpnsCredential;
-        return this;
-    }
-
-    /**
-     * Get the admCredential property: The AdmCredential of the created NotificationHub.
-     *
-     * @return the admCredential value.
-     */
-    public AdmCredential admCredential() {
-        return this.admCredential;
-    }
-
-    /**
-     * Set the admCredential property: The AdmCredential of the created NotificationHub.
-     *
-     * @param admCredential the admCredential value to set.
-     * @return the NotificationHubCreateOrUpdateParameters object itself.
-     */
-    public NotificationHubCreateOrUpdateParameters withAdmCredential(AdmCredential admCredential) {
-        this.admCredential = admCredential;
-        return this;
-    }
-
-    /**
-     * Get the baiduCredential property: The BaiduCredential of the created NotificationHub.
-     *
-     * @return the baiduCredential value.
-     */
-    public BaiduCredential baiduCredential() {
-        return this.baiduCredential;
-    }
-
-    /**
-     * Set the baiduCredential property: The BaiduCredential of the created NotificationHub.
-     *
-     * @param baiduCredential the baiduCredential value to set.
-     * @return the NotificationHubCreateOrUpdateParameters object itself.
-     */
-    public NotificationHubCreateOrUpdateParameters withBaiduCredential(BaiduCredential baiduCredential) {
-        this.baiduCredential = baiduCredential;
-        return this;
+    private NotificationHubProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -295,31 +75,226 @@ public class NotificationHubCreateOrUpdateParameters extends Resource {
     }
 
     /**
+     * Get the name property: The NotificationHub name.
+     *
+     * @return the name value.
+     */
+    public String namePropertiesName() {
+        return this.innerProperties() == null ? null : this.innerProperties().name();
+    }
+
+    /**
+     * Set the name property: The NotificationHub name.
+     *
+     * @param name the name value to set.
+     * @return the NotificationHubCreateOrUpdateParameters object itself.
+     */
+    public NotificationHubCreateOrUpdateParameters withNamePropertiesName(String name) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NotificationHubProperties();
+        }
+        this.innerProperties().withName(name);
+        return this;
+    }
+
+    /**
+     * Get the registrationTtl property: The RegistrationTtl of the created NotificationHub.
+     *
+     * @return the registrationTtl value.
+     */
+    public String registrationTtl() {
+        return this.innerProperties() == null ? null : this.innerProperties().registrationTtl();
+    }
+
+    /**
+     * Set the registrationTtl property: The RegistrationTtl of the created NotificationHub.
+     *
+     * @param registrationTtl the registrationTtl value to set.
+     * @return the NotificationHubCreateOrUpdateParameters object itself.
+     */
+    public NotificationHubCreateOrUpdateParameters withRegistrationTtl(String registrationTtl) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NotificationHubProperties();
+        }
+        this.innerProperties().withRegistrationTtl(registrationTtl);
+        return this;
+    }
+
+    /**
+     * Get the authorizationRules property: The AuthorizationRules of the created NotificationHub.
+     *
+     * @return the authorizationRules value.
+     */
+    public List<SharedAccessAuthorizationRuleProperties> authorizationRules() {
+        return this.innerProperties() == null ? null : this.innerProperties().authorizationRules();
+    }
+
+    /**
+     * Set the authorizationRules property: The AuthorizationRules of the created NotificationHub.
+     *
+     * @param authorizationRules the authorizationRules value to set.
+     * @return the NotificationHubCreateOrUpdateParameters object itself.
+     */
+    public NotificationHubCreateOrUpdateParameters withAuthorizationRules(
+        List<SharedAccessAuthorizationRuleProperties> authorizationRules) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NotificationHubProperties();
+        }
+        this.innerProperties().withAuthorizationRules(authorizationRules);
+        return this;
+    }
+
+    /**
+     * Get the apnsCredential property: The ApnsCredential of the created NotificationHub.
+     *
+     * @return the apnsCredential value.
+     */
+    public ApnsCredential apnsCredential() {
+        return this.innerProperties() == null ? null : this.innerProperties().apnsCredential();
+    }
+
+    /**
+     * Set the apnsCredential property: The ApnsCredential of the created NotificationHub.
+     *
+     * @param apnsCredential the apnsCredential value to set.
+     * @return the NotificationHubCreateOrUpdateParameters object itself.
+     */
+    public NotificationHubCreateOrUpdateParameters withApnsCredential(ApnsCredential apnsCredential) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NotificationHubProperties();
+        }
+        this.innerProperties().withApnsCredential(apnsCredential);
+        return this;
+    }
+
+    /**
+     * Get the wnsCredential property: The WnsCredential of the created NotificationHub.
+     *
+     * @return the wnsCredential value.
+     */
+    public WnsCredential wnsCredential() {
+        return this.innerProperties() == null ? null : this.innerProperties().wnsCredential();
+    }
+
+    /**
+     * Set the wnsCredential property: The WnsCredential of the created NotificationHub.
+     *
+     * @param wnsCredential the wnsCredential value to set.
+     * @return the NotificationHubCreateOrUpdateParameters object itself.
+     */
+    public NotificationHubCreateOrUpdateParameters withWnsCredential(WnsCredential wnsCredential) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NotificationHubProperties();
+        }
+        this.innerProperties().withWnsCredential(wnsCredential);
+        return this;
+    }
+
+    /**
+     * Get the gcmCredential property: The GcmCredential of the created NotificationHub.
+     *
+     * @return the gcmCredential value.
+     */
+    public GcmCredential gcmCredential() {
+        return this.innerProperties() == null ? null : this.innerProperties().gcmCredential();
+    }
+
+    /**
+     * Set the gcmCredential property: The GcmCredential of the created NotificationHub.
+     *
+     * @param gcmCredential the gcmCredential value to set.
+     * @return the NotificationHubCreateOrUpdateParameters object itself.
+     */
+    public NotificationHubCreateOrUpdateParameters withGcmCredential(GcmCredential gcmCredential) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NotificationHubProperties();
+        }
+        this.innerProperties().withGcmCredential(gcmCredential);
+        return this;
+    }
+
+    /**
+     * Get the mpnsCredential property: The MpnsCredential of the created NotificationHub.
+     *
+     * @return the mpnsCredential value.
+     */
+    public MpnsCredential mpnsCredential() {
+        return this.innerProperties() == null ? null : this.innerProperties().mpnsCredential();
+    }
+
+    /**
+     * Set the mpnsCredential property: The MpnsCredential of the created NotificationHub.
+     *
+     * @param mpnsCredential the mpnsCredential value to set.
+     * @return the NotificationHubCreateOrUpdateParameters object itself.
+     */
+    public NotificationHubCreateOrUpdateParameters withMpnsCredential(MpnsCredential mpnsCredential) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NotificationHubProperties();
+        }
+        this.innerProperties().withMpnsCredential(mpnsCredential);
+        return this;
+    }
+
+    /**
+     * Get the admCredential property: The AdmCredential of the created NotificationHub.
+     *
+     * @return the admCredential value.
+     */
+    public AdmCredential admCredential() {
+        return this.innerProperties() == null ? null : this.innerProperties().admCredential();
+    }
+
+    /**
+     * Set the admCredential property: The AdmCredential of the created NotificationHub.
+     *
+     * @param admCredential the admCredential value to set.
+     * @return the NotificationHubCreateOrUpdateParameters object itself.
+     */
+    public NotificationHubCreateOrUpdateParameters withAdmCredential(AdmCredential admCredential) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NotificationHubProperties();
+        }
+        this.innerProperties().withAdmCredential(admCredential);
+        return this;
+    }
+
+    /**
+     * Get the baiduCredential property: The BaiduCredential of the created NotificationHub.
+     *
+     * @return the baiduCredential value.
+     */
+    public BaiduCredential baiduCredential() {
+        return this.innerProperties() == null ? null : this.innerProperties().baiduCredential();
+    }
+
+    /**
+     * Set the baiduCredential property: The BaiduCredential of the created NotificationHub.
+     *
+     * @param baiduCredential the baiduCredential value to set.
+     * @return the NotificationHubCreateOrUpdateParameters object itself.
+     */
+    public NotificationHubCreateOrUpdateParameters withBaiduCredential(BaiduCredential baiduCredential) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NotificationHubProperties();
+        }
+        this.innerProperties().withBaiduCredential(baiduCredential);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (authorizationRules() != null) {
-            authorizationRules().forEach(e -> e.validate());
-        }
-        if (apnsCredential() != null) {
-            apnsCredential().validate();
-        }
-        if (wnsCredential() != null) {
-            wnsCredential().validate();
-        }
-        if (gcmCredential() != null) {
-            gcmCredential().validate();
-        }
-        if (mpnsCredential() != null) {
-            mpnsCredential().validate();
-        }
-        if (admCredential() != null) {
-            admCredential().validate();
-        }
-        if (baiduCredential() != null) {
-            baiduCredential().validate();
+        if (innerProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model NotificationHubCreateOrUpdateParameters"));
+        } else {
+            innerProperties().validate();
         }
         if (sku() != null) {
             sku().validate();

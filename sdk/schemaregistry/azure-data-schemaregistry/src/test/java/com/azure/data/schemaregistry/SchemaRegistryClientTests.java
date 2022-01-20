@@ -6,10 +6,10 @@ package com.azure.data.schemaregistry;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
-import com.azure.data.schemaregistry.implementation.models.ServiceErrorResponseException;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
@@ -17,9 +17,11 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.time.OffsetDateTime;
 
+import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.PLAYBACK_TEST_GROUP;
 import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.RESOURCE_LENGTH;
 import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.SCHEMA_CONTENT;
 import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.SCHEMA_REGISTRY_ENDPOINT;
@@ -30,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -48,7 +51,7 @@ public class SchemaRegistryClientTests extends TestBase {
         TokenCredential tokenCredential;
         if (interceptorManager.isPlaybackMode()) {
             tokenCredential = mock(TokenCredential.class);
-            schemaGroup = "at";
+            schemaGroup = PLAYBACK_TEST_GROUP;
 
             // Sometimes it throws an "NotAMockException", so we had to change from thenReturn to thenAnswer.
             when(tokenCredential.getToken(any(TokenRequestContext.class))).thenAnswer(invocationOnMock -> {
@@ -185,11 +188,32 @@ public class SchemaRegistryClientTests extends TestBase {
         final SchemaRegistryClient client1 = builder.buildClient();
 
         // Act
-        final ServiceErrorResponseException exception = assertThrows(ServiceErrorResponseException.class,
+        final HttpResponseException exception = assertThrows(HttpResponseException.class,
             () -> client1.registerSchema(schemaGroup, schemaName, invalidContent, SchemaFormat.AVRO));
 
         // Assert
         assertEquals(400, exception.getResponse().getStatusCode());
+    }
+
+    /**
+     * Verifies that a 415 is returned if we use an invalid schema format.
+     */
+    @Test
+    public void registerSchemaInvalidFormat() {
+        // Arrange
+        final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
+        final SchemaRegistryAsyncClient client = builder.buildAsyncClient();
+        final SchemaFormat unknownSchemaFormat = SchemaFormat.fromString("protobuf");
+
+        // Act & Assert
+        StepVerifier.create(client.registerSchemaWithResponse(schemaGroup, schemaName, SCHEMA_CONTENT, unknownSchemaFormat))
+            .expectErrorSatisfies(error -> {
+                assertTrue(error instanceof HttpResponseException);
+
+                final HttpResponseException responseException = ((HttpResponseException) error);
+                assertEquals(415, responseException.getResponse().getStatusCode());
+            })
+            .verify();
     }
 
     /**
@@ -218,7 +242,7 @@ public class SchemaRegistryClientTests extends TestBase {
 
         // Act & Assert
         final ResourceNotFoundException error = assertThrows(ResourceNotFoundException.class,
-            () -> client1.getSchemaProperties("at", "bar", SCHEMA_CONTENT, SchemaFormat.AVRO));
+            () -> client1.getSchemaProperties(schemaGroup, "bar", SCHEMA_CONTENT, SchemaFormat.AVRO));
 
         assertEquals(404, error.getResponse().getStatusCode());
     }

@@ -713,7 +713,8 @@ public final class VirtualClustersClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualClusterName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -974,7 +975,7 @@ public final class VirtualClustersClientImpl
                 this.client.getHttpPipeline(),
                 VirtualClusterInner.class,
                 VirtualClusterInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

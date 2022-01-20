@@ -29,7 +29,7 @@ autorest --java --use:@autorest/java@4.0.x
 
 ### Code generation settings
 ``` yaml
-input-file: https://github.com/Azure/azure-rest-api-specs/blob/9b489ff217acd3bd6d62b2932e42d3c08ed4d08c/specification/containerregistry/data-plane/Azure.ContainerRegistry/stable/2021-07-01/containerregistry.json
+input-file: https://github.com/Azure/azure-rest-api-specs/blob/c8d9a26a2857828e095903efa72512cf3a76c15d/specification/containerregistry/data-plane/Azure.ContainerRegistry/stable/2021-07-01/containerregistry.json
 java: true
 output-folder: ./..
 generate-client-as-impl: true
@@ -50,6 +50,7 @@ directive:
 - from: swagger-document
   where: $.definitions.TagOrderBy
   transform: >
+    $["x-ms-enum"].name = ArtifactTagOrder
     $["x-ms-enum"].modelAsString = true;
 ```
 
@@ -59,6 +60,7 @@ directive:
 - from: swagger-document
   where: $.definitions.ManifestOrderBy
   transform: >
+    $["x-ms-enum"].name = ArtifactManifestOrder
     $["x-ms-enum"].modelAsString = true;
 ```
 
