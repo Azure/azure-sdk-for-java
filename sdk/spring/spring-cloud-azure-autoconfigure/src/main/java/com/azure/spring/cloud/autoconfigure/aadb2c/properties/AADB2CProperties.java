@@ -21,7 +21,7 @@ import static com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthorizati
 public class AADB2CProperties implements InitializingBean {
 
     /**
-     * Default logout success URL
+     * Default logout success URL.
      */
     public static final String DEFAULT_LOGOUT_SUCCESS_URL = "http://localhost:8080/login";
 
@@ -81,7 +81,7 @@ public class AADB2CProperties implements InitializingBean {
     private Map<String, Object> authenticateAdditionalParameters;
 
     /**
-     * User name attribute name
+     * User name attribute name.
      */
     private String userNameAttributeName;
 
@@ -101,12 +101,12 @@ public class AADB2CProperties implements InitializingBean {
     private String loginFlow = DEFAULT_KEY_SIGN_UP_OR_SIGN_IN;
 
     /**
-     * User flows
+     * User flows.
      */
     private Map<String, String> userFlows = new HashMap<>();
 
     /**
-     * Specify client configuration
+     * Specify client configuration.
      */
     private Map<String, AuthorizationClientProperties> authorizationClients = new HashMap<>();
 
