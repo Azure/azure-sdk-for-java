@@ -561,9 +561,9 @@ public class AADAuthenticationProperties implements InitializingBean {
         if (isMultiTenantsApplication(getProfile().getTenantId()) && !userGroup.getAllowedGroupNames().isEmpty()) {
             throw new IllegalStateException("When spring.cloud.azure.active-directory.profile.tenant-id is "
                 + "'common/organizations/consumers', "
-                + "spring.cloud.azure.active-directory.user-group.allowed-groups/allowed-group-names should be empty. "
+                + "spring.cloud.azure.active-directory.user-group.allowed-group-names should be empty. "
                 + "But actually spring.cloud.azure.active-directory.profile.tenant-id=" + getProfile().getTenantId()
-                + ", and spring.cloud.azure.active-directory.user-group.allowed-groups/allowed-group-names="
+                + ", and spring.cloud.azure.active-directory.user-group.allowed-group-names="
                 + userGroup.getAllowedGroupNames());
         }
 

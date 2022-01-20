@@ -122,8 +122,8 @@ public class AADB2CProperties implements InitializingBean {
      */
     private void validateWebappProperties() {
         if (!CollectionUtils.isEmpty(userFlows)) {
-            if (StringUtils.hasText(baseUri)) {
-                throw new AADB2CConfigurationException("'baseUri' must be configureed.");
+            if (!StringUtils.hasText(baseUri)) {
+                throw new AADB2CConfigurationException("'baseUri' must be configured.");
             }
             if (!userFlows.keySet().contains(loginFlow)) {
                 throw new AADB2CConfigurationException("Sign in user flow key '"

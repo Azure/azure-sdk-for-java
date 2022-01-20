@@ -106,7 +106,7 @@ class AADOAuth2ClientConfigurationTest {
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.enabled=true",
                 "spring.cloud.azure.active-directory.authorization-clients.graph.authorization-grant-type=on_behalf_of",
-                "spring.cloud.azure.active-directory.authorization-clients.graph.on-demand = true"
+                "spring.cloud.azure.active-directory.authorization-clients.graph.authorization-grant-type = authorization_code"
             )
             .run(context ->
                 assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class))

@@ -78,7 +78,7 @@ class AADAuthenticationPropertiesTest {
         webApplicationContextRunner()
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.profile.tenant-id=",
-                "spring.cloud.azure.active-directory.user-group.allowed-groups=group1,group2"
+                "spring.cloud.azure.active-directory.user-group.allowed-group-names=group1,group2"
             )
             .run(context ->
                 assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class))
@@ -90,7 +90,7 @@ class AADAuthenticationPropertiesTest {
         webApplicationContextRunner()
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.profile.tenant-id=common",
-                "spring.cloud.azure.active-directory.user-group.allowed-groups=group1,group2"
+                "spring.cloud.azure.active-directory.user-group.allowed-group-names=group1,group2"
             )
             .run(context ->
                 assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class))
@@ -102,7 +102,7 @@ class AADAuthenticationPropertiesTest {
         webApplicationContextRunner()
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.profile.tenant-id=organizations",
-                "spring.cloud.azure.active-directory.user-group.allowed-groups=group1,group2"
+                "spring.cloud.azure.active-directory.user-group.allowed-group-names=group1,group2"
             )
             .run(context ->
                 assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class))
@@ -166,7 +166,7 @@ class AADAuthenticationPropertiesTest {
         webApplicationContextRunner()
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.profile.tenant-id=consumers",
-                "spring.cloud.azure.active-directory.user-group.allowed-groups=group1,group2"
+                "spring.cloud.azure.active-directory.user-group.allowed-group-names=group1,group2"
             )
             .run(context ->
                 assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class))
@@ -264,17 +264,6 @@ class AADAuthenticationPropertiesTest {
 
         webApplicationContextRunner()
             .withPropertyValues("spring.cloud.azure.active-directory.application-type=resource_server")
-            .run(context -> assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class)));
-    }
-
-    @Test
-    void invalidAuthorizationCodeWhenOnDemandIsFalse() {
-        webApplicationContextRunner()
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.authorization-clients.graph.scopes = Graph.Scope",
-                "spring.cloud.azure.active-directory.authorization-clients.graph.on-demand = true",
-                "spring.cloud.azure.active-directory.authorization-clients.graph.authorizationGrantType = azure_delegated"
-            )
             .run(context -> assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class)));
     }
 

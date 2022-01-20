@@ -36,7 +36,7 @@ class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
                 "spring.cloud.azure.active-directory.base-uri = fake-uri",
                 "spring.cloud.azure.active-directory.authorization-clients.graph.scopes = Graph.Scope",
                 "spring.cloud.azure.active-directory.authorization-clients.arm.scopes = Arm.Scope",
-                "spring.cloud.azure.active-directory.authorization-clients.arm.on-demand = true");
+                "spring.cloud.azure.active-directory.authorization-clients.arm.authorization-grant-type = authorization_code");
     }
 
     @Test
@@ -51,7 +51,7 @@ class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
     }
 
     @Test
-    void addScopeForOnDemandClient() {
+    void addScopeForAuthorizationCodeClient() {
         getContextRunner().run(context -> {
             AADClientRegistrationRepository repository =
                 (AADClientRegistrationRepository) context.getBean(ClientRegistrationRepository.class);
@@ -75,7 +75,7 @@ class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    void addHeadersForOnDemandClient() {
+    void addHeadersForAuthorizationCodeClient() {
         getContextRunner().run(context -> {
             AADClientRegistrationRepository repository =
                 (AADClientRegistrationRepository) context.getBean(ClientRegistrationRepository.class);
