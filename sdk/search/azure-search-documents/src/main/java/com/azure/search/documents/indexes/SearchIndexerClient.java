@@ -54,7 +54,16 @@ public class SearchIndexerClient {
      *
      * <p> Create or update search indexer data source connection named "dataSource".  </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateDataSourceConnection#SearchIndexerDataSourceConnection}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateDataSourceConnection#SearchIndexerDataSourceConnection -->
+     * <pre>
+     * SearchIndexerDataSourceConnection dataSource = searchIndexerClient.getDataSourceConnection&#40;&quot;dataSource&quot;&#41;;
+     * dataSource.setContainer&#40;new SearchIndexerDataContainer&#40;&quot;updatecontainer&quot;&#41;&#41;;
+     *
+     * SearchIndexerDataSourceConnection updateDataSource = searchIndexerClient.createOrUpdateDataSourceConnection&#40;dataSource&#41;;
+     * System.out.printf&#40;&quot;The dataSource name is %s. The container name of dataSource is %s.%n&quot;,
+     *     updateDataSource.getName&#40;&#41;, updateDataSource.getContainer&#40;&#41;.getName&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateDataSourceConnection#SearchIndexerDataSourceConnection -->
      *
      * @param dataSourceConnection The definition of the data source to create or update.
      * @return the data source that was created or updated.
@@ -72,7 +81,18 @@ public class SearchIndexerClient {
      *
      * <p> Create or update search indexer data source connection named "dataSource". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean-Context}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean-Context -->
+     * <pre>
+     * SearchIndexerDataSourceConnection dataSource = searchIndexerClient.getDataSourceConnection&#40;&quot;dataSource&quot;&#41;;
+     * dataSource.setContainer&#40;new SearchIndexerDataContainer&#40;&quot;updatecontainer&quot;&#41;&#41;;
+     *
+     * Response&lt;SearchIndexerDataSourceConnection&gt; updateDataSource = searchIndexerClient
+     *     .createOrUpdateDataSourceConnectionWithResponse&#40;dataSource, true, new Context&#40;key1, value1&#41;&#41;;
+     * System.out.printf&#40;&quot;The status code of the response is %s.%nThe dataSource name is %s. &quot;
+     *     + &quot;The container name of dataSource is %s.%n&quot;, updateDataSource.getStatusCode&#40;&#41;,
+     *     updateDataSource.getValue&#40;&#41;.getName&#40;&#41;, updateDataSource.getValue&#40;&#41;.getContainer&#40;&#41;.getName&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean-Context -->
      *
      * @param dataSourceConnection the {@link SearchIndexerDataSourceConnection} to create or update
      * @param onlyIfUnchanged {@code true} to update if the {@code dataSourceConnection} is the same as the current
@@ -95,7 +115,16 @@ public class SearchIndexerClient {
      *
      * <p> Create search indexer data source connection named "dataSource".  </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateDataSourceConnection#SearchIndexerDataSourceConnection}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateDataSourceConnection#SearchIndexerDataSourceConnection -->
+     * <pre>
+     * SearchIndexerDataSourceConnection dataSource = searchIndexerClient.getDataSourceConnection&#40;&quot;dataSource&quot;&#41;;
+     * dataSource.setContainer&#40;new SearchIndexerDataContainer&#40;&quot;updatecontainer&quot;&#41;&#41;;
+     *
+     * SearchIndexerDataSourceConnection updateDataSource = searchIndexerClient.createOrUpdateDataSourceConnection&#40;dataSource&#41;;
+     * System.out.printf&#40;&quot;The dataSource name is %s. The container name of dataSource is %s.%n&quot;,
+     *     updateDataSource.getName&#40;&#41;, updateDataSource.getContainer&#40;&#41;.getName&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateDataSourceConnection#SearchIndexerDataSourceConnection -->
      *
      * @param dataSourceConnection The definition of the data source to create
      * @return the data source that was created.
@@ -113,7 +142,18 @@ public class SearchIndexerClient {
      *
      * <p> Create search indexer data source connection named "dataSource". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-Context}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.createDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-Context -->
+     * <pre>
+     * SearchIndexerDataSourceConnection dataSource = new SearchIndexerDataSourceConnection&#40;&quot;dataSource&quot;,
+     *     SearchIndexerDataSourceType.AZURE_BLOB, &quot;&#123;connectionString&#125;&quot;,
+     *     new SearchIndexerDataContainer&#40;&quot;container&quot;&#41;&#41;;
+     * Response&lt;SearchIndexerDataSourceConnection&gt; dataSourceFromService =
+     *     searchIndexerClient.createDataSourceConnectionWithResponse&#40;dataSource, new Context&#40;key1, value1&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;The status code of the response is %s. The data source name is %s.%n&quot;,
+     *     dataSourceFromService.getStatusCode&#40;&#41;, dataSourceFromService.getValue&#40;&#41;.getName&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.createDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-Context -->
      *
      * @param dataSourceConnection the definition of the data source to create doesn't match specified values
      * @param context additional context that is passed through the HTTP pipeline during the service call
@@ -133,7 +173,14 @@ public class SearchIndexerClient {
      *
      * <p> Get search indexer data source connection named "dataSource". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.getDataSourceConnection#String}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.getDataSourceConnection#String -->
+     * <pre>
+     * SearchIndexerDataSourceConnection dataSource =
+     *     searchIndexerClient.getDataSourceConnection&#40;&quot;dataSource&quot;&#41;;
+     * System.out.printf&#40;&quot;The dataSource name is %s. The etag of dataSource is %s.%n&quot;, dataSource.getName&#40;&#41;,
+     *     dataSource.getETag&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.getDataSourceConnection#String -->
      *
      * @param dataSourceConnectionName the name of the data source to retrieve
      * @return the DataSource.
@@ -150,7 +197,16 @@ public class SearchIndexerClient {
      *
      * <p> Get search indexer data source connection named "dataSource". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.getDataSourceConnectionWithResponse#String-Context}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.getDataSourceConnectionWithResponse#String-Context -->
+     * <pre>
+     * Response&lt;SearchIndexerDataSourceConnection&gt; dataSource =
+     *     searchIndexerClient.getDataSourceConnectionWithResponse&#40;
+     *         &quot;dataSource&quot;, new Context&#40;key1, value1&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;The status code of the response is %s. The data source name is %s.%n&quot;,
+     *     dataSource.getStatusCode&#40;&#41;, dataSource.getValue&#40;&#41;.getName&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.getDataSourceConnectionWithResponse#String-Context -->
      *
      * @param dataSourceConnectionName the name of the data source to retrieve
      * @param context additional context that is passed through the HTTP pipeline during the service call
@@ -170,7 +226,15 @@ public class SearchIndexerClient {
      *
      * <p> List all search indexer data source connections. </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnections}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnections -->
+     * <pre>
+     * PagedIterable&lt;SearchIndexerDataSourceConnection&gt; dataSources = searchIndexerClient.listDataSourceConnections&#40;&#41;;
+     * for &#40;SearchIndexerDataSourceConnection dataSource: dataSources&#41; &#123;
+     *     System.out.printf&#40;&quot;The dataSource name is %s. The etag of dataSource is %s.%n&quot;, dataSource.getName&#40;&#41;,
+     *         dataSource.getETag&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnections -->
      *
      * @return a list of DataSources
      */
@@ -186,7 +250,19 @@ public class SearchIndexerClient {
      *
      * <p> List all search indexer data source connections. </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnectionsWithResponse#Context}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnectionsWithResponse#Context -->
+     * <pre>
+     * PagedIterable&lt;SearchIndexerDataSourceConnection&gt; dataSources =
+     *     searchIndexerClient.listDataSourceConnections&#40;new Context&#40;key1, value1&#41;&#41;;
+     *
+     * System.out.println&#40;&quot;The status code of the response is&quot;
+     *     + dataSources.iterableByPage&#40;&#41;.iterator&#40;&#41;.next&#40;&#41;.getStatusCode&#40;&#41;&#41;;
+     * for &#40;SearchIndexerDataSourceConnection dataSource: dataSources&#41; &#123;
+     *     System.out.printf&#40;&quot;The dataSource name is %s. The etag of dataSource is %s.%n&quot;,
+     *         dataSource.getName&#40;&#41;, dataSource.getETag&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnectionsWithResponse#Context -->
      *
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return a response containing the list of DataSources.
@@ -203,7 +279,14 @@ public class SearchIndexerClient {
      *
      * <p> List all search indexer data source connection names. </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnectionNames}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnectionNames -->
+     * <pre>
+     * PagedIterable&lt;String&gt; dataSources = searchIndexerClient.listDataSourceConnectionNames&#40;&#41;;
+     * for &#40;String dataSourceName: dataSources&#41; &#123;
+     *     System.out.printf&#40;&quot;The dataSource name is %s.%n&quot;, dataSourceName&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnectionNames -->
      *
      * @return a list of DataSources names
      */
@@ -219,7 +302,16 @@ public class SearchIndexerClient {
      *
      * <p> List all search indexer data source connection names. </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnectionNamesWithContext#Context}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnectionNamesWithContext#Context -->
+     * <pre>
+     * PagedIterable&lt;String&gt; dataSources = searchIndexerClient.listDataSourceConnectionNames&#40;new Context&#40;key1, value1&#41;&#41;;
+     * System.out.println&#40;&quot;The status code of the response is&quot;
+     *     + dataSources.iterableByPage&#40;&#41;.iterator&#40;&#41;.next&#40;&#41;.getStatusCode&#40;&#41;&#41;;
+     * for &#40;String dataSourceName: dataSources&#41; &#123;
+     *     System.out.printf&#40;&quot;The dataSource name is %s.%n&quot;, dataSourceName&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnectionNamesWithContext#Context -->
      *
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return a response containing the list of DataSource names.
@@ -236,7 +328,11 @@ public class SearchIndexerClient {
      *
      * <p> Delete all search indexer data source connection named "dataSource". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.deleteDataSourceConnection#String}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.deleteDataSourceConnection#String -->
+     * <pre>
+     * searchIndexerClient.deleteDataSourceConnection&#40;&quot;dataSource&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.deleteDataSourceConnection#String -->
      *
      * @param dataSourceConnectionName the name of the data source to be deleted
      */
@@ -253,7 +349,15 @@ public class SearchIndexerClient {
      *
      * <p> Delete all search indexer data source connection named "dataSource". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.deleteDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean-Context}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.deleteDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean-Context -->
+     * <pre>
+     * SearchIndexerDataSourceConnection dataSource =
+     *     searchIndexerClient.getDataSourceConnection&#40;&quot;dataSource&quot;&#41;;
+     * Response&lt;Void&gt; deleteResponse = searchIndexerClient.deleteDataSourceConnectionWithResponse&#40;dataSource, true,
+     *     new Context&#40;key1, value1&#41;&#41;;
+     * System.out.printf&#40;&quot;The status code of the response is %d.%n&quot;, deleteResponse.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.deleteDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean-Context -->
      *
      * @param dataSourceConnection the {@link SearchIndexerDataSourceConnection} to be deleted.
      * @param onlyIfUnchanged {@code true} to delete if the {@code dataSourceConnection} is the same as the current
@@ -277,7 +381,15 @@ public class SearchIndexerClient {
      *
      * <p> Create search indexer named "searchIndexer". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createIndexer#SearchIndexer}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.createIndexer#SearchIndexer -->
+     * <pre>
+     * SearchIndexer searchIndexer = new SearchIndexer&#40;&quot;searchIndexer&quot;, &quot;dataSource&quot;,
+     *     &quot;searchIndex&quot;&#41;;
+     * SearchIndexer indexerFromService = searchIndexerClient.createIndexer&#40;searchIndexer&#41;;
+     * System.out.printf&#40;&quot;The indexer name is %s. The etag of indexer is %s.%n&quot;, indexerFromService.getName&#40;&#41;,
+     *     indexerFromService.getETag&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.createIndexer#SearchIndexer -->
      *
      * @param indexer definition of the indexer to create.
      * @return the created Indexer.
@@ -294,7 +406,17 @@ public class SearchIndexerClient {
      *
      * <p> Create search indexer named "searchIndexer". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createIndexerWithResponse#SearchIndexer-Context}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.createIndexerWithResponse#SearchIndexer-Context -->
+     * <pre>
+     * SearchIndexer searchIndexer = new SearchIndexer&#40;&quot;searchIndexer&quot;, &quot;dataSource&quot;,
+     *     &quot;searchIndex&quot;&#41;;
+     * Response&lt;SearchIndexer&gt; indexerFromServiceResponse = searchIndexerClient.createIndexerWithResponse&#40;
+     *     searchIndexer, new Context&#40;key1, value1&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;The status code of the response is %s. The indexer name is %s.%n&quot;,
+     *     indexerFromServiceResponse.getStatusCode&#40;&#41;, indexerFromServiceResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.createIndexerWithResponse#SearchIndexer-Context -->
      *
      * @param indexer definition of the indexer to create
      * @param context additional context that is passed through the HTTP pipeline during the service call
@@ -312,7 +434,16 @@ public class SearchIndexerClient {
      *
      * <p> Create or update search indexer named "searchIndexer". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexer#SearchIndexer}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexer#SearchIndexer -->
+     * <pre>
+     * SearchIndexer searchIndexerFromService = searchIndexerClient.getIndexer&#40;&quot;searchIndexer&quot;&#41;;
+     * searchIndexerFromService.setFieldMappings&#40;Collections.singletonList&#40;
+     *     new FieldMapping&#40;&quot;hotelName&quot;&#41;.setTargetFieldName&#40;&quot;HotelName&quot;&#41;&#41;&#41;;
+     * SearchIndexer updateIndexer = searchIndexerClient.createOrUpdateIndexer&#40;searchIndexerFromService&#41;;
+     * System.out.printf&#40;&quot;The indexer name is %s. The target field name of indexer is %s.%n&quot;,
+     *     updateIndexer.getName&#40;&#41;, updateIndexer.getFieldMappings&#40;&#41;.get&#40;0&#41;.getTargetFieldName&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexer#SearchIndexer -->
      *
      * @param indexer The definition of the indexer to create or update.
      * @return a response containing the created Indexer.
@@ -329,7 +460,19 @@ public class SearchIndexerClient {
      *
      * <p> Create or update search indexer named "searchIndexer". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexerWithResponse#SearchIndexer-boolean-Context}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexerWithResponse#SearchIndexer-boolean-Context -->
+     * <pre>
+     * SearchIndexer searchIndexerFromService = searchIndexerClient.getIndexer&#40;&quot;searchIndexer&quot;&#41;;
+     * searchIndexerFromService.setFieldMappings&#40;Collections.singletonList&#40;
+     *     new FieldMapping&#40;&quot;hotelName&quot;&#41;.setTargetFieldName&#40;&quot;HotelName&quot;&#41;&#41;&#41;;
+     * Response&lt;SearchIndexer&gt; indexerFromService = searchIndexerClient.createOrUpdateIndexerWithResponse&#40;
+     *     searchIndexerFromService, true, new Context&#40;key1, value1&#41;&#41;;
+     * System.out.printf&#40;&quot;The status code of the response is %s.%nThe indexer name is %s. &quot;
+     *     + &quot;The target field name of indexer is %s.%n&quot;, indexerFromService.getStatusCode&#40;&#41;,
+     *     indexerFromService.getValue&#40;&#41;.getName&#40;&#41;,
+     *     indexerFromService.getValue&#40;&#41;.getFieldMappings&#40;&#41;.get&#40;0&#41;.getTargetFieldName&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexerWithResponse#SearchIndexer-boolean-Context -->
      *
      * @param indexer The {@link SearchIndexer} to create or update.
      * @param onlyIfUnchanged {@code true} to update if the {@code indexer} is the same as the current service value.
@@ -350,7 +493,15 @@ public class SearchIndexerClient {
      *
      * <p> List all search indexers. </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.listIndexers}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.listIndexers -->
+     * <pre>
+     * PagedIterable&lt;SearchIndexer&gt; indexers = searchIndexerClient.listIndexers&#40;&#41;;
+     * for &#40;SearchIndexer indexer: indexers&#41; &#123;
+     *     System.out.printf&#40;&quot;The indexer name is %s. The etag of indexer is %s.%n&quot;, indexer.getName&#40;&#41;,
+     *         indexer.getETag&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.listIndexers -->
      *
      * @return all Indexers from the Search service.
      */
@@ -366,7 +517,17 @@ public class SearchIndexerClient {
      *
      * <p> List all search indexers. </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.listIndexersWithResponse#Context}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.listIndexersWithResponse#Context -->
+     * <pre>
+     * PagedIterable&lt;SearchIndexer&gt; indexers = searchIndexerClient.listIndexers&#40;new Context&#40;key1, value1&#41;&#41;;
+     * System.out.println&#40;&quot;The status code of the response is&quot;
+     *     + indexers.iterableByPage&#40;&#41;.iterator&#40;&#41;.next&#40;&#41;.getStatusCode&#40;&#41;&#41;;
+     * for &#40;SearchIndexer indexer: indexers&#41; &#123;
+     *     System.out.printf&#40;&quot;The indexer name is %s. The etag of index is %s.%n&quot;,
+     *         indexer.getName&#40;&#41;, indexer.getETag&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.listIndexersWithResponse#Context -->
      *
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return all Indexers from the Search service.
@@ -383,7 +544,14 @@ public class SearchIndexerClient {
      *
      * <p> List all search indexer names. </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.listIndexerNames}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.listIndexerNames -->
+     * <pre>
+     * PagedIterable&lt;String&gt; indexers = searchIndexerClient.listIndexerNames&#40;&#41;;
+     * for &#40;String indexerName: indexers&#41; &#123;
+     *     System.out.printf&#40;&quot;The indexer name is %s.%n&quot;, indexerName&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.listIndexerNames -->
      *
      * @return all Indexer names from the Search service .
      */
@@ -399,7 +567,16 @@ public class SearchIndexerClient {
      *
      * <p> List all search indexer names. </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.listIndexerNames#Context}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.listIndexerNames#Context -->
+     * <pre>
+     * PagedIterable&lt;String&gt; indexers = searchIndexerClient.listIndexerNames&#40;new Context&#40;key1, value1&#41;&#41;;
+     * System.out.println&#40;&quot;The status code of the response is&quot;
+     *     + indexers.iterableByPage&#40;&#41;.iterator&#40;&#41;.next&#40;&#41;.getStatusCode&#40;&#41;&#41;;
+     * for &#40;String indexerName: indexers&#41; &#123;
+     *     System.out.printf&#40;&quot;The indexer name is %s.%n&quot;, indexerName&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.listIndexerNames#Context -->
      *
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return all Indexer names from the Search service.
@@ -416,7 +593,14 @@ public class SearchIndexerClient {
      *
      * <p> Get search indexer with name "searchIndexer". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.getIndexer#String}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.getIndexer#String -->
+     * <pre>
+     * SearchIndexer indexerFromService =
+     *     searchIndexerClient.getIndexer&#40;&quot;searchIndexer&quot;&#41;;
+     * System.out.printf&#40;&quot;The indexer name is %s. The etag of indexer is %s.%n&quot;, indexerFromService.getName&#40;&#41;,
+     *     indexerFromService.getETag&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.getIndexer#String -->
      *
      * @param indexerName the name of the indexer to retrieve
      * @return the indexer.
@@ -433,7 +617,15 @@ public class SearchIndexerClient {
      *
      * <p> Get search indexer with name "searchIndexer". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.getIndexerWithResponse#String-Context}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.getIndexerWithResponse#String-Context -->
+     * <pre>
+     * Response&lt;SearchIndexer&gt; indexerFromServiceResponse = searchIndexerClient.getIndexerWithResponse&#40;
+     *     &quot;searchIndexer&quot;, new Context&#40;key1, value1&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;The status code of the response is %s. The indexer name is %s.%n&quot;,
+     *     indexerFromServiceResponse.getStatusCode&#40;&#41;, indexerFromServiceResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.getIndexerWithResponse#String-Context -->
      *
      * @param indexerName the name of the indexer to retrieve
      * @param context additional context that is passed through the HTTP pipeline during the service call
@@ -451,7 +643,11 @@ public class SearchIndexerClient {
      *
      * <p> Delete search indexer named "searchIndexer". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.deleteIndexer#String}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.deleteIndexer#String -->
+     * <pre>
+     * searchIndexerClient.deleteIndexer&#40;&quot;searchIndexer&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.deleteIndexer#String -->
      *
      * @param indexerName the name of the indexer to delete
      */
@@ -467,7 +663,14 @@ public class SearchIndexerClient {
      *
      * <p> Delete search indexe named "searchIndexer".  </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.deleteIndexerWithResponse#SearchIndexer-boolean-Context}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.deleteIndexerWithResponse#SearchIndexer-boolean-Context -->
+     * <pre>
+     * SearchIndexer searchIndexer = searchIndexerClient.getIndexer&#40;&quot;searchIndexer&quot;&#41;;
+     * Response&lt;Void&gt; deleteResponse = searchIndexerClient.deleteIndexerWithResponse&#40;searchIndexer, true,
+     *     new Context&#40;key1, value1&#41;&#41;;
+     * System.out.printf&#40;&quot;The status code of the response is %d.%n&quot;, deleteResponse.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.deleteIndexerWithResponse#SearchIndexer-boolean-Context -->
      *
      * @param indexer the search {@link SearchIndexer}
      * @param onlyIfUnchanged {@code true} to delete if the {@code indexer} is the same as the current service value.
@@ -488,7 +691,11 @@ public class SearchIndexerClient {
      *
      * <p> Reset search indexer named "searchIndexer".  </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.resetIndexer#String}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.resetIndexer#String -->
+     * <pre>
+     * searchIndexerClient.resetIndexer&#40;&quot;searchIndexer&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.resetIndexer#String -->
      *
      * @param indexerName the name of the indexer to reset
      */
@@ -504,7 +711,13 @@ public class SearchIndexerClient {
      *
      * <p> Reset search indexer named "searchIndexer".  </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.resetIndexerWithResponse#String-Context}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.resetIndexerWithResponse#String-Context -->
+     * <pre>
+     * Response&lt;Void&gt; response = searchIndexerClient.resetIndexerWithResponse&#40;&quot;searchIndexer&quot;,
+     *     new Context&#40;key1, value1&#41;&#41;;
+     * System.out.println&#40;&quot;The status code of the response is &quot; + response.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.resetIndexerWithResponse#String-Context -->
      *
      * @param indexerName the name of the indexer to reset
      * @param context additional context that is passed through the HTTP pipeline during the service call
@@ -522,7 +735,11 @@ public class SearchIndexerClient {
      *
      * <p> Run search indexer named "searchIndexer".  </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.runIndexer#String}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.runIndexer#String -->
+     * <pre>
+     * searchIndexerClient.runIndexer&#40;&quot;searchIndexer&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.runIndexer#String -->
      *
      * @param indexerName the name of the indexer to run
      */
@@ -538,7 +755,13 @@ public class SearchIndexerClient {
      *
      * <p> Run search indexer named "searchIndexer".  </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.runIndexerWithResponse#String-Context}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.runIndexerWithResponse#String-Context -->
+     * <pre>
+     * Response&lt;Void&gt; response = searchIndexerClient.runIndexerWithResponse&#40;&quot;searchIndexer&quot;,
+     *     new Context&#40;key1, value1&#41;&#41;;
+     * System.out.println&#40;&quot;The status code of the response is &quot; + response.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.runIndexerWithResponse#String-Context -->
      *
      * @param indexerName the name of the indexer to run
      * @param context additional context that is passed through the HTTP pipeline during the service call
@@ -556,7 +779,12 @@ public class SearchIndexerClient {
      *
      * <p> Get search indexer status.  </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.getIndexerStatus#String}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.getIndexerStatus#String -->
+     * <pre>
+     * SearchIndexerStatus indexerStatus = searchIndexerClient.getIndexerStatus&#40;&quot;searchIndexer&quot;&#41;;
+     * System.out.printf&#40;&quot;The indexer status is %s.%n&quot;, indexerStatus.getStatus&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.getIndexerStatus#String -->
      *
      * @param indexerName the name of the indexer for which to retrieve status
      * @return a response with the indexer execution info.
@@ -573,7 +801,14 @@ public class SearchIndexerClient {
      *
      * <p> Get search indexer status.  </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.getIndexerStatusWithResponse#String-Context}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.getIndexerStatusWithResponse#String-Context -->
+     * <pre>
+     * Response&lt;SearchIndexerStatus&gt; response = searchIndexerClient.getIndexerStatusWithResponse&#40;&quot;searchIndexer&quot;,
+     *     new Context&#40;key1, value1&#41;&#41;;
+     * System.out.printf&#40;&quot;The status code of the response is %s.%nThe indexer status is %s.%n&quot;,
+     *     response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getStatus&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.getIndexerStatusWithResponse#String-Context -->
      *
      * @param indexerName the name of the indexer for which to retrieve status
      * @param context additional context that is passed through the HTTP pipeline during the service call
@@ -592,7 +827,31 @@ public class SearchIndexerClient {
      *
      * <p> Create search indexer skillset "searchIndexerSkillset". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createSkillset#SearchIndexerSkillset}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.createSkillset#SearchIndexerSkillset -->
+     * <pre>
+     * List&lt;InputFieldMappingEntry&gt; inputs = Collections.singletonList&#40;
+     *     new InputFieldMappingEntry&#40;&quot;image&quot;&#41;
+     *         .setSource&#40;&quot;&#47;document&#47;normalized_images&#47;*&quot;&#41;
+     * &#41;;
+     *
+     * List&lt;OutputFieldMappingEntry&gt; outputs = Arrays.asList&#40;
+     *     new OutputFieldMappingEntry&#40;&quot;text&quot;&#41;
+     *         .setTargetName&#40;&quot;mytext&quot;&#41;,
+     *     new OutputFieldMappingEntry&#40;&quot;layoutText&quot;&#41;
+     *         .setTargetName&#40;&quot;myLayoutText&quot;&#41;
+     * &#41;;
+     * SearchIndexerSkillset searchIndexerSkillset = new SearchIndexerSkillset&#40;&quot;searchIndexerSkillset&quot;,
+     *     Collections.singletonList&#40;new OcrSkill&#40;inputs, outputs&#41;
+     *         .setShouldDetectOrientation&#40;true&#41;
+     *         .setDefaultLanguageCode&#40;null&#41;
+     *         .setName&#40;&quot;myocr&quot;&#41;
+     *         .setDescription&#40;&quot;Extracts text &#40;plain and structured&#41; from image.&quot;&#41;
+     *         .setContext&#40;&quot;&#47;document&#47;normalized_images&#47;*&quot;&#41;&#41;&#41;;
+     * SearchIndexerSkillset skillset = searchIndexerClient.createSkillset&#40;searchIndexerSkillset&#41;;
+     * System.out.printf&#40;&quot;The indexer skillset name is %s. The etag of indexer skillset is %s.%n&quot;,
+     *     skillset.getName&#40;&#41;, skillset.getETag&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.createSkillset#SearchIndexerSkillset -->
      *
      * @param skillset definition of the skillset containing one or more cognitive skills
      * @return the created SearchIndexerSkillset.
@@ -609,7 +868,32 @@ public class SearchIndexerClient {
      *
      * <p> Create search indexer skillset "searchIndexerSkillset". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createSkillsetWithResponse#SearchIndexerSkillset-Context}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.createSkillsetWithResponse#SearchIndexerSkillset-Context -->
+     * <pre>
+     * List&lt;InputFieldMappingEntry&gt; inputs = Collections.singletonList&#40;
+     *     new InputFieldMappingEntry&#40;&quot;image&quot;&#41;
+     *         .setSource&#40;&quot;&#47;document&#47;normalized_images&#47;*&quot;&#41;
+     * &#41;;
+     *
+     * List&lt;OutputFieldMappingEntry&gt; outputs = Arrays.asList&#40;
+     *     new OutputFieldMappingEntry&#40;&quot;text&quot;&#41;
+     *         .setTargetName&#40;&quot;mytext&quot;&#41;,
+     *     new OutputFieldMappingEntry&#40;&quot;layoutText&quot;&#41;
+     *         .setTargetName&#40;&quot;myLayoutText&quot;&#41;
+     * &#41;;
+     * SearchIndexerSkillset searchIndexerSkillset = new SearchIndexerSkillset&#40;&quot;searchIndexerSkillset&quot;,
+     *     Collections.singletonList&#40;new OcrSkill&#40;inputs, outputs&#41;
+     *         .setShouldDetectOrientation&#40;true&#41;
+     *         .setDefaultLanguageCode&#40;null&#41;
+     *         .setName&#40;&quot;myocr&quot;&#41;
+     *         .setDescription&#40;&quot;Extracts text &#40;plain and structured&#41; from image.&quot;&#41;
+     *         .setContext&#40;&quot;&#47;document&#47;normalized_images&#47;*&quot;&#41;&#41;&#41;;
+     * Response&lt;SearchIndexerSkillset&gt; skillsetWithResponse =
+     *     searchIndexerClient.createSkillsetWithResponse&#40;searchIndexerSkillset, new Context&#40;key1, value1&#41;&#41;;
+     * System.out.printf&#40;&quot;The status code of the response is %s. The indexer skillset name is %s.%n&quot;,
+     *     skillsetWithResponse.getStatusCode&#40;&#41;, skillsetWithResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.createSkillsetWithResponse#SearchIndexerSkillset-Context -->
      *
      * @param skillset definition of the skillset containing one or more cognitive skills
      * @param context additional context that is passed through the HTTP pipeline during the service call
@@ -627,7 +911,14 @@ public class SearchIndexerClient {
      *
      * <p> Get search indexer skillset "searchIndexerSkillset". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.getSearchIndexerSkillset#String}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.getSearchIndexerSkillset#String -->
+     * <pre>
+     * SearchIndexerSkillset indexerSkillset =
+     *     searchIndexerClient.getSkillset&#40;&quot;searchIndexerSkillset&quot;&#41;;
+     * System.out.printf&#40;&quot;The indexer skillset name is %s. The etag of indexer skillset is %s.%n&quot;,
+     *     indexerSkillset.getName&#40;&#41;, indexerSkillset.getETag&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.getSearchIndexerSkillset#String -->
      *
      * @param skillsetName the name of the skillset to retrieve
      * @return the SearchIndexerSkillset.
@@ -644,7 +935,15 @@ public class SearchIndexerClient {
      *
      * <p> Get search indexer skillset "searchIndexerSkillset". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.getSkillsetWithResponse#String-Context}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.getSkillsetWithResponse#String-Context -->
+     * <pre>
+     * Response&lt;SearchIndexerSkillset&gt; skillsetWithResponse = searchIndexerClient.getSkillsetWithResponse&#40;
+     *     &quot;searchIndexerSkillset&quot;, new Context&#40;key1, value1&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;The status code of the response is %s. The indexer skillset name is %s.%n&quot;,
+     *     skillsetWithResponse.getStatusCode&#40;&#41;, skillsetWithResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.getSkillsetWithResponse#String-Context -->
      *
      * @param skillsetName the name of the skillset to retrieve
      * @param context additional context that is passed through the HTTP pipeline during the service call
@@ -662,7 +961,15 @@ public class SearchIndexerClient {
      *
      * <p> List all search indexer skillsets. </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.listSkillsets}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.listSkillsets -->
+     * <pre>
+     * PagedIterable&lt;SearchIndexerSkillset&gt; indexerSkillsets = searchIndexerClient.listSkillsets&#40;&#41;;
+     * for &#40;SearchIndexerSkillset skillset: indexerSkillsets&#41; &#123;
+     *     System.out.printf&#40;&quot;The skillset name is %s. The etag of skillset is %s.%n&quot;, skillset.getName&#40;&#41;,
+     *         skillset.getETag&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.listSkillsets -->
      *
      * @return the list of skillsets.
      */
@@ -678,7 +985,17 @@ public class SearchIndexerClient {
      *
      * <p> List all search indexer skillsets. </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.listSkillsetsWithContext#Context}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.listSkillsetsWithContext#Context -->
+     * <pre>
+     * PagedIterable&lt;SearchIndexerSkillset&gt; indexerSkillsets = searchIndexerClient.listSkillsets&#40;new Context&#40;key1, value1&#41;&#41;;
+     * System.out.println&#40;&quot;The status code of the response is&quot;
+     *     + indexerSkillsets.iterableByPage&#40;&#41;.iterator&#40;&#41;.next&#40;&#41;.getStatusCode&#40;&#41;&#41;;
+     * for &#40;SearchIndexerSkillset skillset: indexerSkillsets&#41; &#123;
+     *     System.out.printf&#40;&quot;The skillset name is %s. The etag of skillset is %s.%n&quot;,
+     *         skillset.getName&#40;&#41;, skillset.getETag&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.listSkillsetsWithContext#Context -->
      *
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the list of skillsets.
@@ -695,7 +1012,14 @@ public class SearchIndexerClient {
      *
      * <p> List all search indexer skillset names. </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.listSkillsetNames}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.listSkillsetNames -->
+     * <pre>
+     * PagedIterable&lt;String&gt; skillsetNames = searchIndexerClient.listSkillsetNames&#40;&#41;;
+     * for &#40;String skillsetName: skillsetNames&#41; &#123;
+     *     System.out.printf&#40;&quot;The indexer skillset name is %s.%n&quot;, skillsetName&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.listSkillsetNames -->
      *
      * @return the list of skillset names.
      */
@@ -711,7 +1035,16 @@ public class SearchIndexerClient {
      *
      * <p> List all search indexer skillset names with response. </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.listSkillsetNamesWithResponse#Context}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.listSkillsetNamesWithResponse#Context -->
+     * <pre>
+     * PagedIterable&lt;String&gt; skillsetNames = searchIndexerClient.listSkillsetNames&#40;new Context&#40;key1, value1&#41;&#41;;
+     * System.out.println&#40;&quot;The status code of the response is&quot;
+     *     + skillsetNames.iterableByPage&#40;&#41;.iterator&#40;&#41;.next&#40;&#41;.getStatusCode&#40;&#41;&#41;;
+     * for &#40;String skillsetName: skillsetNames&#41; &#123;
+     *     System.out.printf&#40;&quot;The indexer skillset name is %s.%n&quot;, skillsetName&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.listSkillsetNamesWithResponse#Context -->
      *
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the list of skillset names.
@@ -728,7 +1061,15 @@ public class SearchIndexerClient {
      *
      * <p> Create or update search indexer skillset "searchIndexerSkillset". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexerSkillset#SearchIndexerSkillset}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexerSkillset#SearchIndexerSkillset -->
+     * <pre>
+     * SearchIndexerSkillset indexerSkillset = searchIndexerClient.getSkillset&#40;&quot;searchIndexerSkilset&quot;&#41;;
+     * indexerSkillset.setDescription&#40;&quot;This is new description!&quot;&#41;;
+     * SearchIndexerSkillset updateSkillset = searchIndexerClient.createOrUpdateSkillset&#40;indexerSkillset&#41;;
+     * System.out.printf&#40;&quot;The indexer skillset name is %s. The description of indexer skillset is %s.%n&quot;,
+     *     updateSkillset.getName&#40;&#41;, updateSkillset.getDescription&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexerSkillset#SearchIndexerSkillset -->
      *
      * @param skillset the {@link SearchIndexerSkillset} to create or update.
      * @return the skillset that was created or updated.
@@ -745,7 +1086,18 @@ public class SearchIndexerClient {
      *
      * <p> Create or update search indexer skillset "searchIndexerSkillset". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateSkillsetWithResponse#SearchIndexerSkillset-boolean-Context}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateSkillsetWithResponse#SearchIndexerSkillset-boolean-Context -->
+     * <pre>
+     * SearchIndexerSkillset indexerSkillset = searchIndexerClient.getSkillset&#40;&quot;searchIndexerSkilset&quot;&#41;;
+     * indexerSkillset.setDescription&#40;&quot;This is new description!&quot;&#41;;
+     * Response&lt;SearchIndexerSkillset&gt; updateSkillsetResponse = searchIndexerClient.createOrUpdateSkillsetWithResponse&#40;
+     *     indexerSkillset, true, new Context&#40;key1, value1&#41;&#41;;
+     * System.out.printf&#40;&quot;The status code of the response is %s.%nThe indexer skillset name is %s. &quot;
+     *         + &quot;The description of indexer skilset is %s.%n&quot;, updateSkillsetResponse.getStatusCode&#40;&#41;,
+     *     updateSkillsetResponse.getValue&#40;&#41;.getName&#40;&#41;,
+     *     updateSkillsetResponse.getValue&#40;&#41;.getDescription&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateSkillsetWithResponse#SearchIndexerSkillset-boolean-Context -->
      *
      * @param skillset the {@link SearchIndexerSkillset} to create or update.
      * @param onlyIfUnchanged {@code true} to update if the {@code skillset} is the same as the current service value.
@@ -767,7 +1119,11 @@ public class SearchIndexerClient {
      *
      * <p> Delete search indexer skillset "searchIndexerSkillset". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.deleteSkillset#String}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.deleteSkillset#String -->
+     * <pre>
+     * searchIndexerClient.deleteSkillset&#40;&quot;searchIndexerSkillset&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.deleteSkillset#String -->
      *
      * @param skillsetName the name of the skillset to delete
      */
@@ -783,7 +1139,14 @@ public class SearchIndexerClient {
      *
      * <p> Delete search indexer skillset "searchIndexerSkillset". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.deleteSkillsetWithResponse#SearchIndexerSkillset-boolean-Context}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.deleteSkillsetWithResponse#SearchIndexerSkillset-boolean-Context -->
+     * <pre>
+     * SearchIndexerSkillset searchIndexerSkilset = searchIndexerClient.getSkillset&#40;&quot;searchIndexerSkilset&quot;&#41;;
+     * Response&lt;Void&gt; deleteResponse = searchIndexerClient.deleteSkillsetWithResponse&#40;searchIndexerSkilset, true,
+     *     new Context&#40;key1, value1&#41;&#41;;
+     * System.out.printf&#40;&quot;The status code of the response is %d.%n&quot;, deleteResponse.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.deleteSkillsetWithResponse#SearchIndexerSkillset-boolean-Context -->
      *
      * @param skillset the {@link SearchIndexerSkillset} to delete.
      * @param onlyIfUnchanged {@code true} to delete if the {@code skillset} is the same as the current service value.

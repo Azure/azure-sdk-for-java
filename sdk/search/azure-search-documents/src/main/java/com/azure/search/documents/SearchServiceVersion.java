@@ -9,6 +9,9 @@ import com.azure.core.util.ServiceVersion;
  * The versions of Azure Cognitive Search supported by this client library.
  */
 public enum SearchServiceVersion implements ServiceVersion {
+    /**
+     * {@code 2020-06-30} service version.
+     */
     V2020_06_30("2020-06-30");
 
     private final String version;
