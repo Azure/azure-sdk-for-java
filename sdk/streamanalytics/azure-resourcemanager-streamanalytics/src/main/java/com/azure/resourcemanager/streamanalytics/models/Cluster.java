@@ -4,9 +4,11 @@
 
 package com.azure.resourcemanager.streamanalytics.models;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.streamanalytics.fluent.models.ClusterInner;
+import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** An immutable client-side representation of Cluster. */
@@ -64,11 +66,42 @@ public interface Cluster {
     String etag();
 
     /**
-     * Gets the properties property: The properties associated with a Stream Analytics cluster.
+     * Gets the createdDate property: The date this cluster was created.
      *
-     * @return the properties value.
+     * @return the createdDate value.
      */
-    ClusterProperties properties();
+    OffsetDateTime createdDate();
+
+    /**
+     * Gets the clusterId property: Unique identifier for the cluster.
+     *
+     * @return the clusterId value.
+     */
+    String clusterId();
+
+    /**
+     * Gets the provisioningState property: The status of the cluster provisioning. The three terminal states are:
+     * Succeeded, Failed and Canceled.
+     *
+     * @return the provisioningState value.
+     */
+    ClusterProvisioningState provisioningState();
+
+    /**
+     * Gets the capacityAllocated property: Represents the number of streaming units currently being used on the
+     * cluster.
+     *
+     * @return the capacityAllocated value.
+     */
+    Integer capacityAllocated();
+
+    /**
+     * Gets the capacityAssigned property: Represents the sum of the SUs of all streaming jobs associated with the
+     * cluster. If all of the jobs were running, this would be the capacity allocated.
+     *
+     * @return the capacityAssigned value.
+     */
+    Integer capacityAssigned();
 
     /**
      * Gets the region of the resource.
@@ -138,7 +171,6 @@ public interface Cluster {
         interface WithCreate
             extends DefinitionStages.WithTags,
                 DefinitionStages.WithSku,
-                DefinitionStages.WithProperties,
                 DefinitionStages.WithIfMatch,
                 DefinitionStages.WithIfNoneMatch {
             /**
@@ -178,16 +210,6 @@ public interface Cluster {
              */
             WithCreate withSku(ClusterSku sku);
         }
-        /** The stage of the Cluster definition allowing to specify properties. */
-        interface WithProperties {
-            /**
-             * Specifies the properties property: The properties associated with a Stream Analytics cluster..
-             *
-             * @param properties The properties associated with a Stream Analytics cluster.
-             * @return the next definition stage.
-             */
-            WithCreate withProperties(ClusterProperties properties);
-        }
         /** The stage of the Cluster definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -221,8 +243,7 @@ public interface Cluster {
     Cluster.Update update();
 
     /** The template for Cluster update. */
-    interface Update
-        extends UpdateStages.WithTags, UpdateStages.WithSku, UpdateStages.WithProperties, UpdateStages.WithifMatch {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithSku, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *
@@ -262,18 +283,8 @@ public interface Cluster {
              */
             Update withSku(ClusterSku sku);
         }
-        /** The stage of the Cluster update allowing to specify properties. */
-        interface WithProperties {
-            /**
-             * Specifies the properties property: The properties associated with a Stream Analytics cluster..
-             *
-             * @param properties The properties associated with a Stream Analytics cluster.
-             * @return the next definition stage.
-             */
-            Update withProperties(ClusterProperties properties);
-        }
         /** The stage of the Cluster update allowing to specify ifMatch. */
-        interface WithifMatch {
+        interface WithIfMatch {
             /**
              * Specifies the ifMatch property: The ETag of the resource. Omit this value to always overwrite the current
              * record set. Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes..
@@ -282,7 +293,7 @@ public interface Cluster {
              *     Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes.
              * @return the next definition stage.
              */
-            Update ifMatch(String ifMatch);
+            Update withIfMatch(String ifMatch);
         }
     }
     /**
@@ -299,4 +310,24 @@ public interface Cluster {
      * @return the refreshed resource.
      */
     Cluster refresh(Context context);
+
+    /**
+     * Lists all of the streaming jobs in the given cluster.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of streaming jobs.
+     */
+    PagedIterable<ClusterJob> listStreamingJobs();
+
+    /**
+     * Lists all of the streaming jobs in the given cluster.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of streaming jobs.
+     */
+    PagedIterable<ClusterJob> listStreamingJobs(Context context);
 }

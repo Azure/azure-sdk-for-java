@@ -61,8 +61,7 @@ public final class SystemScanRulesetsAsyncClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @Generated
@@ -96,9 +95,9 @@ public final class SystemScanRulesetsAsyncClient {
      *
      * @param dataSourceType The dataSourceType parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return a system scan ruleset for a data source.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a system scan ruleset for a data source along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -132,9 +131,8 @@ public final class SystemScanRulesetsAsyncClient {
      *
      * @param version The version parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return a scan ruleset by version.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a scan ruleset by version along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -167,9 +165,9 @@ public final class SystemScanRulesetsAsyncClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the latest version of a system scan ruleset.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the latest version of a system scan ruleset along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -208,8 +206,7 @@ public final class SystemScanRulesetsAsyncClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @Generated

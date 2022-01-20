@@ -194,9 +194,8 @@ public final class CollectionClient {
      * @param collection the collection unique name.
      * @param entity Atlas entity with extended information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return entityMutationResponse.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return entityMutationResponse along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -372,9 +371,8 @@ public final class CollectionClient {
      * @param collection the collection unique name.
      * @param entities Atlas entities with extended information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return entityMutationResponse.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return entityMutationResponse along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -477,9 +475,8 @@ public final class CollectionClient {
      * @param collection the collection unique name.
      * @param moveEntitiesRequest Entity guids to be moved to target collection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return entityMutationResponse.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return entityMutationResponse along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)

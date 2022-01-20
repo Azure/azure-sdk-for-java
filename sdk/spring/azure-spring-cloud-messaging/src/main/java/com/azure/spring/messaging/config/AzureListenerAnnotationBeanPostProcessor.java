@@ -91,6 +91,10 @@ public class AzureListenerAnnotationBeanPostProcessor
     @Nullable
     private StringValueResolver embeddedValueResolver;
 
+    /**
+     * Set the container factory bean name.
+     * @param containerFactoryBeanName the container factory bean name.
+     */
     public void setContainerFactoryBeanName(String containerFactoryBeanName) {
         this.containerFactoryBeanName = containerFactoryBeanName;
     }

@@ -134,7 +134,9 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
                 }
             } else {
                 if (strict) {
-                    throw new IllegalArgumentException("Unable to construct PartitionKeyInternal from objects array");
+                    throw new IllegalArgumentException(
+                        "Unable to construct PartitionKeyInternal from objects array - unknown type " +
+                            value.getClass().getName());
                 } else {
                     components.add(UndefinedPartitionKeyComponent.VALUE);
                 }

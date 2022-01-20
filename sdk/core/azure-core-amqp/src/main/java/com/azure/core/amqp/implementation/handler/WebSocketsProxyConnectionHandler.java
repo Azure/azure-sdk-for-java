@@ -8,7 +8,6 @@ import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.AmqpErrorCode;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.microsoft.azure.proton.transport.proxy.ProxyHandler;
 import com.microsoft.azure.proton.transport.proxy.impl.ProxyHandlerImpl;
 import com.microsoft.azure.proton.transport.proxy.impl.ProxyImpl;
@@ -30,13 +29,15 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addErrorCondition;
+import static com.azure.core.amqp.implementation.ClientConstants.HOSTNAME_KEY;
+
 /**
  * Creates an AMQP connection using web sockets and connects through a proxy.
  */
 public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandler {
     private static final String HTTPS_URI_FORMAT = "https://%s:%s";
 
-    private final ClientLogger logger = new ClientLogger(WebSocketsProxyConnectionHandler.class);
     private final InetSocketAddress connectionHostname;
     private final ProxyOptions proxyOptions;
     private final String fullyQualifiedNamespace;
@@ -60,7 +61,6 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
         this.proxyOptions = Objects.requireNonNull(proxyOptions, "'proxyConfiguration' cannot be null.");
         this.fullyQualifiedNamespace = connectionOptions.getFullyQualifiedNamespace();
         this.amqpBrokerHostname = connectionOptions.getFullyQualifiedNamespace() + ":" + connectionOptions.getPort();
-
         if (proxyOptions.isProxyAddressConfigured()) {
             this.connectionHostname = (InetSocketAddress) proxyOptions.getProxyAddress().address();
         } else {
@@ -131,16 +131,15 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
         final Transport transport = event.getTransport();
         final Connection connection = event.getConnection();
         if (connection == null || transport == null) {
-            logger.verbose("connectionId[{}] There is no connection or transport associated with error. Event: {}",
-                event);
+            logger.verbose("There is no connection or transport associated with error. Event: {}", event);
             return;
         }
 
         final ErrorCondition errorCondition = transport.getCondition();
         if (errorCondition == null || !(errorCondition.getCondition().equals(ConnectionError.FRAMING_ERROR)
             || errorCondition.getCondition().equals(AmqpErrorCode.PROTON_IO_ERROR))) {
-            logger.verbose("connectionId[{}] There is no error condition and these are not framing errors. Error: {}",
-                errorCondition);
+            addErrorCondition(logger.atVerbose(), errorCondition)
+                .log("There is no error condition and these are not framing errors.");
             return;
         }
 
@@ -148,14 +147,14 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
 
         // If the proxy is not configured, or we are not connected to a host yet.
         if (proxyOptions == null || CoreUtils.isNullOrEmpty(hostname)) {
-            logger.verbose("connectionId[{}] Proxy is not configured and there is no host connected. Error: {}",
-                errorCondition);
+            addErrorCondition(logger.atVerbose(), errorCondition)
+                .log("Proxy is not configured and there is no host connected.");
             return;
         }
 
         final String[] hostNameParts = hostname.split(":");
         if (hostNameParts.length != 2) {
-            logger.warning("connectionId[{}] Invalid hostname: {}", getConnectionId(), hostname);
+            logger.warning("Invalid hostname: {}", hostname);
             return;
         }
 
@@ -163,7 +162,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
         try {
             port = Integer.parseInt(hostNameParts[1]);
         } catch (NumberFormatException ignore) {
-            logger.warning("connectionId[{}] Invalid port number: {}", getConnectionId(), hostNameParts[1]);
+            logger.warning("Invalid port number: {}", hostNameParts[1]);
             return;
         }
 
@@ -174,8 +173,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
         final URI url = createURI(fullyQualifiedNamespace, port);
         final InetSocketAddress address = new InetSocketAddress(hostNameParts[0], port);
 
-        logger.error("connectionId[{}] Failed to connect to url: '{}', proxy host: '{}'",
-            getConnectionId(), url, address.getHostString(), ioException);
+        logger.atError().log("Failed to connect to url: '{}', proxy host: '{}'", url, address.getHostString(), ioException);
 
         final ProxySelector proxySelector = ProxySelector.getDefault();
         if (proxySelector != null) {
@@ -200,7 +198,9 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
 
         transport.addTransportLayer(proxy);
 
-        logger.info("connectionId[{}] addProxyHandshake: hostname[{}]", getConnectionId(), amqpBrokerHostname);
+        logger.atInfo()
+            .addKeyValue(HOSTNAME_KEY, amqpBrokerHostname)
+            .log("addProxyHandshake");
     }
 
     private com.microsoft.azure.proton.transport.proxy.ProxyConfiguration getProtonConfiguration() {
@@ -227,8 +227,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
             case NONE:
                 return com.microsoft.azure.proton.transport.proxy.ProxyAuthenticationType.NONE;
             default:
-                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                    "connectionId[%s]: This authentication type is unknown: %s", getConnectionId(), type.name())));
+                throw logger.logExceptionAsError(new IllegalArgumentException(String.format("This authentication type is unknown: %s", type.name())));
         }
     }
 

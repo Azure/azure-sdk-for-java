@@ -18,6 +18,7 @@ public class ReadmeSamples {
      * Sample for creating low level client.
      */
     public void createClient() {
+        // BEGIN: readme-sample-createBatchDocumentTranslationRestClient
         String endpoint = String.format("https://%s.cognitiveservices.azure.com/translator/text/batch/v1.0-preview.1",
             "<document-translator-resource-name>");
         String apiKey = "<document-translator-api-key>";
@@ -27,5 +28,6 @@ public class ReadmeSamples {
             .endpoint(endpoint)
             .httpClient(new NettyAsyncHttpClientBuilder().build())
             .buildRestClient();
+        // END: readme-sample-createBatchDocumentTranslationRestClient
     }
 }

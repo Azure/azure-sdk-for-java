@@ -864,7 +864,7 @@ public class StoreReader {
                 logger.error("Unexpected exception {} received while reading from store.", responseException.getMessage(), responseException);
                 return new StoreResult(
                         /* storeResponse: */ null,
-                        /* exception: */ new InternalServerErrorException(RMResources.InternalServerError),
+                        /* exception: */ new InternalServerErrorException(RMResources.InternalServerError, responseException),
                         /* partitionKeyRangeId: */ (String) null,
                         /* lsn: */ -1,
                         /* quorumAckedLsn: */ -1,

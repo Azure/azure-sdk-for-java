@@ -6,7 +6,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.EnvironmentCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.attestation.models.AttestationTokenValidationOptions;
 import com.azure.security.attestation.models.AttestationType;
 import com.nimbusds.jose.util.X509CertUtils;
@@ -84,31 +84,17 @@ public class AttestationClientTestBase extends TestBase {
     }
 
     /**
-     * Retrieve an authenticated attestationAdministrationClientBuilder for the specified HTTP
-     * client and client URI.
-     * @param httpClient - HTTP client ot be used for the attestation client.
-     * @param clientUri - Client base URI to access the service.
-     * @return Returns an attestation client builder corresponding to the httpClient and clientUri.
-     */
-    AttestationAdministrationClientBuilder getAuthenticatedAdministrationBuilder(HttpClient httpClient, String clientUri) {
-        AttestationAdministrationClientBuilder builder = getAttestationAdministrationBuilder(httpClient, clientUri);
-        if (!interceptorManager.isPlaybackMode()) {
-            builder.credential(new EnvironmentCredentialBuilder().httpClient(httpClient).build());
-        }
-        return builder;
-    }
-
-
-    /**
      * Retrieve an authenticated attestationClientBuilder for the specified HTTP client and client URI
      * @param httpClient - HTTP client ot be used for the attestation client.
      * @param clientUri - Client base URI to access the service.
      * @return Returns an attestation client builder corresponding to the httpClient and clientUri.
      */
-    AttestationAdministrationClientBuilder getAuthenticatedAttestationBuilder(HttpClient httpClient, String clientUri) {
-        AttestationAdministrationClientBuilder builder = getAttestationAdministrationBuilder(httpClient, clientUri);
+    AttestationClientBuilder getAuthenticatedAttestationBuilder(HttpClient httpClient, String clientUri) {
+        AttestationClientBuilder builder = getAttestationBuilder(httpClient, clientUri);
         if (!interceptorManager.isPlaybackMode()) {
-            builder.credential(new EnvironmentCredentialBuilder().httpClient(httpClient).build());
+            builder
+                .credential(new DefaultAzureCredentialBuilder()
+                .httpClient(httpClient).build());
         }
         return builder;
     }
@@ -142,7 +128,7 @@ public class AttestationClientTestBase extends TestBase {
      * @param clientUri - Client base URI to access the service.
      * @return Returns an attestation client builder corresponding to the httpClient and clientUri.
      */
-    private AttestationAdministrationClientBuilder getAttestationAdministrationBuilder(HttpClient httpClient, String clientUri) {
+    AttestationAdministrationClientBuilder getAttestationAdministrationBuilder(HttpClient httpClient, String clientUri) {
         AttestationAdministrationClientBuilder builder = new AttestationAdministrationClientBuilder()
             .endpoint(clientUri)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
@@ -158,7 +144,7 @@ public class AttestationClientTestBase extends TestBase {
             );
         }
         if (!interceptorManager.isPlaybackMode()) {
-            builder.credential(new EnvironmentCredentialBuilder().httpClient(httpClient).build());
+            builder.credential(new DefaultAzureCredentialBuilder().httpClient(httpClient).build());
         }
         return builder;
     }
@@ -299,12 +285,12 @@ public class AttestationClientTestBase extends TestBase {
     protected KeyPair createKeyPair(String algorithm) throws NoSuchAlgorithmException {
 
         KeyPairGenerator keyGen;
-        if (algorithm.equals("EC")) {
+        if ("EC".equals(algorithm)) {
             keyGen = KeyPairGenerator.getInstance(algorithm, Security.getProvider("SunEC"));
         } else {
             keyGen = KeyPairGenerator.getInstance(algorithm);
         }
-        if (algorithm.equals("RSA")) {
+        if ("RSA".equals(algorithm)) {
             keyGen.initialize(2048); // Generate a reasonably strong key.
         }
         return keyGen.generateKeyPair();
@@ -372,7 +358,7 @@ public class AttestationClientTestBase extends TestBase {
      * @return a stream of Argument objects associated with each of the regions on which to run the attestation test.
      */
     static Stream<Arguments> getAttestationClients() {
-        // when this issues is closed, the newer version of junit will have better support for
+        // when this issue is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
 
         final String regionShortName = getLocationShortName();

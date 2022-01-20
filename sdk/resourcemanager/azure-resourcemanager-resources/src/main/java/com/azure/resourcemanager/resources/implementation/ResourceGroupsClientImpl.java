@@ -578,12 +578,13 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String forceDeletionTypes) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, forceDeletionTypes);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -599,7 +600,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String forceDeletionTypes, Context context) {
         context = this.client.mergeContext(context);
@@ -621,7 +622,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String forceDeletionTypes) {
         return beginDeleteAsync(resourceGroupName, forceDeletionTypes).getSyncPoller();
     }
@@ -639,7 +640,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String forceDeletionTypes, Context context) {
         return beginDeleteAsync(resourceGroupName, forceDeletionTypes, context).getSyncPoller();
@@ -1149,7 +1150,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource group export result.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ResourceGroupExportResultInner>, ResourceGroupExportResultInner>
         beginExportTemplateAsync(String resourceGroupName, ExportTemplateRequest parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = exportTemplateWithResponseAsync(resourceGroupName, parameters);
@@ -1174,7 +1175,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource group export result.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ResourceGroupExportResultInner>, ResourceGroupExportResultInner>
         beginExportTemplateAsync(String resourceGroupName, ExportTemplateRequest parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -1199,7 +1200,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource group export result.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourceGroupExportResultInner>, ResourceGroupExportResultInner> beginExportTemplate(
         String resourceGroupName, ExportTemplateRequest parameters) {
         return beginExportTemplateAsync(resourceGroupName, parameters).getSyncPoller();
@@ -1216,7 +1217,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource group export result.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourceGroupExportResultInner>, ResourceGroupExportResultInner> beginExportTemplate(
         String resourceGroupName, ExportTemplateRequest parameters, Context context) {
         return beginExportTemplateAsync(resourceGroupName, parameters, context).getSyncPoller();

@@ -9,6 +9,9 @@ import com.azure.core.util.ServiceVersion;
  * The versions of Azure Form Recognizer supported by this client library.
  */
 public enum DocumentAnalysisServiceVersion implements ServiceVersion {
+    /**
+     * Service version {@code 2021-09-30-preview}.
+     */
     V2021_09_30_PREVIEW("2021-09-30-preview");
 
     private final String version;

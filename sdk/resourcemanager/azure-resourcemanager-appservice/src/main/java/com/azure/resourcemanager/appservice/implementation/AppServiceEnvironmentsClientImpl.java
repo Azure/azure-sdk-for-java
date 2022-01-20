@@ -1577,7 +1577,7 @@ public final class AppServiceEnvironmentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service Environment ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AppServiceEnvironmentResourceInner>, AppServiceEnvironmentResourceInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope) {
@@ -1605,7 +1605,7 @@ public final class AppServiceEnvironmentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service Environment ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AppServiceEnvironmentResourceInner>, AppServiceEnvironmentResourceInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -1636,7 +1636,7 @@ public final class AppServiceEnvironmentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service Environment ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AppServiceEnvironmentResourceInner>, AppServiceEnvironmentResourceInner>
         beginCreateOrUpdate(
             String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope) {
@@ -1655,7 +1655,7 @@ public final class AppServiceEnvironmentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service Environment ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AppServiceEnvironmentResourceInner>, AppServiceEnvironmentResourceInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -1857,13 +1857,14 @@ public final class AppServiceEnvironmentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String name, Boolean forceDelete) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, name, forceDelete);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1879,7 +1880,7 @@ public final class AppServiceEnvironmentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String name, Boolean forceDelete, Context context) {
         context = this.client.mergeContext(context);
@@ -1901,7 +1902,7 @@ public final class AppServiceEnvironmentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, Boolean forceDelete) {
         return beginDeleteAsync(resourceGroupName, name, forceDelete).getSyncPoller();
     }
@@ -1919,7 +1920,7 @@ public final class AppServiceEnvironmentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String name, Boolean forceDelete, Context context) {
         return beginDeleteAsync(resourceGroupName, name, forceDelete, context).getSyncPoller();
@@ -4040,7 +4041,7 @@ public final class AppServiceEnvironmentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return worker pool of an App Service Environment ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<WorkerPoolResourceInner>, WorkerPoolResourceInner>
         beginCreateOrUpdateMultiRolePoolAsync(
             String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope) {
@@ -4068,7 +4069,7 @@ public final class AppServiceEnvironmentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return worker pool of an App Service Environment ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkerPoolResourceInner>, WorkerPoolResourceInner>
         beginCreateOrUpdateMultiRolePoolAsync(
             String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope, Context context) {
@@ -4096,7 +4097,7 @@ public final class AppServiceEnvironmentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return worker pool of an App Service Environment ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkerPoolResourceInner>, WorkerPoolResourceInner> beginCreateOrUpdateMultiRolePool(
         String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope) {
         return beginCreateOrUpdateMultiRolePoolAsync(resourceGroupName, name, multiRolePoolEnvelope).getSyncPoller();
@@ -4114,7 +4115,7 @@ public final class AppServiceEnvironmentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return worker pool of an App Service Environment ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkerPoolResourceInner>, WorkerPoolResourceInner> beginCreateOrUpdateMultiRolePool(
         String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope, Context context) {
         return beginCreateOrUpdateMultiRolePoolAsync(resourceGroupName, name, multiRolePoolEnvelope, context)
@@ -5940,7 +5941,7 @@ public final class AppServiceEnvironmentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return remote Private Endpoint Connection ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<
             PollResult<RemotePrivateEndpointConnectionArmResourceInner>,
             RemotePrivateEndpointConnectionArmResourceInner>
@@ -5976,7 +5977,7 @@ public final class AppServiceEnvironmentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return remote Private Endpoint Connection ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<
             PollResult<RemotePrivateEndpointConnectionArmResourceInner>,
             RemotePrivateEndpointConnectionArmResourceInner>
@@ -6013,7 +6014,7 @@ public final class AppServiceEnvironmentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return remote Private Endpoint Connection ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<RemotePrivateEndpointConnectionArmResourceInner>,
             RemotePrivateEndpointConnectionArmResourceInner>
@@ -6040,7 +6041,7 @@ public final class AppServiceEnvironmentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return remote Private Endpoint Connection ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<RemotePrivateEndpointConnectionArmResourceInner>,
             RemotePrivateEndpointConnectionArmResourceInner>
@@ -6274,7 +6275,7 @@ public final class AppServiceEnvironmentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Object>, Object> beginDeletePrivateEndpointConnectionAsync(
         String resourceGroupName, String name, String privateEndpointConnectionName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -6297,7 +6298,7 @@ public final class AppServiceEnvironmentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Object>, Object> beginDeletePrivateEndpointConnectionAsync(
         String resourceGroupName, String name, String privateEndpointConnectionName, Context context) {
         context = this.client.mergeContext(context);
@@ -6320,7 +6321,7 @@ public final class AppServiceEnvironmentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Object>, Object> beginDeletePrivateEndpointConnection(
         String resourceGroupName, String name, String privateEndpointConnectionName) {
         return beginDeletePrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName)
@@ -6339,7 +6340,7 @@ public final class AppServiceEnvironmentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Object>, Object> beginDeletePrivateEndpointConnection(
         String resourceGroupName, String name, String privateEndpointConnectionName, Context context) {
         return beginDeletePrivateEndpointConnectionAsync(
@@ -8196,7 +8197,7 @@ public final class AppServiceEnvironmentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return worker pool of an App Service Environment ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<WorkerPoolResourceInner>, WorkerPoolResourceInner> beginCreateOrUpdateWorkerPoolAsync(
         String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -8224,7 +8225,7 @@ public final class AppServiceEnvironmentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return worker pool of an App Service Environment ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkerPoolResourceInner>, WorkerPoolResourceInner> beginCreateOrUpdateWorkerPoolAsync(
         String resourceGroupName,
         String name,
@@ -8257,7 +8258,7 @@ public final class AppServiceEnvironmentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return worker pool of an App Service Environment ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkerPoolResourceInner>, WorkerPoolResourceInner> beginCreateOrUpdateWorkerPool(
         String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope) {
         return beginCreateOrUpdateWorkerPoolAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope)
@@ -8277,7 +8278,7 @@ public final class AppServiceEnvironmentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return worker pool of an App Service Environment ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkerPoolResourceInner>, WorkerPoolResourceInner> beginCreateOrUpdateWorkerPool(
         String resourceGroupName,
         String name,

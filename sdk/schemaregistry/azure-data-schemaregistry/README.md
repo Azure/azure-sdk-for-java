@@ -21,7 +21,7 @@ schema identifiers rather than full schemas.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

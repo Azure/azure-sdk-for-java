@@ -6,6 +6,7 @@ package com.azure.messaging.webpubsub.implementation;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
+import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Head;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -31,27 +32,28 @@ public final class WebPubSubsImpl {
     private final WebPubSubsService service;
 
     /** The service client containing this operation class. */
-    private final AzureWebPubSubServiceRestAPIImpl client;
+    private final AzureWebPubSubServiceRestApiImpl client;
 
     /**
      * Initializes an instance of WebPubSubsImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    WebPubSubsImpl(AzureWebPubSubServiceRestAPIImpl client) {
+    WebPubSubsImpl(AzureWebPubSubServiceRestApiImpl client) {
         this.service =
                 RestProxy.create(WebPubSubsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureWebPubSubServiceRestAPIWebPubSubs to be used by the proxy
+     * The interface defining all the services for AzureWebPubSubServiceRestApiWebPubSubs to be used by the proxy
      * service to perform REST calls.
      */
     @Host("{Endpoint}")
     @ServiceInterface(name = "AzureWebPubSubServic")
     public interface WebPubSubsService {
         @Post("/api/hubs/{hub}/:generateToken")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> generateClientToken(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
@@ -60,6 +62,7 @@ public final class WebPubSubsImpl {
                 Context context);
 
         @Post("/api/hubs/{hub}/:closeConnections")
+        @ExpectedResponses({204})
         Mono<Response<Void>> closeAllConnections(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
@@ -68,6 +71,7 @@ public final class WebPubSubsImpl {
                 Context context);
 
         @Post("/api/hubs/{hub}/:send")
+        @ExpectedResponses({202})
         Mono<Response<Void>> sendToAll(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
@@ -77,6 +81,7 @@ public final class WebPubSubsImpl {
                 Context context);
 
         @Head("/api/hubs/{hub}/connections/{connectionId}")
+        @ExpectedResponses({200, 404})
         Mono<Response<Boolean>> connectionExists(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
@@ -86,6 +91,7 @@ public final class WebPubSubsImpl {
                 Context context);
 
         @Delete("/api/hubs/{hub}/connections/{connectionId}")
+        @ExpectedResponses({204})
         Mono<Response<Void>> closeConnection(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
@@ -95,6 +101,7 @@ public final class WebPubSubsImpl {
                 Context context);
 
         @Post("/api/hubs/{hub}/connections/{connectionId}/:send")
+        @ExpectedResponses({202})
         Mono<Response<Void>> sendToConnection(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
@@ -105,6 +112,7 @@ public final class WebPubSubsImpl {
                 Context context);
 
         @Head("/api/hubs/{hub}/groups/{group}")
+        @ExpectedResponses({200, 404})
         Mono<Response<Boolean>> groupExists(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
@@ -114,6 +122,7 @@ public final class WebPubSubsImpl {
                 Context context);
 
         @Post("/api/hubs/{hub}/groups/{group}/:closeConnections")
+        @ExpectedResponses({204})
         Mono<Response<Void>> closeGroupConnections(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
@@ -123,6 +132,7 @@ public final class WebPubSubsImpl {
                 Context context);
 
         @Post("/api/hubs/{hub}/groups/{group}/:send")
+        @ExpectedResponses({202})
         Mono<Response<Void>> sendToGroup(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
@@ -133,6 +143,7 @@ public final class WebPubSubsImpl {
                 Context context);
 
         @Put("/api/hubs/{hub}/groups/{group}/connections/{connectionId}")
+        @ExpectedResponses({200})
         Mono<Response<Void>> addConnectionToGroup(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
@@ -143,6 +154,7 @@ public final class WebPubSubsImpl {
                 Context context);
 
         @Delete("/api/hubs/{hub}/groups/{group}/connections/{connectionId}")
+        @ExpectedResponses({204})
         Mono<Response<Void>> removeConnectionFromGroup(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
@@ -153,6 +165,7 @@ public final class WebPubSubsImpl {
                 Context context);
 
         @Head("/api/hubs/{hub}/users/{userId}")
+        @ExpectedResponses({200, 404})
         Mono<Response<Boolean>> userExists(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
@@ -162,6 +175,7 @@ public final class WebPubSubsImpl {
                 Context context);
 
         @Post("/api/hubs/{hub}/users/{userId}/:closeConnections")
+        @ExpectedResponses({204})
         Mono<Response<Void>> closeUserConnections(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
@@ -171,6 +185,7 @@ public final class WebPubSubsImpl {
                 Context context);
 
         @Post("/api/hubs/{hub}/users/{userId}/:send")
+        @ExpectedResponses({202})
         Mono<Response<Void>> sendToUser(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
@@ -181,6 +196,7 @@ public final class WebPubSubsImpl {
                 Context context);
 
         @Put("/api/hubs/{hub}/users/{userId}/groups/{group}")
+        @ExpectedResponses({200})
         Mono<Response<Void>> addUserToGroup(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
@@ -191,6 +207,7 @@ public final class WebPubSubsImpl {
                 Context context);
 
         @Delete("/api/hubs/{hub}/users/{userId}/groups/{group}")
+        @ExpectedResponses({204})
         Mono<Response<Void>> removeUserFromGroup(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
@@ -201,6 +218,7 @@ public final class WebPubSubsImpl {
                 Context context);
 
         @Delete("/api/hubs/{hub}/users/{userId}/groups")
+        @ExpectedResponses({204})
         Mono<Response<Void>> removeUserFromAllGroups(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
@@ -210,6 +228,7 @@ public final class WebPubSubsImpl {
                 Context context);
 
         @Put("/api/hubs/{hub}/permissions/{permission}/connections/{connectionId}")
+        @ExpectedResponses({200})
         Mono<Response<Void>> grantPermission(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
@@ -220,6 +239,7 @@ public final class WebPubSubsImpl {
                 Context context);
 
         @Delete("/api/hubs/{hub}/permissions/{permission}/connections/{connectionId}")
+        @ExpectedResponses({204})
         Mono<Response<Void>> revokePermission(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
@@ -230,6 +250,7 @@ public final class WebPubSubsImpl {
                 Context context);
 
         @Head("/api/hubs/{hub}/permissions/{permission}/connections/{connectionId}")
+        @ExpectedResponses({200, 404})
         Mono<Response<Boolean>> checkPermission(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("hub") String hub,
@@ -265,8 +286,7 @@ public final class WebPubSubsImpl {
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response object containing the token for the client.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -310,8 +330,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response object containing the token for the client.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -349,8 +368,7 @@ public final class WebPubSubsImpl {
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response object containing the token for the client.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -374,8 +392,7 @@ public final class WebPubSubsImpl {
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -410,8 +427,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -440,8 +456,7 @@ public final class WebPubSubsImpl {
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -480,8 +495,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param message The payload body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -536,8 +550,7 @@ public final class WebPubSubsImpl {
      * @param message The payload body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -589,8 +602,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param message The payload body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -619,8 +631,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param connectionId The connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -665,8 +676,7 @@ public final class WebPubSubsImpl {
      * @param connectionId The connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -708,8 +718,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param connectionId The connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -734,8 +743,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -775,8 +783,7 @@ public final class WebPubSubsImpl {
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -813,8 +820,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -853,8 +859,7 @@ public final class WebPubSubsImpl {
      * @param connectionId The connection Id.
      * @param message The payload body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -913,8 +918,7 @@ public final class WebPubSubsImpl {
      * @param message The payload body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -970,8 +974,7 @@ public final class WebPubSubsImpl {
      * @param connectionId The connection Id.
      * @param message The payload body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1001,8 +1004,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1047,8 +1049,7 @@ public final class WebPubSubsImpl {
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1090,8 +1091,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1116,8 +1116,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1158,8 +1157,7 @@ public final class WebPubSubsImpl {
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1197,8 +1195,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1238,8 +1235,7 @@ public final class WebPubSubsImpl {
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param message The payload body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1299,8 +1295,7 @@ public final class WebPubSubsImpl {
      * @param message The payload body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1357,8 +1352,7 @@ public final class WebPubSubsImpl {
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param message The payload body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1383,8 +1377,7 @@ public final class WebPubSubsImpl {
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1428,8 +1421,7 @@ public final class WebPubSubsImpl {
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1470,8 +1462,7 @@ public final class WebPubSubsImpl {
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1496,8 +1487,7 @@ public final class WebPubSubsImpl {
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1541,8 +1531,7 @@ public final class WebPubSubsImpl {
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1583,8 +1572,7 @@ public final class WebPubSubsImpl {
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1614,8 +1602,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param userId Target user Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1660,8 +1647,7 @@ public final class WebPubSubsImpl {
      * @param userId Target user Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1703,8 +1689,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param userId Target user Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1729,8 +1714,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param userId The user Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1771,8 +1755,7 @@ public final class WebPubSubsImpl {
      * @param userId The user Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1810,8 +1793,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param userId The user Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1850,8 +1832,7 @@ public final class WebPubSubsImpl {
      * @param userId The user Id.
      * @param message The payload body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1910,8 +1891,7 @@ public final class WebPubSubsImpl {
      * @param message The payload body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1967,8 +1947,7 @@ public final class WebPubSubsImpl {
      * @param userId The user Id.
      * @param message The payload body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1993,8 +1972,7 @@ public final class WebPubSubsImpl {
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param userId Target user Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2038,8 +2016,7 @@ public final class WebPubSubsImpl {
      * @param userId Target user Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2080,8 +2057,7 @@ public final class WebPubSubsImpl {
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param userId Target user Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2106,8 +2082,7 @@ public final class WebPubSubsImpl {
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param userId Target user Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2151,8 +2126,7 @@ public final class WebPubSubsImpl {
      * @param userId Target user Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2193,8 +2167,7 @@ public final class WebPubSubsImpl {
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param userId Target user Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2218,8 +2191,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param userId Target user Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2258,8 +2230,7 @@ public final class WebPubSubsImpl {
      * @param userId Target user Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2295,8 +2266,7 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param userId Target user Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2322,8 +2292,7 @@ public final class WebPubSubsImpl {
      * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup.
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2368,8 +2337,7 @@ public final class WebPubSubsImpl {
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2411,8 +2379,7 @@ public final class WebPubSubsImpl {
      * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup.
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2438,8 +2405,7 @@ public final class WebPubSubsImpl {
      * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup.
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2484,8 +2450,7 @@ public final class WebPubSubsImpl {
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2527,8 +2492,7 @@ public final class WebPubSubsImpl {
      * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup.
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2560,8 +2524,7 @@ public final class WebPubSubsImpl {
      * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup.
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2612,8 +2575,7 @@ public final class WebPubSubsImpl {
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2661,8 +2623,7 @@ public final class WebPubSubsImpl {
      * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup.
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

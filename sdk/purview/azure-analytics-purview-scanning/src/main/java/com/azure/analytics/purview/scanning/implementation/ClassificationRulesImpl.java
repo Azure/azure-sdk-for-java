@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.scanning.implementation;
 
 import com.azure.core.annotation.Delete;
+import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -59,6 +60,7 @@ public final class ClassificationRulesImpl {
     @ServiceInterface(name = "PurviewScanningClien")
     private interface ClassificationRulesService {
         @Get("/classificationrules/{classificationRuleName}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> get(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("classificationRuleName") String classificationRuleName,
@@ -67,6 +69,7 @@ public final class ClassificationRulesImpl {
                 Context context);
 
         @Put("/classificationrules/{classificationRuleName}")
+        @ExpectedResponses({200, 201})
         Mono<Response<BinaryData>> createOrUpdate(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("classificationRuleName") String classificationRuleName,
@@ -75,6 +78,7 @@ public final class ClassificationRulesImpl {
                 Context context);
 
         @Delete("/classificationrules/{classificationRuleName}")
+        @ExpectedResponses({200, 204})
         Mono<Response<BinaryData>> delete(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("classificationRuleName") String classificationRuleName,
@@ -83,6 +87,7 @@ public final class ClassificationRulesImpl {
                 Context context);
 
         @Get("/classificationrules")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> listAll(
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
@@ -90,6 +95,7 @@ public final class ClassificationRulesImpl {
                 Context context);
 
         @Get("/classificationrules/{classificationRuleName}/versions")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> listVersionsByClassificationRuleName(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("classificationRuleName") String classificationRuleName,
@@ -98,6 +104,7 @@ public final class ClassificationRulesImpl {
                 Context context);
 
         @Post("/classificationrules/{classificationRuleName}/versions/{classificationRuleVersion}/:tag")
+        @ExpectedResponses({202})
         Mono<Response<BinaryData>> tagClassificationVersion(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("classificationRuleName") String classificationRuleName,
@@ -107,6 +114,7 @@ public final class ClassificationRulesImpl {
                 Context context);
 
         @Get("{nextLink}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> listAllNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("Endpoint") String endpoint,
@@ -114,6 +122,7 @@ public final class ClassificationRulesImpl {
                 Context context);
 
         @Get("{nextLink}")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> listVersionsByClassificationRuleNameNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("Endpoint") String endpoint,
@@ -143,9 +152,8 @@ public final class ClassificationRulesImpl {
      *
      * @param classificationRuleName The classificationRuleName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return a classification rule.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a classification rule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(
@@ -183,9 +191,8 @@ public final class ClassificationRulesImpl {
      * @param classificationRuleName The classificationRuleName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return a classification rule.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a classification rule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(
@@ -220,9 +227,8 @@ public final class ClassificationRulesImpl {
      *
      * @param classificationRuleName The classificationRuleName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return a classification rule.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a classification rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWithResponse(String classificationRuleName, RequestOptions requestOptions) {
@@ -260,9 +266,8 @@ public final class ClassificationRulesImpl {
      *
      * @param classificationRuleName The classificationRuleName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
@@ -309,9 +314,8 @@ public final class ClassificationRulesImpl {
      * @param classificationRuleName The classificationRuleName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
@@ -355,9 +359,8 @@ public final class ClassificationRulesImpl {
      *
      * @param classificationRuleName The classificationRuleName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateWithResponse(
@@ -387,9 +390,8 @@ public final class ClassificationRulesImpl {
      *
      * @param classificationRuleName The classificationRuleName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteWithResponseAsync(
@@ -427,9 +429,8 @@ public final class ClassificationRulesImpl {
      * @param classificationRuleName The classificationRuleName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteWithResponseAsync(
@@ -464,9 +465,8 @@ public final class ClassificationRulesImpl {
      *
      * @param classificationRuleName The classificationRuleName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteWithResponse(String classificationRuleName, RequestOptions requestOptions) {
@@ -500,9 +500,8 @@ public final class ClassificationRulesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listAllSinglePageAsync(RequestOptions requestOptions) {
@@ -552,9 +551,8 @@ public final class ClassificationRulesImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listAllSinglePageAsync(RequestOptions requestOptions, Context context) {
@@ -601,8 +599,7 @@ public final class ClassificationRulesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -639,8 +636,7 @@ public final class ClassificationRulesImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -677,8 +673,7 @@ public final class ClassificationRulesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -714,9 +709,8 @@ public final class ClassificationRulesImpl {
      *
      * @param classificationRuleName The classificationRuleName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listVersionsByClassificationRuleNameSinglePageAsync(
@@ -769,9 +763,8 @@ public final class ClassificationRulesImpl {
      * @param classificationRuleName The classificationRuleName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listVersionsByClassificationRuleNameSinglePageAsync(
@@ -821,8 +814,7 @@ public final class ClassificationRulesImpl {
      *
      * @param classificationRuleName The classificationRuleName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -862,8 +854,7 @@ public final class ClassificationRulesImpl {
      * @param classificationRuleName The classificationRuleName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -904,8 +895,7 @@ public final class ClassificationRulesImpl {
      *
      * @param classificationRuleName The classificationRuleName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -955,9 +945,8 @@ public final class ClassificationRulesImpl {
      * @param classificationRuleName The classificationRuleName parameter.
      * @param classificationRuleVersion The classificationRuleVersion parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> tagClassificationVersionWithResponseAsync(
@@ -1015,9 +1004,8 @@ public final class ClassificationRulesImpl {
      * @param classificationRuleVersion The classificationRuleVersion parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> tagClassificationVersionWithResponseAsync(
@@ -1075,9 +1063,8 @@ public final class ClassificationRulesImpl {
      * @param classificationRuleName The classificationRuleName parameter.
      * @param classificationRuleVersion The classificationRuleVersion parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> tagClassificationVersionWithResponse(
@@ -1107,9 +1094,8 @@ public final class ClassificationRulesImpl {
      *
      * @param nextLink The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listAllNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
@@ -1147,9 +1133,8 @@ public final class ClassificationRulesImpl {
      * @param nextLink The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listAllNextSinglePageAsync(
@@ -1186,9 +1171,8 @@ public final class ClassificationRulesImpl {
      *
      * @param nextLink The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listVersionsByClassificationRuleNameNextSinglePageAsync(
@@ -1229,9 +1213,8 @@ public final class ClassificationRulesImpl {
      * @param nextLink The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listVersionsByClassificationRuleNameNextSinglePageAsync(

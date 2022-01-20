@@ -1,0 +1,87 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved.
+     Licensed under the MIT License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <relativePath>../azure-client-sdk-parent/pom.xml</relativePath>
+  </parent>
+
+  <groupId>com.azure</groupId>
+  <artifactId>azure-perf-test-parent</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-perf-test-parent;current} -->
+
+  <name>Microsoft Azure SDK for Java - Performance Test Libraries Parent</name>
+  <description>Parent POM for Microsoft Azure SDK for Java Performance Tests</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <distributionManagement>
+    <site>
+      <id>azure-java-build-docs</id>
+      <url>${site.url}/site/${project.artifactId}</url>
+    </site>
+  </distributionManagement>
+
+  <scm>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
+    <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</connection>
+    <developerConnection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</developerConnection>
+  </scm>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+    <!-- Always target the minimum supported Java release in performance tests. -->
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+
+    <!-- Skip all linting in performance tests. -->
+    <codesnippet.skip>true</codesnippet.skip>
+    <checkstyle.skip>true</checkstyle.skip>
+    <spotbugs.skip>true</spotbugs.skip>
+    <revapi.skip>true</revapi.skip>
+
+    <!-- Main class used by children projects. Used to centralize how performance tests are built. -->
+    <perf.test.mainClass></perf.test.mainClass>
+
+    <!-- Skip missing Javadocs in performance tests. -->
+    <doclint>all,-missing</doclint>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>3.2.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-assembly-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <archive>
+                <manifest>
+                  <mainClass>${perf.test.mainClass}</mainClass>
+                </manifest>
+                <!-- Add a manifest entry to indicate that the JAR with dependencies is a multi-release JAR since azure-core contains multi-release functionality. -->
+                <manifestEntries>
+                  <Multi-Release>true</Multi-Release>
+                </manifestEntries>
+              </archive>
+              <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

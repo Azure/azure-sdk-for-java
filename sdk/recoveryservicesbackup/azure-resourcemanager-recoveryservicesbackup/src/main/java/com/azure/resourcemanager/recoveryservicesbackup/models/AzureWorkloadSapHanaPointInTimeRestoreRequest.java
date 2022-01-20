@@ -92,6 +92,13 @@ public class AzureWorkloadSapHanaPointInTimeRestoreRequest extends AzureWorkload
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureWorkloadSapHanaPointInTimeRestoreRequest withTargetVirtualMachineId(String targetVirtualMachineId) {
+        super.withTargetVirtualMachineId(targetVirtualMachineId);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

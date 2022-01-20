@@ -141,7 +141,7 @@ public final class PlaybackClient implements HttpClient {
              */
             if (contentType != null
                 && (contentType.equalsIgnoreCase(ContentType.APPLICATION_OCTET_STREAM)
-                    || contentType.equalsIgnoreCase("avro/binary"))) {
+                    || "avro/binary".equalsIgnoreCase(contentType))) {
                 if (rawBody.startsWith("[") && rawBody.endsWith("]")) {
                     /*
                      * Body is encoded using the old Arrays.toString() format. Remove the leading '[' and trailing ']'

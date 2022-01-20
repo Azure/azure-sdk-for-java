@@ -32,7 +32,7 @@ public interface ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Stream Analytics Cluster object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(
         String resourceGroupName, String clusterName, ClusterInner cluster, String ifMatch, String ifNoneMatch);
 
@@ -53,7 +53,7 @@ public interface ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Stream Analytics Cluster object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(
         String resourceGroupName,
         String clusterName,
@@ -138,7 +138,7 @@ public interface ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Stream Analytics Cluster object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(
         String resourceGroupName, String clusterName, ClusterInner cluster, String ifMatch);
 
@@ -158,7 +158,7 @@ public interface ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Stream Analytics Cluster object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(
         String resourceGroupName, String clusterName, ClusterInner cluster, String ifMatch, Context context);
 
@@ -254,7 +254,7 @@ public interface ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName);
 
     /**
@@ -268,7 +268,7 @@ public interface ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName, Context context);
 
     /**

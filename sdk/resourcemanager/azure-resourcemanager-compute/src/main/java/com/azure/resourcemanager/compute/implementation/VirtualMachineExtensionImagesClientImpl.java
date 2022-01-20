@@ -121,7 +121,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine extension image.
+     * @return a virtual machine extension image along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VirtualMachineExtensionImageInner>> getWithResponseAsync(
@@ -180,7 +180,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine extension image.
+     * @return a virtual machine extension image along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VirtualMachineExtensionImageInner>> getWithResponseAsync(
@@ -235,7 +235,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine extension image.
+     * @return a virtual machine extension image on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineExtensionImageInner> getAsync(
@@ -279,7 +279,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine extension image.
+     * @return a virtual machine extension image along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualMachineExtensionImageInner> getWithResponse(
@@ -295,7 +295,8 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine extension image types.
+     * @return a list of virtual machine extension image types along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<VirtualMachineExtensionImageInner>>> listTypesWithResponseAsync(
@@ -344,7 +345,8 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine extension image types.
+     * @return a list of virtual machine extension image types along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<VirtualMachineExtensionImageInner>>> listTypesWithResponseAsync(
@@ -389,7 +391,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine extension image types.
+     * @return a list of virtual machine extension image types on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<VirtualMachineExtensionImageInner>> listTypesAsync(String location, String publisherName) {
@@ -428,7 +430,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine extension image types.
+     * @return a list of virtual machine extension image types along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<VirtualMachineExtensionImageInner>> listTypesWithResponse(
@@ -448,7 +450,8 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine extension image versions.
+     * @return a list of virtual machine extension image versions along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<VirtualMachineExtensionImageInner>>> listVersionsWithResponseAsync(
@@ -508,7 +511,8 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine extension image versions.
+     * @return a list of virtual machine extension image versions along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<VirtualMachineExtensionImageInner>>> listVersionsWithResponseAsync(
@@ -570,7 +574,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine extension image versions.
+     * @return a list of virtual machine extension image versions on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<VirtualMachineExtensionImageInner>> listVersionsAsync(
@@ -595,7 +599,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine extension image versions.
+     * @return a list of virtual machine extension image versions on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<VirtualMachineExtensionImageInner>> listVersionsAsync(
@@ -646,7 +650,7 @@ public final class VirtualMachineExtensionImagesClientImpl implements VirtualMac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine extension image versions.
+     * @return a list of virtual machine extension image versions along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<VirtualMachineExtensionImageInner>> listVersionsWithResponse(

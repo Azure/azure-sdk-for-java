@@ -1,0 +1,440 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/jmonitor_53883f6?api-version=2019-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.8.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "89c1a392-1dc0-4ba7-8791-dbdedcdb1ba1",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "230",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1199",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-correlation-request-id" : "5ca54b98-246d-430d-acf5-5aeea6a9b773",
+      "Date" : "Tue, 12 Oct 2021 19:41:47 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "WESTUS2:20211012T194147Z:5ca54b98-246d-430d-acf5-5aeea6a9b773",
+      "Expires" : "-1",
+      "x-ms-request-id" : "5ca54b98-246d-430d-acf5-5aeea6a9b773",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_53883f6\",\"name\":\"jmonitor_53883f6\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"eastus2\",\"properties\":{\"provisioningState\":\"Succeeded\"}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_53883f6/providers/Microsoft.Storage/storageAccounts/jmonitorsa13658f?api-version=2019-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.8.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "84ad8f9b-8e25-4343-a269-885cb39dd01c",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "Server" : "Microsoft-Azure-Storage-Resource-Provider/1.0,Microsoft-HTTPAPI/2.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1198",
+      "Pragma" : "no-cache",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "0f12faa6-5ae3-4642-aaa4-fe09a39e0eb5",
+      "Date" : "Tue, 12 Oct 2021 19:41:52 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-routing-request-id" : "WESTUS2:20211012T194152Z:0f12faa6-5ae3-4642-aaa4-fe09a39e0eb5",
+      "Expires" : "-1",
+      "x-ms-request-id" : "38325914-0b24-4dd2-95a9-94efd28ba74d",
+      "Body" : "",
+      "x-ms-client-request-id" : "84ad8f9b-8e25-4343-a269-885cb39dd01c",
+      "Content-Type" : "text/plain; charset=utf-8",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus2/asyncoperations/38325914-0b24-4dd2-95a9-94efd28ba74d?monitor=true&api-version=2019-06-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus2/asyncoperations/38325914-0b24-4dd2-95a9-94efd28ba74d?monitor=true&api-version=2019-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a7ff5085-38c0-4a34-a616-73f0f1fe27bc"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "Server" : "Microsoft-Azure-Storage-Resource-Provider/1.0,Microsoft-HTTPAPI/2.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11999",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "91382bbf-5b6a-463b-b4f5-6c29e4c3f5e3",
+      "Date" : "Tue, 12 Oct 2021 19:42:09 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-routing-request-id" : "WESTUS2:20211012T194210Z:91382bbf-5b6a-463b-b4f5-6c29e4c3f5e3",
+      "Expires" : "-1",
+      "x-ms-request-id" : "b83a8335-5063-401e-9f65-fd798ad4c145",
+      "Body" : "",
+      "x-ms-client-request-id" : "a7ff5085-38c0-4a34-a616-73f0f1fe27bc",
+      "Content-Type" : "text/plain; charset=utf-8",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus2/asyncoperations/38325914-0b24-4dd2-95a9-94efd28ba74d?monitor=true&api-version=2019-06-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus2/asyncoperations/38325914-0b24-4dd2-95a9-94efd28ba74d?monitor=true&api-version=2019-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3a872a1f-4b40-45b0-b05f-009d93e24e61"
+    },
+    "Response" : {
+      "content-length" : "1727",
+      "Server" : "Microsoft-Azure-Storage-Resource-Provider/1.0,Microsoft-HTTPAPI/2.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11999",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "146cfce4-8418-4185-b4b5-675fea3effc8",
+      "Date" : "Tue, 12 Oct 2021 19:42:12 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "WESTUS2:20211012T194213Z:146cfce4-8418-4185-b4b5-675fea3effc8",
+      "Expires" : "-1",
+      "x-ms-request-id" : "647a0b05-8023-4869-8d73-29f9ffab171a",
+      "Body" : "{\"sku\":{\"name\":\"Standard_RAGRS\",\"tier\":\"Standard\"},\"kind\":\"StorageV2\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_53883f6/providers/Microsoft.Storage/storageAccounts/jmonitorsa13658f\",\"name\":\"jmonitorsa13658f\",\"type\":\"Microsoft.Storage/storageAccounts\",\"location\":\"eastus2\",\"tags\":{},\"properties\":{\"privateEndpointConnections\":[],\"minimumTlsVersion\":\"TLS1_2\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"virtualNetworkRules\":[],\"ipRules\":[],\"defaultAction\":\"Allow\"},\"supportsHttpsTrafficOnly\":true,\"encryption\":{\"services\":{\"file\":{\"keyType\":\"Account\",\"enabled\":true,\"lastEnabledTime\":\"2021-10-12T19:41:50.8872276Z\"},\"blob\":{\"keyType\":\"Account\",\"enabled\":true,\"lastEnabledTime\":\"2021-10-12T19:41:50.8872276Z\"}},\"keySource\":\"Microsoft.Storage\"},\"accessTier\":\"Hot\",\"provisioningState\":\"Succeeded\",\"creationTime\":\"2021-10-12T19:41:50.7779466Z\",\"primaryEndpoints\":{\"dfs\":\"https://jmonitorsa13658f.dfs.core.windows.net/\",\"web\":\"https://jmonitorsa13658f.z20.web.core.windows.net/\",\"blob\":\"https://jmonitorsa13658f.blob.core.windows.net/\",\"queue\":\"https://jmonitorsa13658f.queue.core.windows.net/\",\"table\":\"https://jmonitorsa13658f.table.core.windows.net/\",\"file\":\"https://jmonitorsa13658f.file.core.windows.net/\"},\"primaryLocation\":\"eastus2\",\"statusOfPrimary\":\"available\",\"secondaryLocation\":\"centralus\",\"statusOfSecondary\":\"available\",\"secondaryEndpoints\":{\"dfs\":\"https://jmonitorsa13658f-secondary.dfs.core.windows.net/\",\"web\":\"https://jmonitorsa13658f-secondary.z20.web.core.windows.net/\",\"blob\":\"https://jmonitorsa13658f-secondary.blob.core.windows.net/\",\"queue\":\"https://jmonitorsa13658f-secondary.queue.core.windows.net/\",\"table\":\"https://jmonitorsa13658f-secondary.table.core.windows.net/\"}}}",
+      "x-ms-client-request-id" : "3a872a1f-4b40-45b0-b05f-009d93e24e61",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_53883f6/providers/Microsoft.Storage/storageAccounts/jmonitorsa13658f?api-version=2019-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.8.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ef5864e5-0195-4897-87a0-e687982ff0a0",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1727",
+      "Server" : "Microsoft-Azure-Storage-Resource-Provider/1.0,Microsoft-HTTPAPI/2.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11998",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "cffd1971-5b11-4d5a-9332-0636ee074253",
+      "Date" : "Tue, 12 Oct 2021 19:42:13 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "WESTUS2:20211012T194213Z:cffd1971-5b11-4d5a-9332-0636ee074253",
+      "Expires" : "-1",
+      "x-ms-request-id" : "f44b4bf1-e2de-45b5-9085-d62bc3c3be68",
+      "Body" : "{\"sku\":{\"name\":\"Standard_RAGRS\",\"tier\":\"Standard\"},\"kind\":\"StorageV2\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_53883f6/providers/Microsoft.Storage/storageAccounts/jmonitorsa13658f\",\"name\":\"jmonitorsa13658f\",\"type\":\"Microsoft.Storage/storageAccounts\",\"location\":\"eastus2\",\"tags\":{},\"properties\":{\"privateEndpointConnections\":[],\"minimumTlsVersion\":\"TLS1_2\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"virtualNetworkRules\":[],\"ipRules\":[],\"defaultAction\":\"Allow\"},\"supportsHttpsTrafficOnly\":true,\"encryption\":{\"services\":{\"file\":{\"keyType\":\"Account\",\"enabled\":true,\"lastEnabledTime\":\"2021-10-12T19:41:50.8872276Z\"},\"blob\":{\"keyType\":\"Account\",\"enabled\":true,\"lastEnabledTime\":\"2021-10-12T19:41:50.8872276Z\"}},\"keySource\":\"Microsoft.Storage\"},\"accessTier\":\"Hot\",\"provisioningState\":\"Succeeded\",\"creationTime\":\"2021-10-12T19:41:50.7779466Z\",\"primaryEndpoints\":{\"dfs\":\"https://jmonitorsa13658f.dfs.core.windows.net/\",\"web\":\"https://jmonitorsa13658f.z20.web.core.windows.net/\",\"blob\":\"https://jmonitorsa13658f.blob.core.windows.net/\",\"queue\":\"https://jmonitorsa13658f.queue.core.windows.net/\",\"table\":\"https://jmonitorsa13658f.table.core.windows.net/\",\"file\":\"https://jmonitorsa13658f.file.core.windows.net/\"},\"primaryLocation\":\"eastus2\",\"statusOfPrimary\":\"available\",\"secondaryLocation\":\"centralus\",\"statusOfSecondary\":\"available\",\"secondaryEndpoints\":{\"dfs\":\"https://jmonitorsa13658f-secondary.dfs.core.windows.net/\",\"web\":\"https://jmonitorsa13658f-secondary.z20.web.core.windows.net/\",\"blob\":\"https://jmonitorsa13658f-secondary.blob.core.windows.net/\",\"queue\":\"https://jmonitorsa13658f-secondary.queue.core.windows.net/\",\"table\":\"https://jmonitorsa13658f-secondary.table.core.windows.net/\"}}}",
+      "x-ms-client-request-id" : "ef5864e5-0195-4897-87a0-e687982ff0a0",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_53883f6/providers/microsoft.insights/actionGroups/simpleActionGroup?api-version=2019-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.monitor/2.8.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5ed542d0-dd25-47af-828d-f87b14cc936e",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1388",
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-correlation-request-id" : "3a32a9ad-fc86-44ff-a9ce-a3e6647f3c91",
+      "Date" : "Tue, 12 Oct 2021 19:42:15 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "24",
+      "x-ms-routing-request-id" : "WESTUS2:20211012T194215Z:3a32a9ad-fc86-44ff-a9ce-a3e6647f3c91",
+      "Expires" : "-1",
+      "x-ms-request-id" : "b0667557-1ab7-4b93-9333-2b342b334f63",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_53883f6/providers/microsoft.insights/actionGroups/simpleActionGroup\",\"type\":\"Microsoft.Insights/ActionGroups\",\"name\":\"simpleActionGroup\",\"location\":\"Global\",\"kind\":null,\"tags\":{},\"properties\":{\"groupShortName\":\"simpleAction\",\"enabled\":true,\"emailReceivers\":[{\"name\":\"first_-EmailAction-\",\"emailAddress\":\"justemail@outlook.com\",\"status\":\"Enabled\",\"useCommonAlertSchema\":false},{\"name\":\"second_-EmailAction-\",\"emailAddress\":\"secondemail@outlook.com\",\"status\":\"Enabled\",\"useCommonAlertSchema\":false}],\"smsReceivers\":[{\"name\":\"first_-SMSAction-\",\"countryCode\":\"1\",\"phoneNumber\":\"4255655665\",\"status\":\"Enabled\"}],\"webhookReceivers\":[{\"name\":\"first (WH)\",\"serviceUri\":\"https://www.rate.am\",\"useCommonAlertSchema\":false,\"useAadAuth\":false,\"objectId\":null,\"identifierUri\":null,\"tenantId\":null},{\"name\":\"second (WH)\",\"serviceUri\":\"https://www.spyur.am\",\"useCommonAlertSchema\":false,\"useAadAuth\":false,\"objectId\":null,\"identifierUri\":null,\"tenantId\":null}],\"eventhubReceivers\":[],\"itsmReceivers\":[],\"azureAppPushReceivers\":[{\"name\":\"first_-AzureAppAction-\",\"emailAddress\":\"azurepush@outlook.com\"}],\"automationRunbookReceivers\":[],\"voiceReceivers\":[{\"name\":\"first_-VoiceAction-\",\"countryCode\":\"1\",\"phoneNumber\":\"2062066050\"}],\"logicAppReceivers\":[],\"azureFunctionReceivers\":[],\"armRoleReceivers\":[]},\"identity\":null}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_53883f6/providers/Microsoft.Insights/metricAlerts/somename?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.monitor/2.8.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1c9f9b44-a5d9-4ab3-a2dc-4c73faf39780",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1787",
+      "Server" : "Microsoft-IIS/10.0",
+      "api-supported-versions" : "2017-09-01-preview, 2018-03-01",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "3a52941e-ce0d-490d-9ba0-4728bc75b0e8",
+      "Date" : "Tue, 12 Oct 2021 19:42:21 GMT",
+      "Arr-Disable-Session-Affinity" : "true",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "299",
+      "x-ms-routing-request-id" : "WESTUS2:20211012T194221Z:3a52941e-ce0d-490d-9ba0-4728bc75b0e8",
+      "X-AspNet-Version" : "4.0.30319",
+      "Vary" : "Accept-Encoding",
+      "Expires" : "-1",
+      "x-ms-request-id" : "3a52941e-ce0d-490d-9ba0-4728bc75b0e8,3a52941e-ce0d-490d-9ba0-4728bc75b0e8",
+      "Body" : "{\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_53883f6/providers/Microsoft.Insights/metricAlerts/somename\",\r\n  \"name\": \"somename\",\r\n  \"type\": \"Microsoft.Insights/metricAlerts\",\r\n  \"location\": \"global\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"description\": \"This alert rule is for U3 - Single resource  multiple-criteria  with dimensions-single timeseries\",\r\n    \"severity\": 3,\r\n    \"enabled\": true,\r\n    \"scopes\": [\r\n      \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_53883f6/providers/Microsoft.Storage/storageAccounts/jmonitorsa13658f\"\r\n    ],\r\n    \"evaluationFrequency\": \"PT1M\",\r\n    \"windowSize\": \"PT15M\",\r\n    \"criteria\": {\r\n      \"allOf\": [\r\n        {\r\n          \"threshold\": 100.0,\r\n          \"name\": \"Metric1\",\r\n          \"metricNamespace\": \"Microsoft.Storage/storageAccounts\",\r\n          \"metricName\": \"Transactions\",\r\n          \"dimensions\": [\r\n            {\r\n              \"name\": \"ApiName\",\r\n              \"operator\": \"Include\",\r\n              \"values\": [\r\n                \"GetBlob\"\r\n              ]\r\n            },\r\n            {\r\n              \"name\": \"ResponseType\",\r\n              \"operator\": \"Include\",\r\n              \"values\": [\r\n                \"Success\"\r\n              ]\r\n            }\r\n          ],\r\n          \"operator\": \"GreaterThan\",\r\n          \"timeAggregation\": \"Total\",\r\n          \"criterionType\": \"StaticThresholdCriterion\"\r\n        }\r\n      ],\r\n      \"odata.type\": \"Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria\"\r\n    },\r\n    \"autoMitigate\": true,\r\n    \"actions\": [\r\n      {\r\n        \"actionGroupId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_53883f6/providers/microsoft.insights/actionGroups/simpleActionGroup\"\r\n      }\r\n    ]\r\n  }\r\n}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_53883f6/providers/Microsoft.Insights/metricAlerts/somename?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.monitor/2.8.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "cff19b7e-ad40-410f-a6ba-3486c3c7ff30",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1787",
+      "Server" : "Microsoft-IIS/10.0",
+      "api-supported-versions" : "2017-09-01-preview, 2018-03-01",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11999",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "173612d3-73db-4d46-b25b-be5f06180daf",
+      "Date" : "Tue, 12 Oct 2021 19:42:22 GMT",
+      "Arr-Disable-Session-Affinity" : "true",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "WESTUS2:20211012T194222Z:173612d3-73db-4d46-b25b-be5f06180daf",
+      "X-AspNet-Version" : "4.0.30319",
+      "Vary" : "Accept-Encoding",
+      "Expires" : "-1",
+      "x-ms-request-id" : "173612d3-73db-4d46-b25b-be5f06180daf,173612d3-73db-4d46-b25b-be5f06180daf",
+      "Body" : "{\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_53883f6/providers/Microsoft.Insights/metricAlerts/somename\",\r\n  \"name\": \"somename\",\r\n  \"type\": \"Microsoft.Insights/metricAlerts\",\r\n  \"location\": \"global\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"description\": \"This alert rule is for U3 - Single resource  multiple-criteria  with dimensions-single timeseries\",\r\n    \"severity\": 3,\r\n    \"enabled\": true,\r\n    \"scopes\": [\r\n      \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_53883f6/providers/Microsoft.Storage/storageAccounts/jmonitorsa13658f\"\r\n    ],\r\n    \"evaluationFrequency\": \"PT1M\",\r\n    \"windowSize\": \"PT15M\",\r\n    \"criteria\": {\r\n      \"allOf\": [\r\n        {\r\n          \"threshold\": 100.0,\r\n          \"name\": \"Metric1\",\r\n          \"metricNamespace\": \"Microsoft.Storage/storageAccounts\",\r\n          \"metricName\": \"Transactions\",\r\n          \"dimensions\": [\r\n            {\r\n              \"name\": \"ApiName\",\r\n              \"operator\": \"Include\",\r\n              \"values\": [\r\n                \"GetBlob\"\r\n              ]\r\n            },\r\n            {\r\n              \"name\": \"ResponseType\",\r\n              \"operator\": \"Include\",\r\n              \"values\": [\r\n                \"Success\"\r\n              ]\r\n            }\r\n          ],\r\n          \"operator\": \"GreaterThan\",\r\n          \"timeAggregation\": \"Total\",\r\n          \"criterionType\": \"StaticThresholdCriterion\"\r\n        }\r\n      ],\r\n      \"odata.type\": \"Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria\"\r\n    },\r\n    \"autoMitigate\": true,\r\n    \"actions\": [\r\n      {\r\n        \"actionGroupId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_53883f6/providers/microsoft.insights/actionGroups/simpleActionGroup\"\r\n      }\r\n    ]\r\n  }\r\n}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_53883f6/providers/Microsoft.Insights/metricAlerts/somename?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.monitor/2.8.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8d8857ad-451f-4ff3-a18b-5fedd2a948d4",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "2332",
+      "Server" : "Microsoft-IIS/10.0",
+      "api-supported-versions" : "2017-09-01-preview, 2018-03-01",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "c70fcfd7-2ec1-4e49-86c9-1a15a771df8e",
+      "Date" : "Tue, 12 Oct 2021 19:42:25 GMT",
+      "Arr-Disable-Session-Affinity" : "true",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "299",
+      "x-ms-routing-request-id" : "WESTUS2:20211012T194225Z:c70fcfd7-2ec1-4e49-86c9-1a15a771df8e",
+      "X-AspNet-Version" : "4.0.30319",
+      "Vary" : "Accept-Encoding",
+      "Expires" : "-1",
+      "x-ms-request-id" : "c70fcfd7-2ec1-4e49-86c9-1a15a771df8e,c70fcfd7-2ec1-4e49-86c9-1a15a771df8e",
+      "Body" : "{\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_53883f6/providers/Microsoft.Insights/metricAlerts/somename\",\r\n  \"name\": \"somename\",\r\n  \"type\": \"Microsoft.Insights/metricAlerts\",\r\n  \"location\": \"global\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"description\": \"This alert rule is for U3 - Single resource  multiple-criteria  with dimensions-single timeseries\",\r\n    \"severity\": 3,\r\n    \"enabled\": false,\r\n    \"scopes\": [\r\n      \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_53883f6/providers/Microsoft.Storage/storageAccounts/jmonitorsa13658f\"\r\n    ],\r\n    \"evaluationFrequency\": \"PT1M\",\r\n    \"windowSize\": \"PT15M\",\r\n    \"criteria\": {\r\n      \"allOf\": [\r\n        {\r\n          \"threshold\": 99.0,\r\n          \"name\": \"Metric1\",\r\n          \"metricNamespace\": \"Microsoft.Storage/storageAccounts\",\r\n          \"metricName\": \"Transactions\",\r\n          \"dimensions\": [\r\n            {\r\n              \"name\": \"ApiName\",\r\n              \"operator\": \"Include\",\r\n              \"values\": [\r\n                \"GetBlob\"\r\n              ]\r\n            },\r\n            {\r\n              \"name\": \"ResponseType\",\r\n              \"operator\": \"Include\",\r\n              \"values\": [\r\n                \"Success\"\r\n              ]\r\n            }\r\n          ],\r\n          \"operator\": \"GreaterThan\",\r\n          \"timeAggregation\": \"Total\",\r\n          \"criterionType\": \"StaticThresholdCriterion\"\r\n        },\r\n        {\r\n          \"threshold\": 200.0,\r\n          \"name\": \"Metric2\",\r\n          \"metricNamespace\": \"Microsoft.Storage/storageAccounts\",\r\n          \"metricName\": \"SuccessE2ELatency\",\r\n          \"dimensions\": [\r\n            {\r\n              \"name\": \"ApiName\",\r\n              \"operator\": \"Include\",\r\n              \"values\": [\r\n                \"GetBlob\"\r\n              ]\r\n            }\r\n          ],\r\n          \"operator\": \"GreaterThan\",\r\n          \"timeAggregation\": \"Average\",\r\n          \"criterionType\": \"StaticThresholdCriterion\"\r\n        }\r\n      ],\r\n      \"odata.type\": \"Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria\"\r\n    },\r\n    \"autoMitigate\": true,\r\n    \"actions\": [\r\n      {\r\n        \"actionGroupId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_53883f6/providers/microsoft.insights/actionGroups/simpleActionGroup\"\r\n      }\r\n    ]\r\n  }\r\n}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_53883f6/providers/Microsoft.Insights/metricAlerts/somename?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.monitor/2.8.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "99b183ea-b69f-4803-b03a-6548fc42cb57",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "2332",
+      "Server" : "Microsoft-IIS/10.0",
+      "api-supported-versions" : "2017-09-01-preview, 2018-03-01",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11997",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "f9194736-20f3-4650-a286-4c96661bfa02",
+      "Date" : "Tue, 12 Oct 2021 19:42:24 GMT",
+      "Arr-Disable-Session-Affinity" : "true",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "WESTUS2:20211012T194225Z:f9194736-20f3-4650-a286-4c96661bfa02",
+      "X-AspNet-Version" : "4.0.30319",
+      "Vary" : "Accept-Encoding",
+      "Expires" : "-1",
+      "x-ms-request-id" : "f9194736-20f3-4650-a286-4c96661bfa02,f9194736-20f3-4650-a286-4c96661bfa02",
+      "Body" : "{\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_53883f6/providers/Microsoft.Insights/metricAlerts/somename\",\r\n  \"name\": \"somename\",\r\n  \"type\": \"Microsoft.Insights/metricAlerts\",\r\n  \"location\": \"global\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"description\": \"This alert rule is for U3 - Single resource  multiple-criteria  with dimensions-single timeseries\",\r\n    \"severity\": 3,\r\n    \"enabled\": false,\r\n    \"scopes\": [\r\n      \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_53883f6/providers/Microsoft.Storage/storageAccounts/jmonitorsa13658f\"\r\n    ],\r\n    \"evaluationFrequency\": \"PT1M\",\r\n    \"windowSize\": \"PT15M\",\r\n    \"criteria\": {\r\n      \"allOf\": [\r\n        {\r\n          \"threshold\": 99.0,\r\n          \"name\": \"Metric1\",\r\n          \"metricNamespace\": \"Microsoft.Storage/storageAccounts\",\r\n          \"metricName\": \"Transactions\",\r\n          \"dimensions\": [\r\n            {\r\n              \"name\": \"ApiName\",\r\n              \"operator\": \"Include\",\r\n              \"values\": [\r\n                \"GetBlob\"\r\n              ]\r\n            },\r\n            {\r\n              \"name\": \"ResponseType\",\r\n              \"operator\": \"Include\",\r\n              \"values\": [\r\n                \"Success\"\r\n              ]\r\n            }\r\n          ],\r\n          \"operator\": \"GreaterThan\",\r\n          \"timeAggregation\": \"Total\",\r\n          \"criterionType\": \"StaticThresholdCriterion\"\r\n        },\r\n        {\r\n          \"threshold\": 200.0,\r\n          \"name\": \"Metric2\",\r\n          \"metricNamespace\": \"Microsoft.Storage/storageAccounts\",\r\n          \"metricName\": \"SuccessE2ELatency\",\r\n          \"dimensions\": [\r\n            {\r\n              \"name\": \"ApiName\",\r\n              \"operator\": \"Include\",\r\n              \"values\": [\r\n                \"GetBlob\"\r\n              ]\r\n            }\r\n          ],\r\n          \"operator\": \"GreaterThan\",\r\n          \"timeAggregation\": \"Average\",\r\n          \"criterionType\": \"StaticThresholdCriterion\"\r\n        }\r\n      ],\r\n      \"odata.type\": \"Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria\"\r\n    },\r\n    \"autoMitigate\": true,\r\n    \"actions\": [\r\n      {\r\n        \"actionGroupId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_53883f6/providers/microsoft.insights/actionGroups/simpleActionGroup\"\r\n      }\r\n    ]\r\n  }\r\n}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_53883f6/providers/Microsoft.Insights/metricAlerts?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.monitor/2.8.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "fb55c292-d03d-4430-998f-328102275361",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "2641",
+      "Server" : "Microsoft-IIS/10.0",
+      "api-supported-versions" : "2017-09-01-preview, 2018-03-01",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11998",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "354f4869-7e1b-4929-937e-1c2db933b627",
+      "Date" : "Tue, 12 Oct 2021 19:42:25 GMT",
+      "Arr-Disable-Session-Affinity" : "true",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "WESTUS2:20211012T194225Z:354f4869-7e1b-4929-937e-1c2db933b627",
+      "X-AspNet-Version" : "4.0.30319",
+      "Vary" : "Accept-Encoding",
+      "Expires" : "-1",
+      "x-ms-request-id" : "354f4869-7e1b-4929-937e-1c2db933b627,354f4869-7e1b-4929-937e-1c2db933b627",
+      "Body" : "{\r\n  \"value\": [\r\n    {\r\n      \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_53883f6/providers/Microsoft.Insights/metricAlerts/somename\",\r\n      \"name\": \"somename\",\r\n      \"type\": \"Microsoft.Insights/metricAlerts\",\r\n      \"location\": \"global\",\r\n      \"tags\": {},\r\n      \"properties\": {\r\n        \"description\": \"This alert rule is for U3 - Single resource  multiple-criteria  with dimensions-single timeseries\",\r\n        \"severity\": 3,\r\n        \"enabled\": false,\r\n        \"scopes\": [\r\n          \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_53883f6/providers/Microsoft.Storage/storageAccounts/jmonitorsa13658f\"\r\n        ],\r\n        \"evaluationFrequency\": \"PT1M\",\r\n        \"windowSize\": \"PT15M\",\r\n        \"criteria\": {\r\n          \"allOf\": [\r\n            {\r\n              \"threshold\": 99.0,\r\n              \"name\": \"Metric1\",\r\n              \"metricNamespace\": \"Microsoft.Storage/storageAccounts\",\r\n              \"metricName\": \"Transactions\",\r\n              \"dimensions\": [\r\n                {\r\n                  \"name\": \"ApiName\",\r\n                  \"operator\": \"Include\",\r\n                  \"values\": [\r\n                    \"GetBlob\"\r\n                  ]\r\n                },\r\n                {\r\n                  \"name\": \"ResponseType\",\r\n                  \"operator\": \"Include\",\r\n                  \"values\": [\r\n                    \"Success\"\r\n                  ]\r\n                }\r\n              ],\r\n              \"operator\": \"GreaterThan\",\r\n              \"timeAggregation\": \"Total\",\r\n              \"criterionType\": \"StaticThresholdCriterion\"\r\n            },\r\n            {\r\n              \"threshold\": 200.0,\r\n              \"name\": \"Metric2\",\r\n              \"metricNamespace\": \"Microsoft.Storage/storageAccounts\",\r\n              \"metricName\": \"SuccessE2ELatency\",\r\n              \"dimensions\": [\r\n                {\r\n                  \"name\": \"ApiName\",\r\n                  \"operator\": \"Include\",\r\n                  \"values\": [\r\n                    \"GetBlob\"\r\n                  ]\r\n                }\r\n              ],\r\n              \"operator\": \"GreaterThan\",\r\n              \"timeAggregation\": \"Average\",\r\n              \"criterionType\": \"StaticThresholdCriterion\"\r\n            }\r\n          ],\r\n          \"odata.type\": \"Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria\"\r\n        },\r\n        \"autoMitigate\": true,\r\n        \"actions\": [\r\n          {\r\n            \"actionGroupId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_53883f6/providers/microsoft.insights/actionGroups/simpleActionGroup\"\r\n          }\r\n        ]\r\n      }\r\n    }\r\n  ]\r\n}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_53883f6/providers/Microsoft.Insights/metricAlerts?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.monitor/2.8.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4a9e5c35-6415-4f73-b250-502671c3e847",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "2641",
+      "Server" : "Microsoft-IIS/10.0",
+      "api-supported-versions" : "2017-09-01-preview, 2018-03-01",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11997",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "f954a382-8ded-41da-aee9-7d20f44d33d3",
+      "Date" : "Tue, 12 Oct 2021 19:42:25 GMT",
+      "Arr-Disable-Session-Affinity" : "true",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "WESTUS2:20211012T194225Z:f954a382-8ded-41da-aee9-7d20f44d33d3",
+      "X-AspNet-Version" : "4.0.30319",
+      "Vary" : "Accept-Encoding",
+      "Expires" : "-1",
+      "x-ms-request-id" : "f954a382-8ded-41da-aee9-7d20f44d33d3,f954a382-8ded-41da-aee9-7d20f44d33d3",
+      "Body" : "{\r\n  \"value\": [\r\n    {\r\n      \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_53883f6/providers/Microsoft.Insights/metricAlerts/somename\",\r\n      \"name\": \"somename\",\r\n      \"type\": \"Microsoft.Insights/metricAlerts\",\r\n      \"location\": \"global\",\r\n      \"tags\": {},\r\n      \"properties\": {\r\n        \"description\": \"This alert rule is for U3 - Single resource  multiple-criteria  with dimensions-single timeseries\",\r\n        \"severity\": 3,\r\n        \"enabled\": false,\r\n        \"scopes\": [\r\n          \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_53883f6/providers/Microsoft.Storage/storageAccounts/jmonitorsa13658f\"\r\n        ],\r\n        \"evaluationFrequency\": \"PT1M\",\r\n        \"windowSize\": \"PT15M\",\r\n        \"criteria\": {\r\n          \"allOf\": [\r\n            {\r\n              \"threshold\": 99.0,\r\n              \"name\": \"Metric1\",\r\n              \"metricNamespace\": \"Microsoft.Storage/storageAccounts\",\r\n              \"metricName\": \"Transactions\",\r\n              \"dimensions\": [\r\n                {\r\n                  \"name\": \"ApiName\",\r\n                  \"operator\": \"Include\",\r\n                  \"values\": [\r\n                    \"GetBlob\"\r\n                  ]\r\n                },\r\n                {\r\n                  \"name\": \"ResponseType\",\r\n                  \"operator\": \"Include\",\r\n                  \"values\": [\r\n                    \"Success\"\r\n                  ]\r\n                }\r\n              ],\r\n              \"operator\": \"GreaterThan\",\r\n              \"timeAggregation\": \"Total\",\r\n              \"criterionType\": \"StaticThresholdCriterion\"\r\n            },\r\n            {\r\n              \"threshold\": 200.0,\r\n              \"name\": \"Metric2\",\r\n              \"metricNamespace\": \"Microsoft.Storage/storageAccounts\",\r\n              \"metricName\": \"SuccessE2ELatency\",\r\n              \"dimensions\": [\r\n                {\r\n                  \"name\": \"ApiName\",\r\n                  \"operator\": \"Include\",\r\n                  \"values\": [\r\n                    \"GetBlob\"\r\n                  ]\r\n                }\r\n              ],\r\n              \"operator\": \"GreaterThan\",\r\n              \"timeAggregation\": \"Average\",\r\n              \"criterionType\": \"StaticThresholdCriterion\"\r\n            }\r\n          ],\r\n          \"odata.type\": \"Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria\"\r\n        },\r\n        \"autoMitigate\": true,\r\n        \"actions\": [\r\n          {\r\n            \"actionGroupId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_53883f6/providers/microsoft.insights/actionGroups/simpleActionGroup\"\r\n          }\r\n        ]\r\n      }\r\n    }\r\n  ]\r\n}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_53883f6/providers/Microsoft.Insights/metricAlerts/somename?api-version=2018-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.monitor/2.8.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "96178bd3-fda1-453d-a852-a679f7ff9094",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14999",
+      "Server" : "Microsoft-IIS/10.0",
+      "api-supported-versions" : "2017-09-01-preview, 2018-03-01",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "b158329d-762c-4039-a3d1-922ef56a194a",
+      "Date" : "Tue, 12 Oct 2021 19:42:27 GMT",
+      "Arr-Disable-Session-Affinity" : "true",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "WESTUS2:20211012T194228Z:b158329d-762c-4039-a3d1-922ef56a194a",
+      "X-AspNet-Version" : "4.0.30319",
+      "Expires" : "-1",
+      "x-ms-request-id" : "b158329d-762c-4039-a3d1-922ef56a194a,b158329d-762c-4039-a3d1-922ef56a194a",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/jmonitor_53883f6?api-version=2019-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.8.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "45c93a24-8662-4602-b2fe-7fb00908b8a0",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14997",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "1b4e8e1d-b28f-4565-9232-1dccf384e26a",
+      "Date" : "Tue, 12 Oct 2021 19:42:28 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-routing-request-id" : "WESTUS2:20211012T194229Z:1b4e8e1d-b28f-4565-9232-1dccf384e26a",
+      "Expires" : "-1",
+      "x-ms-request-id" : "1b4e8e1d-b28f-4565-9232-1dccf384e26a",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1KTU9OSVRPUjo1RjUzODgzRjYtRUFTVFVTMiIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMiJ9?api-version=2019-10-01"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/jmonitor_53883f6?api-version=2019-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.8.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4ea30b68-8274-4aca-9e01-409aa02de3e7",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14997",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "202",
+      "x-ms-correlation-request-id" : "448b3f3b-95b1-40da-9e1c-d680e97822bb",
+      "Date" : "Tue, 12 Oct 2021 19:42:29 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "Retry-After" : "0",
+      "x-ms-routing-request-id" : "WESTUS2:20211012T194230Z:448b3f3b-95b1-40da-9e1c-d680e97822bb",
+      "Expires" : "-1",
+      "x-ms-request-id" : "448b3f3b-95b1-40da-9e1c-d680e97822bb",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1KTU9OSVRPUjo1RjUzODgzRjYtRUFTVFVTMiIsImpvYkxvY2F0aW9uIjoiZWFzdHVzMiJ9?api-version=2019-10-01"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jmonitor_53883f6", "jmonitorsa13658f" ]
+}

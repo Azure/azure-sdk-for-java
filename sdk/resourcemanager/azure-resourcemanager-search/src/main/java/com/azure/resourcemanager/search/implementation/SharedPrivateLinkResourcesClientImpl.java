@@ -1059,7 +1059,8 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
                 resourceGroupName, searchServiceName, sharedPrivateLinkResourceName, clientRequestId);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.scanning.implementation;
 
+import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -48,6 +49,7 @@ public final class FiltersImpl {
     @ServiceInterface(name = "PurviewScanningClien")
     private interface FiltersService {
         @Get("/datasources/{dataSourceName}/scans/{scanName}/filters/custom")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> get(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("dataSourceName") String dataSourceName,
@@ -57,6 +59,7 @@ public final class FiltersImpl {
                 Context context);
 
         @Put("/datasources/{dataSourceName}/scans/{scanName}/filters/custom")
+        @ExpectedResponses({200, 201})
         Mono<Response<BinaryData>> createOrUpdate(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("dataSourceName") String dataSourceName,
@@ -97,9 +100,8 @@ public final class FiltersImpl {
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return a filter.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a filter along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(
@@ -147,9 +149,8 @@ public final class FiltersImpl {
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return a filter.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a filter along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(
@@ -194,9 +195,8 @@ public final class FiltersImpl {
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return a filter.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return a filter along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWithResponse(String dataSourceName, String scanName, RequestOptions requestOptions) {
@@ -251,9 +251,8 @@ public final class FiltersImpl {
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
@@ -318,9 +317,8 @@ public final class FiltersImpl {
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
@@ -382,9 +380,8 @@ public final class FiltersImpl {
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateWithResponse(

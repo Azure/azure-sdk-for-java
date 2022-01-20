@@ -3,18 +3,15 @@
     "Method" : "DELETE",
     "Uri" : "https://REDACTED.webpubsub.azure.com/api/hubs/test/users/testRemoveNonExistentUserFromGroup/groups/java?api-version=2021-10-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-messaging-webpubsub/1.0.0-beta.6 (17; Windows 10; 10.0)"
+      "User-Agent" : "azsdk-java-azure-messaging-webpubsub/1.0.0-beta.7 (15.0.1; Windows 10; 10.0)"
     },
     "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "Server" : "nginx",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "api-supported-versions" : "2021-10-01",
       "Connection" : "keep-alive",
-      "Vary" : "Accept-Encoding,Accept-Encoding",
       "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "User `testRemoveNonExistentUserFromGroup` is not found.",
-      "Date" : "Wed, 03 Nov 2021 18:51:14 GMT",
-      "Content-Type" : "text/plain; charset=utf-8"
+      "StatusCode" : "204",
+      "Date" : "Mon, 22 Nov 2021 05:57:07 GMT"
     },
     "Exception" : null
   } ],

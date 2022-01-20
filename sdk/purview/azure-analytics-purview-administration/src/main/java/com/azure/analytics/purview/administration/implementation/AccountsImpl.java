@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.administration.implementation;
 
 import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -49,6 +50,7 @@ public final class AccountsImpl {
     @ServiceInterface(name = "PurviewAccountClient")
     private interface AccountsService {
         @Get("/")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getAccountProperties(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
@@ -56,6 +58,7 @@ public final class AccountsImpl {
                 Context context);
 
         @Patch("/")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> updateAccountProperties(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
@@ -64,6 +67,7 @@ public final class AccountsImpl {
                 Context context);
 
         @Post("/listkeys")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> getAccessKeys(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
@@ -71,6 +75,7 @@ public final class AccountsImpl {
                 Context context);
 
         @Post("/regeneratekeys")
+        @ExpectedResponses({200})
         Mono<Response<BinaryData>> regenerateAccessKey(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
@@ -162,9 +167,8 @@ public final class AccountsImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return an account.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return an account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAccountPropertiesWithResponseAsync(RequestOptions requestOptions) {
@@ -261,9 +265,8 @@ public final class AccountsImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return an account.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return an account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAccountPropertiesWithResponseAsync(
@@ -355,9 +358,8 @@ public final class AccountsImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return an account.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return an account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAccountPropertiesWithResponse(RequestOptions requestOptions) {
@@ -456,9 +458,8 @@ public final class AccountsImpl {
      *
      * @param accountUpdateParameters The account properties that can be updated through data plane.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return account resource.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return account resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateAccountPropertiesWithResponseAsync(
@@ -566,9 +567,8 @@ public final class AccountsImpl {
      * @param accountUpdateParameters The account properties that can be updated through data plane.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return account resource.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return account resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateAccountPropertiesWithResponseAsync(
@@ -673,9 +673,8 @@ public final class AccountsImpl {
      *
      * @param accountUpdateParameters The account properties that can be updated through data plane.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return account resource.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return account resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateAccountPropertiesWithResponse(
@@ -704,9 +703,8 @@ public final class AccountsImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the Account access keys.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the Account access keys along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAccessKeysWithResponseAsync(RequestOptions requestOptions) {
@@ -741,9 +739,8 @@ public final class AccountsImpl {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the Account access keys.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the Account access keys along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAccessKeysWithResponseAsync(RequestOptions requestOptions, Context context) {
@@ -772,9 +769,8 @@ public final class AccountsImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the Account access keys.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the Account access keys along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAccessKeysWithResponse(RequestOptions requestOptions) {
@@ -811,9 +807,8 @@ public final class AccountsImpl {
      *
      * @param keyOptions A access key options used for regeneration.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the Account access keys.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the Account access keys along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> regenerateAccessKeyWithResponseAsync(
@@ -859,9 +854,8 @@ public final class AccountsImpl {
      * @param keyOptions A access key options used for regeneration.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the Account access keys.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the Account access keys along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> regenerateAccessKeyWithResponseAsync(
@@ -904,9 +898,8 @@ public final class AccountsImpl {
      *
      * @param keyOptions A access key options used for regeneration.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the Account access keys.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @return the Account access keys along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> regenerateAccessKeyWithResponse(BinaryData keyOptions, RequestOptions requestOptions) {

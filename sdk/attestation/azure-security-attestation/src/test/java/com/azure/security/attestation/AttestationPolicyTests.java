@@ -40,7 +40,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
     @MethodSource("getPolicyClients")
     void testGetAttestationPolicy(HttpClient client, String clientUri, AttestationType attestationType) {
 
-        AttestationAdministrationClientBuilder attestationBuilder = getAuthenticatedAdministrationBuilder(client, clientUri);
+        AttestationAdministrationClientBuilder attestationBuilder = getAttestationAdministrationBuilder(client, clientUri);
 
         AttestationAdministrationClient adminClient = attestationBuilder.buildClient();
 
@@ -75,7 +75,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getPolicyClients")
     void testGetAttestationPolicyAsync(HttpClient client, String clientUri, AttestationType attestationType) {
-        AttestationAdministrationClientBuilder attestationBuilder = getAuthenticatedAdministrationBuilder(client, clientUri);
+        AttestationAdministrationClientBuilder attestationBuilder = getAttestationAdministrationBuilder(client, clientUri);
 
         AttestationAdministrationAsyncClient adminClient = attestationBuilder.buildAsyncClient();
 
@@ -141,7 +141,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         // We can't set attestation policy on the shared client, so just exit early.
         assumeTrue(clientType != ClientTypes.SHARED, "This test does not work on shared instances.");
 
-        AttestationAdministrationClientBuilder attestationAdministrationClientBuilder = getAuthenticatedAdministrationBuilder(httpClient, clientUri);
+        AttestationAdministrationClientBuilder attestationAdministrationClientBuilder = getAttestationAdministrationBuilder(httpClient, clientUri);
         AttestationAdministrationClient client = attestationAdministrationClientBuilder.buildClient();
 
         // AAD or isolated: We want to try setting policy with the Isolated signing certificate.
@@ -149,9 +149,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
             X509Certificate certificate = getIsolatedSigningCertificate();
             PrivateKey key = getIsolatedSigningKey();
 
-            AttestationSigningKey signingKey = new AttestationSigningKey()
-                .setPrivateKey(key)
-                .setCertificate(certificate);
+            AttestationSigningKey signingKey = new AttestationSigningKey(certificate, key);
 
             String policyToSet = "version =1.0; authorizationrules{=> permit();}; issuancerules{};";
             assertDoesNotThrow(() -> {
@@ -166,9 +164,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
             X509Certificate certificate = getPolicySigningCertificate0();
             PrivateKey key = getPolicySigningKey0();
 
-            AttestationSigningKey signingKey = new AttestationSigningKey()
-                .setPrivateKey(key)
-                .setCertificate(certificate);
+            AttestationSigningKey signingKey = new AttestationSigningKey(certificate, key);
 
             String policyToSet = "version=1.0; authorizationrules{=> permit();}; issuancerules{ };";
             assertDoesNotThrow(() -> {
@@ -221,7 +217,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         // We can't set attestation policy on the shared client, so just exit early.
         assumeTrue(clientType != ClientTypes.SHARED, "This test does not work on shared instances.");
 
-        AttestationAdministrationClientBuilder attestationAdministrationClientBuilder = getAuthenticatedAdministrationBuilder(httpClient, clientUri);
+        AttestationAdministrationClientBuilder attestationAdministrationClientBuilder = getAttestationAdministrationBuilder(httpClient, clientUri);
         AttestationAdministrationClient client = attestationAdministrationClientBuilder.buildClient();
 
         // AAD or isolated: We want to try setting policy with the Isolated signing certificate.
@@ -229,10 +225,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
             PrivateKey key = getIsolatedSigningKey();
             X509Certificate cert = getIsolatedSigningCertificate();
 
-            AttestationSigningKey signingKey = new AttestationSigningKey()
-                .setPrivateKey(key)
-                .setCertificate(cert);
-
+            AttestationSigningKey signingKey = new AttestationSigningKey(cert, key);
             assertDoesNotThrow(() -> signingKey.verify());
 
             String policyToSet = "version =1.0; authorizationrules{=> permit();}; issuancerules{};";
@@ -247,9 +240,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         if (clientType == ClientTypes.AAD) {
             X509Certificate certificate = getPolicySigningCertificate0();
             PrivateKey key = getPolicySigningKey0();
-            AttestationSigningKey signingKey = new AttestationSigningKey()
-                .setPrivateKey(key)
-                .setCertificate(certificate);
+            AttestationSigningKey signingKey = new AttestationSigningKey(certificate, key);
 
             assertDoesNotThrow(() -> signingKey.verify());
 
@@ -291,7 +282,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         // We can't set attestation policy on the shared client, so just exit early.
         assumeTrue(clientType != ClientTypes.SHARED, "This test does not work on shared instances.");
 
-        AttestationAdministrationClientBuilder attestationBuilder = getAuthenticatedAdministrationBuilder(httpClient, clientUri);
+        AttestationAdministrationClientBuilder attestationBuilder = getAttestationAdministrationBuilder(httpClient, clientUri);
         AttestationAdministrationAsyncClient client = attestationBuilder.buildAsyncClient();
 
         // AAD or isolated: We want to try setting policy with the Isolated signing certificate.
@@ -299,9 +290,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
             X509Certificate certificate = getIsolatedSigningCertificate();
             PrivateKey key = getIsolatedSigningKey();
 
-            AttestationSigningKey signingKey = new AttestationSigningKey()
-                .setPrivateKey(key)
-                .setCertificate(certificate);
+            AttestationSigningKey signingKey = new AttestationSigningKey(certificate, key);
 
             String policyToSet = "version=1.0; authorizationrules{=> permit();}; issuancerules{};";
 
@@ -343,9 +332,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         if (clientType == ClientTypes.AAD) {
             KeyPair rsaKey = assertDoesNotThrow(() -> createKeyPair("RSA"));
             X509Certificate cert = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate Secured 2", rsaKey));
-            AttestationSigningKey signingKey = new AttestationSigningKey()
-                .setPrivateKey(rsaKey.getPrivate())
-                .setCertificate(cert)
+            AttestationSigningKey signingKey = new AttestationSigningKey(cert, rsaKey.getPrivate())
                 .setAllowWeakKey(true);
 
 
@@ -420,7 +407,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         assumeTrue(clientType != ClientTypes.SHARED, "This test does not work on shared instances.");
         assumeTrue(clientType != ClientTypes.ISOLATED, "This test does not work on isolated instances.");
 
-        AttestationAdministrationClientBuilder attestationBuilder = getAuthenticatedAdministrationBuilder(httpClient, clientUri);
+        AttestationAdministrationClientBuilder attestationBuilder = getAttestationAdministrationBuilder(httpClient, clientUri);
         AttestationAdministrationAsyncClient client = attestationBuilder.buildAsyncClient();
 
         String policyToSet = "version=1.0; authorizationrules{=> permit();}; issuancerules{};";
@@ -446,7 +433,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         // We can't set attestation policy on the shared client, so just exit early.
         assumeTrue(clientType != ClientTypes.SHARED, "This test does not work on shared instances.");
 
-        AttestationAdministrationClientBuilder attestationBuilder = getAuthenticatedAdministrationBuilder(httpClient, clientUri);
+        AttestationAdministrationClientBuilder attestationBuilder = getAttestationAdministrationBuilder(httpClient, clientUri);
         AttestationAdministrationAsyncClient client = attestationBuilder.buildAsyncClient();
 
         // AAD or isolated: We want to try setting policy with the Isolated signing certificate.
@@ -454,9 +441,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
             X509Certificate certificate = getIsolatedSigningCertificate();
             PrivateKey key = getIsolatedSigningKey();
 
-            AttestationSigningKey signingKey = new AttestationSigningKey()
-                .setPrivateKey(key)
-                .setCertificate(certificate);
+            AttestationSigningKey signingKey = new AttestationSigningKey(certificate, key);
 
             // Test setting the policy. This works for both AAD and Isolated mode.
             StepVerifier.create(client.setAttestationPolicyWithResponse(attestationType, new AttestationPolicySetOptions()
@@ -479,9 +464,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
             X509Certificate certificate = getPolicySigningCertificate0();
             PrivateKey key = getPolicySigningKey0();
 
-            AttestationSigningKey signingKey = new AttestationSigningKey()
-                .setPrivateKey(key)
-                .setCertificate(certificate);
+            AttestationSigningKey signingKey = new AttestationSigningKey(certificate, key);
 
             // Test setting the policy. This works for both AAD and Isolated mode.
             StepVerifier.create(client.setAttestationPolicyWithResponse(attestationType, new AttestationPolicySetOptions()

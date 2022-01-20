@@ -256,7 +256,7 @@ public interface AppServiceCertificateOrdersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sSL certificate purchase order.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<AppServiceCertificateOrderInner>, AppServiceCertificateOrderInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String certificateOrderName,
@@ -274,7 +274,7 @@ public interface AppServiceCertificateOrdersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sSL certificate purchase order.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AppServiceCertificateOrderInner>, AppServiceCertificateOrderInner> beginCreateOrUpdate(
         String resourceGroupName,
         String certificateOrderName,
@@ -293,7 +293,7 @@ public interface AppServiceCertificateOrdersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sSL certificate purchase order.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AppServiceCertificateOrderInner>, AppServiceCertificateOrderInner> beginCreateOrUpdate(
         String resourceGroupName,
         String certificateOrderName,
@@ -630,7 +630,7 @@ public interface AppServiceCertificateOrdersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return key Vault container ARM resource for a certificate that is purchased through Azure.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<AppServiceCertificateResourceInner>, AppServiceCertificateResourceInner>
         beginCreateOrUpdateCertificateAsync(
             String resourceGroupName,
@@ -651,7 +651,7 @@ public interface AppServiceCertificateOrdersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return key Vault container ARM resource for a certificate that is purchased through Azure.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AppServiceCertificateResourceInner>, AppServiceCertificateResourceInner>
         beginCreateOrUpdateCertificate(
             String resourceGroupName,
@@ -673,7 +673,7 @@ public interface AppServiceCertificateOrdersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return key Vault container ARM resource for a certificate that is purchased through Azure.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AppServiceCertificateResourceInner>, AppServiceCertificateResourceInner>
         beginCreateOrUpdateCertificate(
             String resourceGroupName,

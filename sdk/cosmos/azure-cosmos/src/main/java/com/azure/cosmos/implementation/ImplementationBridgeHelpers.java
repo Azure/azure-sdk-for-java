@@ -10,6 +10,7 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
 import com.azure.cosmos.implementation.patch.PatchOperation;
@@ -96,6 +97,37 @@ public class ImplementationBridgeHelpers {
         }
     }
 
+    public static final class DirectConnectionConfigHelper {
+        static {
+            ensureClassLoaded(DirectConnectionConfig.class);
+        }
+        private static DirectConnectionConfigAccessor accessor;
+
+        private DirectConnectionConfigHelper() {}
+
+        public static void setDirectConnectionConfigAccessor(final DirectConnectionConfigAccessor newAccessor) {
+            if (accessor != null) {
+                throw new IllegalStateException("DirectConnectionConfig accessor already initialized!");
+            }
+
+            accessor = newAccessor;
+        }
+
+        public static DirectConnectionConfigAccessor getDirectConnectionConfigAccessor() {
+            if (accessor == null) {
+                throw new IllegalStateException("DirectConnectionConfig accessor is not initialized!");
+            }
+
+            return accessor;
+        }
+
+        public interface DirectConnectionConfigAccessor {
+            int getIoThreadCountPerCoreFactor(DirectConnectionConfig config);
+            DirectConnectionConfig setIoThreadCountPerCoreFactor(
+                DirectConnectionConfig config, int ioThreadCountPerCoreFactor);
+        }
+    }
+
     public static final class CosmosQueryRequestOptionsHelper {
         private static CosmosQueryRequestOptionsAccessor accessor;
 
@@ -125,6 +157,8 @@ public class ImplementationBridgeHelpers {
             OperationContextAndListenerTuple getOperationContext(CosmosQueryRequestOptions queryRequestOptions);
             CosmosQueryRequestOptions setHeader(CosmosQueryRequestOptions queryRequestOptions, String name, String value);
             Map<String, String> getHeader(CosmosQueryRequestOptions queryRequestOptions);
+            boolean isQueryPlanRetrievalDisallowed(CosmosQueryRequestOptions queryRequestOptions);
+            CosmosQueryRequestOptions disallowQueryPlanRetrieval(CosmosQueryRequestOptions queryRequestOptions);
         }
     }
 
@@ -238,6 +272,11 @@ public class ImplementationBridgeHelpers {
             CosmosBulkExecutionOptions setMaxMicroBatchSize(CosmosBulkExecutionOptions options, int maxMicroBatchSize);
 
             int getMaxMicroBatchConcurrency(CosmosBulkExecutionOptions options);
+
+            Integer getMaxConcurrentCosmosPartitions(CosmosBulkExecutionOptions options);
+
+            CosmosBulkExecutionOptions setMaxConcurrentCosmosPartitions(
+                CosmosBulkExecutionOptions options, int mxConcurrentCosmosPartitions);
 
             Duration getMaxMicroBatchInterval(CosmosBulkExecutionOptions options);
 
