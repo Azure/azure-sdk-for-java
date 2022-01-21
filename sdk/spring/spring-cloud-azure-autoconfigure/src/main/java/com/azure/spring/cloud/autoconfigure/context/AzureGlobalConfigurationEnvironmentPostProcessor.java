@@ -49,6 +49,14 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
         AzureCoreEnvMapping.setLogger(logger);
     }
 
+    /**
+     * Construct a {@link AzureGlobalConfigurationEnvironmentPostProcessor} instance with default value.
+     */
+    public AzureGlobalConfigurationEnvironmentPostProcessor() {
+        this.logger = null;
+        AzureCoreEnvMapping.setLogger(logger);
+    }
+
     @Override
     public int getOrder() {
         return Ordered.LOWEST_PRECEDENCE;
@@ -169,7 +177,9 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
         if (!source.isEmpty()) {
             environment.getPropertySources().addLast(new AzureCoreEnvPropertySource("Azure Core/SDK", source));
         } else {
-            logger.debug("No env predefined by Azure Core/SDKs are set, skip adding the AzureCoreEnvPropertySource.");
+            if (logger != null) {
+                logger.debug("No env predefined by Azure Core/SDKs are set, skip adding the AzureCoreEnvPropertySource.");
+            }
         }
     }
 
