@@ -42,6 +42,7 @@ stages:
         MatrixReplace:
           - TestOptions=.*/-Punit
           - AZURE_TEST.*=.*/
+        MavenBuildInstallParallelization: 1C
 
   - stage: TestEmulator
     displayName: Test Emulator
