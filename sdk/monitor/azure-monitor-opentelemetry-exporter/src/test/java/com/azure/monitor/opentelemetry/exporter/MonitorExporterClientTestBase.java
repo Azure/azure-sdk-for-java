@@ -51,35 +51,6 @@ public class MonitorExporterClientTestBase extends TestBase {
         return new AzureMonitorExporterBuilder().pipeline(httpPipeline);
     }
 
-    AzureMonitorExporterBuilder getClientBuilderWithAuthentication() {
-        TokenCredential credential = null;
-        HttpClient httpClient;
-        if (getTestMode() == TestMode.RECORD || getTestMode() == TestMode.LIVE) {
-            httpClient = HttpClient.createDefault();
-            credential =
-                new ClientSecretCredentialBuilder()
-                    .tenantId(System.getenv("AZURE_TENANT_ID"))
-                    .clientSecret(System.getenv("AZURE_CLIENT_SECRET"))
-                    .clientId(System.getenv("AZURE_CLIENT_ID"))
-                    .build();
-        } else {
-            httpClient = interceptorManager.getPlaybackClient();
-        }
-
-        if (credential != null) {
-            return new AzureMonitorExporterBuilder()
-                .credential(credential)
-                .httpClient(httpClient)
-                .addPolicy(new AzureMonitorRedirectPolicy())
-                .addPolicy(interceptorManager.getRecordPolicy());
-        } else {
-            return new AzureMonitorExporterBuilder()
-                .httpClient(httpClient)
-                .addPolicy(new AzureMonitorRedirectPolicy())
-                .addPolicy(interceptorManager.getRecordPolicy());
-        }
-    }
-
     List<TelemetryItem> getAllInvalidTelemetryItems() {
         List<TelemetryItem> telemetryItems = new ArrayList<>();
         telemetryItems.add(createRequestData("200", "GET /service/resource-name", true, Duration.ofMillis(100),
