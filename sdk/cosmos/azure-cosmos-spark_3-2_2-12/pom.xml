@@ -75,6 +75,11 @@
   </build>
   <dependencies>
     <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-cosmos</artifactId>
+      <version>4.26.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+    </dependency>
+    <dependency>
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-sql_2.12</artifactId>
       <version>3.2.0</version> <!-- {x-version-update;cosmos-spark_3-2_org.apache.spark:spark-sql_2.12;external_dependency} -->
