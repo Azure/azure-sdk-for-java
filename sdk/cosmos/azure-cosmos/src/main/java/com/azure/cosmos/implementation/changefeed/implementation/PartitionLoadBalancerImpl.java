@@ -108,7 +108,9 @@ class PartitionLoadBalancerImpl implements PartitionLoadBalancer {
             .flatMap(allLeases -> {
                 if (cancellationToken.isCancellationRequested()) return Mono.empty();
                 List<Lease> leasesToTake = this.partitionLoadBalancingStrategy.selectLeasesToTake(allLeases);
-                this.logger.debug("Found {} leases, taking {}", allLeases.size(), leasesToTake.size());
+                if (leasesToTake.size() > 0) {
+                    this.logger.info("Found {} total leases, taking ownership of {}", allLeases.size(), leasesToTake.size());
+                }
 
                 if (cancellationToken.isCancellationRequested()) return Mono.empty();
                 return Flux.fromIterable(leasesToTake)

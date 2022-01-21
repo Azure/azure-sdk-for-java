@@ -24,7 +24,6 @@ class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingStrategy
     private final int minPartitionCount;
     private final int maxPartitionCount;
     private final Duration leaseExpirationInterval;
-    private volatile int countAssignedLeases;
 
     public EqualPartitionsBalancingStrategy(String hostName, int minPartitionCount, int maxPartitionCount, Duration leaseExpirationInterval) {
         if (hostName == null) {
@@ -35,7 +34,6 @@ class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingStrategy
         this.minPartitionCount = minPartitionCount;
         this.maxPartitionCount = maxPartitionCount;
         this.leaseExpirationInterval = leaseExpirationInterval;
-        this.countAssignedLeases = 0;
     }
 
     @Override
@@ -55,29 +53,25 @@ class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingStrategy
 
         int target = this.calculateTargetPartitionCount(partitionCount, workerCount);
         int myCount = workerToPartitionCount.get(this.hostName);
-        this.countAssignedLeases = myCount;
         int partitionsNeededForMe = target - myCount;
 
-        /*
-        Logger.InfoFormat(
-            "Host '{0}' {1} partitions, {2} hosts, {3} available leases, target = {4}, min = {5}, max = {6}, mine = {7}, will try to take {8} lease(s) for myself'.",
-            this.hostName,
-            partitionCount,
-            workerCount,
-            expiredLeases.Count,
-            target,
-            this.minScaleCount,
-            this.maxScaleCount,
-            myCount,
-            Math.Max(partitionsNeededForMe, 0));
-            */
+        if (expiredLeases.size() > 0) {
+            // We should try to pick at least one expired lease even if already overbooked when maximum partition count is not set.
+            // If other CFP instances are running, limit the number of expired leases to acquire to maximum 1 (non-greedy acquiring).
+            if (this.maxPartitionCount == 0 && (partitionsNeededForMe <= 0 || (partitionsNeededForMe > 1 && workerToPartitionCount.size() > 1))) {
+                partitionsNeededForMe = 1;
+            }
+
+            for (Lease lease : expiredLeases) {
+                this.logger.info("Found unused or expired lease {}; previous lease count for instance owner {} is {}, count of leases to target is {} and maxScaleCount {} ",
+                    lease.getLeaseToken(), this.hostName, myCount, partitionsNeededForMe, this.maxPartitionCount);
+            }
+
+            return expiredLeases.subList(0, Math.min(partitionsNeededForMe, expiredLeases.size()));
+        }
 
         if (partitionsNeededForMe <= 0)
             return new ArrayList<Lease>();
-
-        if (expiredLeases.size() > 0) {
-            return expiredLeases.subList(0, Math.min(partitionsNeededForMe, expiredLeases.size()));
-        }
 
         Lease stolenLease = getLeaseToSteal(workerToPartitionCount, target, partitionsNeededForMe, allPartitions);
         List<Lease> stolenLeases = new ArrayList<>();
@@ -150,8 +144,6 @@ class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingStrategy
             allPartitions.put(lease.getLeaseToken(), lease);
 
             if (lease.getOwner() == null || lease.getOwner().isEmpty() || this.isExpired(lease)) {
-                this.logger.info("Found unused or expired lease {}; current lease count for instance owner {} is {} and maxScaleCount {} ",
-                    lease.getLeaseToken(), this.hostName, this.countAssignedLeases, this.maxPartitionCount);
                 expiredLeases.add(lease);
             } else {
                 String assignedTo = lease.getOwner();

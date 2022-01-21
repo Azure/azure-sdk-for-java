@@ -3,7 +3,9 @@
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
@@ -22,6 +24,7 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
+import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -40,7 +43,7 @@ import static com.azure.cosmos.CosmosBridgeInternal.getContextClient;
 public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     private final AsyncDocumentClient documentClient;
     private final CosmosAsyncContainer cosmosContainer;
-    private final Scheduler rxScheduler;
+    private Scheduler rxScheduler;
 
     /**
      * Initializes a new instance of the {@link ChangeFeedContextClient} interface.
@@ -70,6 +73,16 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
         this.documentClient = getContextClient(cosmosContainer);
         this.rxScheduler = rxScheduler;
 
+    }
+
+    @Override
+    public Scheduler getScheduler() {
+        return this.rxScheduler;
+    }
+
+    @Override
+    public void setScheduler(Scheduler scheduler) {
+        this.rxScheduler = scheduler;
     }
 
     @Override
