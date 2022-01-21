@@ -400,6 +400,9 @@
         <file>
           <exists>${basedir}/scalastyle_config.xml</exists>
         </file>
+        <property>
+          <name>spark-e2e</name>
+        </property>
       </activation>
       <build>
         <plugins>
