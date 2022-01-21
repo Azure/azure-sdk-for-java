@@ -515,6 +515,32 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>xml-maven-plugin</artifactId>
+        <version>1.0.2</version> <!-- {x-version-update;org.codehaus.mojo:xml-maven-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>stripDependencyReducedPom</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>transform</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <transformationSets>
+            <transformationSet>
+              <dir>${project.basedir}</dir>
+              <includes>dependency-reduced-pom.xml</includes>
+              <stylesheet>${project.basedir}/../azure-cosmos-spark_3_2-12/stripDependencyReducedPom.xsl</stylesheet>
+              <outputDir>${project.basedir}</outputDir>
+              <skipDefaultExcludes>true</skipDefaultExcludes>
+              <addedToClasspath>false</addedToClasspath>
+            </transformationSet>
+          </transformationSets>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
