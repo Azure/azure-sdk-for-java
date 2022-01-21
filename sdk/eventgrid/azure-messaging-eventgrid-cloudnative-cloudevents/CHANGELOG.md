@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.1 (2022-01-20)
+## 1.0.0-beta.1 (2022-01-21)
 
 ### Features Added
 - Added the bridge library to allow sending Cloud Native Computing Foundation(CNCF) CloudEvents using Azure Event Grid.
