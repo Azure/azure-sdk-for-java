@@ -31,6 +31,14 @@ public interface TagsResult {
     String type();
 
     /**
+     * Gets the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
+     * determine whether the user is updating the latest version or not.
+     *
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
      * Gets the tags property: A list of Tag.
      *
      * @return the tags value.
@@ -50,14 +58,6 @@ public interface TagsResult {
      * @return the previousLink value.
      */
     String previousLink();
-
-    /**
-     * Gets the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
-     * determine whether the user is updating the latest version or not.
-     *
-     * @return the etag value.
-     */
-    String etag();
 
     /**
      * Gets the inner com.azure.resourcemanager.consumption.fluent.models.TagsResultInner object.

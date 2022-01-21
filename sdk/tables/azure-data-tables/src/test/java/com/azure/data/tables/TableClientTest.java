@@ -1,16 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.data.tables;
 
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableAccessPolicies;
@@ -52,39 +50,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * Tests {@link TableClient}.
  */
-public class TableClientTest extends TestBase {
-    private static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
-    private static final boolean IS_COSMOS_TEST = TestUtils.isCosmosTest();
-
-
+public class TableClientTest extends TableClientTestBase {
     private TableClient tableClient;
-    private HttpPipelinePolicy recordPolicy;
-    private HttpClient playbackClient;
 
-    private TableClientBuilder getClientBuilder(String tableName, String connectionString) {
-        final TableClientBuilder builder = new TableClientBuilder()
-            .connectionString(connectionString)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .tableName(tableName);
-
-        if (interceptorManager.isPlaybackMode()) {
-            playbackClient = interceptorManager.getPlaybackClient();
-
-            builder.httpClient(playbackClient);
-        } else {
-            builder.httpClient(DEFAULT_HTTP_CLIENT);
-
-            if (!interceptorManager.isLiveMode()) {
-                recordPolicy = interceptorManager.getRecordPolicy();
-
-                builder.addPolicy(recordPolicy);
-            }
-        }
-
-        return builder;
-    }
-
-    @Override
     protected void beforeTest() {
         final String tableName = testResourceNamer.randomName("tableName", 20);
         final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
@@ -94,7 +62,7 @@ public class TableClientTest extends TestBase {
     }
 
     @Test
-    void createTable() {
+    public void createTable() {
         // Arrange
         final String tableName2 = testResourceNamer.randomName("tableName", 20);
         final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
@@ -105,7 +73,7 @@ public class TableClientTest extends TestBase {
     }
 
     @Test
-    void createTableWithResponse() {
+    public void createTableWithResponse() {
         // Arrange
         final String tableName2 = testResourceNamer.randomName("tableName", 20);
         final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
@@ -117,10 +85,24 @@ public class TableClientTest extends TestBase {
     }
 
     @Test
-    void createEntity() {
+    public void createEntity() {
+        createEntityImpl("partitionKey", "rowKey");
+    }
+
+    @Test
+    public void createEntityWithSingleQuotesInPartitionKey() {
+        createEntityImpl("partition'Key", "rowKey");
+    }
+
+    @Test
+    public void createEntityWithSingleQuotesInRowKey() {
+        createEntityImpl("partitionKey", "row'Key");
+    }
+
+    private void createEntityImpl(String partitionKeyPrefix, String rowKeyPrefix) {
         // Arrange
-        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
-        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        final String partitionKeyValue = testResourceNamer.randomName(partitionKeyPrefix, 20);
+        final String rowKeyValue = testResourceNamer.randomName(rowKeyPrefix, 20);
         final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue);
 
         // Act & Assert
@@ -128,7 +110,7 @@ public class TableClientTest extends TestBase {
     }
 
     @Test
-    void createEntityWithResponse() {
+    public void createEntityWithResponse() {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
@@ -140,7 +122,7 @@ public class TableClientTest extends TestBase {
     }
 
     @Test
-    void createEntityWithAllSupportedDataTypes() {
+    public void createEntityWithAllSupportedDataTypes() {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
@@ -185,9 +167,10 @@ public class TableClientTest extends TestBase {
         assertTrue(properties.get("StringTypeProperty") instanceof String);
     }
 
-    // Will not be supporting subclasses of TableEntity for the time being.
+    // Support for subclassing TableEntity was removed for the time being, although having it back is not 100%
+    // discarded. -vicolina
     /*@Test
-    void createEntitySubclass() {
+    public void createEntitySubclass() {
         // Arrange
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
@@ -232,13 +215,13 @@ public class TableClientTest extends TestBase {
     }*/
 
     @Test
-    void deleteTable() {
+    public void deleteTable() {
         // Act & Assert
         assertDoesNotThrow(() -> tableClient.deleteTable());
     }
 
     @Test
-    void deleteNonExistingTable() {
+    public void deleteNonExistingTable() {
         // Arrange
         tableClient.deleteTable();
 
@@ -247,7 +230,7 @@ public class TableClientTest extends TestBase {
     }
 
     @Test
-    void deleteTableWithResponse() {
+    public void deleteTableWithResponse() {
         // Arrange
         final int expectedStatusCode = 204;
 
@@ -256,7 +239,7 @@ public class TableClientTest extends TestBase {
     }
 
     @Test
-    void deleteNonExistingTableWithResponse() {
+    public void deleteNonExistingTableWithResponse() {
         // Arrange
         final int expectedStatusCode = 404;
         tableClient.deleteTableWithResponse(null, null);
@@ -266,10 +249,24 @@ public class TableClientTest extends TestBase {
     }
 
     @Test
-    void deleteEntity() {
+    public void deleteEntity() {
+        deleteEntityImpl("partitionKey", "rowKey");
+    }
+
+    @Test
+    public void deleteEntityWithSingleQuotesInPartitionKey() {
+        deleteEntityImpl("partition'Key", "rowKey");
+    }
+
+    @Test
+    public void deleteEntityWithSingleQuotesInRowKey() {
+        deleteEntityImpl("partitionKey", "row'Key");
+    }
+
+    private void deleteEntityImpl(String partitionKeyPrefix, String rowKeyPrefix) {
         // Arrange
-        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
-        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        final String partitionKeyValue = testResourceNamer.randomName(partitionKeyPrefix, 20);
+        final String rowKeyValue = testResourceNamer.randomName(rowKeyPrefix, 20);
         final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue);
 
         tableClient.createEntity(tableEntity);
@@ -282,7 +279,7 @@ public class TableClientTest extends TestBase {
     }
 
     @Test
-    void deleteNonExistingEntity() {
+    public void deleteNonExistingEntity() {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
@@ -292,7 +289,7 @@ public class TableClientTest extends TestBase {
     }
 
     @Test
-    void deleteEntityWithResponse() {
+    public void deleteEntityWithResponse() {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
@@ -310,7 +307,7 @@ public class TableClientTest extends TestBase {
     }
 
     @Test
-    void deleteNonExistingEntityWithResponse() {
+    public void deleteNonExistingEntityWithResponse() {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
@@ -323,7 +320,7 @@ public class TableClientTest extends TestBase {
     }
 
     @Test
-    void deleteEntityWithResponseMatchETag() {
+    public void deleteEntityWithResponseMatchETag() {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
@@ -341,14 +338,25 @@ public class TableClientTest extends TestBase {
     }
 
     @Test
-    void getEntityWithResponse() {
-        getEntityWithResponseImpl(this.tableClient, this.testResourceNamer);
+    public void getEntityWithSingleQuotesInPartitionKey() {
+        getEntityWithResponseImpl(tableClient, testResourceNamer, "partition'Key", "rowKey");
     }
 
-    static void getEntityWithResponseImpl(TableClient tableClient, TestResourceNamer testResourceNamer) {
+    @Test
+    public void getEntityWithSingleQuotesInRowKey() {
+        getEntityWithResponseImpl(tableClient, testResourceNamer, "partitionKey", "row'Key");
+    }
+
+    @Test
+    public void getEntityWithResponse() {
+        getEntityWithResponseImpl(tableClient, testResourceNamer, "partitionKey", "rowKey");
+    }
+
+    static void getEntityWithResponseImpl(TableClient tableClient, TestResourceNamer testResourceNamer,
+                                          String partitionKeyPrefix, String rowKeyPrefix) {
         // Arrange
-        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
-        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        final String partitionKeyValue = testResourceNamer.randomName(partitionKeyPrefix, 20);
+        final String rowKeyValue = testResourceNamer.randomName(rowKeyPrefix, 20);
         final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue);
         final int expectedStatusCode = 200;
         tableClient.createEntity(tableEntity);
@@ -371,7 +379,7 @@ public class TableClientTest extends TestBase {
     }
 
     @Test
-    void getEntityWithResponseWithSelect() {
+    public void getEntityWithResponseWithSelect() {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
@@ -397,9 +405,22 @@ public class TableClientTest extends TestBase {
         assertEquals(entity.getProperties().get("Test"), "Value");
     }
 
-    // Will not be supporting subclasses of TableEntity for the time being.
+    @Test
+    public void updateEntityWithSingleQuotesInPartitionKey() {
+        updateEntityWithResponseImpl(TableEntityUpdateMode.MERGE, testResourceNamer.randomName("partition'Key", 20),
+            testResourceNamer.randomName("rowKey", 20));
+    }
+
+    @Test
+    public void updateEntityWithSingleQuotesInRowKey() {
+        updateEntityWithResponseImpl(TableEntityUpdateMode.MERGE, testResourceNamer.randomName("partitionKey", 20),
+            testResourceNamer.randomName("row'Key", 20));
+    }
+
+    // Support for subclassing TableEntity was removed for the time being, although having it back is not 100%
+    // discarded. -vicolina
     /*@Test
-    void getEntityWithResponseSubclass() {
+    public void getEntityWithResponseSubclass() {
         // Arrange
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
@@ -457,24 +478,24 @@ public class TableClientTest extends TestBase {
     }*/
 
     @Test
-    void updateEntityWithResponseReplace() {
-        updateEntityWithResponse(TableEntityUpdateMode.REPLACE);
+    public void updateEntityWithResponseReplace() {
+        updateEntityWithResponseImpl(TableEntityUpdateMode.REPLACE, "partitionKey", "rowKey");
     }
 
     @Test
-    void updateEntityWithResponseMerge() {
-        updateEntityWithResponse(TableEntityUpdateMode.MERGE);
+    public void updateEntityWithResponseMerge() {
+        updateEntityWithResponseImpl(TableEntityUpdateMode.MERGE, "partitionKey", "rowKey");
     }
 
     /**
      * In the case of {@link TableEntityUpdateMode#MERGE}, we expect both properties to exist.
      * In the case of {@link TableEntityUpdateMode#REPLACE}, we only expect {@code newPropertyKey} to exist.
      */
-    void updateEntityWithResponse(TableEntityUpdateMode mode) {
+    void updateEntityWithResponseImpl(TableEntityUpdateMode mode, String partitionKeyPrefix, String rowKeyPrefix) {
         // Arrange
         final boolean expectOldProperty = mode == TableEntityUpdateMode.MERGE;
-        final String partitionKeyValue = testResourceNamer.randomName("APartitionKey", 20);
-        final String rowKeyValue = testResourceNamer.randomName("ARowKey", 20);
+        final String partitionKeyValue = testResourceNamer.randomName(partitionKeyPrefix, 20);
+        final String rowKeyValue = testResourceNamer.randomName(rowKeyPrefix, 20);
         final int expectedStatusCode = 204;
         final String oldPropertyKey = "propertyA";
         final String newPropertyKey = "propertyB";
@@ -501,9 +522,10 @@ public class TableClientTest extends TestBase {
         assertEquals(expectOldProperty, properties.containsKey(oldPropertyKey));
     }
 
-    // Will not be supporting subclasses of TableEntity for the time being.
+    // Support for subclassing TableEntity was removed for the time being, although having it back is not 100%
+    // discarded. -vicolina
     /*@Test
-    void updateEntityWithResponseSubclass() {
+    public void updateEntityWithResponseSubclass() {
         // Arrange
         String partitionKeyValue = testResourceNamer.randomName("APartitionKey", 20);
         String rowKeyValue = testResourceNamer.randomName("ARowKey", 20);
@@ -527,11 +549,25 @@ public class TableClientTest extends TestBase {
     }*/
 
     @Test
-    void listEntities() {
+    public void listEntities() {
+        listEntitiesImpl("partitionKey", "rowKey");
+    }
+
+    @Test
+    public void listEntitiesWithSingleQuotesInPartitionKey() {
+        listEntitiesImpl("partition'Key", "rowKey");
+    }
+
+    @Test
+    public void listEntitiesWithSingleQuotesInRowKey() {
+        listEntitiesImpl("partitionKey", "row'Key");
+    }
+
+    private void listEntitiesImpl(String partitionKeyPrefix, String rowKeyPrefix) {
         // Arrange
-        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
-        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
-        final String rowKeyValue2 = testResourceNamer.randomName("rowKey", 20);
+        final String partitionKeyValue = testResourceNamer.randomName(partitionKeyPrefix, 20);
+        final String rowKeyValue = testResourceNamer.randomName(rowKeyPrefix, 20);
+        final String rowKeyValue2 = testResourceNamer.randomName(rowKeyPrefix, 20);
         tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue));
         tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue2));
 
@@ -547,7 +583,7 @@ public class TableClientTest extends TestBase {
     }
 
     @Test
-    void listEntitiesWithFilter() {
+    public void listEntitiesWithFilter() {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
@@ -564,7 +600,7 @@ public class TableClientTest extends TestBase {
     }
 
     @Test
-    void listEntitiesWithSelect() {
+    public void listEntitiesWithSelect() {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
@@ -592,7 +628,7 @@ public class TableClientTest extends TestBase {
     }
 
     @Test
-    void listEntitiesWithTop() {
+    public void listEntitiesWithTop() {
         // Arrange
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
@@ -611,9 +647,10 @@ public class TableClientTest extends TestBase {
         assertEquals(2, iterator.next().getValue().size());
     }
 
-    // Will not be supporting subclasses of TableEntity for the time being.
+    // Support for subclassing TableEntity was removed for the time being, although having it back is not 100%
+    // discarded. -vicolina
     /*@Test
-    void listEntitiesSubclass() {
+    public void listEntitiesSubclass() {
         // Arrange
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
@@ -639,7 +676,7 @@ public class TableClientTest extends TestBase {
     }*/
 
     @Test
-    void submitTransaction() {
+    public void submitTransaction() {
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
         String rowKeyValue2 = testResourceNamer.randomName("rowKey", 20);
@@ -679,15 +716,29 @@ public class TableClientTest extends TestBase {
     }
 
     @Test
-    void submitTransactionAsyncAllActions() {
-        String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
-        String rowKeyValueCreate = testResourceNamer.randomName("rowKey", 20);
-        String rowKeyValueUpsertInsert = testResourceNamer.randomName("rowKey", 20);
-        String rowKeyValueUpsertMerge = testResourceNamer.randomName("rowKey", 20);
-        String rowKeyValueUpsertReplace = testResourceNamer.randomName("rowKey", 20);
-        String rowKeyValueUpdateMerge = testResourceNamer.randomName("rowKey", 20);
-        String rowKeyValueUpdateReplace = testResourceNamer.randomName("rowKey", 20);
-        String rowKeyValueDelete = testResourceNamer.randomName("rowKey", 20);
+    public void submitTransactionAllActions() {
+        submitTransactionAllActionsImpl("partitionKey", "rowKey");
+    }
+
+    @Test
+    public void submitTransactionAllActionsForEntitiesWithSingleQuotesInPartitionKey() {
+        submitTransactionAllActionsImpl("partition'Key", "rowKey");
+    }
+
+    @Test
+    public void submitTransactionAllActionsForEntitiesWithSingleQuotesInRowKey() {
+        submitTransactionAllActionsImpl("partitionKey", "row'Key");
+    }
+
+    private void submitTransactionAllActionsImpl(String partitionKeyPrefix, String rowKeyPrefix) {
+        String partitionKeyValue = testResourceNamer.randomName(partitionKeyPrefix, 20);
+        String rowKeyValueCreate = testResourceNamer.randomName(rowKeyPrefix, 20);
+        String rowKeyValueUpsertInsert = testResourceNamer.randomName(rowKeyPrefix, 20);
+        String rowKeyValueUpsertMerge = testResourceNamer.randomName(rowKeyPrefix, 20);
+        String rowKeyValueUpsertReplace = testResourceNamer.randomName(rowKeyPrefix, 20);
+        String rowKeyValueUpdateMerge = testResourceNamer.randomName(rowKeyPrefix, 20);
+        String rowKeyValueUpdateReplace = testResourceNamer.randomName(rowKeyPrefix, 20);
+        String rowKeyValueDelete = testResourceNamer.randomName(rowKeyPrefix, 20);
 
         int expectedBatchStatusCode = 202;
         int expectedOperationStatusCode = 204;
@@ -739,7 +790,7 @@ public class TableClientTest extends TestBase {
     }
 
     @Test
-    void submitTransactionAsyncWithFailingAction() {
+    public void submitTransactionWithFailingAction() {
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
         String rowKeyValue2 = testResourceNamer.randomName("rowKey", 20);
@@ -768,7 +819,7 @@ public class TableClientTest extends TestBase {
     }
 
     @Test
-    void submitTransactionAsyncWithSameRowKeys() {
+    public void submitTransactionWithSameRowKeys() {
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
 
@@ -802,7 +853,7 @@ public class TableClientTest extends TestBase {
     }
 
     @Test
-    void submitTransactionAsyncWithDifferentPartitionKeys() {
+    public void submitTransactionWithDifferentPartitionKeys() {
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         String partitionKeyValue2 = testResourceNamer.randomName("partitionKey", 20);
         String rowKeyValue = testResourceNamer.randomName("rowKey", 20);

@@ -251,6 +251,7 @@ public class HttpConstants {
         public static final String QUERY_METRICS = "x-ms-documentdb-query-metrics";
         public static final String POPULATE_INDEX_METRICS = "x-ms-cosmos-populateindexmetrics";
         public static final String INDEX_UTILIZATION = "x-ms-cosmos-index-utilization";
+        public static final String QUERY_EXECUTION_INFO = "x-ms-cosmos-query-execution-info";
 
         // Batch operations
         public static final String IS_BATCH_ATOMIC = "x-ms-cosmos-batch-atomic";
@@ -334,6 +335,8 @@ public class HttpConstants {
         // 404: LSN in session token is higher
         public static final int READ_SESSION_NOT_AVAILABLE = 1002;
         public static final int OWNER_RESOURCE_NOT_EXISTS = 1003;
+
+        public static final int INCORRECT_CONTAINER_RID_SUB_STATUS = 1024;
 
         // Client generated gateway network error substatus
         public static final int GATEWAY_ENDPOINT_UNAVAILABLE = 10001;

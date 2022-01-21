@@ -10,25 +10,25 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 
-/** Reseller details. */
+/** The amount with exchange rate. */
 @Immutable
 public final class AmountWithExchangeRate extends Amount {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AmountWithExchangeRate.class);
 
     /*
-     * Exchange Rate.
+     * The exchange rate.
      */
     @JsonProperty(value = "exchangeRate", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal exchangeRate;
 
     /*
-     * Exchange rate month.
+     * The exchange rate month.
      */
     @JsonProperty(value = "exchangeRateMonth", access = JsonProperty.Access.WRITE_ONLY)
-    private Float exchangeRateMonth;
+    private Integer exchangeRateMonth;
 
     /**
-     * Get the exchangeRate property: Exchange Rate.
+     * Get the exchangeRate property: The exchange rate.
      *
      * @return the exchangeRate value.
      */
@@ -37,11 +37,11 @@ public final class AmountWithExchangeRate extends Amount {
     }
 
     /**
-     * Get the exchangeRateMonth property: Exchange rate month.
+     * Get the exchangeRateMonth property: The exchange rate month.
      *
      * @return the exchangeRateMonth value.
      */
-    public Float exchangeRateMonth() {
+    public Integer exchangeRateMonth() {
         return this.exchangeRateMonth;
     }
 

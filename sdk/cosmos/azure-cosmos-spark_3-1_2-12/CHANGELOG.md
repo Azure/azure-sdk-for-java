@@ -1,5 +1,34 @@
 ## Release History
-### 4.4.3-beta.4 (Unreleased)
+### 4.6.0-beta.1 (Unreleased)
+
+### 4.5.3 (2022-01-06)
+#### Key Bug Fixes
+* Fixed an issue in the Java SDK that would result in NullPointerException when trying to bulk-ingest data into deleted and recreated container. - See [PR 26205](https://github.com/Azure/azure-sdk-for-java/pull/26205)
+
+#### New Features
+* Added support for writing RDDs containing ShortType or ByteType columns into Cosmos DB. - See [PR 26137](https://github.com/Azure/azure-sdk-for-java/pull/26137).
+
+### 4.5.2 (2021-12-17)
+#### Key Bug Fixes
+* Fixed an issue in the Java SDK that would expose request timeouts from the Gateway endpoint with StatusCode==0 instead of 408. This resulted in not retrying these transient errors in the Spark connector as expected. - See [PR 26049](https://github.com/Azure/azure-sdk-for-java/pull/26049)
+* Fixed a bug where bulk responses with mixed results don't handle 400/409 for individual item operations properly. This resulted in silently ignoring these 400/409 errors - the Spark job (for example to Upsert documents) completed "successfully" (because the 400s were silently ignored) without actually upserting the documents. This fix ensures that these errors are thrown, and the Spark job fails. - See [PR 26069](https://github.com/Azure/azure-sdk-for-java/pull/26069)
+
+### 4.5.1 (2021-12-14)
+#### Key Bug Fixes
+* Fixed an issue that can cause hangs when bulk-ingesting data into Cosmos containers with more than 255 physical partitions - See [PR 26017](https://github.com/Azure/azure-sdk-for-java/pull/26017)
+* Improved robustness of built-in retry policies for transient I/O errors when calculating Spark partitioning, do schema inference or process Catalog APIs. - See [PR 26029](https://github.com/Azure/azure-sdk-for-java/pull/26029)
+
+### 4.5.0 (2021-12-09)
+#### New Features
+* Added a user defined function that can be used to calculate the "feedRange" of a partition key value. This "feedRange" can be used to determine co-located documents and to optimize query performance when the query is scoped to a single/few logical partitions. - See [PR 25889](https://github.com/Azure/azure-sdk-for-java/pull/25889).
+* Extended set of provided/accepted TBLPROPERTIES within the `CosmosCatalog` to allow retrieving partition key count, provisioned throughput, partition key definition etc. natively via the `DESCRIBE TABLE EXTENDED` command. - See [PR 25853](https://github.com/Azure/azure-sdk-for-java/pull/25853).
+#### Key Bug Fixes
+* Suppressing query plan retrieval in Spark queries (where they never would be necessary) to suppress I/O calls to the gateway and improve latency for query execution. - See [PR 25668](https://github.com/Azure/azure-sdk-for-java/pull/25668)
+* Fixed a bug resulting in not being able to use views defined in the CosmosCatalog after cluster restart. Error observed in this case was `com.databricks.backend.common.rpc.DatabricksExceptions$SQLExecutionException: org.json4s.package$MappingException: unknown error`. - See [PR 25908](https://github.com/Azure/azure-sdk-for-java/pull/25908)
+* Modified bulk execution settings (maxPendingActions, I/O Thread count factor and 408-retry backoff) to improve default experience in scenarios with significantly more physical partitions in Cosmos than Spark Executor Cores. - See [PR 25914](https://github.com/Azure/azure-sdk-for-java/pull/25914)
+* Bulk execution improvement triggering a flush to the backend (sending the request instead of keep buffering) when the total buffered payload size exceeds the max payload size for batch instead of only relying on retry policies. - See [PR 25897](https://github.com/Azure/azure-sdk-for-java/pull/25897)
+* Bulk execution improvement shortening the flush interval when the `Flux` of incoming operations signals "completion" - See [PR 25917](https://github.com/Azure/azure-sdk-for-java/pull/25917)
+* Added a custom retry policy for transient failures when draining a Cosmos query or change feed query, which will automatically retry transient I/O error more aggressively than the built-in retry policy in the SDK. - See [PR 25917](https://github.com/Azure/azure-sdk-for-java/pull/25917) 
 
 ### 4.4.2 (2021-11-15)
 #### Key Bug Fixes
@@ -66,7 +95,7 @@
 * Cosmos DB Spark 3.1.1 Connector Preview `4.0.0-beta.3` Release.
 #### Configuration Renames
 * Renamed data source name `cosmos.changeFeed` to `cosmos.oltp.changeFeed`, see [PR](https://github.com/Azure/azure-sdk-for-java/pull/21121).
-* Configuration renamed. See [PR](https://github.com/Azure/azure-sdk-for-java/pull/21004) for list of changes. See [Configuration-Reference](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/configuration-reference.md) for more details.
+* Configuration renamed. See [PR](https://github.com/Azure/azure-sdk-for-java/pull/21004) for list of changes. See [Configuration-Reference](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3_2-12/docs/configuration-reference.md) for more details.
 
 #### Key Bug Fixes
 * Added validation for all config-settings with a name starting with "spark.cosmos."

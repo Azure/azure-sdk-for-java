@@ -3,7 +3,7 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20211019.1
+      ref: refs/tags/azure-sdk-build-tools_20211215.1
 
 parameters:
 - name: Artifacts
@@ -47,6 +47,9 @@ parameters:
 - name: PreBuildSteps
   type: object
   default: []
+- name: MavenVerifyAdditionalOptions
+  type: string
+  default: ''
 
 stages:
   - stage: Build
@@ -79,6 +82,7 @@ stages:
             - TestOptions=.*/-am
           - AZURE_TEST.*=.*/
         PreBuildSteps: ${{ parameters.PreBuildSteps }}
+        MavenVerifyAdditionalOptions: ${{ parameters.MavenVerifyAdditionalOptions }}
 
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.

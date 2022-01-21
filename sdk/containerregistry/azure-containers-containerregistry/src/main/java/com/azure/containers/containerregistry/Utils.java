@@ -55,9 +55,10 @@ final class Utils {
     private static final String CLIENT_VERSION;
     private static final int HTTP_STATUS_CODE_NOT_FOUND = 404;
     private static final int HTTP_STATUS_CODE_ACCEPTED = 202;
+    static final String CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE = "Microsoft.ContainerRegistry";
 
     static {
-        Map<String, String> properties = CoreUtils.getProperties("azure-search-documents.properties");
+        Map<String, String> properties = CoreUtils.getProperties("azure-containers-containerregistry.properties");
         CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
         CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
 
