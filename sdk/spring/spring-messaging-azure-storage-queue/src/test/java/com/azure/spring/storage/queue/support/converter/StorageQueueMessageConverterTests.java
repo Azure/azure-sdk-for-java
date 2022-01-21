@@ -4,7 +4,7 @@
 package com.azure.spring.storage.queue.support.converter;
 
 import com.azure.spring.messaging.converter.AzureMessageConverter;
-import com.azure.spring.messaging.converter.UnaryAzureMessageConverterTest;
+import com.azure.spring.messaging.converter.UnaryAzureMessageConverterTests;
 import com.azure.storage.queue.models.QueueMessageItem;
 import org.springframework.messaging.Message;
 
@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class StorageQueueMessageConverterTests extends UnaryAzureMessageConverterTest<QueueMessageItem> {
+public class StorageQueueMessageConverterTests extends UnaryAzureMessageConverterTests<QueueMessageItem> {
 
     @Override
     protected AzureMessageConverter<QueueMessageItem, QueueMessageItem> getConverter() {
