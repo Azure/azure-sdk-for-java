@@ -34,5 +34,9 @@ com.azure.spring.cloud.autoconfigure.trace.sleuth.AzureSleuthAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureEventHubsResourceManagerAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.resourcemanager.AzureStorageQueueResourceManagerAutoConfiguration
+com.azure.spring.cloud.autoconfigure.resourcemanager.AzureStorageQueueResourceManagerAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.configuration.CompatibilityVerifierAutoConfiguration
+
+org.springframework.boot.diagnostics.FailureAnalyzer=\
+com.azure.spring.cloud.autoconfigure.configuration.CompatibilityNotMetFailureAnalyzer
 
