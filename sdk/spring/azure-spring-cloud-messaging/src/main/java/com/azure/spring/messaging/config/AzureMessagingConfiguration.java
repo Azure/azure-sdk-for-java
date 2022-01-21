@@ -17,6 +17,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AzureMessagingConfiguration {
 
+    /**
+     * Bean for the {@link ListenerContainerFactory}.
+     * @param subscribeByGroupOperation the {@link SubscribeByGroupOperation}.
+     * @return the {@link ListenerContainerFactory} bean.
+     */
     @ConditionalOnMissingBean
     @Bean(name = AzureListenerAnnotationBeanPostProcessor.DEFAULT_AZURE_LISTENER_CONTAINER_FACTORY_BEAN_NAME)
     public ListenerContainerFactory<? extends MessageListenerContainer> azureListenerContainerFactory(

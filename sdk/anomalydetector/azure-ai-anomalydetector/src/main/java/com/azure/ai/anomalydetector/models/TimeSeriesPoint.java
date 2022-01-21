@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The TimeSeriesPoint model. */
+/** The definition of input timeseries points. */
 @Fluent
 public final class TimeSeriesPoint {
     /*

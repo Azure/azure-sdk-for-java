@@ -218,7 +218,7 @@ public interface TriggerResource {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a trigger's event subscription status.
+     * @return a trigger's event subscription status along with {@link Response}.
      */
     Response<TriggerSubscriptionOperationStatus> getEventSubscriptionStatusWithResponse(Context context);
 

@@ -17,11 +17,10 @@ public class SystemScanRulesetsClientTests extends PurviewScanningClientTestBase
 
     @Override
     protected void beforeTest() {
-        client = clientSetup(httpPipeline -> new PurviewScanningClientBuilder()
-                .endpoint(getEndpoint())
-                .pipeline(httpPipeline)
-                .buildSystemScanRulesetsClient());
+        PurviewScanningClientBuilder builder = builderSetUp();
+        client = builder.endpoint(getEndpoint()).buildSystemScanRulesetsClient();
     }
+
 
     @Test
     public void testListAll() {
