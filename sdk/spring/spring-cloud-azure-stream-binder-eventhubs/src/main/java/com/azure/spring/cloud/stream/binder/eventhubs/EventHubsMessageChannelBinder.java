@@ -100,7 +100,7 @@ public class EventHubsMessageChannelBinder extends
 
         handler.setBeanFactory(getBeanFactory());
         handler.setSync(producerProperties.getExtension().isSync());
-        handler.setSendTimeout(producerProperties.getExtension().getSendTimeout());
+        handler.setSendTimeout(producerProperties.getExtension().getSendTimeout().toMillis());
         handler.setSendFailureChannel(errorChannel);
 
         String instrumentationId = Instrumentation.buildId(PRODUCER, destination.getName());

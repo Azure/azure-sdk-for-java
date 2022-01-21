@@ -5,6 +5,8 @@ package com.azure.spring.cloud.stream.binder.eventhubs.properties;
 
 import com.azure.spring.eventhubs.core.properties.ProducerProperties;
 
+import java.time.Duration;
+
 /**
  *
  */
@@ -24,7 +26,7 @@ public class EventHubsProducerProperties extends ProducerProperties {
      * <p>
      * Default: 10000
      */
-    private long sendTimeout = 10000;
+    private Duration sendTimeout = Duration.ofMillis(10000);
 
     /**
      * Check whether is sync.
@@ -49,7 +51,7 @@ public class EventHubsProducerProperties extends ProducerProperties {
      *
      * @return sendTimeout the send time out
      */
-    public long getSendTimeout() {
+    public Duration getSendTimeout() {
         return sendTimeout;
     }
 
@@ -58,7 +60,7 @@ public class EventHubsProducerProperties extends ProducerProperties {
      *
      * @param sendTimeout the send time out
      */
-    public void setSendTimeout(long sendTimeout) {
+    public void setSendTimeout(Duration sendTimeout) {
         this.sendTimeout = sendTimeout;
     }
 
