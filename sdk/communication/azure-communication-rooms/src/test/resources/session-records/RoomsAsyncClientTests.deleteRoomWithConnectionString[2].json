@@ -3,76 +3,76 @@
     "Method" : "DELETE",
     "Uri" : "https://REDACTED.ppe.communication.azure.net/rooms/NotExistingRoomID?api-version=2021-04-07",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-rooms/1.0.0-beta.1 (11.0.12; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "61d2af1e-0063-47ef-bf14-836b4490aa58"
+      "User-Agent" : "azsdk-java-azure-communication-rooms/1.0.0-alpha.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f5e6639d-d76a-46b5-875f-e0b4e51f3008"
     },
     "Response" : {
-      "date" : "Thu, 13 Jan 2022 05:35:34 GMT",
-      "x-azure-ref" : "0JbrfYQAAAAB3e/vJ+8+8SYDKFUB4gsi0U0cyRURHRTI4MTUAZjA5YTRjMTMtMjFmMS00OGVjLTljZjctNjY1NDU2ODRiNjQy",
+      "date" : "Fri, 21 Jan 2022 03:47:27 GMT",
+      "x-azure-ref" : "00CzqYQAAAABWAJgGNq1YT6wlNt3EWsCdU0cyRURHRTI4MTgAZjA5YTRjMTMtMjFmMS00OGVjLTljZjctNjY1NDU2ODRiNjQy",
       "api-supported-versions" : "2021-04-07",
       "content-type" : "application/json; charset=utf-8",
       "x-cache" : "CONFIG_NOCACHE",
       "retry-after" : "0",
       "StatusCode" : "500",
       "Body" : "{\"error\":{\"code\":\"InternalServerError\",\"message\":\"Unhandled exception\"}}",
-      "ms-cv" : "sIlxC+Y0uke7IDE191Rbww.0"
+      "ms-cv" : "0s8LobgB3EGh/m6ICpc15w.0"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
     "Uri" : "https://REDACTED.ppe.communication.azure.net/rooms/NotExistingRoomID?api-version=2021-04-07",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-rooms/1.0.0-beta.1 (11.0.12; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "61d2af1e-0063-47ef-bf14-836b4490aa58"
+      "User-Agent" : "azsdk-java-azure-communication-rooms/1.0.0-alpha.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f5e6639d-d76a-46b5-875f-e0b4e51f3008"
     },
     "Response" : {
-      "date" : "Thu, 13 Jan 2022 05:35:35 GMT",
-      "x-azure-ref" : "0J7rfYQAAAABhBFJicpBnRaKXfEHVsw77U0cyRURHRTI4MTUAZjA5YTRjMTMtMjFmMS00OGVjLTljZjctNjY1NDU2ODRiNjQy",
+      "date" : "Fri, 21 Jan 2022 03:47:28 GMT",
+      "x-azure-ref" : "00SzqYQAAAAAgES0WXpQ+Qbrh8Ph3WloDU0cyRURHRTI4MTgAZjA5YTRjMTMtMjFmMS00OGVjLTljZjctNjY1NDU2ODRiNjQy",
       "api-supported-versions" : "2021-04-07",
       "content-type" : "application/json; charset=utf-8",
       "x-cache" : "CONFIG_NOCACHE",
       "retry-after" : "0",
       "StatusCode" : "500",
       "Body" : "{\"error\":{\"code\":\"InternalServerError\",\"message\":\"Unhandled exception\"}}",
-      "ms-cv" : "GzrsdclfS06PKMT6ZNRaQg.0"
+      "ms-cv" : "emNf0lvlVkOqBjIsiqgWFQ.0"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
     "Uri" : "https://REDACTED.ppe.communication.azure.net/rooms/NotExistingRoomID?api-version=2021-04-07",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-rooms/1.0.0-beta.1 (11.0.12; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "61d2af1e-0063-47ef-bf14-836b4490aa58"
+      "User-Agent" : "azsdk-java-azure-communication-rooms/1.0.0-alpha.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f5e6639d-d76a-46b5-875f-e0b4e51f3008"
     },
     "Response" : {
-      "date" : "Thu, 13 Jan 2022 05:35:37 GMT",
-      "x-azure-ref" : "0KbrfYQAAAADpxOc1ZgsdQI9wt1MhzMaVU0cyRURHRTI4MTUAZjA5YTRjMTMtMjFmMS00OGVjLTljZjctNjY1NDU2ODRiNjQy",
+      "date" : "Fri, 21 Jan 2022 03:47:30 GMT",
+      "x-azure-ref" : "00yzqYQAAAAAkJveXAboCTZmYXv3kV4EsU0cyRURHRTI4MTgAZjA5YTRjMTMtMjFmMS00OGVjLTljZjctNjY1NDU2ODRiNjQy",
       "api-supported-versions" : "2021-04-07",
       "content-type" : "application/json; charset=utf-8",
       "x-cache" : "CONFIG_NOCACHE",
       "retry-after" : "0",
       "StatusCode" : "500",
       "Body" : "{\"error\":{\"code\":\"InternalServerError\",\"message\":\"Unhandled exception\"}}",
-      "ms-cv" : "KMLoA4n9gUud+hug9kIudQ.0"
+      "ms-cv" : "O9iPduw+JkaC076RAcOPxA.0"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
     "Uri" : "https://REDACTED.ppe.communication.azure.net/rooms/NotExistingRoomID?api-version=2021-04-07",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-rooms/1.0.0-beta.1 (11.0.12; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "61d2af1e-0063-47ef-bf14-836b4490aa58"
+      "User-Agent" : "azsdk-java-azure-communication-rooms/1.0.0-alpha.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f5e6639d-d76a-46b5-875f-e0b4e51f3008"
     },
     "Response" : {
-      "date" : "Thu, 13 Jan 2022 05:35:40 GMT",
-      "x-azure-ref" : "0LLrfYQAAAAAVpRvJ+zXaQ5dQG33y0n2bU0cyRURHRTI4MTUAZjA5YTRjMTMtMjFmMS00OGVjLTljZjctNjY1NDU2ODRiNjQy",
+      "date" : "Fri, 21 Jan 2022 03:47:34 GMT",
+      "x-azure-ref" : "01izqYQAAAACjbOvOSEUMTLRQi7w0upWFU0cyRURHRTI4MTgAZjA5YTRjMTMtMjFmMS00OGVjLTljZjctNjY1NDU2ODRiNjQy",
       "api-supported-versions" : "2021-04-07",
       "content-type" : "application/json; charset=utf-8",
       "x-cache" : "CONFIG_NOCACHE",
       "retry-after" : "0",
       "StatusCode" : "500",
       "Body" : "{\"error\":{\"code\":\"InternalServerError\",\"message\":\"Unhandled exception\"}}",
-      "ms-cv" : "RauC3cS/BE+d7M7RlSRItw.0"
+      "ms-cv" : "dKrX6KLmMk6bNkMZ8BJAOw.0"
     },
     "Exception" : null
   } ],
