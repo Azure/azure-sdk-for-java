@@ -57,6 +57,20 @@ public class ExponentialBackoff implements RetryStrategy {
         this(DEFAULT_MAX_RETRIES, DEFAULT_BASE_DELAY, DEFAULT_MAX_DELAY);
     }
 
+    public ExponentialBackoff(ExponentialBackoffOptions options) {
+        this(
+            Objects.requireNonNullElse(
+                Objects.requireNonNull(options, "'options' cannot be null.").getMaxRetries(),
+                DEFAULT_MAX_RETRIES),
+            Objects.requireNonNullElse(
+                Objects.requireNonNull(options, "'options' cannot be null.").getBaseDelay(),
+                DEFAULT_BASE_DELAY),
+            Objects.requireNonNullElse(
+                Objects.requireNonNull(options, "'options' cannot be null.").getMaxDelay(),
+                DEFAULT_MAX_DELAY)
+        );
+    }
+
     /**
      * Creates an instance of {@link ExponentialBackoff}.
      *

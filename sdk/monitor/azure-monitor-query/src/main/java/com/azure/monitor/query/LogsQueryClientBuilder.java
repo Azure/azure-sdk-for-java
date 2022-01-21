@@ -12,11 +12,14 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.query.implementation.logs.AzureLogAnalyticsImplBuilder;
+
+import java.util.Objects;
 
 /**
  * Fluent builder for creating instances of {@link LogsQueryClient} and {@link LogsQueryAsyncClient}.
@@ -112,6 +115,19 @@ public final class LogsQueryClientBuilder implements
     public LogsQueryClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         innerLogBuilder.retryPolicy(retryPolicy);
         return this;
+    }
+
+    /**
+     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * @return The updated {@link LogsQueryClientBuilder} object.
+     */
+    @Override
+    public LogsQueryClientBuilder retryOptions(RetryOptions retryOptions) {
+        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+        return retryPolicy(new RetryPolicy(retryOptions));
     }
 
     /**

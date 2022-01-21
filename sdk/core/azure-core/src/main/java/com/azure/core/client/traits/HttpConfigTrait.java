@@ -7,6 +7,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryOptions;
 
 /**
  * The interface for client builders that support an HTTP protocol.
@@ -36,6 +37,13 @@ public interface HttpConfigTrait<TBuilder extends HttpConfigTrait<TBuilder>> {
      * @return the updated TBuilder object.
      */
     TBuilder addPolicy(HttpPipelinePolicy pipelinePolicy);
+
+    /**
+     * Sets the configuration of retry policy.
+     * @param retryOptions the options of retry policy.
+     * @return the updated TBuilder object.
+     */
+    TBuilder retryOptions(RetryOptions retryOptions);
 
     /**
      * Sets the {@link HttpLogOptions} for service requests.
