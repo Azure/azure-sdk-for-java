@@ -48,4 +48,5 @@ private[cosmos] object SparkBridgeInternal {
       .rangeToNormalizedRange(
         container.getNormalizedEffectiveRange(feedRange).block)
   }
+
 }
