@@ -1,5 +1,15 @@
 # Release History
 
+## 4.0.0-beta.4 (Unreleased)
+
+### spring-cloud-azure-resourcemanager
+This section includes changes in the `spring-cloud-azure-resourcemanager` module.
+
+#### Bugs Fixed
+- Fix the bug that the auto-created consumer group takes the name of Event Hub [#26622](https://github.com/Azure/azure-sdk-for-java/pull/26622).
+
+### Other Changes
+
 ## 4.0.0-beta.3 (2022-01-18)
 Please refer to [Spring Cloud Azure Migration Guide for 4.0](https://microsoft.github.io/spring-cloud-azure/4.0.0-beta.3/4.0.0-beta.3/reference/html/appendix.html#migration-guide-for-4-0) to learn how to migrate to version 4.0.
 
