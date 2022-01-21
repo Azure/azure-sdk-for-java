@@ -310,6 +310,15 @@ public class Configuration implements Cloneable {
         return converter.apply(value);
     }
 
+    private void logProperty(String name, String value, boolean canLogValue) {
+        if (logger != null) {
+            logger.atVerbose()
+                .addKeyValue("property", name)
+                .addKeyValue("value", canLogValue ? value : "redacted")
+                .log("Got property value.");
+        }
+    }
+
     /*
      * Attempts to get the value of the configuration from the configuration store, if the value isn't found then it
      * attempts to load it from the runtime parameters then the environment variables.
@@ -323,11 +332,13 @@ public class Configuration implements Cloneable {
     private String getOrLoad(String name) {
         String value = configurations.get(name);
         if (value != null) {
+            logProperty(name, value, false);
             return value;
         }
 
         value = ENVIRONMENT_SOURCE.getValue(name);
         if (value != null) {
+            logProperty(name, value, false);
             configurations.put(name, value);
             return value;
         }
@@ -392,6 +403,7 @@ public class Configuration implements Cloneable {
 
     public <T> T get(ConfigurationProperty<T> property) {
         String valueStr = getWithFallback(property);
+
         if (valueStr == null) {
             return property.getDefaultValue();
         }
@@ -399,16 +411,20 @@ public class Configuration implements Cloneable {
         try {
             return property.getConverter().apply(valueStr);
         } catch (Throwable t) {
-            throw logger.logThrowableAsError(Exceptions.propagate(t));
+            throw logger.atError()
+                .addKeyValue("property", property.getName())
+                .addKeyValue("value", property.canLogValue() ? valueStr : "redacted")
+                .log(Exceptions.propagate(t));
         }
     }
 
-    private String getLocalProperty(String name, String[] aliases) {
+    private String getLocalProperty(String name, String[] aliases, boolean canLogValue) {
         // TODO this can be optimized with smarter index
         String absoluteName = path == null ? name : path + "." + name;
         String value = configurations.get(absoluteName);
 
         if (value != null) {
+            logProperty(absoluteName, value, canLogValue);
             return value;
         }
 
@@ -416,6 +432,7 @@ public class Configuration implements Cloneable {
             absoluteName = path == null ? alias : path + "." + alias;
             value = configurations.get(absoluteName);
             if (value != null) {
+                logProperty(absoluteName, value, canLogValue);
                 return value;
             }
         }
@@ -425,20 +442,25 @@ public class Configuration implements Cloneable {
 
 
     private <T> String getWithFallback(ConfigurationProperty<T> property) {
-        String value = getLocalProperty(property.getName(), property.getAliases());
+        String value = getLocalProperty(property.getName(), property.getAliases(), property.canLogValue());
         if (value != null) {
             return value;
         }
 
-        if (!property.isLocal() && fallback != null) {
-            value = fallback.getLocalProperty(property.getName(), property.getAliases());
+        if (property.isGlobal() && fallback != null) {
+            value = fallback.getLocalProperty(property.getName(), property.getAliases(), property.canLogValue());
             if (value != null) {
                 return value;
             }
         }
 
-        if (property.getEnvironmentVariableName() != null) {
-            return get(property.getEnvironmentVariableName());
+        if (!CoreUtils.isNullOrEmpty(property.getEnvironmentVariables())) {
+            for (String name : property.getEnvironmentVariables()) {
+                value = get(name);
+                if (value != null) {
+                    return value;
+                }
+            }
         }
 
         return null;

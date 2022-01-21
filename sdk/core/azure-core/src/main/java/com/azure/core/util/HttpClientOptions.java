@@ -47,13 +47,35 @@ public final class HttpClientOptions extends ClientOptions {
             Duration.ofSeconds(60), LOGGER);
     }
 
-    private static final ConfigurationProperty<String> APPLICATION_ID_PROP = ConfigurationProperty.stringProperty("http-client.application-id", null, null, LOGGER, "client.application-id");
-    private static final ConfigurationProperty<Duration> CONNECT_TIMEOUT_PROP = ConfigurationProperty.durationProperty("http-client.connect-timeout", null, DEFAULT_CONNECT_TIMEOUT, LOGGER);
-    private static final ConfigurationProperty<Duration> WRITE_TIMEOUT_PROP = ConfigurationProperty.durationProperty("http-client.write-timeout", null, DEFAULT_WRITE_TIMEOUT, LOGGER);
-    private static final ConfigurationProperty<Duration> RESPONSE_TIMEOUT_PROP = ConfigurationProperty.durationProperty("http-client.response-timeout", null, DEFAULT_RESPONSE_TIMEOUT, LOGGER);
-    private static final ConfigurationProperty<Duration> READ_TIMEOUT_PROP = ConfigurationProperty.durationProperty("http-client.read-timeout", null, DEFAULT_READ_TIMEOUT, LOGGER);
-    private static final ConfigurationProperty<Duration> CONNECTION_IDLE_TIMEOUT_PROP = ConfigurationProperty.durationProperty("http-client.connection-idle-timeout", null, DEFAULT_CONNECTION_IDLE_TIMEOUT, LOGGER);
-    private static final ConfigurationProperty<Integer> CONNECTION_POOL_SIZE_PROP = ConfigurationProperty.integerProperty("http-client.maximum-connection-pool-size", null, null, LOGGER);
+    private static final ConfigurationProperty<String> APPLICATION_ID_PROP = ConfigurationProperty.stringPropertyBuilder("http-client.application-id")
+        .aliases("client.application-id")
+        .global(true)
+        .canLogValue(true)
+        .build();
+
+    private static final ConfigurationProperty<Duration> CONNECT_TIMEOUT_PROP = ConfigurationProperty.durationPropertyBuilder("http-client.connect-timeout")
+        .defaultValue(DEFAULT_CONNECT_TIMEOUT)
+        .global(true)
+        .build();
+    private static final ConfigurationProperty<Duration> WRITE_TIMEOUT_PROP = ConfigurationProperty.durationPropertyBuilder("http-client.write-timeout")
+        .defaultValue(DEFAULT_WRITE_TIMEOUT)
+        .global(true)
+        .build();
+    private static final ConfigurationProperty<Duration> RESPONSE_TIMEOUT_PROP = ConfigurationProperty.durationPropertyBuilder("http-client.response-timeout")
+        .defaultValue(DEFAULT_RESPONSE_TIMEOUT)
+        .global(true)
+        .build();
+    private static final ConfigurationProperty<Duration> READ_TIMEOUT_PROP = ConfigurationProperty.durationPropertyBuilder("http-client.read-timeout")
+        .defaultValue(DEFAULT_READ_TIMEOUT)
+        .global(true)
+        .build();
+    private static final ConfigurationProperty<Duration> CONNECTION_IDLE_TIMEOUT_PROP = ConfigurationProperty.durationPropertyBuilder("http-client.connection-idle-timeout")
+        .defaultValue(DEFAULT_CONNECTION_IDLE_TIMEOUT)
+        .global(true)
+        .build();
+    private static final ConfigurationProperty<Integer> CONNECTION_POOL_SIZE_PROP = ConfigurationProperty.integerPropertyBuilder("http-client.maximum-connection-pool-size")
+        .global(true)
+        .build();
 
     private ProxyOptions proxyOptions;
     private Configuration configuration;
@@ -99,11 +121,16 @@ public final class HttpClientOptions extends ClientOptions {
     }
 
     public static ClientOptions fromConfiguration(Configuration configuration, ClientOptions defaultOptions) {
-        if (!ConfigurationHelpers.containsAny(configuration, APPLICATION_ID_PROP, CONNECT_TIMEOUT_PROP, WRITE_TIMEOUT_PROP, RESPONSE_TIMEOUT_PROP, CONNECTION_IDLE_TIMEOUT_PROP, CONNECTION_POOL_SIZE_PROP)) {
+        if (configuration.contains(APPLICATION_ID_PROP) ||
+            configuration.contains(CONNECT_TIMEOUT_PROP) ||
+            configuration.contains(WRITE_TIMEOUT_PROP) ||
+            configuration.contains(RESPONSE_TIMEOUT_PROP) ||
+            configuration.contains(CONNECTION_IDLE_TIMEOUT_PROP) ||
+            configuration.contains(CONNECTION_POOL_SIZE_PROP)) {
+            return new HttpClientOptions().setConfiguration(configuration);
+        } else {
             return defaultOptions;
         }
-
-        return new HttpClientOptions().setConfiguration(configuration);
     }
 
     /**

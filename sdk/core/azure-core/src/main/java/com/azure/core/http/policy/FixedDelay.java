@@ -4,7 +4,6 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.util.Configuration;
-import com.azure.core.util.ConfigurationHelpers;
 import com.azure.core.util.ConfigurationProperty;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -18,8 +17,14 @@ import static com.azure.core.util.Configuration.NONE;
  */
 public class FixedDelay implements RetryStrategy {
     private static final ClientLogger LOGGER = new ClientLogger(FixedDelay.class);;
-    private final static ConfigurationProperty<Integer> MAX_RETRIES_CONFIG = ConfigurationProperty.integerProperty("http-retry.fixed.max-retries",  null, null, LOGGER);
-    private final static ConfigurationProperty<Duration> RETRY_DELAY_CONFIG = ConfigurationProperty.durationProperty("http-retry.fixed.delay", null, null, LOGGER);
+    private final static ConfigurationProperty<Integer> MAX_RETRIES_CONFIG = ConfigurationProperty.integerPropertyBuilder("http-retry.fixed.max-retries")
+        .global(true)
+        .required(true)
+        .build();
+    private final static ConfigurationProperty<Duration> RETRY_DELAY_CONFIG = ConfigurationProperty.durationPropertyBuilder("http-retry.fixed.delay")
+        .global(true)
+        .required(true)
+        .build();
 
     private final int maxRetries;
     private final Duration delay;
@@ -51,10 +56,6 @@ public class FixedDelay implements RetryStrategy {
     static RetryStrategy fromConfiguration(Configuration configuration, RetryStrategy defaultStrategy) {
         if (configuration == null || configuration == NONE) {
             return defaultStrategy;
-        }
-
-        if(!ConfigurationHelpers.containsAll(configuration, MAX_RETRIES_CONFIG, RETRY_DELAY_CONFIG)) {
-            // TODO(configuration) log error and fail
         }
 
         return new FixedDelay(configuration.get(MAX_RETRIES_CONFIG), configuration.get(RETRY_DELAY_CONFIG));

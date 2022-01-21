@@ -9,20 +9,15 @@ public class ConfigurationBuilder {
 
     private final static ConcurrentMap<String, String> EMPTY_MAP = new ConcurrentHashMap<>();
 
-    private ConfigurationSource source;
+    private final ConfigurationSource source;
     private final ClientLogger logger;
     private String rootPath;
-    private String defaultsPath;
+    private Configuration defaults;
     private String clientPath;
 
-    public ConfigurationBuilder() {
-        this.logger = new ClientLogger(Configuration.class);
-    }
-
-    // Q: should we move it to builder ctor since it mandatory?
-    public ConfigurationBuilder source(ConfigurationSource source) {
+    public ConfigurationBuilder(ConfigurationSource source) {
         this.source = source;
-        return this;
+        this.logger = new ClientLogger(Configuration.class);
     }
 
     public ConfigurationBuilder root(String rootPath) {
@@ -31,7 +26,8 @@ public class ConfigurationBuilder {
     }
 
     public ConfigurationBuilder defaultsSection(String defaultsPath) {
-        this.defaultsPath = defaultsPath;
+        String absoluteDefaultsPath = getAbsolutePath(rootPath, defaultsPath);
+        defaults = new Configuration(absoluteDefaultsPath, readConfigurations(this.source, absoluteDefaultsPath), null);
         return this;
     }
 
@@ -53,9 +49,9 @@ public class ConfigurationBuilder {
     }
 
     public Configuration build() {
-        // we can cache defaults across builders by path for better perf
-        String absoluteDefaultsPath = getAbsolutePath(rootPath, defaultsPath);
-        Configuration defaults = new Configuration(absoluteDefaultsPath, readConfigurations(this.source, absoluteDefaultsPath), null);
+        if (defaults == null) {
+            defaults = new Configuration(rootPath, readConfigurations(this.source, rootPath), null);
+        }
 
         String absoluteClientPath = getAbsolutePath(rootPath, clientPath);
         return new Configuration(absoluteClientPath, readConfigurations(this.source, absoluteClientPath), defaults);

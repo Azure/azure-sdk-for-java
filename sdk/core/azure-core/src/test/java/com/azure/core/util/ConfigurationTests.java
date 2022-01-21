@@ -4,15 +4,11 @@
 package com.azure.core.util;
 
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_TRACING_DISABLED;
@@ -31,12 +27,8 @@ public class ConfigurationTests {
     private static final String UNEXPECTED_VALUE = "notMyConfigurationValueDef456";
     private static final String DEFAULT_VALUE = "theDefaultValueGhi789";
 
-    private static final ClientLogger LOGGER = new ClientLogger(ConfigurationTests.class);
-
     private Configuration getTestConfiguration(String... props) {
-        return new ConfigurationBuilder()
-            .source(new TestConfigurationSource(props))
-            .build();
+        return new ConfigurationBuilder(new TestConfigurationSource(props)).build();
     }
 
     /**
@@ -148,18 +140,14 @@ public class ConfigurationTests {
     @Test
     public void getProperty() {
         ConfigurationSource source = new TestConfigurationSource("appconfiguration.prop", "local-prop-value");
-        Configuration appconfigSection = new ConfigurationBuilder()
-            .source(source)
-            .clientSection("appconfiguration")
-            .build();
+        ConfigurationBuilder configBuilder = new ConfigurationBuilder(source);
 
-        Configuration root = new ConfigurationBuilder()
-            .source(source)
-            .build();
+        Configuration root = configBuilder.build();
+        Configuration appconfigSection = configBuilder.clientSection("appconfiguration").build();
 
-        ConfigurationProperty<String> localProp = ConfigurationProperty.stringLocalProperty("prop", null, LOGGER);
-        ConfigurationProperty<String> localPropFullName = ConfigurationProperty.stringLocalProperty("appconfiguration.prop", null, LOGGER);
-        ConfigurationProperty<String> globalProp = ConfigurationProperty.stringProperty("prop", null, null, LOGGER);
+        ConfigurationProperty<String> localProp = ConfigurationProperty.stringPropertyBuilder("prop").build();
+        ConfigurationProperty<String> localPropFullName = ConfigurationProperty.stringPropertyBuilder("appconfiguration.prop").build();
+        ConfigurationProperty<String> globalProp = ConfigurationProperty.stringPropertyBuilder("prop").global(true).build();
 
         assertNull(root.get(localProp));
         assertEquals("local-prop-value", appconfigSection.get(localProp));
@@ -174,19 +162,14 @@ public class ConfigurationTests {
     @Test
     public void getMissingProperty() {
         ConfigurationSource source = new TestConfigurationSource("az.appconfiguration.prop", "local-prop-value");
-        Configuration appconfigSection = new ConfigurationBuilder()
-            .root("az")
-            .source(source)
-            .clientSection("appconfiguration")
-            .build();
+        ConfigurationBuilder configBuilder = new ConfigurationBuilder(source)
+            .root("az");
 
-        Configuration root = new ConfigurationBuilder()
-            .root("az")
-            .source(source)
-            .build();
+        Configuration root = configBuilder.build();
+        Configuration appconfigSection = configBuilder.clientSection("appconfiguration").build();
 
-        ConfigurationProperty<String> localProp = ConfigurationProperty.stringLocalProperty("foo", null, LOGGER);
-        ConfigurationProperty<String> localPropFullName = ConfigurationProperty.stringLocalProperty("storage.prop", null, LOGGER);
+        ConfigurationProperty<String> localProp = ConfigurationProperty.stringPropertyBuilder("foo").build();
+        ConfigurationProperty<String> localPropFullName = ConfigurationProperty.stringPropertyBuilder("storage.prop").build();
 
         assertNull(root.get(localProp));
         assertNull(root.get(localPropFullName));
@@ -198,20 +181,17 @@ public class ConfigurationTests {
     @Test
     public void localPropertyGoesFirst() {
         ConfigurationSource source = new TestConfigurationSource("az.foo.prop", "local", "az.prop", "global");
-        Configuration appconfigSection = new ConfigurationBuilder()
-            .root("az")
-            .source(source)
+        ConfigurationBuilder configBuilder = new ConfigurationBuilder(source)
+            .root("az");
+
+        Configuration root = configBuilder.build();
+        Configuration appconfigSection = configBuilder
             .clientSection("foo")
             .build();
 
-        Configuration root = new ConfigurationBuilder()
-            .root("az")
-            .source(source)
-            .build();
-
-        ConfigurationProperty<String> localProp = ConfigurationProperty.stringLocalProperty("prop", null, LOGGER);
-        ConfigurationProperty<String> localPropFullName = ConfigurationProperty.stringLocalProperty("foo.prop", null, LOGGER);
-        ConfigurationProperty<String> globalProp = ConfigurationProperty.stringProperty("prop", null, null, LOGGER);
+        ConfigurationProperty<String> localProp = ConfigurationProperty.stringPropertyBuilder("prop").build();
+        ConfigurationProperty<String> localPropFullName = ConfigurationProperty.stringPropertyBuilder("foo.prop").build();
+        ConfigurationProperty<String> globalProp = ConfigurationProperty.stringPropertyBuilder("prop").build();
 
         assertEquals("global", root.get(localProp));
         assertEquals("local", root.get(localPropFullName));
@@ -225,19 +205,17 @@ public class ConfigurationTests {
     @Test
     public void getGlobalProperty() {
         ConfigurationSource source = new TestConfigurationSource("az.storage.prop", "local", "az.prop", "global");
-        Configuration appconfigSection = new ConfigurationBuilder()
-            .root("az")
-            .source(source)
+
+        ConfigurationBuilder configBuilder = new ConfigurationBuilder(source)
+            .root("az");
+
+        Configuration root = configBuilder.build();
+        Configuration appconfigSection = configBuilder
             .clientSection("appconfiguration")
             .build();
 
-        Configuration root = new ConfigurationBuilder()
-            .root("az")
-            .source(source)
-            .build();
-
-        ConfigurationProperty<String> globalProp = ConfigurationProperty.stringProperty("prop", null, null, LOGGER);
-        ConfigurationProperty<String> globalPropFullName = ConfigurationProperty.stringProperty("appconfiguration.prop", null, null, LOGGER);
+        ConfigurationProperty<String> globalProp = ConfigurationProperty.stringPropertyBuilder("prop").global(true).build();
+        ConfigurationProperty<String> globalPropFullName = ConfigurationProperty.stringPropertyBuilder("appconfiguration.prop").global(true).build();
 
         assertEquals("global", root.get(globalProp));
         assertNull(root.get(globalPropFullName));
@@ -248,23 +226,18 @@ public class ConfigurationTests {
 
     @Test
     public void multipleNestedSections() {
-        ConfigurationSource source = new TestConfigurationSource()
-            .put("http-retry.mode", "fixed")
-            .put("appconfiguration.http-retry.fixed.max-retries", "1")
-            .put("appconfiguration.http-retry.fixed.delay", "1000");
+        ConfigurationSource source = new TestConfigurationSource(
+            "http-retry.mode", "fixed",
+            "appconfiguration.http-retry.fixed.max-retries", "1",
+            "appconfiguration.http-retry.fixed.delay", "1000");
 
-        Configuration appconfigSection = new ConfigurationBuilder()
-            .source(source)
-            .clientSection("appconfiguration")
-            .build();
+        ConfigurationBuilder configBuilder = new ConfigurationBuilder(source);
+        Configuration root = configBuilder.build();
+        Configuration appconfigSection = configBuilder.clientSection("appconfiguration").build();
 
-        Configuration root = new ConfigurationBuilder()
-            .source(source)
-            .build();
-
-        ConfigurationProperty<String> globalProp = ConfigurationProperty.stringProperty("http-retry.mode", null, null, LOGGER);
-        ConfigurationProperty<String> globalMissingProp = ConfigurationProperty.stringProperty("mode", null, null, LOGGER);
-        ConfigurationProperty<String> globalMaxTries = ConfigurationProperty.stringProperty("http-retry.fixed.max-retries", null, null, LOGGER);
+        ConfigurationProperty<String> globalProp = ConfigurationProperty.stringPropertyBuilder("http-retry.mode").global(true).build();
+        ConfigurationProperty<String> globalMissingProp = ConfigurationProperty.stringPropertyBuilder("mode").global(true).build();
+        ConfigurationProperty<String> globalMaxTries = ConfigurationProperty.stringPropertyBuilder("http-retry.fixed.max-retries").global(true).build();
 
         assertNull(root.get(globalMissingProp));
         assertEquals("fixed", root.get(globalProp));
@@ -277,38 +250,5 @@ public class ConfigurationTests {
 
         // todo : should throw
         assertThrows(Throwable.class, () -> RetryPolicy.fromConfiguration(root, null));
-    }
-
-    private static class TestConfigurationSource implements ConfigurationSource {
-        private Map<String, String> testData;
-
-        public TestConfigurationSource(Map<String, String> testData) {
-            this.testData = testData;
-        }
-
-        public TestConfigurationSource(String... testData) {
-            this.testData = new HashMap<>();
-            for (int i = 0; i < testData.length; i +=2) {
-                this.testData.put(testData[i], testData[i + 1]);
-            }
-        }
-
-        @Override
-        public Iterable<String> getValues(String prefix) {
-            if (prefix == null) {
-                return testData.keySet();
-            }
-            return testData.keySet().stream().filter(k -> k.startsWith(prefix + ".")).collect(Collectors.toList());
-        }
-
-        @Override
-        public String getValue(String propertyName) {
-            return testData.get(propertyName);
-        }
-
-        public TestConfigurationSource put(String key, String value) {
-            testData.put(key, value);
-            return this;
-        }
     }
 }

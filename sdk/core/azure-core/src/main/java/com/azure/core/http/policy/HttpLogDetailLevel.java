@@ -5,7 +5,9 @@ package com.azure.core.http.policy;
 
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationProperty;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.ConfigurationPropertyBuilder;
+
+import java.util.function.Function;
 
 /**
  * The level of detail to log on HTTP messages.
@@ -44,10 +46,8 @@ public enum HttpLogDetailLevel {
     static final String BODY_AND_HEADERS_VALUE = "body_and_headers";
     static final String BODYANDHEADERS_VALUE = "bodyandheaders";
 
-    private static final ConfigurationProperty.ValueProcessor<HttpLogDetailLevel> LOG_LEVEL_CONVERTER = new ConfigurationProperty.ValueProcessor<HttpLogDetailLevel>() {
-        @Override
-        public HttpLogDetailLevel processAndConvert(String value, HttpLogDetailLevel defaultValue, String propertyName, ClientLogger logger) {
-            HttpLogDetailLevel logDetailLevel = defaultValue;
+    private static final Function<String, HttpLogDetailLevel> LOG_LEVEL_CONVERTER = (value) -> {
+            HttpLogDetailLevel logDetailLevel;
             if (BASIC_VALUE.equalsIgnoreCase(value)) {
                 logDetailLevel = BASIC;
             } else if (HEADERS_VALUE.equalsIgnoreCase(value)) {
@@ -57,14 +57,19 @@ public enum HttpLogDetailLevel {
             } else if (BODY_AND_HEADERS_VALUE.equalsIgnoreCase(value)
                 || BODYANDHEADERS_VALUE.equalsIgnoreCase(value)) {
                 logDetailLevel = BODY_AND_HEADERS;
+            } else {
+                logDetailLevel = NONE;
             }
 
             return logDetailLevel;
-        }
-    };
+        };
 
-    static final ConfigurationProperty<HttpLogDetailLevel> LOG_LEVEL_PROP = new ConfigurationProperty<>("http.logging.level", LOG_LEVEL_CONVERTER, false,
-        Configuration.PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL, NONE, null, new ClientLogger(HttpLogDetailLevel.class));
+    static final ConfigurationProperty<HttpLogDetailLevel> LOG_LEVEL_PROP = new ConfigurationPropertyBuilder<>("http.logging.level", LOG_LEVEL_CONVERTER)
+        .defaultValue(NONE)
+        .canLogValue(true)
+        .global(true)
+        .environmentVariables(Configuration.PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL)
+        .build();
 
     static final HttpLogDetailLevel ENVIRONMENT_HTTP_LOG_DETAIL_LEVEL = Configuration.getGlobalConfiguration().get(LOG_LEVEL_PROP);
 

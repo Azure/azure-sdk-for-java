@@ -4,7 +4,6 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.util.Configuration;
-import com.azure.core.util.ConfigurationHelpers;
 import com.azure.core.util.ConfigurationProperty;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -48,9 +47,21 @@ public class ExponentialBackoff implements RetryStrategy {
         DEFAULT_MAX_RETRIES = defaultMaxRetries;
     }
 
-    private final static ConfigurationProperty<Integer> MAX_RETRIES_CONFIG = ConfigurationProperty.integerProperty("http-retry.exponential.max-retries",  PROPERTY_AZURE_REQUEST_RETRY_COUNT, DEFAULT_MAX_RETRIES, LOGGER);
-    private final static ConfigurationProperty<Duration> BASE_DELAY_CONFIG = ConfigurationProperty.durationProperty("http-retry.exponential.base-delay", null, DEFAULT_BASE_DELAY, LOGGER);
-    private final static ConfigurationProperty<Duration> MAX_DELAY_CONFIG = ConfigurationProperty.durationProperty("http-retry.exponential.max-delay", null, DEFAULT_MAX_DELAY, LOGGER);
+    private final static ConfigurationProperty<Integer> MAX_RETRIES_CONFIG = ConfigurationProperty.integerPropertyBuilder("http-retry.exponential.max-retries")
+            .defaultValue(DEFAULT_MAX_RETRIES)
+            .environmentVariables(PROPERTY_AZURE_REQUEST_RETRY_COUNT)
+            .global(true)
+            .build();
+
+    private final static ConfigurationProperty<Duration> BASE_DELAY_CONFIG = ConfigurationProperty.durationPropertyBuilder("http-retry.exponential.base-delay")
+        .defaultValue(DEFAULT_BASE_DELAY)
+        .global(true)
+        .build();
+
+    private final static ConfigurationProperty<Duration> MAX_DELAY_CONFIG = ConfigurationProperty.durationPropertyBuilder("http-retry.exponential.max-delay")
+        .defaultValue(DEFAULT_MAX_DELAY)
+        .global(true)
+        .build();
 
     private final int maxRetries;
     private final long baseDelayNanos;
@@ -70,15 +81,13 @@ public class ExponentialBackoff implements RetryStrategy {
      * Caller must only call this method if they are sure that user specified retry policy options
      */
     static RetryStrategy fromConfiguration(Configuration configuration, RetryStrategy defaultStrategy) {
-        if (configuration == null) {
-            return defaultStrategy;
+        if (configuration.contains(MAX_RETRIES_CONFIG) ||
+            configuration.contains(BASE_DELAY_CONFIG) ||
+            configuration.contains(MAX_DELAY_CONFIG)) {
+            return new ExponentialBackoff(configuration.get(MAX_RETRIES_CONFIG), configuration.get(BASE_DELAY_CONFIG), configuration.get(MAX_DELAY_CONFIG));
         }
 
-        if (!ConfigurationHelpers.containsAny(configuration, MAX_RETRIES_CONFIG, BASE_DELAY_CONFIG, MAX_DELAY_CONFIG)) {
-            return defaultStrategy;
-        }
-
-        return new ExponentialBackoff(configuration.get(MAX_RETRIES_CONFIG), configuration.get(BASE_DELAY_CONFIG), configuration.get(MAX_DELAY_CONFIG));
+        return defaultStrategy;
     }
 
     /**

@@ -393,8 +393,8 @@ public final class ConfigurationClientBuilder {
         return this;
     }
 
-    private static final ConfigurationProperty<String> ENDPOINT_PROP = ConfigurationProperty.stringLocalProperty("endpoint", null, LOGGER);
-    private static final ConfigurationProperty<String> CONNECTION_STRING_PROP = ConfigurationProperty.stringLocalProperty("connection-string", null, LOGGER);
+    private static final ConfigurationProperty<String> ENDPOINT_PROP = ConfigurationProperty.stringPropertyBuilder("endpoint").build();
+    private static final ConfigurationProperty<String> CONNECTION_STRING_PROP = ConfigurationProperty.stringPropertyBuilder("connection-string").build();
 
     /**
      * Sets the configuration store that is used during construction of the service client.
@@ -443,7 +443,6 @@ public final class ConfigurationClientBuilder {
             }
         }
 
-        // TODO(configuration) credential
         return this;
     }
 

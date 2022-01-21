@@ -5,7 +5,6 @@ package com.azure.core.http.policy;
 
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.ConfigurationHelpers;
 import com.azure.core.util.ConfigurationProperty;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -61,15 +60,15 @@ public class HttpLogOptions {
         "User-Agent"
     );
 
-    private static final ConfigurationProperty<String> APPLICATION_ID_PROP = ConfigurationProperty.stringProperty("http.logging.application-id", null, null, LOGGER);
-    private static final ConfigurationProperty<Boolean> PRETTY_PRINT_BODY_PROP = ConfigurationProperty.booleanProperty("http.logging.pretty-print-body", null, false, LOGGER);
+    private static final ConfigurationProperty<String> APPLICATION_ID_PROP = ConfigurationProperty.stringPropertyBuilder("http.logging.application-id").canLogValue(true).build();
+    private static final ConfigurationProperty<Boolean> PRETTY_PRINT_BODY_PROP = ConfigurationProperty.booleanPropertyBuilder("http.logging.pretty-print-body").build();
 
     public static HttpLogOptions fromConfiguration(Configuration configuration, HttpLogOptions defaultOptions) {
         if (configuration == Configuration.NONE || configuration == null) {
             return defaultOptions;
         }
 
-        if (!ConfigurationHelpers.containsAny(configuration, APPLICATION_ID_PROP, PRETTY_PRINT_BODY_PROP)) {
+        if (!configuration.contains(APPLICATION_ID_PROP) && !configuration.contains(PRETTY_PRINT_BODY_PROP)) {
             return defaultOptions;
         }
 

@@ -10,9 +10,8 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.ImplUtils;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.ConfigurationHelpers;
 import com.azure.core.util.ConfigurationProperty;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.util.ConfigurationPropertyBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -22,9 +21,9 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static com.azure.core.util.Configuration.NONE;
 import static com.azure.core.util.CoreUtils.isNullOrEmpty;
 
 /**
@@ -38,33 +37,18 @@ public class RetryPolicy implements HttpPipelinePolicy {
     private final String retryAfterHeader;
     private final ChronoUnit retryAfterTimeUnit;
 
-    private final static ConfigurationProperty<String> RETRY_MODE_CONFIG = ConfigurationProperty.stringProperty("http-retry.mode", null, "exponential", LOGGER);
-    private final static ConfigurationProperty<String> RETRY_AFTER_HEADER_CONFIG = ConfigurationProperty.stringProperty("http-retry.retry-after-header", null, null, LOGGER);
+    private final static ConfigurationProperty<String> RETRY_MODE_CONFIG = ConfigurationProperty.stringPropertyBuilder("http-retry.mode")
+                                            .global(true)
+                                            .canLogValue(true)
+                                            .build();
 
-    private static final ConfigurationProperty.ValueProcessor<ChronoUnit> CHRONOUNIT_CONVERTER = new ConfigurationProperty.ValueProcessor<ChronoUnit>() {
-        @Override
-        public ChronoUnit processAndConvert(String value, ChronoUnit defaultValue, String propertyName, ClientLogger logger) {
-            logger.atVerbose()
-                .addKeyValue("property", propertyName)
-                .addKeyValue("value", value)
-                .log("Read property.");
+    private final static ConfigurationProperty<String> RETRY_AFTER_HEADER_CONFIG = ConfigurationProperty.stringPropertyBuilder("http-retry.retry-after-header")
+        .global(true)
+        .canLogValue(true)
+        .build();
 
-            if (CoreUtils.isNullOrEmpty(value)) {
-                return defaultValue;
-            }
-
-            try {
-                return ChronoUnit.valueOf(value);
-            } catch (IllegalArgumentException ex) {
-                throw logger.atError()
-                    .addKeyValue("property", propertyName)
-                    .addKeyValue("value", value)
-                    .log(ex);
-            }
-        }
-    };
-
-    private final static ConfigurationProperty<ChronoUnit> RETRY_AFTER_TIME_UNIT_CONFIG = new ConfigurationProperty<>("http-retry.retry-after-time-unit", CHRONOUNIT_CONVERTER, false, null, null, null, LOGGER);
+    private static final Function<String, ChronoUnit> CHRONOUNIT_CONVERTER = (value) -> ChronoUnit.valueOf(value);
+    private final static ConfigurationProperty<ChronoUnit> RETRY_AFTER_TIME_UNIT_CONFIG = new ConfigurationPropertyBuilder<>("http-retry.retry-after-time-unit", CHRONOUNIT_CONVERTER).build();
 
     /**
      * Creates {@link RetryPolicy} using {@link ExponentialBackoff#ExponentialBackoff()} as the {@link RetryStrategy}.
@@ -123,21 +107,23 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     public static RetryPolicy fromConfiguration(Configuration configuration, RetryPolicy defaultPolicy) {
-        if (configuration == null || configuration == NONE) {
-            return defaultPolicy;
-        }
-
-        if (!ConfigurationHelpers.containsAny(configuration, RETRY_MODE_CONFIG, RETRY_AFTER_HEADER_CONFIG, RETRY_AFTER_TIME_UNIT_CONFIG)) {
-            return defaultPolicy;
-        }
-
         String retryMode = configuration.get(RETRY_MODE_CONFIG);
         RetryStrategy retryStrategy;
         if ("fixed".equals(retryMode)) {
             retryStrategy = FixedDelay.fromConfiguration(configuration, null);
-            // throw if null
+        } else if ("experimental".equals(retryMode)) {
+            retryStrategy = ExponentialBackoff.fromConfiguration(configuration, null);
+
+            if (retryStrategy == null) {
+                if (!(configuration.contains(RETRY_MODE_CONFIG) ||
+                    configuration.contains(RETRY_AFTER_HEADER_CONFIG) ||
+                    configuration.contains(RETRY_AFTER_TIME_UNIT_CONFIG))) {
+                    return defaultPolicy;
+                }
+                retryStrategy = new ExponentialBackoff();
+            }
         } else {
-            retryStrategy = ExponentialBackoff.fromConfiguration(configuration, new ExponentialBackoff());
+            throw new IllegalArgumentException("Unexpected retry mode: " + retryMode);
         }
 
         return new RetryPolicy(retryStrategy, configuration.get(RETRY_AFTER_HEADER_CONFIG), configuration.get(RETRY_AFTER_TIME_UNIT_CONFIG));
