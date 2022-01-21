@@ -14,6 +14,7 @@ trigger:
       - sdk/cosmos/azure-cosmos-dotnet-benchmark/
       - sdk/cosmos/azure-cosmos-encryption/
       - sdk/cosmos/azure-cosmos-examples/
+      - sdk/cosmos/azure-cosmos-spark_3_2-12/
       - sdk/cosmos/azure-cosmos-spark_3-1_2-12/
       - sdk/cosmos/azure-cosmos-spark_3-2_2-12/
       - sdk/cosmos/azure-spring-data-cosmos/
@@ -46,6 +47,7 @@ pr:
       - sdk/cosmos/azure-cosmos-dotnet-benchmark/
       - sdk/cosmos/azure-cosmos-encryption/
       - sdk/cosmos/azure-cosmos-examples/
+      - sdk/cosmos/azure-cosmos-spark_3_2-12/
       - sdk/cosmos/azure-cosmos-spark_3-1_2-12/
       - sdk/cosmos/azure-cosmos-spark_3-2_2-12/
       - sdk/cosmos/azure-spring-data-cosmos/

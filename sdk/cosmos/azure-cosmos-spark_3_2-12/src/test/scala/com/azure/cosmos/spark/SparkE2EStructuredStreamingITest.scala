@@ -25,6 +25,7 @@ class SparkE2EStructuredStreamingITest
 
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
+  /*
   "spark change feed micro batch (incremental)" can "be used to copy data to another container" in {
     val processedRecordCount = new AtomicLong()
     var spark = this.createSparkSession(processedRecordCount)
@@ -244,7 +245,7 @@ class SparkE2EStructuredStreamingITest
     sourceCount shouldEqual targetCount
 
     targetContainer.delete()
-  }
+  }*/
 
   private[this] def ingestTestDocument
   (
