@@ -109,7 +109,7 @@ def create_from_source_pom(project_list: str, set_pipeline_variable: str, set_sk
     add_source_projects(source_projects, dependent_modules, projects)
     add_source_projects(source_projects, dependency_modules, projects)
     
-    modules = list(set(sorted([p.module_path for p in source_projects])))
+    modules = sorted(list(set([p.module_path for p in source_projects])))
     with open(file=client_from_source_pom_path, mode='w') as fromSourcePom:
         fromSourcePom.write(pom_file_start)
 
