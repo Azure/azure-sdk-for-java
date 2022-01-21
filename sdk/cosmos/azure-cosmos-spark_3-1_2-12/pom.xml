@@ -14,10 +14,20 @@
   <artifactId>azure-cosmos-spark_3-1_2-12</artifactId>
   <version>4.6.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12;current} -->
   <packaging>jar</packaging>
-  <name>OLTP Spark Connector for Azure Cosmos DB SQL API</name>
-  <description>OLTP Spark Connector for Azure Cosmos DB SQL API</description>
-  <url>https://github.com/Azure/azure-sdk-for-java/tree/feature/cosmos/spark30/sdk/cosmos/azure-cosmos-spark_3-1_2-12</url>
-
+  <url>https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-cosmos-spark_3-1_2-12</url>
+  <scm>
+    <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git/sdk/cosmos/azure-cosmos-spark_3-1_2-12</connection>
+    <developerConnection></developerConnection>
+    <url>https://github.com/Azure/azure-sdk-for-java/sdk/cosmos/azure-cosmos-spark_3-1_2-12</url>
+  </scm>
+  <developers>
+    <developer>
+      <id>microsoft</id>
+      <name>Microsoft</name>
+    </developer>
+  </developers>
+  <name>OLTP Spark 3.1 Connector for Azure Cosmos DB SQL API</name>
+  <description>OLTP Spark 3.1 Connector for Azure Cosmos DB SQL API</description>
   <properties>
     <maven.build.timestamp.format>MM-dd-HH-mm-ss</maven.build.timestamp.format>
     <jacoco.min.branchcoverage>0.17</jacoco.min.branchcoverage>
@@ -30,29 +40,14 @@
       <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]>
     </legal>
     <codesnippet.skip>true</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
+    <revapi.skip>true</revapi.skip>
   </properties>
-
-  <developers>
-    <developer>
-      <id>microsoft</id>
-      <name>Microsoft</name>
-    </developer>
-  </developers>
-
 
   <dependencies>
     <dependency>
       <groupId>org.scala-lang</groupId>
       <artifactId>scala-library</artifactId>
       <version>2.12.10</version> <!-- {x-version-update;cosmos_org.scala-lang:scala-library;external_dependency} -->
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.spark</groupId>
-      <artifactId>spark-sql_2.12</artifactId>
-      <version>3.1.1</version> <!-- {x-version-update;cosmos_org.apache.spark:spark-sql_2.12;external_dependency} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -64,7 +59,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.24.0</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.26.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>org.scala-lang.modules</groupId>
@@ -82,6 +77,18 @@
         </exclusion>
       </exclusions>
     </dependency>
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-sql_2.12</artifactId>
+      <version>3.1.1</version> <!-- {x-version-update;cosmos-spark_3-1_org.apache.spark:spark-sql_2.12;external_dependency} -->
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-hive_2.12</artifactId>
+      <version>3.1.1</version> <!-- {x-version-update;cosmos-spark_3-1_org.apache.spark:spark-hive_2.12;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
 
     <!-- Test -->
     <dependency>
@@ -93,7 +100,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.12</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.13</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -106,13 +113,6 @@
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
       <version>3.21.0</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.spark</groupId>
-      <artifactId>spark-hive_2.12</artifactId>
-      <version>3.1.1</version> <!-- {x-version-update;cosmos_org.apache.spark:spark-hive_2.12;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -174,6 +174,51 @@
     </resources>
     <plugins>
       <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.0.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>add-sources</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${basedir}/../azure-cosmos-spark_3_2-12/src/main/scala</source>
+                <source>${basedir}/src/main/scala</source>
+              </sources>
+            </configuration>
+          </execution>
+          <execution>
+            <id>add-test-sources</id>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>add-test-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${basedir}/../azure-cosmos-spark_3_2-12/src/test/scala</source>
+              </sources>
+            </configuration>
+          </execution>
+          <execution>
+            <id>add-resources</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>add-resource</goal>
+            </goals>
+            <configuration>
+              <resources>
+                <resource><directory>${basedir}/../azure-cosmos-spark_3_2-12/src/main/resources</directory></resource>
+                <resource><directory>${basedir}/src/main/resources</directory></resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
@@ -212,10 +257,10 @@
         </configuration>
         <executions>
           <execution>
-          <goals>
-            <goal>compile</goal>
-            <goal>testCompile</goal>
-          </goals>
+            <goals>
+              <goal>compile</goal>
+              <goal>testCompile</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>
@@ -231,7 +276,7 @@
                 <include>javax.annotation:javax.annotation-api:[1.3.2]</include> <!-- {x-include-update;javax.annotation:javax.annotation-api;external_dependency} -->
                 <include>org.apache.commons:commons-lang3:[3.12.0]</include> <!-- {x-include-update;org.apache.commons:commons-lang3;external_dependency} -->
                 <include>org.slf4j:slf4j-api:[1.7.32]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
-                <include>org.apache.spark:spark-sql_2.12:[3.1.1]</include> <!-- {x-include-update;cosmos_org.apache.spark:spark-sql_2.12;external_dependency} -->
+                <include>org.apache.spark:spark-sql_2.12:[3.1.1]</include> <!-- {x-include-update;cosmos-spark_3-1_org.apache.spark:spark-sql_2.12;external_dependency} -->
                 <include>commons-io:commons-io:[2.4]</include> <!-- {x-include-update;cosmos_commons-io:commons-io;external_dependency} -->
                 <include>org.scala-lang:scala-library:[2.12.10]</include> <!-- {x-include-update;cosmos_org.scala-lang:scala-library;external_dependency} -->
                 <include>org.scala-lang.modules:scala-java8-compat_2.12:[0.8.0]</include> <!-- {x-include-update;cosmos_org.scala-lang.modules:scala-java8-compat_2.12;external_dependency} -->
@@ -313,15 +358,6 @@
       </plugin>
 
       <plugin>
-        <groupId>org.revapi</groupId>
-        <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
-
-      <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
@@ -336,6 +372,7 @@
         <version>3.2.4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
         <executions>
           <execution>
+            <id>shade</id>
             <phase>package</phase>
             <goals>
               <goal>shade</goal>
@@ -403,7 +440,7 @@
                   <pattern>javax.xml</pattern>
                   <shadedPattern>${shadingPrefix}.javax.xml</shadedPattern>
                 </relocation>
-             </relocations>
+              </relocations>
               <filters>
                 <filter>
                   <artifact>*:*</artifact>
@@ -474,14 +511,10 @@
 
                 <!-- TODO moderakh validate that netty native libs e.g, boringssl actually is used. -->
               </transformers>
-
-              <!-- When true, it will attempt to shade the contents of the java source files when creating the sources jar. -->
-              <shadeSourcesContent>true</shadeSourcesContent>
             </configuration>
           </execution>
         </executions>
       </plugin>
-
     </plugins>
   </build>
 
@@ -646,15 +679,6 @@
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-maven-plugin</artifactId>
             <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
-            <configuration>
-              <skip>true</skip>
-            </configuration>
-          </plugin>
-
-          <plugin>
-            <groupId>org.revapi</groupId>
-            <artifactId>revapi-maven-plugin</artifactId>
-            <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
             <configuration>
               <skip>true</skip>
             </configuration>

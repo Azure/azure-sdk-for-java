@@ -183,29 +183,6 @@ stages:
             condition: succeededOrFailed()
             continueOnError: true
 
-          - pwsh: |
-              $results = (Get-Content "$(Pipeline.workspace)\.gdn\.r\CredScan\001\CredScan-matches.sarif" | ConvertFrom-Json).runs.results
-              $csvRows = @()
-              $pathMatchRegex = ("$(Build.SourcesDirectory)" -replace "\\", "/")
-              $results | ForEach-Object {
-                $csvRows += [pscustomobject]@{
-                  ruleId = $_.ruleId
-                  ruleIndex = $_.ruleIndex
-                  fingerprints = $_.fingerprints
-                  message = $_.message
-                  properties = $_.properties
-                  rank = $_.rank
-                  fileName = $_.analysisTarget.uri -replace ".*$pathMatchRegex(.*)", "https://github.com/Azure/azure-sdk-for-java/blob/main/`$1"
-                  startLine = $_.locations.physicalLocation.region.startLine
-                  startColumn = $_.locations.physicalLocation.region.startColumn
-                  endLine = $_.locations.physicalLocation.region.endLine
-                  endColumn = $_.locations.physicalLocation.region.endColumn
-                  level = $_.level
-                }
-              }
-              $csvRows | Export-Csv -Path "$(Pipeline.workspace)\.gdn\.r\CredScan\001\CredScan-matches.csv" -NoTypeInformation
-            displayName: Add converted csv file for CredScan-matches.sarif
-
           - task: securedevelopmentteam.vss-secure-development-tools.build-task-publishsecurityanalysislogs.PublishSecurityAnalysisLogs@3
             displayName: 'Publish Security Analysis Logs'
             condition: succeededOrFailed()

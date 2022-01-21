@@ -171,7 +171,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a VMSS VM Extension.
+     * @return describes a VMSS VM Extension along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -244,7 +244,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a VMSS VM Extension.
+     * @return describes a VMSS VM Extension along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -314,7 +314,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a VMSS VM Extension.
+     * @return describes a VMSS VM Extension along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner>
@@ -349,7 +349,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a VMSS VM Extension.
+     * @return describes a VMSS VM Extension along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner>
@@ -385,7 +385,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a VMSS VM Extension.
+     * @return describes a VMSS VM Extension along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner>
@@ -412,7 +412,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a VMSS VM Extension.
+     * @return describes a VMSS VM Extension along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner>
@@ -439,7 +439,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a VMSS VM Extension.
+     * @return describes a VMSS VM Extension on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineScaleSetVMExtensionInner> createOrUpdateAsync(
@@ -466,7 +466,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a VMSS VM Extension.
+     * @return describes a VMSS VM Extension on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VirtualMachineScaleSetVMExtensionInner> createOrUpdateAsync(
@@ -544,7 +544,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a VMSS VM Extension.
+     * @return describes a VMSS VM Extension along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -617,7 +617,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a VMSS VM Extension.
+     * @return describes a VMSS VM Extension along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -687,7 +687,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a VMSS VM Extension.
+     * @return describes a VMSS VM Extension along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner>
@@ -722,7 +722,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a VMSS VM Extension.
+     * @return describes a VMSS VM Extension along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner>
@@ -758,7 +758,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a VMSS VM Extension.
+     * @return describes a VMSS VM Extension along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner>
@@ -784,7 +784,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a VMSS VM Extension.
+     * @return describes a VMSS VM Extension along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner>
@@ -811,7 +811,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a VMSS VM Extension.
+     * @return describes a VMSS VM Extension on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineScaleSetVMExtensionInner> updateAsync(
@@ -837,7 +837,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a VMSS VM Extension.
+     * @return describes a VMSS VM Extension on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VirtualMachineScaleSetVMExtensionInner> updateAsync(
@@ -912,7 +912,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -973,7 +973,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1030,7 +1030,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1054,7 +1054,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1077,7 +1077,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -1096,7 +1096,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -1115,7 +1115,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
@@ -1136,7 +1136,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1191,7 +1191,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a VMSS VM Extension.
+     * @return describes a VMSS VM Extension along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VirtualMachineScaleSetVMExtensionInner>> getWithResponseAsync(
@@ -1254,7 +1254,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a VMSS VM Extension.
+     * @return describes a VMSS VM Extension along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VirtualMachineScaleSetVMExtensionInner>> getWithResponseAsync(
@@ -1318,7 +1318,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a VMSS VM Extension.
+     * @return describes a VMSS VM Extension on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineScaleSetVMExtensionInner> getAsync(
@@ -1344,7 +1344,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a VMSS VM Extension.
+     * @return describes a VMSS VM Extension on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineScaleSetVMExtensionInner> getAsync(
@@ -1392,7 +1392,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a VMSS VM Extension.
+     * @return describes a VMSS VM Extension along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualMachineScaleSetVMExtensionInner> getWithResponse(
@@ -1416,7 +1416,8 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List VMSS VM Extension operation response.
+     * @return the List VMSS VM Extension operation response along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VirtualMachineScaleSetVMExtensionsListResultInner>> listWithResponseAsync(
@@ -1473,7 +1474,8 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List VMSS VM Extension operation response.
+     * @return the List VMSS VM Extension operation response along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VirtualMachineScaleSetVMExtensionsListResultInner>> listWithResponseAsync(
@@ -1526,7 +1528,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List VMSS VM Extension operation response.
+     * @return the List VMSS VM Extension operation response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineScaleSetVMExtensionsListResultInner> listAsync(
@@ -1551,7 +1553,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List VMSS VM Extension operation response.
+     * @return the List VMSS VM Extension operation response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineScaleSetVMExtensionsListResultInner> listAsync(
@@ -1597,7 +1599,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List VMSS VM Extension operation response.
+     * @return the List VMSS VM Extension operation response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualMachineScaleSetVMExtensionsListResultInner> listWithResponse(

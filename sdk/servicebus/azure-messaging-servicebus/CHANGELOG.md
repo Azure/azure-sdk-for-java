@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 7.5.2 (2022-01-14)
+
+### Bugs Fixed
+- Fixed lock renewal delay behavior, renewal delay is more relaxed, with it happening at half the remaining time now. Issue [25259](https://github.com/Azure/azure-sdk-for-java/issues/25259).
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.23.1` to `1.24.1`.
+- Upgraded `azure-core-amqp` from `2.3.5` to `2.3.7`.
+
 ## 7.5.1 (2021-12-08)
 ### Bugs Fixed
 - Fixed a bug where Synchronous Receiver client stops receiving messages if MaxMessages is greater than 1. Issue [25063](https://github.com/Azure/azure-sdk-for-java/issues/25063).
@@ -37,16 +46,16 @@
 - Fixed a bug that was causing leaking of boundedElastic-evictor threads associated with the `ServiceBusSessionManager` objects. Issue [23539](https://github.com/Azure/azure-sdk-for-java/issues/23539).
 
 #### Dependency Updates
- - Update `azure-core` dependency to `1.20.0`.
- - Update `azure-core-amqp` dependency to `2.3.2`.
+- Update `azure-core` dependency to `1.20.0`.
+- Update `azure-core-amqp` dependency to `2.3.2`.
 
 ## 7.4.0 (2021-08-20)
 ### Features Added
- - Updated ServiceBusAdministrationClientBuilder to Support HttpPipelinePosition.
+- Updated ServiceBusAdministrationClientBuilder to Support HttpPipelinePosition.
 
 #### Dependency Updates
- - Update `azure-core` dependency to `1.19.0`.
- - Update `azure-core-amqp` dependency to `2.3.1`.
+- Update `azure-core` dependency to `1.19.0`.
+- Update `azure-core-amqp` dependency to `2.3.1`.
 
 ## 7.3.0 (2021-07-08)
 ### Features Added

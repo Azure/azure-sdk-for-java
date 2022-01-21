@@ -91,11 +91,11 @@ public final class VaultProperties {
      * Property that controls how data actions are authorized. When true, the
      * key vault will use Role Based Access Control (RBAC) for authorization of
      * data actions, and the access policies specified in vault properties will
-     * be  ignored (warning: this is a preview feature). When false, the key
-     * vault will use the access policies specified in vault properties, and
-     * any policy stored on Azure Resource Manager will be ignored. If null or
-     * not specified, the vault is created with the default value of false.
-     * Note that management actions are always authorized with RBAC.
+     * be  ignored. When false, the key vault will use the access policies
+     * specified in vault properties, and any policy stored on Azure Resource
+     * Manager will be ignored. If null or not specified, the vault is created
+     * with the default value of false. Note that management actions are always
+     * authorized with RBAC.
      */
     @JsonProperty(value = "enableRbacAuthorization")
     private Boolean enableRbacAuthorization;
@@ -347,10 +347,10 @@ public final class VaultProperties {
     /**
      * Get the enableRbacAuthorization property: Property that controls how data actions are authorized. When true, the
      * key vault will use Role Based Access Control (RBAC) for authorization of data actions, and the access policies
-     * specified in vault properties will be ignored (warning: this is a preview feature). When false, the key vault
-     * will use the access policies specified in vault properties, and any policy stored on Azure Resource Manager will
-     * be ignored. If null or not specified, the vault is created with the default value of false. Note that management
-     * actions are always authorized with RBAC.
+     * specified in vault properties will be ignored. When false, the key vault will use the access policies specified
+     * in vault properties, and any policy stored on Azure Resource Manager will be ignored. If null or not specified,
+     * the vault is created with the default value of false. Note that management actions are always authorized with
+     * RBAC.
      *
      * @return the enableRbacAuthorization value.
      */
@@ -361,10 +361,10 @@ public final class VaultProperties {
     /**
      * Set the enableRbacAuthorization property: Property that controls how data actions are authorized. When true, the
      * key vault will use Role Based Access Control (RBAC) for authorization of data actions, and the access policies
-     * specified in vault properties will be ignored (warning: this is a preview feature). When false, the key vault
-     * will use the access policies specified in vault properties, and any policy stored on Azure Resource Manager will
-     * be ignored. If null or not specified, the vault is created with the default value of false. Note that management
-     * actions are always authorized with RBAC.
+     * specified in vault properties will be ignored. When false, the key vault will use the access policies specified
+     * in vault properties, and any policy stored on Azure Resource Manager will be ignored. If null or not specified,
+     * the vault is created with the default value of false. Note that management actions are always authorized with
+     * RBAC.
      *
      * @param enableRbacAuthorization the enableRbacAuthorization value to set.
      * @return the VaultProperties object itself.

@@ -19,6 +19,9 @@
 
   <properties>
     <perf.test.mainClass>com.azure.communication.common.perf.App</perf.test.mainClass>
+
+    <!-- TODO: Remove this once all Javadoc warnings and errors are resolved -->
+    <doclint>all,-missing</doclint>
   </properties>
 
   <dependencies>
@@ -35,7 +38,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.7.5</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.7.7</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
     </dependency>
   </dependencies>
 </project>

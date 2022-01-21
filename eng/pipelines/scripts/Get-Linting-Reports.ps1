@@ -104,6 +104,7 @@ function WriteSpotbugsProcessedReport($SpotbugsXmlReport, $ReportOutputFolder) {
 Set-Location -ErrorAction Stop -LiteralPath (Join-Path $PSScriptRoot "../../../")
 
 # Always create the output directory
+$OutputDirectory = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($OutputDirectory)
 New-Item -Path $OutputDirectory -ItemType Directory | Out-Null
 
 $path = "sdk/*/"
@@ -125,7 +126,7 @@ foreach ($targetFolder in (Get-ChildItem -Path $path -Filter "target" -Directory
 
   $spotbugsXmlReport = Join-Path $targetFolder.FullName "spotbugs.xml"
   if (Test-Path -Path $spotbugsXmlReport) {
-    WriteSpotbugsProcessedReport $spotbugsXmlReport $OutputDirectory
+    WriteSpotbugsProcessedReport $spotbugsXmlReport $reportOutputFolder
   }
 
   $revapiReport = Join-Path $targetFolder.FullName "revapi.json"

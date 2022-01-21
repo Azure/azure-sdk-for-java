@@ -161,6 +161,32 @@ public final class KubeEnvironmentPatchResource extends ProxyOnlyResource {
     }
 
     /**
+     * Get the containerAppsConfiguration property: Cluster configuration for Container Apps Environments to configure
+     * Dapr Instrumentation Key and VNET Configuration.
+     *
+     * @return the containerAppsConfiguration value.
+     */
+    public ContainerAppsConfiguration containerAppsConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().containerAppsConfiguration();
+    }
+
+    /**
+     * Set the containerAppsConfiguration property: Cluster configuration for Container Apps Environments to configure
+     * Dapr Instrumentation Key and VNET Configuration.
+     *
+     * @param containerAppsConfiguration the containerAppsConfiguration value to set.
+     * @return the KubeEnvironmentPatchResource object itself.
+     */
+    public KubeEnvironmentPatchResource withContainerAppsConfiguration(
+        ContainerAppsConfiguration containerAppsConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KubeEnvironmentPatchResourceProperties();
+        }
+        this.innerProperties().withContainerAppsConfiguration(containerAppsConfiguration);
+        return this;
+    }
+
+    /**
      * Get the aksResourceId property: The aksResourceID property.
      *
      * @return the aksResourceId value.

@@ -56,7 +56,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-formrecognizer</artifactId>
-    <version>3.1.6</version>
+    <version>3.1.7</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -161,7 +161,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.3.7</version>
+    <version>1.4.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -260,13 +260,13 @@ analyzeLayoutResult.getPages().forEach(documentPage -> {
 
     // lines
     documentPage.getLines().forEach(documentLine ->
-        System.out.printf("Line %s is within a bounding box %s.%n",
+        System.out.printf("Line '%s' is within a bounding box %s.%n",
             documentLine.getContent(),
             documentLine.getBoundingBox().toString()));
 
     // selection marks
     documentPage.getSelectionMarks().forEach(documentSelectionMark ->
-        System.out.printf("Selection mark is %s and is within a bounding box %s with confidence %.2f.%n",
+        System.out.printf("Selection mark is '%s' and is within a bounding box %s with confidence %.2f.%n",
             documentSelectionMark.getState().toString(),
             documentSelectionMark.getBoundingBox().toString(),
             documentSelectionMark.getConfidence()));
@@ -440,13 +440,13 @@ analyzeResult.getPages().forEach(documentPage -> {
 
     // lines
     documentPage.getLines().forEach(documentLine ->
-        System.out.printf("Line %s is within a bounding box %s.%n",
+        System.out.printf("Line '%s' is within a bounding box %s.%n",
             documentLine.getContent(),
             documentLine.getBoundingBox().toString()));
 
     // words
     documentPage.getWords().forEach(documentWord ->
-        System.out.printf("Word %s has a confidence score of %.2f%n.",
+        System.out.printf("Word '%s' has a confidence score of %.2f.%n",
             documentWord.getContent(),
             documentWord.getConfidence()));
 });

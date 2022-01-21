@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * This sample demonstrates how to publish cloud native cloud events to Azure EventGrid, asynchronously.
+ */
 public class PublishNativeCloudEventToDomainAsync {
     public static void main(String[] args) {
         EventGridPublisherAsyncClient<com.azure.core.models.CloudEvent> egClientAsync =
