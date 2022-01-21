@@ -8,7 +8,15 @@ package com.azure.spring.messaging.checkpoint;
  */
 public interface Checkpointable {
 
+    /**
+     * Get a {@link CheckpointConfig} instance.
+     * @return a CheckpointConfig instance.
+     */
     CheckpointConfig getCheckpointConfig();
 
+    /**
+     * Set a {@link CheckpointConfig} instance.
+     * @param checkpointConfig a CheckpointConfig instance.
+     */
     void setCheckpointConfig(CheckpointConfig checkpointConfig);
 }

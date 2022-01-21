@@ -12,7 +12,7 @@ import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.service.AzureServiceType;
-import com.azure.spring.service.storage.fileshare.ShareServiceClientBuilderFactory;
+import com.azure.spring.service.implementation.storage.fileshare.ShareServiceClientBuilderFactory;
 import com.azure.storage.file.share.ShareAsyncClient;
 import com.azure.storage.file.share.ShareClient;
 import com.azure.storage.file.share.ShareFileAsyncClient;
@@ -59,7 +59,7 @@ public class AzureStorageFileShareAutoConfiguration extends AzureServiceConfigur
 
     @Bean
     @ConditionalOnMissingBean
-    public ShareServiceClientBuilderFactory shareServiceClientBuilderFactory(
+    ShareServiceClientBuilderFactory shareServiceClientBuilderFactory(
         AzureStorageFileShareProperties properties,
         ObjectProvider<ConnectionStringProvider<AzureServiceType.StorageFileShare>> connectionStringProviders,
         ObjectProvider<AzureServiceClientBuilderCustomizer<ShareServiceClientBuilder>> customizers) {
@@ -73,7 +73,7 @@ public class AzureStorageFileShareAutoConfiguration extends AzureServiceConfigur
 
     @Bean
     @ConditionalOnMissingBean
-    public ShareServiceClientBuilder shareServiceClientBuilder(ShareServiceClientBuilderFactory factory) {
+    ShareServiceClientBuilder shareServiceClientBuilder(ShareServiceClientBuilderFactory factory) {
         return factory.build();
     }
 
@@ -81,7 +81,7 @@ public class AzureStorageFileShareAutoConfiguration extends AzureServiceConfigur
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureStorageFileShareProperties.PREFIX, name = "file-name")
     public ShareFileAsyncClient shareFileAsyncClient(AzureStorageFileShareProperties properties,
-                                                ShareAsyncClient shareAsyncClient) {
+                                                     ShareAsyncClient shareAsyncClient) {
         return shareAsyncClient.getFileClient(properties.getFileName());
     }
 
@@ -89,7 +89,7 @@ public class AzureStorageFileShareAutoConfiguration extends AzureServiceConfigur
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureStorageFileShareProperties.PREFIX, name = "share-name")
     public ShareAsyncClient shareAsyncClient(AzureStorageFileShareProperties properties,
-                                                     ShareServiceAsyncClient shareServiceAsyncClient) {
+                                             ShareServiceAsyncClient shareServiceAsyncClient) {
         return shareServiceAsyncClient.getShareAsyncClient(properties.getShareName());
     }
 
@@ -104,8 +104,7 @@ public class AzureStorageFileShareAutoConfiguration extends AzureServiceConfigur
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureStorageFileShareProperties.PREFIX, name = "share-name")
-    public ShareClient shareClient(AzureStorageFileShareProperties properties,
-                                                     ShareServiceClient shareServiceClient) {
+    public ShareClient shareClient(AzureStorageFileShareProperties properties, ShareServiceClient shareServiceClient) {
         return shareServiceClient.getShareClient(properties.getShareName());
     }
 

@@ -14,8 +14,8 @@ import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.service.AzureServiceType;
-import com.azure.spring.service.servicebus.factory.ServiceBusReceiverClientBuilderFactory;
-import com.azure.spring.service.servicebus.factory.ServiceBusSessionReceiverClientBuilderFactory;
+import com.azure.spring.service.implementation.servicebus.factory.ServiceBusReceiverClientBuilderFactory;
+import com.azure.spring.service.implementation.servicebus.factory.ServiceBusSessionReceiverClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -44,7 +44,7 @@ class AzureServiceBusConsumerClientConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        public ServiceBusReceiverClientBuilderFactory serviceBusReceiverClientBuilderFactory(
+        ServiceBusReceiverClientBuilderFactory serviceBusReceiverClientBuilderFactory(
             AzureServiceBusProperties serviceBusProperties,
             ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders,
             ObjectProvider<ConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders,
@@ -65,7 +65,7 @@ class AzureServiceBusConsumerClientConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        public ServiceBusClientBuilder.ServiceBusReceiverClientBuilder serviceBusReceiverClientBuilder(
+        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder serviceBusReceiverClientBuilder(
             ServiceBusReceiverClientBuilderFactory builderFactory) {
             return builderFactory.build();
         }
@@ -93,7 +93,7 @@ class AzureServiceBusConsumerClientConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        public ServiceBusSessionReceiverClientBuilderFactory serviceBusSessionReceiverClientBuilderFactory(
+        ServiceBusSessionReceiverClientBuilderFactory serviceBusSessionReceiverClientBuilderFactory(
             AzureServiceBusProperties serviceBusProperties,
             ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders,
             ObjectProvider<ConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders,
@@ -114,7 +114,7 @@ class AzureServiceBusConsumerClientConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        public ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder serviceBusSessionReceiverClientBuilder(
+        ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder serviceBusSessionReceiverClientBuilder(
             ServiceBusSessionReceiverClientBuilderFactory builderFactory) {
             return builderFactory.build();
         }

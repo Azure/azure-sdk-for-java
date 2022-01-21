@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.storage.blob.properties;
 
 import com.azure.spring.cloud.autoconfigure.storage.common.AzureStorageProperties;
-import com.azure.spring.service.storage.blob.BlobServiceClientProperties;
+import com.azure.spring.service.implementation.storage.blob.BlobServiceClientProperties;
 import com.azure.storage.blob.BlobServiceVersion;
 
 /**
@@ -16,11 +16,25 @@ public class AzureStorageBlobProperties extends AzureStorageProperties implement
 
     private static final String BLOB_ENDPOINT_PATTERN = "https://%s.blob%s";
 
+    /**
+     * Customer provided key used to encrypt blob contents on the server.
+     */
     private String customerProvidedKey;
+    /**
+     * Encryption scope used to encrypt blob contents on the server.
+     */
     private String encryptionScope;
+    /**
+     * Blob service version used when making API requests.
+     */
     private BlobServiceVersion serviceVersion;
-
+    /**
+     * Name of the container.
+     */
     private String containerName;
+    /**
+     * Name of the blob.
+     */
     private String blobName;
 
     public String getEndpoint() {

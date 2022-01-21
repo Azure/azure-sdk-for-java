@@ -8,7 +8,7 @@ import com.azure.spring.cloud.autoconfigure.storage.fileshare.AzureStorageFileSh
 import com.azure.spring.cloud.autoconfigure.storage.fileshare.properties.AzureStorageFileShareProperties;
 import com.azure.spring.cloud.autoconfigure.useragent.util.UserAgentTestUtil;
 import com.azure.spring.core.AzureSpringIdentifier;
-import com.azure.spring.service.storage.fileshare.ShareServiceClientBuilderFactory;
+import com.azure.spring.service.implementation.storage.fileshare.ShareServiceClientBuilderFactory;
 import com.azure.storage.file.share.ShareServiceAsyncClient;
 import com.azure.storage.file.share.ShareServiceClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;

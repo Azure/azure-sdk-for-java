@@ -19,6 +19,7 @@ public class AzureHeaders {
     public static final String RAW_ID = "raw_id";
 
     public static final String PARTITION_KEY = PREFIX + "partition_key";
+    public static final String BATCH_CONVERTED_PARTITION_KEY = PREFIX + "batch_converted_partition_key";
 
     public static final String NAME = PREFIX + "name";
 

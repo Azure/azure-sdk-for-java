@@ -43,6 +43,10 @@ public class AppConfigurationHealthIndicator extends AbstractHealthIndicator {
         }
     }
 
+    /**
+     * Set health check request timeout.
+     * @param timeout the duration value.
+     */
     public void setTimeout(Duration timeout) {
         this.timeout = timeout;
     }

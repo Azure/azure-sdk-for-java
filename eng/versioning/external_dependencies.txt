@@ -30,7 +30,6 @@ com.microsoft.azure:azure-cosmos;3.7.3
 com.microsoft.azure:azure-keyvault-cryptography;1.2.2
 com.microsoft.azure:azure-media;0.9.8
 com.microsoft.azure:azure-servicebus;3.6.1
-com.microsoft.azure:azure-servicebus-jms;0.0.9
 com.microsoft.azure:qpid-proton-j-extensions;1.2.4
 com.microsoft.azure.sdk.iot:iot-service-client;1.30.0
 com.microsoft.rest:client-runtime;1.7.4
@@ -93,6 +92,7 @@ org.glassfish.tyrus.bundles:tyrus-standalone-client;1.16
 org.hibernate.validator:hibernate-validator;6.2.0.Final
 org.javatuples:javatuples;1.2
 org.linguafranca.pwdb:KeePassJava2;2.1.4
+org.messaginghub:pooled-jms;1.2.2
 org.powermock:powermock-api-mockito2;2.0.9
 org.powermock:powermock-module-junit4;2.0.9
 org.postgresql:postgresql;42.3.1

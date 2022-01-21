@@ -3,7 +3,7 @@
 
 package com.azure.spring.servicebus.core.properties;
 
-import com.azure.spring.service.servicebus.properties.ServiceBusProcessorClientProperties;
+import com.azure.spring.service.implementation.servicebus.properties.ServiceBusProcessorClientProperties;
 
 /**
  * A service bus processor related properties.

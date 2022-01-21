@@ -14,6 +14,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = AzureStorageQueueProperties.PREFIX + ".resource")
 public class StorageQueueResourceMetadata extends AzureResourceMetadataConfigurationProperties {
 
+    /**
+     * Name of the storage account.
+     */
     @Value("${spring.cloud.azure.storage.queue.accountName:}")
     private String name;
 

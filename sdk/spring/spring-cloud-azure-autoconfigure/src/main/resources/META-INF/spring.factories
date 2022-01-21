@@ -8,8 +8,6 @@ com.azure.spring.cloud.autoconfigure.aad.AADAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.aad.AADAuthenticationFilterAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.aadb2c.AADB2CAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.aadb2c.AADB2CResourceServerAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.jms.NonPremiumServiceBusJmsAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.jms.PremiumServiceBusJmsAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.redis.AzureRedisAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.context.AzureDefaultTokenCredentialAutoConfiguration,\
@@ -25,12 +23,13 @@ com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultSecretAutoCon
 com.azure.spring.cloud.autoconfigure.keyvault.certificates.AzureKeyVaultCertificateAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobResourceAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.storage.fileshare.AzureStorageFileShareAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.storage.fileshare.AzureStorageFileShareResourceAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.storage.queue.AzureStorageQueueAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.storage.AzureStorageQueueOperationAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.storage.AzureStorageQueueMessagingAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.trace.sleuth.AzureSleuthAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureEventHubsResourceManagerAutoConfiguration,\

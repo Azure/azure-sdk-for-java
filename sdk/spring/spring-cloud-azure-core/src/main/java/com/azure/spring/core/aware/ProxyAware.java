@@ -8,6 +8,10 @@ package com.azure.spring.core.aware;
  */
 public interface ProxyAware {
 
+    /**
+     * Get the proxy configuration.
+     * @return the proxy configuration.
+     */
     Proxy getProxy();
 
     /**
@@ -15,6 +19,10 @@ public interface ProxyAware {
      */
     interface HttpProxy {
 
+        /**
+         * Get the http non-proxy host.
+         * @return the non-proxy host.
+         */
         String getNonProxyHosts();
     }
 
@@ -23,16 +31,40 @@ public interface ProxyAware {
      */
     interface Proxy {
 
+        /**
+         * Get the proxy type.
+         * @return the proxy type.
+         */
         String getType();
 
+        /**
+         * Get the proxy hostname.
+         * @return the proxy hostname.
+         */
         String getHostname();
 
+        /**
+         * Get the proxy port.
+         * @return the proxy port.
+         */
         Integer getPort();
 
+        /**
+         * Get the proxy authentication type.
+         * @return the proxy authentication type.
+         */
         String getAuthenticationType();
 
+        /**
+         * Get the proxy username.
+         * @return the proxy username.
+         */
         String getUsername();
 
+        /**
+         * Get the proxy password.
+         * @return the proxy password.
+         */
         String getPassword();
 
     }

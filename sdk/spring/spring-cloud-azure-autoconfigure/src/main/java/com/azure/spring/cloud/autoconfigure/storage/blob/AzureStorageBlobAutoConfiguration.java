@@ -12,7 +12,7 @@ import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.service.AzureServiceType;
-import com.azure.spring.service.storage.blob.BlobServiceClientBuilderFactory;
+import com.azure.spring.service.implementation.storage.blob.BlobServiceClientBuilderFactory;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
@@ -28,6 +28,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.STORAGE_BLOB_CLIENT_BUILDER_BEAN_NAME;
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.STORAGE_BLOB_CLIENT_BUILDER_FACTORY_BEAN_NAME;
 
 /**
@@ -66,7 +67,8 @@ public class AzureStorageBlobAutoConfiguration extends AzureServiceConfiguration
 
     @Bean
     @ConditionalOnMissingBean
-    public BlobServiceAsyncClient blobServiceAsyncClient(BlobServiceClientBuilder builder) {
+    public BlobServiceAsyncClient blobServiceAsyncClient(
+        @Qualifier(STORAGE_BLOB_CLIENT_BUILDER_BEAN_NAME) BlobServiceClientBuilder builder) {
         return builder.buildAsyncClient();
     }
 
@@ -88,13 +90,14 @@ public class AzureStorageBlobAutoConfiguration extends AzureServiceConfiguration
 
     @Bean
     @ConditionalOnMissingBean
-    public BlobServiceClient blobServiceClient(BlobServiceClientBuilder builder) {
+    public BlobServiceClient blobServiceClient(
+        @Qualifier(STORAGE_BLOB_CLIENT_BUILDER_BEAN_NAME) BlobServiceClientBuilder builder) {
         return builder.buildClient();
     }
 
     @Bean(STORAGE_BLOB_CLIENT_BUILDER_FACTORY_BEAN_NAME)
     @ConditionalOnMissingBean(name = STORAGE_BLOB_CLIENT_BUILDER_FACTORY_BEAN_NAME)
-    public BlobServiceClientBuilderFactory blobServiceClientBuilderFactory(
+    BlobServiceClientBuilderFactory blobServiceClientBuilderFactory(
         AzureStorageBlobProperties properties,
         ObjectProvider<ConnectionStringProvider<AzureServiceType.StorageBlob>> connectionStringProviders,
         ObjectProvider<AzureServiceClientBuilderCustomizer<BlobServiceClientBuilder>> customizers) {
@@ -106,10 +109,10 @@ public class AzureStorageBlobAutoConfiguration extends AzureServiceConfiguration
         return factory;
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public BlobServiceClientBuilder blobServiceClientBuilder(@Qualifier(STORAGE_BLOB_CLIENT_BUILDER_FACTORY_BEAN_NAME)
-                                                                     BlobServiceClientBuilderFactory factory) {
+    @Bean(STORAGE_BLOB_CLIENT_BUILDER_BEAN_NAME)
+    @ConditionalOnMissingBean(name = STORAGE_BLOB_CLIENT_BUILDER_BEAN_NAME)
+    BlobServiceClientBuilder blobServiceClientBuilder(@Qualifier(STORAGE_BLOB_CLIENT_BUILDER_FACTORY_BEAN_NAME)
+                                                          BlobServiceClientBuilderFactory factory) {
         return factory.build();
     }
 

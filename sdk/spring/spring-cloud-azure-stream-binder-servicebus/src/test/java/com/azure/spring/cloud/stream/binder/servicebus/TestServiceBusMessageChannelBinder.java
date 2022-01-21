@@ -41,12 +41,12 @@ public class TestServiceBusMessageChannelBinder extends ServiceBusMessageChannel
     public void addProducerDownInstrumentation() {
         DefaultInstrumentation producer = new DefaultInstrumentation("producer", Instrumentation.Type.PRODUCER);
         producer.markDown(new IllegalArgumentException("Producer exception"));
-        getInstrumentationManager().addHealthInstrumentation("producer", producer);
+        getInstrumentationManager().addHealthInstrumentation(producer);
     }
 
     public void addProcessorDownInstrumentation() {
         DefaultInstrumentation processor = new DefaultInstrumentation("Processor", Instrumentation.Type.PRODUCER);
         processor.markDown(new IllegalArgumentException("Processor exception"));
-        getInstrumentationManager().addHealthInstrumentation("Processor", processor);
+        getInstrumentationManager().addHealthInstrumentation(processor);
     }
 }

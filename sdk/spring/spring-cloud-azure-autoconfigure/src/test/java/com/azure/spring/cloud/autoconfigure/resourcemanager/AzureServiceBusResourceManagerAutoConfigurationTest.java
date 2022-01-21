@@ -8,7 +8,7 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.resourcemanager.connectionstring.ServiceBusArmConnectionStringProvider;
-import com.azure.spring.resourcemanager.provisioner.servicebus.ServiceBusProvisioner;
+import com.azure.spring.resourcemanager.provisioning.servicebus.ServiceBusProvisioner;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;

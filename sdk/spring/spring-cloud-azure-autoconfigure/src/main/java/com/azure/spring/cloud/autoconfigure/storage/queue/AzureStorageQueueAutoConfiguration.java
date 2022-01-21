@@ -12,7 +12,9 @@ import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.service.AzureServiceType;
-import com.azure.spring.service.storage.queue.QueueServiceClientBuilderFactory;
+import com.azure.spring.service.implementation.storage.queue.QueueServiceClientBuilderFactory;
+import com.azure.storage.queue.QueueAsyncClient;
+import com.azure.storage.queue.QueueClient;
 import com.azure.storage.queue.QueueServiceAsyncClient;
 import com.azure.storage.queue.QueueServiceClient;
 import com.azure.storage.queue.QueueServiceClientBuilder;
@@ -55,7 +57,22 @@ public class AzureStorageQueueAutoConfiguration extends AzureServiceConfiguratio
 
     @Bean
     @ConditionalOnMissingBean
-    public QueueServiceClientBuilderFactory queueServiceClientBuilderFactory(
+    @ConditionalOnProperty(prefix = AzureStorageQueueProperties.PREFIX, name = "queue-name")
+    public QueueClient queueClient(QueueServiceClient queueServiceClient, AzureStorageQueueProperties properties) {
+        return queueServiceClient.getQueueClient(properties.getQueueName());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(prefix = AzureStorageQueueProperties.PREFIX, name = "queue-name")
+    public QueueAsyncClient queueAsyncClient(QueueServiceAsyncClient queueServiceAsyncClient,
+                                             AzureStorageQueueProperties properties) {
+        return queueServiceAsyncClient.getQueueAsyncClient(properties.getQueueName());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    QueueServiceClientBuilderFactory queueServiceClientBuilderFactory(
         AzureStorageQueueProperties properties,
         ObjectProvider<ConnectionStringProvider<AzureServiceType.StorageQueue>> connectionStringProviders,
         ObjectProvider<AzureServiceClientBuilderCustomizer<QueueServiceClientBuilder>> customizers) {
@@ -70,7 +87,7 @@ public class AzureStorageQueueAutoConfiguration extends AzureServiceConfiguratio
 
     @Bean
     @ConditionalOnMissingBean
-    public QueueServiceClientBuilder queueServiceClientBuilder(QueueServiceClientBuilderFactory factory) {
+    QueueServiceClientBuilder queueServiceClientBuilder(QueueServiceClientBuilderFactory factory) {
         return factory.build();
     }
 

@@ -10,6 +10,10 @@ package com.azure.spring.core.customizer;
  */
 public interface AzureServiceClientBuilderCustomizer<T> {
 
+    /**
+     * customize the client builder.
+     * @param builder the client builder.
+     */
     void customize(T builder);
 
 }

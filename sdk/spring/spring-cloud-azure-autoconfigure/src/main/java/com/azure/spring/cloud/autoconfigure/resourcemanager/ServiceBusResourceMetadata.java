@@ -14,6 +14,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = AzureServiceBusProperties.PREFIX + ".resource")
 public class ServiceBusResourceMetadata extends AzureResourceMetadataConfigurationProperties {
 
+    /**
+     * Namespace of the service bus.
+     */
     @Value("${spring.cloud.azure.servicebus.namespace:}")
     private String name;
 

@@ -103,6 +103,7 @@ public final class StorageFileResource extends AzureStorageResource {
 
     /**
      * Determines if the file this client represents exists in the cloud.
+     *
      * @return Flag indicating existence of the file.
      */
     @Override
@@ -110,6 +111,11 @@ public final class StorageFileResource extends AzureStorageResource {
         return this.shareClient.exists() && shareFileClient.exists();
     }
 
+    /**
+     * Get the url of the storage file client.
+     *
+     * @return the URL of the storage file client.
+     */
     @Override
     public URL getURL() throws IOException {
         return new URL(this.shareFileClient.getFileUrl());
@@ -143,6 +149,7 @@ public final class StorageFileResource extends AzureStorageResource {
 
     /**
      * Create relative resource from current location.
+     *
      * @param relativePath the relative path.
      * @return StorageFileResource with relative path from current location.
      */

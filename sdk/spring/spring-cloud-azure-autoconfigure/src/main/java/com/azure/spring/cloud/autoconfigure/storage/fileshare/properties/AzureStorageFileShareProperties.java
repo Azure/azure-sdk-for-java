@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.storage.fileshare.properties;
 
 import com.azure.spring.cloud.autoconfigure.storage.common.AzureStorageProperties;
-import com.azure.spring.service.storage.fileshare.ShareServiceClientProperties;
+import com.azure.spring.service.implementation.storage.fileshare.ShareServiceClientProperties;
 import com.azure.storage.file.share.ShareServiceVersion;
 
 /**
@@ -15,9 +15,17 @@ public class AzureStorageFileShareProperties extends AzureStorageProperties impl
     public static final String PREFIX = "spring.cloud.azure.storage.fileshare";
     public static final String FILE_ENDPOINT_PATTERN = "https://%s.file%s";
 
+    /**
+     * Share service version used when making API requests
+     */
     private ShareServiceVersion serviceVersion;
-
+    /**
+     * Name of the share.
+     */
     private String shareName;
+    /**
+     * Name of the file.
+     */
     private String fileName;
 
     public String getEndpoint() {

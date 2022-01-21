@@ -63,19 +63,22 @@ public class AzureDefaultTokenCredentialAutoConfiguration extends AzureServiceCo
         return new AzureServiceClientBuilderFactoryPostProcessor();
     }
 
+    /**
+     * Apply the default token credential to service client builder factory.
+     */
     static class AzureServiceClientBuilderFactoryPostProcessor implements BeanPostProcessor, BeanFactoryAware {
 
         private BeanFactory beanFactory;
 
-        @SuppressWarnings("rawtypes")
         @Override
+        @SuppressWarnings("rawtypes")
         public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
             if (bean instanceof AbstractAzureCredentialBuilderFactory) {
                 return bean;
             }
+
             if (bean instanceof AbstractAzureServiceClientBuilderFactory
                 && beanFactory.containsBean(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)) {
-
                 ((AbstractAzureServiceClientBuilderFactory) bean).setDefaultTokenCredential(
                     (TokenCredential) beanFactory.getBean(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME));
             }

@@ -14,6 +14,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = AzureEventHubsProperties.PREFIX + ".resource")
 public class EventHubsResourceMetadata extends AzureResourceMetadataConfigurationProperties {
 
+    /**
+     * Namespace of the event hub.
+     */
     @Value("${spring.cloud.azure.eventhubs.namespace:}")
     private String name;
 

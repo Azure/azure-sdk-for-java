@@ -11,7 +11,7 @@ import com.azure.spring.eventhubs.core.properties.ProcessorProperties;
 import com.azure.spring.eventhubs.core.properties.merger.ProcessorPropertiesParentMerger;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.ConsumerIdentifier;
-import com.azure.spring.service.eventhubs.factory.EventProcessorClientBuilderFactory;
+import com.azure.spring.service.implementation.eventhubs.factory.EventProcessorClientBuilderFactory;
 import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
