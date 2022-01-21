@@ -827,7 +827,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "emulator" }, timeOut = 2000 * TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = 20 * TIMEOUT)
     public void inactiveOwnersRecovery() throws InterruptedException {
         CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT_MAX);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
