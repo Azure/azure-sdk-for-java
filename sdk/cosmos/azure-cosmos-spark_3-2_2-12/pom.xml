@@ -511,10 +511,6 @@
 
                 <!-- TODO moderakh validate that netty native libs e.g, boringssl actually is used. -->
               </transformers>
-
-              <!-- When true, it will attempt to shade the contents of the java source files when creating the sources jar. -->
-              <shadeSourcesContent>true</shadeSourcesContent>
-              <createDependencyReducedPom>true</createDependencyReducedPom>
             </configuration>
           </execution>
         </executions>
