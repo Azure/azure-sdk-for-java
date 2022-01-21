@@ -204,7 +204,7 @@ public class NettyAsyncHttpClientBuilder {
 
             AddressResolverGroup<?> resolver = nettyHttpClient.configuration().resolver();
             if (resolver == null || addressResolverWasSetByBuilder) {
-                nettyHttpClient.resolver(NoopAddressResolverGroup.INSTANCE);
+                nettyHttpClient = nettyHttpClient.resolver(NoopAddressResolverGroup.INSTANCE);
             }
         }
 
