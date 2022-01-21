@@ -205,8 +205,6 @@ public class Configuration implements Cloneable {
         PROPERTY_AZURE_REQUEST_READ_TIMEOUT
     };
 
-    private static final ConfigurationSource ENVIRONMENT_SOURCE = new EnvironmentConfigurationSource();
-
     /*
      * Gets the global configuration shared by all client libraries.
      */
@@ -228,7 +226,7 @@ public class Configuration implements Cloneable {
      * Constructs a configuration containing the known Azure properties constants.
      */
     public Configuration() {
-        this.configurations = loadBaseConfiguration(ENVIRONMENT_SOURCE);
+        this.configurations = loadBaseConfiguration();
         this.path = null;
         this.fallback = null;
         // global configuration can't have logger :(
@@ -336,7 +334,7 @@ public class Configuration implements Cloneable {
             return value;
         }
 
-        value = ENVIRONMENT_SOURCE.getValue(name);
+        value = load(name);
         if (value != null) {
             logProperty(name, value, false);
             configurations.put(name, value);
@@ -506,15 +504,33 @@ public class Configuration implements Cloneable {
         return (T) convertedValue;
     }
 
-    private ConcurrentMap<String, String> loadBaseConfiguration(ConfigurationSource source) {
+    private static ConcurrentMap<String, String> loadBaseConfiguration() {
         ConcurrentMap<String, String> configurations = new ConcurrentHashMap<>();
         for (String config : DEFAULT_CONFIGURATIONS) {
-            String value = source.getValue(config);
+            String value = load(config);
             if (value != null) {
                 configurations.put(config, value);
             }
         }
 
         return configurations;
+    }
+
+    private static String load(String name) {
+        String value = loadFromProperties(name);
+
+        if (value != null) {
+            return value;
+        }
+
+        return loadFromEnvironment(name);
+    }
+
+    static String loadFromEnvironment(String name) {
+        return System.getenv(name);
+    }
+
+    static String loadFromProperties(String name) {
+        return System.getProperty(name);
     }
 }

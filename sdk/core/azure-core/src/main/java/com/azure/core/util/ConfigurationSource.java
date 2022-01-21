@@ -1,6 +1,6 @@
 package com.azure.core.util;
 
 public interface ConfigurationSource {
-    Iterable<String> getValues(String prefix);
+    Iterable<String> getChildKeys(String path);
     String getValue(String propertyName);
 }

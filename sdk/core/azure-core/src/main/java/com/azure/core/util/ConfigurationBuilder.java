@@ -57,9 +57,9 @@ public class ConfigurationBuilder {
         return new Configuration(absoluteClientPath, readConfigurations(this.source, absoluteClientPath), defaults);
     }
 
-    private static ConcurrentMap<String, String> readConfigurations(ConfigurationSource source, String prefix) {
+    private static ConcurrentMap<String, String> readConfigurations(ConfigurationSource source, String path) {
         ConcurrentMap<String, String> configs = null;
-        Iterable<String> children = source.getValues(prefix);
+        Iterable<String> children = source.getChildKeys(path);
 
         if (children == null) {
             return EMPTY_MAP;

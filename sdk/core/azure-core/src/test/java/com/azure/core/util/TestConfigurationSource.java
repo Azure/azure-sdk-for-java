@@ -15,7 +15,7 @@ public class TestConfigurationSource implements ConfigurationSource {
     }
 
     @Override
-    public Iterable<String> getValues(String prefix) {
+    public Iterable<String> getChildKeys(String prefix) {
         if (prefix == null) {
             return testData.keySet();
         }

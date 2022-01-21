@@ -48,7 +48,10 @@ public class RetryPolicy implements HttpPipelinePolicy {
         .build();
 
     private static final Function<String, ChronoUnit> CHRONOUNIT_CONVERTER = (value) -> ChronoUnit.valueOf(value);
-    private final static ConfigurationProperty<ChronoUnit> RETRY_AFTER_TIME_UNIT_CONFIG = new ConfigurationPropertyBuilder<>("http-retry.retry-after-time-unit", CHRONOUNIT_CONVERTER).build();
+    private final static ConfigurationProperty<ChronoUnit> RETRY_AFTER_TIME_UNIT_CONFIG = new ConfigurationPropertyBuilder<>("http-retry.retry-after-time-unit", CHRONOUNIT_CONVERTER)
+        .global(true)
+        .canLogValue(true)
+        .build();
 
     /**
      * Creates {@link RetryPolicy} using {@link ExponentialBackoff#ExponentialBackoff()} as the {@link RetryStrategy}.
@@ -108,22 +111,23 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
     public static RetryPolicy fromConfiguration(Configuration configuration, RetryPolicy defaultPolicy) {
         String retryMode = configuration.get(RETRY_MODE_CONFIG);
-        RetryStrategy retryStrategy;
+        RetryStrategy retryStrategy = null;
         if ("fixed".equals(retryMode)) {
             retryStrategy = FixedDelay.fromConfiguration(configuration, null);
-        } else if ("experimental".equals(retryMode)) {
+        } else if ("exponential".equals(retryMode) || retryMode == null) {
             retryStrategy = ExponentialBackoff.fromConfiguration(configuration, null);
-
-            if (retryStrategy == null) {
-                if (!(configuration.contains(RETRY_MODE_CONFIG) ||
-                    configuration.contains(RETRY_AFTER_HEADER_CONFIG) ||
-                    configuration.contains(RETRY_AFTER_TIME_UNIT_CONFIG))) {
-                    return defaultPolicy;
-                }
-                retryStrategy = new ExponentialBackoff();
-            }
         } else {
             throw new IllegalArgumentException("Unexpected retry mode: " + retryMode);
+        }
+
+        if (retryStrategy == null) {
+            if (retryMode == null &&
+                !configuration.contains(RETRY_AFTER_HEADER_CONFIG) &&
+                !configuration.contains(RETRY_AFTER_TIME_UNIT_CONFIG)) {
+                return defaultPolicy;
+            }
+
+            retryStrategy = new ExponentialBackoff();
         }
 
         return new RetryPolicy(retryStrategy, configuration.get(RETRY_AFTER_HEADER_CONFIG), configuration.get(RETRY_AFTER_TIME_UNIT_CONFIG));
