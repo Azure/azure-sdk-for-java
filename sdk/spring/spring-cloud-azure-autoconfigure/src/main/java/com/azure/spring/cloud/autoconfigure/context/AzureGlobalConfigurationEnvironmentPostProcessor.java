@@ -40,8 +40,20 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
 
     private final Log logger;
 
+    /**
+     *
+     * @param logger The logger used in this class.
+     */
     public AzureGlobalConfigurationEnvironmentPostProcessor(Log logger) {
         this.logger = logger;
+        AzureCoreEnvMapping.setLogger(logger);
+    }
+
+    /**
+     * Construct a {@link AzureGlobalConfigurationEnvironmentPostProcessor} instance with default value.
+     */
+    public AzureGlobalConfigurationEnvironmentPostProcessor() {
+        this.logger = null;
         AzureCoreEnvMapping.setLogger(logger);
     }
 
@@ -165,7 +177,9 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
         if (!source.isEmpty()) {
             environment.getPropertySources().addLast(new AzureCoreEnvPropertySource("Azure Core/SDK", source));
         } else {
-            logger.debug("No env predefined by Azure Core/SDKs are set, skip adding the AzureCoreEnvPropertySource.");
+            if (logger != null) {
+                logger.debug("No env predefined by Azure Core/SDKs are set, skip adding the AzureCoreEnvPropertySource.");
+            }
         }
     }
 

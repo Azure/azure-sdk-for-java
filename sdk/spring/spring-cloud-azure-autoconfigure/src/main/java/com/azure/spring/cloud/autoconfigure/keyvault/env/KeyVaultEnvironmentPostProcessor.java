@@ -46,6 +46,12 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
         this.logger = logger;
     }
 
+    /**
+     * Construct a {@link KeyVaultEnvironmentPostProcessor} instance with default value.
+     */
+    public KeyVaultEnvironmentPostProcessor() {
+        this.logger = null;
+    }
 
     /**
      * Post-process the environment.
@@ -61,7 +67,9 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
         if (!isKeyVaultClientAvailable()) {
-            logger.info("Key Vault client is not present, skip the Key Vault property source");
+            if (this.logger != null) {
+                logger.info("Key Vault client is not present, skip the Key Vault property source");
+            }
             return;
         }
 
@@ -85,7 +93,9 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
                 }
             }
         } else {
-            logger.debug("Key Vault 'propertySourceEnabled' or 'enabled' is not enabled");
+            if (this.logger != null) {
+                logger.debug("Key Vault 'propertySourceEnabled' or 'enabled' is not enabled");
+            }
         }
     }
 
