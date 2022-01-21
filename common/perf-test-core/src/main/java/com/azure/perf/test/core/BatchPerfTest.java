@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono;
  * </p>
  * @param <TOptions> the options configured for the test.
  */
-public abstract class BatchPerfTest<TOptions extends PerfStressOptions> extends PerfTestBase<TOptions> {
+public abstract class BatchPerfTest<TOptions extends PerfStressOptions> extends HttpPerfTestBase<TOptions> {
 
     /**
      * Creates an instance of Batch performance test.

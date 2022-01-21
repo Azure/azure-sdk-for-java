@@ -30,12 +30,12 @@ public class PerfStressProgram {
     private static final int NANOSECONDS_PER_SECOND = 1_000_000_000;
 
     private static int getCompletedOperations(PerfTestBase<?>[] tests) {
-        return Stream.of(tests).mapToInt(perfStressTest -> Long.valueOf(perfStressTest.completedOperations).intValue()).sum();
+        return Stream.of(tests).mapToInt(perfStressTest -> Long.valueOf(perfStressTest.getCompletedOperations()).intValue()).sum();
     }
 
     private static double getOperationsPerSecond(PerfTestBase<?>[] tests) {
         return IntStream.range(0, tests.length)
-            .mapToDouble(i -> tests[i].completedOperations / (((double) tests[i].lastCompletionNanoTime) / NANOSECONDS_PER_SECOND))
+            .mapToDouble(i -> tests[i].getCompletedOperations() / (((double) tests[i].lastCompletionNanoTime) / NANOSECONDS_PER_SECOND))
             .sum();
     }
 
@@ -52,6 +52,7 @@ public class PerfStressProgram {
 
         try {
             classList.add(Class.forName("com.azure.perf.test.core.NoOpTest"));
+            classList.add(Class.forName("com.azure.perf.test.core.MockEventProcessorTest"));
             classList.add(Class.forName("com.azure.perf.test.core.ExceptionTest"));
             classList.add(Class.forName("com.azure.perf.test.core.SleepTest"));
             classList.add(Class.forName("com.azure.perf.test.core.HttpPipelineTest"));

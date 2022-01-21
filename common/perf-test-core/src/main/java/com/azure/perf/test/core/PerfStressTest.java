@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono;
  * </p>
  * @param <TOptions> the options configured for the test.
  */
-public abstract class PerfStressTest<TOptions extends PerfStressOptions> extends PerfTestBase<TOptions> {
+public abstract class PerfStressTest<TOptions extends PerfStressOptions> extends HttpPerfTestBase<TOptions> {
     /**
      * Creates an instance of performance test.
      * @param options the options configured for the test.
