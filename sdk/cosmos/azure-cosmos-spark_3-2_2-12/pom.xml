@@ -253,7 +253,6 @@
         <configuration>
           <source>11</source>
           <target>11</target>
-          <failOnWarning>false</failOnWarning>
         </configuration>
         <executions>
           <execution>
@@ -721,6 +720,15 @@
                 </goals>
                 <configuration combine.self="override">
                   <release>11</release>
+                </configuration>
+              </execution>
+              <execution>
+                <id>base-testCompile</id>
+                <goals>
+                  <goal>testCompile</goal>
+                </goals>
+                <configuration combine.self="override">
+                  <testRelease>11</testRelease>
                 </configuration>
               </execution>
             </executions>
