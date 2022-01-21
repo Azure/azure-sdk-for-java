@@ -2,7 +2,7 @@
 
 ## 4.0.0-beta.4 (Unreleased)
 
-### spring-cloud-azure-resourcemanager
+### Spring Cloud Azure Resource Manager
 This section includes changes in the `spring-cloud-azure-resourcemanager` module.
 
 #### Bugs Fixed
