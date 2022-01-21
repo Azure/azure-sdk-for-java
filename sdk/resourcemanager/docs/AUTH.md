@@ -75,7 +75,7 @@ EnvironmentCredential credential = new EnvironmentCredentialBuilder()
 
 Once the `TokenCredential` and `AzureProfile` are ready, you can move forward with below authenticating code. It helps build http pipeline internally with [default configuration](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/azure-resourcemanager-resources/src/main/java/com/azure/resourcemanager/resources/fluentcore/utils/HttpPipelineProvider.java#L43).
 
-```java readme-sample-authenticate
+```java readme-sample-authenticateAuth
 AzureResourceManager azure = AzureResourceManager.authenticate(credential, profile).withDefaultSubscription();
 ```
 

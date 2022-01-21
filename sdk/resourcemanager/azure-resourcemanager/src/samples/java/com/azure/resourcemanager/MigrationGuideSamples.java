@@ -30,14 +30,14 @@ import java.util.List;
 public class MigrationGuideSamples {
 
     public void authentication() {
-        // BEGIN: readme-sample-authentication
+        // BEGIN: readme-sample-authenticationMigration
         TokenCredential credential = new ClientSecretCredentialBuilder()
             .clientId("<ClientId>")
             .clientSecret("<ClientSecret>")
             .tenantId("<TenantId>")
             .build();
         AzureProfile profile = new AzureProfile("<TenantId>", "<SubscriptionId>", AzureEnvironment.AZURE);
-        // BEGIN: readme-sample-authentication
+        // END: readme-sample-authenticationMigration
     }
 
     public void customizedPolicy(TokenCredential credential, AzureProfile profile) {

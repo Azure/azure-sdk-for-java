@@ -48,9 +48,9 @@ public class AuthSamples {
     }
 
     public void authenticate(TokenCredential credential, AzureProfile profile) {
-        // BEGIN: readme-sample-authenticate
+        // BEGIN: readme-sample-authenticateAuth
         AzureResourceManager azure = AzureResourceManager.authenticate(credential, profile).withDefaultSubscription();
-        // END: readme-sample-authenticate
+        // END: readme-sample-authenticateAuth
     }
 
     public void authenticateAndListSubs(TokenCredential credential, AzureProfile profile) {

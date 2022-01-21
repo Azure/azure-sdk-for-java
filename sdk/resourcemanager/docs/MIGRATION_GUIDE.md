@@ -54,7 +54,7 @@ ApplicationTokenCredential = new ApplicationTokenCredentials("<ClientId>", "<Ten
 
 **Equivalent in new version (`com.azure.resourcemanager.**`)**
 
-```java readme-sample-authentication
+```java readme-sample-authenticationMigration
 TokenCredential credential = new ClientSecretCredentialBuilder()
     .clientId("<ClientId>")
     .clientSecret("<ClientSecret>")
