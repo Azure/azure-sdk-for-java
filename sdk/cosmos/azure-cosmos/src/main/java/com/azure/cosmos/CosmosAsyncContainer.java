@@ -4,7 +4,6 @@ package com.azure.cosmos;
 
 import com.azure.core.util.Context;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.CosmosSchedulers;
@@ -109,8 +108,8 @@ public class CosmosAsyncContainer {
     private final String batchSpanName;
     private final AtomicBoolean isInitialized;
     private CosmosAsyncScripts scripts;
-    private final ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.CosmosItemRequestOptionsAccessor cosmosItemRequestOptionsAccessor;
-    private final ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor cosmosItemResponseBuilderAccessor;
+    private static final ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.CosmosItemRequestOptionsAccessor cosmosItemRequestOptionsAccessor = ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.getCosmosItemRequestOptionsAccessor();
+    private static final ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor cosmosItemResponseBuilderAccessor = ImplementationBridgeHelpers.CosmosItemResponseHelper.getCosmosItemResponseBuilderAccessor();
 
     CosmosAsyncContainer(String id, CosmosAsyncDatabase database) {
         this.id = id;
@@ -135,8 +134,6 @@ public class CosmosAsyncContainer {
         this.queryConflictsSpanName = "queryConflicts." + this.id;
         this.batchSpanName = "transactionalBatch." + this.id;
         this.isInitialized = new AtomicBoolean(false);
-        this.cosmosItemRequestOptionsAccessor = ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.getCosmosItemRequestOptionsAccessor();
-        this.cosmosItemResponseBuilderAccessor = ImplementationBridgeHelpers.CosmosItemResponseHelper.getCosmosItemResponseBuilderAccessor();
     }
 
     /**
