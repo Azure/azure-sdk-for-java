@@ -108,6 +108,7 @@ public class AppConfigurationRefreshTest {
 
         properties = new AppConfigurationProperties();
         properties.setStores(Arrays.asList(store));
+        properties.setRefreshInterval(null);
 
         contextsMap = new ConcurrentHashMap<>();
         contextsMap.put(TEST_STORE_NAME + testInfo.getDisplayName(), Arrays.asList(TEST_ETAG));

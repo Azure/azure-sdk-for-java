@@ -50,6 +50,8 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
     private Map<String, AppConfigurationStoreHealth> clientHealth;
 
     private String eventDataInfo;
+    
+    private final Duration refreshInterval;
 
     /**
      * Component used for checking for and triggering configuration refreshes.
@@ -59,6 +61,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
      */
     public AppConfigurationRefresh(AppConfigurationProperties properties, ClientStore clientStore) {
         this.configStores = properties.getStores();
+        refreshInterval = properties.getRefreshInterval();
         this.clientStore = clientStore;
         this.eventDataInfo = "";
         this.clientHealth = new HashMap<>();
@@ -112,7 +115,8 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
     private boolean refreshStores() {
         boolean didRefresh = false;
         if (running.compareAndSet(false, true)) {
-            if (StateHolder.getNextForcedRefresh() != null && new Date().after(StateHolder.getNextForcedRefresh())) {
+            if (refreshInterval != null && StateHolder.getNextForcedRefresh() != null 
+                    && new Date().after(StateHolder.getNextForcedRefresh())) {
                 this.eventDataInfo = "Minimum refresh period reached. Refreshing configurations.";
                 
                 LOGGER.info(eventDataInfo);
