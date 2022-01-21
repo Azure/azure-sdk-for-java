@@ -278,8 +278,12 @@
         <configuration>
           <additionalReadmes>
             <additionalReadme>
-              <root>../</root>
-              <glob>**/{README.md,docs/*.md}</glob>
+              <root>../README.md</root>
+              <glob>**/README.md</glob>
+            </additionalReadme>
+            <additionalReadme>
+              <root>../docs</root>
+              <glob>**/*.md</glob>
             </additionalReadme>
           </additionalReadmes>
         </configuration>
