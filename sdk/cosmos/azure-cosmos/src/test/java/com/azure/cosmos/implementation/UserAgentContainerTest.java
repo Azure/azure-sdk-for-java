@@ -45,7 +45,7 @@ public class UserAgentContainerTest {
             userProvidedSuffix = "test-application-id";
             userAgentContainer = new UserAgentContainer();
             userAgentContainer.setSuffix(userProvidedSuffix);
-            expectedString = expectedStringFixedPart + SPACE + userProvidedSuffix;
+            expectedString = getUserAgentFixedPart() + SPACE + userProvidedSuffix;
             assertThat(userAgentContainer.getUserAgent()).isEqualTo(expectedString);
             assertThat(userAgentContainer.getUserAgent()).doesNotContainIgnoringCase("beta");
         } finally {
