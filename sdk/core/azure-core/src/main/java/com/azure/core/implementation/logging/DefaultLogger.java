@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation.logging;
 
+import com.azure.core.implementation.util.EnvironmentConfiguration;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.LogLevel;
 import org.slf4j.helpers.FormattingTuple;
@@ -68,7 +69,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
         }
         this.classPath = classPath;
         int configuredLogLevel =
-            LogLevel.fromString(Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_LOG_LEVEL))
+            LogLevel.fromString(EnvironmentConfiguration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_LOG_LEVEL))
                 .getLogLevel();
 
         isTraceEnabled = LogLevel.VERBOSE.getLogLevel() > configuredLogLevel;

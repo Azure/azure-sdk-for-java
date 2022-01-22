@@ -4,9 +4,7 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.util.Configuration;
-import com.azure.core.util.ConfigurationBuilder;
-import com.azure.core.util.ConfigurationSource;
-import com.azure.core.util.TestConfigurationSource;
+import com.azure.core.util.TestConfigurationBuilder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -88,9 +86,6 @@ public class HttpLogDetailLevelTests {
 
     @SuppressWarnings("deprecation")
     private static Configuration makeConfiguration(String detailLevelValue) {
-        ConfigurationSource source =
-            detailLevelValue == null ? new TestConfigurationSource() : new TestConfigurationSource(Configuration.PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL, detailLevelValue);
-
-        return new ConfigurationBuilder(source).build();
+        return new TestConfigurationBuilder().setEnv(Configuration.PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL, detailLevelValue).build();
     }
 }

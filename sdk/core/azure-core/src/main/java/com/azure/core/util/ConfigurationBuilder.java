@@ -1,15 +1,19 @@
 package com.azure.core.util;
 
+import com.azure.core.implementation.util.EnvironmentConfiguration;
+import com.azure.core.implementation.util.EnvironmentConfigurationSource;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ConfigurationBuilder {
 
-    private final static ConcurrentMap<String, String> EMPTY_MAP = new ConcurrentHashMap<>();
+    private final static Map<String, String> EMPTY_MAP = new HashMap<>();
+    private final static EnvironmentConfigurationSource ENVIRONMENT_SOURCE = new EnvironmentConfigurationSource();
 
     private final ConfigurationSource source;
+    private final EnvironmentConfiguration environmentConfiguration;
     private final ClientLogger logger;
     private String rootPath;
     private Configuration defaults;
@@ -17,7 +21,15 @@ public class ConfigurationBuilder {
 
     public ConfigurationBuilder(ConfigurationSource source) {
         this.source = source;
-        this.logger = new ClientLogger(Configuration.class);
+        this.environmentConfiguration = EnvironmentConfiguration.getGlobalConfiguration();
+        this.logger = new ClientLogger(ConfigurationBuilder.class);
+    }
+
+    // for tests
+    ConfigurationBuilder(ConfigurationSource source, ConfigurationSource environmentSource) {
+        this.source = source;
+        this.environmentConfiguration = new EnvironmentConfiguration(environmentSource);
+        this.logger = new ClientLogger(ConfigurationBuilder.class);
     }
 
     public ConfigurationBuilder root(String rootPath) {
@@ -27,7 +39,7 @@ public class ConfigurationBuilder {
 
     public ConfigurationBuilder defaultsSection(String defaultsPath) {
         String absoluteDefaultsPath = getAbsolutePath(rootPath, defaultsPath);
-        defaults = new Configuration(absoluteDefaultsPath, readConfigurations(this.source, absoluteDefaultsPath), null);
+        defaults = new Configuration(absoluteDefaultsPath, readConfigurations(this.source, absoluteDefaultsPath), null, environmentConfiguration);
         return this;
     }
 
@@ -50,22 +62,26 @@ public class ConfigurationBuilder {
 
     public Configuration build() {
         if (defaults == null) {
-            defaults = new Configuration(rootPath, readConfigurations(this.source, rootPath), null);
+            defaults = new Configuration(rootPath, readConfigurations(this.source, rootPath), null, environmentConfiguration);
+        }
+
+        if (clientPath == null) {
+            return defaults;
         }
 
         String absoluteClientPath = getAbsolutePath(rootPath, clientPath);
-        return new Configuration(absoluteClientPath, readConfigurations(this.source, absoluteClientPath), defaults);
+        return new Configuration(absoluteClientPath, readConfigurations(this.source, absoluteClientPath), defaults, environmentConfiguration);
     }
 
-    private static ConcurrentMap<String, String> readConfigurations(ConfigurationSource source, String path) {
-        ConcurrentMap<String, String> configs = null;
+    private static Map<String, String> readConfigurations(ConfigurationSource source, String path) {
+        Map<String, String> configs = null;
         Iterable<String> children = source.getChildKeys(path);
 
         if (children == null) {
             return EMPTY_MAP;
         }
 
-        configs = new ConcurrentHashMap<>();
+        configs = new HashMap<>();
         for (String child : children) {
             // todo log if contains
             configs.putIfAbsent(child, source.getValue(child));

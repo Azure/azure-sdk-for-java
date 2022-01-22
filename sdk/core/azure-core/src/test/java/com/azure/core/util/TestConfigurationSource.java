@@ -9,6 +9,11 @@ public class TestConfigurationSource implements ConfigurationSource {
 
     public TestConfigurationSource(String... testData) {
         this.testData = new HashMap<>();
+
+        if (testData == null) {
+            return;
+        }
+
         for (int i = 0; i < testData.length; i +=2) {
             this.testData.put(testData[i], testData[i + 1]);
         }
@@ -27,3 +32,4 @@ public class TestConfigurationSource implements ConfigurationSource {
         return testData.get(propertyName);
     }
 }
+

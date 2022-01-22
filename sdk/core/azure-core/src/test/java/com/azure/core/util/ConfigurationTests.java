@@ -27,9 +27,10 @@ public class ConfigurationTests {
     private static final String UNEXPECTED_VALUE = "notMyConfigurationValueDef456";
     private static final String DEFAULT_VALUE = "theDefaultValueGhi789";
 
-    private Configuration getTestConfiguration(String... props) {
-        return new ConfigurationBuilder(new TestConfigurationSource(props)).build();
+    private Configuration getEnvironmentTestConfiguration(String... props) {
+        return new TestConfigurationBuilder().setEnv(props).build();
     }
+
 
     /**
      * Verifies that a runtime parameter is able to be retrieved.
@@ -37,7 +38,7 @@ public class ConfigurationTests {
     @Test
     public void runtimeConfigurationFound() {
         // TODO test env source
-        assertEquals(EXPECTED_VALUE, getTestConfiguration(MY_CONFIGURATION, EXPECTED_VALUE).get(MY_CONFIGURATION));
+        assertEquals(EXPECTED_VALUE, getEnvironmentTestConfiguration(MY_CONFIGURATION, EXPECTED_VALUE).get(MY_CONFIGURATION));
     }
 
     /**
@@ -45,7 +46,7 @@ public class ConfigurationTests {
      */
     @Test
     public void configurationNotFound() {
-        assertNull(new Configuration().get(MY_CONFIGURATION));
+        assertNull(new ConfigurationBuilder(new TestConfigurationSource()).build().get(MY_CONFIGURATION));
     }
 
 
@@ -54,7 +55,7 @@ public class ConfigurationTests {
      */
     @Test
     public void foundConfigurationPreferredOverDefault() {
-        Configuration configuration = getTestConfiguration(MY_CONFIGURATION, EXPECTED_VALUE);
+        Configuration configuration = getEnvironmentTestConfiguration(MY_CONFIGURATION, EXPECTED_VALUE);
 
         assertEquals(EXPECTED_VALUE, configuration.get(MY_CONFIGURATION, DEFAULT_VALUE));
     }
@@ -74,7 +75,7 @@ public class ConfigurationTests {
      */
     @Test
     public void foundConfigurationIsConverted() {
-        Configuration configuration = getTestConfiguration(MY_CONFIGURATION, EXPECTED_VALUE);
+        Configuration configuration = getEnvironmentTestConfiguration(MY_CONFIGURATION, EXPECTED_VALUE);
 
         assertEquals(EXPECTED_VALUE.toUpperCase(), configuration.get(MY_CONFIGURATION, String::toUpperCase));
     }
@@ -84,13 +85,13 @@ public class ConfigurationTests {
      */
     @Test
     public void notFoundConfigurationIsConvertedToNull() {
-        assertNull(new Configuration().get(MY_CONFIGURATION, String::toUpperCase));
+        assertNull(getEnvironmentTestConfiguration().get(MY_CONFIGURATION, String::toUpperCase));
     }
 
     @Test
     @SuppressWarnings("deprecation")
     public void cloneConfiguration() {
-        Configuration configuration = getTestConfiguration("variable1", "value1", "variable2", "value2");
+        Configuration configuration = getEnvironmentTestConfiguration("variable1", "value1", "variable2", "value2");
 
         Configuration configurationClone = configuration.clone();
 
@@ -115,7 +116,7 @@ public class ConfigurationTests {
     @ParameterizedTest
     @MethodSource("getOrDefaultSupplier")
     public void getOrDefault(String configurationValue, Object defaultValue, Object expectedValue) {
-        Configuration configuration = getTestConfiguration("getOrDefault", configurationValue);
+        Configuration configuration = getEnvironmentTestConfiguration("getOrDefault", configurationValue);
         assertEquals(expectedValue, configuration.get("getOrDefault", defaultValue));
     }
 

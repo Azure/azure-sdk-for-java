@@ -3,11 +3,12 @@
 
 package com.azure.core.util;
 
+import com.azure.core.implementation.util.EnvironmentConfiguration;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Exceptions;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import java.util.Collections;
+import java.util.Map;
 import java.util.function.Function;
 
 /**
@@ -171,41 +172,6 @@ public class Configuration implements Cloneable {
     public static final String PROPERTY_AZURE_REQUEST_READ_TIMEOUT = "AZURE_REQUEST_READ_TIMEOUT";
 
     /*
-     * Configurations that are loaded into the global configuration store when the application starts.
-     */
-    private static final String[] DEFAULT_CONFIGURATIONS = {
-        PROPERTY_HTTP_PROXY,
-        PROPERTY_HTTPS_PROXY,
-        PROPERTY_IDENTITY_ENDPOINT,
-        PROPERTY_IDENTITY_HEADER,
-        PROPERTY_NO_PROXY,
-        PROPERTY_MSI_ENDPOINT,
-        PROPERTY_MSI_SECRET,
-        PROPERTY_AZURE_SUBSCRIPTION_ID,
-        PROPERTY_AZURE_USERNAME,
-        PROPERTY_AZURE_PASSWORD,
-        PROPERTY_AZURE_CLIENT_ID,
-        PROPERTY_AZURE_CLIENT_SECRET,
-        PROPERTY_AZURE_TENANT_ID,
-        PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH,
-        PROPERTY_AZURE_IDENTITY_DISABLE_CP1,
-        PROPERTY_AZURE_RESOURCE_GROUP,
-        PROPERTY_AZURE_CLOUD,
-        PROPERTY_AZURE_AUTHORITY_HOST,
-        PROPERTY_AZURE_TELEMETRY_DISABLED,
-        PROPERTY_AZURE_LOG_LEVEL,
-        PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL,
-        PROPERTY_AZURE_TRACING_DISABLED,
-        PROPERTY_AZURE_POD_IDENTITY_TOKEN_URL,
-        PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME,
-        PROPERTY_AZURE_REQUEST_RETRY_COUNT,
-        PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT,
-        PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
-        PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT,
-        PROPERTY_AZURE_REQUEST_READ_TIMEOUT
-    };
-
-    /*
      * Gets the global configuration shared by all client libraries.
      */
     private static final Configuration GLOBAL_CONFIGURATION = new Configuration();
@@ -217,34 +183,31 @@ public class Configuration implements Cloneable {
     @SuppressWarnings("StaticInitializerReferencesSubClass")
     public static final Configuration NONE = new NoopConfiguration();
 
-    private final ConcurrentMap<String, String> configurations;
+    private final EnvironmentConfiguration mutableEnvironmentConfiguration;
+    private final Map<String, String> configurations;
     private final String path;
-    private final Configuration fallback;
+    private final Configuration defaults;
     private final ClientLogger logger;
+    private final static String[] EMPTY_ARRAY = new String[0];
 
     /**
      * Constructs a configuration containing the known Azure properties constants.
      */
+    @Deprecated
     public Configuration() {
-        this.configurations = loadBaseConfiguration();
-        this.path = null;
-        this.fallback = null;
-        // global configuration can't have logger :(
-        this.logger = null;
+        this(null, Collections.emptyMap(), null, new EnvironmentConfiguration(EnvironmentConfiguration.ENVIRONMENT_SOURCE));
     }
 
-    Configuration(String path, ConcurrentMap<String, String> configurations, Configuration fallback) {
-        this.configurations = configurations;
-        this.fallback = fallback;
+    Configuration(String path, Map<String, String> configurations, Configuration defaults, EnvironmentConfiguration environmentConfiguration) {
+        this.configurations = Collections.unmodifiableMap(configurations);
+        this.defaults = defaults;
         this.path = path;
+        this.mutableEnvironmentConfiguration = environmentConfiguration;
         this.logger = new ClientLogger(Configuration.class);
     }
 
     private Configuration(Configuration original) {
-        this.configurations = new ConcurrentHashMap<>(original.configurations);
-        this.path = original.path;
-        this.fallback = original.fallback;
-        this.logger = new ClientLogger(Configuration.class);
+        this(original.path, original.configurations, original.defaults, original.mutableEnvironmentConfiguration.clone());
     }
 
     /**
@@ -266,7 +229,16 @@ public class Configuration implements Cloneable {
      * @return Value of the configuration if found, otherwise null.
      */
     public String get(String name) {
-        return getOrLoad(name);
+
+        // TODO:
+        // With this we allow env vars to be set in props file
+        /*String value = getLocalProperty(name, EMPTY_ARRAY, false);
+        if (value != null) {
+
+            return value;
+        }*/
+
+        return mutableEnvironmentConfiguration.get(name);
     }
 
     /**
@@ -283,7 +255,7 @@ public class Configuration implements Cloneable {
      * @return The converted configuration if found, otherwise the default value is returned.
      */
     public <T> T get(String name, T defaultValue) {
-        return convertOrDefault(getOrLoad(name), defaultValue);
+        return mutableEnvironmentConfiguration.get(name, defaultValue);
     }
 
     /**
@@ -300,48 +272,7 @@ public class Configuration implements Cloneable {
      * @return The converted configuration if found, otherwise null.
      */
     public <T> T get(String name, Function<String, T> converter) {
-        String value = getOrLoad(name);
-        if (CoreUtils.isNullOrEmpty(value)) {
-            return null;
-        }
-
-        return converter.apply(value);
-    }
-
-    private void logProperty(String name, String value, boolean canLogValue) {
-        if (logger != null) {
-            logger.atVerbose()
-                .addKeyValue("property", name)
-                .addKeyValue("value", canLogValue ? value : "redacted")
-                .log("Got property value.");
-        }
-    }
-
-    /*
-     * Attempts to get the value of the configuration from the configuration store, if the value isn't found then it
-     * attempts to load it from the runtime parameters then the environment variables.
-     *
-     * If no configuration is found null is returned.
-     *
-     * @param name Name of the configuration.
-     * @return The configuration value from either the configuration store, runtime parameters, or environment
-     * variable, in that order, if found, otherwise null.
-     */
-    private String getOrLoad(String name) {
-        String value = configurations.get(name);
-        if (value != null) {
-            logProperty(name, value, false);
-            return value;
-        }
-
-        value = load(name);
-        if (value != null) {
-            logProperty(name, value, false);
-            configurations.put(name, value);
-            return value;
-        }
-
-        return null;
+        return mutableEnvironmentConfiguration.get(name, converter);
     }
 
     /**
@@ -355,7 +286,7 @@ public class Configuration implements Cloneable {
      */
     @Deprecated
     public Configuration put(String name, String value) {
-        configurations.put(name, value);
+        mutableEnvironmentConfiguration.put(name, value);
         return this;
     }
 
@@ -369,7 +300,7 @@ public class Configuration implements Cloneable {
      */
     @Deprecated
     public String remove(String name) {
-        return configurations.remove(name);
+        return mutableEnvironmentConfiguration.remove(name);
     }
 
     /**
@@ -382,7 +313,7 @@ public class Configuration implements Cloneable {
      * @return True if the configuration exists, otherwise false.
      */
     public boolean contains(String name) {
-        return configurations.containsKey(name);
+        return mutableEnvironmentConfiguration.contains(name);
     }
 
     /**
@@ -445,8 +376,8 @@ public class Configuration implements Cloneable {
             return value;
         }
 
-        if (property.isGlobal() && fallback != null) {
-            value = fallback.getLocalProperty(property.getName(), property.getAliases(), property.canLogValue());
+        if (property.isGlobal() && defaults != null) {
+            value = defaults.getLocalProperty(property.getName(), property.getAliases(), property.canLogValue());
             if (value != null) {
                 return value;
             }
@@ -454,7 +385,7 @@ public class Configuration implements Cloneable {
 
         if (!CoreUtils.isNullOrEmpty(property.getEnvironmentVariables())) {
             for (String name : property.getEnvironmentVariables()) {
-                value = get(name);
+                value = mutableEnvironmentConfiguration.get(name);
                 if (value != null) {
                     return value;
                 }
@@ -464,73 +395,13 @@ public class Configuration implements Cloneable {
         return null;
     }
 
-    /*
-     * Attempts to convert the configuration value to {@code T}.
-     *
-     * If the value is null or empty then the default value is returned.
-     *
-     * @param value Configuration value retrieved from the map.
-     * @param defaultValue Default value to return if the configuration value is null or empty.
-     * @param <T> Generic type that the value is converted to if not null or empty.
-     * @return The converted configuration, if null or empty the default value.
-     */
-    @SuppressWarnings("unchecked")
-    private static <T> T convertOrDefault(String value, T defaultValue) {
-        // Value is null or empty, return the default.
-        if (CoreUtils.isNullOrEmpty(value)) {
-            return defaultValue;
+    private void logProperty(String name, String value, boolean canLogValue) {
+        // TODO don't use configuration for default logger
+        if (logger != null) {
+            logger.atVerbose()
+                .addKeyValue("property", name)
+                .addKeyValue("value", canLogValue ? value : "redacted")
+                .log("Got property value.");
         }
-
-        // Check the default value's type to determine how it needs to be converted.
-        Object convertedValue;
-        if (defaultValue instanceof Byte) {
-            convertedValue = Byte.parseByte(value);
-        } else if (defaultValue instanceof Short) {
-            convertedValue = Short.parseShort(value);
-        } else if (defaultValue instanceof Integer) {
-            convertedValue = Integer.parseInt(value);
-        } else if (defaultValue instanceof Long) {
-            convertedValue = Long.parseLong(value);
-        } else if (defaultValue instanceof Float) {
-            convertedValue = Float.parseFloat(value);
-        } else if (defaultValue instanceof Double) {
-            convertedValue = Double.parseDouble(value);
-        } else if (defaultValue instanceof Boolean) {
-            convertedValue = Boolean.parseBoolean(value);
-        } else {
-            convertedValue = value;
-        }
-
-        return (T) convertedValue;
-    }
-
-    private static ConcurrentMap<String, String> loadBaseConfiguration() {
-        ConcurrentMap<String, String> configurations = new ConcurrentHashMap<>();
-        for (String config : DEFAULT_CONFIGURATIONS) {
-            String value = load(config);
-            if (value != null) {
-                configurations.put(config, value);
-            }
-        }
-
-        return configurations;
-    }
-
-    private static String load(String name) {
-        String value = loadFromProperties(name);
-
-        if (value != null) {
-            return value;
-        }
-
-        return loadFromEnvironment(name);
-    }
-
-    static String loadFromEnvironment(String name) {
-        return System.getenv(name);
-    }
-
-    static String loadFromProperties(String name) {
-        return System.getProperty(name);
     }
 }
