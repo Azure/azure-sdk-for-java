@@ -75,15 +75,15 @@ extends:
       - name: azure-cosmos
         groupId: com.azure
         safeName: azurecosmos
+      - name: azure-cosmos-spark_3-1_2-12
+        groupId: com.azure.cosmos.spark
+        safeName: azurecosmosspark31
       - name: azure-spring-data-cosmos
         groupId: com.azure
         safeName: azurespringdatacosmos
       - name: azure-cosmos-encryption
         groupId: com.azure
         safeName: azurecosmosencryption
-      - name: azure-cosmos-spark_3-1_2-12
-        groupId: com.azure.cosmos.spark
-        safeName: azurecosmosspark31
       - name: azure-cosmos-spark_3-2_2-12
         groupId: com.azure.cosmos.spark
         safeName: azurecosmosspark32

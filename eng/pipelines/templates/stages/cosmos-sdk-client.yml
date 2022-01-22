@@ -43,6 +43,7 @@ stages:
           - TestOptions=.*/-Punit
           - AZURE_TEST.*=.*/
         MavenBuildInstallParallelization: 1
+        MavenBuildPackageParallelization: 1
         SparkShading: '-DsparkShading'
 
   - stage: TestEmulator
