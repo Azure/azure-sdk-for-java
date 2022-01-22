@@ -11,16 +11,16 @@ import java.util.List;
 /**
  * The helper class to set the non-public properties of an {@link DocumentModelOperationError} instance.
  */
-public final class FormRecognizerErrorHelper {
-    private static FormRecognizerErrorAccessor accessor;
+public final class DocumentModelOperationErrorHelper {
+    private static DocumentModelOperationErrorAccessor accessor;
 
-    private FormRecognizerErrorHelper() {
+    private DocumentModelOperationErrorHelper() {
     }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link DocumentModelOperationError} instance.
      */
-    public interface FormRecognizerErrorAccessor {
+    public interface DocumentModelOperationErrorAccessor {
         void setCode(DocumentModelOperationError documentModelOperationError, String errorCode);
         void setMessage(DocumentModelOperationError documentModelOperationError, String message);
 
@@ -34,10 +34,10 @@ public final class FormRecognizerErrorHelper {
     /**
      * The method called from {@link DocumentModelOperationError} to set it's accessor.
      *
-     * @param formRecognizerErrorAccessor The accessor.
+     * @param documentModelOperationErrorAccessor The accessor.
      */
-    public static void setAccessor(final FormRecognizerErrorAccessor formRecognizerErrorAccessor) {
-        accessor = formRecognizerErrorAccessor;
+    public static void setAccessor(final DocumentModelOperationErrorAccessor documentModelOperationErrorAccessor) {
+        accessor = documentModelOperationErrorAccessor;
     }
 
     static void setCode(DocumentModelOperationError documentModelOperationError, String errorCode) {

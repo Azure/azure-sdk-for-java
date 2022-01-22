@@ -247,7 +247,7 @@ public final class AttestationAdministrationAsyncClient {
             .onErrorMap(Utilities::mapException)
             .flatMap(response -> {
                 Response<AttestationTokenImpl> token = Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken()));
-                return getCachedAttestationSigners()
+                return getCachedAttestationSigners(context)
                     .map(signers -> {
                         token.getValue().validate(signers, validationOptionsToUse);
                         String policyJwt = token.getValue().getBody(com.azure.security.attestation.implementation.models.PolicyResult.class).getPolicy();
@@ -406,7 +406,7 @@ public final class AttestationAdministrationAsyncClient {
             .onErrorMap(Utilities::mapException)
             .flatMap(response -> {
                 Response<AttestationTokenImpl> token = Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken()));
-                return getCachedAttestationSigners()
+                return getCachedAttestationSigners(context)
                     .map(signers -> {
                         token.getValue().validate(signers, finalOptions);
                         PolicyResult policyResult = PolicyResultImpl.fromGenerated(token.getValue().getBody(com.azure.security.attestation.implementation.models.PolicyResult.class));
@@ -626,7 +626,7 @@ public final class AttestationAdministrationAsyncClient {
             .onErrorMap(Utilities::mapException)
             .flatMap(response -> {
                 Response<AttestationTokenImpl> token = Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken()));
-                return getCachedAttestationSigners()
+                return getCachedAttestationSigners(context)
                     .map(signers -> {
                         token.getValue().validate(signers, finalOptions);
                         PolicyResult policyResult = PolicyResultImpl.fromGenerated(token.getValue().getBody(com.azure.security.attestation.implementation.models.PolicyResult.class));
@@ -729,7 +729,7 @@ public final class AttestationAdministrationAsyncClient {
             .onErrorMap(Utilities::mapException)
             .flatMap(response -> {
                 Response<AttestationTokenImpl> responseWithToken = Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken()));
-                return getCachedAttestationSigners()
+                return getCachedAttestationSigners(context)
                     .map(signers -> {
                         responseWithToken.getValue().validate(signers, optionsToUse);
                         JsonWebKeySet policyJwks = responseWithToken.getValue().getBody(com.azure.security.attestation.implementation.models.PolicyCertificatesResult.class).getPolicyCertificates();
@@ -861,7 +861,7 @@ public final class AttestationAdministrationAsyncClient {
             .onErrorMap(Utilities::mapException)
             .flatMap(response -> {
                 Response<AttestationTokenImpl> token = Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken()));
-                return getCachedAttestationSigners()
+                return getCachedAttestationSigners(context)
                     .map(signers -> {
                         token.getValue().validate(signers, finalOptions);
                         PolicyCertificatesModificationResult addResult = PolicyCertificatesModificationResultImpl.fromGenerated(token.getValue().getBody(com.azure.security.attestation.implementation.models.PolicyCertificatesModificationResult.class));
@@ -1000,7 +1000,7 @@ public final class AttestationAdministrationAsyncClient {
             .onErrorMap(Utilities::mapException)
             .flatMap(response -> {
                 Response<AttestationTokenImpl> token = Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken()));
-                return getCachedAttestationSigners()
+                return getCachedAttestationSigners(context)
                     .map(signers -> {
                         token.getValue().validate(signers, finalOptions);
                         PolicyCertificatesModificationResult addResult = PolicyCertificatesModificationResultImpl.fromGenerated(token.getValue().getBody(com.azure.security.attestation.implementation.models.PolicyCertificatesModificationResult.class));
@@ -1026,14 +1026,15 @@ public final class AttestationAdministrationAsyncClient {
      *  because the `compareAndSet` API won't capture a reference to the second `signers` object.
      *
      * </p>
+     * @param context Context for the operation.
      * @return cached signers.
      */
-    Mono<List<AttestationSigner>> getCachedAttestationSigners() {
+    Mono<List<AttestationSigner>> getCachedAttestationSigners(Context context) {
         if (this.cachedSigners.get() != null) {
             return Mono.just(this.cachedSigners.get());
         } else {
-            return this.signingCertificatesImpl.getAsync()
-                .map(AttestationSignerImpl::attestationSignersFromJwks)
+            return this.signingCertificatesImpl.getWithResponseAsync(context)
+                .map(response -> AttestationSignerImpl.attestationSignersFromJwks(response.getValue()))
                 .map(signers -> {
                     this.cachedSigners.compareAndSet(null, signers);
                     return this.cachedSigners.get();
