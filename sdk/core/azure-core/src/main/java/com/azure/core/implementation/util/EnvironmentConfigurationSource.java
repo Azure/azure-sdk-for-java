@@ -3,16 +3,16 @@ package com.azure.core.implementation.util;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationSource;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class EnvironmentConfigurationSource implements ConfigurationSource {
 
     /*
      * Configurations that are loaded into the global configuration store when the application starts.
      */
-    private static final List<String> DEFAULT_CONFIGURATIONS = List.of(
+    private static final Set<String> DEFAULT_CONFIGURATIONS = Set.of(
         Configuration.PROPERTY_HTTP_PROXY,
         Configuration.PROPERTY_HTTPS_PROXY,
         Configuration.PROPERTY_IDENTITY_ENDPOINT,
@@ -45,16 +45,16 @@ public class EnvironmentConfigurationSource implements ConfigurationSource {
     );
 
     @Override
-    public Iterable<String> getChildKeys(String path) {
+    public Set<String> getChildKeys(String path) {
         if (path == null) {
             return DEFAULT_CONFIGURATIONS;
         }
 
-        List<String> childKeys = Collections.emptyList();
+        Set<String> childKeys = Collections.emptySet();
         for (String prop : DEFAULT_CONFIGURATIONS) {
             if (prop.startsWith(path) && prop.length() > path.length() && prop.charAt(path.length()) == '.') {
                 if (childKeys.isEmpty()) {
-                    childKeys = new ArrayList<>();
+                    childKeys = new HashSet<>();
                 }
 
                 childKeys.add(prop);

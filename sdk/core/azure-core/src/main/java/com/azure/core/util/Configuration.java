@@ -188,7 +188,7 @@ public class Configuration implements Cloneable {
     private final String path;
     private final Configuration defaults;
     private final ClientLogger logger;
-    private final static String[] EMPTY_ARRAY = new String[0];
+    // private final static String[] EMPTY_ARRAY = new String[0];
 
     /**
      * Constructs a configuration containing the known Azure properties constants.
@@ -322,6 +322,7 @@ public class Configuration implements Cloneable {
      * @return A clone of the Configuration object.
      */
     @SuppressWarnings("CloneDoesntCallSuperClone")
+    @Deprecated // TODO we don't really need to anymore since config is immutable
     public Configuration clone() {
         return new Configuration(this);
     }
@@ -348,20 +349,17 @@ public class Configuration implements Cloneable {
     }
 
     private String getLocalProperty(String name, String[] aliases, boolean canLogValue) {
-        // TODO this can be optimized with smarter index
-        String absoluteName = path == null ? name : path + "." + name;
-        String value = configurations.get(absoluteName);
+        String value = configurations.get(name);
 
         if (value != null) {
-            logProperty(absoluteName, value, canLogValue);
+            logProperty(name, value, canLogValue);
             return value;
         }
 
         for(String alias : aliases) {
-            absoluteName = path == null ? alias : path + "." + alias;
-            value = configurations.get(absoluteName);
+            value = configurations.get(name);
             if (value != null) {
-                logProperty(absoluteName, value, canLogValue);
+                logProperty(name, value, canLogValue);
                 return value;
             }
         }
@@ -396,12 +394,10 @@ public class Configuration implements Cloneable {
     }
 
     private void logProperty(String name, String value, boolean canLogValue) {
-        // TODO don't use configuration for default logger
-        if (logger != null) {
-            logger.atVerbose()
-                .addKeyValue("property", name)
-                .addKeyValue("value", canLogValue ? value : "redacted")
-                .log("Got property value.");
-        }
+        logger.atVerbose()
+            .addKeyValue("property", name)
+            .addKeyValue("path", path)
+            .addKeyValue("value", canLogValue ? value : "redacted")
+            .log("Got property value.");
     }
 }

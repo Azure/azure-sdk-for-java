@@ -6,6 +6,7 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class ConfigurationBuilder {
 
@@ -75,16 +76,16 @@ public class ConfigurationBuilder {
 
     private static Map<String, String> readConfigurations(ConfigurationSource source, String path) {
         Map<String, String> configs = null;
-        Iterable<String> children = source.getChildKeys(path);
+        Set<String> children = source.getChildKeys(path);
 
-        if (children == null) {
+        if (children == null || children.isEmpty()) {
             return EMPTY_MAP;
         }
 
         configs = new HashMap<>();
         for (String child : children) {
             // todo log if contains
-            configs.putIfAbsent(child, source.getValue(child));
+            configs.putIfAbsent(path == null ? child : child.substring(path.length() + 1), source.getValue(child));
         }
 
         return configs;

@@ -2,6 +2,7 @@ package com.azure.core.util;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class TestConfigurationSource implements ConfigurationSource {
@@ -20,11 +21,11 @@ public class TestConfigurationSource implements ConfigurationSource {
     }
 
     @Override
-    public Iterable<String> getChildKeys(String prefix) {
+    public Set<String> getChildKeys(String prefix) {
         if (prefix == null) {
             return testData.keySet();
         }
-        return testData.keySet().stream().filter(k -> k.startsWith(prefix + ".")).collect(Collectors.toList());
+        return testData.keySet().stream().filter(k -> k.startsWith(prefix + ".")).collect(Collectors.toSet());
     }
 
     @Override
