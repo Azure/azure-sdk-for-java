@@ -28,11 +28,17 @@
           "DESIRED_CONSISTENCIES": "[\"Session\"]",
           "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/\""
       },
-      "Spark Integration Tests targeting Cosmos Emulator'": {
-          "ProfileFlag": "-Dspark-e2e",
+      "Spark 3.1 Integration Tests targeting Cosmos Emulator'": {
+          "ProfileFlag": "-Dspark-e2e_3-1",
           "PROTOCOLS": "[\"Tcp\"]",
           "DESIRED_CONSISTENCIES": "[\"Session\"]",
           "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop\""
+      },
+      "Spark 3.2 Integration Tests targeting Cosmos Emulator'": {
+        "ProfileFlag": "-Dspark-e2e_3-2",
+        "PROTOCOLS": "[\"Tcp\"]",
+        "DESIRED_CONSISTENCIES": "[\"Session\"]",
+        "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop\""
       }
     }
   }
