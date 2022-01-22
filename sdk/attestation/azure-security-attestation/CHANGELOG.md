@@ -26,7 +26,7 @@
 factory method:
 ```java
 AttestSgxEnclaveOptions options = AttestSgxEnclaveOptions
-    .fromQuote(decodedOpenEnclaveReport)
+    .fromQuote(decodedSgxEnclaveReport)
     .setRunTimeData(new byte[] { 1, 2, 3, 4, 5});
 ```
 or
@@ -49,6 +49,7 @@ with the  `listPolicyManagementCertificates`, `addPolicyManagementCertificate` a
  * Removed `JsonWebKey`, `JsonWebKeySet`, `PolicyCertificatesModificationResult`, `PolicyCertificatesModifyResponse`, and `CertificatesResponse` objects 
 because they are no longer a part of the public API surface.
  * Refactored `AttestationSigningKey` class to require certificate and signing key parameters in constructor.
+ * listAttestationSigners now returns an `AttestationSignersCollection` object instead of a raw `List<AttestationSigner>`
 
 ### Bugs Fixed
 * Attestation tests now all pass when run in Live mode.
