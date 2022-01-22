@@ -41,7 +41,7 @@ public class UserAgentContainerTest {
 
         //With snapshot-instead-of-beta enabled
         try {
-            HttpConstants.Versions.SDK_VERSION_SNAPSHOT_INSTEAD_OF_BETA = true;
+            HttpConstants.Versions.useSnapshotInsteadOfBeta();
             userProvidedSuffix = "test-application-id";
             userAgentContainer = new UserAgentContainer();
             userAgentContainer.setSuffix(userProvidedSuffix);
@@ -49,7 +49,7 @@ public class UserAgentContainerTest {
             assertThat(userAgentContainer.getUserAgent()).isEqualTo(expectedString);
             assertThat(userAgentContainer.getUserAgent()).doesNotContainIgnoringCase("beta");
         } finally {
-            HttpConstants.Versions.SDK_VERSION_SNAPSHOT_INSTEAD_OF_BETA = false;
+            HttpConstants.Versions.resetSnapshotInsteadOfBeta();
         }
     }
 

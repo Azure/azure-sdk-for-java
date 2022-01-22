@@ -286,7 +286,8 @@ public class HttpConstants {
         public static final String QUERY_VERSION = "1.0";
         public static final String AZURE_COSMOS_PROPERTIES_FILE_NAME = "azure-cosmos.properties";
 
-        public static boolean SDK_VERSION_SNAPSHOT_INSTEAD_OF_BETA = false;
+        private static boolean SDK_VERSION_SNAPSHOT_INSTEAD_OF_BETA = false;
+
         public static final String SDK_NAME = "cosmos";
 
         private static final String SDK_VERSION_RAW = CoreUtils.getProperties(AZURE_COSMOS_PROPERTIES_FILE_NAME).get("version");
@@ -296,6 +297,14 @@ public class HttpConstants {
         public static String getSdkVersion() {
             return SDK_VERSION_SNAPSHOT_INSTEAD_OF_BETA ?
                 getSdkVersionWithSnapshotInsteadOfBeta() :  SDK_VERSION_RAW;
+        }
+
+        public static void useSnapshotInsteadOfBeta() {
+            SDK_VERSION_SNAPSHOT_INSTEAD_OF_BETA = true;
+        }
+
+        public static void resetSnapshotInsteadOfBeta() {
+            SDK_VERSION_SNAPSHOT_INSTEAD_OF_BETA = false;
         }
 
         private static String getSdkVersionWithSnapshotInsteadOfBeta() {

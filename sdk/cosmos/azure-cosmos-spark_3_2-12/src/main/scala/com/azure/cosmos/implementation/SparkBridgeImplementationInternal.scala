@@ -173,6 +173,6 @@ private[cosmos] object SparkBridgeImplementationInternal {
   }
 
   def setUserAgentWithSnapshotInsteadOfBeta() = {
-    HttpConstants.Versions.SDK_VERSION_SNAPSHOT_INSTEAD_OF_BETA = true;
+    HttpConstants.Versions.useSnapshotInsteadOfBeta();
   }
 }
