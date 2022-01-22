@@ -88,7 +88,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * Each service call goes through the {@link DocumentModelAdministrationClientBuilder#pipeline http pipeline}.
      *  @param service The proxy service used to perform REST calls.
      * @param serviceVersion The versions of Azure Form Recognizer supported by this client library.
-     * @param audience ARM management scope associated with the given form recognizer resource.
+     * @param audience ARM management audience associated with the given form recognizer resource.
      */
     DocumentModelAdministrationAsyncClient(FormRecognizerClientImpl service,
                                            DocumentAnalysisServiceVersion serviceVersion,
@@ -133,7 +133,7 @@ public final class DocumentModelAdministrationAsyncClient {
      *
      * @return the audience the client is using.
      */
-    public FormRecognizerAudience getAudience() {
+    FormRecognizerAudience getAudience() {
         return audience;
     }
 

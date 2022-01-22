@@ -373,7 +373,7 @@ public final class DocumentAnalysisClientBuilder {
     /**
      * Sets the audience for the Azure Form Recognizer service.
      *
-     * @param audience ARM management scope associated with the given form recognizer resource.
+     * @param audience ARM management audience associated with the given form recognizer resource.
      * @return The updated {@link DocumentAnalysisClientBuilder} object.
      */
     public DocumentAnalysisClientBuilder audience(FormRecognizerAudience audience) {
