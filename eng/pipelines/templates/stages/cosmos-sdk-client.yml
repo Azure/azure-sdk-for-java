@@ -59,6 +59,8 @@ stages:
               Selection: all
               GenerateVMJobs: true
           AdditionalParameters:
+            MavenBuildInstallParallelization: 1
+            SparkShading: '-DsparkShading'
             DisableAzureResourceCreation: true
             ServiceDirectory: cosmos
             Artifacts: ${{ parameters.Artifacts }}
