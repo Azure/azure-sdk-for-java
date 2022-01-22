@@ -38,6 +38,19 @@ public class UserAgentContainerTest {
         userAgentContainer.setSuffix(userProvidedSuffix);
         expectedString = (expectedStringFixedPart + SPACE + userProvidedSuffix).substring(0, 255);
         assertThat(userAgentContainer.getUserAgent()).isEqualTo(expectedString);
+
+        //With snapshot-instead-of-beta enabled
+        try {
+            HttpConstants.Versions.SDK_VERSION_SNAPSHOT_INSTEAD_OF_BETA = true;
+            userProvidedSuffix = "test-application-id";
+            userAgentContainer = new UserAgentContainer();
+            userAgentContainer.setSuffix(userProvidedSuffix);
+            expectedString = expectedStringFixedPart + SPACE + userProvidedSuffix;
+            assertThat(userAgentContainer.getUserAgent()).isEqualTo(expectedString);
+            assertThat(userAgentContainer.getUserAgent()).doesNotContainIgnoringCase("beta");
+        } finally {
+            HttpConstants.Versions.SDK_VERSION_SNAPSHOT_INSTEAD_OF_BETA = false;
+        }
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
@@ -90,7 +103,7 @@ public class UserAgentContainerTest {
         String geteUserAgentFixedPart = "azsdk-java-" +
             "cosmos" +
             "/" +
-            HttpConstants.Versions.SDK_VERSION +
+            HttpConstants.Versions.getSdkVersion() +
             SPACE +
             osName +
             "/" +
