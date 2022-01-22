@@ -6,13 +6,11 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
-import com.azure.security.attestation.models.AttestationSigner;
+import com.azure.security.attestation.models.AttestationSignerCollection;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -29,7 +27,7 @@ public class AttestationSignersTest extends AttestationClientTestBase {
 
         AttestationClientBuilder attestationBuilder = getAttestationBuilder(client, clientUri);
 
-        List<AttestationSigner> signers = attestationBuilder.buildClient().listAttestationSigners();
+        AttestationSignerCollection signers = attestationBuilder.buildClient().listAttestationSigners();
 
         verifySigningCertificatesResponse(clientUri, signers);
     }
@@ -40,7 +38,7 @@ public class AttestationSignersTest extends AttestationClientTestBase {
 
         AttestationClient attestationClient = getAttestationBuilder(client, clientUri).buildClient();
 
-        Response<List<AttestationSigner>> signers = attestationClient
+        Response<AttestationSignerCollection> signers = attestationClient
             .listAttestationSignersWithResponse(Context.NONE);
 
         verifySigningCertificatesResponse(clientUri, signers.getValue());
@@ -80,10 +78,10 @@ public class AttestationSignersTest extends AttestationClientTestBase {
      * @param clientUri Base URI for client, used to verify the contents of the certificates.
      * @param signers   AttestationSigners to verify.
      */
-    private void verifySigningCertificatesResponse(String clientUri, List<AttestationSigner> signers) {
-        Assertions.assertTrue(signers.size() > 1);
+    private void verifySigningCertificatesResponse(String clientUri, AttestationSignerCollection signers) {
+        Assertions.assertTrue(signers.getAttestationSigners().size() > 1);
 
-        signers.forEach(signer -> {
+        signers.getAttestationSigners().forEach(signer -> {
             assertNotNull(signer.getKeyId());
             assertNotNull(signer.getCertificates());
             Assertions.assertNotEquals(0, signer.getCertificates().size());

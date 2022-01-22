@@ -309,7 +309,7 @@ public class AttestationTokenImpl implements AttestationToken {
      * @param options - Options providing finer granular control over the validation.
      */
     public void validate(List<AttestationSigner> signers, AttestationTokenValidationOptions options) {
-        if (!options.getValidateToken()) {
+        if (!options.isValidateToken()) {
             return;
         }
 
@@ -341,7 +341,7 @@ public class AttestationTokenImpl implements AttestationToken {
         Instant timeNow = Instant.now();
         timeNow = timeNow.minusNanos(timeNow.getNano());
 
-        if (this.getExpiresOn() != null && options.getValidateExpiresOn()) {
+        if (this.getExpiresOn() != null && options.isValidateExpiresOn()) {
             final Instant expirationTime = this.getExpiresOn();
             if (timeNow.isAfter(expirationTime)) {
                 final Duration timeDelta = Duration.between(timeNow, expirationTime);
@@ -353,7 +353,7 @@ public class AttestationTokenImpl implements AttestationToken {
             }
         }
 
-        if (this.getNotBefore() != null && options.getValidateNotBefore()) {
+        if (this.getNotBefore() != null && options.isValidateNotBefore()) {
             final Instant notBefore = this.getNotBefore();
             if (timeNow.isBefore(notBefore)) {
                 final Duration timeDelta = Duration.between(timeNow, notBefore);
@@ -514,7 +514,7 @@ public class AttestationTokenImpl implements AttestationToken {
             if (signingKey.getPrivateKey() instanceof RSAPrivateKey) {
                 // If the caller wants to allow weak keys, allow them.
                 Set<JWSSignerOption> options = new HashSet<>();
-                if (signingKey.getAllowWeakKey()) {
+                if (signingKey.isWeakKeyAllowed()) {
                     options.add(AllowWeakRSAKey.getInstance());
                 }
                 signer = new RSASSASigner(signingKey.getPrivateKey(), options);
@@ -569,7 +569,7 @@ public class AttestationTokenImpl implements AttestationToken {
             if (signingKey.getPrivateKey() instanceof RSAPrivateKey) {
                 // If the caller wants to allow weak keys, allow them.
                 Set<JWSSignerOption> options = new HashSet<>();
-                if (signingKey.getAllowWeakKey()) {
+                if (signingKey.isWeakKeyAllowed()) {
                     options.add(AllowWeakRSAKey.getInstance());
                 }
                 signer = new RSASSASigner(signingKey.getPrivateKey(), options);

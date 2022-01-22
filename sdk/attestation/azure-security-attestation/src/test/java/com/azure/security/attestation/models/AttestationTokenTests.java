@@ -177,7 +177,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
 
         // And make sure that the wrong key also throws a reasonable exception.
         AttestationSigningKey signingKey2 = new AttestationSigningKey(cert, rsaKeyWrongKey.getPrivate())
-                .setAllowWeakKey(true);
+                .setWeakKeyAllowed(true);
         assertThrows(IllegalArgumentException.class, () -> signingKey2.verify());
     }
 
@@ -236,7 +236,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         X509Certificate cert = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate Secured", rsaKey));
 
         AttestationSigningKey signingKey = new AttestationSigningKey(cert, rsaKey.getPrivate())
-            .setAllowWeakKey(true);
+            .setWeakKeyAllowed(true);
 
         String sourceObject = "{\"foo\": \"foo\", \"bar\": 10 }";
 
@@ -295,7 +295,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         KeyPair rsaKey = assertDoesNotThrow(() -> createKeyPair("RSA"));
         X509Certificate cert = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate Secured 2", rsaKey));
         AttestationSigningKey signingKey = new AttestationSigningKey(cert, rsaKey.getPrivate())
-            .setAllowWeakKey(true);
+            .setWeakKeyAllowed(true);
 
 
         JacksonAdapter adapter = new JacksonAdapter();
@@ -456,7 +456,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         KeyPair rsaKey = assertDoesNotThrow(() -> createKeyPair("RSA"));
         X509Certificate cert = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate Secured 2", rsaKey));
         AttestationSigningKey signingKey = new AttestationSigningKey(cert, rsaKey.getPrivate())
-            .setAllowWeakKey(true);
+            .setWeakKeyAllowed(true);
 
         AttestationToken newToken = AttestationTokenImpl.createSecuredToken(signingKey);
 

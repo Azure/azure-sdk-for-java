@@ -115,7 +115,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
 
         assertEquals(CertificateModification.IS_PRESENT, result.getCertificateResolution());
 
-        result = client.removePolicyManagementCertificate(
+        result = client.deletePolicyManagementCertificate(
             new PolicyManagementCertificateOptions(
                 getPolicySigningCertificate0(),
                 new AttestationSigningKey(getIsolatedSigningCertificate(), getIsolatedSigningKey())));
@@ -154,7 +154,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
 
         assertEquals(CertificateModification.IS_PRESENT, response.getValue().getCertificateResolution());
 
-        response = client.removePolicyManagementCertificateWithResponse(
+        response = client.deletePolicyManagementCertificateWithResponse(
             new PolicyManagementCertificateOptions(
                 getPolicySigningCertificate0(),
                 new AttestationSigningKey(getIsolatedSigningCertificate(), getIsolatedSigningKey())),
@@ -192,7 +192,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
             .verifyComplete();
 
         // Now remove the certificate we just added.
-        StepVerifier.create(client.removePolicyManagementCertificate(new PolicyManagementCertificateOptions(
+        StepVerifier.create(client.deletePolicyManagementCertificate(new PolicyManagementCertificateOptions(
                 getPolicySigningCertificate0(),
                 new AttestationSigningKey(getIsolatedSigningCertificate(), getIsolatedSigningKey()))))
             .assertNext(removeResult -> {

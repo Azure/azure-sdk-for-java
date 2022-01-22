@@ -889,7 +889,7 @@ public final class AttestationAdministrationAsyncClient {
      * <p><strong>Add a new certificate to the set of policy management certificates for this instance.</strong></p>
      * <!-- src_embed com.azure.security.attestation.AttestationAdministrationAsyncClient.removePolicyManagementCertificate -->
      * <pre>
-     * Mono&lt;PolicyCertificatesModificationResult&gt; removeResultMono = client.removePolicyManagementCertificate&#40;
+     * Mono&lt;PolicyCertificatesModificationResult&gt; removeResultMono = client.deletePolicyManagementCertificate&#40;
      *     new PolicyManagementCertificateOptions&#40;certificateToAdd, new AttestationSigningKey&#40;certificate, privateKey&#41;&#41;&#41;;
      * removeResultMono.subscribe&#40;removeResult -&gt; System.out.printf&#40;&quot;Result: %s&#92;n&quot;,
      *     removeResult.getCertificateResolution&#40;&#41;.toString&#40;&#41;&#41;&#41;;
@@ -909,8 +909,8 @@ public final class AttestationAdministrationAsyncClient {
      * @return the response to an attestation policy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PolicyCertificatesModificationResult> removePolicyManagementCertificate(PolicyManagementCertificateOptions options) {
-        return removePolicyManagementCertificateWithResponse(options)
+    public Mono<PolicyCertificatesModificationResult> deletePolicyManagementCertificate(PolicyManagementCertificateOptions options) {
+        return deletePolicyManagementCertificateWithResponse(options)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -952,8 +952,8 @@ public final class AttestationAdministrationAsyncClient {
      * @return the response to an attestation policy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PolicyCertificatesModificationResult>> removePolicyManagementCertificateWithResponse(PolicyManagementCertificateOptions options) {
-        return withContext(context -> removePolicyManagementCertificateWithResponse(options, context));
+    public Mono<Response<PolicyCertificatesModificationResult>> deletePolicyManagementCertificateWithResponse(PolicyManagementCertificateOptions options) {
+        return withContext(context -> deletePolicyManagementCertificateWithResponse(options, context));
     }
 
     /**
@@ -967,7 +967,7 @@ public final class AttestationAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy operation.
      */
-    Mono<Response<PolicyCertificatesModificationResult>> removePolicyManagementCertificateWithResponse(PolicyManagementCertificateOptions options, Context context) {
+    Mono<Response<PolicyCertificatesModificationResult>> deletePolicyManagementCertificateWithResponse(PolicyManagementCertificateOptions options, Context context) {
         Objects.requireNonNull(options.getCertificate());
         Objects.requireNonNull(options.getAttestationSigner());
 

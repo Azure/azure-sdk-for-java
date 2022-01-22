@@ -542,7 +542,7 @@ public final class AttestationAdministrationClient {
     }
 
     /**
-     * Removes a policy management certificate from the set of policy management certificates.
+     * Deletes a policy management certificate from the set of policy management certificates.
      * <p>
      * Each Isolated mode attestation service instance maintains a set of certificates which can be used to authorize
      * policy modification operations (in Isolated mode, each policy modification request needs to be signed with
@@ -559,7 +559,7 @@ public final class AttestationAdministrationClient {
      * <p><strong>Add a new certificate to the set of policy management certificates for this instance.</strong></p>
      * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClient.removePolicyManagementCertificate -->
      * <pre>
-     * PolicyCertificatesModificationResult removeResult = client.removePolicyManagementCertificate&#40;
+     * PolicyCertificatesModificationResult removeResult = client.deletePolicyManagementCertificate&#40;
      *     new PolicyManagementCertificateOptions&#40;certificateToAdd, new AttestationSigningKey&#40;certificate, privateKey&#41;&#41;&#41;;
      * System.out.printf&#40;&quot; Result: %s&#92;n&quot;, removeResult.getCertificateResolution&#40;&#41;.toString&#40;&#41;&#41;;
      * </pre>
@@ -577,8 +577,8 @@ public final class AttestationAdministrationClient {
      * @return the response to an attestation policy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyCertificatesModificationResult removePolicyManagementCertificate(PolicyManagementCertificateOptions options) {
-        return asyncClient.removePolicyManagementCertificate(options).block();
+    public PolicyCertificatesModificationResult deletePolicyManagementCertificate(PolicyManagementCertificateOptions options) {
+        return asyncClient.deletePolicyManagementCertificate(options).block();
     }
 
     /**
@@ -619,7 +619,7 @@ public final class AttestationAdministrationClient {
      * @return the response to an attestation policy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyCertificatesModificationResult> removePolicyManagementCertificateWithResponse(PolicyManagementCertificateOptions options, Context context) {
-        return asyncClient.removePolicyManagementCertificateWithResponse(options, context).block();
+    public Response<PolicyCertificatesModificationResult> deletePolicyManagementCertificateWithResponse(PolicyManagementCertificateOptions options, Context context) {
+        return asyncClient.deletePolicyManagementCertificateWithResponse(options, context).block();
     }
 }

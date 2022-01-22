@@ -131,7 +131,7 @@ public class PolicyManagementCertificatesSamples {
 
         // BEGIN: readme-sample-removePolicyManagementCertificate
         System.out.printf("Removing existing certificate %s\n", certificateToRemove.getSubjectDN().toString());
-        PolicyCertificatesModificationResult modificationResult = client.removePolicyManagementCertificate(
+        PolicyCertificatesModificationResult modificationResult = client.deletePolicyManagementCertificate(
             new PolicyManagementCertificateOptions(certificateToRemove,
                 new AttestationSigningKey(isolatedCertificate, isolatedKey)));
         System.out.printf("Updated policy certificate, certificate remove result: %s\n",
@@ -158,7 +158,7 @@ public class PolicyManagementCertificatesSamples {
 
         // Note: It is not an error to remove a non-existent certificate. The second removal is ignored.
         System.out.printf("Removing an existing certificate %s\n", certificateToRemove.getSubjectDN().toString());
-        client.removePolicyManagementCertificate(new PolicyManagementCertificateOptions(certificateToRemove,
+        client.deletePolicyManagementCertificate(new PolicyManagementCertificateOptions(certificateToRemove,
                 new AttestationSigningKey(isolatedCertificate, isolatedKey)))
             .subscribe(modificationResult -> {
                 System.out.printf("Updated policy certificate, certificate removal result: %s\n",

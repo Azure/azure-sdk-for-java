@@ -16,6 +16,7 @@ import com.azure.security.attestation.models.AttestationPolicySetOptions;
 import com.azure.security.attestation.models.AttestationResponse;
 import com.azure.security.attestation.models.AttestationResult;
 import com.azure.security.attestation.models.AttestationSigner;
+import com.azure.security.attestation.models.AttestationSignerCollection;
 import com.azure.security.attestation.models.AttestationSigningKey;
 import com.azure.security.attestation.models.AttestationTokenValidationOptions;
 import com.azure.security.attestation.models.AttestationType;
@@ -191,8 +192,8 @@ public class AttestationClientJavaDocCodeSnippets {
         // END: com.azure.security.attestation.AttestationClient.getOpenIdMetadata
 
         // BEGIN: com.azure.security.attestation.AttestationClient.getAttestationSigners
-        List<AttestationSigner> signers = client.listAttestationSigners();
-        signers.forEach(cert -> {
+        AttestationSignerCollection signers = client.listAttestationSigners();
+        signers.getAttestationSigners().forEach(cert -> {
             System.out.println("Found certificate.");
             if (cert.getKeyId() != null) {
                 System.out.println("    Certificate Key ID: " + cert.getKeyId());
@@ -207,7 +208,7 @@ public class AttestationClientJavaDocCodeSnippets {
         // END: com.azure.security.attestation.AttestationClient.getAttestationSigners
 
         // BEGIN: com.azure.security.attestation.AttestationClient.getAttestationSignersWithResponse
-        Response<List<AttestationSigner>> responseOfSigners = client.listAttestationSignersWithResponse(Context.NONE);
+        Response<AttestationSignerCollection> responseOfSigners = client.listAttestationSignersWithResponse(Context.NONE);
         // END: com.azure.security.attestation.AttestationClient.getAttestationSignersWithResponse
 
         // BEGIN: com.azure.security.attestation.AttestationClient.attestOpenEnclaveWithReport
@@ -248,8 +249,8 @@ public class AttestationClientJavaDocCodeSnippets {
         // END: com.azure.security.attestation.AttestationAsyncClient.getOpenIdMetadata
 
         // BEGIN: com.azure.security.attestation.AttestationAsyncClient.getAttestationSigners
-        Mono<List<AttestationSigner>> signersMono = client.listAttestationSigners();
-        signersMono.subscribe(signers -> signers.forEach(cert -> {
+        Mono<AttestationSignerCollection> signersMono = client.listAttestationSigners();
+        signersMono.subscribe(signers -> signers.getAttestationSigners().forEach(cert -> {
             System.out.println("Found certificate.");
             if (cert.getKeyId() != null) {
                 System.out.println("    Certificate Key ID: " + cert.getKeyId());
@@ -264,7 +265,7 @@ public class AttestationClientJavaDocCodeSnippets {
         // END: com.azure.security.attestation.AttestationAsyncClient.getAttestationSigners
 
         // BEGIN: com.azure.security.attestation.AttestationAsyncClient.getAttestationSignersWithResponse
-        Mono<Response<List<AttestationSigner>>> responseOfSigners = client.listAttestationSignersWithResponse();
+        Mono<Response<AttestationSignerCollection>> responseOfSigners = client.listAttestationSignersWithResponse();
         responseOfSigners.subscribe();
         // END: com.azure.security.attestation.AttestationAsyncClient.getAttestationSignersWithResponse
 
@@ -671,7 +672,7 @@ public class AttestationClientJavaDocCodeSnippets {
         // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.addPolicyManagementCertificateWithResponse
 
         // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.removePolicyManagementCertificate
-        Mono<PolicyCertificatesModificationResult> removeResultMono = client.removePolicyManagementCertificate(
+        Mono<PolicyCertificatesModificationResult> removeResultMono = client.deletePolicyManagementCertificate(
             new PolicyManagementCertificateOptions(certificateToAdd, new AttestationSigningKey(certificate, privateKey)));
         removeResultMono.subscribe(removeResult -> System.out.printf("Result: %s\n",
             removeResult.getCertificateResolution().toString()));
@@ -714,7 +715,7 @@ public class AttestationClientJavaDocCodeSnippets {
 
         System.out.println("Remove Certificate Sync\n");
         // BEGIN: com.azure.security.attestation.AttestationAdministrationClient.removePolicyManagementCertificate
-        PolicyCertificatesModificationResult removeResult = client.removePolicyManagementCertificate(
+        PolicyCertificatesModificationResult removeResult = client.deletePolicyManagementCertificate(
             new PolicyManagementCertificateOptions(certificateToAdd, new AttestationSigningKey(certificate, privateKey)));
         System.out.printf(" Result: %s\n", removeResult.getCertificateResolution().toString());
         // END: com.azure.security.attestation.AttestationAdministrationClient.removePolicyManagementCertificate

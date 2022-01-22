@@ -351,8 +351,6 @@ public class AttestationTest extends AttestationClientTestBase {
         try {
             StepVerifier.create(client.attestSgxEnclaveWithResponse(request, contextWithSpan))
                 .assertNext(response -> {
-                    assertTrue(response instanceof AttestationResponse);
-                    AttestationResponse<AttestationResult> attestResponse = (AttestationResponse<AttestationResult>) response;
                     // Make sure that the request included a traceparent header and that the response contains a
                     // traceresponse header.
                     // Note: The recording infrastructure doesn't record traceparent or traceresponse, so we can
@@ -680,8 +678,6 @@ public class AttestationTest extends AttestationClientTestBase {
 
         StepVerifier.create(client.attestOpenEnclaveWithResponse(options))
             .assertNext(response -> {
-                assertTrue(response instanceof AttestationResponse);
-                AttestationResponse<AttestationResult> attestResponse = (AttestationResponse<AttestationResult>) response;
                 verifyAttestationResult(clientUri, response.getValue(), decodedRuntimeData, true);
             })
             .expectComplete()

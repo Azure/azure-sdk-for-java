@@ -29,7 +29,7 @@ Maven dependency for the Azure Attestation  library. Add it to your project's PO
 ### Prerequisites
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
 - [Azure Subscription][azure_subscription]
-- An existing [Azure Attestation][azure_attestation]. If you need to create an attestation instance, you can use the [Azure Cloud Shell][azure_cloud_shell] to create one with this Azure CLI command. Replace `<your-resource-group-name>` and `<your-instance-name>` with your own, unique names:
+- An existing [Azure Attestation instance][azure_attestation]. If you need to create an attestation instance, you can use the [Azure Cloud Shell][azure_cloud_shell] to create one with this Azure CLI command. Replace `<your-resource-group-name>` and `<your-instance-name>` with your own, unique names:
 
 ```bash
 az attestation create --resource-group <your-resource-group-name> --name <your-key-vault-name>
@@ -117,9 +117,9 @@ attestation service, however the APIs are provided for completeness and to facil
 attestation results.
 
 ```java readme-sample-getSigningCertificates
-List<AttestationSigner> certs = client.listAttestationSigners();
+AttestationSignerCollection certs = client.listAttestationSigners();
 
-certs.forEach(cert -> {
+certs.getAttestationSigners().forEach(cert -> {
     System.out.println("Found certificate.");
     if (cert.getKeyId() != null) {
         System.out.println("    Certificate Key ID: " + cert.getKeyId());
@@ -241,7 +241,7 @@ ignored (this possibly surprising behavior is there because retries could cause 
 
 ```java readme-sample-removePolicyManagementCertificate
 System.out.printf("Removing existing certificate %s\n", certificateToRemove.getSubjectDN().toString());
-PolicyCertificatesModificationResult modificationResult = client.removePolicyManagementCertificate(
+PolicyCertificatesModificationResult modificationResult = client.deletePolicyManagementCertificate(
     new PolicyManagementCertificateOptions(certificateToRemove,
         new AttestationSigningKey(isolatedCertificate, isolatedKey)));
 System.out.printf("Updated policy certificate, certificate remove result: %s\n",
@@ -265,5 +265,18 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 
 <!-- LINKS -->
 [style-guide-msft]: https://docs.microsoft.com/style-guide/capitalization
+[api_documentation]: https://azure.github.io/azure-sdk-for-java
+[azure_attestation]: https://docs.microsoft.com/azure/attestation
+[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
+[maven]: https://maven.apache.org/
+[azure_subscription]: https://azure.microsoft.com/
+[azure_cli]: https://docs.microsoft.com/cli/azure
+[rest_api]: https://docs.microsoft.com/rest/api/attestation/
+[azure_create_application_in_portal]: https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[azure_cloud_shell]: https://shell.azure.com/bash
+[http_clients_wiki]: https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients
+[microsoft_code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fattestation%2Fazure-security-attestation%2FREADME.png)

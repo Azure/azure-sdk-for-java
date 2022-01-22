@@ -19,6 +19,7 @@ import com.azure.security.attestation.implementation.SigningCertificatesImpl;
 import com.azure.security.attestation.implementation.models.AttestationOpenIdMetadataImpl;
 import com.azure.security.attestation.implementation.models.AttestationOptionsImpl;
 import com.azure.security.attestation.implementation.models.AttestationResultImpl;
+import com.azure.security.attestation.implementation.models.AttestationSignerCollectionImpl;
 import com.azure.security.attestation.implementation.models.AttestationSignerImpl;
 import com.azure.security.attestation.implementation.models.AttestationTokenImpl;
 import com.azure.security.attestation.models.AttestationData;
@@ -26,6 +27,7 @@ import com.azure.security.attestation.models.AttestationOpenIdMetadata;
 import com.azure.security.attestation.models.AttestationOptions;
 import com.azure.security.attestation.models.AttestationResult;
 import com.azure.security.attestation.models.AttestationSigner;
+import com.azure.security.attestation.models.AttestationSignerCollection;
 import com.azure.security.attestation.models.AttestationToken;
 import com.azure.security.attestation.models.AttestationTokenValidationOptions;
 import reactor.core.publisher.Mono;
@@ -222,8 +224,8 @@ public final class AttestationAsyncClient {
      * <p><strong>Retrieve Attestation Signers for this async client.</strong></p>
      * <!-- src_embed com.azure.security.attestation.AttestationAsyncClient.getAttestationSigners -->
      * <pre>
-     * Mono&lt;List&lt;AttestationSigner&gt;&gt; signersMono = client.listAttestationSigners&#40;&#41;;
-     * signersMono.subscribe&#40;signers -&gt; signers.forEach&#40;cert -&gt; &#123;
+     * Mono&lt;AttestationSignerCollection&gt; signersMono = client.listAttestationSigners&#40;&#41;;
+     * signersMono.subscribe&#40;signers -&gt; signers.getAttestationSigners&#40;&#41;.forEach&#40;cert -&gt; &#123;
      *     System.out.println&#40;&quot;Found certificate.&quot;&#41;;
      *     if &#40;cert.getKeyId&#40;&#41; != null&#41; &#123;
      *         System.out.println&#40;&quot;    Certificate Key ID: &quot; + cert.getKeyId&#40;&#41;&#41;;
@@ -241,7 +243,7 @@ public final class AttestationAsyncClient {
      * @return Returns an array of {@link AttestationSigner} objects.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AttestationSigner>> listAttestationSigners() {
+    public Mono<AttestationSignerCollection> listAttestationSigners() {
         return this.listAttestationSignersWithResponse()
             .flatMap(FluxUtil::toMono);
     }
@@ -255,7 +257,7 @@ public final class AttestationAsyncClient {
      * <p><strong>Retrieve Attestation Signers for this async client.</strong></p>
      * <!-- src_embed com.azure.security.attestation.AttestationAsyncClient.getAttestationSignersWithResponse -->
      * <pre>
-     * Mono&lt;Response&lt;List&lt;AttestationSigner&gt;&gt;&gt; responseOfSigners = client.listAttestationSignersWithResponse&#40;&#41;;
+     * Mono&lt;Response&lt;AttestationSignerCollection&gt;&gt; responseOfSigners = client.listAttestationSignersWithResponse&#40;&#41;;
      * responseOfSigners.subscribe&#40;&#41;;
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationAsyncClient.getAttestationSignersWithResponse -->
@@ -263,13 +265,13 @@ public final class AttestationAsyncClient {
      * @return Returns an array of {@link AttestationSigner} objects.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AttestationSigner>>> listAttestationSignersWithResponse() {
+    public Mono<Response<AttestationSignerCollection>> listAttestationSignersWithResponse() {
         return withContext(context -> listAttestationSignersWithResponse(context));
     }
 
-    Mono<Response<List<AttestationSigner>>> listAttestationSignersWithResponse(Context context) {
+    Mono<Response<AttestationSignerCollection>> listAttestationSignersWithResponse(Context context) {
         return  this.signerImpl.getWithResponseAsync(context)
-            .map(response -> Utilities.generateResponseFromModelType(response, AttestationSignerImpl.attestationSignersFromJwks(response.getValue())));
+            .map(response -> Utilities.generateResponseFromModelType(response, new AttestationSignerCollectionImpl(AttestationSignerImpl.attestationSignersFromJwks(response.getValue()))));
     }
 
 
@@ -397,7 +399,7 @@ public final class AttestationAsyncClient {
             .onErrorMap(Utilities::mapException)
             .map(response -> Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken())))
             .flatMap(response -> {
-                if (finalValidationOptions.getValidateToken()) {
+                if (finalValidationOptions.isValidateToken()) {
                     return getCachedAttestationSigners(context)
                         .map(signers -> {
                             response.getValue().validate(signers, finalValidationOptions);
@@ -515,7 +517,7 @@ public final class AttestationAsyncClient {
             .onErrorMap(Utilities::mapException)
             .map(response -> Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken())))
             .flatMap(response -> {
-                if (finalValidationOptions.getValidateToken()) {
+                if (finalValidationOptions.isValidateToken()) {
                     return getCachedAttestationSigners(context)
                         .map(signers -> {
                             response.getValue().validate(signers, finalValidationOptions);
