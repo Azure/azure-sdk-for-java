@@ -1,8 +1,6 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
-### Features Added
-
+## 1.0.0 (2022-02-08)
 ### Breaking Changes
  * Removed `buildSigningCertificatesClient` and `buildSigningCertificatesAsyncClient` replaced
    with `getAttestationSigners` and `getAttestationSignersWithResponse` on `AttestationClient` 
@@ -53,8 +51,6 @@ because they are no longer a part of the public API surface.
 
 ### Bugs Fixed
 * Attestation tests now all pass when run in Live mode.
-
-### Other Changes
 
 ## 1.0.0-beta.1 (2021-01-28)
 
