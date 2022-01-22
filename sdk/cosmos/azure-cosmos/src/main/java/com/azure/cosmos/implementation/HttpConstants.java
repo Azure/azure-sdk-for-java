@@ -251,6 +251,7 @@ public class HttpConstants {
         public static final String QUERY_METRICS = "x-ms-documentdb-query-metrics";
         public static final String POPULATE_INDEX_METRICS = "x-ms-cosmos-populateindexmetrics";
         public static final String INDEX_UTILIZATION = "x-ms-cosmos-index-utilization";
+        public static final String QUERY_EXECUTION_INFO = "x-ms-cosmos-query-execution-info";
 
         // Batch operations
         public static final String IS_BATCH_ATOMIC = "x-ms-cosmos-batch-atomic";
