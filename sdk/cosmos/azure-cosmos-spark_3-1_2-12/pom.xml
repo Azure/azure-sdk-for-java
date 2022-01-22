@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.azure.cosmos.spark</groupId>
     <artifactId>azure-cosmos-spark_3_2-12</artifactId>
-    <version>4.6.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12;current} -->
+    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3_2-12;current} -->
     <relativePath>../azure-cosmos-spark_3_2-12</relativePath>
   </parent>
   <groupId>com.azure.cosmos.spark</groupId>
@@ -19,6 +19,11 @@
     <developerConnection></developerConnection>
     <url>https://github.com/Azure/azure-sdk-for-java/sdk/cosmos/azure-cosmos-spark_3-1_2-12</url>
   </scm>
+
+  <properties>
+    <cosmos.spark.skip>false</cosmos.spark.skip>
+  </properties>
+
   <build>
     <plugins>
       <plugin>
@@ -69,6 +74,11 @@
     </plugins>
   </build>
   <dependencies>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-cosmos</artifactId>
+      <version>4.26.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+    </dependency>
     <dependency>
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-sql_2.12</artifactId>
