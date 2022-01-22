@@ -23,7 +23,7 @@ do
 	databricks libraries uninstall --cluster-id $CLUSTER_ID --jar $library
 done
 
-bash sdk/cosmos/azure-cosmos-spark_3-1_2-12/test-databricks/databricks-cluster-restart.sh $CLUSTER_ID
+bash sdk/cosmos/azure-cosmos-spark_3_2-12/test-databricks/databricks-cluster-restart.sh $CLUSTER_ID
 
 echo "Deleting files in dbfs:/tmp/libraries"
 dbfs rm --recursive dbfs:/tmp/libraries
@@ -39,7 +39,7 @@ done
 
 if [[ -z "$JARFILE" ]]
 then
-	echo "Cannot find a Jar file name azure-cosmos-spark_3-1_2-12"
+	echo "Cannot find Jar files at $JARPATH"
 	exit 1
 fi
 
@@ -50,4 +50,4 @@ dbfs ls dbfs:/tmp/libraries/
 echo "Installing $JARFILE in $CLUSTER_ID"
 databricks libraries install --cluster-id $CLUSTER_ID --jar dbfs:/tmp/libraries/$JARFILE
 
-bash sdk/cosmos/azure-cosmos-spark_3-1_2-12/test-databricks/databricks-cluster-restart.sh $CLUSTER_ID
+bash sdk/cosmos/azure-cosmos-spark_3_2-12/test-databricks/databricks-cluster-restart.sh $CLUSTER_ID
