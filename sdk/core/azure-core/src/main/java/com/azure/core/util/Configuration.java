@@ -339,6 +339,12 @@ public class Configuration implements Cloneable {
         String valueStr = getWithFallback(property);
 
         if (valueStr == null) {
+            if (property.isRequired()) {
+                throw logger.atError()
+                    .addKeyValue("property", property.getName())
+                    .addKeyValue("path", path)
+                    .log(new IllegalArgumentException("Missing required property."));
+            }
             return property.getDefaultValue();
         }
 

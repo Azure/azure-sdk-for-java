@@ -6,6 +6,7 @@ public class TestConfigurationBuilder {
 
     public TestConfigurationBuilder(String... testProps) {
         source = new TestConfigurationSource(testProps);
+        envSource = new TestConfigurationSource();
     }
 
     public TestConfigurationBuilder setEnv(String... testEnv) {

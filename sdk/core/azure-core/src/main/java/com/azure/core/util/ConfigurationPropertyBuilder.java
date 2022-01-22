@@ -41,12 +41,12 @@ public class ConfigurationPropertyBuilder<T> {
     }
 
     public ConfigurationPropertyBuilder<T> aliases(String... aliases) {
-        aliases = aliases;
+        this.aliases = aliases;
         return this;
     }
 
     public ConfigurationPropertyBuilder<T> environmentVariables(String... names) {
-        environmentVariableNames = names;
+        this.environmentVariableNames = names;
         return this;
     }
 

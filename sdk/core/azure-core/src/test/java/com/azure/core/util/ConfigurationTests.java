@@ -3,17 +3,17 @@
 
 package com.azure.core.util;
 
-import com.azure.core.http.policy.RetryPolicy;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.time.Duration;
 import java.util.stream.Stream;
 
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_TRACING_DISABLED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -31,13 +31,11 @@ public class ConfigurationTests {
         return new TestConfigurationBuilder().setEnv(props).build();
     }
 
-
     /**
      * Verifies that a runtime parameter is able to be retrieved.
      */
     @Test
     public void runtimeConfigurationFound() {
-        // TODO test env source
         assertEquals(EXPECTED_VALUE, getEnvironmentTestConfiguration(MY_CONFIGURATION, EXPECTED_VALUE).get(MY_CONFIGURATION));
     }
 
@@ -46,7 +44,7 @@ public class ConfigurationTests {
      */
     @Test
     public void configurationNotFound() {
-        assertNull(new ConfigurationBuilder(new TestConfigurationSource()).build().get(MY_CONFIGURATION));
+        assertNull(getEnvironmentTestConfiguration().get(MY_CONFIGURATION));
     }
 
 
@@ -65,9 +63,7 @@ public class ConfigurationTests {
      */
     @Test
     public void fallbackToDefaultConfiguration() {
-        Configuration configuration = new Configuration();
-
-        assertEquals(DEFAULT_VALUE, configuration.get(MY_CONFIGURATION, DEFAULT_VALUE));
+        assertEquals(DEFAULT_VALUE, getEnvironmentTestConfiguration().get(MY_CONFIGURATION, DEFAULT_VALUE));
     }
 
     /**
@@ -91,22 +87,32 @@ public class ConfigurationTests {
     @Test
     @SuppressWarnings("deprecation")
     public void cloneConfiguration() {
-        Configuration configuration = getEnvironmentTestConfiguration("variable1", "value1", "variable2", "value2");
+        Configuration configuration = new Configuration()
+            .put("variable1", "value1")
+            .put("variable2", "value2");
 
         Configuration configurationClone = configuration.clone();
+
+        configuration.put("variable3", "value3");
 
         // Verify that the clone has the expected values.
         assertEquals(configuration.get("variable1"), configurationClone.get("variable1"));
         assertEquals(configuration.get("variable2"), configurationClone.get("variable2"));
+        assertEquals("value3", configuration.get("variable3"));
+        assertFalse(configurationClone.contains("variable3"));
+        assertNull(configurationClone.get("variable3"));
 
         // The clone should be a separate instance, verify its modifications won't affect the original copy.
         configurationClone.remove("variable2");
         assertTrue(configuration.contains("variable2"));
+
+        assertFalse(configurationClone.contains("variable2"));
+        assertNull(configurationClone.get("variable2"));
     }
 
     @Test
     public void loadValueTwice() {
-        Configuration configuration = new Configuration();
+        Configuration configuration = getEnvironmentTestConfiguration();
         String tracingDisabled = configuration.get(PROPERTY_AZURE_TRACING_DISABLED);
         String tracingDisabled2 = configuration.get(PROPERTY_AZURE_TRACING_DISABLED);
 
@@ -135,96 +141,211 @@ public class ConfigurationTests {
 
     @Test
     public void getOrDefaultReturnsDefault() {
-        assertEquals("42", new Configuration().get("empty", "42"));
+        assertEquals("42", getEnvironmentTestConfiguration().get("empty", "42"));
     }
 
     @Test
-    public void getProperty() {
-        ConfigurationSource source = new TestConfigurationSource("appconfiguration.prop", "local-prop-value");
-        ConfigurationBuilder configBuilder = new ConfigurationBuilder(source);
+    public void getLocalPropertyFromSection() {
+        Configuration config = getPropertyConfiguration("appconfiguration", "appconfiguration.prop", "foo", "prop", "bar", "prop2", "baz");
 
-        Configuration root = configBuilder.build();
-        Configuration appconfigSection = configBuilder.clientSection("appconfiguration").build();
+        ConfigurationProperty<String> localProp = ConfigurationProperty.stringPropertyBuilder("prop").build();
+        ConfigurationProperty<String> localPropFullName = ConfigurationProperty.stringPropertyBuilder("appconfiguration.prop").build();
+        ConfigurationProperty<String> globalProp = ConfigurationProperty.stringPropertyBuilder("prop").global(true).build();
+        ConfigurationProperty<String> globalProp2 = ConfigurationProperty.stringPropertyBuilder("prop2").global(true).build();
+
+        assertEquals("foo", config.get(localProp));
+        assertEquals("foo", config.get(globalProp));
+        assertEquals("baz", config.get(globalProp2));
+        assertNull(config.get(localPropFullName));
+    }
+
+    @Test
+    public void getGlobalPropertyFromDefaultsSection() {
+        Configuration config = getPropertyConfiguration("defaults", "appconfiguration.prop", "local", "defaults.prop", "default", "root.prop", "root");
 
         ConfigurationProperty<String> localProp = ConfigurationProperty.stringPropertyBuilder("prop").build();
         ConfigurationProperty<String> localPropFullName = ConfigurationProperty.stringPropertyBuilder("appconfiguration.prop").build();
         ConfigurationProperty<String> globalProp = ConfigurationProperty.stringPropertyBuilder("prop").global(true).build();
 
-        assertNull(root.get(localProp));
-        assertEquals("local-prop-value", appconfigSection.get(localProp));
-
-        assertEquals("local-prop-value", root.get(localPropFullName));
-        assertNull(appconfigSection.get(localPropFullName));
-
-        assertNull(root.get(globalProp));
-        assertEquals("local-prop-value", appconfigSection.get(globalProp));
+        assertEquals("default", config.get(localProp));
+        assertEquals("default", config.get(globalProp));
+        assertNull(config.get(localPropFullName));
     }
 
     @Test
-    public void getMissingProperty() {
-        ConfigurationSource source = new TestConfigurationSource("az.appconfiguration.prop", "local-prop-value");
-        ConfigurationBuilder configBuilder = new ConfigurationBuilder(source)
-            .root("az");
-
-        Configuration root = configBuilder.build();
-        Configuration appconfigSection = configBuilder.clientSection("appconfiguration").build();
-
-        ConfigurationProperty<String> localProp = ConfigurationProperty.stringPropertyBuilder("foo").build();
-        ConfigurationProperty<String> localPropFullName = ConfigurationProperty.stringPropertyBuilder("storage.prop").build();
-
-        assertNull(root.get(localProp));
-        assertNull(root.get(localPropFullName));
-
-        assertNull(appconfigSection.get(localProp));
-        assertNull(appconfigSection.get(localPropFullName));
-    }
-
-    @Test
-    public void localPropertyGoesFirst() {
-        ConfigurationSource source = new TestConfigurationSource("az.foo.prop", "local", "az.prop", "global");
-        ConfigurationBuilder configBuilder = new ConfigurationBuilder(source)
-            .root("az");
-
-        Configuration root = configBuilder.build();
-        Configuration appconfigSection = configBuilder
-            .clientSection("foo")
-            .build();
+    public void getGlobalPropertyFromDefaultsAndRootSection() {
+        Configuration config = getPropertyConfiguration(null, "appconfiguration.prop", "local", "prop", "root");
 
         ConfigurationProperty<String> localProp = ConfigurationProperty.stringPropertyBuilder("prop").build();
-        ConfigurationProperty<String> localPropFullName = ConfigurationProperty.stringPropertyBuilder("foo.prop").build();
-        ConfigurationProperty<String> globalProp = ConfigurationProperty.stringPropertyBuilder("prop").build();
+        ConfigurationProperty<String> localPropFullName = ConfigurationProperty.stringPropertyBuilder("appconfiguration.prop").build();
+        ConfigurationProperty<String> globalProp = ConfigurationProperty.stringPropertyBuilder("prop").global(true).build();
 
-        assertEquals("global", root.get(localProp));
-        assertEquals("local", root.get(localPropFullName));
-        assertEquals("global", root.get(globalProp));
-
-        assertEquals("local", appconfigSection.get(localProp));
-        assertNull(appconfigSection.get(localPropFullName));
-        assertEquals("local", appconfigSection.get(globalProp));
+        assertEquals("root", config.get(localProp));
+        assertEquals("root", config.get(globalProp));
+        assertEquals("local", config.get(localPropFullName));
     }
 
     @Test
-    public void getGlobalProperty() {
-        ConfigurationSource source = new TestConfigurationSource("az.storage.prop", "local", "az.prop", "global");
+    public void getPropertyWithAlias() {
+        ConfigurationProperty<String> prop = ConfigurationProperty.stringPropertyBuilder("prop").aliases("alias1", "alias2").build();
 
-        ConfigurationBuilder configBuilder = new ConfigurationBuilder(source)
-            .root("az");
+        Configuration config1 = getPropertyConfiguration(null, "alias2", "a2");
+        assertTrue(config1.contains(prop));
+        assertEquals("a2", config1.get(prop));
 
-        Configuration root = configBuilder.build();
-        Configuration appconfigSection = configBuilder
-            .clientSection("appconfiguration")
-            .build();
+        Configuration config2 = getPropertyConfiguration(null, "alias1", "a1", "alias2", "a2");
+        assertTrue(config2.contains(prop));
+        assertEquals("a1", config2.get(prop));
 
-        ConfigurationProperty<String> globalProp = ConfigurationProperty.stringPropertyBuilder("prop").global(true).build();
-        ConfigurationProperty<String> globalPropFullName = ConfigurationProperty.stringPropertyBuilder("appconfiguration.prop").global(true).build();
-
-        assertEquals("global", root.get(globalProp));
-        assertNull(root.get(globalPropFullName));
-
-        assertEquals("global", appconfigSection.get(globalProp));
-        assertNull(appconfigSection.get(globalPropFullName));
+        Configuration config3 = getPropertyConfiguration(null, "prop", "p", "alias1", "a1");
+        assertTrue(config3.contains(prop));
+        assertEquals("p", config3.get(prop));
     }
 
+    @Test
+    public void getPropertyWithEnvVar() {
+
+        ConfigurationProperty<String> prop = ConfigurationProperty.stringPropertyBuilder("prop").environmentVariables("env1", "env2").build();
+        Configuration config1 = new TestConfigurationBuilder().setEnv("env2", "e2").build();
+        assertTrue(config1.contains(prop));
+        assertEquals("e2", config1.get(prop));
+
+        Configuration config2 = new TestConfigurationBuilder().setEnv("env1", "e1", "env2", "e2").build();
+        assertTrue(config2.contains(prop));
+        assertEquals("e1", config2.get(prop));
+
+        Configuration config3 = new TestConfigurationBuilder("prop", "p").setEnv("env1", "e1").build();
+        assertTrue(config3.contains(prop));
+        assertEquals("p", config3.get(prop));
+    }
+
+    @ParameterizedTest
+    @MethodSource("properties")
+    public void getProperty(ConfigurationProperty<?> prop, String actual, Object expected, Object defaultValue) {
+        Configuration config = getPropertyConfiguration(null, "foo",  actual);
+        assertTrue(config.contains(prop));
+        assertEquals(expected, config.get(prop));
+    }
+
+    @ParameterizedTest
+    @MethodSource("properties")
+    public void getMissingProperty(ConfigurationProperty<?> missingProp, String actual, Object expected, Object defaultValue) {
+        Configuration config = getPropertyConfiguration("az");
+        assertFalse(config.contains(missingProp));
+        assertEquals(defaultValue, config.get(missingProp));
+    }
+
+    @Test
+    public void getRequiredMissingProperty() {
+        Configuration config = getPropertyConfiguration("az");
+        //TODO better exception
+        assertThrows(IllegalArgumentException.class, () -> config.get(ConfigurationProperty.stringPropertyBuilder("foo").required(true).build()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("validIntStrings")
+    public void getValidIntProperty(String value, Integer expected) {
+        Configuration config = getPropertyConfiguration("az", "az.foo", value);
+        assertEquals(expected, config.get(ConfigurationProperty.integerPropertyBuilder("foo").build()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidIntStrings")
+    public void getInvalidIntProperty(String value) {
+        Configuration config = getPropertyConfiguration("az", "az.foo", value);
+        assertThrows(NumberFormatException.class, () -> config.get(ConfigurationProperty.integerPropertyBuilder("foo").build()));
+    }
+
+
+    @ParameterizedTest
+    @MethodSource("validDurationStrings")
+    public void getValidDurationProperty(String value, Duration expected) {
+        Configuration config = getPropertyConfiguration("az", "az.foo", value);
+        assertEquals(expected, config.get(ConfigurationProperty.durationPropertyBuilder("foo").build()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidDurationStrings")
+    public void getInvalidDurationProperty(String value) {
+        Configuration config = getPropertyConfiguration("az", "az.foo", value);
+
+        if (value.startsWith("-")) {
+            // todo better exception
+            assertThrows(IllegalArgumentException.class, () -> config.get(ConfigurationProperty.durationPropertyBuilder("foo").build()));
+        } else {
+            assertThrows(NumberFormatException.class, () -> config.get(ConfigurationProperty.durationPropertyBuilder("foo").build()));
+        }
+    }
+
+    @Test
+    public void getBooleanProperty() {
+        Configuration config = getPropertyConfiguration("az", "az.true", "true", "az.false", "false", "az.anything-else", "anything-else", "az.null", null);
+
+        assertTrue(config.get(ConfigurationProperty.booleanPropertyBuilder("true").build()));
+        assertFalse(config.get(ConfigurationProperty.booleanPropertyBuilder("false").build()));
+        assertFalse(config.get(ConfigurationProperty.booleanPropertyBuilder("anything-else").build()));
+        assertNull(config.get(ConfigurationProperty.booleanPropertyBuilder("null").build()));
+    }
+
+    private static Stream<Arguments> properties() {
+        return Stream.of(
+            Arguments.of(ConfigurationProperty.stringPropertyBuilder("foo").build(), "bar", "bar", null),
+            Arguments.of(ConfigurationProperty.integerPropertyBuilder("foo").build(), "42", 42, null),
+            Arguments.of(ConfigurationProperty.durationPropertyBuilder("foo").build(),  "2", Duration.ofMillis(2), null),
+            Arguments.of(ConfigurationProperty.booleanPropertyBuilder("foo").build(), "true", true, null),
+            Arguments.of(ConfigurationProperty.stringPropertyBuilder("foo").defaultValue("foo").build(), "bar", "bar", "foo"),
+            Arguments.of(ConfigurationProperty.integerPropertyBuilder("foo").defaultValue(37).build(), "42", 42, 37),
+            Arguments.of(ConfigurationProperty.durationPropertyBuilder("foo").defaultValue(Duration.ofMillis(1)).build(), "2", Duration.ofMillis(2), Duration.ofMillis(1)),
+            Arguments.of(ConfigurationProperty.booleanPropertyBuilder("foo").defaultValue(false).build(), "true", true, false),
+            Arguments.of(new ConfigurationProperty<Double>("foo", 0.1, false, v -> Double.parseDouble(v), false, null, null, false), "0.2", 0.2, 0.1)
+        );
+    }
+
+    private static Stream<Arguments> validIntStrings() {
+        return Stream.of(
+            Arguments.of("123", 123),
+            Arguments.of("-321", -321),
+            Arguments.of("0", 0),
+            Arguments.of("2147483647", Integer.MAX_VALUE)
+        );
+    }
+
+    private static Stream<Arguments> invalidIntStrings() {
+        return Stream.of(
+            Arguments.of("0x5"),
+            Arguments.of(""),
+            Arguments.of("2147483648")
+        );
+    }
+
+    private static Stream<Arguments> validDurationStrings() {
+        return Stream.of(
+            Arguments.of("0", Duration.ofMillis(0)),
+            Arguments.of("123", Duration.ofMillis(123)),
+            Arguments.of("2147483648", Duration.ofMillis(2147483648L))
+        );
+    }
+
+    private static Stream<Arguments> invalidDurationStrings() {
+        return Stream.of(
+            Arguments.of("-1", Duration.ofMillis(0)),
+            Arguments.of("foo", Duration.ofMillis(123)),
+            Arguments.of("9223372036854775808", Duration.ofMillis(2147483648L))
+        );
+    }
+
+    private Configuration getPropertyConfiguration(String section, String... testData) {
+        ConfigurationSource source = new TestConfigurationSource(testData);
+        ConfigurationBuilder configBuilder = new ConfigurationBuilder(source);
+        if (section == null) {
+            return configBuilder.build();
+        }
+
+        return configBuilder.clientSection(section).build();
+    }
+
+
+    /*
     @Test
     public void multipleNestedSections() {
         ConfigurationSource source = new TestConfigurationSource(
@@ -251,5 +372,5 @@ public class ConfigurationTests {
 
         // todo : should throw
         assertThrows(Throwable.class, () -> RetryPolicy.fromConfiguration(root, null));
-    }
+    }*/
 }
