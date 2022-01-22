@@ -42,7 +42,17 @@ stages:
         MatrixReplace:
           - TestOptions=.*/-Punit
           - AZURE_TEST.*=.*/
-        MavenBuildInstallParallelization: 1
+        MavenBuildInstallParallelization: $[
+          replace(
+            replace(
+              eq(variables['SetSingleThreadedBuild'], ''),
+              True,
+              '1'
+            ),
+            False,
+            '1C'
+          )
+        ]
         SparkShading: '-DsparkShading'
 
   - stage: TestEmulator
