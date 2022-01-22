@@ -1,6 +1,7 @@
 package com.azure.core.util;
 
 import java.time.Duration;
+import java.util.Objects;
 import java.util.function.Function;
 
 public class ConfigurationProperty<T> {
@@ -27,28 +28,24 @@ public class ConfigurationProperty<T> {
     private final boolean canLogValue;
     private final boolean isRequired;
 
-    // todo (configuration)
-    //  - required flag?
-    //  - range
-
     ConfigurationProperty(String name, T defaultValue, boolean isRequired, Function<String, T> converter, boolean isGlobal,
                           String[] environmentVariables, String[] aliases, boolean canLogValue) {
-        this.name = name;
-        this.environmentVariables = environmentVariables;
+        this.name = Objects.requireNonNull(name, "'name' cannot be null");
+        this.converter = Objects.requireNonNull(converter, "'converter' cannot be null");
+        this.environmentVariables = environmentVariables == null ? EMPTY_LIST : environmentVariables;
         this.aliases = aliases == null ? EMPTY_LIST : aliases;
-        this.converter = converter;
         this.defaultValue = defaultValue;
         this.isRequired = isRequired;
         this.isGlobal = isGlobal;
         this.canLogValue = canLogValue;
     }
 
-    public boolean isGlobal() {
-        return isGlobal;
-    }
+    public boolean isGlobal() { return isGlobal; }
+
     public boolean canLogValue() {
         return canLogValue;
     }
+
     public boolean isRequired() {
         return isRequired;
     }
@@ -57,9 +54,7 @@ public class ConfigurationProperty<T> {
         return name;
     }
 
-    public Function<String, T> getConverter() {
-        return converter;
-    }
+    public Function<String, T> getConverter() { return converter; }
 
     public T getDefaultValue() {
         return defaultValue;
@@ -69,9 +64,7 @@ public class ConfigurationProperty<T> {
         return aliases;
     }
 
-    public String[] getEnvironmentVariables() {
-        return environmentVariables;
-    }
+    public String[] getEnvironmentVariables() { return environmentVariables; }
 
     public static ConfigurationPropertyBuilder<String> stringPropertyBuilder(String name) {
         return new ConfigurationPropertyBuilder<String>(name, STRING_CONVERTER);

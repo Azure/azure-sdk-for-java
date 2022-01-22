@@ -77,9 +77,6 @@ public class ExponentialBackoff implements RetryStrategy {
         this(DEFAULT_MAX_RETRIES, DEFAULT_BASE_DELAY, DEFAULT_MAX_DELAY);
     }
 
-    /**
-     * Caller must only call this method if they are sure that user specified retry policy options
-     */
     static RetryStrategy fromConfiguration(Configuration configuration, RetryStrategy defaultStrategy) {
         if (configuration.contains(MAX_RETRIES_CONFIG) ||
             configuration.contains(BASE_DELAY_CONFIG) ||

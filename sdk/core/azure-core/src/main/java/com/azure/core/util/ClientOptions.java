@@ -7,10 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
-import java.util.function.Supplier;
 
 /**
  * General configuration options for clients.
@@ -26,30 +23,6 @@ public class ClientOptions {
     private Iterable<Header> headers;
 
     private String applicationId;
-
-    // TODO(configuration) maybe can simplify it further
-    static ClientOptions fromConfiguration(String applicationId, String headersStr, Supplier<ClientOptions> implementationSupplier, ClientOptions defaultOptions) {
-        if (applicationId == null && headersStr == null) {
-            // no client options - return null to indicate it
-            return defaultOptions;
-        }
-
-        ClientOptions clientOptions = implementationSupplier.get();
-        if (!CoreUtils.isNullOrEmpty(applicationId)) {
-            clientOptions.setApplicationId(applicationId);
-        }
-
-        if (!CoreUtils.isNullOrEmpty(headersStr)) {
-            List<Header> headers = new ArrayList<>();
-            for (String header : headersStr.split(";")) {
-                String[] kvp = header.split("=");
-                headers.add(new Header(kvp[0], kvp[1]));
-            }
-            clientOptions.setHeaders(headers);
-        }
-
-        return clientOptions;
-    }
 
     /**
      * Gets the application ID.

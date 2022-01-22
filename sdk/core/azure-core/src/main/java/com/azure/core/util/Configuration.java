@@ -5,10 +5,12 @@ package com.azure.core.util;
 
 import com.azure.core.implementation.util.EnvironmentConfiguration;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LoggingEventBuilder;
 import reactor.core.Exceptions;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 
 /**
@@ -183,31 +185,30 @@ public class Configuration implements Cloneable {
     @SuppressWarnings("StaticInitializerReferencesSubClass")
     public static final Configuration NONE = new NoopConfiguration();
 
-    private final EnvironmentConfiguration mutableEnvironmentConfiguration;
+    private final EnvironmentConfiguration environmentConfiguration;
     private final Map<String, String> configurations;
     private final String path;
     private final Configuration defaults;
     private final ClientLogger logger;
-    // private final static String[] EMPTY_ARRAY = new String[0];
 
     /**
      * Constructs a configuration containing the known Azure properties constants.
      */
     @Deprecated
     public Configuration() {
-        this(null, Collections.emptyMap(), null, new EnvironmentConfiguration(EnvironmentConfiguration.ENVIRONMENT_SOURCE));
+        this(Collections.emptyMap(), new EnvironmentConfiguration(EnvironmentConfiguration.ENVIRONMENT_SOURCE), null, null);
     }
 
-    Configuration(String path, Map<String, String> configurations, Configuration defaults, EnvironmentConfiguration environmentConfiguration) {
-        this.configurations = Collections.unmodifiableMap(configurations);
-        this.defaults = defaults;
+    Configuration(Map<String, String> configurations, EnvironmentConfiguration environmentConfiguration, String path, Configuration defaults) {
+        this.configurations = Collections.unmodifiableMap(Objects.requireNonNull(configurations, "'configurations' cannot be null"));
+        this.environmentConfiguration = Objects.requireNonNull(environmentConfiguration, "'environmentConfiguration' cannot be null");;
         this.path = path;
-        this.mutableEnvironmentConfiguration = environmentConfiguration;
+        this.defaults = defaults;
         this.logger = new ClientLogger(Configuration.class);
     }
 
     private Configuration(Configuration original) {
-        this(original.path, original.configurations, original.defaults, original.mutableEnvironmentConfiguration.clone());
+        this(original.configurations, original.environmentConfiguration.clone(), original.path, original.defaults);
     }
 
     /**
@@ -231,14 +232,16 @@ public class Configuration implements Cloneable {
     public String get(String name) {
 
         // TODO:
-        // With this we allow env vars to be set in props file
+        // With this we'd allow env vars to be set in props file
+        // should we deprecate all existing (String) methods?
+
         /*String value = getLocalProperty(name, EMPTY_ARRAY, false);
         if (value != null) {
 
             return value;
         }*/
 
-        return mutableEnvironmentConfiguration.get(name);
+        return environmentConfiguration.get(name);
     }
 
     /**
@@ -255,7 +258,7 @@ public class Configuration implements Cloneable {
      * @return The converted configuration if found, otherwise the default value is returned.
      */
     public <T> T get(String name, T defaultValue) {
-        return mutableEnvironmentConfiguration.get(name, defaultValue);
+        return environmentConfiguration.get(name, defaultValue);
     }
 
     /**
@@ -272,7 +275,7 @@ public class Configuration implements Cloneable {
      * @return The converted configuration if found, otherwise null.
      */
     public <T> T get(String name, Function<String, T> converter) {
-        return mutableEnvironmentConfiguration.get(name, converter);
+        return environmentConfiguration.get(name, converter);
     }
 
     /**
@@ -286,7 +289,7 @@ public class Configuration implements Cloneable {
      */
     @Deprecated
     public Configuration put(String name, String value) {
-        mutableEnvironmentConfiguration.put(name, value);
+        environmentConfiguration.put(name, value);
         return this;
     }
 
@@ -300,7 +303,7 @@ public class Configuration implements Cloneable {
      */
     @Deprecated
     public String remove(String name) {
-        return mutableEnvironmentConfiguration.remove(name);
+        return environmentConfiguration.remove(name);
     }
 
     /**
@@ -313,7 +316,7 @@ public class Configuration implements Cloneable {
      * @return True if the configuration exists, otherwise false.
      */
     public boolean contains(String name) {
-        return mutableEnvironmentConfiguration.contains(name);
+        return environmentConfiguration.contains(name);
     }
 
     /**
@@ -322,7 +325,7 @@ public class Configuration implements Cloneable {
      * @return A clone of the Configuration object.
      */
     @SuppressWarnings("CloneDoesntCallSuperClone")
-    @Deprecated // TODO we don't really need to anymore since config is immutable
+    @Deprecated // TODO we don't really need to clone anymore since config is immutable
     public Configuration clone() {
         return new Configuration(this);
     }
@@ -332,6 +335,7 @@ public class Configuration implements Cloneable {
     }
 
     public <T> T get(ConfigurationProperty<T> property) {
+        Objects.requireNonNull(property, "'property' cannot be null");
         String valueStr = getWithFallback(property);
 
         if (valueStr == null) {
@@ -351,15 +355,23 @@ public class Configuration implements Cloneable {
     private String getLocalProperty(String name, String[] aliases, boolean canLogValue) {
         String value = configurations.get(name);
 
+        LoggingEventBuilder logEvent = logger.atVerbose()
+                .addKeyValue("name", name)
+                .addKeyValue("path", path);
+
         if (value != null) {
-            logProperty(name, value, canLogValue);
+            logEvent
+                .addKeyValue("value", canLogValue ? value : "redacted")
+                .log("Got property value by name.");
             return value;
         }
 
         for(String alias : aliases) {
-            value = configurations.get(name);
+            value = configurations.get(alias);
             if (value != null) {
-                logProperty(name, value, canLogValue);
+                logEvent
+                    .addKeyValue("value", canLogValue ? value : "redacted")
+                    .log("Got property value by alias.");
                 return value;
             }
         }
@@ -381,23 +393,17 @@ public class Configuration implements Cloneable {
             }
         }
 
-        if (!CoreUtils.isNullOrEmpty(property.getEnvironmentVariables())) {
-            for (String name : property.getEnvironmentVariables()) {
-                value = mutableEnvironmentConfiguration.get(name);
-                if (value != null) {
-                    return value;
-                }
+        for (String name : property.getEnvironmentVariables()) {
+            value = environmentConfiguration.get(name);
+            if (value != null) {
+                logger.atVerbose()
+                    .addKeyValue("name", name)
+                    .addKeyValue("value", property.canLogValue() ? value : "redacted")
+                    .log("Got property from environment.");
+                return value;
             }
         }
 
         return null;
-    }
-
-    private void logProperty(String name, String value, boolean canLogValue) {
-        logger.atVerbose()
-            .addKeyValue("property", name)
-            .addKeyValue("path", path)
-            .addKeyValue("value", canLogValue ? value : "redacted")
-            .log("Got property value.");
     }
 }

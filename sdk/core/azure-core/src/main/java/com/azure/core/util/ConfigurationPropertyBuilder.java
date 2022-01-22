@@ -1,5 +1,6 @@
 package com.azure.core.util;
 
+import java.util.Objects;
 import java.util.function.Function;
 
 public class ConfigurationPropertyBuilder<T> {
@@ -15,8 +16,8 @@ public class ConfigurationPropertyBuilder<T> {
     private boolean isRequired;
 
     public ConfigurationPropertyBuilder(String name, Function<String, T> converter) {
-        this.name = name;
-        this.converter = converter;
+        this.name = Objects.requireNonNull(name, "'name' cannot be null");
+        this.converter = Objects.requireNonNull(converter, "'converter' cannot be null");;
     }
 
     public ConfigurationPropertyBuilder<T> defaultValue(T defaultValue) {

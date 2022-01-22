@@ -10,8 +10,6 @@ import com.azure.core.util.logging.ClientLogger;
 import java.time.Duration;
 import java.util.Objects;
 
-import static com.azure.core.util.Configuration.NONE;
-
 /**
  * A fixed-delay implementation of {@link RetryStrategy} that has a fixed delay duration between each retry attempt.
  */
@@ -53,11 +51,7 @@ public class FixedDelay implements RetryStrategy {
         return delay;
     }
 
-    static RetryStrategy fromConfiguration(Configuration configuration, RetryStrategy defaultStrategy) {
-        if (configuration == null || configuration == NONE) {
-            return defaultStrategy;
-        }
-
+    static RetryStrategy fromConfiguration(Configuration configuration ) {
         return new FixedDelay(configuration.get(MAX_RETRIES_CONFIG), configuration.get(RETRY_DELAY_CONFIG));
     }
 }

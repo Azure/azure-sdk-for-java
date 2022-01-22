@@ -9,6 +9,7 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
+import java.util.Objects;
 
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
@@ -121,6 +122,11 @@ public final class HttpClientOptions extends ClientOptions {
     }
 
     public static ClientOptions fromConfiguration(Configuration configuration, ClientOptions defaultOptions) {
+        Objects.requireNonNull(configuration, "'configuration' cannot be null");
+        if (configuration == Configuration.NONE) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'configuration' cannot be 'Configuration.NONE'."));
+        }
+
         if (configuration.contains(APPLICATION_ID_PROP) ||
             configuration.contains(CONNECT_TIMEOUT_PROP) ||
             configuration.contains(WRITE_TIMEOUT_PROP) ||
@@ -128,9 +134,9 @@ public final class HttpClientOptions extends ClientOptions {
             configuration.contains(CONNECTION_IDLE_TIMEOUT_PROP) ||
             configuration.contains(CONNECTION_POOL_SIZE_PROP)) {
             return new HttpClientOptions().setConfiguration(configuration);
-        } else {
-            return defaultOptions;
         }
+
+        return defaultOptions;
     }
 
     /**

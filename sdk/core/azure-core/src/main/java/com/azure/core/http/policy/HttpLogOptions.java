@@ -60,12 +60,14 @@ public class HttpLogOptions {
         "User-Agent"
     );
 
+    // skip headers and query params as they need should be rather configured in code
     private static final ConfigurationProperty<String> APPLICATION_ID_PROP = ConfigurationProperty.stringPropertyBuilder("http.logging.application-id").canLogValue(true).build();
     private static final ConfigurationProperty<Boolean> PRETTY_PRINT_BODY_PROP = ConfigurationProperty.booleanPropertyBuilder("http.logging.pretty-print-body").build();
 
     public static HttpLogOptions fromConfiguration(Configuration configuration, HttpLogOptions defaultOptions) {
-        if (configuration == Configuration.NONE || configuration == null) {
-            return defaultOptions;
+        Objects.requireNonNull(configuration, "'configuration' cannot be null");
+        if (configuration == Configuration.NONE) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'configuration' cannot be 'Configuration.NONE'."));
         }
 
         if (!configuration.contains(APPLICATION_ID_PROP) && !configuration.contains(PRETTY_PRINT_BODY_PROP)) {
@@ -87,8 +89,7 @@ public class HttpLogOptions {
         // there is no real validation for boolean anyway
         httpLogOptions.setPrettyPrintBody(configuration.get(PRETTY_PRINT_BODY_PROP));
 
-        // skipping headers and query params as they need more parsing
-        // and should be rather configured in code
+
         return httpLogOptions;
     }
 
