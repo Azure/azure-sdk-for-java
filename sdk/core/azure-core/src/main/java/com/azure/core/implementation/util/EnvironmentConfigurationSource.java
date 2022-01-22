@@ -52,7 +52,7 @@ public class EnvironmentConfigurationSource implements ConfigurationSource {
 
         Set<String> childKeys = Collections.emptySet();
         for (String prop : DEFAULT_CONFIGURATIONS) {
-            if (prop.startsWith(path) && prop.length() > path.length() && prop.charAt(path.length()) == '.') {
+            if (prop.startsWith(path) && prop.length() > path.length() && prop.charAt(path.length()) == '_') {
                 if (childKeys.isEmpty()) {
                     childKeys = new HashSet<>();
                 }
@@ -66,12 +66,21 @@ public class EnvironmentConfigurationSource implements ConfigurationSource {
 
     @Override
     public String getValue(String propertyName) {
-        String value = System.getProperty(propertyName);
+        String value = loadFromProperties(propertyName);
 
         if (value != null) {
             return value;
         }
 
-        return System.getenv(propertyName);
+        return loadFromEnvironment(propertyName);
+    }
+
+
+    String loadFromEnvironment(String name) {
+        return System.getenv(name);
+    }
+
+    String loadFromProperties(String name) {
+        return System.getProperty(name);
     }
 }
