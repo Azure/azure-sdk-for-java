@@ -18,7 +18,7 @@ parameters:
   DependsOn: ''
   UsePlatformContainer: false
   DisableAzureResourceCreation: false
-  MavenBuildInstallParallelization: '2C'
+  MavenBuildInstallParallelization: '1C'
   SparkShading: ''
 
 jobs:
