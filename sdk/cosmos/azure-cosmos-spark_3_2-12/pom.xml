@@ -494,6 +494,8 @@
                       <shadedPattern>${shadingPrefix}.com.azure</shadedPattern>
                       <excludes>
                         <exclude>com.azure.cosmos.spark.*</exclude>
+                        <exclude>com.azure.cosmos.spark.diagnostics.*</exclude>
+                        <exclude>com.azure.cosmos.spark.udf.*</exclude>
                         <exclude>com.azure.cosmos.implementation.SparkBridgeInternal</exclude>
                         <exclude>com.azure.cosmos.models.CosmosParameterizedQuery</exclude>
                       </excludes>
