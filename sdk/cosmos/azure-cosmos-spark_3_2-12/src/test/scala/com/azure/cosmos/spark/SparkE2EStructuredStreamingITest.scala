@@ -6,7 +6,7 @@ import com.azure.cosmos.CosmosAsyncContainer
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
 import com.azure.cosmos.models.ThroughputProperties
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.streaming.StreamingQueryListener
+import org.apache.spark.sql.streaming.{StreamingQueryListener, Trigger}
 import org.apache.spark.sql.streaming.StreamingQueryListener.{QueryProgressEvent, QueryStartedEvent, QueryTerminatedEvent}
 
 import java.util.UUID
@@ -86,6 +86,7 @@ class SparkE2EStructuredStreamingITest
     val microBatchQuery = changeFeedDF
       .writeStream
       .format("cosmos.oltp")
+      .trigger(Trigger.ProcessingTime("1 second"))
       .queryName(testId)
       .options(writeCfg)
       .outputMode("append")
@@ -128,6 +129,7 @@ class SparkE2EStructuredStreamingITest
     val secondMicroBatchQuery = secondChangeFeedDF
       .writeStream
       .format("cosmos.oltp")
+      .trigger(Trigger.ProcessingTime("1 second"))
       .queryName(testId)
       .options(writeCfg)
       .outputMode("append")
@@ -199,6 +201,7 @@ class SparkE2EStructuredStreamingITest
     val microBatchQuery = changeFeedDF
       .writeStream
       .format("cosmos.oltp")
+      .trigger(Trigger.ProcessingTime("1 second"))
       .queryName(testId)
       .options(writeCfg)
       .outputMode("append")
@@ -241,6 +244,7 @@ class SparkE2EStructuredStreamingITest
     val secondMicroBatchQuery = secondChangeFeedDF
       .writeStream
       .format("cosmos.oltp")
+      .trigger(Trigger.ProcessingTime("1 second"))
       .queryName(testId)
       .options(writeCfg)
       .outputMode("append")
