@@ -86,7 +86,7 @@ class SparkE2EStructuredStreamingITest
     val microBatchQuery = changeFeedDF
       .writeStream
       .format("cosmos.oltp")
-      .trigger(Trigger.ProcessingTime("1 second"))
+      .trigger(Trigger.ProcessingTime("500 milliseconds"))
       .queryName(testId)
       .options(writeCfg)
       .outputMode("append")
@@ -129,7 +129,7 @@ class SparkE2EStructuredStreamingITest
     val secondMicroBatchQuery = secondChangeFeedDF
       .writeStream
       .format("cosmos.oltp")
-      .trigger(Trigger.ProcessingTime("1 second"))
+      .trigger(Trigger.ProcessingTime("500 milliseconds"))
       .queryName(testId)
       .options(writeCfg)
       .outputMode("append")
@@ -201,7 +201,7 @@ class SparkE2EStructuredStreamingITest
     val microBatchQuery = changeFeedDF
       .writeStream
       .format("cosmos.oltp")
-      .trigger(Trigger.ProcessingTime("1 second"))
+      .trigger(Trigger.ProcessingTime("100 milliseconds"))
       .queryName(testId)
       .options(writeCfg)
       .outputMode("append")
@@ -244,7 +244,7 @@ class SparkE2EStructuredStreamingITest
     val secondMicroBatchQuery = secondChangeFeedDF
       .writeStream
       .format("cosmos.oltp")
-      .trigger(Trigger.ProcessingTime("1 second"))
+      .trigger(Trigger.ProcessingTime("100 milliseconds"))
       .queryName(testId)
       .options(writeCfg)
       .outputMode("append")
