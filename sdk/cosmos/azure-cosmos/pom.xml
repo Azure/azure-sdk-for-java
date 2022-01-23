@@ -63,8 +63,8 @@ Licensed under the MIT License.
     <!-- CosmosSkip - This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
     <!-- This can only be enabled once we release GA, as it needs a stable version to check for breaking changes. -->
     <revapi.skip>true</revapi.skip>
-    <cosmos.spark.e2e>false</cosmos.spark.e2e>
-    <maven.test.skip>${cosmos.spark.e2e}</maven.test.skip>
+    <cosmos.test.e2e.skip>false</cosmos.test.e2e.skip>
+    <maven.test.skip>${cosmos.test.e2e.skip}</maven.test.skip>
   </properties>
 
   <dependencies>
@@ -295,11 +295,11 @@ Licensed under the MIT License.
       <id>sparkE2E_3-1</id>
       <activation>
         <property>
-          <name>spark-e2e</name>
+          <name>spark-e2e_3-1</name>
         </property>
       </activation>
       <properties>
-        <cosmos.spark.e2e>true</cosmos.spark.e2e>
+        <cosmos.test.e2e.skip>true</cosmos.test.e2e.skip>
       </properties>
     </profile>
     <profile>
@@ -307,11 +307,35 @@ Licensed under the MIT License.
       <id>sparkE2E_3-2</id>
       <activation>
         <property>
-          <name>spark-e2e</name>
+          <name>spark-e2e_3-2</name>
         </property>
       </activation>
       <properties>
-        <cosmos.spark.e2e>true</cosmos.spark.e2e>
+        <cosmos.test.e2e.skip>true</cosmos.test.e2e.skip>
+      </properties>
+    </profile>
+    <profile>
+      <!-- Spark integration tests, requires Cosmos DB Emulator Endpoint -->
+      <id>springE2E</id>
+      <activation>
+        <property>
+          <name>spring-e2e</name>
+        </property>
+      </activation>
+      <properties>
+        <cosmos.test.e2e.skip>true</cosmos.test.e2e.skip>
+      </properties>
+    </profile>
+    <profile>
+      <!-- Spark integration tests, requires Cosmos DB Emulator Endpoint -->
+      <id>encryptionE2E</id>
+      <activation>
+        <property>
+          <name>encryption-e2e</name>
+        </property>
+      </activation>
+      <properties>
+        <cosmos.test.e2e.skip>true</cosmos.test.e2e.skip>
       </properties>
     </profile>
     <profile>
