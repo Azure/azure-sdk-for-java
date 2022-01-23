@@ -135,7 +135,7 @@ class SparkE2EStructuredStreamingITest
       .outputMode("append")
       .start()
 
-    Thread.sleep(10100)
+    Thread.sleep(15500)
     secondMicroBatchQuery.stop()
 
     sourceCount = getRecordCountOfContainer(sourceContainer)
@@ -207,7 +207,7 @@ class SparkE2EStructuredStreamingITest
       .outputMode("append")
       .start()
 
-    Thread.sleep(20000)
+    Thread.sleep(25500)
     microBatchQuery.stop()
 
     var sourceCount: Long = getRecordCountOfContainer(sourceContainer)
@@ -250,7 +250,7 @@ class SparkE2EStructuredStreamingITest
       .outputMode("append")
       .start()
 
-    Thread.sleep(10100)
+    Thread.sleep(25500)
     secondMicroBatchQuery.stop()
 
     sourceCount = getRecordCountOfContainer(sourceContainer)
