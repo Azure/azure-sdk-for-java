@@ -10,6 +10,13 @@
 
 ### Other Changes
 
+## 5.1.5 (2022-01-14)
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` from `1.22.0` to `1.24.1`.
+- Updated `azure-core-http-netty` from `1.11.2` to `1.11.6`.
+
 ## 5.1.4 (2021-11-11)
 ### Other Changes
 

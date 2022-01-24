@@ -214,12 +214,6 @@ public class AttestationClientJavaDocCodeSnippets {
         AttestationResult resultWithReport = client.attestOpenEnclave(openEnclaveReport);
         // END: com.azure.security.attestation.AttestationClient.attestOpenEnclaveWithReport
 
-        // BEGIN: com.azure.security.attestation.AttestationClient.attestOpenEnclaveWithResponseWithReport
-        Response<AttestationResult> responseWithReport = client.attestOpenEnclaveWithResponse(openEnclaveReport,
-            Context.NONE);
-        // END: com.azure.security.attestation.AttestationClient.attestOpenEnclaveWithResponseWithReport
-
-
         // BEGIN: com.azure.security.attestation.AttestationClient.attestOpenEnclave
         AttestationResult result = client.attestOpenEnclave(new AttestationOptions(openEnclaveReport)
             .setRunTimeData(new AttestationData(runtimeData, AttestationDataInterpretation.BINARY)));
@@ -307,11 +301,6 @@ public class AttestationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithReport
         AttestationResult resultWithReport = client.attestSgxEnclave(sgxEnclaveReport);
         // END: com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithReport
-
-        // BEGIN: com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithResponseWithReport
-        Response<AttestationResult> responseWithReport = client.attestSgxEnclaveWithResponse(sgxQuote, Context.NONE);
-        // END: com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithResponseWithReport
-
 
         // BEGIN: com.azure.security.attestation.AttestationClient.attestSgxEnclave
         AttestationResult result = client.attestSgxEnclave(new AttestationOptions(sgxQuote)

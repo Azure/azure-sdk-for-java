@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.labservices.implementation;
 
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.labservices.fluent.OperationsClient;
-import com.azure.resourcemanager.labservices.fluent.models.OperationResultInner;
-import com.azure.resourcemanager.labservices.models.OperationResult;
+import com.azure.resourcemanager.labservices.fluent.models.OperationInner;
+import com.azure.resourcemanager.labservices.models.Operation;
 import com.azure.resourcemanager.labservices.models.Operations;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -19,42 +18,29 @@ public final class OperationsImpl implements Operations {
 
     private final OperationsClient innerClient;
 
-    private final com.azure.resourcemanager.labservices.ManagedLabsManager serviceManager;
+    private final com.azure.resourcemanager.labservices.LabServicesManager serviceManager;
 
     public OperationsImpl(
-        OperationsClient innerClient, com.azure.resourcemanager.labservices.ManagedLabsManager serviceManager) {
+        OperationsClient innerClient, com.azure.resourcemanager.labservices.LabServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public OperationResult get(String locationName, String operationName) {
-        OperationResultInner inner = this.serviceClient().get(locationName, operationName);
-        if (inner != null) {
-            return new OperationResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public PagedIterable<Operation> list() {
+        PagedIterable<OperationInner> inner = this.serviceClient().list();
+        return Utils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
     }
 
-    public Response<OperationResult> getWithResponse(String locationName, String operationName, Context context) {
-        Response<OperationResultInner> inner =
-            this.serviceClient().getWithResponse(locationName, operationName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new OperationResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public PagedIterable<Operation> list(Context context) {
+        PagedIterable<OperationInner> inner = this.serviceClient().list(context);
+        return Utils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
     }
 
     private OperationsClient serviceClient() {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.labservices.ManagedLabsManager manager() {
+    private com.azure.resourcemanager.labservices.LabServicesManager manager() {
         return this.serviceManager;
     }
 }

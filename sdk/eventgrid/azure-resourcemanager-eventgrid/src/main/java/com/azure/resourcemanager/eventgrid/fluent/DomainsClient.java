@@ -15,6 +15,7 @@ import com.azure.resourcemanager.eventgrid.fluent.models.DomainInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.DomainSharedAccessKeysInner;
 import com.azure.resourcemanager.eventgrid.models.DomainRegenerateKeyRequest;
 import com.azure.resourcemanager.eventgrid.models.DomainUpdateParameters;
+import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DomainsClient. */
 public interface DomainsClient {
@@ -40,7 +41,7 @@ public interface DomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a domain.
+     * @return properties of a domain along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DomainInner> getByResourceGroupWithResponse(String resourceGroupName, String domainName, Context context);
@@ -54,7 +55,7 @@ public interface DomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid Domain.
+     * @return eventGrid Domain along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DomainInner>, DomainInner> beginCreateOrUpdate(
@@ -70,7 +71,7 @@ public interface DomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid Domain.
+     * @return eventGrid Domain along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DomainInner>, DomainInner> beginCreateOrUpdate(
@@ -113,7 +114,7 @@ public interface DomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String domainName);
@@ -127,7 +128,7 @@ public interface DomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String domainName, Context context);
@@ -166,7 +167,7 @@ public interface DomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DomainInner>, DomainInner> beginUpdate(
@@ -182,7 +183,7 @@ public interface DomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DomainInner>, DomainInner> beginUpdate(
@@ -304,7 +305,7 @@ public interface DomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Domain.
+     * @return shared access keys of the Domain along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DomainSharedAccessKeysInner> listSharedAccessKeysWithResponse(
@@ -335,7 +336,7 @@ public interface DomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Domain.
+     * @return shared access keys of the Domain along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DomainSharedAccessKeysInner> regenerateKeyWithResponse(

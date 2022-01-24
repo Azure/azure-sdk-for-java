@@ -246,7 +246,6 @@ public interface BigDataPoolResourceInfo {
             extends DefinitionStages.WithTags,
                 DefinitionStages.WithProvisioningState,
                 DefinitionStages.WithAutoScale,
-                DefinitionStages.WithCreationDate,
                 DefinitionStages.WithAutoPause,
                 DefinitionStages.WithIsComputeIsolationEnabled,
                 DefinitionStages.WithSessionLevelPackagesEnabled,
@@ -306,16 +305,6 @@ public interface BigDataPoolResourceInfo {
              * @return the next definition stage.
              */
             WithCreate withAutoScale(AutoScaleProperties autoScale);
-        }
-        /** The stage of the BigDataPoolResourceInfo definition allowing to specify creationDate. */
-        interface WithCreationDate {
-            /**
-             * Specifies the creationDate property: The time when the Big Data pool was created..
-             *
-             * @param creationDate The time when the Big Data pool was created.
-             * @return the next definition stage.
-             */
-            WithCreate withCreationDate(OffsetDateTime creationDate);
         }
         /** The stage of the BigDataPoolResourceInfo definition allowing to specify autoPause. */
         interface WithAutoPause {

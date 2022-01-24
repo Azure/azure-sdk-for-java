@@ -42,6 +42,9 @@ stages:
         MatrixReplace:
           - TestOptions=.*/-Punit
           - AZURE_TEST.*=.*/
+        MavenBuildInstallParallelization: 1
+        MavenBuildPackageParallelization: 1
+        SparkShading: '-DsparkShading'
 
   - stage: TestEmulator
     displayName: Test Emulator
@@ -56,6 +59,8 @@ stages:
             Selection: all
             GenerateVMJobs: true
         AdditionalParameters:
+          MavenBuildInstallParallelization: 1
+          SparkShading: '-DsparkShading'
           DisableAzureResourceCreation: true
           ServiceDirectory: cosmos
           Artifacts: ${{ parameters.Artifacts }}

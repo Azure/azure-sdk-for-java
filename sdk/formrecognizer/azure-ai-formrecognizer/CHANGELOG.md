@@ -1,5 +1,15 @@
 # Release History
 
+## 4.0.0-beta.4 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 4.0.0-beta.3 (2022-01-13)
 ### Bugs Fixed
 - Fixed confidence value returned on fields.

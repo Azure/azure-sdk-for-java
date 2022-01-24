@@ -165,6 +165,10 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         return this.innerModel().azureADOnlyAuthentication();
     }
 
+    public Boolean trustedServiceBypassEnabled() {
+        return this.innerModel().trustedServiceBypassEnabled();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -401,6 +405,11 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
 
     public WorkspaceImpl withAzureADOnlyAuthentication(Boolean azureADOnlyAuthentication) {
         this.innerModel().withAzureADOnlyAuthentication(azureADOnlyAuthentication);
+        return this;
+    }
+
+    public WorkspaceImpl withTrustedServiceBypassEnabled(Boolean trustedServiceBypassEnabled) {
+        this.innerModel().withTrustedServiceBypassEnabled(trustedServiceBypassEnabled);
         return this;
     }
 

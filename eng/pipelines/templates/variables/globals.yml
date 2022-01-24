@@ -21,3 +21,4 @@ variables:
 
   skipComponentGovernanceDetection: true
   IsDebug: $[coalesce(variables['System.Debug'], 'false')]
+  Package.EnableSBOMSigning: true
