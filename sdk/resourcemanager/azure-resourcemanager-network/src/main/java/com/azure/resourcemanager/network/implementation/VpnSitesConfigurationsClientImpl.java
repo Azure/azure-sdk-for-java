@@ -116,7 +116,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
         } else {
             request.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -173,7 +173,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
         } else {
             request.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -199,13 +199,14 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDownloadAsync(
         String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request) {
         Mono<Response<Flux<ByteBuffer>>> mono = downloadWithResponseAsync(resourceGroupName, virtualWanName, request);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -220,7 +221,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDownloadAsync(
         String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request, Context context) {
         context = this.client.mergeContext(context);
@@ -242,7 +243,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDownload(
         String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request) {
         return beginDownloadAsync(resourceGroupName, virtualWanName, request).getSyncPoller();
@@ -260,7 +261,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDownload(
         String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request, Context context) {
         return beginDownloadAsync(resourceGroupName, virtualWanName, request, context).getSyncPoller();

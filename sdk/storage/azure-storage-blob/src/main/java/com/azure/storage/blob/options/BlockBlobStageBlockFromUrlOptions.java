@@ -13,7 +13,7 @@ import com.azure.storage.blob.models.BlobRequestConditions;
  * Extended options that may be passed when staging a block from a source URL.
  */
 @Fluent
-public class BlockBlobStageBlockFromUrlOptions {
+public final class BlockBlobStageBlockFromUrlOptions {
     private final String base64BlockId;
     private final String sourceUrl;
     private BlobRange sourceRange;

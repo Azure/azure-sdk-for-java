@@ -1,6 +1,6 @@
 {
   "id": "key1",
-  "encryptionAlgorithmId": "AEAD_AES_256_CBC_HMAC_SHA256",
+  "encryptionAlgorithm": "AEAD_AES_256_CBC_HMAC_SHA256",
   "wrappedDataEncryptionKey": "S84PieiyZNyHxeuUuX5IXSV2KOktpt02tQM4QLhm8dI=",
   "keyWrapMetadata": {
     "type": "TESTKEYSTORE_VAULT",

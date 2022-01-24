@@ -157,7 +157,7 @@ public final class HybridKubernetesManagementClientImpl implements HybridKuberne
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-03-01";
+        this.apiVersion = "2021-10-01";
         this.connectedClusters = new ConnectedClustersClientImpl(this);
         this.operations = new OperationsClientImpl(this);
     }

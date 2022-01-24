@@ -32,13 +32,13 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param diskAccess disk access object supplied in the body of the Put disk access operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk access resource.
+     * @return disk access resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -49,15 +49,15 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param diskAccess disk access object supplied in the body of the Put disk access operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk access resource.
+     * @return disk access resource along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<DiskAccessInner>, DiskAccessInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String diskAccessName, DiskAccessInner diskAccess);
 
@@ -66,15 +66,15 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param diskAccess disk access object supplied in the body of the Put disk access operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk access resource.
+     * @return disk access resource along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DiskAccessInner>, DiskAccessInner> beginCreateOrUpdate(
         String resourceGroupName, String diskAccessName, DiskAccessInner diskAccess);
 
@@ -83,16 +83,16 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param diskAccess disk access object supplied in the body of the Put disk access operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk access resource.
+     * @return disk access resource along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DiskAccessInner>, DiskAccessInner> beginCreateOrUpdate(
         String resourceGroupName, String diskAccessName, DiskAccessInner diskAccess, Context context);
 
@@ -101,13 +101,13 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param diskAccess disk access object supplied in the body of the Put disk access operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk access resource.
+     * @return disk access resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DiskAccessInner> createOrUpdateAsync(
@@ -118,7 +118,7 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param diskAccess disk access object supplied in the body of the Put disk access operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -134,7 +134,7 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param diskAccess disk access object supplied in the body of the Put disk access operation.
      * @param context The context to associate with this operation.
@@ -152,13 +152,13 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param diskAccess disk access object supplied in the body of the Patch disk access operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk access resource.
+     * @return disk access resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -169,15 +169,15 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param diskAccess disk access object supplied in the body of the Patch disk access operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk access resource.
+     * @return disk access resource along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<DiskAccessInner>, DiskAccessInner> beginUpdateAsync(
         String resourceGroupName, String diskAccessName, DiskAccessUpdate diskAccess);
 
@@ -186,15 +186,15 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param diskAccess disk access object supplied in the body of the Patch disk access operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk access resource.
+     * @return disk access resource along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DiskAccessInner>, DiskAccessInner> beginUpdate(
         String resourceGroupName, String diskAccessName, DiskAccessUpdate diskAccess);
 
@@ -203,16 +203,16 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param diskAccess disk access object supplied in the body of the Patch disk access operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk access resource.
+     * @return disk access resource along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DiskAccessInner>, DiskAccessInner> beginUpdate(
         String resourceGroupName, String diskAccessName, DiskAccessUpdate diskAccess, Context context);
 
@@ -221,13 +221,13 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param diskAccess disk access object supplied in the body of the Patch disk access operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk access resource.
+     * @return disk access resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DiskAccessInner> updateAsync(String resourceGroupName, String diskAccessName, DiskAccessUpdate diskAccess);
@@ -237,7 +237,7 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param diskAccess disk access object supplied in the body of the Patch disk access operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -253,7 +253,7 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param diskAccess disk access object supplied in the body of the Patch disk access operation.
      * @param context The context to associate with this operation.
@@ -271,12 +271,13 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a disk access resource.
+     * @return information about a disk access resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DiskAccessInner>> getByResourceGroupWithResponseAsync(
@@ -287,12 +288,12 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a disk access resource.
+     * @return information about a disk access resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DiskAccessInner> getByResourceGroupAsync(String resourceGroupName, String diskAccessName);
@@ -302,7 +303,7 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -317,13 +318,13 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a disk access resource.
+     * @return information about a disk access resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DiskAccessInner> getByResourceGroupWithResponse(
@@ -334,12 +335,12 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String diskAccessName);
@@ -349,14 +350,14 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String diskAccessName);
 
     /**
@@ -364,14 +365,14 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String diskAccessName);
 
     /**
@@ -379,15 +380,15 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String diskAccessName, Context context);
 
     /**
@@ -395,12 +396,12 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String diskAccessName);
@@ -410,7 +411,7 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -424,7 +425,7 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -508,12 +509,13 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources possible under disk access resource.
+     * @return the private link resources possible under disk access resource along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<PrivateLinkResourceListResultInner>> getPrivateLinkResourcesWithResponseAsync(
@@ -524,12 +526,12 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources possible under disk access resource.
+     * @return the private link resources possible under disk access resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<PrivateLinkResourceListResultInner> getPrivateLinkResourcesAsync(
@@ -540,7 +542,7 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -555,13 +557,13 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources possible under disk access resource.
+     * @return the private link resources possible under disk access resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PrivateLinkResourceListResultInner> getPrivateLinkResourcesWithResponse(
@@ -573,7 +575,7 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
@@ -581,7 +583,8 @@ public interface DiskAccessesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
+     * @return the Private Endpoint Connection resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateAPrivateEndpointConnectionWithResponseAsync(
@@ -596,7 +599,7 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
@@ -604,9 +607,10 @@ public interface DiskAccessesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
+     * @return the Private Endpoint Connection resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
         beginUpdateAPrivateEndpointConnectionAsync(
             String resourceGroupName,
@@ -620,7 +624,7 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
@@ -628,9 +632,10 @@ public interface DiskAccessesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
+     * @return the Private Endpoint Connection resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
         beginUpdateAPrivateEndpointConnection(
             String resourceGroupName,
@@ -644,7 +649,7 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
@@ -653,9 +658,10 @@ public interface DiskAccessesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
+     * @return the Private Endpoint Connection resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
         beginUpdateAPrivateEndpointConnection(
             String resourceGroupName,
@@ -670,7 +676,7 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
@@ -678,7 +684,7 @@ public interface DiskAccessesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
+     * @return the Private Endpoint Connection resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<PrivateEndpointConnectionInner> updateAPrivateEndpointConnectionAsync(
@@ -693,7 +699,7 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
@@ -716,7 +722,7 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
@@ -740,13 +746,14 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a private endpoint connection under a disk access resource.
+     * @return information about a private endpoint connection under a disk access resource along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<PrivateEndpointConnectionInner>> getAPrivateEndpointConnectionWithResponseAsync(
@@ -757,13 +764,14 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a private endpoint connection under a disk access resource.
+     * @return information about a private endpoint connection under a disk access resource on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<PrivateEndpointConnectionInner> getAPrivateEndpointConnectionAsync(
@@ -774,7 +782,7 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -791,14 +799,14 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a private endpoint connection under a disk access resource.
+     * @return information about a private endpoint connection under a disk access resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PrivateEndpointConnectionInner> getAPrivateEndpointConnectionWithResponse(
@@ -809,13 +817,13 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteAPrivateEndpointConnectionWithResponseAsync(
@@ -826,15 +834,15 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAPrivateEndpointConnectionAsync(
         String resourceGroupName, String diskAccessName, String privateEndpointConnectionName);
 
@@ -843,15 +851,15 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteAPrivateEndpointConnection(
         String resourceGroupName, String diskAccessName, String privateEndpointConnectionName);
 
@@ -860,16 +868,16 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteAPrivateEndpointConnection(
         String resourceGroupName, String diskAccessName, String privateEndpointConnectionName, Context context);
 
@@ -878,13 +886,13 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAPrivateEndpointConnectionAsync(
@@ -895,7 +903,7 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -911,7 +919,7 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param context The context to associate with this operation.
@@ -928,7 +936,7 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -944,7 +952,7 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -960,7 +968,7 @@ public interface DiskAccessesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

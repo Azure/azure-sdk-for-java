@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.streamanalytics.fluent.models.JavaScriptFunctionBindingRetrievalProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -15,24 +15,27 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** The parameters needed to retrieve the default function definition for a JavaScript function. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "bindingType")
 @JsonTypeName("Microsoft.StreamAnalytics/JavascriptUdf")
-@JsonFlatten
 @Fluent
-public class JavaScriptFunctionRetrieveDefaultDefinitionParameters extends FunctionRetrieveDefaultDefinitionParameters {
+public final class JavaScriptFunctionRetrieveDefaultDefinitionParameters
+    extends FunctionRetrieveDefaultDefinitionParameters {
     @JsonIgnore
     private final ClientLogger logger = new ClientLogger(JavaScriptFunctionRetrieveDefaultDefinitionParameters.class);
 
     /*
-     * The JavaScript code containing a single function definition. For
-     * example: 'function (x, y) { return x + y; }'.
+     * The binding retrieval properties associated with a JavaScript function.
      */
-    @JsonProperty(value = "bindingRetrievalProperties.script")
-    private String script;
+    @JsonProperty(value = "bindingRetrievalProperties")
+    private JavaScriptFunctionBindingRetrievalProperties innerBindingRetrievalProperties;
 
-    /*
-     * The function type.
+    /**
+     * Get the innerBindingRetrievalProperties property: The binding retrieval properties associated with a JavaScript
+     * function.
+     *
+     * @return the innerBindingRetrievalProperties value.
      */
-    @JsonProperty(value = "bindingRetrievalProperties.udfType")
-    private UdfType udfType;
+    private JavaScriptFunctionBindingRetrievalProperties innerBindingRetrievalProperties() {
+        return this.innerBindingRetrievalProperties;
+    }
 
     /**
      * Get the script property: The JavaScript code containing a single function definition. For example: 'function (x,
@@ -41,7 +44,7 @@ public class JavaScriptFunctionRetrieveDefaultDefinitionParameters extends Funct
      * @return the script value.
      */
     public String script() {
-        return this.script;
+        return this.innerBindingRetrievalProperties() == null ? null : this.innerBindingRetrievalProperties().script();
     }
 
     /**
@@ -52,7 +55,10 @@ public class JavaScriptFunctionRetrieveDefaultDefinitionParameters extends Funct
      * @return the JavaScriptFunctionRetrieveDefaultDefinitionParameters object itself.
      */
     public JavaScriptFunctionRetrieveDefaultDefinitionParameters withScript(String script) {
-        this.script = script;
+        if (this.innerBindingRetrievalProperties() == null) {
+            this.innerBindingRetrievalProperties = new JavaScriptFunctionBindingRetrievalProperties();
+        }
+        this.innerBindingRetrievalProperties().withScript(script);
         return this;
     }
 
@@ -62,7 +68,7 @@ public class JavaScriptFunctionRetrieveDefaultDefinitionParameters extends Funct
      * @return the udfType value.
      */
     public UdfType udfType() {
-        return this.udfType;
+        return this.innerBindingRetrievalProperties() == null ? null : this.innerBindingRetrievalProperties().udfType();
     }
 
     /**
@@ -72,7 +78,10 @@ public class JavaScriptFunctionRetrieveDefaultDefinitionParameters extends Funct
      * @return the JavaScriptFunctionRetrieveDefaultDefinitionParameters object itself.
      */
     public JavaScriptFunctionRetrieveDefaultDefinitionParameters withUdfType(UdfType udfType) {
-        this.udfType = udfType;
+        if (this.innerBindingRetrievalProperties() == null) {
+            this.innerBindingRetrievalProperties = new JavaScriptFunctionBindingRetrievalProperties();
+        }
+        this.innerBindingRetrievalProperties().withUdfType(udfType);
         return this;
     }
 
@@ -84,5 +93,8 @@ public class JavaScriptFunctionRetrieveDefaultDefinitionParameters extends Funct
     @Override
     public void validate() {
         super.validate();
+        if (innerBindingRetrievalProperties() != null) {
+            innerBindingRetrievalProperties().validate();
+        }
     }
 }

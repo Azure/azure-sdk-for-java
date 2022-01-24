@@ -4,6 +4,7 @@ package com.azure.spring.data.cosmos.core;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ConflictException;
@@ -61,8 +62,6 @@ import static com.azure.spring.data.cosmos.common.TestConstants.HOBBIES;
 import static com.azure.spring.data.cosmos.common.TestConstants.LAST_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.PASSPORT_IDS_BY_COUNTRY;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
@@ -119,23 +118,23 @@ public class ReactiveCosmosTemplateIT {
             azureKeyCredential = new AzureKeyCredential(cosmosDbKey);
             cosmosClientBuilder.credential(azureKeyCredential);
             client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
-            final CosmosFactory dbFactory = new CosmosFactory(client, TestConstants.DB_NAME);
-
-            final CosmosMappingContext mappingContext = new CosmosMappingContext();
             personInfo = new CosmosEntityInformation<>(Person.class);
             containerName = personInfo.getContainerName();
-
-            mappingContext.setInitialEntitySet(new EntityScanner(this.applicationContext).scan(Persistent.class));
-
-            final MappingCosmosConverter dbConverter =
-                new MappingCosmosConverter(mappingContext, null);
-            cosmosTemplate = new ReactiveCosmosTemplate(dbFactory, cosmosConfig, dbConverter);
+            cosmosTemplate = createReactiveCosmosTemplate(cosmosConfig, TestConstants.DB_NAME);
         }
 
         collectionManager.ensureContainersCreatedAndEmpty(cosmosTemplate, Person.class, GenIdEntity.class, AuditableEntity.class);
 
         insertedPerson = cosmosTemplate.insert(TEST_PERSON,
             new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON))).block();
+    }
+
+    private ReactiveCosmosTemplate createReactiveCosmosTemplate(CosmosConfig config, String dbName) throws ClassNotFoundException {
+        final CosmosFactory cosmosFactory = new CosmosFactory(client, dbName);
+        final CosmosMappingContext mappingContext = new CosmosMappingContext();
+        mappingContext.setInitialEntitySet(new EntityScanner(this.applicationContext).scan(Persistent.class));
+        final MappingCosmosConverter cosmosConverter = new MappingCosmosConverter(mappingContext, null);
+        return new ReactiveCosmosTemplate(cosmosFactory, config, cosmosConverter);
     }
 
     @After
@@ -149,8 +148,11 @@ public class ReactiveCosmosTemplateIT {
         final Mono<Person> insertMono = cosmosTemplate.insert(TEST_PERSON,
             new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
         StepVerifier.create(insertMono)
-                    .expectErrorMatches(ex -> ex instanceof CosmosAccessException && ((CosmosAccessException) ex).getCosmosException() instanceof ConflictException)
+                    .expectErrorMatches(ex -> ex instanceof CosmosAccessException &&
+                        ((CosmosAccessException) ex).getCosmosException() instanceof ConflictException)
                     .verify();
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
     }
 
     @Test
@@ -173,8 +175,8 @@ public class ReactiveCosmosTemplateIT {
             TEST_PERSON.getId(),
             Person.class);
         StepVerifier.create(findById).consumeNextWith(actual -> {
-            Assert.assertThat(actual.getFirstName(), is(equalTo(TEST_PERSON.getFirstName())));
-            Assert.assertThat(actual.getLastName(), is(equalTo(TEST_PERSON.getLastName())));
+            Assert.assertEquals(actual.getFirstName(), TEST_PERSON.getFirstName());
+            Assert.assertEquals(actual.getLastName(), TEST_PERSON.getLastName());
         }).verifyComplete();
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
@@ -246,6 +248,7 @@ public class ReactiveCosmosTemplateIT {
             person, new PartitionKey(person.getLastName()));
         StepVerifier.create(entityMono).verifyError(CosmosAccessException.class);
 
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
     }
 
     @Test
@@ -478,6 +481,7 @@ public class ReactiveCosmosTemplateIT {
         StepVerifier.create(findById)
                     .expectError(CosmosAccessException.class)
                     .verify();
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
     }
 
     @Test
@@ -545,4 +549,34 @@ public class ReactiveCosmosTemplateIT {
         assertEquals(Integer.parseInt(TestConstants.AUTOSCALE_MAX_THROUGHPUT),
             throughput.getProperties().getAutoscaleMaxThroughput());
     }
+
+    @Test
+    public void createDatabaseWithThroughput() throws ClassNotFoundException {
+        final String configuredThroughputDbName = TestConstants.DB_NAME + "-other";
+        deleteDatabaseIfExists(configuredThroughputDbName);
+
+        Integer expectedRequestUnits = 700;
+        final CosmosConfig config = CosmosConfig.builder()
+            .enableDatabaseThroughput(false, expectedRequestUnits)
+            .build();
+        final ReactiveCosmosTemplate configuredThroughputCosmosTemplate = createReactiveCosmosTemplate(config, configuredThroughputDbName);
+
+        final CosmosEntityInformation<Person, String> personInfo =
+            new CosmosEntityInformation<>(Person.class);
+        configuredThroughputCosmosTemplate.createContainerIfNotExists(personInfo).block();
+
+        final CosmosAsyncDatabase database = client.getDatabase(configuredThroughputDbName);
+        final ThroughputResponse response = database.readThroughput().block();
+        assertEquals(expectedRequestUnits, response.getProperties().getManualThroughput());
+    }
+
+    private void deleteDatabaseIfExists(String dbName) {
+        CosmosAsyncDatabase database = client.getDatabase(dbName);
+        try {
+            database.delete().block();
+        } catch (CosmosException ex) {
+            assertEquals(ex.getStatusCode(), 404);
+        }
+    }
+
 }

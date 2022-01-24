@@ -11,8 +11,30 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public final class RecognizeEntitiesAction {
+    private String actionName;
     private String modelVersion;
     private boolean disableServiceLogs;
+
+    /**
+     * Get the name of action.
+     *
+     * @return the name of action.
+     */
+    public String getActionName() {
+        return actionName;
+    }
+
+    /**
+     * Set the custom name for the action.
+     *
+     * @param actionName the custom name for the action.
+     *
+     * @return The {@link RecognizeEntitiesAction} object itself.
+     */
+    public RecognizeEntitiesAction setActionName(String actionName) {
+        this.actionName = actionName;
+        return this;
+    }
 
     /**
      * Gets the version of the text analytics model used by this operation.

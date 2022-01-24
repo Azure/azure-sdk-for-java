@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.BulkProcessingOptions;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
 import org.testng.annotations.Test;
@@ -21,12 +20,12 @@ public class BulkProcessingOptionsTest {
     @Test(groups = { "unit" })
     public void minAndMaxTargetRetryRateMustNotBeNegative() {
         assertThatThrownBy(
-            () -> new BulkProcessingOptions<Object>().setTargetedMicroBatchRetryRate(-0.001, 0))
+            () -> new CosmosBulkExecutionOptions().setTargetedMicroBatchRetryRate(-0.001, 0))
             .isInstanceOf(IllegalArgumentException.class);
 
         assertThatThrownBy(
-            () -> new BulkProcessingOptions<Object>().setTargetedMicroBatchRetryRate(0.3, 0.29999))
-            .isInstanceOf(IllegalArgumentException.class);;
+            () -> new CosmosBulkExecutionOptions().setTargetedMicroBatchRetryRate(0.3, 0.29999))
+            .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test(groups = { "unit" })
@@ -48,7 +47,7 @@ public class BulkProcessingOptionsTest {
     @Test(groups = { "unit" })
     public void thresholdsInstanceCanBePassedAcrossBulkExecutionOptionsInstances() {
         CosmosBulkExecutionOptions initialOptions = new CosmosBulkExecutionOptions();
-        CosmosBulkExecutionThresholdsState thresholds = initialOptions.getThresholds();
+        CosmosBulkExecutionThresholdsState thresholds = initialOptions.getThresholdsState();
         ConcurrentMap<String, PartitionScopeThresholds> partitionScopeThresholdsMap =
             ImplementationBridgeHelpers.CosmosBulkExecutionThresholdsStateHelper
                 .getBulkExecutionThresholdsAccessor()
@@ -56,11 +55,11 @@ public class BulkProcessingOptionsTest {
         CosmosBulkExecutionOptions optionsWithThresholds =
             new CosmosBulkExecutionOptions(null, thresholds);
 
-        assertThat(thresholds).isSameAs(optionsWithThresholds.getThresholds());
+        assertThat(thresholds).isSameAs(optionsWithThresholds.getThresholdsState());
         assertThat(partitionScopeThresholdsMap)
             .isSameAs(
                 ImplementationBridgeHelpers.CosmosBulkExecutionThresholdsStateHelper
                     .getBulkExecutionThresholdsAccessor()
-                    .getPartitionScopeThresholds(optionsWithThresholds.getThresholds()));
+                    .getPartitionScopeThresholds(optionsWithThresholds.getThresholdsState()));
     }
 }

@@ -28,13 +28,13 @@ public class AzureDataExplorerLinkedService extends LinkedService {
      * The ID of the service principal used to authenticate against Azure Data
      * Explorer. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.servicePrincipalId", required = true)
+    @JsonProperty(value = "typeProperties.servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
      * The key of the service principal used to authenticate against Kusto.
      */
-    @JsonProperty(value = "typeProperties.servicePrincipalKey", required = true)
+    @JsonProperty(value = "typeProperties.servicePrincipalKey")
     private SecretBase servicePrincipalKey;
 
     /*
@@ -48,7 +48,7 @@ public class AzureDataExplorerLinkedService extends LinkedService {
      * The name or ID of the tenant to which the service principal belongs.
      * Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.tenant", required = true)
+    @JsonProperty(value = "typeProperties.tenant")
     private Object tenant;
 
     /**

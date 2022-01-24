@@ -4,8 +4,8 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.batch.BatchExecUtils;
-import com.azure.cosmos.util.Beta;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -18,8 +18,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Response of a {@link CosmosBatch} request.
  */
-@Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-public class CosmosBatchResponse {
+public final class CosmosBatchResponse {
 
     private final Map<String, String> responseHeaders;
     private final int statusCode;
@@ -60,7 +59,6 @@ public class CosmosBatchResponse {
      *
      * @return diagnostics information for the current request to Azure Cosmos DB service.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosDiagnostics getDiagnostics() {
         return cosmosDiagnostics;
     }
@@ -70,7 +68,6 @@ public class CosmosBatchResponse {
      *
      * @return the number of operations results in this response.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int size() {
         return this.results == null ? 0 : this.results.size();
     }
@@ -80,7 +77,6 @@ public class CosmosBatchResponse {
      *
      * @return a value indicating whether the batch was successfully processed.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public boolean isSuccessStatusCode() {
         return this.statusCode >= 200 && this.statusCode <= 299;
     }
@@ -90,7 +86,6 @@ public class CosmosBatchResponse {
      *
      * @return the activity ID that identifies the server request made to execute the batch.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getActivityId() {
         return BatchExecUtils.getActivityId(this.responseHeaders);
     }
@@ -100,7 +95,6 @@ public class CosmosBatchResponse {
      *
      * @return the reason for the failure of the batch request, if any, or {@code null}.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getErrorMessage() {
         return this.errorMessage;
     }
@@ -113,7 +107,6 @@ public class CosmosBatchResponse {
      *
      * @return the request charge.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public double getRequestCharge() {
        return BatchExecUtils.getRequestCharge(this.responseHeaders);
     }
@@ -123,7 +116,6 @@ public class CosmosBatchResponse {
      *
      * @return the status code.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getStatusCode() {
         return this.statusCode;
     }
@@ -133,7 +125,6 @@ public class CosmosBatchResponse {
      *
      * @return the session token.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getSessionToken() {
         return BatchExecUtils.getSessionToken(this.responseHeaders);
     }
@@ -143,7 +134,6 @@ public class CosmosBatchResponse {
      *
      * @return the response headers.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Map<String, String> getResponseHeaders() {
         return this.responseHeaders;
     }
@@ -153,7 +143,6 @@ public class CosmosBatchResponse {
      *
      * @return the amount of time to wait before retrying this or any other request due to throttling.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Duration getRetryAfterDuration() {
         return BatchExecUtils.getRetryAfterDuration(this.responseHeaders);
     }
@@ -163,7 +152,6 @@ public class CosmosBatchResponse {
      *
      * @return the sub status code.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getSubStatusCode() {
         return this.subStatusCode;
     }
@@ -174,7 +162,6 @@ public class CosmosBatchResponse {
      *
      * @return Results of operations in a batch.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public List<CosmosBatchOperationResult> getResults() {
         return Collections.unmodifiableList(this.results);
     }
@@ -185,7 +172,6 @@ public class CosmosBatchResponse {
      *
      * @return length of the response.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getResponseLength() {
         return BatchExecUtils.getResponseLength(this.responseHeaders);
     }
@@ -195,7 +181,6 @@ public class CosmosBatchResponse {
      *
      * @return end-to-end request latency for the current request to Azure Cosmos DB service.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Duration getDuration() {
         if (cosmosDiagnostics == null) {
             return Duration.ZERO;
@@ -206,5 +191,19 @@ public class CosmosBatchResponse {
 
     void addAll(List<? extends CosmosBatchOperationResult> collection) {
         this.results.addAll(collection);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        ImplementationBridgeHelpers.CosmosBatchResponseHelper.setCosmosBatchResponseAccessor(
+            new ImplementationBridgeHelpers.CosmosBatchResponseHelper.CosmosBatchResponseAccessor() {
+                @Override
+                public List<CosmosBatchOperationResult> getResults(CosmosBatchResponse cosmosBatchResponse) {
+                    return cosmosBatchResponse.results;
+                }
+            });
     }
 }

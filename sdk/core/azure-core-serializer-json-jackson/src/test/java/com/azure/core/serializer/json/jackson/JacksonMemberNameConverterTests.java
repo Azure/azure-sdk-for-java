@@ -19,8 +19,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -269,8 +267,7 @@ public class JacksonMemberNameConverterTests {
 
     @ParameterizedTest
     @MethodSource("classConversionSupplier")
-    public <T> void classConversion(T object, JacksonJsonSerializer converter, Set<String> expected)
-        throws Exception {
+    public <T> void classConversion(T object, JacksonJsonSerializer converter, Set<String> expected) {
         Set<String> actual = getAllDeclaredMembers(object.getClass())
             .map(converter::convertMemberName)
             .filter(Objects::nonNull)
@@ -278,13 +275,7 @@ public class JacksonMemberNameConverterTests {
 
         assertEquals(expected, actual);
 
-        Field field = JacksonJsonSerializer.class.getDeclaredField("mapper");
-        AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-            field.setAccessible(true);
-            return null;
-        });
-
-        ObjectNode objectNode = ((ObjectMapper) field.get(converter)).valueToTree(object);
+        ObjectNode objectNode = converter.getMapper().valueToTree(object);
 
         for (String name : actual) {
             assertTrue(objectNode.has(name));

@@ -47,7 +47,7 @@ public interface VirtualNetworkPeeringsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName);
 
@@ -62,7 +62,7 @@ public interface VirtualNetworkPeeringsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName);
 
@@ -78,7 +78,7 @@ public interface VirtualNetworkPeeringsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, Context context);
 
@@ -222,7 +222,7 @@ public interface VirtualNetworkPeeringsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peerings in a virtual network resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String virtualNetworkName,
@@ -245,7 +245,7 @@ public interface VirtualNetworkPeeringsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peerings in a virtual network resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner> beginCreateOrUpdate(
         String resourceGroupName,
         String virtualNetworkName,
@@ -269,7 +269,7 @@ public interface VirtualNetworkPeeringsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peerings in a virtual network resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner> beginCreateOrUpdate(
         String resourceGroupName,
         String virtualNetworkName,

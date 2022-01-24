@@ -14,7 +14,7 @@ public final class CreateOrUpdateSkillsetOptions {
 
     private boolean onlyIfUnchanged;
     private Boolean cacheReprocessingChangeDetectionDisabled;
-    private Boolean resetRequirementsIgnored;
+    private Boolean cacheResetRequirementsIgnored;
 
     /**
      * Creates the property bag used to create or update a {@link SearchIndexerSkillset skillset}.
@@ -88,12 +88,12 @@ public final class CreateOrUpdateSkillsetOptions {
      * Sets an optional flag that determines whether the created or updated {@link SearchIndexerSkillset skillset}
      * ignores cache reset requirements.
      *
-     * @param resetRequirementsIgnored An optional flag that determines whether the created or updated {@link
+     * @param cacheResetRequirementsIgnored An optional flag that determines whether the created or updated {@link
      * SearchIndexerSkillset skillset} ignores cache reset requirements.
      * @return The updated CreateOrUpdateSkillsetOptions object.
      */
-    public CreateOrUpdateSkillsetOptions setResetRequirementsIgnored(Boolean resetRequirementsIgnored) {
-        this.resetRequirementsIgnored = resetRequirementsIgnored;
+    public CreateOrUpdateSkillsetOptions setCacheResetRequirementsIgnored(Boolean cacheResetRequirementsIgnored) {
+        this.cacheResetRequirementsIgnored = cacheResetRequirementsIgnored;
         return this;
     }
 
@@ -103,7 +103,7 @@ public final class CreateOrUpdateSkillsetOptions {
      *
      * @return Whether the created or updated {@link SearchIndexerSkillset skillset} ignores cache reset requirements.
      */
-    public Boolean isResetRequirementsIgnored() {
-        return resetRequirementsIgnored;
+    public Boolean isCacheResetRequirementsIgnored() {
+        return cacheResetRequirementsIgnored;
     }
 }

@@ -111,7 +111,7 @@ public interface P2SVpnGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return p2SVpnGateway Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String gatewayName, P2SVpnGatewayInner p2SVpnGatewayParameters);
 
@@ -126,7 +126,7 @@ public interface P2SVpnGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return p2SVpnGateway Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginCreateOrUpdate(
         String resourceGroupName, String gatewayName, P2SVpnGatewayInner p2SVpnGatewayParameters);
 
@@ -142,7 +142,7 @@ public interface P2SVpnGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return p2SVpnGateway Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginCreateOrUpdate(
         String resourceGroupName, String gatewayName, P2SVpnGatewayInner p2SVpnGatewayParameters, Context context);
 
@@ -218,7 +218,7 @@ public interface P2SVpnGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return p2SVpnGateway Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginUpdateTagsAsync(
         String resourceGroupName, String gatewayName, TagsObject p2SVpnGatewayParameters);
 
@@ -233,7 +233,7 @@ public interface P2SVpnGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return p2SVpnGateway Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginUpdateTags(
         String resourceGroupName, String gatewayName, TagsObject p2SVpnGatewayParameters);
 
@@ -249,7 +249,7 @@ public interface P2SVpnGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return p2SVpnGateway Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginUpdateTags(
         String resourceGroupName, String gatewayName, TagsObject p2SVpnGatewayParameters, Context context);
 
@@ -321,7 +321,7 @@ public interface P2SVpnGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String gatewayName);
 
     /**
@@ -334,7 +334,7 @@ public interface P2SVpnGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String gatewayName);
 
     /**
@@ -348,7 +348,7 @@ public interface P2SVpnGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String gatewayName, Context context);
 
     /**
@@ -481,7 +481,7 @@ public interface P2SVpnGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return p2SVpnGateway Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginResetAsync(
         String resourceGroupName, String gatewayName);
 
@@ -495,7 +495,7 @@ public interface P2SVpnGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return p2SVpnGateway Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginReset(
         String resourceGroupName, String gatewayName);
 
@@ -510,7 +510,7 @@ public interface P2SVpnGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return p2SVpnGateway Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginReset(
         String resourceGroupName, String gatewayName, Context context);
 
@@ -580,7 +580,7 @@ public interface P2SVpnGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpn Profile Response for package generation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner> beginGenerateVpnProfileAsync(
         String resourceGroupName, String gatewayName, P2SVpnProfileParameters parameters);
 
@@ -595,7 +595,7 @@ public interface P2SVpnGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpn Profile Response for package generation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner> beginGenerateVpnProfile(
         String resourceGroupName, String gatewayName, P2SVpnProfileParameters parameters);
 
@@ -611,7 +611,7 @@ public interface P2SVpnGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpn Profile Response for package generation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner> beginGenerateVpnProfile(
         String resourceGroupName, String gatewayName, P2SVpnProfileParameters parameters, Context context);
 
@@ -685,7 +685,7 @@ public interface P2SVpnGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginGetP2SVpnConnectionHealthAsync(
         String resourceGroupName, String gatewayName);
 
@@ -699,7 +699,7 @@ public interface P2SVpnGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginGetP2SVpnConnectionHealth(
         String resourceGroupName, String gatewayName);
 
@@ -714,7 +714,7 @@ public interface P2SVpnGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginGetP2SVpnConnectionHealth(
         String resourceGroupName, String gatewayName, Context context);
 
@@ -788,7 +788,7 @@ public interface P2SVpnGatewaysClient
      * @return the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
      *     specified resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<P2SVpnConnectionHealthInner>, P2SVpnConnectionHealthInner>
         beginGetP2SVpnConnectionHealthDetailedAsync(
             String resourceGroupName, String gatewayName, P2SVpnConnectionHealthRequest request);
@@ -806,7 +806,7 @@ public interface P2SVpnGatewaysClient
      * @return the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
      *     specified resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<P2SVpnConnectionHealthInner>, P2SVpnConnectionHealthInner>
         beginGetP2SVpnConnectionHealthDetailed(
             String resourceGroupName, String gatewayName, P2SVpnConnectionHealthRequest request);
@@ -825,7 +825,7 @@ public interface P2SVpnGatewaysClient
      * @return the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
      *     specified resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<P2SVpnConnectionHealthInner>, P2SVpnConnectionHealthInner>
         beginGetP2SVpnConnectionHealthDetailed(
             String resourceGroupName, String gatewayName, P2SVpnConnectionHealthRequest request, Context context);
@@ -908,7 +908,7 @@ public interface P2SVpnGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDisconnectP2SVpnConnectionsAsync(
         String resourceGroupName, String p2SVpnGatewayName, P2SVpnConnectionRequest request);
 
@@ -923,7 +923,7 @@ public interface P2SVpnGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDisconnectP2SVpnConnections(
         String resourceGroupName, String p2SVpnGatewayName, P2SVpnConnectionRequest request);
 
@@ -939,7 +939,7 @@ public interface P2SVpnGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDisconnectP2SVpnConnections(
         String resourceGroupName, String p2SVpnGatewayName, P2SVpnConnectionRequest request, Context context);
 

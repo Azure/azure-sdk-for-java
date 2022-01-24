@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,28 +12,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties of a role definition. */
-@JsonFlatten
 @Fluent
-public class BillingRoleDefinitionInner extends ProxyResource {
+public final class BillingRoleDefinitionInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingRoleDefinitionInner.class);
 
     /*
-     * The role description
+     * The properties of the a role definition.
      */
-    @JsonProperty(value = "properties.description", access = JsonProperty.Access.WRITE_ONLY)
-    private String description;
+    @JsonProperty(value = "properties")
+    private BillingRoleDefinitionProperties innerProperties;
 
-    /*
-     * The billingPermissions the role has
+    /**
+     * Get the innerProperties property: The properties of the a role definition.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.permissions")
-    private List<BillingPermissionsPropertiesInner> permissions;
-
-    /*
-     * The name of the role
-     */
-    @JsonProperty(value = "properties.roleName", access = JsonProperty.Access.WRITE_ONLY)
-    private String roleName;
+    private BillingRoleDefinitionProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the description property: The role description.
@@ -42,7 +37,7 @@ public class BillingRoleDefinitionInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -51,7 +46,7 @@ public class BillingRoleDefinitionInner extends ProxyResource {
      * @return the permissions value.
      */
     public List<BillingPermissionsPropertiesInner> permissions() {
-        return this.permissions;
+        return this.innerProperties() == null ? null : this.innerProperties().permissions();
     }
 
     /**
@@ -61,7 +56,10 @@ public class BillingRoleDefinitionInner extends ProxyResource {
      * @return the BillingRoleDefinitionInner object itself.
      */
     public BillingRoleDefinitionInner withPermissions(List<BillingPermissionsPropertiesInner> permissions) {
-        this.permissions = permissions;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingRoleDefinitionProperties();
+        }
+        this.innerProperties().withPermissions(permissions);
         return this;
     }
 
@@ -71,7 +69,7 @@ public class BillingRoleDefinitionInner extends ProxyResource {
      * @return the roleName value.
      */
     public String roleName() {
-        return this.roleName;
+        return this.innerProperties() == null ? null : this.innerProperties().roleName();
     }
 
     /**
@@ -80,8 +78,8 @@ public class BillingRoleDefinitionInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (permissions() != null) {
-            permissions().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -8,11 +8,8 @@ import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.util.logging.ClientLogger;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -28,6 +25,7 @@ import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -45,6 +43,7 @@ import static org.mockito.Mockito.when;
  * Tests for {@link AmqpChannelProcessor}.
  */
 class AmqpChannelProcessorTest {
+    private static final Duration VERIFY_TIMEOUT = Duration.ofSeconds(30);
     private final TestObject connection1 = new TestObject();
     private final TestObject connection2 = new TestObject();
     private final TestObject connection3 = new TestObject();
@@ -54,30 +53,17 @@ class AmqpChannelProcessorTest {
     private AmqpChannelProcessor<TestObject> channelProcessor;
     private AutoCloseable mocksCloseable;
 
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
-
     @BeforeEach
     void setup() {
         mocksCloseable = MockitoAnnotations.openMocks(this);
-
-        channelProcessor = new AmqpChannelProcessor<>("connection-test", "test-path",
-            TestObject::getStates, retryPolicy,
-            new ClientLogger(AmqpChannelProcessor.class.getName() + "<TestObject>"));
+        channelProcessor = new AmqpChannelProcessor<>("namespace-test", TestObject::getStates, retryPolicy, new HashMap<>());
     }
 
     @AfterEach
     void teardown() throws Exception {
         // Tear down any inline mocks to avoid memory leaks.
         // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
 
         if (mocksCloseable != null) {
             mocksCloseable.close();
@@ -99,7 +85,8 @@ class AmqpChannelProcessorTest {
             .then(() -> publisher.next(connection1))
             .then(() -> connection1.getSink().next(AmqpEndpointState.ACTIVE))
             .expectNext(connection1)
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
 
         publisher.assertMaxRequested(1L);
     }
@@ -118,11 +105,13 @@ class AmqpChannelProcessorTest {
         StepVerifier.create(processor)
             .then(() -> connection1.getSink().next(AmqpEndpointState.ACTIVE))
             .expectNext(connection1)
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
 
         StepVerifier.create(processor)
             .expectNext(connection1)
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -140,7 +129,8 @@ class AmqpChannelProcessorTest {
         StepVerifier.create(processor)
             .then(() -> connection1.getSink().next(AmqpEndpointState.ACTIVE))
             .expectNext(connection1)
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
 
         // Close that connection.
         connection1.getSink().complete();
@@ -152,7 +142,8 @@ class AmqpChannelProcessorTest {
                 connection2.getSink().next(AmqpEndpointState.ACTIVE);
             })
             .expectNext(connection2)
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
 
         // Close connection 2
         connection2.getSink().complete();
@@ -164,12 +155,14 @@ class AmqpChannelProcessorTest {
                 connection3.getSink().next(AmqpEndpointState.ACTIVE);
             })
             .expectNext(connection3)
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
 
         // Expect that the new connection is returned again.
         StepVerifier.create(processor)
             .expectNext(connection3)
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
     }
 
     public static Stream<Throwable> newConnectionOnRetriableError() {
@@ -188,8 +181,10 @@ class AmqpChannelProcessorTest {
     @ParameterizedTest
     void newConnectionOnRetriableError(Throwable exception) {
         // Arrange
-        final Flux<TestObject> publisher = createSink(connection1, connection2);
-        final AmqpChannelProcessor<TestObject> processor = publisher.subscribeWith(channelProcessor);
+        final TestPublisher<TestObject> publisher = TestPublisher.createCold();
+        publisher.next(connection1);
+        publisher.next(connection2);
+        final AmqpChannelProcessor<TestObject> processor = publisher.flux().subscribeWith(channelProcessor);
 
         when(retryPolicy.calculateRetryDelay(exception, 1)).thenReturn(Duration.ofSeconds(1));
         when(retryPolicy.getMaxRetries()).thenReturn(3);
@@ -199,7 +194,8 @@ class AmqpChannelProcessorTest {
         StepVerifier.create(processor)
             .then(() -> connection1.getSink().next(AmqpEndpointState.ACTIVE))
             .expectNext(connection1)
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
 
         connection1.getSink().error(exception);
 
@@ -207,12 +203,14 @@ class AmqpChannelProcessorTest {
         StepVerifier.create(processor)
             .then(() -> connection2.getSink().next(AmqpEndpointState.ACTIVE))
             .expectNext(connection2)
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
 
         // Expect that the next connection is returned to us.
         StepVerifier.create(processor)
             .expectNext(connection2)
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
     }
 
     public static Stream<Throwable> nonRetriableError() {
@@ -244,19 +242,19 @@ class AmqpChannelProcessorTest {
             .then(() -> connection1.getSink().next(AmqpEndpointState.ACTIVE))
             .expectNext(connection1)
             .expectComplete()
-            .verify();
+            .verify(VERIFY_TIMEOUT);
 
         connection1.getSink().error(exception);
 
         // Expect that the error is returned to us.
         StepVerifier.create(processor)
             .expectErrorMatches(error -> Objects.equals(exception, error))
-            .verify();
+            .verify(VERIFY_TIMEOUT);
 
         // Expect that the error is returned to us again.
         StepVerifier.create(processor)
             .expectErrorMatches(error -> Objects.equals(exception, error))
-            .verify();
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -291,14 +289,14 @@ class AmqpChannelProcessorTest {
             .then(() -> connection1.getSink().next(AmqpEndpointState.ACTIVE))
             .expectNext(connection1)
             .expectComplete()
-            .verify();
+            .verify(VERIFY_TIMEOUT);
 
         processor.dispose();
 
         // Verify that it errors without emitting a connection.
         StepVerifier.create(processor)
             .expectError(IllegalStateException.class)
-            .verify();
+            .verify(VERIFY_TIMEOUT);
 
         assertTrue(channelProcessor.isChannelClosed());
     }
@@ -317,7 +315,7 @@ class AmqpChannelProcessorTest {
             .then(() -> connection1.getSink().next(AmqpEndpointState.UNINITIALIZED))
             .expectNoEvent(Duration.ofMinutes(10))
             .thenCancel()
-            .verify();
+            .verify(VERIFY_TIMEOUT);
     }
 
     @Test
@@ -343,7 +341,8 @@ class AmqpChannelProcessorTest {
             .thenAwait(Duration.ofMinutes(10))
             .then(() -> connection1.getSink().next(AmqpEndpointState.ACTIVE))
             .expectNext(connection1)
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -365,7 +364,8 @@ class AmqpChannelProcessorTest {
             .thenAwait(Duration.ofMinutes(10))
             .then(() -> connection1.getSink().next(AmqpEndpointState.ACTIVE))
             .expectNext(contents)
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
     }
 
     private static Flux<TestObject> createSink(TestObject... connections) {

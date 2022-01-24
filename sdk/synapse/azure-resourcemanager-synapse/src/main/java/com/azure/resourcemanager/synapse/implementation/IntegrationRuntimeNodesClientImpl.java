@@ -122,7 +122,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration runtime node.
+     * @return an integration runtime node along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SelfHostedIntegrationRuntimeNodeInner>> getWithResponseAsync(
@@ -154,6 +154,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
         if (nodeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter nodeName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -161,7 +162,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -183,7 +184,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration runtime node.
+     * @return an integration runtime node along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SelfHostedIntegrationRuntimeNodeInner>> getWithResponseAsync(
@@ -219,12 +220,13 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
         if (nodeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter nodeName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -244,7 +246,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration runtime node.
+     * @return an integration runtime node on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SelfHostedIntegrationRuntimeNodeInner> getAsync(
@@ -289,7 +291,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration runtime node.
+     * @return an integration runtime node along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SelfHostedIntegrationRuntimeNodeInner> getWithResponse(
@@ -313,7 +315,8 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of Self-hosted integration runtime node.
+     * @return properties of Self-hosted integration runtime node along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SelfHostedIntegrationRuntimeNodeInner>> updateWithResponseAsync(
@@ -357,6 +360,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
         } else {
             updateIntegrationRuntimeNodeRequest.validate();
         }
+        final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -364,7 +368,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
                     service
                         .update(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -388,7 +392,8 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of Self-hosted integration runtime node.
+     * @return properties of Self-hosted integration runtime node along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SelfHostedIntegrationRuntimeNodeInner>> updateWithResponseAsync(
@@ -433,12 +438,13 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
         } else {
             updateIntegrationRuntimeNodeRequest.validate();
         }
+        final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -460,7 +466,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of Self-hosted integration runtime node.
+     * @return properties of Self-hosted integration runtime node on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SelfHostedIntegrationRuntimeNodeInner> updateAsync(
@@ -518,7 +524,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of Self-hosted integration runtime node.
+     * @return properties of Self-hosted integration runtime node along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SelfHostedIntegrationRuntimeNodeInner> updateWithResponse(
@@ -548,7 +554,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -580,6 +586,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
         if (nodeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter nodeName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -587,7 +594,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
                     service
                         .delete(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -609,7 +616,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -645,12 +652,13 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
         if (nodeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter nodeName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -670,7 +678,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -706,7 +714,7 @@ public final class IntegrationRuntimeNodesClientImpl implements IntegrationRunti
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(

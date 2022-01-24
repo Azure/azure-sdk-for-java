@@ -14,14 +14,12 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -32,10 +30,26 @@ import java.util.Objects;
  *
  * <p>The client needs the service endpoint of the Azure Container Registry, Audience for ACR that you want to target and Azure access credentials to use for authentication.
  * <p><strong>Instantiating an asynchronous Container Registry client</strong></p>
- * {@codesnippet com.azure.containers.containerregistry.ContainerRegistryAsyncClient.instantiation}
+ * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryAsyncClient.instantiation -->
+ * <pre>
+ * ContainerRegistryAsyncClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .credential&#40;credential&#41;
+ *     .audience&#40;ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.containers.containerregistry.ContainerRegistryAsyncClient.instantiation -->
  *
  * <p><strong>Instantiating a synchronous Container Registry client</strong></p>
- * {@codesnippet com.azure.containers.containerregistry.ContainerRegistryClient.instantiation}
+ * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryClient.instantiation -->
+ * <pre>
+ * ContainerRegistryClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .audience&#40;ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD&#41;
+ *     .credential&#40;credential&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.containers.containerregistry.ContainerRegistryClient.instantiation -->
  *
  * <p>Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
  * authenticated way to communicate with the service but it doesn't contain the service endpoint. Set the pipeline with
@@ -48,10 +62,36 @@ import java.util.Objects;
  * For more information please see <a href="https://github.com/Azure/acr/blob/main/docs/AAD-OAuth.md"> Azure Container Registry Authentication </a>.</p>
  *
  * <p><strong>Instantiating an asynchronous Container Registry client using a custom pipeline</strong></p>
- * {@codesnippet com.azure.containers.containerregistry.ContainerRegistryAsyncClient.pipeline.instantiation}
+ * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryAsyncClient.pipeline.instantiation -->
+ * <pre>
+ * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
+ *     .policies&#40;&#47;* add policies *&#47;&#41;
+ *     .build&#40;&#41;;
+ *
+ * ContainerRegistryAsyncClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
+ *     .pipeline&#40;pipeline&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .audience&#40;ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD&#41;
+ *     .credential&#40;credential&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.containers.containerregistry.ContainerRegistryAsyncClient.pipeline.instantiation -->
  *
  * <p><strong>Instantiating a synchronous Container Registry client with custom pipeline</strong></p>
- * {@codesnippet com.azure.containers.containerregistry.ContainerRegistryClient.pipeline.instantiation}
+ * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryClient.pipeline.instantiation -->
+ * <pre>
+ * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
+ *     .policies&#40;&#47;* add policies *&#47;&#41;
+ *     .build&#40;&#41;;
+ *
+ * ContainerRegistryClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
+ *     .pipeline&#40;pipeline&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .audience&#40;ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD&#41;
+ *     .credential&#40;credential&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.containers.containerregistry.ContainerRegistryClient.pipeline.instantiation -->
  *
  *
  * @see ContainerRegistryAsyncClient
@@ -60,19 +100,13 @@ import java.util.Objects;
 @ServiceClientBuilder(
     serviceClients = {
         ContainerRegistryClient.class,
-        ContainerRegistryAsyncClient.class
+        ContainerRegistryAsyncClient.class,
+        ContainerRepositoryAsync.class,
+        ContainerRepository.class,
+        RegistryArtifactAsync.class,
+        RegistryArtifact.class
     })
 public final class ContainerRegistryClientBuilder {
-    private static final String CLIENT_NAME;
-    private static final String CLIENT_VERSION;
-
-    static {
-        Map<String, String> properties =
-            CoreUtils.getProperties("azure-containers-containerregistry.properties");
-        CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
-        CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
-    }
-
     private final ClientLogger logger = new ClientLogger(ContainerRegistryClientBuilder.class);
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
@@ -300,6 +334,7 @@ public final class ContainerRegistryClientBuilder {
             this.perRetryPolicies,
             this.httpClient,
             this.endpoint,
+            this.version,
             this.logger);
     }
 

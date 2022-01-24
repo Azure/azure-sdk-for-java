@@ -41,11 +41,11 @@ public class OkHttpAsyncHttpClientBuilder {
         ClientLogger logger = new ClientLogger(OkHttpAsyncHttpClientBuilder.class);
         Configuration configuration = Configuration.getGlobalConfiguration();
         DEFAULT_CONNECT_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, TimeUnit.SECONDS.toMillis(10), logger);
+            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Duration.ofSeconds(10), logger).toMillis();
         DEFAULT_WRITE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
-            TimeUnit.SECONDS.toMillis(60), logger);
+            Duration.ofSeconds(60), logger).toMillis();
         DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
-            TimeUnit.SECONDS.toMillis(60), logger);
+            Duration.ofSeconds(60), logger).toMillis();
     }
 
     private List<Interceptor> networkInterceptors = new ArrayList<>();

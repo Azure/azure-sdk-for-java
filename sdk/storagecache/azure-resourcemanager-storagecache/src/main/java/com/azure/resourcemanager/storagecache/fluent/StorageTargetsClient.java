@@ -27,7 +27,7 @@ public interface StorageTargetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDnsRefresh(
         String resourceGroupName, String cacheName, String storageTargetName);
 
@@ -44,7 +44,7 @@ public interface StorageTargetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDnsRefresh(
         String resourceGroupName, String cacheName, String storageTargetName, Context context);
 
@@ -123,7 +123,7 @@ public interface StorageTargetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String cacheName, String storageTargetName, String force);
 
@@ -145,7 +145,7 @@ public interface StorageTargetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String cacheName, String storageTargetName, String force, Context context);
 
@@ -251,7 +251,7 @@ public interface StorageTargetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return type of the Storage Target.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<StorageTargetInner>, StorageTargetInner> beginCreateOrUpdate(
         String resourceGroupName, String cacheName, String storageTargetName, StorageTargetInner storagetarget);
 
@@ -270,7 +270,7 @@ public interface StorageTargetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return type of the Storage Target.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<StorageTargetInner>, StorageTargetInner> beginCreateOrUpdate(
         String resourceGroupName,
         String cacheName,

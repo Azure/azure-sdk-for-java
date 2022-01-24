@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.imagebuilder.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.imagebuilder.models.ProvisioningState;
@@ -13,28 +12,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents an output that was created by running an image template. */
-@JsonFlatten
 @Fluent
-public class RunOutputInner extends SubResource {
+public final class RunOutputInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RunOutputInner.class);
 
     /*
-     * The resource id of the artifact.
+     * The properties of the run output
      */
-    @JsonProperty(value = "properties.artifactId")
-    private String artifactId;
-
-    /*
-     * The location URI of the artifact.
-     */
-    @JsonProperty(value = "properties.artifactUri")
-    private String artifactUri;
-
-    /*
-     * Provisioning state of the resource
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "properties")
+    private RunOutputProperties innerProperties;
 
     /*
      * Resource name
@@ -49,52 +35,12 @@ public class RunOutputInner extends SubResource {
     private String type;
 
     /**
-     * Get the artifactId property: The resource id of the artifact.
+     * Get the innerProperties property: The properties of the run output.
      *
-     * @return the artifactId value.
+     * @return the innerProperties value.
      */
-    public String artifactId() {
-        return this.artifactId;
-    }
-
-    /**
-     * Set the artifactId property: The resource id of the artifact.
-     *
-     * @param artifactId the artifactId value to set.
-     * @return the RunOutputInner object itself.
-     */
-    public RunOutputInner withArtifactId(String artifactId) {
-        this.artifactId = artifactId;
-        return this;
-    }
-
-    /**
-     * Get the artifactUri property: The location URI of the artifact.
-     *
-     * @return the artifactUri value.
-     */
-    public String artifactUri() {
-        return this.artifactUri;
-    }
-
-    /**
-     * Set the artifactUri property: The location URI of the artifact.
-     *
-     * @param artifactUri the artifactUri value to set.
-     * @return the RunOutputInner object itself.
-     */
-    public RunOutputInner withArtifactUri(String artifactUri) {
-        this.artifactUri = artifactUri;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
+    private RunOutputProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -134,11 +80,69 @@ public class RunOutputInner extends SubResource {
     }
 
     /**
+     * Get the artifactId property: The resource id of the artifact.
+     *
+     * @return the artifactId value.
+     */
+    public String artifactId() {
+        return this.innerProperties() == null ? null : this.innerProperties().artifactId();
+    }
+
+    /**
+     * Set the artifactId property: The resource id of the artifact.
+     *
+     * @param artifactId the artifactId value to set.
+     * @return the RunOutputInner object itself.
+     */
+    public RunOutputInner withArtifactId(String artifactId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RunOutputProperties();
+        }
+        this.innerProperties().withArtifactId(artifactId);
+        return this;
+    }
+
+    /**
+     * Get the artifactUri property: The location URI of the artifact.
+     *
+     * @return the artifactUri value.
+     */
+    public String artifactUri() {
+        return this.innerProperties() == null ? null : this.innerProperties().artifactUri();
+    }
+
+    /**
+     * Set the artifactUri property: The location URI of the artifact.
+     *
+     * @param artifactUri the artifactUri value to set.
+     * @return the RunOutputInner object itself.
+     */
+    public RunOutputInner withArtifactUri(String artifactUri) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RunOutputProperties();
+        }
+        this.innerProperties().withArtifactUri(artifactUri);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (name() == null) {
             throw logger
                 .logExceptionAsError(

@@ -18,9 +18,14 @@
     },
     "testApplicationOid": {
       "type": "string",
-      "defaultValue": "b3653439-8136-4cd5-aac3-2a9460871ca6",
       "metadata": {
         "description": "The client OID to grant access to test resources."
+      }
+    },
+    "provisionerApplicationOid": {
+      "type": "string",
+      "metadata": {
+        "description": "The provisioner OID to grant access to test resources."
       }
     },
     "location": {
@@ -62,24 +67,24 @@
     },
     "keyVaultSku": {
       "type": "string",
-      "defaultValue": "Premium",
+      "defaultValue": "premium",
       "allowedValues": [
-        "Standard",
-        "Premium"
+        "standard",
+        "premium"
       ],
       "metadata": {
         "description": "Key Vault SKU to deploy. The default is 'Premium'"
       }
     },
-    "endpointSuffix": {
-      "type": "String",
-      "defaultValue": "vault.azure.net"
+    "keyVaultEndpointSuffix": {
+      "type": "string",
+      "defaultValue": ".vault.azure.net"
     },
     "testApplicationId": {
-      "type": "String"
+      "type": "string"
     },
     "testApplicationSecret": {
-      "type": "String"
+      "type": "string"
     },
     "enabledForDeployment": {
       "type": "bool",
@@ -126,6 +131,13 @@
       "defaultValue": "https://skrattestation.azurewebsites.net/",
       "metadata": {
         "description": "Test attestation service for Secure Key Release"
+      }
+    },
+    "storageEndpointSuffix": {
+      "type": "string",
+      "defaultValue": "core.windows.net",
+      "metadata": {
+          "description": "The url suffix to use when accessing the storage data plane."
       }
     }
   },
@@ -194,102 +206,108 @@
             "objectId": "[parameters('testApplicationOid')]",
             "permissions": {
               "keys": [
-                "backup",
-                "create",
-                "decrypt",
-                "delete",
-                "encrypt",
-                "get",
-                "import",
-                "list",
-                "purge",
-                "recover",
-                "restore",
-                "sign",
-                "unwrapKey",
-                "update",
-                "verify",
-                "wrapKey"
+                "Get",
+                "List",
+                "Update",
+                "Create",
+                "Import",
+                "Delete",
+                "Recover",
+                "Backup",
+                "Restore",
+                "Decrypt",
+                "Encrypt",
+                "UnwrapKey",
+                "WrapKey",
+                "Sign",
+                "Purge",
+                "Rotate",
+                "Verify",
+                "GetRotationPolicy",
+                "SetRotationPolicy"
               ],
               "secrets": [
-                "backup",
-                "delete",
-                "get",
-                "list",
-                "purge",
-                "recover",
-                "restore",
-                "set"
+                "Get",
+                "List",
+                "Set",
+                "Delete",
+                "Recover",
+                "Backup",
+                "Restore",
+                "Purge"
               ],
               "certificates": [
-                "backup",
-                "create",
-                "delete",
-                "deleteissuers",
-                "get",
-                "getissuers",
-                "import",
-                "list",
-                "listissuers",
-                "managecontacts",
-                "manageissuers",
-                "purge",
-                "recover",
-                "restore",
-                "setissuers",
-                "update"
+                "Get",
+                "List",
+                "Update",
+                "Create",
+                "Import",
+                "Delete",
+                "Recover",
+                "Backup",
+                "Restore",
+                "ManageContacts",
+                "ManageIssuers",
+                "GetIssuers",
+                "ListIssuers",
+                "SetIssuers",
+                "DeleteIssuers",
+                "Purge"
               ]
             }
           },
           {
-            "objectId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('identityName')), '2018-11-30').principalId]",
             "tenantId": "[parameters('tenantId')]",
+            "objectId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('identityName')), '2018-11-30').principalId]",
             "permissions": {
               "keys": [
-                "backup",
-                "create",
-                "decrypt",
-                "delete",
-                "encrypt",
-                "get",
-                "import",
-                "list",
-                "purge",
-                "recover",
-                "restore",
-                "sign",
-                "unwrapKey",
-                "update",
-                "verify",
-                "wrapKey"
+                "Get",
+                "List",
+                "Update",
+                "Create",
+                "Import",
+                "Delete",
+                "Recover",
+                "Backup",
+                "Restore",
+                "Decrypt",
+                "Encrypt",
+                "UnwrapKey",
+                "WrapKey",
+                "Sign",
+                "Purge",
+                "Rotate",
+                "Verify",
+                "GetRotationPolicy",
+                "SetRotationPolicy"
               ],
               "secrets": [
-                "backup",
-                "delete",
-                "get",
-                "list",
-                "purge",
-                "recover",
-                "restore",
-                "set"
+                "Get",
+                "List",
+                "Set",
+                "Delete",
+                "Recover",
+                "Backup",
+                "Restore",
+                "Purge"
               ],
               "certificates": [
-                "backup",
-                "create",
-                "delete",
-                "deleteissuers",
-                "get",
-                "getissuers",
-                "import",
-                "list",
-                "listissuers",
-                "managecontacts",
-                "manageissuers",
-                "purge",
-                "recover",
-                "restore",
-                "setissuers",
-                "update"
+                "Get",
+                "List",
+                "Update",
+                "Create",
+                "Import",
+                "Delete",
+                "Recover",
+                "Backup",
+                "Restore",
+                "ManageContacts",
+                "ManageIssuers",
+                "GetIssuers",
+                "ListIssuers",
+                "SetIssuers",
+                "DeleteIssuers",
+                "Purge"
               ]
             }
           }
@@ -314,21 +332,12 @@
       },
       "properties": {
         "tenantId": "[parameters('tenantId')]",
-        "initialAdminObjectIds": [
-          "[parameters('testApplicationOid')]"
-        ],
+        "initialAdminObjectIds": "[union(array(parameters('testApplicationOid')), array(parameters('provisionerApplicationOid')))]",
         "enablePurgeProtection": false,
         "enableSoftDelete": true,
         "softDeleteRetentionInDays": 7,
         "publicNetworkAccess": "Enabled",
-        "networkAcls": {
-          "bypass": "None",
-          "virtualNetworkRules": [
-          ],
-          "ipRules": [
-          ],
-          "defaultAction": "Allow"
-        }
+        "networkAcls": "[variables('networkAcls')]"
       }
     },
     {
@@ -480,6 +489,10 @@
       "type": "string",
       "value": "[parameters('testApplicationOid')]"
     },
+    "KEYVAULT_STORAGE_ENDPOINT_SUFFIX": {
+        "type": "string",
+        "value": "[parameters('storageEndpointSuffix')]"
+    },
     "BLOB_STORAGE_ACCOUNT_NAME": {
       "type": "string",
       "value": "[variables('primaryAccountName')]"
@@ -495,6 +508,10 @@
     "AZURE_KEYVAULT_ATTESTATION_URL": {
       "type": "string",
       "value": "[parameters('attestationUrl')]"
+    },
+    "KEY_VAULT_ENDPOINT_SUFFIX": {
+      "type": "string",
+      "value": "[parameters('keyVaultEndpointSuffix')]"
     }
   }
 }

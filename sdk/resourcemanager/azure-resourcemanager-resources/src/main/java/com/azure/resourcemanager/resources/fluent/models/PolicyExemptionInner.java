@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
@@ -16,10 +15,15 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 /** The policy exemption. */
-@JsonFlatten
 @Fluent
-public class PolicyExemptionInner extends ProxyResource {
+public final class PolicyExemptionInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyExemptionInner.class);
+
+    /*
+     * Properties for the policy exemption.
+     */
+    @JsonProperty(value = "properties", required = true)
+    private PolicyExemptionProperties innerProperties = new PolicyExemptionProperties();
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy
@@ -28,50 +32,14 @@ public class PolicyExemptionInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /*
-     * The ID of the policy assignment that is being exempted.
+    /**
+     * Get the innerProperties property: Properties for the policy exemption.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.policyAssignmentId", required = true)
-    private String policyAssignmentId;
-
-    /*
-     * The policy definition reference ID list when the associated policy
-     * assignment is an assignment of a policy set definition.
-     */
-    @JsonProperty(value = "properties.policyDefinitionReferenceIds")
-    private List<String> policyDefinitionReferenceIds;
-
-    /*
-     * The policy exemption category. Possible values are Waiver and Mitigated.
-     */
-    @JsonProperty(value = "properties.exemptionCategory", required = true)
-    private ExemptionCategory exemptionCategory;
-
-    /*
-     * The expiration date and time (in UTC ISO 8601 format
-     * yyyy-MM-ddTHH:mm:ssZ) of the policy exemption.
-     */
-    @JsonProperty(value = "properties.expiresOn")
-    private OffsetDateTime expiresOn;
-
-    /*
-     * The display name of the policy exemption.
-     */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
-
-    /*
-     * The description of the policy exemption.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * The policy exemption metadata. Metadata is an open ended object and is
-     * typically a collection of key value pairs.
-     */
-    @JsonProperty(value = "properties.metadata")
-    private Object metadata;
+    private PolicyExemptionProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -88,7 +56,7 @@ public class PolicyExemptionInner extends ProxyResource {
      * @return the policyAssignmentId value.
      */
     public String policyAssignmentId() {
-        return this.policyAssignmentId;
+        return this.innerProperties() == null ? null : this.innerProperties().policyAssignmentId();
     }
 
     /**
@@ -98,7 +66,10 @@ public class PolicyExemptionInner extends ProxyResource {
      * @return the PolicyExemptionInner object itself.
      */
     public PolicyExemptionInner withPolicyAssignmentId(String policyAssignmentId) {
-        this.policyAssignmentId = policyAssignmentId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyExemptionProperties();
+        }
+        this.innerProperties().withPolicyAssignmentId(policyAssignmentId);
         return this;
     }
 
@@ -109,7 +80,7 @@ public class PolicyExemptionInner extends ProxyResource {
      * @return the policyDefinitionReferenceIds value.
      */
     public List<String> policyDefinitionReferenceIds() {
-        return this.policyDefinitionReferenceIds;
+        return this.innerProperties() == null ? null : this.innerProperties().policyDefinitionReferenceIds();
     }
 
     /**
@@ -120,7 +91,10 @@ public class PolicyExemptionInner extends ProxyResource {
      * @return the PolicyExemptionInner object itself.
      */
     public PolicyExemptionInner withPolicyDefinitionReferenceIds(List<String> policyDefinitionReferenceIds) {
-        this.policyDefinitionReferenceIds = policyDefinitionReferenceIds;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyExemptionProperties();
+        }
+        this.innerProperties().withPolicyDefinitionReferenceIds(policyDefinitionReferenceIds);
         return this;
     }
 
@@ -130,7 +104,7 @@ public class PolicyExemptionInner extends ProxyResource {
      * @return the exemptionCategory value.
      */
     public ExemptionCategory exemptionCategory() {
-        return this.exemptionCategory;
+        return this.innerProperties() == null ? null : this.innerProperties().exemptionCategory();
     }
 
     /**
@@ -140,7 +114,10 @@ public class PolicyExemptionInner extends ProxyResource {
      * @return the PolicyExemptionInner object itself.
      */
     public PolicyExemptionInner withExemptionCategory(ExemptionCategory exemptionCategory) {
-        this.exemptionCategory = exemptionCategory;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyExemptionProperties();
+        }
+        this.innerProperties().withExemptionCategory(exemptionCategory);
         return this;
     }
 
@@ -151,7 +128,7 @@ public class PolicyExemptionInner extends ProxyResource {
      * @return the expiresOn value.
      */
     public OffsetDateTime expiresOn() {
-        return this.expiresOn;
+        return this.innerProperties() == null ? null : this.innerProperties().expiresOn();
     }
 
     /**
@@ -162,7 +139,10 @@ public class PolicyExemptionInner extends ProxyResource {
      * @return the PolicyExemptionInner object itself.
      */
     public PolicyExemptionInner withExpiresOn(OffsetDateTime expiresOn) {
-        this.expiresOn = expiresOn;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyExemptionProperties();
+        }
+        this.innerProperties().withExpiresOn(expiresOn);
         return this;
     }
 
@@ -172,7 +152,7 @@ public class PolicyExemptionInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -182,7 +162,10 @@ public class PolicyExemptionInner extends ProxyResource {
      * @return the PolicyExemptionInner object itself.
      */
     public PolicyExemptionInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyExemptionProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -192,7 +175,7 @@ public class PolicyExemptionInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -202,7 +185,10 @@ public class PolicyExemptionInner extends ProxyResource {
      * @return the PolicyExemptionInner object itself.
      */
     public PolicyExemptionInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyExemptionProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -213,7 +199,7 @@ public class PolicyExemptionInner extends ProxyResource {
      * @return the metadata value.
      */
     public Object metadata() {
-        return this.metadata;
+        return this.innerProperties() == null ? null : this.innerProperties().metadata();
     }
 
     /**
@@ -224,7 +210,10 @@ public class PolicyExemptionInner extends ProxyResource {
      * @return the PolicyExemptionInner object itself.
      */
     public PolicyExemptionInner withMetadata(Object metadata) {
-        this.metadata = metadata;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyExemptionProperties();
+        }
+        this.innerProperties().withMetadata(metadata);
         return this;
     }
 
@@ -234,17 +223,13 @@ public class PolicyExemptionInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (policyAssignmentId() == null) {
+        if (innerProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property policyAssignmentId in model PolicyExemptionInner"));
-        }
-        if (exemptionCategory() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property exemptionCategory in model PolicyExemptionInner"));
+                        "Missing required property innerProperties in model PolicyExemptionInner"));
+        } else {
+            innerProperties().validate();
         }
     }
 }

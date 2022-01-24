@@ -40,7 +40,6 @@ public final class ModelsRepositoryAsyncClient {
         ModelsRepositoryServiceVersion serviceVersion,
         ModelDependencyResolution dependencyResolutionOption) {
 
-        JacksonAdapter jacksonAdapter = new JacksonAdapter();
         this.serviceVersion = serviceVersion;
 
         this.defaultDependencyResolutionOption = dependencyResolutionOption;
@@ -50,7 +49,7 @@ public final class ModelsRepositoryAsyncClient {
             .apiVersion(this.serviceVersion.toString())
             .host(repositoryEndpoint.toString())
             .pipeline(pipeline)
-            .serializerAdapter(jacksonAdapter)
+            .serializerAdapter(JacksonAdapter.createDefaultSerializerAdapter())
             .buildClient();
 
         this.repositoryHandler = new RepositoryHandler(repositoryEndpoint, protocolLayer);

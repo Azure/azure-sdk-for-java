@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.fluent.models.DatabaseInner;
+import com.azure.resourcemanager.kusto.fluent.models.ReadWriteDatabaseProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,109 +17,23 @@ import java.time.Duration;
 /** Class representing a read write database. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("ReadWrite")
-@JsonFlatten
 @Fluent
-public class ReadWriteDatabase extends DatabaseInner {
+public final class ReadWriteDatabase extends DatabaseInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ReadWriteDatabase.class);
 
     /*
-     * The provisioned state of the resource.
+     * The database properties.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The time the data should be kept before it stops being accessible to
-     * queries in TimeSpan.
-     */
-    @JsonProperty(value = "properties.softDeletePeriod")
-    private Duration softDeletePeriod;
-
-    /*
-     * The time the data should be kept in cache for fast queries in TimeSpan.
-     */
-    @JsonProperty(value = "properties.hotCachePeriod")
-    private Duration hotCachePeriod;
-
-    /*
-     * The statistics of the database.
-     */
-    @JsonProperty(value = "properties.statistics", access = JsonProperty.Access.WRITE_ONLY)
-    private DatabaseStatistics statistics;
-
-    /*
-     * Indicates whether the database is followed.
-     */
-    @JsonProperty(value = "properties.isFollowed", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isFollowed;
+    @JsonProperty(value = "properties")
+    private ReadWriteDatabaseProperties innerProperties;
 
     /**
-     * Get the provisioningState property: The provisioned state of the resource.
+     * Get the innerProperties property: The database properties.
      *
-     * @return the provisioningState value.
+     * @return the innerProperties value.
      */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the softDeletePeriod property: The time the data should be kept before it stops being accessible to queries
-     * in TimeSpan.
-     *
-     * @return the softDeletePeriod value.
-     */
-    public Duration softDeletePeriod() {
-        return this.softDeletePeriod;
-    }
-
-    /**
-     * Set the softDeletePeriod property: The time the data should be kept before it stops being accessible to queries
-     * in TimeSpan.
-     *
-     * @param softDeletePeriod the softDeletePeriod value to set.
-     * @return the ReadWriteDatabase object itself.
-     */
-    public ReadWriteDatabase withSoftDeletePeriod(Duration softDeletePeriod) {
-        this.softDeletePeriod = softDeletePeriod;
-        return this;
-    }
-
-    /**
-     * Get the hotCachePeriod property: The time the data should be kept in cache for fast queries in TimeSpan.
-     *
-     * @return the hotCachePeriod value.
-     */
-    public Duration hotCachePeriod() {
-        return this.hotCachePeriod;
-    }
-
-    /**
-     * Set the hotCachePeriod property: The time the data should be kept in cache for fast queries in TimeSpan.
-     *
-     * @param hotCachePeriod the hotCachePeriod value to set.
-     * @return the ReadWriteDatabase object itself.
-     */
-    public ReadWriteDatabase withHotCachePeriod(Duration hotCachePeriod) {
-        this.hotCachePeriod = hotCachePeriod;
-        return this;
-    }
-
-    /**
-     * Get the statistics property: The statistics of the database.
-     *
-     * @return the statistics value.
-     */
-    public DatabaseStatistics statistics() {
-        return this.statistics;
-    }
-
-    /**
-     * Get the isFollowed property: Indicates whether the database is followed.
-     *
-     * @return the isFollowed value.
-     */
-    public Boolean isFollowed() {
-        return this.isFollowed;
+    private ReadWriteDatabaseProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -130,6 +44,81 @@ public class ReadWriteDatabase extends DatabaseInner {
     }
 
     /**
+     * Get the provisioningState property: The provisioned state of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the softDeletePeriod property: The time the data should be kept before it stops being accessible to queries
+     * in TimeSpan.
+     *
+     * @return the softDeletePeriod value.
+     */
+    public Duration softDeletePeriod() {
+        return this.innerProperties() == null ? null : this.innerProperties().softDeletePeriod();
+    }
+
+    /**
+     * Set the softDeletePeriod property: The time the data should be kept before it stops being accessible to queries
+     * in TimeSpan.
+     *
+     * @param softDeletePeriod the softDeletePeriod value to set.
+     * @return the ReadWriteDatabase object itself.
+     */
+    public ReadWriteDatabase withSoftDeletePeriod(Duration softDeletePeriod) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ReadWriteDatabaseProperties();
+        }
+        this.innerProperties().withSoftDeletePeriod(softDeletePeriod);
+        return this;
+    }
+
+    /**
+     * Get the hotCachePeriod property: The time the data should be kept in cache for fast queries in TimeSpan.
+     *
+     * @return the hotCachePeriod value.
+     */
+    public Duration hotCachePeriod() {
+        return this.innerProperties() == null ? null : this.innerProperties().hotCachePeriod();
+    }
+
+    /**
+     * Set the hotCachePeriod property: The time the data should be kept in cache for fast queries in TimeSpan.
+     *
+     * @param hotCachePeriod the hotCachePeriod value to set.
+     * @return the ReadWriteDatabase object itself.
+     */
+    public ReadWriteDatabase withHotCachePeriod(Duration hotCachePeriod) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ReadWriteDatabaseProperties();
+        }
+        this.innerProperties().withHotCachePeriod(hotCachePeriod);
+        return this;
+    }
+
+    /**
+     * Get the statistics property: The statistics of the database.
+     *
+     * @return the statistics value.
+     */
+    public DatabaseStatistics statistics() {
+        return this.innerProperties() == null ? null : this.innerProperties().statistics();
+    }
+
+    /**
+     * Get the isFollowed property: Indicates whether the database is followed.
+     *
+     * @return the isFollowed value.
+     */
+    public Boolean isFollowed() {
+        return this.innerProperties() == null ? null : this.innerProperties().isFollowed();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -137,8 +126,8 @@ public class ReadWriteDatabase extends DatabaseInner {
     @Override
     public void validate() {
         super.validate();
-        if (statistics() != null) {
-            statistics().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

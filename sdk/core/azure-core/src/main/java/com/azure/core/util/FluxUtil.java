@@ -11,6 +11,7 @@ import com.azure.core.implementation.FileWriteSubscriber;
 import com.azure.core.implementation.RetriableDownloadFlux;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LoggingEventBuilder;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
@@ -29,14 +30,12 @@ import java.nio.channels.CompletionHandler;
 import java.nio.file.StandardOpenOption;
 import java.util.Collections;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 /**
  * Utility type exposing methods to deal with {@link Flux}.
@@ -244,7 +243,13 @@ public final class FluxUtil {
      * </p>
      *
      * <p><strong>Code samples</strong></p>
-     * {@codesnippet com.azure.core.implementation.util.fluxutil.withcontext}
+     * <!-- src_embed com.azure.core.implementation.util.fluxutil.withcontext -->
+     * <pre>
+     * String prefix = &quot;Hello, &quot;;
+     * Mono&lt;String&gt; response = FluxUtil
+     *     .withContext&#40;context -&gt; serviceCallReturnsSingle&#40;prefix, context&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.implementation.util.fluxutil.withcontext -->
      *
      * @param serviceCall The lambda function that makes the service call into which azure context will be passed
      * @param <T> The type of response returned from the service call
@@ -310,6 +315,18 @@ public final class FluxUtil {
     }
 
     /**
+     * Propagates a {@link RuntimeException} through the error channel of {@link Mono}.
+     *
+     * @param logBuilder The {@link LoggingEventBuilder} with context to log the exception.
+     * @param ex The {@link RuntimeException}.
+     * @param <T> The return type.
+     * @return A {@link Mono} that terminates with error wrapping the {@link RuntimeException}.
+     */
+    public static <T> Mono<T> monoError(LoggingEventBuilder logBuilder, RuntimeException ex) {
+        return Mono.error(logBuilder.log(Exceptions.propagate(ex)));
+    }
+
+    /**
      * Propagates a {@link RuntimeException} through the error channel of {@link Flux}.
      *
      * @param logger The {@link ClientLogger} to log the exception.
@@ -342,7 +359,13 @@ public final class FluxUtil {
      * </p>
      *
      * <p><strong>Code samples</strong></p>
-     * {@codesnippet com.azure.core.implementation.util.fluxutil.fluxcontext}
+     * <!-- src_embed com.azure.core.implementation.util.fluxutil.fluxcontext -->
+     * <pre>
+     * String prefix = &quot;Hello, &quot;;
+     * Flux&lt;String&gt; response = FluxUtil
+     *     .fluxContext&#40;context -&gt; serviceCallReturnsCollection&#40;prefix, context&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.implementation.util.fluxutil.fluxcontext -->
      *
      * @param serviceCall The lambda function that makes the service call into which the context will be passed
      * @param <T> The type of response returned from the service call
@@ -382,14 +405,19 @@ public final class FluxUtil {
             return reactor.util.context.Context.empty();
         }
 
-        // Filter out null value entries as Reactor's context doesn't allow null values.
-        Map<Object, Object> contextValues = context.getValues().entrySet().stream()
-            .filter(kvp -> kvp.getValue() != null)
-            .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+        reactor.util.context.Context returnContext = reactor.util.context.Context.empty();
 
-        return CoreUtils.isNullOrEmpty(contextValues)
-            ? reactor.util.context.Context.empty()
-            : reactor.util.context.Context.of(contextValues);
+        Context[] contextChain = context.getContextChain();
+        for (Context toAdd : contextChain) {
+            // Filter out null value entries as Reactor's context doesn't allow null values.
+            if (toAdd == null || toAdd.getValue() == null) {
+                continue;
+            }
+
+            returnContext = returnContext.put(toAdd.getKey(), toAdd.getValue());
+        }
+
+        return returnContext;
     }
 
     /**

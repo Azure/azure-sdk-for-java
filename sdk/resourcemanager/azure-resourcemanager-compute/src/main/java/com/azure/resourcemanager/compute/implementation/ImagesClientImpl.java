@@ -26,7 +26,6 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -35,6 +34,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.fluent.ImagesClient;
 import com.azure.resourcemanager.compute.fluent.models.ImageInner;
+import com.azure.resourcemanager.compute.models.ApiErrorException;
 import com.azure.resourcemanager.compute.models.ImageListResult;
 import com.azure.resourcemanager.compute.models.ImageUpdate;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -77,7 +77,7 @@ public final class ImagesClientImpl
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images"
                 + "/{imageName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -93,7 +93,7 @@ public final class ImagesClientImpl
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images"
                 + "/{imageName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -104,18 +104,19 @@ public final class ImagesClientImpl
             @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images"
                 + "/{imageName}")
         @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("imageName") String imageName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -123,7 +124,7 @@ public final class ImagesClientImpl
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images"
                 + "/{imageName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<ImageInner>> getByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -137,7 +138,7 @@ public final class ImagesClientImpl
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<ImageListResult>> listByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -149,7 +150,7 @@ public final class ImagesClientImpl
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/images")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<ImageListResult>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
@@ -160,7 +161,7 @@ public final class ImagesClientImpl
         @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<ImageListResult>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
@@ -170,7 +171,7 @@ public final class ImagesClientImpl
         @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<ImageListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
@@ -185,9 +186,10 @@ public final class ImagesClientImpl
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Create Image operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source user image virtual hard disk.
+     * @return the source user image virtual hard disk along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -216,7 +218,7 @@ public final class ImagesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -242,9 +244,10 @@ public final class ImagesClientImpl
      * @param parameters Parameters supplied to the Create Image operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source user image virtual hard disk.
+     * @return the source user image virtual hard disk along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -273,7 +276,7 @@ public final class ImagesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -295,11 +298,12 @@ public final class ImagesClientImpl
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Create Image operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source user image virtual hard disk.
+     * @return the source user image virtual hard disk along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ImageInner>, ImageInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String imageName, ImageInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -307,7 +311,7 @@ public final class ImagesClientImpl
         return this
             .client
             .<ImageInner, ImageInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ImageInner.class, ImageInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), ImageInner.class, ImageInner.class, this.client.getContext());
     }
 
     /**
@@ -318,11 +322,12 @@ public final class ImagesClientImpl
      * @param parameters Parameters supplied to the Create Image operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source user image virtual hard disk.
+     * @return the source user image virtual hard disk along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ImageInner>, ImageInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String imageName, ImageInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -341,11 +346,12 @@ public final class ImagesClientImpl
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Create Image operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source user image virtual hard disk.
+     * @return the source user image virtual hard disk along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImageInner>, ImageInner> beginCreateOrUpdate(
         String resourceGroupName, String imageName, ImageInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, imageName, parameters).getSyncPoller();
@@ -359,11 +365,12 @@ public final class ImagesClientImpl
      * @param parameters Parameters supplied to the Create Image operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source user image virtual hard disk.
+     * @return the source user image virtual hard disk along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImageInner>, ImageInner> beginCreateOrUpdate(
         String resourceGroupName, String imageName, ImageInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, imageName, parameters, context).getSyncPoller();
@@ -376,9 +383,9 @@ public final class ImagesClientImpl
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Create Image operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source user image virtual hard disk.
+     * @return the source user image virtual hard disk on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImageInner> createOrUpdateAsync(String resourceGroupName, String imageName, ImageInner parameters) {
@@ -395,9 +402,9 @@ public final class ImagesClientImpl
      * @param parameters Parameters supplied to the Create Image operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source user image virtual hard disk.
+     * @return the source user image virtual hard disk on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ImageInner> createOrUpdateAsync(
@@ -414,7 +421,7 @@ public final class ImagesClientImpl
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Create Image operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the source user image virtual hard disk.
      */
@@ -431,7 +438,7 @@ public final class ImagesClientImpl
      * @param parameters Parameters supplied to the Create Image operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the source user image virtual hard disk.
      */
@@ -448,9 +455,10 @@ public final class ImagesClientImpl
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Update Image operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source user image virtual hard disk.
+     * @return the source user image virtual hard disk along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -479,7 +487,7 @@ public final class ImagesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -505,9 +513,10 @@ public final class ImagesClientImpl
      * @param parameters Parameters supplied to the Update Image operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source user image virtual hard disk.
+     * @return the source user image virtual hard disk along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -536,7 +545,7 @@ public final class ImagesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -558,18 +567,19 @@ public final class ImagesClientImpl
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Update Image operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source user image virtual hard disk.
+     * @return the source user image virtual hard disk along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ImageInner>, ImageInner> beginUpdateAsync(
         String resourceGroupName, String imageName, ImageUpdate parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, imageName, parameters);
         return this
             .client
             .<ImageInner, ImageInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ImageInner.class, ImageInner.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), ImageInner.class, ImageInner.class, this.client.getContext());
     }
 
     /**
@@ -580,11 +590,12 @@ public final class ImagesClientImpl
      * @param parameters Parameters supplied to the Update Image operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source user image virtual hard disk.
+     * @return the source user image virtual hard disk along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ImageInner>, ImageInner> beginUpdateAsync(
         String resourceGroupName, String imageName, ImageUpdate parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -603,11 +614,12 @@ public final class ImagesClientImpl
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Update Image operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source user image virtual hard disk.
+     * @return the source user image virtual hard disk along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImageInner>, ImageInner> beginUpdate(
         String resourceGroupName, String imageName, ImageUpdate parameters) {
         return beginUpdateAsync(resourceGroupName, imageName, parameters).getSyncPoller();
@@ -621,11 +633,12 @@ public final class ImagesClientImpl
      * @param parameters Parameters supplied to the Update Image operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source user image virtual hard disk.
+     * @return the source user image virtual hard disk along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ImageInner>, ImageInner> beginUpdate(
         String resourceGroupName, String imageName, ImageUpdate parameters, Context context) {
         return beginUpdateAsync(resourceGroupName, imageName, parameters, context).getSyncPoller();
@@ -638,9 +651,9 @@ public final class ImagesClientImpl
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Update Image operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source user image virtual hard disk.
+     * @return the source user image virtual hard disk on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImageInner> updateAsync(String resourceGroupName, String imageName, ImageUpdate parameters) {
@@ -657,9 +670,9 @@ public final class ImagesClientImpl
      * @param parameters Parameters supplied to the Update Image operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the source user image virtual hard disk.
+     * @return the source user image virtual hard disk on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ImageInner> updateAsync(
@@ -676,7 +689,7 @@ public final class ImagesClientImpl
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Update Image operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the source user image virtual hard disk.
      */
@@ -693,7 +706,7 @@ public final class ImagesClientImpl
      * @param parameters Parameters supplied to the Update Image operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the source user image virtual hard disk.
      */
@@ -708,9 +721,9 @@ public final class ImagesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String imageName) {
@@ -733,7 +746,8 @@ public final class ImagesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-11-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -744,6 +758,7 @@ public final class ImagesClientImpl
                             imageName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -755,9 +770,9 @@ public final class ImagesClientImpl
      * @param imageName The name of the image.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -781,7 +796,8 @@ public final class ImagesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-11-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -790,6 +806,7 @@ public final class ImagesClientImpl
                 imageName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -799,16 +816,17 @@ public final class ImagesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String imageName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, imageName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -818,11 +836,11 @@ public final class ImagesClientImpl
      * @param imageName The name of the image.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String imageName, Context context) {
         context = this.client.mergeContext(context);
@@ -838,11 +856,11 @@ public final class ImagesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String imageName) {
         return beginDeleteAsync(resourceGroupName, imageName).getSyncPoller();
     }
@@ -854,11 +872,11 @@ public final class ImagesClientImpl
      * @param imageName The name of the image.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String imageName, Context context) {
         return beginDeleteAsync(resourceGroupName, imageName, context).getSyncPoller();
     }
@@ -869,9 +887,9 @@ public final class ImagesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String imageName) {
@@ -885,9 +903,9 @@ public final class ImagesClientImpl
      * @param imageName The name of the image.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String imageName, Context context) {
@@ -902,7 +920,7 @@ public final class ImagesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -917,7 +935,7 @@ public final class ImagesClientImpl
      * @param imageName The name of the image.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -932,9 +950,9 @@ public final class ImagesClientImpl
      * @param imageName The name of the image.
      * @param expand The expand expression to apply on the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an image.
+     * @return an image along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ImageInner>> getByResourceGroupWithResponseAsync(
@@ -958,7 +976,7 @@ public final class ImagesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -984,9 +1002,9 @@ public final class ImagesClientImpl
      * @param expand The expand expression to apply on the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an image.
+     * @return an image along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ImageInner>> getByResourceGroupWithResponseAsync(
@@ -1010,7 +1028,7 @@ public final class ImagesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1032,9 +1050,9 @@ public final class ImagesClientImpl
      * @param imageName The name of the image.
      * @param expand The expand expression to apply on the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an image.
+     * @return an image on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImageInner> getByResourceGroupAsync(String resourceGroupName, String imageName, String expand) {
@@ -1055,9 +1073,9 @@ public final class ImagesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an image.
+     * @return an image on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImageInner> getByResourceGroupAsync(String resourceGroupName, String imageName) {
@@ -1079,7 +1097,7 @@ public final class ImagesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an image.
      */
@@ -1097,9 +1115,9 @@ public final class ImagesClientImpl
      * @param expand The expand expression to apply on the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an image.
+     * @return an image along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ImageInner> getByResourceGroupWithResponse(
@@ -1112,9 +1130,10 @@ public final class ImagesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of images under a resource group.
+     * @return the list of images under a resource group along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ImageInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -1134,7 +1153,7 @@ public final class ImagesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1165,9 +1184,10 @@ public final class ImagesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of images under a resource group.
+     * @return the list of images under a resource group along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ImageInner>> listByResourceGroupSinglePageAsync(
@@ -1188,7 +1208,7 @@ public final class ImagesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1215,7 +1235,7 @@ public final class ImagesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of images under a resource group.
      */
@@ -1232,7 +1252,7 @@ public final class ImagesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of images under a resource group.
      */
@@ -1248,7 +1268,7 @@ public final class ImagesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of images under a resource group.
      */
@@ -1263,7 +1283,7 @@ public final class ImagesClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of images under a resource group.
      */
@@ -1276,9 +1296,10 @@ public final class ImagesClientImpl
      * Gets the list of Images in the subscription. Use nextLink property in the response to get the next page of
      * Images. Do this till nextLink is null to fetch all the Images.
      *
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Images in the subscription.
+     * @return the list of Images in the subscription along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ImageInner>> listSinglePageAsync() {
@@ -1294,7 +1315,7 @@ public final class ImagesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1319,9 +1340,10 @@ public final class ImagesClientImpl
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Images in the subscription.
+     * @return the list of Images in the subscription along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ImageInner>> listSinglePageAsync(Context context) {
@@ -1337,7 +1359,7 @@ public final class ImagesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1357,7 +1379,7 @@ public final class ImagesClientImpl
      * Gets the list of Images in the subscription. Use nextLink property in the response to get the next page of
      * Images. Do this till nextLink is null to fetch all the Images.
      *
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Images in the subscription.
      */
@@ -1372,7 +1394,7 @@ public final class ImagesClientImpl
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Images in the subscription.
      */
@@ -1386,7 +1408,7 @@ public final class ImagesClientImpl
      * Gets the list of Images in the subscription. Use nextLink property in the response to get the next page of
      * Images. Do this till nextLink is null to fetch all the Images.
      *
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Images in the subscription.
      */
@@ -1401,7 +1423,7 @@ public final class ImagesClientImpl
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Images in the subscription.
      */
@@ -1415,9 +1437,10 @@ public final class ImagesClientImpl
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Image operation response.
+     * @return the List Image operation response along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ImageInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1452,9 +1475,10 @@ public final class ImagesClientImpl
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Image operation response.
+     * @return the List Image operation response along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ImageInner>> listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
@@ -1487,9 +1511,10 @@ public final class ImagesClientImpl
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Image operation response.
+     * @return the List Image operation response along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ImageInner>> listNextSinglePageAsync(String nextLink) {
@@ -1523,9 +1548,10 @@ public final class ImagesClientImpl
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Image operation response.
+     * @return the List Image operation response along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ImageInner>> listNextSinglePageAsync(String nextLink, Context context) {

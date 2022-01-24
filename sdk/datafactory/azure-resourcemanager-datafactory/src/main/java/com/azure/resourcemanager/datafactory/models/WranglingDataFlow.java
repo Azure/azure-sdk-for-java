@@ -103,6 +103,29 @@ public final class WranglingDataFlow extends DataFlow {
     }
 
     /**
+     * Get the documentLocale property: Locale of the Power query mashup document.
+     *
+     * @return the documentLocale value.
+     */
+    public String documentLocale() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().documentLocale();
+    }
+
+    /**
+     * Set the documentLocale property: Locale of the Power query mashup document.
+     *
+     * @param documentLocale the documentLocale value to set.
+     * @return the WranglingDataFlow object itself.
+     */
+    public WranglingDataFlow withDocumentLocale(String documentLocale) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new PowerQueryTypeProperties();
+        }
+        this.innerTypeProperties().withDocumentLocale(documentLocale);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

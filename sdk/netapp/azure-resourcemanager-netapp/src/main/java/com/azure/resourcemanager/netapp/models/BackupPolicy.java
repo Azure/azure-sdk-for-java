@@ -55,13 +55,6 @@ public interface BackupPolicy {
     String etag();
 
     /**
-     * Gets the namePropertiesName property: Name of backup policy.
-     *
-     * @return the namePropertiesName value.
-     */
-    String namePropertiesName();
-
-    /**
      * Gets the backupPolicyId property: Backup Policy Resource ID.
      *
      * @return the backupPolicyId value.

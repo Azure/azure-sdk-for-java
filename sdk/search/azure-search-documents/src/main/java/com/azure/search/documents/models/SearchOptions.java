@@ -105,6 +105,13 @@ public final class SearchOptions {
     private String scoringProfile;
 
     /*
+     * The name of the semantic configuration that lists which fields should be
+     * used for semantic ranking, captions, highlights, and answers
+     */
+    @JsonProperty(value = "semanticConfiguration")
+    private String semanticConfigurationName;
+
+    /*
      * The list of field names to which to scope the full-text search. When
      * using fielded search (fieldName:searchExpression) in a full Lucene
      * query, the field names of each fielded search expression take precedence
@@ -123,7 +130,7 @@ public final class SearchOptions {
      * Improve search recall by spell-correcting individual search query terms.
      */
     @JsonProperty(value = "speller")
-    private QuerySpeller speller;
+    private QuerySpellerType speller;
 
     /*
      * This parameter is only valid if the query type is 'semantic'. If set,
@@ -134,7 +141,7 @@ public final class SearchOptions {
      * 'extractive|count-3'. Default count is 1.
      */
     @JsonProperty(value = "answers")
-    private QueryAnswer answers;
+    private QueryAnswerType answers;
 
     /*
      * This parameter is only valid if the query type is 'semantic'. If set,
@@ -208,7 +215,17 @@ public final class SearchOptions {
      * 'extractive|highlight-true'. Defaults to 'None'.
      */
     @JsonProperty(value = "captions")
-    private Captions captions;
+    private QueryCaptionType queryCaption;
+
+    /*
+     * This parameter is only valid if the query type is 'semantic'. If set,
+     * the query returns captions extracted from key passages in the highest
+     * ranked documents. When Captions is set to 'extractive', highlighting is
+     * enabled by default, and can be configured by appending the pipe
+     * character '|' followed by the 'highlight-<true/false>' option, such as
+     * 'extractive|highlight-true'. Defaults to 'None'.
+     */
+    private Boolean queryCaptionHighlightEnabled;
 
     /*
      * The list of field names used for semantic search.
@@ -471,6 +488,28 @@ public final class SearchOptions {
     }
 
     /**
+     * Get the semanticConfigurationName property: The name of the semantic configuration that lists which fields should
+     * be used for semantic ranking, captions, highlights, and answers.
+     *
+     * @return the semanticConfigurationName value.
+     */
+    public String getSemanticConfigurationName() {
+        return this.semanticConfigurationName;
+    }
+
+    /**
+     * Set the semanticConfigurationName property: The name of the semantic configuration that lists which fields should
+     * be used for semantic ranking, captions, highlights, and answers.
+     *
+     * @param semanticConfigurationName the semanticConfigurationName value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setSemanticConfigurationName(String semanticConfigurationName) {
+        this.semanticConfigurationName = semanticConfigurationName;
+        return this;
+    }
+
+    /**
      * Get the searchFields property: The list of field names to which to scope the full-text search. When using fielded
      * search (fieldName:searchExpression) in a full Lucene query, the field names of each fielded search expression
      * take precedence over any field names listed in this parameter.
@@ -519,7 +558,7 @@ public final class SearchOptions {
      *
      * @return the speller value.
      */
-    public QuerySpeller getSpeller() {
+    public QuerySpellerType getSpeller() {
         return this.speller;
     }
 
@@ -529,7 +568,7 @@ public final class SearchOptions {
      * @param speller the speller value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setSpeller(QuerySpeller speller) {
+    public SearchOptions setSpeller(QuerySpellerType speller) {
         this.speller = speller;
         return this;
     }
@@ -542,7 +581,7 @@ public final class SearchOptions {
      *
      * @return the answers value.
      */
-    public QueryAnswer getAnswers() {
+    public QueryAnswerType getAnswers() {
         return this.answers;
     }
 
@@ -555,7 +594,7 @@ public final class SearchOptions {
      * @param answers the answers value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setAnswers(QueryAnswer answers) {
+    public SearchOptions setAnswers(QueryAnswerType answers) {
         this.answers = answers;
         return this;
     }
@@ -729,28 +768,54 @@ public final class SearchOptions {
     }
 
     /**
-     * Get the captions property: This parameter is only valid if the query type is 'semantic'. If set, the query
+     * Get the query caption property: This parameter is only valid if the query type is 'semantic'. If set, the query
      * returns captions extracted from key passages in the highest ranked documents. When Captions is set to
      * 'extractive', highlighting is enabled by default, and can be configured by appending the pipe character '|'
      * followed by the 'highlight-&lt;true/false&gt;' option, such as 'extractive|highlight-true'. Defaults to 'None'.
      *
-     * @return the captions value.
+     * @return the query caption value.
      */
-    public Captions getCaptions() {
-        return this.captions;
+    public QueryCaptionType getQueryCaption() {
+        return this.queryCaption;
     }
 
     /**
-     * Set the captions property: This parameter is only valid if the query type is 'semantic'. If set, the query
+     * Set the query caption property: This parameter is only valid if the query type is 'semantic'. If set, the query
      * returns captions extracted from key passages in the highest ranked documents. When Captions is set to
      * 'extractive', highlighting is enabled by default, and can be configured by appending the pipe character '|'
      * followed by the 'highlight-&lt;true/false&gt;' option, such as 'extractive|highlight-true'. Defaults to 'None'.
      *
-     * @param captions the captions value to set.
+     * @param queryCaption the query caption value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setCaptions(Captions captions) {
-        this.captions = captions;
+    public SearchOptions setQueryCaption(QueryCaptionType queryCaption) {
+        this.queryCaption = queryCaption;
+        return this;
+    }
+
+    /**
+     * Get the query caption highlight property: This parameter is only valid if the query type is 'semantic'. If set,
+     * the query returns captions extracted from key passages in the highest ranked documents. When Captions is set to
+     * 'extractive', highlighting is enabled by default, and can be configured by appending the pipe character '|'
+     * followed by the 'highlight-&lt;true/false&gt;' option, such as 'extractive|highlight-true'. Defaults to 'None'.
+     *
+     * @return the query caption highlight value.
+     */
+    public Boolean getQueryCaptionHighlightEnabled() {
+        return this.queryCaptionHighlightEnabled;
+    }
+
+    /**
+     * Set the query caption highlight property: This parameter is only valid if the query type is 'semantic'. If set,
+     * the query returns captions extracted from key passages in the highest ranked documents. When Captions is set to
+     * 'extractive', highlighting is enabled by default, and can be configured by appending the pipe character '|'
+     * followed by the 'highlight-&lt;true/false&gt;' option, such as 'extractive|highlight-true'. Defaults to 'None'.
+     *
+     * @param queryCaptionHighlightEnabled the query caption highlight value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setQueryCaptionHighlightEnabled(Boolean queryCaptionHighlightEnabled) {
+        this.queryCaptionHighlightEnabled = queryCaptionHighlightEnabled;
         return this;
     }
 

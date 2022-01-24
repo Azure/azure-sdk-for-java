@@ -145,7 +145,8 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace SQL server's extended blob auditing policy.
+     * @return a workspace SQL server's extended blob auditing policy along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExtendedServerBlobAuditingPolicyInner>> getWithResponseAsync(
@@ -174,6 +175,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
                 .error(
                     new IllegalArgumentException("Parameter blobAuditingPolicyName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -181,7 +183,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -201,7 +203,8 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace SQL server's extended blob auditing policy.
+     * @return a workspace SQL server's extended blob auditing policy along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExtendedServerBlobAuditingPolicyInner>> getWithResponseAsync(
@@ -233,12 +236,13 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
                 .error(
                     new IllegalArgumentException("Parameter blobAuditingPolicyName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -256,7 +260,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace SQL server's extended blob auditing policy.
+     * @return a workspace SQL server's extended blob auditing policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ExtendedServerBlobAuditingPolicyInner> getAsync(
@@ -299,7 +303,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace SQL server's extended blob auditing policy.
+     * @return a workspace SQL server's extended blob auditing policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExtendedServerBlobAuditingPolicyInner> getWithResponse(
@@ -320,7 +324,8 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server blob auditing policy.
+     * @return an extended server blob auditing policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -357,6 +362,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -364,7 +370,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
                     service
                         .createOrUpdate(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -386,7 +392,8 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server blob auditing policy.
+     * @return an extended server blob auditing policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -424,12 +431,13 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -449,9 +457,10 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server blob auditing policy.
+     * @return an extended server blob auditing policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -467,7 +476,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
                 this.client.getHttpPipeline(),
                 ExtendedServerBlobAuditingPolicyInner.class,
                 ExtendedServerBlobAuditingPolicyInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -481,9 +490,10 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server blob auditing policy.
+     * @return an extended server blob auditing policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -515,9 +525,10 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server blob auditing policy.
+     * @return an extended server blob auditing policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -539,9 +550,10 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server blob auditing policy.
+     * @return an extended server blob auditing policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -563,7 +575,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server blob auditing policy.
+     * @return an extended server blob auditing policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ExtendedServerBlobAuditingPolicyInner> createOrUpdateAsync(
@@ -587,7 +599,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server blob auditing policy.
+     * @return an extended server blob auditing policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ExtendedServerBlobAuditingPolicyInner> createOrUpdateAsync(
@@ -654,7 +666,8 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server extended auditing settings.
+     * @return a list of server extended auditing settings along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExtendedServerBlobAuditingPolicyInner>> listByWorkspaceSinglePageAsync(
@@ -678,6 +691,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -685,7 +699,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
                     service
                         .listByWorkspace(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -712,7 +726,8 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server extended auditing settings.
+     * @return a list of server extended auditing settings along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExtendedServerBlobAuditingPolicyInner>> listByWorkspaceSinglePageAsync(
@@ -736,12 +751,13 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByWorkspace(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -835,7 +851,8 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server extended auditing settings.
+     * @return a list of server extended auditing settings along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExtendedServerBlobAuditingPolicyInner>> listByWorkspaceNextSinglePageAsync(
@@ -872,7 +889,8 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server extended auditing settings.
+     * @return a list of server extended auditing settings along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExtendedServerBlobAuditingPolicyInner>> listByWorkspaceNextSinglePageAsync(

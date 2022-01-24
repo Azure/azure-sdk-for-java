@@ -50,6 +50,9 @@ public class PartitionKey {
         return new PartitionKey(PartitionKeyInternal.fromJsonString(jsonString));
     }
 
+    /**
+     * Partition key that represents no partition key.
+     */
     public static final PartitionKey NONE = new PartitionKey(PartitionKeyInternal.None);
 
     /**

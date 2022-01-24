@@ -216,7 +216,7 @@ public final class NatGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -266,7 +266,7 @@ public final class NatGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -290,12 +290,13 @@ public final class NatGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String natGatewayName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, natGatewayName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -309,7 +310,7 @@ public final class NatGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String natGatewayName, Context context) {
         context = this.client.mergeContext(context);
@@ -329,7 +330,7 @@ public final class NatGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String natGatewayName) {
         return beginDeleteAsync(resourceGroupName, natGatewayName).getSyncPoller();
     }
@@ -345,7 +346,7 @@ public final class NatGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String natGatewayName, Context context) {
         return beginDeleteAsync(resourceGroupName, natGatewayName, context).getSyncPoller();
@@ -448,7 +449,7 @@ public final class NatGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -500,7 +501,7 @@ public final class NatGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -636,7 +637,7 @@ public final class NatGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -693,7 +694,7 @@ public final class NatGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -719,7 +720,7 @@ public final class NatGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nat Gateway resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<NatGatewayInner>, NatGatewayInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String natGatewayName, NatGatewayInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -727,7 +728,11 @@ public final class NatGatewaysClientImpl
         return this
             .client
             .<NatGatewayInner, NatGatewayInner>getLroResult(
-                mono, this.client.getHttpPipeline(), NatGatewayInner.class, NatGatewayInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                NatGatewayInner.class,
+                NatGatewayInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -742,7 +747,7 @@ public final class NatGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nat Gateway resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NatGatewayInner>, NatGatewayInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String natGatewayName, NatGatewayInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -765,7 +770,7 @@ public final class NatGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nat Gateway resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NatGatewayInner>, NatGatewayInner> beginCreateOrUpdate(
         String resourceGroupName, String natGatewayName, NatGatewayInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, natGatewayName, parameters).getSyncPoller();
@@ -783,7 +788,7 @@ public final class NatGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nat Gateway resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NatGatewayInner>, NatGatewayInner> beginCreateOrUpdate(
         String resourceGroupName, String natGatewayName, NatGatewayInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, natGatewayName, parameters, context).getSyncPoller();
@@ -900,7 +905,7 @@ public final class NatGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -957,7 +962,7 @@ public final class NatGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1052,7 +1057,7 @@ public final class NatGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1094,7 +1099,7 @@ public final class NatGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1190,7 +1195,7 @@ public final class NatGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1244,7 +1249,7 @@ public final class NatGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

@@ -55,6 +55,14 @@ public class AzureADGraphClient {
     private final AADAuthorizationServerEndpoints endpoints;
     private final AADAuthenticationProperties aadAuthenticationProperties;
 
+    /**
+     * Creates a new instance of {@link AzureADGraphClient}.
+     *
+     * @param clientId the client ID
+     * @param clientSecret the client secret
+     * @param aadAuthenticationProperties the AAD authentication properties
+     * @param endpoints the AAF authorization server endpoints
+     */
     public AzureADGraphClient(String clientId,
                               String clientSecret,
         AADAuthenticationProperties aadAuthenticationProperties,
@@ -124,6 +132,12 @@ public class AzureADGraphClient {
         return membership.getObjectType().equals(Membership.OBJECT_TYPE_GROUP);
     }
 
+    /**
+     * Converts a set of groups to their granted authority set.
+     *
+     * @param groups a set of groups
+     * @return the granted authority set
+     */
     public Set<SimpleGrantedAuthority> toGrantedAuthoritySet(final Set<String> groups) {
         Set<SimpleGrantedAuthority> grantedAuthoritySet =
             groups.stream()

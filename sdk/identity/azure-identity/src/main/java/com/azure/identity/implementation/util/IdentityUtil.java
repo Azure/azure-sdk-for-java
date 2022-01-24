@@ -5,7 +5,6 @@ package com.azure.identity.implementation.util;
 
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.experimental.credential.TokenRequestContextExperimental;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClientOptions;
@@ -24,25 +23,25 @@ public final class IdentityUtil {
     public static String resolveTenantId(String currentTenantId, TokenRequestContext requestContext,
                                          IdentityClientOptions options) {
 
-        String contextTenantId;
-        if (requestContext instanceof TokenRequestContextExperimental) {
-            TokenRequestContextExperimental experimental = ((TokenRequestContextExperimental) requestContext);
-            contextTenantId = experimental.getTenantId();
-        } else {
-            return currentTenantId;
-        }
+        String contextTenantId = requestContext.getTenantId();
 
-        if (!options.isMultiTenantAuthenticationAllowed()) {
-            if (contextTenantId != null && !currentTenantId.equals(contextTenantId)
-                && !options.isLegacyTenantSelectionEnabled()) {
-                throw LOGGER.logExceptionAsError(new ClientAuthenticationException("The TenantId received from a"
-                    + " challenge did not match the configured TenantId and AllowMultiTenantAuthentication is false.",
+        if (contextTenantId != null && currentTenantId != null && !currentTenantId.equals(contextTenantId)) {
+            if (options.isMultiTenantAuthenticationDisabled()) {
+                throw LOGGER.logExceptionAsError(new ClientAuthenticationException("The Multi Tenant Authentication "
+                    + "is disabled. An updated Tenant Id provided via TokenRequestContext cannot be used in this "
+                    + "scenario. To resolve this issue, set the env var AZURE_IDENTITY_DISABLE_MULTITENANTAUTH"
+                    + " to false ",
                     null));
+            } else if ("adfs".equals(currentTenantId)) {
+                throw LOGGER.logExceptionAsError(new ClientAuthenticationException("The credential is configured with"
+                    + "`adfs` tenant id and it cannot be replaced with a tenant id challenge provided via "
+                    + "TokenRequestContext class. ", null));
             }
-            return CoreUtils.isNullOrEmpty(currentTenantId) ? contextTenantId : currentTenantId;
+            return CoreUtils.isNullOrEmpty(contextTenantId) ? currentTenantId
+                : contextTenantId;
         }
 
-        return CoreUtils.isNullOrEmpty(contextTenantId) ? currentTenantId
-                : contextTenantId;
+        return currentTenantId;
+
     }
 }

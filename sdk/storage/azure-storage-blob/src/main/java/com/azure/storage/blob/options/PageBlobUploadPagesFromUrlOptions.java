@@ -14,7 +14,7 @@ import com.azure.storage.blob.models.PageRange;
  * Extended options that may be passed when uploading a page range from a source URL.
  */
 @Fluent
-public class PageBlobUploadPagesFromUrlOptions {
+public final class PageBlobUploadPagesFromUrlOptions {
     private final PageRange range;
     private final String sourceUrl;
     private Long sourceOffset;

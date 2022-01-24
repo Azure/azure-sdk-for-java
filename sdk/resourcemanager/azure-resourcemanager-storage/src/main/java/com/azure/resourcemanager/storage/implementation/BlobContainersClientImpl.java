@@ -3401,14 +3401,15 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginObjectLevelWormAsync(
         String resourceGroupName, String accountName, String containerName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             objectLevelWormWithResponseAsync(resourceGroupName, accountName, containerName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -3429,7 +3430,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginObjectLevelWormAsync(
         String resourceGroupName, String accountName, String containerName, Context context) {
         context = this.client.mergeContext(context);
@@ -3457,7 +3458,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginObjectLevelWorm(
         String resourceGroupName, String accountName, String containerName) {
         return beginObjectLevelWormAsync(resourceGroupName, accountName, containerName).getSyncPoller();
@@ -3481,7 +3482,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginObjectLevelWorm(
         String resourceGroupName, String accountName, String containerName, Context context) {
         return beginObjectLevelWormAsync(resourceGroupName, accountName, containerName, context).getSyncPoller();

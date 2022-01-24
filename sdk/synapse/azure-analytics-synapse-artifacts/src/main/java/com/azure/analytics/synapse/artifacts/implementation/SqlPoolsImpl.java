@@ -74,13 +74,13 @@ public final class SqlPoolsImpl {
      *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pools.
+     * @return sQL pool collection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SqlPoolInfoListResult>> listWithResponseAsync() {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), apiVersion, accept, context));
     }
 
     /**
@@ -90,12 +90,13 @@ public final class SqlPoolsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pools.
+     * @return sQL pool collection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SqlPoolInfoListResult>> listWithResponseAsync(Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
+        return service.list(this.client.getEndpoint(), apiVersion, accept, context);
     }
 
     /**
@@ -103,7 +104,7 @@ public final class SqlPoolsImpl {
      *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pools.
+     * @return sQL pool collection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SqlPoolInfoListResult> listAsync() {
@@ -125,7 +126,7 @@ public final class SqlPoolsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pools.
+     * @return sQL pool collection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SqlPoolInfoListResult> listAsync(Context context) {
@@ -145,7 +146,7 @@ public final class SqlPoolsImpl {
      *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pools.
+     * @return sQL pool collection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SqlPoolInfoListResult list() {
@@ -159,7 +160,7 @@ public final class SqlPoolsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pools.
+     * @return sQL pool collection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SqlPoolInfoListResult> listWithResponse(Context context) {
@@ -177,11 +178,10 @@ public final class SqlPoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SqlPool>> getWithResponseAsync(String sqlPoolName) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.get(
-                                this.client.getEndpoint(), this.client.getApiVersion(), sqlPoolName, accept, context));
+                context -> service.get(this.client.getEndpoint(), apiVersion, sqlPoolName, accept, context));
     }
 
     /**
@@ -196,8 +196,9 @@ public final class SqlPoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SqlPool>> getWithResponseAsync(String sqlPoolName, Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), sqlPoolName, accept, context);
+        return service.get(this.client.getEndpoint(), apiVersion, sqlPoolName, accept, context);
     }
 
     /**

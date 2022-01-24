@@ -21,10 +21,27 @@ import java.util.Objects;
  * An AAD credential that acquires a token with a client certificate for an AAD application.
  *
  * <p><strong>Sample: Construct a simple ClientCertificateCredential</strong></p>
- * {@codesnippet com.azure.identity.credential.clientcertificatecredential.construct}
+ * <!-- src_embed com.azure.identity.credential.clientcertificatecredential.construct -->
+ * <pre>
+ * ClientCertificateCredential credential1 = new ClientCertificateCredentialBuilder&#40;&#41;
+ *     .tenantId&#40;tenantId&#41;
+ *     .clientId&#40;clientId&#41;
+ *     .pemCertificate&#40;&quot;&lt;PATH-TO-PEM-CERTIFICATE&gt;&quot;&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.identity.credential.clientcertificatecredential.construct -->
  *
  * <p><strong>Sample: Construct a ClientCertificateCredential behind a proxy</strong></p>
- * {@codesnippet com.azure.identity.credential.clientcertificatecredential.constructwithproxy}
+ * <!-- src_embed com.azure.identity.credential.clientcertificatecredential.constructwithproxy -->
+ * <pre>
+ * ClientCertificateCredential credential2 = new ClientCertificateCredentialBuilder&#40;&#41;
+ *     .tenantId&#40;tenantId&#41;
+ *     .clientId&#40;clientId&#41;
+ *     .pfxCertificate&#40;&quot;&lt;PATH-TO-PFX-CERTIFICATE&gt;&quot;, &quot;P&#64;s$w0rd&quot;&#41;
+ *     .proxyOptions&#40;new ProxyOptions&#40;Type.HTTP, new InetSocketAddress&#40;&quot;10.21.32.43&quot;, 5465&#41;&#41;&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.identity.credential.clientcertificatecredential.constructwithproxy -->
  */
 @Immutable
 public class ClientCertificateCredential implements TokenCredential {

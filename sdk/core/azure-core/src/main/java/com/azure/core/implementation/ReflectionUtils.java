@@ -3,60 +3,12 @@
 
 package com.azure.core.implementation;
 
-import com.azure.core.util.logging.ClientLogger;
-
-import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
-
-import static java.lang.invoke.MethodType.methodType;
 
 /**
  * Utility methods that aid in performing reflective operations.
  */
-public final class ReflectionUtils {
-    // This lookup is specific to the com.azure.core module, specifically this class.
-    private static final MethodHandles.Lookup LOOKUP = MethodHandles.lookup();
-
-    // Convenience pointer to the com.azure.core module.
-    // Since this is only Java 9+ functionality it needs to use reflection.
-    private static final String MODULE_CLASS = "java.lang.Module";
-    private static final Object CORE_MODULE;
-    private static final MethodHandle GET_MODULE;
-    private static final MethodHandle IS_MODULE_EXPORTED;
-    private static final MethodHandle CAN_READ_MODULE;
-    private static final MethodHandle ADD_MODULE_READ;
-
-    static {
-        MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
-
-        Object coreModule = null;
-        MethodHandle getModule = null;
-        MethodHandle isModuleExported = null;
-        MethodHandle canReadModule = null;
-        MethodHandle addReadModule = null;
-
-        try {
-            Class<?> moduleClass = Class.forName(MODULE_CLASS);
-            Class<?> classClass = Class.class;
-            getModule = publicLookup.findVirtual(classClass, "getModule", methodType(moduleClass));
-            coreModule = getModule.invoke(ReflectionUtils.class);
-            isModuleExported = publicLookup.findVirtual(moduleClass, "isExported",
-                methodType(boolean.class, String.class));
-            canReadModule = publicLookup.findVirtual(moduleClass, "canRead", methodType(boolean.class, moduleClass));
-            addReadModule = MethodHandles.lookup()
-                .findVirtual(moduleClass, "addReads", methodType(moduleClass, moduleClass));
-        } catch (Throwable ex) {
-            new ClientLogger(ReflectionUtils.class)
-                .verbose("Failed to retrieve MethodHandles used to check module information. "
-                    + "If the application is not using Java 9+ runtime behavior will work as expected.", ex);
-        }
-
-        CORE_MODULE = coreModule;
-        GET_MODULE = getModule;
-        IS_MODULE_EXPORTED = isModuleExported;
-        CAN_READ_MODULE = canReadModule;
-        ADD_MODULE_READ = addReadModule;
-    }
+final class ReflectionUtils implements ReflectionUtilsApi {
 
     /**
      * Gets the {@link MethodHandles.Lookup} to use when performing reflective operations.
@@ -74,37 +26,14 @@ public final class ReflectionUtils {
      * reflectively.
      * @throws Throwable If the underlying reflective calls throw an exception.
      */
-    public static MethodHandles.Lookup getLookupToUse(Class<?> targetClass) throws Throwable {
-        /*
-         * If we were able to write this using Java 9+ code.
-         *
-         * First check if the response class's module is exported to all unnamed modules. If it is we will use
-         * MethodHandles.publicLookup() which is meant for creating MethodHandle instances for publicly accessible
-         * classes.
-         */
-        if (GET_MODULE == null) {
-            // Java 8 is being used, public lookup should be able to access the Response class.
-            return MethodHandles.publicLookup();
-        } else {
-            Object responseModule = GET_MODULE.invoke(targetClass);
-            if ((boolean) IS_MODULE_EXPORTED.invoke(responseModule, "")) {
-                return MethodHandles.publicLookup();
-            } else {
-                /*
-                 * Otherwise, we use the MethodHandles.Lookup which is associated to this (com.azure.core) module, and
-                 * more specifically, is tied to this class (ResponseConstructorsCache). But, in order to use this
-                 * lookup we need to ensure that the com.azure.core module reads the response class's module as the
-                 * lookup won't have permissions necessary to create the MethodHandle instance without it.
-                 */
-                if (!(boolean) CAN_READ_MODULE.invoke(CORE_MODULE, responseModule)) {
-                    ADD_MODULE_READ.invoke(CORE_MODULE, responseModule);
-                }
-
-                return LOOKUP;
-            }
-        }
+    public MethodHandles.Lookup getLookupToUse(Class<?> targetClass) throws Throwable {
+        return MethodHandles.publicLookup();
     }
 
-    private ReflectionUtils() {
+    public int getJavaImplementationMajorVersion() {
+        return 8;
+    }
+
+    ReflectionUtils() {
     }
 }

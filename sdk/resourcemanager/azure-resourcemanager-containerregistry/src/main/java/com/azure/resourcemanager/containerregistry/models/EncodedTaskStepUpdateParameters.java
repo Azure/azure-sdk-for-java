@@ -98,6 +98,20 @@ public final class EncodedTaskStepUpdateParameters extends TaskStepUpdateParamet
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public EncodedTaskStepUpdateParameters withContextPath(String contextPath) {
+        super.withContextPath(contextPath);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EncodedTaskStepUpdateParameters withContextAccessToken(String contextAccessToken) {
+        super.withContextAccessToken(contextAccessToken);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

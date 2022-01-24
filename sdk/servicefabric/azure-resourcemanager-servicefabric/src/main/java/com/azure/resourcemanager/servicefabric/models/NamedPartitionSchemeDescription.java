@@ -22,14 +22,14 @@ public final class NamedPartitionSchemeDescription extends PartitionSchemeDescri
     /*
      * The number of partitions.
      */
-    @JsonProperty(value = "Count", required = true)
+    @JsonProperty(value = "count", required = true)
     private int count;
 
     /*
-     * Array of size specified by the ‘Count’ parameter, for the names of the
+     * Array of size specified by the ‘count’ parameter, for the names of the
      * partitions.
      */
-    @JsonProperty(value = "Names", required = true)
+    @JsonProperty(value = "names", required = true)
     private List<String> names;
 
     /**
@@ -53,7 +53,7 @@ public final class NamedPartitionSchemeDescription extends PartitionSchemeDescri
     }
 
     /**
-     * Get the names property: Array of size specified by the ‘Count’ parameter, for the names of the partitions.
+     * Get the names property: Array of size specified by the ‘count’ parameter, for the names of the partitions.
      *
      * @return the names value.
      */
@@ -62,7 +62,7 @@ public final class NamedPartitionSchemeDescription extends PartitionSchemeDescri
     }
 
     /**
-     * Set the names property: Array of size specified by the ‘Count’ parameter, for the names of the partitions.
+     * Set the names property: Array of size specified by the ‘count’ parameter, for the names of the partitions.
      *
      * @param names the names value to set.
      * @return the NamedPartitionSchemeDescription object itself.

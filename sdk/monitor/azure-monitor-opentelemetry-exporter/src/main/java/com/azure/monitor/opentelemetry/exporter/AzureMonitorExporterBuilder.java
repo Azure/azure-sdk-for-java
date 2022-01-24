@@ -6,20 +6,22 @@ package com.azure.monitor.opentelemetry.exporter;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.monitor.opentelemetry.exporter.implementation.ApplicationInsightsClientImpl;
 import com.azure.monitor.opentelemetry.exporter.implementation.ApplicationInsightsClientImplBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.NdJsonSerializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -34,12 +36,23 @@ import java.util.Objects;
 public final class AzureMonitorExporterBuilder {
     private static final String APPLICATIONINSIGHTS_CONNECTION_STRING = "APPLICATIONINSIGHTS_CONNECTION_STRING";
     private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE = "https://monitor.azure.com//.default";
+    private static final SerializerAdapter SERIALIZER_ADAPTER;
     private final ClientLogger logger = new ClientLogger(AzureMonitorExporterBuilder.class);
     private final ApplicationInsightsClientImplBuilder restServiceClientBuilder;
     private String instrumentationKey;
     private String connectionString;
     private AzureMonitorExporterServiceVersion serviceVersion;
     private TokenCredential credential;
+
+    static {
+        // Customize serializer to use NDJSON
+        final SimpleModule ndjsonModule = new SimpleModule("Ndjson List Serializer");
+        JacksonAdapter jacksonAdapter = new JacksonAdapter();
+        ndjsonModule.addSerializer(new NdJsonSerializer());
+        jacksonAdapter.serializer().registerModule(ndjsonModule);
+
+        SERIALIZER_ADAPTER = jacksonAdapter;
+    }
 
     /**
      * Creates an instance of {@link AzureMonitorExporterBuilder}.
@@ -239,12 +252,7 @@ public final class AzureMonitorExporterBuilder {
      * @return A {@link MonitorExporterAsyncClient} with the options set from the builder.
      */
     MonitorExporterAsyncClient buildAsyncClient() {
-        // Customize serializer to use NDJSON
-        final SimpleModule ndjsonModule = new SimpleModule("Ndjson List Serializer");
-        JacksonAdapter jacksonAdapter = new JacksonAdapter();
-        ndjsonModule.addSerializer(new NdJsonSerializer());
-        jacksonAdapter.serializer().registerModule(ndjsonModule);
-        restServiceClientBuilder.serializerAdapter(jacksonAdapter);
+        restServiceClientBuilder.serializerAdapter(SERIALIZER_ADAPTER);
         if (this.credential != null) {
             // Add authentication policy to HttpPipeline
             BearerTokenAuthenticationPolicy authenticationPolicy = new BearerTokenAuthenticationPolicy(this.credential, APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE);

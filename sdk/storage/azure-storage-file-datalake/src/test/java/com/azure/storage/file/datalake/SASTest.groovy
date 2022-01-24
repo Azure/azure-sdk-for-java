@@ -38,10 +38,10 @@ class SASTest extends APISpec {
 
     def setup() {
         pathName = generatePathName()
-        sasClient = getFileClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
+        sasClient = getFileClient(environment.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
         sasClient.create()
         sasClient.append(data.defaultInputStream, 0, data.defaultDataSize)
-        sasClient.flush(data.defaultDataSize)
+        sasClient.flush(data.defaultDataSize, true)
     }
 
     DataLakeServiceSasSignatureValues generateValues(PathSasPermission permission) {
@@ -110,7 +110,7 @@ class SASTest extends APISpec {
     def "directory sas permission"() {
         setup:
         def pathName = generatePathName()
-        DataLakeDirectoryClient sasClient = getDirectoryClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
+        DataLakeDirectoryClient sasClient = getDirectoryClient(environment.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
         sasClient.create()
         def permissions = new PathSasPermission()
             .setReadPermission(true)
@@ -148,7 +148,7 @@ class SASTest extends APISpec {
     def "directory sas permission fail"() {
         setup:
         def pathName = generatePathName()
-        DataLakeDirectoryClient sasClient = getDirectoryClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
+        DataLakeDirectoryClient sasClient = getDirectoryClient(environment.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
         sasClient.create()
         def permissions = new PathSasPermission() /* No read permission. */
             .setWritePermission(true)
@@ -251,7 +251,7 @@ class SASTest extends APISpec {
     def "directory user delegation"() {
         setup:
         def pathName = generatePathName()
-        DataLakeDirectoryClient sasClient = getDirectoryClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
+        DataLakeDirectoryClient sasClient = getDirectoryClient(environment.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
         sasClient.create()
         def permissions = new PathSasPermission()
             .setReadPermission(true)
@@ -358,7 +358,7 @@ class SASTest extends APISpec {
 
         when:
         /* Grant userOID on root folder. */
-        def rootClient = getDirectoryClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), "")
+        def rootClient = getDirectoryClient(environment.dataLakeAccount.credential, fsc.getFileSystemUrl(), "")
         ArrayList<PathAccessControlEntry> acl = new ArrayList<>();
         PathAccessControlEntry ace = new PathAccessControlEntry()
             .setAccessControlType(AccessControlType.USER)
@@ -375,14 +375,14 @@ class SASTest extends APISpec {
 
         client.create(true)
         client.append(data.defaultInputStream, 0, data.defaultDataSize)
-        client.flush(data.defaultDataSize)
+        client.flush(data.defaultDataSize, true)
 
         then:
         notThrown(DataLakeStorageException)
         sasWithPermissions.contains("saoid=" + saoid)
 
         when:
-        client = getFileClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
+        client = getFileClient(environment.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
         def accessControl = client.getAccessControl()
 
         then:
@@ -423,7 +423,7 @@ class SASTest extends APISpec {
         def client = getFileClient(sasWithPermissions, fsc.getFileSystemUrl(), pathName)
         client.create(true)
         client.append(data.defaultInputStream, 0, data.defaultDataSize)
-        client.flush(data.defaultDataSize)
+        client.flush(data.defaultDataSize, true)
 
         then:
         thrown(DataLakeStorageException)
@@ -431,7 +431,7 @@ class SASTest extends APISpec {
 
         when: "User is now authorized."
         /* Grant userOID on root folder. */
-        def rootClient = getDirectoryClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), "")
+        def rootClient = getDirectoryClient(environment.dataLakeAccount.credential, fsc.getFileSystemUrl(), "")
         ArrayList<PathAccessControlEntry> acl = new ArrayList<>();
         PathAccessControlEntry ace = new PathAccessControlEntry()
             .setAccessControlType(AccessControlType.USER)
@@ -448,9 +448,9 @@ class SASTest extends APISpec {
 
         client.create(true)
         client.append(data.defaultInputStream, 0, data.defaultDataSize)
-        client.flush(data.defaultDataSize)
+        client.flush(data.defaultDataSize, true)
 
-        client = getFileClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
+        client = getFileClient(environment.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
 
         then:
         notThrown(DataLakeStorageException)
@@ -537,7 +537,7 @@ class SASTest extends APISpec {
         def fc = fsc.getFileClient(pathName)
         fc.create()
         fc.append(data.defaultInputStream, 0, data.defaultDataSize)
-        fc.flush(data.defaultDataSize)
+        fc.flush(data.defaultDataSize, true)
 
         def service = new AccountSasService()
             .setBlobAccess(true)
@@ -657,7 +657,7 @@ class SASTest extends APISpec {
         def fsc = getFileSystemClientBuilder(primaryDataLakeServiceClient.getAccountUrl() + "/" + fileSystemName + "?" + sas).buildClient()
         fsc.listPaths()
 
-        def fc = getFileClient(env.dataLakeAccount.credential, primaryDataLakeServiceClient.getAccountUrl() + "/" + fileSystemName + "/" + pathName + "?" + sas)
+        def fc = getFileClient(environment.dataLakeAccount.credential, primaryDataLakeServiceClient.getAccountUrl() + "/" + fileSystemName + "/" + pathName + "?" + sas)
 
         fc.create()
 
@@ -670,7 +670,7 @@ class SASTest extends APISpec {
      values are handled correctly. We will validate the whole SAS with service calls as well as correct serialization of
      individual parts later.
      */
-
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     @Unroll
     def "sas impl util string to sign"() {
         when:
@@ -685,7 +685,7 @@ class SASTest extends APISpec {
         } else {
             v = new DataLakeServiceSasSignatureValues(e, p)
         }
-        def expected = String.format(expectedStringToSign, env.dataLakeAccount.name)
+        def expected = String.format(expectedStringToSign, environment.dataLakeAccount.name)
 
         v.setPermissions(p)
 
@@ -707,7 +707,7 @@ class SASTest extends APISpec {
 
         def util = new DataLakeSasImplUtil(v, "fileSystemName", "pathName", false)
         util.ensureState()
-        def sasToken = util.stringToSign(util.getCanonicalName(env.dataLakeAccount.name))
+        def sasToken = util.stringToSign(util.getCanonicalName(environment.dataLakeAccount.name))
 
         then:
         sasToken == expected
@@ -720,18 +720,18 @@ class SASTest extends APISpec {
          */
         where:
         startTime                                                 | identifier | ipRange          | protocol               | cacheControl | disposition   | encoding   | language   | type   || expectedStringToSign
-        OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null       | null             | null                   | null         | null          | null       | null       | null   || "r\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
-        null                                                      | "id"       | null             | null                   | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\nid\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
-        null                                                      | null       | new SasIpRange() | null                   | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\nip\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
-        null                                                      | null       | null             | SasProtocol.HTTPS_ONLY | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n" + SasProtocol.HTTPS_ONLY + "\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
-        null                                                      | null       | null             | null                   | "control"    | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\ncontrol\n\n\n\n"
-        null                                                      | null       | null             | null                   | null         | "disposition" | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\ndisposition\n\n\n"
-        null                                                      | null       | null             | null                   | null         | null          | "encoding" | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\nencoding\n\n"
-        null                                                      | null       | null             | null                   | null         | null          | null       | "language" | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\nlanguage\n"
-        null                                                      | null       | null             | null                   | null         | null          | null       | null       | "type" || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\ntype"
+        OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null       | null             | null                   | null         | null          | null       | null       | null   || "r\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"
+        null                                                      | "id"       | null             | null                   | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\nid\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"
+        null                                                      | null       | new SasIpRange() | null                   | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\nip\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"
+        null                                                      | null       | null             | SasProtocol.HTTPS_ONLY | null         | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n" + SasProtocol.HTTPS_ONLY + "\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"
+        null                                                      | null       | null             | null                   | "control"    | null          | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\ncontrol\n\n\n\n"
+        null                                                      | null       | null             | null                   | null         | "disposition" | null       | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\ndisposition\n\n\n"
+        null                                                      | null       | null             | null                   | null         | null          | "encoding" | null       | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\nencoding\n\n"
+        null                                                      | null       | null             | null                   | null         | null          | null       | "language" | null   || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\nlanguage\n"
+        null                                                      | null       | null             | null                   | null         | null          | null       | null       | "type" || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\ntype"
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     @Unroll
     def "sas impl util string to sign user delegation key"() {
         when:
@@ -741,7 +741,7 @@ class SASTest extends APISpec {
         p.setReadPermission(true)
 
         def v = new DataLakeServiceSasSignatureValues(e, p)
-        def expected = String.format(expectedStringToSign, env.dataLakeAccount.name)
+        def expected = String.format(expectedStringToSign, environment.dataLakeAccount.name)
 
         p.setReadPermission(true)
         v.setPermissions(p)
@@ -775,7 +775,7 @@ class SASTest extends APISpec {
 
         def util = new DataLakeSasImplUtil(v, "fileSystemName", "pathName", false)
         util.ensureState()
-        def sasToken = util.stringToSign(key, util.getCanonicalName(env.dataLakeAccount.name))
+        def sasToken = util.stringToSign(key, util.getCanonicalName(environment.dataLakeAccount.name))
 
         then:
         sasToken == expected
@@ -785,24 +785,24 @@ class SASTest extends APISpec {
          */
         where:
         startTime                                                 | keyOid                                 | keyTid                                 | keyStart                                                              | keyExpiry                                                             | keyService | keyVersion   | keyValue                                       | ipRange          | protocol               | cacheControl | disposition   | encoding   | language   | type   | saoid   | suoid   | cid   || expectedStringToSign
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
-        OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | null    | null    | null  || "r\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
-        null                                                      | "11111111-1111-1111-1111-111111111111" | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n11111111-1111-1111-1111-111111111111\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
-        null                                                      | null                                   | "22222222-2222-2222-2222-222222222222" | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n22222222-2222-2222-2222-222222222222\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
-        null                                                      | null                                   | null                                   | OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC) | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC) | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | "b"        | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\nb\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | "2018-06-17" | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n2018-06-17\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | new SasIpRange() | null                   | null         | null          | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\nip\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | SasProtocol.HTTPS_ONLY | null         | null          | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n" + SasProtocol.HTTPS_ONLY + "\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | "control"    | null          | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\ncontrol\n\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | "disposition" | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\ndisposition\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | "encoding" | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\nencoding\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | "language" | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\nlanguage\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | "type" | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\ntype"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | "saoid" | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\nsaoid\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | null    | "suoid" | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\nsuoid\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
-        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | null    | null    | "cid" || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\ncid\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"
+        OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC) | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | null    | null    | null  || "r\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"
+        null                                                      | "11111111-1111-1111-1111-111111111111" | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n11111111-1111-1111-1111-111111111111\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"
+        null                                                      | null                                   | "22222222-2222-2222-2222-222222222222" | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n22222222-2222-2222-2222-222222222222\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC) | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC) | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | "b"        | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\nb\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | "2018-06-17" | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n2018-06-17\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | new SasIpRange() | null                   | null         | null          | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\nip\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | SasProtocol.HTTPS_ONLY | null         | null          | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n" + SasProtocol.HTTPS_ONLY + "\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | "control"    | null          | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\ncontrol\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | "disposition" | null       | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\ndisposition\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | "encoding" | null       | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\nencoding\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | "language" | null   | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\nlanguage\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | "type" | null    | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\ntype"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | "saoid" | null    | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\nsaoid\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | null    | "suoid" | null  || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\nsuoid\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"
+        null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null         | null          | null       | null       | null   | null    | null    | "cid" || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\ncid\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"
     }
 
     def "can use sas to authenticate"() {

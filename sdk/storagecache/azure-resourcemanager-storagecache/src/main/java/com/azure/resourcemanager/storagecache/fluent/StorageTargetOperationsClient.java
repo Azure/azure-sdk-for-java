@@ -25,7 +25,7 @@ public interface StorageTargetOperationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginFlush(String resourceGroupName, String cacheName, String storageTargetName);
 
     /**
@@ -42,7 +42,7 @@ public interface StorageTargetOperationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginFlush(
         String resourceGroupName, String cacheName, String storageTargetName, Context context);
 
@@ -89,7 +89,7 @@ public interface StorageTargetOperationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginSuspend(
         String resourceGroupName, String cacheName, String storageTargetName);
 
@@ -106,7 +106,7 @@ public interface StorageTargetOperationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginSuspend(
         String resourceGroupName, String cacheName, String storageTargetName, Context context);
 
@@ -151,7 +151,7 @@ public interface StorageTargetOperationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginResume(
         String resourceGroupName, String cacheName, String storageTargetName);
 
@@ -168,7 +168,7 @@ public interface StorageTargetOperationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginResume(
         String resourceGroupName, String cacheName, String storageTargetName, Context context);
 

@@ -136,6 +136,29 @@ public interface Volume {
     String subnetId();
 
     /**
+     * Gets the networkFeatures property: Network features Basic network, or Standard features available to the volume.
+     *
+     * @return the networkFeatures value.
+     */
+    NetworkFeatures networkFeatures();
+
+    /**
+     * Gets the networkSiblingSetId property: Network Sibling Set ID Network Sibling Set ID for the the group of volumes
+     * sharing networking resources.
+     *
+     * @return the networkSiblingSetId value.
+     */
+    String networkSiblingSetId();
+
+    /**
+     * Gets the storageToNetworkProximity property: Storage to Network Proximity Provides storage to network proximity
+     * information for the volume.
+     *
+     * @return the storageToNetworkProximity value.
+     */
+    VolumeStorageToNetworkProximity storageToNetworkProximity();
+
+    /**
      * Gets the mountTargets property: mountTargets List of mount targets.
      *
      * @return the mountTargets value.
@@ -143,7 +166,8 @@ public interface Volume {
     List<MountTargetProperties> mountTargets();
 
     /**
-     * Gets the volumeType property: What type of volume is this.
+     * Gets the volumeType property: What type of volume is this. For destination volumes in Cross Region Replication,
+     * set type to DataProtection.
      *
      * @return the volumeType value.
      */
@@ -205,7 +229,8 @@ public interface Volume {
     Boolean smbContinuouslyAvailable();
 
     /**
-     * Gets the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume.
+     * Gets the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume and this will
+     * be accepted as input only for manual qosType volume.
      *
      * @return the throughputMibps value.
      */
@@ -290,6 +315,51 @@ public interface Volume {
      * @return the defaultGroupQuotaInKiBs value.
      */
     Long defaultGroupQuotaInKiBs();
+
+    /**
+     * Gets the volumeGroupName property: Volume Group Name.
+     *
+     * @return the volumeGroupName value.
+     */
+    String volumeGroupName();
+
+    /**
+     * Gets the capacityPoolResourceId property: Pool Resource Id used in case of creating a volume through volume
+     * group.
+     *
+     * @return the capacityPoolResourceId value.
+     */
+    String capacityPoolResourceId();
+
+    /**
+     * Gets the proximityPlacementGroup property: Proximity placement group associated with the volume.
+     *
+     * @return the proximityPlacementGroup value.
+     */
+    String proximityPlacementGroup();
+
+    /**
+     * Gets the t2Network property: T2 network information.
+     *
+     * @return the t2Network value.
+     */
+    String t2Network();
+
+    /**
+     * Gets the volumeSpecName property: Volume spec name is the application specific designation or identifier for the
+     * particular volume in a volume group for e.g. data, log.
+     *
+     * @return the volumeSpecName value.
+     */
+    String volumeSpecName();
+
+    /**
+     * Gets the placementRules property: Volume placement rules Application specific placement rules for the particular
+     * volume.
+     *
+     * @return the placementRules value.
+     */
+    List<PlacementKeyValuePairs> placementRules();
 
     /**
      * Gets the region of the resource.
@@ -406,6 +476,7 @@ public interface Volume {
                 DefinitionStages.WithProtocolTypes,
                 DefinitionStages.WithSnapshotId,
                 DefinitionStages.WithBackupId,
+                DefinitionStages.WithNetworkFeatures,
                 DefinitionStages.WithVolumeType,
                 DefinitionStages.WithDataProtection,
                 DefinitionStages.WithIsRestoring,
@@ -423,7 +494,11 @@ public interface Volume {
                 DefinitionStages.WithAvsDataStore,
                 DefinitionStages.WithIsDefaultQuotaEnabled,
                 DefinitionStages.WithDefaultUserQuotaInKiBs,
-                DefinitionStages.WithDefaultGroupQuotaInKiBs {
+                DefinitionStages.WithDefaultGroupQuotaInKiBs,
+                DefinitionStages.WithCapacityPoolResourceId,
+                DefinitionStages.WithProximityPlacementGroup,
+                DefinitionStages.WithVolumeSpecName,
+                DefinitionStages.WithPlacementRules {
             /**
              * Executes the create request.
              *
@@ -501,12 +576,25 @@ public interface Volume {
              */
             WithCreate withBackupId(String backupId);
         }
+        /** The stage of the Volume definition allowing to specify networkFeatures. */
+        interface WithNetworkFeatures {
+            /**
+             * Specifies the networkFeatures property: Network features Basic network, or Standard features available to
+             * the volume..
+             *
+             * @param networkFeatures Network features Basic network, or Standard features available to the volume.
+             * @return the next definition stage.
+             */
+            WithCreate withNetworkFeatures(NetworkFeatures networkFeatures);
+        }
         /** The stage of the Volume definition allowing to specify volumeType. */
         interface WithVolumeType {
             /**
-             * Specifies the volumeType property: What type of volume is this.
+             * Specifies the volumeType property: What type of volume is this. For destination volumes in Cross Region
+             * Replication, set type to DataProtection.
              *
-             * @param volumeType What type of volume is this.
+             * @param volumeType What type of volume is this. For destination volumes in Cross Region Replication, set
+             *     type to DataProtection.
              * @return the next definition stage.
              */
             WithCreate withVolumeType(String volumeType);
@@ -596,9 +684,11 @@ public interface Volume {
         /** The stage of the Volume definition allowing to specify throughputMibps. */
         interface WithThroughputMibps {
             /**
-             * Specifies the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume.
+             * Specifies the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume
+             * and this will be accepted as input only for manual qosType volume.
              *
-             * @param throughputMibps Maximum throughput in Mibps that can be achieved by this volume.
+             * @param throughputMibps Maximum throughput in Mibps that can be achieved by this volume and this will be
+             *     accepted as input only for manual qosType volume.
              * @return the next definition stage.
              */
             WithCreate withThroughputMibps(Float throughputMibps);
@@ -710,6 +800,51 @@ public interface Volume {
              */
             WithCreate withDefaultGroupQuotaInKiBs(Long defaultGroupQuotaInKiBs);
         }
+        /** The stage of the Volume definition allowing to specify capacityPoolResourceId. */
+        interface WithCapacityPoolResourceId {
+            /**
+             * Specifies the capacityPoolResourceId property: Pool Resource Id used in case of creating a volume through
+             * volume group.
+             *
+             * @param capacityPoolResourceId Pool Resource Id used in case of creating a volume through volume group.
+             * @return the next definition stage.
+             */
+            WithCreate withCapacityPoolResourceId(String capacityPoolResourceId);
+        }
+        /** The stage of the Volume definition allowing to specify proximityPlacementGroup. */
+        interface WithProximityPlacementGroup {
+            /**
+             * Specifies the proximityPlacementGroup property: Proximity placement group associated with the volume.
+             *
+             * @param proximityPlacementGroup Proximity placement group associated with the volume.
+             * @return the next definition stage.
+             */
+            WithCreate withProximityPlacementGroup(String proximityPlacementGroup);
+        }
+        /** The stage of the Volume definition allowing to specify volumeSpecName. */
+        interface WithVolumeSpecName {
+            /**
+             * Specifies the volumeSpecName property: Volume spec name is the application specific designation or
+             * identifier for the particular volume in a volume group for e.g. data, log.
+             *
+             * @param volumeSpecName Volume spec name is the application specific designation or identifier for the
+             *     particular volume in a volume group for e.g. data, log.
+             * @return the next definition stage.
+             */
+            WithCreate withVolumeSpecName(String volumeSpecName);
+        }
+        /** The stage of the Volume definition allowing to specify placementRules. */
+        interface WithPlacementRules {
+            /**
+             * Specifies the placementRules property: Volume placement rules Application specific placement rules for
+             * the particular volume.
+             *
+             * @param placementRules Volume placement rules Application specific placement rules for the particular
+             *     volume.
+             * @return the next definition stage.
+             */
+            WithCreate withPlacementRules(List<PlacementKeyValuePairs> placementRules);
+        }
     }
     /**
      * Begins update for the Volume resource.
@@ -793,9 +928,11 @@ public interface Volume {
         /** The stage of the Volume update allowing to specify throughputMibps. */
         interface WithThroughputMibps {
             /**
-             * Specifies the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume.
+             * Specifies the throughputMibps property: Maximum throughput in Mibps that can be achieved by this volume
+             * and this will be accepted as input only for manual qosType volume.
              *
-             * @param throughputMibps Maximum throughput in Mibps that can be achieved by this volume.
+             * @param throughputMibps Maximum throughput in Mibps that can be achieved by this volume and this will be
+             *     accepted as input only for manual qosType volume.
              * @return the next definition stage.
              */
             Update withThroughputMibps(Float throughputMibps);

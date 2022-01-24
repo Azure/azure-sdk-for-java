@@ -64,6 +64,9 @@ public enum AmqpErrorCondition {
     CONNECTION_FORCED("amqp:connection:forced"),
 
     // These are errors that are specific to Azure services.
+    /**
+     * The server is busy.
+     */
     SERVER_BUSY_ERROR("com.microsoft:server-busy"),
     /**
      * One or more arguments supplied to the method are invalid.

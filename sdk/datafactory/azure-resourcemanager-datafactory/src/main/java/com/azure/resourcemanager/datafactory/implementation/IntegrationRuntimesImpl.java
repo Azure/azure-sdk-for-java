@@ -477,7 +477,7 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'integrationRuntimes'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, factoryName, integrationRuntimeName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, factoryName, integrationRuntimeName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {

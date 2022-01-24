@@ -3,11 +3,13 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.ThroughputProperties;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,8 +92,6 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
             }));
 
         CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
-        cosmosBulkExecutionOptions.setMaxMicroBatchSize(100);
-        cosmosBulkExecutionOptions.setMaxMicroBatchConcurrency(5);
 
         try {
             Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<CosmosBulkAsyncTest>> responseFlux = bulkAsyncContainerWithThroughputControl
@@ -145,8 +145,6 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
             }));
 
         CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
-        cosmosBulkExecutionOptions.setMaxMicroBatchSize(100);
-        cosmosBulkExecutionOptions.setMaxMicroBatchConcurrency(5);
 
         Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<CosmosBulkAsyncTest>> responseFlux = bulkAsyncContainer
             .executeBulkOperations(cosmosItemOperationFlux, cosmosBulkExecutionOptions);
@@ -177,6 +175,72 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void createItem_withBulk_after_collectionRecreate() {
+        int totalRequest = getTotalRequest();
+
+        for(int x = 0; x < 2; x = x + 1) {
+            Flux<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperationFlux = Flux.merge(
+                Flux.range(0, totalRequest).map(i -> {
+                    String partitionKey = UUID.randomUUID().toString();
+                    TestDoc testDoc = this.populateTestDoc(partitionKey);
+
+                    return CosmosBulkOperations.getCreateItemOperation(testDoc, new PartitionKey(partitionKey));
+                }),
+                Flux.range(0, totalRequest).map(i -> {
+                    String partitionKey = UUID.randomUUID().toString();
+                    EventDoc eventDoc = new EventDoc(UUID.randomUUID().toString(), 2, 4, "type1", partitionKey);
+
+                    return CosmosBulkOperations.getCreateItemOperation(eventDoc, new PartitionKey(partitionKey));
+                }));
+
+            CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
+
+            Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<CosmosBulkAsyncTest>> responseFlux = bulkAsyncContainer
+                .executeBulkOperations(cosmosItemOperationFlux, cosmosBulkExecutionOptions);
+
+            AtomicInteger processedDoc = new AtomicInteger(0);
+            responseFlux
+                .flatMap((com.azure.cosmos.models.CosmosBulkOperationResponse<CosmosBulkAsyncTest> cosmosBulkOperationResponse) -> {
+
+                    processedDoc.incrementAndGet();
+
+                    com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse = cosmosBulkOperationResponse.getResponse();
+                    if (cosmosBulkOperationResponse.getException() != null) {
+                        logger.error("Bulk operation failed", cosmosBulkOperationResponse.getException());
+                        fail(cosmosBulkOperationResponse.getException().toString());
+                    }
+
+                    assertThat(cosmosBulkItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+                    assertThat(cosmosBulkItemResponse.getRequestCharge()).isGreaterThan(0);
+                    assertThat(cosmosBulkItemResponse.getCosmosDiagnostics().toString()).isNotNull();
+                    assertThat(cosmosBulkItemResponse.getSessionToken()).isNotNull();
+                    assertThat(cosmosBulkItemResponse.getActivityId()).isNotNull();
+                    assertThat(cosmosBulkItemResponse.getRequestCharge()).isNotNull();
+
+                    return Mono.just(cosmosBulkItemResponse);
+                }).blockLast();
+
+            assertThat(processedDoc.get()).isEqualTo(totalRequest * 2);
+
+            CosmosAsyncDatabase db = bulkAsyncContainer
+                .getDatabase();
+            String containerName = bulkAsyncContainer.getId();
+
+            // Manually deleting and recreating the container
+            // on the same client (same async cache instances)
+            // to validate correct mitigation after delete and recreate
+            bulkAsyncContainer.delete().block();
+            db
+                .createContainer(
+                    containerName,
+                    "/mypk",
+                    ThroughputProperties.createManualThroughput(10_100))
+                .block();
+            bulkAsyncContainer = db.getContainer(containerName);
+        }
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void createItem_withBulk_and_operationLevelContext() {
         int totalRequest = getTotalRequest();
 
@@ -200,8 +264,12 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
             }));
 
         CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
-        bulkExecutionOptions.setTargetedMicroBatchRetryRate(0.25, 0.5);
-        bulkExecutionOptions.setMaxMicroBatchConcurrency(1);
+        ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+            .getCosmosBulkExecutionOptionsAccessor()
+            .setTargetedMicroBatchRetryRate(
+                bulkExecutionOptions,
+                0.25,
+                0.5);
 
         Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<CosmosBulkAsyncTest>> responseFlux = bulkAsyncContainer
             .executeBulkOperations(cosmosItemOperationFlux, bulkExecutionOptions);
@@ -253,8 +321,6 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
             }));
 
         CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
-        cosmosBulkExecutionOptions.setMaxMicroBatchSize(100);
-        cosmosBulkExecutionOptions.setMaxMicroBatchConcurrency(5);
 
         Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<CosmosBulkAsyncTest>> responseFlux = bulkAsyncContainer
             .executeBulkOperations(cosmosItemOperationFlux, cosmosBulkExecutionOptions);
@@ -333,8 +399,6 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         }
 
         CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
-        cosmosBulkExecutionOptions.setMaxMicroBatchSize(30);
-        cosmosBulkExecutionOptions.setMaxMicroBatchConcurrency(5);
 
         HashSet<Object> distinctDocs = new HashSet<>();
         AtomicInteger processedDoc = new AtomicInteger(0);
@@ -414,8 +478,6 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         });
 
         CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
-        cosmosBulkExecutionOptions.setMaxMicroBatchSize(100);
-        cosmosBulkExecutionOptions.setMaxMicroBatchConcurrency(15);
 
         Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<CosmosBulkAsyncTest>> responseFlux = bulkAsyncContainer
             .executeBulkOperations(cosmosItemOperationFlux, cosmosBulkExecutionOptions);
@@ -468,8 +530,6 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         }
 
         CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
-        cosmosBulkExecutionOptions.setMaxMicroBatchSize(100);
-        cosmosBulkExecutionOptions.setMaxMicroBatchConcurrency(2);
 
         Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<Object>> responseFlux = bulkAsyncContainer
             .executeBulkOperations(Flux.fromIterable(cosmosItemOperations), cosmosBulkExecutionOptions);
@@ -527,8 +587,6 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
             });
 
         CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
-        cosmosBulkExecutionOptions.setMaxMicroBatchSize(30);
-        cosmosBulkExecutionOptions.setMaxMicroBatchConcurrency(1);
 
         AtomicInteger processedDoc = new AtomicInteger(0);
         bulkAsyncContainer
@@ -578,8 +636,6 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
             });
 
         CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
-        cosmosBulkExecutionOptions.setMaxMicroBatchSize(30);
-        cosmosBulkExecutionOptions.setMaxMicroBatchConcurrency(5);
 
         AtomicInteger processedDoc = new AtomicInteger(0);
         bulkAsyncContainer
@@ -633,8 +689,6 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
             });
 
         CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
-        cosmosBulkExecutionOptions.setMaxMicroBatchSize(30);
-        cosmosBulkExecutionOptions.setMaxMicroBatchConcurrency(5);
 
         HashSet<TestDoc> distinctDocs = new HashSet<>();
         AtomicInteger processedDoc = new AtomicInteger(0);
@@ -736,8 +790,6 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
 
     private void createItemsAndVerify(List<com.azure.cosmos.models.CosmosItemOperation> cosmosItemOperations) {
         CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
-        cosmosBulkExecutionOptions.setMaxMicroBatchSize(100);
-        cosmosBulkExecutionOptions.setMaxMicroBatchConcurrency(5);
 
         Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<Object>> createResonseFlux = bulkAsyncContainer
             .executeBulkOperations(Flux.fromIterable(cosmosItemOperations), cosmosBulkExecutionOptions);

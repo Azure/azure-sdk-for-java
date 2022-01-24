@@ -3,6 +3,7 @@
 package com.azure.cosmos;
 
 import com.azure.core.util.Context;
+import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
@@ -41,6 +42,7 @@ import com.azure.cosmos.models.TriggerType;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
@@ -423,7 +425,8 @@ public class CosmosTracerTest extends TestSuiteBase {
 
         Mockito.doAnswer(tracerProviderCapture).when(tracerProvider).startSpan(ArgumentMatchers.any(),
             ArgumentMatchers.any(),
-            ArgumentMatchers.any(), ArgumentMatchers.any());
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any());
         Mockito.doAnswer(addEventCapture).when(tracerProvider).addEvent(ArgumentMatchers.any(),
             ArgumentMatchers.any(),
             ArgumentMatchers.any(),
@@ -439,7 +442,6 @@ public class CosmosTracerTest extends TestSuiteBase {
         traceApiCounter++;
 
         String errorType = null;
-        CosmosDiagnostics cosmosDiagnostics = null;
         try {
             PartitionKey partitionKey = new PartitionKey("wrongPk");
             cosmosAsyncContainer.readItem("testDoc", partitionKey, null, InternalObjectNode.class).block();
@@ -447,12 +449,13 @@ public class CosmosTracerTest extends TestSuiteBase {
         } catch (CosmosException ex) {
             assertThat(ex.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
             errorType = ex.getClass().getName();
-            cosmosDiagnostics = ex.getDiagnostics();
         }
 
         verifyTracerAttributes(tracerProvider, mockTracer, "readItem." + cosmosAsyncContainer.getId(), context,
             cosmosAsyncDatabase.getId(), traceApiCounter
-            , errorType, cosmosDiagnostics, attributesMap);
+            , errorType, null, attributesMap);
+        // sending null diagnostics as we don't want diagnostics in events for exception as this information is
+        // already there as part of exception message
     }
 
     @AfterClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
@@ -482,7 +485,10 @@ public class CosmosTracerTest extends TestSuiteBase {
 
     private Tracer getMockTracer() {
         Tracer mockTracer = Mockito.mock(Tracer.class);
-        Mockito.when(mockTracer.start(ArgumentMatchers.any(String.class), ArgumentMatchers.any(Context.class))).thenReturn(Context.NONE);
+        Mockito.when(mockTracer.start(ArgumentMatchers.any(String.class),
+            ArgumentMatchers.any(StartSpanOptions.class),
+            ArgumentMatchers.any(Context.class)))
+        .thenReturn(Context.NONE);
         return mockTracer;
     }
 
@@ -490,35 +496,27 @@ public class CosmosTracerTest extends TestSuiteBase {
                                         Context context, String databaseName,
                                         int numberOfTimesCalledWithinTest, String errorType,
                                         CosmosDiagnostics cosmosDiagnostics,
-                                        Map<String, Map<String, Object>> attributesMap) throws JsonProcessingException {
+                                        Map<String, Map<String, Object>> eventAttributesMap) throws JsonProcessingException {
         Mockito.verify(tracerProvider, Mockito.times(numberOfTimesCalledWithinTest)).startSpan(ArgumentMatchers.any(),
             ArgumentMatchers.any(),
             ArgumentMatchers.any(), ArgumentMatchers.any(Context.class));
 
+        ArgumentCaptor<StartSpanOptions> optionsCaptor = ArgumentCaptor.forClass(StartSpanOptions.class);
+        Mockito.verify(mockTracer, Mockito.times(numberOfTimesCalledWithinTest))
+            .start(Mockito.any(), optionsCaptor.capture(), Mockito.any());
+
+        Map<String, Object> startAttributes = optionsCaptor.getValue().getAttributes();
         if (databaseName != null) {
-            Mockito.verify(mockTracer, Mockito.times(numberOfTimesCalledWithinTest)).setAttribute(TracerProvider.DB_INSTANCE,
-                databaseName, context);
-        }
-        Mockito.verify(mockTracer, Mockito.times(numberOfTimesCalledWithinTest)).setAttribute(TracerProvider.DB_TYPE,
-            TracerProvider.DB_TYPE_VALUE, context);
-        Mockito.verify(mockTracer, Mockito.times(numberOfTimesCalledWithinTest)).setAttribute(TracerProvider.DB_URL,
-            TestConfigurations.HOST,
-            context);
-        Mockito.verify(mockTracer, Mockito.times(1)).setAttribute(TracerProvider.DB_STATEMENT, methodName, context);
-        if (errorType == null) {
-            Mockito.verify(mockTracer, Mockito.times(0)).setAttribute(Mockito.eq(TracerProvider.ERROR_MSG)
-                , ArgumentMatchers.any(), Mockito.eq(context));
-            Mockito.verify(mockTracer, Mockito.times(0)).setAttribute(Mockito.eq(TracerProvider.ERROR_TYPE)
-                , ArgumentMatchers.any(), Mockito.eq(context));
-        } else {
-            Mockito.verify(mockTracer, Mockito.times(1)).setAttribute(Mockito.eq(TracerProvider.ERROR_TYPE)
-                , Mockito.eq(errorType), Mockito.eq(context));
-            Mockito.verify(mockTracer, Mockito.times(1)).setAttribute(Mockito.eq(TracerProvider.ERROR_MSG)
-                , ArgumentMatchers.any(), Mockito.eq(context));
+            assertThat(startAttributes.get(TracerProvider.DB_INSTANCE)).isEqualTo(databaseName);
         }
 
+        assertThat(startAttributes.get(TracerProvider.DB_TYPE)).isEqualTo(TracerProvider.DB_TYPE_VALUE);
+        assertThat(startAttributes.get(TracerProvider.DB_URL)).isEqualTo(TestConfigurations.HOST);
+        assertThat(startAttributes.get(TracerProvider.DB_STATEMENT)).isEqualTo(methodName);
+        assertThat(startAttributes.get(Tracer.AZ_TRACING_NAMESPACE_KEY)).isEqualTo(TracerProvider.RESOURCE_PROVIDER_NAME);
+
         //verifying diagnostics as events
-        verifyTracerDiagnostics(tracerProvider, cosmosDiagnostics, attributesMap);
+        verifyTracerDiagnostics(tracerProvider, cosmosDiagnostics, eventAttributesMap);
     }
 
     private void verifyTracerDiagnostics(TracerProvider tracerProvider,
@@ -539,7 +537,7 @@ public class CosmosTracerTest extends TestSuiteBase {
                 , ArgumentMatchers.any(),
                 Mockito.eq(OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(),
                     ZoneOffset.UTC)), ArgumentMatchers.any());
-            assertThat(attributesMap.get("RegionContacted").get("JSON")).isEqualTo(OBJECT_MAPPER.writeValueAsString(clientSideRequestStatistics.getRegionsContacted()));
+            assertThat(attributesMap.get("RegionContacted").get("JSON")).isEqualTo(OBJECT_MAPPER.writeValueAsString(clientSideRequestStatistics.getContactedRegionNames()));
 
             //verifying add event call for clientCfgs
             Mockito.verify(tracerProvider, Mockito.times(1)).addEvent(Mockito.eq("ClientCfgs")
@@ -686,7 +684,7 @@ public class CosmosTracerTest extends TestSuiteBase {
     }
 
     private class TracerProviderCapture implements Answer<Context> {
-        private Context result = null;
+        private Context result = Context.NONE;
 
         public Context getResult() {
             return result;

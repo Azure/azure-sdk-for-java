@@ -27,7 +27,7 @@ All of these samples need the endpoint to your Purview Catalog resource, and you
 
 |**File Name**|**Description**|
 |----------------|-------------|
-|[ListGlossaries.java][list_glossaries]|List glossaries in the catalog|
+|[GlossaryListGlossaries.java][list_glossaries]|List glossaries in the catalog|
 
 ## Troubleshooting
 
@@ -48,4 +48,4 @@ If you would like to become an active contributor to this project please refer t
 <!-- [SDK_README_KEY_CONCEPTS]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/purview/azure-analytics-purview-catalog/README.md#key-concepts -->
 <!-- [SDK_README_DEPENDENCY]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/purview/azure-analytics-purview-catalog/README.md#include-the-package -->
 <!-- [SDK_README_NEXT_STEPS]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/purview/azure-analytics-purview-catalog/README.md#next-steps -->
-<!-- [list_glossaries]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/purview/azure-analytics-purview-catalog/src/samples/java/com/azure/analytics/purview/catalog/ListGlossaries.java -->
+<!-- [list_glossaries]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/purview/azure-analytics-purview-catalog/src/samples/java/com/azure/analytics/purview/catalog/GlossaryListGlossaries.java -->

@@ -1,6 +1,6 @@
 # Release History
 
-## 3.9.0-beta.1 (Unreleased)
+## 3.13.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,53 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 3.12.0 (2021-12-24)
+This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.1.
+
+### Dependency Upgrades
+- Upgrade to [spring-boot-dependencies:2.6.1](https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-dependencies/2.6.1/spring-boot-dependencies-2.6.1.pom).
+
+## 3.11.0 (2021-11-24)
+
+This release is compatible with Spring Boot 2.5.0 - 2.5.4.
+### Dependency Upgrades
+Regular updates for Azure SDK dependency versions.
+
+## 3.10.0 (2021-11-02)
+
+### Features Added
+Add property for JmsDefaultPrefetchPolicy.([#24304](https://github.com/Azure/azure-sdk-for-java/issues/24304))
+- Add property `spring.jms.servicebus.prefetch-policy.all` to configure all prefetchPolicy values.
+- Add property `spring.jms.servicebus.durable-topic-prefetch` to configure the durable topic prefetch value.
+- Add property `spring.jms.servicebus.queue-browser-prefetch` to configure the queueBrowserPrefetch value.
+- Add property `spring.jms.servicebus.queue-prefetch` to configure the queuePrefetch value.
+- Add property `spring.jms.servicebus.topic-prefetch` to configure the topicPrefetch value.
+
+### Breaking Changes
+For standard tier in ServiceBus, the default value of prefetch number has been changed from 1000 to 0.
+
+
+## 3.9.0 (2021-09-27)
+This release is compatible with Spring Boot 2.5.0 - 2.5.4.
+### Dependency Upgrades
+- Upgrade to [spring-boot-dependencies:2.5.4](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.4/spring-boot-dependencies-2.5.4.pom).
+### Features Added
+- Support configuration of `AbstractJmsListenerContainerFactory` for `JmsListener`. Enabled properties include `replyPubSubDomain`, `replyQosSettings`, `subscriptionDurable`, `subscriptionShared` and `phase` with prefix as `spring.jms.servicebus.listener`.
+### Bugs Fixed
+- Fix bug about application type validation. ([#23481](https://github.com/Azure/azure-sdk-for-java/issues/23481))
+
+    The latest application type relationship is as follows:
+    
+    | Has dependency: spring-security-oauth2-client | Has dependency: spring-security-oauth2-resource-server |                  Valid values of application type                                                     | Default value               |
+    |-----------------------------------------------|--------------------------------------------------------|-------------------------------------------------------------------------------------------------------|-----------------------------|
+    |                      Yes                      |                          No                            |                       `web_application`                                                               |       `web_application`     |
+    |                      No                       |                          Yes                           |                       `resource_server`                                                               |       `resource_server`     |
+    |                      Yes                      |                          Yes                           | `web_application`,`resource_server`,`resource_server_with_obo`, `web_application_and_resource_server` | `resource_server_with_obo`  |
+- Fix the bug of not supporting Spring Boot autoconfiguration of JMS listener.
+### Deprecations
+- Deprecate `azure.activedirectory.authorization-clients.xxx.on-demand`, use `azure.activedirectory.authorization-clients.xxx.authorization-grant-type` instead. If you are using `on-demand=true`, please change to `authorization-grant-type=authorization_code`.
+
 
 ## 3.8.0 (2021-08-25)
 This release is compatible with Spring Boot 2.5.0 - 2.5.3.

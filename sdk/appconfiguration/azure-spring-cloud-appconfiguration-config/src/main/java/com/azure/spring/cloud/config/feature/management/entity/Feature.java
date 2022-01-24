@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Azure App Configuration Feature Flag.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Feature {
+public final class Feature {
 
     @JsonProperty("key")
     private String key;
@@ -24,9 +24,18 @@ public class Feature {
     @JsonAlias("enabled-for")
     private Map<Integer, FeatureFlagFilter> enabledFor;
 
+    /**
+     * Feature Flag object.
+     */
     public Feature() {
     }
 
+    /**
+     * Feature Flag object.
+     * 
+     * @param key Name of the Feature Flag
+     * @param featureItem Configurations of the Feature Flag.
+     */
     public Feature(String key, FeatureFlagConfigurationSetting featureItem) {
         this.key = key;
         List<FeatureFlagFilter> filterMapper = featureItem.getClientFilters();

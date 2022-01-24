@@ -4,24 +4,31 @@
 
 package com.azure.resourcemanager.synapse.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** User activities of a data warehouse. */
-@JsonFlatten
-@Immutable
-public class DataWarehouseUserActivitiesInner extends ProxyResource {
+@Fluent
+public final class DataWarehouseUserActivitiesInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DataWarehouseUserActivitiesInner.class);
 
     /*
-     * Count of running and suspended queries.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.activeQueriesCount", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer activeQueriesCount;
+    @JsonProperty(value = "properties")
+    private DataWarehouseUserActivitiesProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
+     */
+    private DataWarehouseUserActivitiesProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the activeQueriesCount property: Count of running and suspended queries.
@@ -29,7 +36,7 @@ public class DataWarehouseUserActivitiesInner extends ProxyResource {
      * @return the activeQueriesCount value.
      */
     public Integer activeQueriesCount() {
-        return this.activeQueriesCount;
+        return this.innerProperties() == null ? null : this.innerProperties().activeQueriesCount();
     }
 
     /**
@@ -38,5 +45,8 @@ public class DataWarehouseUserActivitiesInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

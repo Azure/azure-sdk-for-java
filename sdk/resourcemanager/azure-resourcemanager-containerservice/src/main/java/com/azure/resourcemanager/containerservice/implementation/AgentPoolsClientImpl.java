@@ -223,7 +223,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -282,7 +282,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -406,7 +406,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -461,7 +461,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -576,7 +576,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -642,7 +642,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -670,7 +670,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return agent Pool.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String resourceName, String agentPoolName, AgentPoolInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -678,7 +678,11 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         return this
             .client
             .<AgentPoolInner, AgentPoolInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AgentPoolInner.class, AgentPoolInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                AgentPoolInner.class,
+                AgentPoolInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -694,7 +698,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return agent Pool.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String resourceName,
@@ -722,7 +726,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return agent Pool.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, String agentPoolName, AgentPoolInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, resourceName, agentPoolName, parameters).getSyncPoller();
@@ -741,7 +745,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return agent Pool.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdate(
         String resourceGroupName,
         String resourceName,
@@ -874,7 +878,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -929,7 +933,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -955,13 +959,14 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String resourceName, String agentPoolName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName, agentPoolName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -976,7 +981,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String resourceName, String agentPoolName, Context context) {
         context = this.client.mergeContext(context);
@@ -998,7 +1003,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String resourceName, String agentPoolName) {
         return beginDeleteAsync(resourceGroupName, resourceName, agentPoolName).getSyncPoller();
@@ -1016,7 +1021,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String resourceName, String agentPoolName, Context context) {
         return beginDeleteAsync(resourceGroupName, resourceName, agentPoolName, context).getSyncPoller();
@@ -1127,7 +1132,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1182,7 +1187,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1290,7 +1295,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1341,7 +1346,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1453,7 +1458,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1510,7 +1515,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1538,7 +1543,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginUpgradeNodeImageVersionAsync(
         String resourceGroupName, String resourceName, String agentPoolName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1546,7 +1551,11 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         return this
             .client
             .<AgentPoolInner, AgentPoolInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AgentPoolInner.class, AgentPoolInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                AgentPoolInner.class,
+                AgentPoolInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1563,7 +1572,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginUpgradeNodeImageVersionAsync(
         String resourceGroupName, String resourceName, String agentPoolName, Context context) {
         context = this.client.mergeContext(context);
@@ -1588,7 +1597,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginUpgradeNodeImageVersion(
         String resourceGroupName, String resourceName, String agentPoolName) {
         return beginUpgradeNodeImageVersionAsync(resourceGroupName, resourceName, agentPoolName).getSyncPoller();
@@ -1608,7 +1617,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginUpgradeNodeImageVersion(
         String resourceGroupName, String resourceName, String agentPoolName, Context context) {
         return beginUpgradeNodeImageVersionAsync(resourceGroupName, resourceName, agentPoolName, context)

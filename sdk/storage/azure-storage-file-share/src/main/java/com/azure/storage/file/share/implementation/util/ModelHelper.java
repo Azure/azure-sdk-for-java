@@ -27,7 +27,7 @@ import java.io.IOException;
 
 public class ModelHelper {
 
-    private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
+    private static final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
     private static final ClientLogger LOGGER = new ClientLogger(ModelHelper.class);
 
     private static final long MAX_FILE_PUT_RANGE_BYTES = 4 * Constants.MB;
@@ -139,6 +139,7 @@ public class ModelHelper {
         properties.setProtocols(parseShareProtocols(sharePropertiesInternal.getEnabledProtocols()));
         properties.setRootSquash(sharePropertiesInternal.getRootSquash());
         properties.setMetadata(sharePropertiesInternal.getMetadata());
+        properties.setProvisionedBandwidthMiBps(sharePropertiesInternal.getProvisionedBandwidthMiBps());
 
         return properties;
     }

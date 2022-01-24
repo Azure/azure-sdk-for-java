@@ -112,7 +112,7 @@ public class PartitionBasedLoadBalancerTest {
         // Tear down any inline mocks to avoid memory leaks.
         // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
         this.checkpointStore = null;
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
         Mockito.reset(eventHubClientBuilder, eventHubAsyncClient, eventHubConsumer, partitionProcessor);
     }
 

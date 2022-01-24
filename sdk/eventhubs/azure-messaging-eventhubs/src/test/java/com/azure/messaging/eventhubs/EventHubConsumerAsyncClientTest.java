@@ -152,7 +152,7 @@ class EventHubConsumerAsyncClientTest {
     @AfterEach
     void teardown() throws Exception {
         testScheduler.dispose();
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
         Mockito.clearInvocations(amqpReceiveLink, connection, tokenCredential);
         consumer.close();
 

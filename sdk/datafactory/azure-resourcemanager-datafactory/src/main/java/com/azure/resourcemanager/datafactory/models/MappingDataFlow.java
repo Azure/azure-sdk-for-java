@@ -149,6 +149,29 @@ public final class MappingDataFlow extends DataFlow {
     }
 
     /**
+     * Get the scriptLines property: Data flow script lines.
+     *
+     * @return the scriptLines value.
+     */
+    public List<String> scriptLines() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().scriptLines();
+    }
+
+    /**
+     * Set the scriptLines property: Data flow script lines.
+     *
+     * @param scriptLines the scriptLines value to set.
+     * @return the MappingDataFlow object itself.
+     */
+    public MappingDataFlow withScriptLines(List<String> scriptLines) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new MappingDataFlowTypeProperties();
+        }
+        this.innerTypeProperties().withScriptLines(scriptLines);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

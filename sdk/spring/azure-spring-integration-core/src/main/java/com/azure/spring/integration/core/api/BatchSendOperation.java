@@ -13,7 +13,12 @@ import java.util.concurrent.CompletableFuture;
  * Operations for sending {@link Collection}&lt;{@link Message}&gt; to a destination.
  *
  * @author Warren Zhu
+ *
+ * @deprecated {@link CompletableFuture} API will be dropped in version 4.0.0, please migrate to reactor API in
+ * {@link com.azure.spring.integration.core.api.reactor.BatchSendOperation}. From version 4.0.0, the reactor API support
+ * will be moved to com.azure.spring.messaging.core.BatchSendOperation.
  */
+@Deprecated
 public interface BatchSendOperation {
 
     /**
@@ -23,7 +28,12 @@ public interface BatchSendOperation {
      * @param partitionSupplier partition supplier
      * @param <T> payload class type in message
      * @return Future instance
+     *
+     * @deprecated {@link CompletableFuture} API will be dropped in version 4.0.0, please migrate to reactor API in
+     * {@link com.azure.spring.integration.core.api.reactor.BatchSendOperation}. From version 4.0.0, the reactor API support
+     * will be moved to com.azure.spring.messaging.core.BatchSendOperation.
      */
+    @Deprecated
     <T> CompletableFuture<Void> sendAsync(String destination, Collection<Message<T>> messages,
                                           PartitionSupplier partitionSupplier);
 
@@ -33,7 +43,12 @@ public interface BatchSendOperation {
      * @param messages messages
      * @param <T> payload class type in message
      * @return Future instance
+     *
+     * @deprecated {@link CompletableFuture} API will be dropped in version 4.0.0, please migrate to reactor API in
+     * {@link com.azure.spring.integration.core.api.reactor.BatchSendOperation}. From version 4.0.0, the reactor API support
+     * will be moved to com.azure.spring.messaging.core.BatchSendOperation.
      */
+    @Deprecated
     default <T> CompletableFuture<Void> sendAsync(String destination, Collection<Message<T>> messages) {
         return sendAsync(destination, messages, null);
     }

@@ -32,7 +32,7 @@ public class CreateOctKeyOptions extends CreateKeyOptions {
     }
 
     /**
-     * Set the key size in bits.
+     * Sets the key size in bits, such as 128, 192, or 256. If {@code null}, the service default is used.
      *
      * @param keySize The key size in bits to set.
      *
@@ -45,7 +45,7 @@ public class CreateOctKeyOptions extends CreateKeyOptions {
     }
 
     /**
-     * Get the key size in bits.
+     * Gets the key size in bits, such as 128, 192, or 256.
      *
      * @return The key size in bits.
      */

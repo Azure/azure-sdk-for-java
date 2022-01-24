@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The CommunicationRelayConfiguration model. */
+/** A relay configuration containing the STUN/TURN URLs and credentials. */
 @Fluent
 public final class CommunicationRelayConfiguration {
     /*

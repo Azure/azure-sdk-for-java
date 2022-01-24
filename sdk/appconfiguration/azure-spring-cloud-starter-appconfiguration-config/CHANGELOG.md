@@ -1,6 +1,27 @@
 # Release History
 
-## 2.1.0 (2021-08-25)
+## 2.4.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.3.0 (2022-01-06)
+This release is compatible with Spring Boot 2.5.5-2.5.8, 2.6.0-2.6.1.
+
+## 2.2.0 (2021-11-25)
+
+* Updated with latest releases of azure-spring-cloud-appconfiguration-config-web and azure-spring-cloud-feature-management.
+
+## 2.1.1 (2021-09-28)
+
+* Updated with latest releases of azure-spring-cloud-appconfiguration-config-web and azure-spring-cloud-feature-management.
+
+## 2.1.0 (2021-09-05)
 
 * Updated with new release of azure-spring-cloud-appconfiguration-config-web
 

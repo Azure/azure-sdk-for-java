@@ -12,7 +12,9 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridkubernetes.fluent.models.ConnectedClusterInner;
+import com.azure.resourcemanager.hybridkubernetes.fluent.models.CredentialResultsInner;
 import com.azure.resourcemanager.hybridkubernetes.models.ConnectedClusterPatch;
+import com.azure.resourcemanager.hybridkubernetes.models.ListClusterUserCredentialProperties;
 
 /** An instance of this class provides access to all the operations defined in ConnectedClustersClient. */
 public interface ConnectedClustersClient {
@@ -27,7 +29,7 @@ public interface ConnectedClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a connected cluster.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ConnectedClusterInner>, ConnectedClusterInner> beginCreate(
         String resourceGroupName, String clusterName, ConnectedClusterInner connectedCluster);
 
@@ -43,7 +45,7 @@ public interface ConnectedClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a connected cluster.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ConnectedClusterInner>, ConnectedClusterInner> beginCreate(
         String resourceGroupName, String clusterName, ConnectedClusterInner connectedCluster, Context context);
 
@@ -148,7 +150,7 @@ public interface ConnectedClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName);
 
     /**
@@ -162,7 +164,7 @@ public interface ConnectedClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName, Context context);
 
     /**
@@ -189,6 +191,37 @@ public interface ConnectedClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String clusterName, Context context);
+
+    /**
+     * Gets cluster user credentials of the connected cluster with a specified resource group and name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kubernetes cluster on which get is called.
+     * @param properties ListClusterUserCredential properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster user credentials of the connected cluster with a specified resource group and name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CredentialResultsInner listClusterUserCredential(
+        String resourceGroupName, String clusterName, ListClusterUserCredentialProperties properties);
+
+    /**
+     * Gets cluster user credentials of the connected cluster with a specified resource group and name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kubernetes cluster on which get is called.
+     * @param properties ListClusterUserCredential properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster user credentials of the connected cluster with a specified resource group and name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CredentialResultsInner> listClusterUserCredentialWithResponse(
+        String resourceGroupName, String clusterName, ListClusterUserCredentialProperties properties, Context context);
 
     /**
      * API to enumerate registered connected K8s clusters under a Resource Group.

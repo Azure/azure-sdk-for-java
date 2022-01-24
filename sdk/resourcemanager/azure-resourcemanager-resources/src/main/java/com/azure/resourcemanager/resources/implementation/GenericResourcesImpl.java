@@ -186,6 +186,21 @@ public final class GenericResourcesImpl
     }
 
     @Override
+    public void validateMoveResources(String sourceResourceGroupName, ResourceGroup targetResourceGroup,
+                                      List<String> resourceIds) {
+        validateMoveResourcesAsync(sourceResourceGroupName, targetResourceGroup, resourceIds).block();
+    }
+
+    @Override
+    public Mono<Void> validateMoveResourcesAsync(String sourceResourceGroupName, ResourceGroup targetResourceGroup,
+                                                 List<String> resourceIds) {
+        ResourcesMoveInfo moveInfo = new ResourcesMoveInfo();
+        moveInfo.withTargetResourceGroup(targetResourceGroup.id());
+        moveInfo.withResources(resourceIds);
+        return this.inner().validateMoveResourcesAsync(sourceResourceGroupName, moveInfo);
+    }
+
+    @Override
     public GenericResource get(
             String resourceGroupName,
             String resourceProviderNamespace,
@@ -222,16 +237,16 @@ public final class GenericResourcesImpl
 
     @Override
     public void moveResources(String sourceResourceGroupName,
-            ResourceGroup targetResourceGroup, List<String> resources) {
-        this.moveResourcesAsync(sourceResourceGroupName, targetResourceGroup, resources).block();
+            ResourceGroup targetResourceGroup, List<String> resourceIds) {
+        this.moveResourcesAsync(sourceResourceGroupName, targetResourceGroup, resourceIds).block();
     }
 
     @Override
     public Mono<Void> moveResourcesAsync(String sourceResourceGroupName,
-            ResourceGroup targetResourceGroup, List<String> resources) {
+            ResourceGroup targetResourceGroup, List<String> resourceIds) {
         ResourcesMoveInfo moveInfo = new ResourcesMoveInfo();
         moveInfo.withTargetResourceGroup(targetResourceGroup.id());
-        moveInfo.withResources(resources);
+        moveInfo.withResources(resourceIds);
         return this.inner().moveResourcesAsync(sourceResourceGroupName, moveInfo);
     }
 

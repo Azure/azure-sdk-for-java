@@ -1,7 +1,75 @@
 # Release History
 
-## 1.0.0-beta.14 (Unreleased)
+## 1.0.0-beta.20 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.19 (2022-01-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.0` to `1.24.1`.
+
+## 1.0.0-beta.18 (2022-01-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.23.1` to `1.24.0`.
+
+## 1.0.0-beta.17 (2021-12-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.22.0` to `1.23.1`.
+
+## 1.0.0-beta.16 (2021-11-05)
+
+### Features Added
+
+- Provide HTTP URL and method before span is started to allow for sampling decisions to be based on them. ([#24996](https://github.com/Azure/azure-sdk-for-java/pull/24996))
+
+### Bugs Fixed
+
+- Fixed OpenTelemetry context propagation and span duplication. ([#25012](https://github.com/Azure/azure-sdk-for-java/pull/25012))
+- Fixed inconsistencies in span creation and the OpenTelemetry specification. ([#24954](https://github.com/Azure/azure-sdk-for-java/pull/24954))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.21.0` to `1.22.0`.
+
+## 1.0.0-beta.15 (2021-10-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.20.0` to `1.21.0`.
+
+## 1.0.0-beta.14 (2021-09-07)
+
+### Fixed
+
+- Fixed a case where AMQP span context should set remote parent. ([#21667](https://github.com/Azure/azure-sdk-for-java/pull/21667))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.19.0` to `1.20.0`.
 
 ## 1.0.0-beta.13 (2021-08-06)
 

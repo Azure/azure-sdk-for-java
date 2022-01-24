@@ -1,8 +1,40 @@
 # Release History
 
-## 1.0.4 (2021-08-30)
-### Dependency updates
+## 1.1.0-beta.1 (2022-01-24)
+
+### Features Added
+- Users can now purchase United Kingdom (GB) toll free and geographic phone numbers for PSTN Calling
+- Users can now purchase Denmark (DK) toll free and geographic phone numbers for PSTN Calling
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.6 (2021-11-18)
+
+### Other Changes
+
+#### Dependency updates
+- Upgraded `azure-communication-common` to 1.0.6
+- Upgraded `azure-core` to 1.22.0
+- Upgraded `azure-identity` to 1.4.1
+
+## 1.0.5 (2021-10-06)
+
+### Other Changes
+
+#### Dependency updates
+- Upgraded `azure-core` to 1.21.0
+
+## 1.0.4 (2021-09-22)
+
+### Other Changes
+
+#### Dependency updates
 - Upgraded `azure-communication-common` to 1.0.4
+- Upgraded `azure-core` to 1.20.0
 
 ## 1.0.3 (2021-06-09)
 Updated `azure-communication-phonenumbers` version

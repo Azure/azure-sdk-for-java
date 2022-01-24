@@ -2,6 +2,50 @@
 
 ## 1.2.0-beta.1 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.1.4 (2022-01-19)
+
+### Other Changes
+
+#### Dependency updates
+
+- Updated azure-core to 1.24.1.
+- Updated azure-identity to 1.4.3.
+- Updated azure-core-http-netty to 1.11.6.
+
+## 1.1.3 (2021-11-12)
+
+### Other Changes
+
+#### Dependency updates
+
+- Updated azure-core to 1.22.0.
+- Updated azure-core-http-netty to 1.11.2.
+
+## 1.1.2 (2021-10-06)
+
+### Other Changes
+
+#### Dependency updates
+
+- Updated azure-core to 1.21.0.
+- Updated azure-core-http-netty to 1.11.1.
+
+## 1.1.1 (2021-09-13)
+
+### Other changes
+
+#### Dependency updates
+
+- Updated azure-core to 1.20.0.
+- Updated azure-core-http-netty to 1.11.0.
 
 ## 1.1.0 (2021-07-07)
 

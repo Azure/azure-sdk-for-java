@@ -30,7 +30,7 @@ public class CertificateClientBuilderTest {
     public void setUp() {
         vaultUrl = "https://key-vault-url.vault.azure.net/";
         certificateName = "TestCertificate";
-        serviceVersion = CertificateServiceVersion.V7_1;
+        serviceVersion = CertificateServiceVersion.V7_2;
     }
 
     @Test

@@ -40,7 +40,7 @@ class KeyvaultKeyTest extends APISpec {
 
     def setup() {
         def keyVaultUrl = "https://azstoragesdkvault.vault.azure.net/"
-        if (env.testMode != TestMode.PLAYBACK) {
+        if (environment.testMode != TestMode.PLAYBACK) {
             keyVaultUrl = Configuration.getGlobalConfiguration().get("KEYVAULT_URL")
         }
 
@@ -64,12 +64,12 @@ class KeyvaultKeyTest extends APISpec {
             .buildAsyncKeyEncryptionKey(keyVaultKey.getId())
             .block()
 
-        cc = getServiceClientBuilder(env.primaryAccount)
+        cc = getServiceClientBuilder(environment.primaryAccount)
             .buildClient()
             .getBlobContainerClient(generateContainerName())
         cc.create()
 
-        bec = getEncryptedClientBuilder(akek, null, env.primaryAccount.credential,
+        bec = getEncryptedClientBuilder(akek, null, environment.primaryAccount.credential,
             cc.getBlobContainerUrl().toString())
             .blobName(generateBlobName())
             .buildEncryptedBlobClient()
@@ -111,7 +111,7 @@ class KeyvaultKeyTest extends APISpec {
     HttpPipeline getHttpPipeline(KeyServiceVersion serviceVersion) {
         TokenCredential credential = null
 
-        if (env.testMode != TestMode.PLAYBACK) {
+        if (environment.testMode != TestMode.PLAYBACK) {
             String clientId = System.getenv("AZURE_CLIENT_ID")
             String clientKey = System.getenv("AZURE_CLIENT_SECRET")
             String tenantId = System.getenv("AZURE_TENANT_ID")

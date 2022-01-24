@@ -5,7 +5,7 @@ package com.azure.security.keyvault.jca.implementation.utils;
 import static java.util.logging.Level.FINER;
 import static java.util.logging.Level.INFO;
 
-import com.azure.security.keyvault.jca.implementation.model.OAuthToken;
+import com.azure.security.keyvault.jca.implementation.model.AccessToken;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
@@ -62,8 +62,8 @@ public final class AccessTokenUtil {
      * @param identity the user-assigned identity (null if system-assigned)
      * @return the authorization token.
      */
-    public static String getAccessToken(String resource, String identity) {
-        String result;
+    public static AccessToken getAccessToken(String resource, String identity) {
+        AccessToken result;
 
         if (System.getenv("WEBSITE_SITE_NAME") != null
             && !System.getenv("WEBSITE_SITE_NAME").isEmpty()) {
@@ -84,13 +84,13 @@ public final class AccessTokenUtil {
      * @param clientSecret         the client secret.
      * @return the authorization token.
      */
-    public static String getAccessToken(String resource, String aadAuthenticationUrl,
-        String tenantId, String clientId, String clientSecret) {
+    public static AccessToken getAccessToken(String resource, String aadAuthenticationUrl,
+               String tenantId, String clientId, String clientSecret) {
 
         LOGGER.entering("AccessTokenUtil", "getAccessToken", new Object[]{
             resource, tenantId, clientId, clientSecret});
         LOGGER.info("Getting access token using client ID / client secret");
-        String result = null;
+        AccessToken result = null;
 
         StringBuilder oauth2Url = new StringBuilder();
         oauth2Url.append(aadAuthenticationUrl == null ? OAUTH2_TOKEN_BASE_URL : aadAuthenticationUrl)
@@ -106,8 +106,7 @@ public final class AccessTokenUtil {
         String body = HttpUtil
             .post(oauth2Url.toString(), requestBody.toString(), "application/x-www-form-urlencoded");
         if (body != null) {
-            OAuthToken token = (OAuthToken) JsonConverterUtil.fromJson(body, OAuthToken.class);
-            result = token.getAccessToken();
+            result = (AccessToken) JsonConverterUtil.fromJson(body, AccessToken.class);
         }
         LOGGER.log(FINER, "Access token: {0}", result);
         return result;
@@ -120,11 +119,10 @@ public final class AccessTokenUtil {
      * @param clientId the user-assigned managed identity (null if system-assigned).
      * @return the authorization token.
      */
-    private static String getAccessTokenOnAppService(String resource, String clientId) {
+    private static AccessToken getAccessTokenOnAppService(String resource, String clientId) {
         LOGGER.entering("AccessTokenUtil", "getAccessTokenOnAppService", resource);
         LOGGER.info("Getting access token using managed identity based on MSI_SECRET");
-        String result = null;
-
+        AccessToken result = null;
         StringBuilder url = new StringBuilder();
         url.append(System.getenv("MSI_ENDPOINT"))
            .append("?api-version=2017-09-01")
@@ -140,8 +138,7 @@ public final class AccessTokenUtil {
         String body = HttpUtil.get(url.toString(), headers);
 
         if (body != null) {
-            OAuthToken token = (OAuthToken) JsonConverterUtil.fromJson(body, OAuthToken.class);
-            result = token.getAccessToken();
+            result = (AccessToken) JsonConverterUtil.fromJson(body, AccessToken.class);
         }
         LOGGER.exiting("AccessTokenUtil", "getAccessTokenOnAppService", result);
         return result;
@@ -154,13 +151,13 @@ public final class AccessTokenUtil {
      * @param identity the user-assigned identity (null if system-assigned).
      * @return the authorization token.
      */
-    private static String getAccessTokenOnOthers(String resource, String identity) {
+    private static AccessToken getAccessTokenOnOthers(String resource, String identity) {
         LOGGER.entering("AccessTokenUtil", "getAccessTokenOnOthers", resource);
         LOGGER.info("Getting access token using managed identity");
         if (identity != null) {
             LOGGER.log(INFO, "Using managed identity with object ID: {0}", identity);
         }
-        String result = null;
+        AccessToken result = null;
 
         StringBuilder url = new StringBuilder();
         url.append(OAUTH2_MANAGED_IDENTITY_TOKEN_URL)
@@ -174,8 +171,7 @@ public final class AccessTokenUtil {
         String body = HttpUtil.get(url.toString(), headers);
 
         if (body != null) {
-            OAuthToken token = (OAuthToken) JsonConverterUtil.fromJson(body, OAuthToken.class);
-            result = token.getAccessToken();
+            result = (AccessToken) JsonConverterUtil.fromJson(body, AccessToken.class);
         }
         LOGGER.exiting("AccessTokenUtil", "getAccessTokenOnOthers", result);
         return result;

@@ -84,6 +84,13 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
 
     /** {@inheritDoc} */
     @Override
+    public ManagedClusterAgentPoolProfile withWorkloadRuntime(WorkloadRuntime workloadRuntime) {
+        super.withWorkloadRuntime(workloadRuntime);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public ManagedClusterAgentPoolProfile withVnetSubnetId(String vnetSubnetId) {
         super.withVnetSubnetId(vnetSubnetId);
         return this;
@@ -170,6 +177,13 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     @Override
     public ManagedClusterAgentPoolProfile withUpgradeSettings(AgentPoolUpgradeSettings upgradeSettings) {
         super.withUpgradeSettings(upgradeSettings);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withPowerState(PowerState powerState) {
+        super.withPowerState(powerState);
         return this;
     }
 
@@ -282,6 +296,13 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     @Override
     public ManagedClusterAgentPoolProfile withGpuInstanceProfile(GpuInstanceProfile gpuInstanceProfile) {
         super.withGpuInstanceProfile(gpuInstanceProfile);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withCreationData(CreationData creationData) {
+        super.withCreationData(creationData);
         return this;
     }
 

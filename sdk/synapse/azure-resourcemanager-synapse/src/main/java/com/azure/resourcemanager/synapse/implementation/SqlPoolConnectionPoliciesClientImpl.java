@@ -85,7 +85,8 @@ public final class SqlPoolConnectionPoliciesClientImpl implements SqlPoolConnect
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool's connection policy, which is used with table auditing.
+     * @return a Sql pool's connection policy, which is used with table auditing along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SqlPoolConnectionPolicyInner>> getWithResponseAsync(
@@ -116,6 +117,7 @@ public final class SqlPoolConnectionPoliciesClientImpl implements SqlPoolConnect
             return Mono
                 .error(new IllegalArgumentException("Parameter connectionPolicyName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -123,7 +125,7 @@ public final class SqlPoolConnectionPoliciesClientImpl implements SqlPoolConnect
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -145,7 +147,8 @@ public final class SqlPoolConnectionPoliciesClientImpl implements SqlPoolConnect
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool's connection policy, which is used with table auditing.
+     * @return a Sql pool's connection policy, which is used with table auditing along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SqlPoolConnectionPolicyInner>> getWithResponseAsync(
@@ -180,12 +183,13 @@ public final class SqlPoolConnectionPoliciesClientImpl implements SqlPoolConnect
             return Mono
                 .error(new IllegalArgumentException("Parameter connectionPolicyName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -205,7 +209,8 @@ public final class SqlPoolConnectionPoliciesClientImpl implements SqlPoolConnect
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool's connection policy, which is used with table auditing.
+     * @return a Sql pool's connection policy, which is used with table auditing on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SqlPoolConnectionPolicyInner> getAsync(
@@ -250,7 +255,7 @@ public final class SqlPoolConnectionPoliciesClientImpl implements SqlPoolConnect
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool's connection policy, which is used with table auditing.
+     * @return a Sql pool's connection policy, which is used with table auditing along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SqlPoolConnectionPolicyInner> getWithResponse(

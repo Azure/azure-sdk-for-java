@@ -35,7 +35,7 @@ public interface IntegrationRuntimes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration runtime.
+     * @return an integration runtime along with {@link Response}.
      */
     Response<IntegrationRuntimeResource> getWithResponse(
         String resourceGroupName,
@@ -91,7 +91,7 @@ public interface IntegrationRuntimes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> upgradeWithResponse(
         String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
@@ -177,6 +177,37 @@ public interface IntegrationRuntimes {
     void stop(String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
 
     /**
+     * Gets the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param integrationRuntimeName Integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     */
+    IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse listOutboundNetworkDependenciesEndpoints(
+        String resourceGroupName, String workspaceName, String integrationRuntimeName);
+
+    /**
+     * Gets the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param integrationRuntimeName Integration runtime name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime along with {@link
+     *     Response}.
+     */
+    Response<IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse>
+        listOutboundNetworkDependenciesEndpointsWithResponse(
+            String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+
+    /**
      * Enable interactive query in integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -235,7 +266,7 @@ public interface IntegrationRuntimes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration runtime.
+     * @return an integration runtime along with {@link Response}.
      */
     IntegrationRuntimeResource getById(String id);
 
@@ -249,7 +280,7 @@ public interface IntegrationRuntimes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration runtime.
+     * @return an integration runtime along with {@link Response}.
      */
     Response<IntegrationRuntimeResource> getByIdWithResponse(String id, String ifNoneMatch, Context context);
 

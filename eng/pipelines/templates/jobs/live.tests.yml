@@ -81,7 +81,7 @@ jobs:
         inputs:
           mavenPomFile: pom.xml
           goals: 'install'
-          options: '$(DefaultOptions) -T 1C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+          options: '$(DefaultOptions) -T 1C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaTestVersion)
@@ -97,6 +97,8 @@ jobs:
           AZURE_TEST_MODE: ${{ parameters.TestMode }}
           ${{ each var in parameters.EnvVars }}:
             ${{ var.key }}: ${{ var.value }}
+
+      - template: ../steps/retain-heap-dump-hprofs.yml
 
       - ${{ parameters.PostSteps }}
 

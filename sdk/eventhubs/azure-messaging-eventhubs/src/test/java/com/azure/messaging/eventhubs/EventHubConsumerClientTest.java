@@ -141,7 +141,7 @@ public class EventHubConsumerClientTest {
 
     @AfterEach
     public void teardown() throws Exception {
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
         consumer.close();
         verifyNoMoreInteractions(onClientClosed);
         mockCloseable.close();

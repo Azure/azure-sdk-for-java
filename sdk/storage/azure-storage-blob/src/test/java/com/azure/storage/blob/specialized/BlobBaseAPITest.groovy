@@ -10,10 +10,8 @@ import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import reactor.core.Exceptions
-import spock.lang.Requires
 import spock.lang.Retry
 import spock.lang.Unroll
-import spock.lang.Ignore
 
 import java.util.function.Consumer
 
@@ -93,7 +91,7 @@ class BlobBaseAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query min"() {
         setup:
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
@@ -140,7 +138,7 @@ class BlobBaseAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query csv serialization separator"() {
         setup:
         BlobQueryDelimitedSerialization serIn = new BlobQueryDelimitedSerialization()
@@ -224,7 +222,7 @@ class BlobBaseAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query csv serialization escape and field quote"() {
         setup:
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
@@ -266,7 +264,7 @@ class BlobBaseAPITest extends APISpec {
     /* Note: Input delimited tested everywhere */
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query Input json"() {
         setup:
         BlobQueryJsonSerialization ser = new BlobQueryJsonSerialization()
@@ -309,7 +307,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query Input parquet"() {
         setup:
         String fileName = "parquet.parquet"
@@ -345,7 +343,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query Input csv Output json"() {
         setup:
         BlobQueryDelimitedSerialization inSer = new BlobQueryDelimitedSerialization()
@@ -386,7 +384,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query Input json Output csv"() {
         setup:
         BlobQueryJsonSerialization inSer = new BlobQueryJsonSerialization()
@@ -427,7 +425,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query Input csv Output arrow"() {
         setup:
         BlobQueryDelimitedSerialization inSer = new BlobQueryDelimitedSerialization()
@@ -465,7 +463,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query non fatal error"() {
         setup:
         BlobQueryDelimitedSerialization base = new BlobQueryDelimitedSerialization()
@@ -505,7 +503,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query fatal error"() {
         setup:
         BlobQueryDelimitedSerialization base = new BlobQueryDelimitedSerialization()
@@ -535,7 +533,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query progress receiver"() {
         setup:
         BlobQueryDelimitedSerialization base = new BlobQueryDelimitedSerialization()
@@ -580,7 +578,7 @@ class BlobBaseAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @LiveOnly // Large amount of data.
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query multiple records with progress receiver"() {
         setup:
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
@@ -632,7 +630,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query snapshot"() {
         setup:
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
@@ -674,7 +672,7 @@ class BlobBaseAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query input output IA"() {
         setup:
         /* Mock random impl of QQ Serialization*/
@@ -705,7 +703,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query arrow input IA"() {
         setup:
         def inSer = new BlobQueryArrowSerialization()
@@ -729,7 +727,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query parquet output IA"() {
         setup:
         def outSer = new BlobQueryParquetSerialization()
@@ -753,7 +751,7 @@ class BlobBaseAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query error"() {
         setup:
         bc = cc.getBlobClient(generateBlobName())
@@ -773,7 +771,7 @@ class BlobBaseAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query AC"() {
         setup:
         def t = new HashMap<String, String>()

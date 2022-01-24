@@ -31,9 +31,10 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param vmssExtensionName The name of the VM scale set extension.
      * @param extensionParameters Parameters supplied to the Create VM scale set Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension.
+     * @return describes a Virtual Machine Scale Set Extension along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -50,11 +51,12 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param vmssExtensionName The name of the VM scale set extension.
      * @param extensionParameters Parameters supplied to the Create VM scale set Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension.
+     * @return describes a Virtual Machine Scale Set Extension along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VirtualMachineScaleSetExtensionInner>, VirtualMachineScaleSetExtensionInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -70,11 +72,12 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param vmssExtensionName The name of the VM scale set extension.
      * @param extensionParameters Parameters supplied to the Create VM scale set Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension.
+     * @return describes a Virtual Machine Scale Set Extension along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineScaleSetExtensionInner>, VirtualMachineScaleSetExtensionInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -91,11 +94,12 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param extensionParameters Parameters supplied to the Create VM scale set Extension operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension.
+     * @return describes a Virtual Machine Scale Set Extension along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineScaleSetExtensionInner>, VirtualMachineScaleSetExtensionInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -112,9 +116,9 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param vmssExtensionName The name of the VM scale set extension.
      * @param extensionParameters Parameters supplied to the Create VM scale set Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension.
+     * @return describes a Virtual Machine Scale Set Extension on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<VirtualMachineScaleSetExtensionInner> createOrUpdateAsync(
@@ -131,7 +135,7 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param vmssExtensionName The name of the VM scale set extension.
      * @param extensionParameters Parameters supplied to the Create VM scale set Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine Scale Set Extension.
      */
@@ -151,7 +155,7 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param extensionParameters Parameters supplied to the Create VM scale set Extension operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine Scale Set Extension.
      */
@@ -171,9 +175,10 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param vmssExtensionName The name of the VM scale set extension.
      * @param extensionParameters Parameters supplied to the Update VM scale set Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension.
+     * @return describes a Virtual Machine Scale Set Extension along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -190,11 +195,12 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param vmssExtensionName The name of the VM scale set extension.
      * @param extensionParameters Parameters supplied to the Update VM scale set Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension.
+     * @return describes a Virtual Machine Scale Set Extension along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VirtualMachineScaleSetExtensionInner>, VirtualMachineScaleSetExtensionInner> beginUpdateAsync(
         String resourceGroupName,
         String vmScaleSetName,
@@ -209,11 +215,12 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param vmssExtensionName The name of the VM scale set extension.
      * @param extensionParameters Parameters supplied to the Update VM scale set Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension.
+     * @return describes a Virtual Machine Scale Set Extension along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineScaleSetExtensionInner>, VirtualMachineScaleSetExtensionInner> beginUpdate(
         String resourceGroupName,
         String vmScaleSetName,
@@ -229,11 +236,12 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param extensionParameters Parameters supplied to the Update VM scale set Extension operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension.
+     * @return describes a Virtual Machine Scale Set Extension along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineScaleSetExtensionInner>, VirtualMachineScaleSetExtensionInner> beginUpdate(
         String resourceGroupName,
         String vmScaleSetName,
@@ -249,9 +257,9 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param vmssExtensionName The name of the VM scale set extension.
      * @param extensionParameters Parameters supplied to the Update VM scale set Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension.
+     * @return describes a Virtual Machine Scale Set Extension on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<VirtualMachineScaleSetExtensionInner> updateAsync(
@@ -268,7 +276,7 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param vmssExtensionName The name of the VM scale set extension.
      * @param extensionParameters Parameters supplied to the Update VM scale set Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine Scale Set Extension.
      */
@@ -288,7 +296,7 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param extensionParameters Parameters supplied to the Update VM scale set Extension operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine Scale Set Extension.
      */
@@ -307,9 +315,9 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param vmScaleSetName The name of the VM scale set where the extension should be deleted.
      * @param vmssExtensionName The name of the VM scale set extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -322,11 +330,11 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param vmScaleSetName The name of the VM scale set where the extension should be deleted.
      * @param vmssExtensionName The name of the VM scale set extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String vmScaleSetName, String vmssExtensionName);
 
@@ -337,11 +345,11 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param vmScaleSetName The name of the VM scale set where the extension should be deleted.
      * @param vmssExtensionName The name of the VM scale set extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String vmScaleSetName, String vmssExtensionName);
 
@@ -353,11 +361,11 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param vmssExtensionName The name of the VM scale set extension.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String vmScaleSetName, String vmssExtensionName, Context context);
 
@@ -368,9 +376,9 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param vmScaleSetName The name of the VM scale set where the extension should be deleted.
      * @param vmssExtensionName The name of the VM scale set extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String vmScaleSetName, String vmssExtensionName);
@@ -382,7 +390,7 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param vmScaleSetName The name of the VM scale set where the extension should be deleted.
      * @param vmssExtensionName The name of the VM scale set extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -396,7 +404,7 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param vmssExtensionName The name of the VM scale set extension.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -410,9 +418,10 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param vmssExtensionName The name of the VM scale set extension.
      * @param expand The expand expression to apply on the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension.
+     * @return describes a Virtual Machine Scale Set Extension along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<VirtualMachineScaleSetExtensionInner>> getWithResponseAsync(
@@ -426,9 +435,9 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param vmssExtensionName The name of the VM scale set extension.
      * @param expand The expand expression to apply on the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension.
+     * @return describes a Virtual Machine Scale Set Extension on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<VirtualMachineScaleSetExtensionInner> getAsync(
@@ -441,9 +450,9 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param vmScaleSetName The name of the VM scale set containing the extension.
      * @param vmssExtensionName The name of the VM scale set extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension.
+     * @return describes a Virtual Machine Scale Set Extension on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<VirtualMachineScaleSetExtensionInner> getAsync(
@@ -456,7 +465,7 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param vmScaleSetName The name of the VM scale set containing the extension.
      * @param vmssExtensionName The name of the VM scale set extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine Scale Set Extension.
      */
@@ -472,9 +481,9 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param expand The expand expression to apply on the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension.
+     * @return describes a Virtual Machine Scale Set Extension along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VirtualMachineScaleSetExtensionInner> getWithResponse(
@@ -486,7 +495,7 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set containing the extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all extensions in a VM scale set.
      */
@@ -499,7 +508,7 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set containing the extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all extensions in a VM scale set.
      */
@@ -513,7 +522,7 @@ public interface VirtualMachineScaleSetExtensionsClient {
      * @param vmScaleSetName The name of the VM scale set containing the extension.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all extensions in a VM scale set.
      */

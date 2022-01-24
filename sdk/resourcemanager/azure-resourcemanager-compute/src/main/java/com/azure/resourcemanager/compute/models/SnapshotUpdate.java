@@ -264,6 +264,54 @@ public final class SnapshotUpdate {
     }
 
     /**
+     * Get the publicNetworkAccess property: Policy for controlling export on the disk.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Policy for controlling export on the disk.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the SnapshotUpdate object itself.
+     */
+    public SnapshotUpdate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SnapshotUpdateProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the supportedCapabilities property: List of supported capabilities (like accelerated networking) for the
+     * image from which the OS disk was created.
+     *
+     * @return the supportedCapabilities value.
+     */
+    public SupportedCapabilities supportedCapabilities() {
+        return this.innerProperties() == null ? null : this.innerProperties().supportedCapabilities();
+    }
+
+    /**
+     * Set the supportedCapabilities property: List of supported capabilities (like accelerated networking) for the
+     * image from which the OS disk was created.
+     *
+     * @param supportedCapabilities the supportedCapabilities value to set.
+     * @return the SnapshotUpdate object itself.
+     */
+    public SnapshotUpdate withSupportedCapabilities(SupportedCapabilities supportedCapabilities) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SnapshotUpdateProperties();
+        }
+        this.innerProperties().withSupportedCapabilities(supportedCapabilities);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

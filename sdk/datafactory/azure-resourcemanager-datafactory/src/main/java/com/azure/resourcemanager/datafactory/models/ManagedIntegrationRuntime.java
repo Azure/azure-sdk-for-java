@@ -130,6 +130,32 @@ public final class ManagedIntegrationRuntime extends IntegrationRuntime {
     }
 
     /**
+     * Get the customerVirtualNetwork property: The name of virtual network to which Azure-SSIS integration runtime will
+     * join.
+     *
+     * @return the customerVirtualNetwork value.
+     */
+    public IntegrationRuntimeCustomerVirtualNetwork customerVirtualNetwork() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().customerVirtualNetwork();
+    }
+
+    /**
+     * Set the customerVirtualNetwork property: The name of virtual network to which Azure-SSIS integration runtime will
+     * join.
+     *
+     * @param customerVirtualNetwork the customerVirtualNetwork value to set.
+     * @return the ManagedIntegrationRuntime object itself.
+     */
+    public ManagedIntegrationRuntime withCustomerVirtualNetwork(
+        IntegrationRuntimeCustomerVirtualNetwork customerVirtualNetwork) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new ManagedIntegrationRuntimeTypeProperties();
+        }
+        this.innerTypeProperties().withCustomerVirtualNetwork(customerVirtualNetwork);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

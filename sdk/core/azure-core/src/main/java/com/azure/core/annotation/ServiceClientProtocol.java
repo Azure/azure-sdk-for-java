@@ -8,6 +8,13 @@ package com.azure.core.annotation;
  * {@link ServiceClientBuilder} annotation.
  */
 public enum ServiceClientProtocol {
+    /**
+     * HTTP protocol.
+     */
     HTTP,
-    AMQP;
+
+    /**
+     * AMQP protocol.
+     */
+    AMQP
 }

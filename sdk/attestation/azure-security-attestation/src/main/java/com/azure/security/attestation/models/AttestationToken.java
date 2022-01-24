@@ -5,7 +5,7 @@ package com.azure.security.attestation.models;
 
 import com.azure.core.util.BinaryData;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 /**
  * An AttestationToken represents an <a href='https://datatracker.ietf.org/doc/html/rfc7515'>RFC 7515 JSON Web Signature</a> or
@@ -152,7 +152,7 @@ public interface AttestationToken {
      *
      * @return the IssuedAt value.
      */
-    LocalDateTime getIssuedAt();
+    Instant getIssuedAt();
 
     /**
      * Get the ExpiresOn property: The expiration time after which the token is no longer valid. The ExpiresOn property
@@ -160,20 +160,13 @@ public interface AttestationToken {
      *
      * @return the expiration time for the token.
      */
-    LocalDateTime getExpiresOn();
+    Instant getExpiresOn();
 
     /**
      * Get the NotBefore property: The time before which a token cannot be considered valid. The ExpiresOn property
      * corresponds to the "exp" claim in a Json Web Token.  See <a href="https://datatracker.ietf.org/doc/html/rfc7519#section-4.1.4">RFC 7519 section 4.1.4</a>
      *
-     * @return the expiration time for the token.
+     * @return the not-before time for the token.
      */
-    /**
-     * Get the nbf property: The not before time before which the token cannot be considered valid, in the number of
-     * seconds since 1970-01-0T00:00:00Z UTC.
-     *
-     * @return the nbf value.
-     */
-    LocalDateTime getNotBefore();
-
+    Instant getNotBefore();
 }

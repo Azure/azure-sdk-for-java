@@ -106,8 +106,7 @@ public class ServiceBusMessageConverter
             }
         });
         getAndRemove(copySpringMessageHeaders, TIME_TO_LIVE, Duration.class).ifPresent(message::setTimeToLive);
-        getAndRemove(copySpringMessageHeaders, SCHEDULED_ENQUEUE_TIME, Instant.class)
-            .map((ins) -> OffsetDateTime.ofInstant(ins, ZoneId.systemDefault()))
+        getAndRemove(copySpringMessageHeaders, SCHEDULED_ENQUEUE_TIME, OffsetDateTime.class)
             .ifPresent(val -> {
                 message.setScheduledEnqueueTime(val);
                 logOverriddenHeaders(SCHEDULED_ENQUEUE_TIME, AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE, headers);

@@ -2,9 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config;
 
-import static com.azure.spring.cloud.config.Constants.KEY_VAULT_CONTENT_TYPE;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.KEY_VAULT_CONTENT_TYPE;
 import static com.azure.spring.cloud.config.TestConstants.TEST_CONN_STRING;
-import static com.azure.spring.cloud.config.TestConstants.TEST_CONTEXT;
 import static com.azure.spring.cloud.config.TestConstants.TEST_KEY_1;
 import static com.azure.spring.cloud.config.TestConstants.TEST_KEY_2;
 import static com.azure.spring.cloud.config.TestConstants.TEST_KEY_3;
@@ -37,6 +36,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
@@ -62,17 +62,19 @@ public class AppConfigurationPropertySourceKeyVaultTest {
     private static final String EMPTY_CONTENT_TYPE = "";
 
     private static final AppConfigurationProperties TEST_PROPS = new AppConfigurationProperties();
+    
+    private static final String KEY_FILTER = "/foo/";
 
-    private static final ConfigurationSetting ITEM_1 = createItem(TEST_CONTEXT, TEST_KEY_1, TEST_VALUE_1, TEST_LABEL_1,
+    private static final ConfigurationSetting ITEM_1 = createItem(KEY_FILTER, TEST_KEY_1, TEST_VALUE_1, TEST_LABEL_1,
         EMPTY_CONTENT_TYPE);
 
-    private static final ConfigurationSetting ITEM_2 = createItem(TEST_CONTEXT, TEST_KEY_2, TEST_VALUE_2, TEST_LABEL_2,
+    private static final ConfigurationSetting ITEM_2 = createItem(KEY_FILTER, TEST_KEY_2, TEST_VALUE_2, TEST_LABEL_2,
         EMPTY_CONTENT_TYPE);
 
-    private static final ConfigurationSetting ITEM_3 = createItem(TEST_CONTEXT, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3,
+    private static final ConfigurationSetting ITEM_3 = createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3,
         EMPTY_CONTENT_TYPE);
 
-    private static final SecretReferenceConfigurationSetting KEY_VAULT_ITEM = createSecretReference(TEST_CONTEXT,
+    private static final SecretReferenceConfigurationSetting KEY_VAULT_ITEM = createSecretReference(KEY_FILTER,
         TEST_KEY_VAULT_1,
         TEST_URI_VAULT_1, TEST_LABEL_VAULT_1, KEY_VAULT_CONTENT_TYPE);
 
@@ -109,11 +111,14 @@ public class AppConfigurationPropertySourceKeyVaultTest {
     @Mock
     private PagedResponse<ConfigurationSetting> pagedResponseMock;
 
+    @Mock
+    private PagedIterable<ConfigurationSetting> pagedFluxMock;
+
     private KeyVaultCredentialProvider tokenCredentialProvider = null;
 
     @BeforeEach
     public void init() {
-        TestUtils.addStore(TEST_PROPS, TEST_STORE_NAME, TEST_CONN_STRING);
+        TestUtils.addStore(TEST_PROPS, TEST_STORE_NAME, TEST_CONN_STRING, KEY_FILTER);
 
         KEY_VAULT_ITEM.setContentType(KEY_VAULT_CONTENT_TYPE);
 
@@ -125,9 +130,9 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         testStore.setEndpoint(TEST_STORE_NAME);
         ArrayList<String> contexts = new ArrayList<String>();
         contexts.add("/application/*");
-        AppConfigurationStoreSelects selects = new AppConfigurationStoreSelects().setKeyFilter("/foo/")
+        AppConfigurationStoreSelects selects = new AppConfigurationStoreSelects().setKeyFilter(KEY_FILTER)
             .setLabelFilter("\0");
-        propertySource = new AppConfigurationPropertySource(TEST_CONTEXT, testStore, selects, new ArrayList<>(),
+        propertySource = new AppConfigurationPropertySource(testStore, selects, new ArrayList<>(),
             appConfigurationProperties, clientStoreMock, appProperties, tokenCredentialProvider, null,
             new TestClient());
 
@@ -144,8 +149,10 @@ public class AppConfigurationPropertySourceKeyVaultTest {
     @Test
     public void testKeyVaultTest() throws Exception {
         TEST_ITEMS.add(KEY_VAULT_ITEM);
-        when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenReturn(TEST_ITEMS)
-            .thenReturn(new ArrayList<ConfigurationSetting>());
+        when(pagedFluxMock.iterator()).thenReturn(TEST_ITEMS.iterator())
+            .thenReturn(new ArrayList<ConfigurationSetting>().iterator());
+        when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenReturn(pagedFluxMock)
+            .thenReturn(pagedFluxMock);
 
         Mockito.when(builderMock.buildAsyncClient()).thenReturn(clientMock);
 
@@ -162,7 +169,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
 
         String[] keyNames = propertySource.getPropertyNames();
         String[] expectedKeyNames = TEST_ITEMS.stream()
-            .map(t -> t.getKey().substring(TEST_CONTEXT.length())).toArray(String[]::new);
+            .map(t -> t.getKey().substring(KEY_FILTER.length())).toArray(String[]::new);
 
         assertThat(keyNames).containsExactlyInAnyOrder(expectedKeyNames);
 

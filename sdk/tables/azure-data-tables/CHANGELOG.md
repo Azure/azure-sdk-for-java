@@ -2,6 +2,46 @@
 
 ## 12.2.0-beta.1 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.1.5 (2022-01-11)
+
+### Bugs fixed
+- Fixed issue that made it so single quotes in entity names were not properly escaped according to OData standards. [[25066]](https://github.com/Azure/azure-sdk-for-java/pull/25066) 
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.24.1`
+- Upgraded `azure-core-http-netty` dependency to `1.11.6`
+    
+## 12.1.4 (2021-11-19)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.22.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.2`
+
+## 12.1.3 (2021-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.21.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.1`
+
+## 12.1.2 (2021-09-09)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.20.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.0`
 
 ## 12.1.1 (2021-08-13)
 

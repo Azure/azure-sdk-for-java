@@ -153,6 +153,13 @@
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
+ <!--False positive: https://github.com/spotbugs/spotbugs/issues/1219-->
+  <Match>
+    <Class name="com.azure.core.implementation.jackson.ObjectMapperShim"/>
+    <Method name="createJsonMapper"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+
   <!-- Suppress non-null warning in the case that we change the code and it is possible for
   KeyVaultCredentials.getAuthenticationCredentials to return null. -->
   <Match>
@@ -167,7 +174,7 @@
   <!-- Suppress Redundant nullcheck error for JreCertificates$JREKeyStore.loadKeyStore(KeyStore). -->
   <Match>
     <Or>
-      <Class name="com.azure.security.keyvault.jca.implementation.certificates.JreCertificates$JREKeyStore"/> <!-- false positive -->
+      <Class name="com.azure.security.keyvault.jca.implementation.JREKeyStoreFactory"/> <!-- false positive -->
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
@@ -661,10 +668,10 @@
   <!-- Serializers define non-transient non-serializable instance field -->
   <Match>
     <Or>
-      <Class name="com.azure.core.util.serializer.FlatteningSerializer"/>
-      <Class name="com.azure.core.util.serializer.FlatteningDeserializer"/>
-      <Class name="com.azure.core.util.serializer.AdditionalPropertiesSerializer"/>
-      <Class name="com.azure.core.util.serializer.AdditionalPropertiesDeserializer"/>
+      <Class name="com.azure.core.implementation.jackson.FlatteningSerializer"/>
+      <Class name="com.azure.core.implementation.jackson.FlatteningDeserializer"/>
+      <Class name="com.azure.core.implementation.jackson.AdditionalPropertiesSerializer"/>
+      <Class name="com.azure.core.implementation.jackson.AdditionalPropertiesDeserializer"/>
     </Or>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
@@ -748,6 +755,7 @@
   <Match>
     <Or>
       <Class name="com.azure.core.util.paging.PagedFluxCoreJavaDocCodeSnippets"/>
+      <Class name="com.azure.storage.blob.implementation.models.BlobPropertiesInternalDownload"/>
     </Or>
     <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE,
     SIC_INNER_SHOULD_BE_STATIC_ANON,
@@ -1261,83 +1269,11 @@
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
-  <!-- FormRecognizerException fields re serializable -->
+  <!-- DocumentModelOperationException fields re serializable -->
   <Match>
-    <Class name="com.azure.ai.formrecognizer.models.FormRecognizerException"/>
-    <Field name="errorInformationList"/>
+    <Class name="com.azure.ai.formrecognizer.models.DocumentModelOperationException"/>
+    <Field name="documentModelOperationError"/>
     <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModel"/>
-    <Field name="modelName"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModel"/>
-    <Field name="customFormModelProperties"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModelInfo"/>
-    <Field name="modelName"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModelInfo"/>
-    <Field name="customFormModelProperties"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormSubmodel"/>
-    <Field name="modelId"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModelProperties"/>
-    <Field name="isComposed"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.training.models.TrainingDocumentInfo"/>
-    <Field name="modelId"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.models.RecognizedForm"/>
-    <Field name="formTypeConfidence"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.models.RecognizedForm"/>
-    <Field name="modelId"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.models.FormSelectionMark"/>
-    <Field name="confidence"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.models.FormSelectionMark"/>
-    <Field name="state"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.models.FormPage"/>
-    <Field name="selectionMarks"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
   </Match>
 
   <!-- TextAnalyticsException fields re serializable -->
@@ -1375,10 +1311,24 @@
     <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
 
+    <!-- Exception is required to handle when getting java version  -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.Utils"/>
+    <Method name="getJavaVersion"/>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+
   <!-- Exception is required to handle and fallback to default pair  -->
   <Match>
     <Class name="com.azure.cosmos.implementation.ResourceId"/>
     <Method name="tryParse"/>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+
+  <!-- This is a false positive. Exception is getting caught in init method-->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.RxDocumentClientImpl"/>
+    <Method name="init"/>
     <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
 
@@ -1948,6 +1898,18 @@
     <Bug pattern="DE_MIGHT_IGNORE"/>
   </Match>
 
+  <!-- Exception in AutoCloseable.close is ignored -->
+  <Match>
+    <Class name="com.azure.core.tracing.opentelemetry.OpenTelemetryHttpPolicy$ScalarPropagatingMono"/>
+    <Method name="subscribe"/>
+    <Bug pattern="DE_MIGHT_IGNORE"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.cosmos.implementation.TracerProvider"/>
+    <Method name="subscribe"/>
+    <Bug pattern="DE_MIGHT_IGNORE"/>
+  </Match>
+
   <!-- Exception is ignored by design which indicate that non-parsable id -->
   <Match>
     <Class name="com.azure.cosmos.implementation.ResourceId"/>
@@ -2455,6 +2417,10 @@
     <Class name="com.azure.core.util.logging.ClientLogger"/>
     <Bug pattern="CRLF_INJECTION_LOGS"/>
   </Match>
+  <Match>
+    <Class name="com.azure.core.util.logging.LoggingEventBuilder"/>
+    <Bug pattern="CRLF_INJECTION_LOGS"/>
+  </Match>
 
   <!-- The predictable randomness doesn't expose any crucial detail in this case. -->
   <Match>
@@ -2479,6 +2445,10 @@
     <Method name="~(get|post)"/>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
   </Match>
+  <Match>
+    <Class name="com.azure.security.keyvault.jca.implementation.KeyVaultPrivateKey"/>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
 
   <!-- Returning a new copy of the object is not necessary for queuing system use cases.
   Client do not change content of message once message is created. Array copy would degrade the performance.
@@ -2491,7 +2461,7 @@
 
    <!-- For BinaryData, copying array contents degrades performance. The data returned as byte array from BinaryData is expected to be copied by the call if mutability is desired. -->
   <Match>
-    <Class name="com.azure.core.util.implementation.ByteArrayContent"/>
+    <Class name="com.azure.core.implementation.util.ByteArrayContent"/>
     <Field name="content"/>
     <Bug pattern="EI_EXPOSE_REP"/>
   </Match>
@@ -2563,5 +2533,37 @@
     <Class name="com.azure.core.test.implementation.AzureMethodSourceArgumentsProvider"/>
     <Method name="getServiceVersions"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+
+  <Match>
+    <Class name="~com\.azure\.search.*"/>
+    <Or>
+      <Field name="odataType"/>
+      <Field name="type"/>
+    </Or>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+
+  <Match>
+    <Or>
+      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslJdkAlpnApplicationProtocolNegotiatorAlpnWrapper"/>
+      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslJdkAlpnApplicationProtocolNegotiatorAlpnWrapperJava8"/>
+      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslJdkSslContext"/>
+      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslSslContext"/>
+    </Or>
+    <Bug pattern="BC_IMPOSSIBLE_CAST"/>
+  </Match>
+  <Match>
+    <Or>
+      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerCodecHttpHttpContentDecompressor"/>
+    </Or>
+    <Bug pattern="CI_CONFUSED_INHERITANCE"/>
+  </Match>
+  <Match>
+    <Or>
+      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslOpenSsl"/>
+    </Or>
+    <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 </FindBugsFilter>

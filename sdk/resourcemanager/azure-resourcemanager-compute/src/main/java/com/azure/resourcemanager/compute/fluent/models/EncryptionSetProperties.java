@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.models.ApiError;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetType;
 import com.azure.resourcemanager.compute.models.KeyForDiskEncryptionSet;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -56,6 +57,14 @@ public final class EncryptionSetProperties {
      */
     @JsonProperty(value = "lastKeyRotationTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastKeyRotationTimestamp;
+
+    /*
+     * The error that was encountered during auto-key rotation. If an error is
+     * present, then auto-key rotation will not be attempted until the error on
+     * this disk encryption set is fixed.
+     */
+    @JsonProperty(value = "autoKeyRotationError", access = JsonProperty.Access.WRITE_ONLY)
+    private ApiError autoKeyRotationError;
 
     /**
      * Get the encryptionType property: The type of key used to encrypt the data of the disk.
@@ -148,6 +157,16 @@ public final class EncryptionSetProperties {
     }
 
     /**
+     * Get the autoKeyRotationError property: The error that was encountered during auto-key rotation. If an error is
+     * present, then auto-key rotation will not be attempted until the error on this disk encryption set is fixed.
+     *
+     * @return the autoKeyRotationError value.
+     */
+    public ApiError autoKeyRotationError() {
+        return this.autoKeyRotationError;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -158,6 +177,9 @@ public final class EncryptionSetProperties {
         }
         if (previousKeys() != null) {
             previousKeys().forEach(e -> e.validate());
+        }
+        if (autoKeyRotationError() != null) {
+            autoKeyRotationError().validate();
         }
     }
 }

@@ -14,8 +14,8 @@ import java.time.OffsetDateTime;
 @Fluent
 public class ContainerRepositoryProperties {
     /*
-     * Registry login server name.  This is likely to be similar to
-     * {registry-name}.azurecr.io
+     * Registry login server name. This is likely to be similar to
+     * {registry-name}.azurecr.io.
      */
     @JsonProperty(value = "registry", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String registryLoginServer;
@@ -73,13 +73,6 @@ public class ContainerRepositoryProperties {
      */
     @JsonProperty(value = "changeableAttributes.readEnabled")
     private Boolean readEnabled;
-
-    /*
-     * Enables Teleport functionality on new images in the repository improving
-     * Container startup performance
-     */
-    @JsonProperty(value = "changeableAttributes.teleportEnabled")
-    private Boolean teleportEnabled;
 
     /**
      * Get the registryLoginServer property: Registry login server name. This is likely to be similar to
@@ -213,28 +206,6 @@ public class ContainerRepositoryProperties {
      */
     public ContainerRepositoryProperties setReadEnabled(Boolean readEnabled) {
         this.readEnabled = readEnabled;
-        return this;
-    }
-
-    /**
-     * Get the teleportEnabled property: Enables Teleport functionality on new images in the repository improving
-     * Container startup performance.
-     *
-     * @return the teleportEnabled value.
-     */
-    public Boolean isTeleportEnabled() {
-        return this.teleportEnabled;
-    }
-
-    /**
-     * Set the teleportEnabled property: Enables Teleport functionality on new images in the repository improving
-     * Container startup performance.
-     *
-     * @param teleportEnabled the teleportEnabled value to set.
-     * @return the ContainerRepositoryProperties object itself.
-     */
-    public ContainerRepositoryProperties setTeleportEnabled(Boolean teleportEnabled) {
-        this.teleportEnabled = teleportEnabled;
         return this;
     }
 }

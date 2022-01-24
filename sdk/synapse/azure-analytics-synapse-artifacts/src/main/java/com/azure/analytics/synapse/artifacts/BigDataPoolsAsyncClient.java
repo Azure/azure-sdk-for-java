@@ -33,7 +33,7 @@ public final class BigDataPoolsAsyncClient {
      *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Big Data pool information.
+     * @return collection of Big Data pools.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BigDataPoolResourceInfoListResult>> listWithResponse() {
@@ -45,7 +45,7 @@ public final class BigDataPoolsAsyncClient {
      *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Big Data pool information.
+     * @return collection of Big Data pools.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BigDataPoolResourceInfoListResult> list() {

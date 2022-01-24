@@ -5,7 +5,7 @@
 ### Setup
 ```ps
 Fork and clone https://github.com/Azure/autorest.java 
-git checkout v4
+git checkout main
 git submodule update --init --recursive
 mvn package -Dlocal
 npm install
@@ -26,7 +26,7 @@ repo: https://github.com/Azure/azure-rest-api-specs/blob/$(branch)
 
 ```yaml
 input-file:
-    - $(repo)/specification/synapse/data-plane/Microsoft.Synapse/preview/2021-06-01-preview/managedPrivateEndpoints.json
+    - $(repo)/specification/synapse/data-plane/Microsoft.Synapse/stable/2020-12-01/managedPrivateEndpoints.json
 java: true
 output-folder: ..\
 generate-client-as-impl: true

@@ -27,7 +27,7 @@ public interface FirewallRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a server firewall rule.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String firewallRuleName, FirewallRuleInner parameters);
 
@@ -44,7 +44,7 @@ public interface FirewallRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a server firewall rule.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serverName,
@@ -100,7 +100,7 @@ public interface FirewallRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String firewallRuleName);
 
@@ -116,7 +116,7 @@ public interface FirewallRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String firewallRuleName, Context context);
 

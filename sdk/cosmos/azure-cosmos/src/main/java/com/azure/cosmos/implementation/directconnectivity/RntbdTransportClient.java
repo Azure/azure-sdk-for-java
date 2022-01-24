@@ -402,7 +402,7 @@ public class RntbdTransportClient extends TransportClient {
         private final Duration receiveHangDetectionTime;
 
         @JsonProperty()
-        private final Duration requestTimeout;
+        private final Duration tcpNetworkRequestTimeout;
 
         @JsonProperty()
         private final Duration requestTimerResolution;
@@ -421,6 +421,18 @@ public class RntbdTransportClient extends TransportClient {
 
         @JsonProperty()
         private final boolean channelAcquisitionContextEnabled;
+
+        @JsonProperty()
+        private final int ioThreadPriority;
+
+        @JsonProperty()
+        private final int tcpKeepIntvl;
+
+        @JsonProperty()
+        private final int tcpKeepIdle;
+
+        @JsonProperty()
+        private final boolean preferTcpNative;
 
         // endregion
 
@@ -444,16 +456,20 @@ public class RntbdTransportClient extends TransportClient {
             this.maxRequestsPerChannel = builder.maxRequestsPerChannel;
             this.maxConcurrentRequestsPerEndpointOverride = builder.maxConcurrentRequestsPerEndpointOverride;
             this.receiveHangDetectionTime = builder.receiveHangDetectionTime;
-            this.requestTimeout = builder.requestTimeout;
+            this.tcpNetworkRequestTimeout = builder.tcpNetworkRequestTimeout;
             this.requestTimerResolution = builder.requestTimerResolution;
             this.sendHangDetectionTime = builder.sendHangDetectionTime;
             this.shutdownTimeout = builder.shutdownTimeout;
             this.threadCount = builder.threadCount;
             this.userAgent = builder.userAgent;
             this.channelAcquisitionContextEnabled = builder.channelAcquisitionContextEnabled;
+            this.ioThreadPriority = builder.ioThreadPriority;
+            this.tcpKeepIntvl = builder.tcpKeepIntvl;
+            this.tcpKeepIdle = builder.tcpKeepIdle;
+            this.preferTcpNative = builder.preferTcpNative;
 
             this.connectTimeout = builder.connectTimeout == null
-                ? builder.requestTimeout
+                ? builder.tcpNetworkRequestTimeout
                 : builder.connectTimeout;
         }
 
@@ -472,13 +488,18 @@ public class RntbdTransportClient extends TransportClient {
             this.maxConcurrentRequestsPerEndpointOverride = -1;
 
             this.receiveHangDetectionTime = Duration.ofSeconds(65L);
-            this.requestTimeout = connectionPolicy.getRequestTimeout();
+            this.tcpNetworkRequestTimeout = connectionPolicy.getTcpNetworkRequestTimeout();
             this.requestTimerResolution = Duration.ofMillis(100L);
             this.sendHangDetectionTime = Duration.ofSeconds(10L);
             this.shutdownTimeout = Duration.ofSeconds(15L);
-            this.threadCount = 2 * Runtime.getRuntime().availableProcessors();
+            this.threadCount = connectionPolicy.getIoThreadCountPerCoreFactor() *
+                Runtime.getRuntime().availableProcessors();
             this.userAgent = new UserAgentContainer();
             this.channelAcquisitionContextEnabled = false;
+            this.ioThreadPriority = Thread.NORM_PRIORITY;
+            this.tcpKeepIntvl = 1; // Configuration for EpollChannelOption.TCP_KEEPINTVL
+            this.tcpKeepIdle = 30; // Configuration for EpollChannelOption.TCP_KEEPIDLE
+            this.preferTcpNative = true;
         }
 
         // endregion
@@ -537,8 +558,8 @@ public class RntbdTransportClient extends TransportClient {
             return this.receiveHangDetectionTime;
         }
 
-        public Duration requestTimeout() {
-            return this.requestTimeout;
+        public Duration tcpNetworkRequestTimeout() {
+            return this.tcpNetworkRequestTimeout;
         }
 
         public Duration requestTimerResolution() {
@@ -562,6 +583,22 @@ public class RntbdTransportClient extends TransportClient {
         }
 
         public boolean isChannelAcquisitionContextEnabled() { return this.channelAcquisitionContextEnabled; }
+
+        public int ioThreadPriority() {
+            checkArgument(
+                this.ioThreadPriority >= Thread.MIN_PRIORITY && this.ioThreadPriority <= Thread.MAX_PRIORITY,
+                "Expect ioThread priority between [%s, %s]",
+                Thread.MIN_PRIORITY,
+                Thread.MAX_PRIORITY);
+
+            return this.ioThreadPriority;
+        }
+
+        public int tcpKeepIntvl() { return this.tcpKeepIntvl; }
+
+        public int tcpKeepIdle() { return this.tcpKeepIdle; }
+
+        public boolean preferTcpNative() { return this.preferTcpNative; }
 
         // endregion
 
@@ -698,13 +735,17 @@ public class RntbdTransportClient extends TransportClient {
             private int maxRequestsPerChannel;
             private int maxConcurrentRequestsPerEndpointOverride;
             private Duration receiveHangDetectionTime;
-            private Duration requestTimeout;
+            private Duration tcpNetworkRequestTimeout;
             private Duration requestTimerResolution;
             private Duration sendHangDetectionTime;
             private Duration shutdownTimeout;
             private int threadCount;
             private UserAgentContainer userAgent;
             private boolean channelAcquisitionContextEnabled;
+            private int ioThreadPriority;
+            private int tcpKeepIntvl;
+            private int tcpKeepIdle;
+            private boolean preferTcpNative;
 
             // endregion
 
@@ -727,13 +768,17 @@ public class RntbdTransportClient extends TransportClient {
                     DEFAULT_OPTIONS.maxConcurrentRequestsPerEndpointOverride;
 
                 this.receiveHangDetectionTime = DEFAULT_OPTIONS.receiveHangDetectionTime;
-                this.requestTimeout = connectionPolicy.getRequestTimeout();
+                this.tcpNetworkRequestTimeout = connectionPolicy.getTcpNetworkRequestTimeout();
                 this.requestTimerResolution = DEFAULT_OPTIONS.requestTimerResolution;
                 this.sendHangDetectionTime = DEFAULT_OPTIONS.sendHangDetectionTime;
                 this.shutdownTimeout = DEFAULT_OPTIONS.shutdownTimeout;
                 this.threadCount = DEFAULT_OPTIONS.threadCount;
                 this.userAgent = DEFAULT_OPTIONS.userAgent;
                 this.channelAcquisitionContextEnabled = DEFAULT_OPTIONS.channelAcquisitionContextEnabled;
+                this.ioThreadPriority = DEFAULT_OPTIONS.ioThreadPriority;
+                this.tcpKeepIntvl = DEFAULT_OPTIONS.tcpKeepIntvl;
+                this.tcpKeepIdle = DEFAULT_OPTIONS.tcpKeepIdle;
+                this.preferTcpNative = DEFAULT_OPTIONS.preferTcpNative;
             }
 
             // endregion
@@ -831,11 +876,11 @@ public class RntbdTransportClient extends TransportClient {
                 return this;
             }
 
-            public Builder requestTimeout(final Duration value) {
+            public Builder tcpNetworkRequestTimeout(final Duration value) {
                 checkArgument(value != null && value.compareTo(Duration.ZERO) > 0,
                     "expected positive value, not %s",
                     value);
-                this.requestTimeout = value;
+                this.tcpNetworkRequestTimeout = value;
                 return this;
             }
 

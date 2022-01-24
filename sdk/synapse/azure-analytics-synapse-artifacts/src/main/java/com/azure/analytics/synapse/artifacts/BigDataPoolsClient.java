@@ -33,7 +33,7 @@ public final class BigDataPoolsClient {
      *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Big Data pool information.
+     * @return collection of Big Data pools.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BigDataPoolResourceInfoListResult list() {
@@ -47,7 +47,7 @@ public final class BigDataPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Big Data pool information.
+     * @return collection of Big Data pools.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BigDataPoolResourceInfoListResult> listWithResponse(Context context) {

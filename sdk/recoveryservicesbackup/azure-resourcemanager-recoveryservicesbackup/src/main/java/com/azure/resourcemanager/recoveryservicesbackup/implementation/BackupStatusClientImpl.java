@@ -104,7 +104,6 @@ public final class BackupStatusClientImpl implements BackupStatusClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2017-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -112,7 +111,7 @@ public final class BackupStatusClientImpl implements BackupStatusClient {
                     service
                         .get(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             azureRegion,
                             this.client.getSubscriptionId(),
                             parameters,
@@ -155,13 +154,12 @@ public final class BackupStatusClientImpl implements BackupStatusClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2017-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 azureRegion,
                 this.client.getSubscriptionId(),
                 parameters,

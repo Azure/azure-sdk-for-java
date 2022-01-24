@@ -4,8 +4,7 @@
 
 package com.azure.resourcemanager.avs.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.ScriptParameter;
@@ -14,28 +13,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A cmdlet available for script execution. */
-@JsonFlatten
-@Immutable
-public class ScriptCmdletInner extends ProxyResource {
+@Fluent
+public final class ScriptCmdletInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptCmdletInner.class);
 
     /*
-     * Description of the scripts functionality
+     * The properties of a script cmdlet resource
      */
-    @JsonProperty(value = "properties.description", access = JsonProperty.Access.WRITE_ONLY)
-    private String description;
+    @JsonProperty(value = "properties")
+    private ScriptCmdletProperties innerProperties;
 
-    /*
-     * Recommended time limit for execution
+    /**
+     * Get the innerProperties property: The properties of a script cmdlet resource.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.timeout", access = JsonProperty.Access.WRITE_ONLY)
-    private String timeout;
-
-    /*
-     * Parameters the script will accept
-     */
-    @JsonProperty(value = "properties.parameters", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ScriptParameter> parameters;
+    private ScriptCmdletProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the description property: Description of the scripts functionality.
@@ -43,7 +38,7 @@ public class ScriptCmdletInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -52,7 +47,7 @@ public class ScriptCmdletInner extends ProxyResource {
      * @return the timeout value.
      */
     public String timeout() {
-        return this.timeout;
+        return this.innerProperties() == null ? null : this.innerProperties().timeout();
     }
 
     /**
@@ -61,7 +56,7 @@ public class ScriptCmdletInner extends ProxyResource {
      * @return the parameters value.
      */
     public List<ScriptParameter> parameters() {
-        return this.parameters;
+        return this.innerProperties() == null ? null : this.innerProperties().parameters();
     }
 
     /**
@@ -70,8 +65,8 @@ public class ScriptCmdletInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (parameters() != null) {
-            parameters().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -6,11 +6,13 @@ package com.azure.resourcemanager.hdinsight.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hdinsight.models.ClusterGetProperties;
 import com.azure.resourcemanager.hdinsight.models.ClusterIdentity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
 /** The HDInsight cluster. */
@@ -25,6 +27,12 @@ public final class ClusterInner extends Resource {
     private String etag;
 
     /*
+     * The availability zones.
+     */
+    @JsonProperty(value = "zones")
+    private List<String> zones;
+
+    /*
      * The properties of the cluster.
      */
     @JsonProperty(value = "properties")
@@ -35,6 +43,12 @@ public final class ClusterInner extends Resource {
      */
     @JsonProperty(value = "identity")
     private ClusterIdentity identity;
+
+    /*
+     * Metadata pertaining to creation and last modification of the resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
      * Get the etag property: The ETag for the resource.
@@ -53,6 +67,26 @@ public final class ClusterInner extends Resource {
      */
     public ClusterInner withEtag(String etag) {
         this.etag = etag;
+        return this;
+    }
+
+    /**
+     * Get the zones property: The availability zones.
+     *
+     * @return the zones value.
+     */
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Set the zones property: The availability zones.
+     *
+     * @param zones the zones value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withZones(List<String> zones) {
+        this.zones = zones;
         return this;
     }
 
@@ -94,6 +128,15 @@ public final class ClusterInner extends Resource {
     public ClusterInner withIdentity(ClusterIdentity identity) {
         this.identity = identity;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /** {@inheritDoc} */

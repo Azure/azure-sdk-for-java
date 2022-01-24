@@ -42,12 +42,12 @@ class LargeFileTest extends APISpec{
         fileName = generatePathName()
         def fileClient = fsc.getFileClient(fileName)
         fc = getFileClient(
-            env.dataLakeAccount.credential,
+            environment.dataLakeAccount.credential,
             fileClient.getFileUrl(),
             new CountingPolicy()
         )
         fcAsync = getFileAsyncClient(
-            env.dataLakeAccount.credential,
+            environment.dataLakeAccount.credential,
             fileClient.getFileUrl(),
             new CountingPolicy()
         )

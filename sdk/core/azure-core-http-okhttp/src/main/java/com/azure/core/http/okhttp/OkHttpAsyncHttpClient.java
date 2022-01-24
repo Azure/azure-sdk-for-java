@@ -145,7 +145,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
                     throw Exceptions.propagate(ioe);
                 }
             }).map(b -> ByteString.of(b.readByteArray())), okio.Buffer::clear)
-            .switchIfEmpty(EMPTY_BYTE_STRING_MONO);
+            .switchIfEmpty(Mono.defer(() -> EMPTY_BYTE_STRING_MONO));
     }
 
     private static class OkHttpCallback implements okhttp3.Callback {

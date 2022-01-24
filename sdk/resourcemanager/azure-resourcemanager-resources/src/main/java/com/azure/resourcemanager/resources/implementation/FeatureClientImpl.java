@@ -204,7 +204,7 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Microsoft.
+     * @return result of the request to list Microsoft.Features operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationInner>> listOperationsSinglePageAsync() {
@@ -234,7 +234,7 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Microsoft.
+     * @return result of the request to list Microsoft.Features operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationInner>> listOperationsSinglePageAsync(Context context) {
@@ -262,7 +262,7 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Microsoft.
+     * @return result of the request to list Microsoft.Features operations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<OperationInner> listOperationsAsync() {
@@ -277,7 +277,7 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Microsoft.
+     * @return result of the request to list Microsoft.Features operations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OperationInner> listOperationsAsync(Context context) {
@@ -291,7 +291,7 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Microsoft.
+     * @return result of the request to list Microsoft.Features operations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationInner> listOperations() {
@@ -305,7 +305,7 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Microsoft.
+     * @return result of the request to list Microsoft.Features operations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationInner> listOperations(Context context) {
@@ -319,7 +319,7 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Microsoft.
+     * @return result of the request to list Microsoft.Features operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationInner>> listOperationsNextSinglePageAsync(String nextLink) {
@@ -353,7 +353,7 @@ public final class FeatureClientImpl extends AzureServiceClient implements Featu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Microsoft.
+     * @return result of the request to list Microsoft.Features operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationInner>> listOperationsNextSinglePageAsync(String nextLink, Context context) {

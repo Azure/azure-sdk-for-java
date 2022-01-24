@@ -4,19 +4,40 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
-import com.azure.cosmos.util.Beta;
 
 /**
  * Depicts type of Cosmos Item Operation
  */
-@Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public enum CosmosItemOperationType {
 
+    /**
+     * Create operation type.
+     */
     CREATE(BatchRequestResponseConstants.OPERATION_CREATE),
+
+    /**
+     * Delete operation type.
+     */
     DELETE(BatchRequestResponseConstants.OPERATION_DELETE),
+
+    /**
+     * Read operation type.
+     */
     READ(BatchRequestResponseConstants.OPERATION_READ),
+
+    /**
+     * Replace operation type.
+     */
     REPLACE(BatchRequestResponseConstants.OPERATION_REPLACE),
+
+    /**
+     * Upsert operation type.
+     */
     UPSERT(BatchRequestResponseConstants.OPERATION_UPSERT),
+
+    /**
+     * Patch operation type.
+     */
     PATCH(BatchRequestResponseConstants.OPERATION_PATCH);
 
     CosmosItemOperationType(String operationValue) {

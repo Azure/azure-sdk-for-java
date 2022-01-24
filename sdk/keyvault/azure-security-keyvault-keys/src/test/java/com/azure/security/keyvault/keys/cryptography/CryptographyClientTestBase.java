@@ -8,7 +8,6 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -22,13 +21,13 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
-import com.azure.core.util.ServiceVersion;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
+import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import org.junit.jupiter.api.Test;
@@ -49,7 +48,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -59,7 +57,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 public abstract class CryptographyClientTestBase extends TestBase {
     private static final String SDK_NAME = "client_name";
     private static final String SDK_VERSION = "client_version";
-    protected boolean isManagedHsmTest = false;
+    protected boolean isHsmEnabled = false;
+    protected boolean runManagedHsmTest = false;
 
     @Override
     protected String getTestName() {
@@ -69,7 +68,7 @@ public abstract class CryptographyClientTestBase extends TestBase {
     void beforeTestSetup() {
     }
 
-    HttpPipeline getHttpPipeline(HttpClient httpClient, ServiceVersion serviceVersion) {
+    HttpPipeline getHttpPipeline(HttpClient httpClient) {
         TokenCredential credential = null;
 
         if (!interceptorManager.isPlaybackMode()) {
@@ -89,14 +88,13 @@ public abstract class CryptographyClientTestBase extends TestBase {
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(new UserAgentPolicy(SDK_NAME, SDK_VERSION, Configuration.getGlobalConfiguration().clone(), serviceVersion));
+        policies.add(new UserAgentPolicy(null, SDK_NAME, SDK_VERSION, Configuration.getGlobalConfiguration().clone()));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         RetryStrategy strategy = new ExponentialBackoff(5, Duration.ofSeconds(2), Duration.ofSeconds(16));
         policies.add(new RetryPolicy(strategy));
 
         if (credential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(credential,
-                isManagedHsmTest ? CryptographyAsyncClient.MHSM_SCOPE : CryptographyAsyncClient.KEY_VAULT_SCOPE));
+            policies.add(new KeyVaultCredentialPolicy(credential));
         }
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
@@ -224,16 +222,8 @@ public abstract class CryptographyClientTestBase extends TestBase {
         return JsonWebKey.fromAes(secretKey, keyOperations).setId("testKey");
     }
 
-    String generateResourceId(String suffix) {
-        if (interceptorManager.isPlaybackMode()) {
-            return suffix;
-        }
-        String id = UUID.randomUUID().toString();
-        return suffix.length() > 0 ? id + "-" + suffix : id;
-    }
-
     public String getEndpoint() {
-        final String endpoint = isManagedHsmTest
+        final String endpoint = runManagedHsmTest
             ? Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT", "http://localhost:8080")
             : Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "http://localhost:8080");
 

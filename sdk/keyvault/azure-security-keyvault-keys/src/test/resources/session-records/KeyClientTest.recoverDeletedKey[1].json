@@ -1,940 +1,316 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testKey7/create?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testkey73587481d/create?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "733",
+      "content-length" : "715",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 23 Apr 2021 07:48:38 GMT",
+      "Date" : "Tue, 05 Oct 2021 01:42:29 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
+      "x-ms-keyvault-region" : "centralus",
       "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "0adf9b88-0fde-48a1-a757-8fb0bcc9ed1d",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"key\":{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testKey7/b8bec98c831a4b7e85d7afce4efe2b27\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"77Z-q2xfebtai525-RlnEAVrBSMQXC9loyCBRGfFbl7l53CEVUPYeU8kElMbhjsBbla-cCbH4c8S_0RIqqVki8PUxpvn5OjEGfeSl3UcF1CqI5liA72vEEl2cD-jQZ6-2w4sbGGnSJ5wZjsUeKzNCWmoPc2PWx-ESKZed4sdobxoiEUP5vKbSSCt0a5Rbs4l4qo0e8QMT3TdBeoojyUEOgz2xCd2m3ed1OquJztKBTxAa8JnaAkzwSXEHM2Hq0FLI_Lo9M18-AjiDPcLoJZC0ZuZSLK47mKXaMEnk8sFlLG_6NcidigJFWOg09z2NbiF6Kdxx_9HMD7xnRexvOrCaQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1619164119,\"updated\":1619164119,\"recoveryLevel\":\"Recoverable+Purgeable\",\"recoverableDays\":90}}",
+      "x-ms-request-id" : "9b5a0192-a546-4e70-9501-75e573f79287",
+      "x-ms-keyvault-service-version" : "1.9.132.3",
+      "Body" : "{\"key\":{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testkey73587481d/e975da94c7d44b95ae61470da0ea4106\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"3TlZahIqYOLj_m1Lhf7otV9AF3o-8_KhP-8z9vilCVVvR2lInKnMnO20b74--GkW3_60rH5axIbj0bVD6-EkqFW5IqeT9PlxKWrxYWUP11iJnyLZMeKd_1ev_kTiNWlSqaYP3MvxjRk6SmJNOMAjYTx-XE7zCCTRpfXakbBBVEUIquIxU2WcOx3TnRvX68XUe2O9Sfuv7uR3i-7ximsDF3CJyM3fK0k-BeY0xCqpxgU4BsUklC6sS-w5nnj5kzz3e9KEUWm1Cfi1WKW4oBqsFRS50hTSBBYf8nmFEhUF-CFs0fnEgswk9hHcKBzbu93Xa2ftV6MvCG6Fdg-pe6oxiQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633398149,\"updated\":1633398149,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}}",
       "Content-Type" : "application/json; charset=utf-8",
       "X-Powered-By" : "ASP.NET"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testKey7?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testkey73587481d?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "903",
+      "content-length" : "858",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 23 Apr 2021 07:48:38 GMT",
+      "Date" : "Tue, 05 Oct 2021 01:42:30 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
+      "x-ms-keyvault-region" : "centralus",
       "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "47ec2f2e-1c3b-44ff-b328-55aacbd264d9",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"recoveryId\":\"https://azure-kv-tests2.vault.azure.net/deletedkeys/testKey7\",\"deletedDate\":1619164119,\"scheduledPurgeDate\":1626940119,\"key\":{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testKey7/b8bec98c831a4b7e85d7afce4efe2b27\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"77Z-q2xfebtai525-RlnEAVrBSMQXC9loyCBRGfFbl7l53CEVUPYeU8kElMbhjsBbla-cCbH4c8S_0RIqqVki8PUxpvn5OjEGfeSl3UcF1CqI5liA72vEEl2cD-jQZ6-2w4sbGGnSJ5wZjsUeKzNCWmoPc2PWx-ESKZed4sdobxoiEUP5vKbSSCt0a5Rbs4l4qo0e8QMT3TdBeoojyUEOgz2xCd2m3ed1OquJztKBTxAa8JnaAkzwSXEHM2Hq0FLI_Lo9M18-AjiDPcLoJZC0ZuZSLK47mKXaMEnk8sFlLG_6NcidigJFWOg09z2NbiF6Kdxx_9HMD7xnRexvOrCaQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1619164119,\"updated\":1619164119,\"recoveryLevel\":\"Recoverable+Purgeable\",\"recoverableDays\":90}}",
+      "x-ms-request-id" : "e965c8ef-e5a0-4f3a-b448-81062cd51ae0",
+      "x-ms-keyvault-service-version" : "1.9.132.3",
+      "Body" : "{\"recoveryId\":\"https://azure-kv-tests2.vault.azure.net/deletedkeys/testkey73587481d\",\"deletedDate\":1633398150,\"scheduledPurgeDate\":1634002950,\"key\":{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testkey73587481d/e975da94c7d44b95ae61470da0ea4106\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"3TlZahIqYOLj_m1Lhf7otV9AF3o-8_KhP-8z9vilCVVvR2lInKnMnO20b74--GkW3_60rH5axIbj0bVD6-EkqFW5IqeT9PlxKWrxYWUP11iJnyLZMeKd_1ev_kTiNWlSqaYP3MvxjRk6SmJNOMAjYTx-XE7zCCTRpfXakbBBVEUIquIxU2WcOx3TnRvX68XUe2O9Sfuv7uR3i-7ximsDF3CJyM3fK0k-BeY0xCqpxgU4BsUklC6sS-w5nnj5kzz3e9KEUWm1Cfi1WKW4oBqsFRS50hTSBBYf8nmFEhUF-CFs0fnEgswk9hHcKBzbu93Xa2ftV6MvCG6Fdg-pe6oxiQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633398149,\"updated\":1633398149,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}}",
       "Content-Type" : "application/json; charset=utf-8",
       "X-Powered-By" : "ASP.NET"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/deletedkeys/testKey7?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.vault.azure.net/deletedkeys/testkey73587481d?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "113",
+      "content-length" : "84",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Date" : "Fri, 23 Apr 2021 07:48:39 GMT",
+      "Date" : "Tue, 05 Oct 2021 01:42:29 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
+      "x-ms-keyvault-region" : "centralus",
       "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "929a2c11-325d-4e67-b7a3-f162652fe945",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testKey7\"}}",
+      "x-ms-request-id" : "8af3ae59-c155-48c7-8dd3-f52ebebc8135",
+      "x-ms-keyvault-service-version" : "1.9.132.3",
+      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testkey73587481d\"}}",
       "Content-Type" : "application/json; charset=utf-8",
       "X-Powered-By" : "ASP.NET"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/deletedkeys/testKey7?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.vault.azure.net/deletedkeys/testkey73587481d?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "113",
+      "content-length" : "84",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Date" : "Fri, 23 Apr 2021 07:48:39 GMT",
+      "Date" : "Tue, 05 Oct 2021 01:42:30 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
+      "x-ms-keyvault-region" : "centralus",
       "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "6eef65ba-c748-436b-a073-eb01ae664837",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testKey7\"}}",
+      "x-ms-request-id" : "6cd5dfa0-a6fb-4541-a177-8d0cb10f14b5",
+      "x-ms-keyvault-service-version" : "1.9.132.3",
+      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testkey73587481d\"}}",
       "Content-Type" : "application/json; charset=utf-8",
       "X-Powered-By" : "ASP.NET"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/deletedkeys/testKey7?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.vault.azure.net/deletedkeys/testkey73587481d?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "113",
+      "content-length" : "84",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Date" : "Fri, 23 Apr 2021 07:48:41 GMT",
+      "Date" : "Tue, 05 Oct 2021 01:42:32 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
+      "x-ms-keyvault-region" : "centralus",
       "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "d3c0fcbb-2165-4f43-82e6-9fe91570af5e",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testKey7\"}}",
+      "x-ms-request-id" : "57bc88a9-ff1a-4a6b-aad0-3865fecb3430",
+      "x-ms-keyvault-service-version" : "1.9.132.3",
+      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testkey73587481d\"}}",
       "Content-Type" : "application/json; charset=utf-8",
       "X-Powered-By" : "ASP.NET"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/deletedkeys/testKey7?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.vault.azure.net/deletedkeys/testkey73587481d?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "113",
+      "content-length" : "84",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Date" : "Fri, 23 Apr 2021 07:48:42 GMT",
+      "Date" : "Tue, 05 Oct 2021 01:42:33 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
+      "x-ms-keyvault-region" : "centralus",
       "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "d711b428-7a57-405e-afe9-0e48e0c2f691",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testKey7\"}}",
+      "x-ms-request-id" : "106204c5-2be6-45b8-a158-83e468b9dca9",
+      "x-ms-keyvault-service-version" : "1.9.132.3",
+      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testkey73587481d\"}}",
       "Content-Type" : "application/json; charset=utf-8",
       "X-Powered-By" : "ASP.NET"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/deletedkeys/testKey7?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.vault.azure.net/deletedkeys/testkey73587481d?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "113",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "Date" : "Fri, 23 Apr 2021 07:48:43 GMT",
-      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
-      "Expires" : "-1",
-      "x-ms-request-id" : "1a74b80b-1446-4f97-8951-50a5ec90e879",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testKey7\"}}",
-      "Content-Type" : "application/json; charset=utf-8",
-      "X-Powered-By" : "ASP.NET"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/deletedkeys/testKey7?api-version=7.3-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "113",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "Date" : "Fri, 23 Apr 2021 07:48:44 GMT",
-      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
-      "Expires" : "-1",
-      "x-ms-request-id" : "992bd78a-4836-4f32-9891-367e8820ece6",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testKey7\"}}",
-      "Content-Type" : "application/json; charset=utf-8",
-      "X-Powered-By" : "ASP.NET"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/deletedkeys/testKey7?api-version=7.3-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "113",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "Date" : "Fri, 23 Apr 2021 07:48:45 GMT",
-      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
-      "Expires" : "-1",
-      "x-ms-request-id" : "e4816f98-a152-4544-be14-b6e12e122c51",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testKey7\"}}",
-      "Content-Type" : "application/json; charset=utf-8",
-      "X-Powered-By" : "ASP.NET"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/deletedkeys/testKey7?api-version=7.3-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "113",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "Date" : "Fri, 23 Apr 2021 07:48:46 GMT",
-      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
-      "Expires" : "-1",
-      "x-ms-request-id" : "c62d8344-4dab-4430-b11f-4c2aea2969e8",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testKey7\"}}",
-      "Content-Type" : "application/json; charset=utf-8",
-      "X-Powered-By" : "ASP.NET"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/deletedkeys/testKey7?api-version=7.3-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "113",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "Date" : "Fri, 23 Apr 2021 07:48:48 GMT",
-      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
-      "Expires" : "-1",
-      "x-ms-request-id" : "ebb06e7f-2181-473d-a32d-c21ebfda1463",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testKey7\"}}",
-      "Content-Type" : "application/json; charset=utf-8",
-      "X-Powered-By" : "ASP.NET"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/deletedkeys/testKey7?api-version=7.3-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "113",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "Date" : "Fri, 23 Apr 2021 07:48:48 GMT",
-      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
-      "Expires" : "-1",
-      "x-ms-request-id" : "6d787a16-8758-4f82-a6d1-9c67e5fd69c4",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testKey7\"}}",
-      "Content-Type" : "application/json; charset=utf-8",
-      "X-Powered-By" : "ASP.NET"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/deletedkeys/testKey7?api-version=7.3-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "113",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "Date" : "Fri, 23 Apr 2021 07:48:50 GMT",
-      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
-      "Expires" : "-1",
-      "x-ms-request-id" : "57970962-a6c3-4fbc-9735-2bc5f2b3657a",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testKey7\"}}",
-      "Content-Type" : "application/json; charset=utf-8",
-      "X-Powered-By" : "ASP.NET"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/deletedkeys/testKey7?api-version=7.3-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "113",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "Date" : "Fri, 23 Apr 2021 07:48:50 GMT",
-      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
-      "Expires" : "-1",
-      "x-ms-request-id" : "c778e5c9-ccb9-4a44-ae10-8c604552a38f",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testKey7\"}}",
-      "Content-Type" : "application/json; charset=utf-8",
-      "X-Powered-By" : "ASP.NET"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/deletedkeys/testKey7?api-version=7.3-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "113",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "Date" : "Fri, 23 Apr 2021 07:48:51 GMT",
-      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
-      "Expires" : "-1",
-      "x-ms-request-id" : "7a5bd974-61f4-4184-9b5d-101aa9cd8a26",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testKey7\"}}",
-      "Content-Type" : "application/json; charset=utf-8",
-      "X-Powered-By" : "ASP.NET"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/deletedkeys/testKey7?api-version=7.3-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "113",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "Date" : "Fri, 23 Apr 2021 07:48:52 GMT",
-      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
-      "Expires" : "-1",
-      "x-ms-request-id" : "3787c2cc-b83b-4c9a-89df-cbf2d0d45538",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testKey7\"}}",
-      "Content-Type" : "application/json; charset=utf-8",
-      "X-Powered-By" : "ASP.NET"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/deletedkeys/testKey7?api-version=7.3-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "113",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "Date" : "Fri, 23 Apr 2021 07:48:54 GMT",
-      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
-      "Expires" : "-1",
-      "x-ms-request-id" : "292a1b8b-8528-493b-a494-c220caff0574",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Deleted Key not found: testKey7\"}}",
-      "Content-Type" : "application/json; charset=utf-8",
-      "X-Powered-By" : "ASP.NET"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/deletedkeys/testKey7?api-version=7.3-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "903",
+      "content-length" : "858",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 23 Apr 2021 07:48:55 GMT",
+      "Date" : "Tue, 05 Oct 2021 01:42:34 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
+      "x-ms-keyvault-region" : "centralus",
       "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "f381e31e-878a-4784-88de-0d2c30995f11",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"recoveryId\":\"https://azure-kv-tests2.vault.azure.net/deletedkeys/testKey7\",\"deletedDate\":1619164119,\"scheduledPurgeDate\":1626940119,\"key\":{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testKey7/b8bec98c831a4b7e85d7afce4efe2b27\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"77Z-q2xfebtai525-RlnEAVrBSMQXC9loyCBRGfFbl7l53CEVUPYeU8kElMbhjsBbla-cCbH4c8S_0RIqqVki8PUxpvn5OjEGfeSl3UcF1CqI5liA72vEEl2cD-jQZ6-2w4sbGGnSJ5wZjsUeKzNCWmoPc2PWx-ESKZed4sdobxoiEUP5vKbSSCt0a5Rbs4l4qo0e8QMT3TdBeoojyUEOgz2xCd2m3ed1OquJztKBTxAa8JnaAkzwSXEHM2Hq0FLI_Lo9M18-AjiDPcLoJZC0ZuZSLK47mKXaMEnk8sFlLG_6NcidigJFWOg09z2NbiF6Kdxx_9HMD7xnRexvOrCaQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1619164119,\"updated\":1619164119,\"recoveryLevel\":\"Recoverable+Purgeable\",\"recoverableDays\":90}}",
+      "x-ms-request-id" : "667da9a9-3385-480f-929b-19752216bbeb",
+      "x-ms-keyvault-service-version" : "1.9.132.3",
+      "Body" : "{\"recoveryId\":\"https://azure-kv-tests2.vault.azure.net/deletedkeys/testkey73587481d\",\"deletedDate\":1633398150,\"scheduledPurgeDate\":1634002950,\"key\":{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testkey73587481d/e975da94c7d44b95ae61470da0ea4106\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"3TlZahIqYOLj_m1Lhf7otV9AF3o-8_KhP-8z9vilCVVvR2lInKnMnO20b74--GkW3_60rH5axIbj0bVD6-EkqFW5IqeT9PlxKWrxYWUP11iJnyLZMeKd_1ev_kTiNWlSqaYP3MvxjRk6SmJNOMAjYTx-XE7zCCTRpfXakbBBVEUIquIxU2WcOx3TnRvX68XUe2O9Sfuv7uR3i-7ximsDF3CJyM3fK0k-BeY0xCqpxgU4BsUklC6sS-w5nnj5kzz3e9KEUWm1Cfi1WKW4oBqsFRS50hTSBBYf8nmFEhUF-CFs0fnEgswk9hHcKBzbu93Xa2ftV6MvCG6Fdg-pe6oxiQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633398149,\"updated\":1633398149,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}}",
       "Content-Type" : "application/json; charset=utf-8",
       "X-Powered-By" : "ASP.NET"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/deletedkeys/testKey7/recover?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.vault.azure.net/deletedkeys/testkey73587481d/recover?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "733",
+      "content-length" : "715",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 23 Apr 2021 07:48:54 GMT",
+      "Date" : "Tue, 05 Oct 2021 01:42:34 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
+      "x-ms-keyvault-region" : "centralus",
       "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "82a50e82-6fe5-4606-864d-7a76d8c6eaca",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"key\":{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testKey7/b8bec98c831a4b7e85d7afce4efe2b27\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"77Z-q2xfebtai525-RlnEAVrBSMQXC9loyCBRGfFbl7l53CEVUPYeU8kElMbhjsBbla-cCbH4c8S_0RIqqVki8PUxpvn5OjEGfeSl3UcF1CqI5liA72vEEl2cD-jQZ6-2w4sbGGnSJ5wZjsUeKzNCWmoPc2PWx-ESKZed4sdobxoiEUP5vKbSSCt0a5Rbs4l4qo0e8QMT3TdBeoojyUEOgz2xCd2m3ed1OquJztKBTxAa8JnaAkzwSXEHM2Hq0FLI_Lo9M18-AjiDPcLoJZC0ZuZSLK47mKXaMEnk8sFlLG_6NcidigJFWOg09z2NbiF6Kdxx_9HMD7xnRexvOrCaQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1619164119,\"updated\":1619164119,\"recoveryLevel\":\"Recoverable+Purgeable\",\"recoverableDays\":90}}",
+      "x-ms-request-id" : "756456cf-da61-4f2f-bdbd-b924fe220245",
+      "x-ms-keyvault-service-version" : "1.9.132.3",
+      "Body" : "{\"key\":{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testkey73587481d/e975da94c7d44b95ae61470da0ea4106\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"3TlZahIqYOLj_m1Lhf7otV9AF3o-8_KhP-8z9vilCVVvR2lInKnMnO20b74--GkW3_60rH5axIbj0bVD6-EkqFW5IqeT9PlxKWrxYWUP11iJnyLZMeKd_1ev_kTiNWlSqaYP3MvxjRk6SmJNOMAjYTx-XE7zCCTRpfXakbBBVEUIquIxU2WcOx3TnRvX68XUe2O9Sfuv7uR3i-7ximsDF3CJyM3fK0k-BeY0xCqpxgU4BsUklC6sS-w5nnj5kzz3e9KEUWm1Cfi1WKW4oBqsFRS50hTSBBYf8nmFEhUF-CFs0fnEgswk9hHcKBzbu93Xa2ftV6MvCG6Fdg-pe6oxiQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633398149,\"updated\":1633398149,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}}",
       "Content-Type" : "application/json; charset=utf-8",
       "X-Powered-By" : "ASP.NET"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testKey7/?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testkey73587481d/?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "333",
+      "content-length" : "304",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Date" : "Fri, 23 Apr 2021 07:48:54 GMT",
+      "Date" : "Tue, 05 Oct 2021 01:42:34 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
+      "x-ms-keyvault-region" : "centralus",
       "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "334df0cd-8bdb-4a0e-817e-c700cc72a039",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"A key with (name/id) testKey7 was not found in this key vault. If you recently deleted this key you may be able to recover it using the correct recovery command. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125182\"}}",
+      "x-ms-request-id" : "2a8bb5e3-ab4a-4771-8fa8-26443ec5c765",
+      "x-ms-keyvault-service-version" : "1.9.132.3",
+      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"A key with (name/id) testkey73587481d was not found in this key vault. If you recently deleted this key you may be able to recover it using the correct recovery command. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125182\"}}",
       "Content-Type" : "application/json; charset=utf-8",
       "X-Powered-By" : "ASP.NET"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testKey7/?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testkey73587481d/?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "333",
+      "content-length" : "304",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Date" : "Fri, 23 Apr 2021 07:48:55 GMT",
+      "Date" : "Tue, 05 Oct 2021 01:42:34 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
+      "x-ms-keyvault-region" : "centralus",
       "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "66a9f615-537e-4bb0-8058-ab0e7c66d896",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"A key with (name/id) testKey7 was not found in this key vault. If you recently deleted this key you may be able to recover it using the correct recovery command. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125182\"}}",
+      "x-ms-request-id" : "aca9d616-e8c6-4a9b-ba6c-4304f90ae47a",
+      "x-ms-keyvault-service-version" : "1.9.132.3",
+      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"A key with (name/id) testkey73587481d was not found in this key vault. If you recently deleted this key you may be able to recover it using the correct recovery command. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125182\"}}",
       "Content-Type" : "application/json; charset=utf-8",
       "X-Powered-By" : "ASP.NET"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testKey7/?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testkey73587481d/?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "333",
+      "content-length" : "304",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Date" : "Fri, 23 Apr 2021 07:48:56 GMT",
+      "Date" : "Tue, 05 Oct 2021 01:42:36 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
+      "x-ms-keyvault-region" : "centralus",
       "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "c44a91e9-e79a-4e83-8eb3-34c6922919cd",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"A key with (name/id) testKey7 was not found in this key vault. If you recently deleted this key you may be able to recover it using the correct recovery command. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125182\"}}",
+      "x-ms-request-id" : "e7f92643-411a-4d16-ba8c-5bb0d56f59ed",
+      "x-ms-keyvault-service-version" : "1.9.132.3",
+      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"A key with (name/id) testkey73587481d was not found in this key vault. If you recently deleted this key you may be able to recover it using the correct recovery command. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125182\"}}",
       "Content-Type" : "application/json; charset=utf-8",
       "X-Powered-By" : "ASP.NET"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testKey7/?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testkey73587481d/?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "333",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "Date" : "Fri, 23 Apr 2021 07:48:57 GMT",
-      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
-      "Expires" : "-1",
-      "x-ms-request-id" : "71401c7c-ecfc-45c6-a285-9894e1f6d74d",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"A key with (name/id) testKey7 was not found in this key vault. If you recently deleted this key you may be able to recover it using the correct recovery command. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125182\"}}",
-      "Content-Type" : "application/json; charset=utf-8",
-      "X-Powered-By" : "ASP.NET"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testKey7/?api-version=7.3-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "333",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "Date" : "Fri, 23 Apr 2021 07:48:58 GMT",
-      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
-      "Expires" : "-1",
-      "x-ms-request-id" : "503b9875-08fe-406b-8b03-79bc4ae77fdc",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"A key with (name/id) testKey7 was not found in this key vault. If you recently deleted this key you may be able to recover it using the correct recovery command. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125182\"}}",
-      "Content-Type" : "application/json; charset=utf-8",
-      "X-Powered-By" : "ASP.NET"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testKey7/?api-version=7.3-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "333",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "Date" : "Fri, 23 Apr 2021 07:48:59 GMT",
-      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
-      "Expires" : "-1",
-      "x-ms-request-id" : "abb874ab-cf8d-49d1-881b-5279480f8b1d",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"A key with (name/id) testKey7 was not found in this key vault. If you recently deleted this key you may be able to recover it using the correct recovery command. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125182\"}}",
-      "Content-Type" : "application/json; charset=utf-8",
-      "X-Powered-By" : "ASP.NET"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testKey7/?api-version=7.3-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "333",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "Date" : "Fri, 23 Apr 2021 07:49:00 GMT",
-      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
-      "Expires" : "-1",
-      "x-ms-request-id" : "ab7e5bd5-93fb-4b2e-b159-9cca0dccec8a",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"A key with (name/id) testKey7 was not found in this key vault. If you recently deleted this key you may be able to recover it using the correct recovery command. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125182\"}}",
-      "Content-Type" : "application/json; charset=utf-8",
-      "X-Powered-By" : "ASP.NET"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testKey7/?api-version=7.3-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "333",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "Date" : "Fri, 23 Apr 2021 07:49:01 GMT",
-      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
-      "Expires" : "-1",
-      "x-ms-request-id" : "70b03cde-5223-484a-b694-265c5826c110",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"A key with (name/id) testKey7 was not found in this key vault. If you recently deleted this key you may be able to recover it using the correct recovery command. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125182\"}}",
-      "Content-Type" : "application/json; charset=utf-8",
-      "X-Powered-By" : "ASP.NET"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testKey7/?api-version=7.3-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "333",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "Date" : "Fri, 23 Apr 2021 07:49:02 GMT",
-      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
-      "Expires" : "-1",
-      "x-ms-request-id" : "2b53cccf-b0f2-4de0-85c9-068cb5d0bfa2",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"A key with (name/id) testKey7 was not found in this key vault. If you recently deleted this key you may be able to recover it using the correct recovery command. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125182\"}}",
-      "Content-Type" : "application/json; charset=utf-8",
-      "X-Powered-By" : "ASP.NET"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testKey7/?api-version=7.3-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "333",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "Date" : "Fri, 23 Apr 2021 07:49:03 GMT",
-      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
-      "Expires" : "-1",
-      "x-ms-request-id" : "241843f7-60c3-4ecb-8375-0d99181706ec",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"A key with (name/id) testKey7 was not found in this key vault. If you recently deleted this key you may be able to recover it using the correct recovery command. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125182\"}}",
-      "Content-Type" : "application/json; charset=utf-8",
-      "X-Powered-By" : "ASP.NET"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testKey7/?api-version=7.3-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "333",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "Date" : "Fri, 23 Apr 2021 07:49:04 GMT",
-      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
-      "Expires" : "-1",
-      "x-ms-request-id" : "f9746f3c-9cc5-4ec8-9b02-f4fe1b1cdff3",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"A key with (name/id) testKey7 was not found in this key vault. If you recently deleted this key you may be able to recover it using the correct recovery command. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125182\"}}",
-      "Content-Type" : "application/json; charset=utf-8",
-      "X-Powered-By" : "ASP.NET"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testKey7/?api-version=7.3-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "333",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "Date" : "Fri, 23 Apr 2021 07:49:06 GMT",
-      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
-      "Expires" : "-1",
-      "x-ms-request-id" : "3b4b4c7f-8741-4f89-8c24-cce7ae7c164a",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"A key with (name/id) testKey7 was not found in this key vault. If you recently deleted this key you may be able to recover it using the correct recovery command. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125182\"}}",
-      "Content-Type" : "application/json; charset=utf-8",
-      "X-Powered-By" : "ASP.NET"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testKey7/?api-version=7.3-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "333",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "Date" : "Fri, 23 Apr 2021 07:49:06 GMT",
-      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
-      "Expires" : "-1",
-      "x-ms-request-id" : "07b0bae8-7f64-4421-bbf0-5159cc88bd5e",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"A key with (name/id) testKey7 was not found in this key vault. If you recently deleted this key you may be able to recover it using the correct recovery command. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125182\"}}",
-      "Content-Type" : "application/json; charset=utf-8",
-      "X-Powered-By" : "ASP.NET"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testKey7/?api-version=7.3-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "333",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "Date" : "Fri, 23 Apr 2021 07:49:08 GMT",
-      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
-      "Expires" : "-1",
-      "x-ms-request-id" : "282d539c-f72e-4ba4-98ef-422cffc1b526",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"A key with (name/id) testKey7 was not found in this key vault. If you recently deleted this key you may be able to recover it using the correct recovery command. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125182\"}}",
-      "Content-Type" : "application/json; charset=utf-8",
-      "X-Powered-By" : "ASP.NET"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testKey7/?api-version=7.3-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "333",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "Date" : "Fri, 23 Apr 2021 07:49:08 GMT",
-      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
-      "Expires" : "-1",
-      "x-ms-request-id" : "e9119187-203e-4d78-8787-5e19d741672e",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"A key with (name/id) testKey7 was not found in this key vault. If you recently deleted this key you may be able to recover it using the correct recovery command. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125182\"}}",
-      "Content-Type" : "application/json; charset=utf-8",
-      "X-Powered-By" : "ASP.NET"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testKey7/?api-version=7.3-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "333",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "Date" : "Fri, 23 Apr 2021 07:49:09 GMT",
-      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
-      "Expires" : "-1",
-      "x-ms-request-id" : "2423695e-3f95-4ba7-a806-316829d8eb84",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"A key with (name/id) testKey7 was not found in this key vault. If you recently deleted this key you may be able to recover it using the correct recovery command. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125182\"}}",
-      "Content-Type" : "application/json; charset=utf-8",
-      "X-Powered-By" : "ASP.NET"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testKey7/?api-version=7.3-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "733",
+      "content-length" : "715",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 23 Apr 2021 07:49:10 GMT",
+      "Date" : "Tue, 05 Oct 2021 01:42:37 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
+      "x-ms-keyvault-region" : "centralus",
       "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "51aa8421-e78f-49a3-8dee-6a7c92934a98",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"key\":{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testKey7/b8bec98c831a4b7e85d7afce4efe2b27\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"77Z-q2xfebtai525-RlnEAVrBSMQXC9loyCBRGfFbl7l53CEVUPYeU8kElMbhjsBbla-cCbH4c8S_0RIqqVki8PUxpvn5OjEGfeSl3UcF1CqI5liA72vEEl2cD-jQZ6-2w4sbGGnSJ5wZjsUeKzNCWmoPc2PWx-ESKZed4sdobxoiEUP5vKbSSCt0a5Rbs4l4qo0e8QMT3TdBeoojyUEOgz2xCd2m3ed1OquJztKBTxAa8JnaAkzwSXEHM2Hq0FLI_Lo9M18-AjiDPcLoJZC0ZuZSLK47mKXaMEnk8sFlLG_6NcidigJFWOg09z2NbiF6Kdxx_9HMD7xnRexvOrCaQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1619164119,\"updated\":1619164119,\"recoveryLevel\":\"Recoverable+Purgeable\",\"recoverableDays\":90}}",
+      "x-ms-request-id" : "e9db934e-c50a-4307-a625-105ec1ab6ca8",
+      "x-ms-keyvault-service-version" : "1.9.132.3",
+      "Body" : "{\"key\":{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testkey73587481d/e975da94c7d44b95ae61470da0ea4106\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"3TlZahIqYOLj_m1Lhf7otV9AF3o-8_KhP-8z9vilCVVvR2lInKnMnO20b74--GkW3_60rH5axIbj0bVD6-EkqFW5IqeT9PlxKWrxYWUP11iJnyLZMeKd_1ev_kTiNWlSqaYP3MvxjRk6SmJNOMAjYTx-XE7zCCTRpfXakbBBVEUIquIxU2WcOx3TnRvX68XUe2O9Sfuv7uR3i-7ximsDF3CJyM3fK0k-BeY0xCqpxgU4BsUklC6sS-w5nnj5kzz3e9KEUWm1Cfi1WKW4oBqsFRS50hTSBBYf8nmFEhUF-CFs0fnEgswk9hHcKBzbu93Xa2ftV6MvCG6Fdg-pe6oxiQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1633398149,\"updated\":1633398149,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}}",
       "Content-Type" : "application/json; charset=utf-8",
       "X-Powered-By" : "ASP.NET"
     },
     "Exception" : null
   } ],
-  "variables" : [ ]
+  "variables" : [ "testkey73587481d" ]
 }

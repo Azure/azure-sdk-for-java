@@ -17,13 +17,19 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 /**
  * Custom serializer for serializing {@link ManagementError} objects.
  */
 public final class ManagementErrorDeserializer extends StdDeserializer<Object> {
-
     private static final long serialVersionUID = 1L;
+
+    // Use compiled Patterns instead of String.replaceFirst as that compiles the target Pattern per invocation.
+    private static final Pattern CODE_PATTERN = Pattern.compile("\"code\"", Pattern.CASE_INSENSITIVE);
+    private static final Pattern MESSAGE_PATTERN = Pattern.compile("\"message\"", Pattern.CASE_INSENSITIVE);
+    private static final Pattern TARGET_PATTERN = Pattern.compile("\"target\"", Pattern.CASE_INSENSITIVE);
+    private static final Pattern DETAILS_PATTERN = Pattern.compile("\"details\"", Pattern.CASE_INSENSITIVE);
 
     private final ObjectMapper mapper;
 
@@ -74,10 +80,17 @@ public final class ManagementErrorDeserializer extends StdDeserializer<Object> {
             errorNode = errorNode.get("error");
         }
         String nodeContent = errorNode.toString();
-        nodeContent = nodeContent.replaceFirst("(?i)\"code\"", "\"code\"")
-                .replaceFirst("(?i)\"message\"", "\"message\"")
-                .replaceFirst("(?i)\"target\"", "\"target\"")
-                .replaceFirst("(?i)\"details\"", "\"details\"");
+
+        /*
+         * This uses static compiled Patterns instead of String.replaceFirst as replaceFirst is implemented using a
+         * compiled Pattern. Using String.replaceFirst will cause the Pattern to be compiled every time the code path
+         * is reach, using the static Patterns only requires that to be done once.
+         */
+        nodeContent = CODE_PATTERN.matcher(nodeContent).replaceFirst("\"code\"");
+        nodeContent = MESSAGE_PATTERN.matcher(nodeContent).replaceFirst("\"message\"");
+        nodeContent = TARGET_PATTERN.matcher(nodeContent).replaceFirst("\"target\"");
+        nodeContent = DETAILS_PATTERN.matcher(nodeContent).replaceFirst("\"details\"");
+
         JsonParser parser = new JsonFactory().createParser(nodeContent);
         parser.setCodec(mapper);
         return parser.readValueAs(this.handledType());

@@ -17,12 +17,14 @@ import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -180,7 +182,9 @@ public final class CoreUtils {
      * @param content The function which fetches items from the next page.
      * @param <T> The type of the item being returned by the paged response.
      * @return The publisher holding all the generic items combined.
+     * @deprecated Use localized implementation.
      */
+    @Deprecated
     public static <T> Publisher<T> extractAndFetch(PagedResponse<T> page, Context context,
         BiFunction<String, Context, Publisher<T>> content) {
         String nextPageLink = page.getContinuationToken();
@@ -311,41 +315,65 @@ public final class CoreUtils {
     }
 
     /**
-     * Attempts to load an environment configured default timeout, in milliseconds.
+     * Attempts to load an environment configured default timeout.
      * <p>
-     * If the environment default timeout isn't configured, {@code defaultTimeoutMillis} will be returned. If the
-     * environment default timeout is a string that isn't parseable by {@link Long#parseLong(String)}, {@code
-     * defaultTimeoutMillis} will be returned. If the environment default timeout is less than 0, 0 will be returned
-     * indicated that there is no timeout period.
+     * If the environment default timeout isn't configured, {@code defaultTimeout} will be returned. If the environment
+     * default timeout is a string that isn't parseable by {@link Long#parseLong(String)}, {@code defaultTimeout} will
+     * be returned. If the environment default timeout is less than 0, {@link Duration#ZERO} will be returned indicated
+     * that there is no timeout period.
      *
      * @param configuration The environment configurations.
      * @param timeoutPropertyName The default timeout property name.
-     * @param defaultTimoutMillis The fallback timeout to be used.
+     * @param defaultTimeout The fallback timeout to be used.
      * @param logger A {@link ClientLogger} to log exceptions.
      * @return Either the environment configured default timeout, {@code defaultTimeoutMillis}, or 0.
      */
-    public static long getDefaultTimeoutFromEnvironment(Configuration configuration, String timeoutPropertyName,
-        long defaultTimoutMillis, ClientLogger logger) {
+    public static Duration getDefaultTimeoutFromEnvironment(Configuration configuration, String timeoutPropertyName,
+        Duration defaultTimeout, ClientLogger logger) {
         String environmentTimeout = configuration.get(timeoutPropertyName);
 
         // Environment wasn't configured with the timeout property.
         if (CoreUtils.isNullOrEmpty(environmentTimeout)) {
-            return defaultTimoutMillis;
+            return defaultTimeout;
         }
 
         try {
             long timeoutMillis = Long.parseLong(environmentTimeout);
             if (timeoutMillis < 0) {
-                logger.verbose("{} was set to {} ms. Using timeout of 0 ms to indicate no timeout.",
+                logger.verbose("{} was set to {} ms. Using timeout of 'Duration.ZERO' to indicate no timeout.",
                     timeoutPropertyName, timeoutMillis);
-                return 0;
+                return Duration.ZERO;
             }
 
-            return timeoutMillis;
+            return Duration.ofMillis(timeoutMillis);
         } catch (NumberFormatException ex) {
-            logger.warning("{} wasn't configured with a valid number. Using default of {} ms.", timeoutPropertyName,
-                defaultTimoutMillis, ex);
-            return defaultTimoutMillis;
+            logger.warning("{} wasn't configured with a valid number. Using default of {}.", timeoutPropertyName,
+                defaultTimeout, ex);
+            return defaultTimeout;
         }
+    }
+
+    /**
+     * Merges two {@link Context Contexts} into a new {@link Context}.
+     *
+     * @param into Context being merged into.
+     * @param from Context being merged.
+     * @return A new Context that is the merged Contexts.
+     * @throws NullPointerException If either {@code into} or {@code from} is null.
+     */
+    public static Context mergeContexts(Context into, Context from) {
+        Objects.requireNonNull(into, "'into' cannot be null.");
+        Objects.requireNonNull(from, "'from' cannot be null.");
+
+        Context[] contextChain = from.getContextChain();
+
+        Context returnContext = into;
+        for (Context toAdd : contextChain) {
+            if (toAdd != null) {
+                returnContext = returnContext.addData(toAdd.getKey(), toAdd.getValue());
+            }
+        }
+
+        return returnContext;
     }
 }

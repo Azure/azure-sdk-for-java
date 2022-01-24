@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
  */
 @Fluent
 public class AttestationSignerImpl implements AttestationSigner {
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
      /**
      * Sets the signing certificate.
@@ -74,7 +75,7 @@ public class AttestationSignerImpl implements AttestationSigner {
     /**
      * Gets the Certificates associated with this signer.
      *
-     * The Certificates is an X.509 certificate chain associated with a particular attestation signer.
+     * Certificates are an X.509 certificate chain associated with a particular attestation signer.
      *
      * It corresponds to the `x5c` property on a JSON Web Key. See <a href="https://datatracker.ietf.org/doc/html/rfc7517#section-4.7">JsonWebKey RFC Section 4.7</a>
      * for more details.
@@ -135,8 +136,7 @@ public class AttestationSignerImpl implements AttestationSigner {
 
         JsonWebKey jsonWebKey;
         try {
-            ObjectMapper om = new ObjectMapper();
-            jsonWebKey = om.readValue(serializedKey, JsonWebKey.class);
+            jsonWebKey = MAPPER.readValue(serializedKey, JsonWebKey.class);
         } catch (JsonProcessingException e) {
             throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }

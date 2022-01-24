@@ -105,6 +105,10 @@ public final class Region {
      */
     public static final Region SWITZERLAND_NORTH = new Region("switzerlandnorth", "Switzerland North");
     /**
+     * Sweden Central (Europe) (recommended)
+     */
+    public static final Region SWEDEN_CENTRAL = new Region("swedencentral", "Sweden Central");
+    /**
      * France South (Europe)
      */
     public static final Region FRANCE_SOUTH = new Region("francesouth", "France South");

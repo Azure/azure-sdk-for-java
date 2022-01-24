@@ -205,7 +205,7 @@ public final class DscpConfigurationsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -263,7 +263,7 @@ public final class DscpConfigurationsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -289,7 +289,7 @@ public final class DscpConfigurationsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return differentiated Services Code Point configuration for any given network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DscpConfigurationInner>, DscpConfigurationInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String dscpConfigurationName, DscpConfigurationInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -301,7 +301,7 @@ public final class DscpConfigurationsClientImpl
                 this.client.getHttpPipeline(),
                 DscpConfigurationInner.class,
                 DscpConfigurationInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -316,7 +316,7 @@ public final class DscpConfigurationsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return differentiated Services Code Point configuration for any given network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DscpConfigurationInner>, DscpConfigurationInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String dscpConfigurationName, DscpConfigurationInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -343,7 +343,7 @@ public final class DscpConfigurationsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return differentiated Services Code Point configuration for any given network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DscpConfigurationInner>, DscpConfigurationInner> beginCreateOrUpdate(
         String resourceGroupName, String dscpConfigurationName, DscpConfigurationInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, dscpConfigurationName, parameters).getSyncPoller();
@@ -361,7 +361,7 @@ public final class DscpConfigurationsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return differentiated Services Code Point configuration for any given network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DscpConfigurationInner>, DscpConfigurationInner> beginCreateOrUpdate(
         String resourceGroupName, String dscpConfigurationName, DscpConfigurationInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, dscpConfigurationName, parameters, context).getSyncPoller();
@@ -474,7 +474,7 @@ public final class DscpConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -525,7 +525,7 @@ public final class DscpConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -549,12 +549,13 @@ public final class DscpConfigurationsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String dscpConfigurationName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, dscpConfigurationName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -568,7 +569,7 @@ public final class DscpConfigurationsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String dscpConfigurationName, Context context) {
         context = this.client.mergeContext(context);
@@ -589,7 +590,7 @@ public final class DscpConfigurationsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dscpConfigurationName) {
         return beginDeleteAsync(resourceGroupName, dscpConfigurationName).getSyncPoller();
     }
@@ -605,7 +606,7 @@ public final class DscpConfigurationsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String dscpConfigurationName, Context context) {
         return beginDeleteAsync(resourceGroupName, dscpConfigurationName, context).getSyncPoller();
@@ -708,7 +709,7 @@ public final class DscpConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -759,7 +760,7 @@ public final class DscpConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -856,7 +857,7 @@ public final class DscpConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -910,7 +911,7 @@ public final class DscpConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1014,7 +1015,7 @@ public final class DscpConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1056,7 +1057,7 @@ public final class DscpConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

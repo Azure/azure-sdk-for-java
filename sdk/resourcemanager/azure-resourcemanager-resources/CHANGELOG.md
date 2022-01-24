@@ -1,6 +1,42 @@
 # Release History
 
-## 2.8.0-beta.1 (Unreleased)
+## 2.12.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.11.0 (2022-01-17)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources
+
+## 2.10.0 (2021-11-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources
+
+## 2.9.0 (2021-10-21)
+
+### Features Added
+
+- Added support for `validateMoveResources` in `GenericResources`.
+
+## 2.8.0 (2021-09-15)
+
+### Dependency Updates
+
+- Updated `api-version` of policy to `2021-06-01`.
 
 ### Other Changes
 

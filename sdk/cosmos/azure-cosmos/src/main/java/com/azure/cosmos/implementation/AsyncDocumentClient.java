@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
+import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
@@ -27,7 +28,7 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.concurrent.ConcurrentMap;
+import java.util.Map;
 
 /**
  * Provides a client-side logical representation of the Azure Cosmos DB
@@ -90,6 +91,7 @@ public interface AsyncDocumentClient {
         boolean transportClientSharing;
         boolean contentResponseOnWriteEnabled;
         private CosmosClientMetadataCachesSnapshot state;
+        private ApiType apiType;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -102,6 +104,11 @@ public interface AsyncDocumentClient {
 
         public Builder withState(CosmosClientMetadataCachesSnapshot state) {
             this.state = state;
+            return this;
+        }
+
+        public Builder withApiType(ApiType apiType) {
+            this.apiType = apiType;
             return this;
         }
 
@@ -214,7 +221,7 @@ public interface AsyncDocumentClient {
             ifThrowIllegalArgException(this.serviceEndpoint == null || StringUtils.isEmpty(this.serviceEndpoint.toString()), "cannot buildAsyncClient client without service endpoint");
             ifThrowIllegalArgException(
                     this.masterKeyOrResourceToken == null && (permissionFeed == null || permissionFeed.isEmpty())
-                        && this.credential == null && this.tokenCredential == null,
+                        && this.credential == null && this.tokenCredential == null && this.cosmosAuthorizationTokenResolver == null,
                     "cannot buildAsyncClient client without any one of masterKey, " +
                         "resource token, permissionFeed and azure key credential");
             ifThrowIllegalArgException(credential != null && StringUtils.isEmpty(credential.getKey()),
@@ -232,7 +239,8 @@ public interface AsyncDocumentClient {
                 sessionCapturingOverride,
                 transportClientSharing,
                 contentResponseOnWriteEnabled,
-                state);
+                state,
+                apiType);
 
             client.init(state, null);
             return client;
@@ -627,6 +635,7 @@ public interface AsyncDocumentClient {
      */
     Mono<ResourceResponse<Document>> deleteDocument(String documentLink, InternalObjectNode internalObjectNode, RequestOptions options);
 
+    Mono<ResourceResponse<Document>> deleteAllDocumentsByPartitionKey(String collectionLink, PartitionKey partitionKey, RequestOptions options);
     /**
      * Reads a document
      * <p>
@@ -1569,7 +1578,7 @@ public interface AsyncDocumentClient {
         CosmosQueryRequestOptions options
     );
 
-    ConcurrentMap<String, PartitionedQueryExecutionInfo> getQueryPlanCache();
+    Map<String, PartitionedQueryExecutionInfo> getQueryPlanCache();
 
     /**
      * Gets the collection cache.

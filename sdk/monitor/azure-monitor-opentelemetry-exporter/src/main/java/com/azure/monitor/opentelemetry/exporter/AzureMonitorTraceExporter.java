@@ -14,6 +14,8 @@ import com.azure.monitor.opentelemetry.exporter.implementation.models.RequestDat
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryExceptionData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryExceptionDetails;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
+import com.azure.monitor.opentelemetry.exporter.implementation.FormattedDuration;
+import com.azure.monitor.opentelemetry.exporter.implementation.VersionGenerator;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.SpanId;
@@ -28,7 +30,6 @@ import reactor.util.context.Context;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -213,7 +214,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         // set dependency-specific properties
         data.setId(span.getSpanId());
         data.setName(span.getName());
-        data.setDuration(getFormattedDuration(Duration.ofNanos(span.getEndEpochNanos() - span.getStartEpochNanos())));
+        data.setDuration(FormattedDuration.getFormattedDuration(span.getEndEpochNanos() - span.getStartEpochNanos()));
         data.setSuccess(span.getStatus().getStatusCode() != StatusCode.ERROR);
 
         if (inProc) {
@@ -244,11 +245,11 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
             return;
         }
         String azureNamespace = attributes.get(AZURE_NAMESPACE);
-        if (azureNamespace != null && azureNamespace.equals("Microsoft.EventHub")) {
+        if (azureNamespace != null && "Microsoft.EventHub".equals(azureNamespace)) {
             applyEventHubsSpan(attributes, remoteDependencyData);
             return;
         }
-        if (azureNamespace != null && azureNamespace.equals("Microsoft.ServiceBus")) {
+        if (azureNamespace != null && "Microsoft.ServiceBus".equals(azureNamespace)) {
             applyServiceBusSpan(attributes, remoteDependencyData);
             return;
         }
@@ -538,7 +539,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
 
         // set request-specific properties
         data.setName(operationName);
-        data.setDuration(getFormattedDuration(Duration.ofNanos(span.getEndEpochNanos() - startEpochNanos)));
+        data.setDuration(FormattedDuration.getFormattedDuration(span.getEndEpochNanos() - startEpochNanos));
         data.setSuccess(span.getStatus().getStatusCode() != StatusCode.ERROR);
 
         String httpUrl = attributes.get(SemanticAttributes.HTTP_URL);
@@ -614,8 +615,8 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         if (azureNamespace == null) {
             return false;
         }
-        return azureNamespace.equals("Microsoft.EventHub")
-            || azureNamespace.equals("Microsoft.ServiceBus");
+        return "Microsoft.EventHub".equals(azureNamespace)
+            || "Microsoft.ServiceBus".equals(azureNamespace);
     }
 
     private static String getOperationName(SpanData span) {
@@ -691,7 +692,8 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         telemetry.setName(telemetryName);
         telemetry.setInstrumentationKey(instrumentationKey);
         telemetry.setTags(new HashMap<>());
-
+        // Set AI Internal SDK Version
+        telemetry.getTags().put(ContextTagKeys.AI_INTERNAL_SDK_VERSION.toString(), VersionGenerator.getSdkVersion());
         data.setVersion(2);
 
         MonitorBase monitorBase = new MonitorBase();
@@ -702,11 +704,6 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
 
     private static void setTime(TelemetryItem telemetry, long epochNanos) {
         telemetry.setTime(getFormattedTime(epochNanos));
-    }
-
-    private static String getFormattedDuration(Duration duration) {
-        return duration.toDays() + "." + duration.toHours() + ":" + duration.toMinutes() + ":" + duration.getSeconds()
-            + "." + duration.toMillis();
     }
 
     private static OffsetDateTime getFormattedTime(long epochNanos) {
@@ -744,7 +741,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
             }
             // TODO (trask) use az.namespace for something?
             if (stringKey.equals(AZURE_SDK_MESSAGE_BUS_DESTINATION.getKey())
-                || stringKey.equals("az.namespace")) {
+                || "az.namespace".equals(stringKey)) {
                 return;
             }
             // special case mappings

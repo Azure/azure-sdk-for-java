@@ -30,7 +30,7 @@ public class SecretClientBuilderTest {
     public void setUp() {
         vaultUrl = "https://key-vault-url.vault.azure.net/";
         secretName = "TestSecret";
-        serviceVersion = SecretServiceVersion.V7_1;
+        serviceVersion = SecretServiceVersion.V7_2;
     }
 
     @Test

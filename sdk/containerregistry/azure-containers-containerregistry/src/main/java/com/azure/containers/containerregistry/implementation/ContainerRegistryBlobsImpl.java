@@ -45,14 +45,14 @@ public final class ContainerRegistryBlobsImpl {
     private final ContainerRegistryBlobsService service;
 
     /** The service client containing this operation class. */
-    private final ContainerRegistryImpl client;
+    private final AzureContainerRegistryImpl client;
 
     /**
      * Initializes an instance of ContainerRegistryBlobsImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ContainerRegistryBlobsImpl(ContainerRegistryImpl client) {
+    ContainerRegistryBlobsImpl(AzureContainerRegistryImpl client) {
         this.service =
                 RestProxy.create(
                         ContainerRegistryBlobsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -60,11 +60,11 @@ public final class ContainerRegistryBlobsImpl {
     }
 
     /**
-     * The interface defining all the services for ContainerRegistryContainerRegistryBlobs to be used by the proxy
+     * The interface defining all the services for AzureContainerRegistryContainerRegistryBlobs to be used by the proxy
      * service to perform REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "ContainerRegistryCon")
+    @ServiceInterface(name = "AzureContainerRegist")
     public interface ContainerRegistryBlobsService {
         @Get("/v2/{name}/blobs/{digest}")
         @ExpectedResponses({200, 307})

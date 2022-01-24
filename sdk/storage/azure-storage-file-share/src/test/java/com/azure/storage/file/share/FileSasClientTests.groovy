@@ -1,12 +1,11 @@
 package com.azure.storage.file.share
 
-import com.azure.storage.common.StorageSharedKeyCredential
+
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
-import com.azure.storage.common.sas.SasIpRange
 import com.azure.storage.common.sas.SasProtocol
 import com.azure.storage.file.share.models.ShareAccessPolicy
 import com.azure.storage.file.share.models.ShareSignedIdentifier
@@ -189,12 +188,12 @@ class FileSasClientTests extends APISpec {
      */
     def "Remember about string to sign deprecation"() {
         setup:
-        def client = shareBuilderHelper(shareName).credential(env.primaryAccount.credential).buildClient()
+        def client = shareBuilderHelper(shareName).credential(environment.primaryAccount.credential).buildClient()
         def values = new ShareServiceSasSignatureValues(namer.getUtcNow(), new ShareSasPermission())
         values.setShareName(client.getShareName())
 
         when:
-        def deprecatedStringToSign = values.generateSasQueryParameters(env.primaryAccount.credential).encode()
+        def deprecatedStringToSign = values.generateSasQueryParameters(environment.primaryAccount.credential).encode()
         def stringToSign = client.generateSas(values)
 
         then:

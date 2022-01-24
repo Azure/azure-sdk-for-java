@@ -29,15 +29,20 @@ module com.azure.core {
     exports com.azure.core.util.serializer;
     exports com.azure.core.util.tracing;
 
+    // TODO temporary until we find final shape of ObjectMapper shimming APIs
+    exports com.azure.core.implementation.jackson to com.azure.core.management, com.azure.core.serializer.json.jackson;
+
     // exporting some packages specifically for Jackson
     opens com.azure.core.http to com.fasterxml.jackson.databind;
     opens com.azure.core.models to com.fasterxml.jackson.databind;
     opens com.azure.core.util to com.fasterxml.jackson.databind;
     opens com.azure.core.util.logging to com.fasterxml.jackson.databind;
+    opens com.azure.core.util.polling to com.fasterxml.jackson.databind;
     opens com.azure.core.util.serializer to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation.logging to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation.serializer to com.fasterxml.jackson.databind;
+    opens com.azure.core.implementation.jackson to com.fasterxml.jackson.databind;
     opens com.azure.core.http.rest to com.fasterxml.jackson.databind;
 
     // Service Provider Interfaces

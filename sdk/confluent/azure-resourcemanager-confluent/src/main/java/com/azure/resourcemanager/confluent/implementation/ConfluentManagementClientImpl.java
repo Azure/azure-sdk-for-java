@@ -183,7 +183,7 @@ public final class ConfluentManagementClientImpl implements ConfluentManagementC
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-03-01-preview";
+        this.apiVersion = "2021-09-01-preview";
         this.marketplaceAgreements = new MarketplaceAgreementsClientImpl(this);
         this.organizationOperations = new OrganizationOperationsClientImpl(this);
         this.organizations = new OrganizationsClientImpl(this);

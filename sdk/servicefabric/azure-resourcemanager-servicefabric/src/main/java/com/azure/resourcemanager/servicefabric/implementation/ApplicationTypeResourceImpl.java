@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.servicefabric.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicefabric.fluent.models.ApplicationTypeResourceInner;
 import com.azure.resourcemanager.servicefabric.models.ApplicationTypeResource;
@@ -29,10 +30,6 @@ public final class ApplicationTypeResourceImpl
         return this.innerModel().type();
     }
 
-    public String provisioningState() {
-        return this.innerModel().provisioningState();
-    }
-
     public String location() {
         return this.innerModel().location();
     }
@@ -48,6 +45,14 @@ public final class ApplicationTypeResourceImpl
 
     public String etag() {
         return this.innerModel().etag();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
+    public String provisioningState() {
+        return this.innerModel().provisioningState();
     }
 
     public Region region() {

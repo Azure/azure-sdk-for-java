@@ -43,20 +43,20 @@ public final class OperationResultImpl implements OperationResult {
         return this.innerModel().percentComplete();
     }
 
-    public String code() {
-        return this.innerModel().code();
-    }
-
-    public String message() {
-        return this.innerModel().message();
-    }
-
     public String operationKind() {
         return this.innerModel().operationKind();
     }
 
     public String operationState() {
         return this.innerModel().operationState();
+    }
+
+    public String code() {
+        return this.innerModel().code();
+    }
+
+    public String message() {
+        return this.innerModel().message();
     }
 
     public OperationResultInner innerModel() {

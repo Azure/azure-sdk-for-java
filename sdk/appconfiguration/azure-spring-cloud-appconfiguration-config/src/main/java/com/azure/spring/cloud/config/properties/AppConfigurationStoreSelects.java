@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.properties;
 
+import static com.azure.spring.cloud.config.AppConfigurationConstants.EMPTY_LABEL;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -16,12 +18,16 @@ import org.springframework.util.StringUtils;
 /**
  * Properties on what Selects are checked before loading configurations.
  */
-public class AppConfigurationStoreSelects {
+public final class AppConfigurationStoreSelects {
 
-    private static final String EMPTY_LABEL = "\0";
-
+    /**
+     * Label for requesting all configurations with (No Label)
+     */
     private static final String[] EMPTY_LABEL_ARRAY = { EMPTY_LABEL };
 
+    /**
+     * Separator for multiple labels
+     */
     public static final String LABEL_SEPARATOR = ",";
 
     @NotNull
@@ -73,6 +79,15 @@ public class AppConfigurationStoreSelects {
     }
 
     /**
+     * Get all labels as a single String
+     * @param profiles current user profiles
+     * @return comma separated list of labels
+     */
+    public String getLabelFilterText(List<String> profiles) {
+        return String.join(",", getLabelFilter(profiles));
+    }
+
+    /**
      * Used for Generating Property Source name only.
      * 
      * @return String all labels combined.
@@ -90,6 +105,9 @@ public class AppConfigurationStoreSelects {
         return this;
     }
 
+    /**
+     * Validates key-filter and label-filter are valid.
+     */
     @PostConstruct
     public void validateAndInit() {
         Assert.isTrue(!keyFilter.contains("*"), "KeyFilter must not contain asterisk(*)");

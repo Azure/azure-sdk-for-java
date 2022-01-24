@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.eventgrid.fluent.models.DynamicDeliveryAttributeMappingProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -15,16 +15,31 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** Dynamic delivery attribute mapping details. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Dynamic")
-@JsonFlatten
 @Fluent
-public class DynamicDeliveryAttributeMapping extends DeliveryAttributeMapping {
+public final class DynamicDeliveryAttributeMapping extends DeliveryAttributeMapping {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DynamicDeliveryAttributeMapping.class);
 
     /*
-     * JSON path in the event which contains attribute value.
+     * Properties of dynamic delivery attribute mapping.
      */
-    @JsonProperty(value = "properties.sourceField")
-    private String sourceField;
+    @JsonProperty(value = "properties")
+    private DynamicDeliveryAttributeMappingProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: Properties of dynamic delivery attribute mapping.
+     *
+     * @return the innerProperties value.
+     */
+    private DynamicDeliveryAttributeMappingProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DynamicDeliveryAttributeMapping withName(String name) {
+        super.withName(name);
+        return this;
+    }
 
     /**
      * Get the sourceField property: JSON path in the event which contains attribute value.
@@ -32,7 +47,7 @@ public class DynamicDeliveryAttributeMapping extends DeliveryAttributeMapping {
      * @return the sourceField value.
      */
     public String sourceField() {
-        return this.sourceField;
+        return this.innerProperties() == null ? null : this.innerProperties().sourceField();
     }
 
     /**
@@ -42,14 +57,10 @@ public class DynamicDeliveryAttributeMapping extends DeliveryAttributeMapping {
      * @return the DynamicDeliveryAttributeMapping object itself.
      */
     public DynamicDeliveryAttributeMapping withSourceField(String sourceField) {
-        this.sourceField = sourceField;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public DynamicDeliveryAttributeMapping withName(String name) {
-        super.withName(name);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DynamicDeliveryAttributeMappingProperties();
+        }
+        this.innerProperties().withSourceField(sourceField);
         return this;
     }
 
@@ -61,5 +72,8 @@ public class DynamicDeliveryAttributeMapping extends DeliveryAttributeMapping {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

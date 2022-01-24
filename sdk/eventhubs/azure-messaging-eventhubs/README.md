@@ -57,7 +57,7 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs</artifactId>
-    <version>5.8.0</version>
+    <version>5.10.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -79,8 +79,7 @@ Both the asynchronous and synchronous Event Hub producer and consumer clients ca
 
 The snippet below creates a synchronous Event Hub producer.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L31-L35 -->
-```java
+```java readme-sample-createSynchronousEventHubProducer
 String connectionString = "<< CONNECTION STRING FOR THE EVENT HUBS NAMESPACE >>";
 String eventHubName = "<< NAME OF THE EVENT HUB >>";
 EventHubProducerClient producer = new EventHubClientBuilder()
@@ -98,7 +97,7 @@ platform. First, add the package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.2.3</version>
+    <version>1.4.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -113,8 +112,7 @@ Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds
 running environment. For more information about using Azure Active Directory authorization with Event Hubs, please refer
 to [the associated documentation][aad_authorization].
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L42-L51 -->
-```java
+```java readme-sample-useAadAuthorization
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .build();
 
@@ -146,7 +144,7 @@ EventHubProducerClient client = new EventHubClientBuilder()
 - A **consumer group** is a view of an entire Event Hub. Consumer groups enable multiple consuming applications to each
   have a separate view of the event stream, and to read the stream independently at their own pace and from their own
   position. There can be at most 5 concurrent readers on a partition per consumer group; however it is recommended that
-  there is only one active consumer for a given partition and consumer group pairing. Each active reader receives all of
+  there is only one active consumer for a given partition and consumer group pairing. Each active reader receives
   the events from its partition; if there are multiple readers on the same partition, then they will receive duplicate
   events.
 
@@ -173,8 +171,7 @@ Hubs service to hash the events and send them to the same partition.
 The snippet below creates a synchronous producer and sends events to any partition, allowing Event Hubs service to route
 the event to an available partition.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L59-L81 -->
-```java
+```java readme-sample-publishEvents
 EventHubProducerClient producer = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
     .buildProducerClient();
@@ -206,8 +203,7 @@ Many Event Hub operations take place within the scope of a specific partition. A
 `getPartitionIds()` or `getEventHubProperties()` to get the partition ids and metadata about in their Event Hub
 instance.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L88-L96 -->
-```java
+```java readme-sample-publishEventsToPartition
 EventHubProducerClient producer = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
     .buildProducerClient();
@@ -225,8 +221,7 @@ When a set of events are not associated with any specific partition, it may be d
 Hubs service keep different events or batches of events together on the same partition. This can be accomplished by
 setting a `partition key` when publishing the events.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L103-L111 -->
-```java
+```java readme-sample-publishEventsWithPartitionKey
 EventHubProducerClient producer = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
     .buildProducerClient();
@@ -247,12 +242,11 @@ specify where in the event stream to begin receiving events.
 #### Consume events with EventHubConsumerAsyncClient
 
 In the snippet below, we create an asynchronous consumer that receives events from `partitionId` and only listens
-to newest events that get pushed to the partition. Developers can begin receiving events from multiple partitions using
+to the newest events that get pushed to the partition. Developers can begin receiving events from multiple partitions using
 the same `EventHubConsumerAsyncClient` by calling `receiveFromPartition(String, EventPosition)` with another partition
 id.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L118-L128 -->
-```java
+```java readme-sample-consumeEventsFromPartition
 EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
     .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
@@ -271,8 +265,7 @@ consumer.receiveFromPartition("0", EventPosition.latest()).subscribe(event -> {
 Developers can create a synchronous consumer that returns events in batches using an `EventHubConsumerClient`. In the
 snippet below, a consumer is created that starts reading events from the beginning of the partition's event stream.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L135-L147 -->
-```java
+```java readme-sample-consumeEventsFromPartitionUsingSyncClient
 EventHubConsumerClient consumer = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
     .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
@@ -302,9 +295,7 @@ In our example, we will focus on building the [`EventProcessorClient`][EventProc
 received from the Event Hub and writes to console. For production applications, it's recommended to use a durable
 store like [Checkpoint Store with Azure Storage Blobs][BlobCheckpointStore].
 
-
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L155-L176 -->
-```java
+```java readme-sample-consumeEventsUsingEventProcessor
 EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
     .consumerGroup("<< CONSUMER GROUP NAME >>")
     .connectionString("<< EVENT HUB CONNECTION STRING >>")
@@ -335,7 +326,11 @@ eventProcessorClient.stop();
 
 Azure SDK for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite
 their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
-locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
+locate the root issue.
+
+View the [Configure logging in the Azure SDK for Java][logging] article for guidance about enabling logging. In
+addition, [TROUBLESHOOTING.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventhubs/azure-messaging-eventhubs/docs/troubleshooting.md) has instructions to enable VERBOSE logging that helps the
+Azure SDK team diagnose Event Hubs specific problems.
 
 ### Enable AMQP transport logging
 
@@ -419,7 +414,7 @@ Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/
 [SampleCheckpointStore]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/SampleCheckpointStore.java
 [java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+[logging]: https://docs.microsoft.com/azure/developer/java/sdk/logging-overview
 [maven]: https://maven.apache.org/
 [oasis_amqp_v1_error]: https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-error
 [oasis_amqp_v1]: https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html

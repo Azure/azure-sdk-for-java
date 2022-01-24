@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.eventgrid.fluent.models.StorageBlobDeadLetterDestinationProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -15,24 +15,24 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** Information about the storage blob based dead letter destination. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
 @JsonTypeName("StorageBlob")
-@JsonFlatten
 @Fluent
-public class StorageBlobDeadLetterDestination extends DeadLetterDestination {
+public final class StorageBlobDeadLetterDestination extends DeadLetterDestination {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageBlobDeadLetterDestination.class);
 
     /*
-     * The Azure Resource ID of the storage account that is the destination of
-     * the deadletter events
+     * The properties of the Storage Blob based deadletter destination
      */
-    @JsonProperty(value = "properties.resourceId")
-    private String resourceId;
+    @JsonProperty(value = "properties")
+    private StorageBlobDeadLetterDestinationProperties innerProperties;
 
-    /*
-     * The name of the Storage blob container that is the destination of the
-     * deadletter events
+    /**
+     * Get the innerProperties property: The properties of the Storage Blob based deadletter destination.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.blobContainerName")
-    private String blobContainerName;
+    private StorageBlobDeadLetterDestinationProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the resourceId property: The Azure Resource ID of the storage account that is the destination of the
@@ -41,7 +41,7 @@ public class StorageBlobDeadLetterDestination extends DeadLetterDestination {
      * @return the resourceId value.
      */
     public String resourceId() {
-        return this.resourceId;
+        return this.innerProperties() == null ? null : this.innerProperties().resourceId();
     }
 
     /**
@@ -52,7 +52,10 @@ public class StorageBlobDeadLetterDestination extends DeadLetterDestination {
      * @return the StorageBlobDeadLetterDestination object itself.
      */
     public StorageBlobDeadLetterDestination withResourceId(String resourceId) {
-        this.resourceId = resourceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageBlobDeadLetterDestinationProperties();
+        }
+        this.innerProperties().withResourceId(resourceId);
         return this;
     }
 
@@ -63,7 +66,7 @@ public class StorageBlobDeadLetterDestination extends DeadLetterDestination {
      * @return the blobContainerName value.
      */
     public String blobContainerName() {
-        return this.blobContainerName;
+        return this.innerProperties() == null ? null : this.innerProperties().blobContainerName();
     }
 
     /**
@@ -74,7 +77,10 @@ public class StorageBlobDeadLetterDestination extends DeadLetterDestination {
      * @return the StorageBlobDeadLetterDestination object itself.
      */
     public StorageBlobDeadLetterDestination withBlobContainerName(String blobContainerName) {
-        this.blobContainerName = blobContainerName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageBlobDeadLetterDestinationProperties();
+        }
+        this.innerProperties().withBlobContainerName(blobContainerName);
         return this;
     }
 
@@ -86,5 +92,8 @@ public class StorageBlobDeadLetterDestination extends DeadLetterDestination {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

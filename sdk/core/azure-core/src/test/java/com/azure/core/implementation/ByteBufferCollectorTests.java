@@ -24,11 +24,6 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  */
 public class ByteBufferCollectorTests {
     @Test
-    public void throwsOnZeroInitialSize() {
-        assertThrows(IllegalArgumentException.class, () -> new ByteBufferCollector(0));
-    }
-
-    @Test
     public void throwsOnNegativeInitialSize() {
         assertThrows(IllegalArgumentException.class, () -> new ByteBufferCollector(-1));
     }

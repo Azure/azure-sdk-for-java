@@ -10,6 +10,8 @@ import com.azure.resourcemanager.compute.models.Encryption;
 import com.azure.resourcemanager.compute.models.EncryptionSettingsCollection;
 import com.azure.resourcemanager.compute.models.NetworkAccessPolicy;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
+import com.azure.resourcemanager.compute.models.PublicNetworkAccess;
+import com.azure.resourcemanager.compute.models.SupportedCapabilities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -65,6 +67,19 @@ public final class SnapshotUpdateProperties {
      */
     @JsonProperty(value = "supportsHibernation")
     private Boolean supportsHibernation;
+
+    /*
+     * Policy for controlling export on the disk.
+     */
+    @JsonProperty(value = "publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
+
+    /*
+     * List of supported capabilities (like accelerated networking) for the
+     * image from which the OS disk was created.
+     */
+    @JsonProperty(value = "supportedCapabilities")
+    private SupportedCapabilities supportedCapabilities;
 
     /**
      * Get the osType property: the Operating System type.
@@ -218,6 +233,48 @@ public final class SnapshotUpdateProperties {
     }
 
     /**
+     * Get the publicNetworkAccess property: Policy for controlling export on the disk.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Policy for controlling export on the disk.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the SnapshotUpdateProperties object itself.
+     */
+    public SnapshotUpdateProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the supportedCapabilities property: List of supported capabilities (like accelerated networking) for the
+     * image from which the OS disk was created.
+     *
+     * @return the supportedCapabilities value.
+     */
+    public SupportedCapabilities supportedCapabilities() {
+        return this.supportedCapabilities;
+    }
+
+    /**
+     * Set the supportedCapabilities property: List of supported capabilities (like accelerated networking) for the
+     * image from which the OS disk was created.
+     *
+     * @param supportedCapabilities the supportedCapabilities value to set.
+     * @return the SnapshotUpdateProperties object itself.
+     */
+    public SnapshotUpdateProperties withSupportedCapabilities(SupportedCapabilities supportedCapabilities) {
+        this.supportedCapabilities = supportedCapabilities;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -228,6 +285,9 @@ public final class SnapshotUpdateProperties {
         }
         if (encryption() != null) {
             encryption().validate();
+        }
+        if (supportedCapabilities() != null) {
+            supportedCapabilities().validate();
         }
     }
 }

@@ -21,6 +21,8 @@ import com.azure.core.util.FluxUtil;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.http.Fault;
 import io.netty.handler.proxy.ProxyConnectException;
+import io.netty.resolver.DefaultAddressResolverGroup;
+import io.netty.resolver.NoopAddressResolverGroup;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -32,6 +34,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+import reactor.netty.resources.ConnectionProvider;
 import reactor.test.StepVerifier;
 import reactor.test.StepVerifierOptions;
 
@@ -40,8 +43,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,6 +59,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class NettyAsyncHttpClientTests {
@@ -255,41 +257,20 @@ public class NettyAsyncHttpClientTests {
         HttpClient httpClient = new NettyAsyncHttpClientProvider().createInstance();
 
         int numberOfRequests = 100; // 100 = 100MB of data
-        byte[] expectedDigest = digest();
-
-        Mono<Long> numberOfBytesMono;
-        numberOfBytesMono = Flux.range(1, numberOfRequests)
+        Mono<Long> numberOfBytesMono = Flux.range(1, numberOfRequests)
             .parallel(25)
             .runOn(Schedulers.boundedElastic())
             .flatMap(ignored -> httpClient.send(new HttpRequest(HttpMethod.GET, url(server, LONG_BODY_PATH)))
-                .flatMapMany(response -> {
-                    MessageDigest md = md5Digest();
-                    return response.getBody()
-                        .doOnNext(buffer -> md.update(buffer.duplicate()))
-                        .doOnComplete(() -> assertArrayEquals(expectedDigest, md.digest()));
-                }))
+                .flatMap(HttpResponse::getBodyAsByteArray)
+                .doOnNext(bytes -> assertArrayEquals(LONG_BODY, bytes)))
             .sequential()
-            .map(ByteBuffer::remaining)
+            .map(bytes -> (long) bytes.length)
             .reduce(0L, Long::sum);
 
         StepVerifier.create(numberOfBytesMono)
             .expectNext((long) numberOfRequests * LONG_BODY.length)
             .expectComplete()
             .verify(Duration.ofSeconds(60));
-    }
-
-    private static MessageDigest md5Digest() {
-        try {
-            return MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private static byte[] digest() {
-        MessageDigest md = md5Digest();
-        md.update(NettyAsyncHttpClientTests.LONG_BODY);
-        return md.digest();
     }
 
     /**
@@ -456,6 +437,41 @@ public class NettyAsyncHttpClientTests {
 
             StepVerifier.create(httpPipeline.send(new HttpRequest(HttpMethod.GET, url(server, PROXY_TO_ADDRESS))))
                 .verifyError(ProxyConnectException.class);
+        }
+    }
+
+    @Test
+    public void httpClientWithDefaultResolverUsesNoopResolverWithProxy() {
+        try (MockProxyServer mockProxyServer = new MockProxyServer()) {
+            NettyAsyncHttpClient httpClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder()
+                .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress()))
+                .build();
+
+            assertEquals(NoopAddressResolverGroup.INSTANCE, httpClient.nettyClient.configuration().resolver());
+        }
+    }
+
+    @Test
+    public void httpClientWithConnectionProviderUsesNoopResolverWithProxy() {
+        try (MockProxyServer mockProxyServer = new MockProxyServer()) {
+            NettyAsyncHttpClient httpClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder()
+                .connectionProvider(ConnectionProvider.newConnection())
+                .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress()))
+                .build();
+
+            assertEquals(NoopAddressResolverGroup.INSTANCE, httpClient.nettyClient.configuration().resolver());
+        }
+    }
+
+    @Test
+    public void httpClientWithResolverUsesConfiguredResolverWithProxy() {
+        try (MockProxyServer mockProxyServer = new MockProxyServer()) {
+            NettyAsyncHttpClient httpClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(
+                reactor.netty.http.client.HttpClient.create().resolver(DefaultAddressResolverGroup.INSTANCE))
+                .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress()))
+                .build();
+
+            assertNotEquals(NoopAddressResolverGroup.INSTANCE, httpClient.nettyClient.configuration().resolver());
         }
     }
 

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.SensitivityLabelUpdateKind;
@@ -13,40 +12,24 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A sensitivity label update operation. */
-@JsonFlatten
 @Fluent
-public class SensitivityLabelUpdateInner extends ProxyResource {
+public final class SensitivityLabelUpdateInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SensitivityLabelUpdateInner.class);
 
     /*
-     * The op property.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.op")
-    private SensitivityLabelUpdateKind op;
+    @JsonProperty(value = "properties")
+    private SensitivityLabelUpdatePropertiesInner innerProperties;
 
-    /*
-     * Schema name of the column to update.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.schema")
-    private String schema;
-
-    /*
-     * Table name of the column to update.
-     */
-    @JsonProperty(value = "properties.table")
-    private String table;
-
-    /*
-     * Column name to update.
-     */
-    @JsonProperty(value = "properties.column")
-    private String column;
-
-    /*
-     * The sensitivity label information to apply on a column.
-     */
-    @JsonProperty(value = "properties.sensitivityLabel")
-    private SensitivityLabelInner sensitivityLabel;
+    private SensitivityLabelUpdatePropertiesInner innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the op property: The op property.
@@ -54,7 +37,7 @@ public class SensitivityLabelUpdateInner extends ProxyResource {
      * @return the op value.
      */
     public SensitivityLabelUpdateKind op() {
-        return this.op;
+        return this.innerProperties() == null ? null : this.innerProperties().op();
     }
 
     /**
@@ -64,7 +47,10 @@ public class SensitivityLabelUpdateInner extends ProxyResource {
      * @return the SensitivityLabelUpdateInner object itself.
      */
     public SensitivityLabelUpdateInner withOp(SensitivityLabelUpdateKind op) {
-        this.op = op;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SensitivityLabelUpdatePropertiesInner();
+        }
+        this.innerProperties().withOp(op);
         return this;
     }
 
@@ -74,7 +60,7 @@ public class SensitivityLabelUpdateInner extends ProxyResource {
      * @return the schema value.
      */
     public String schema() {
-        return this.schema;
+        return this.innerProperties() == null ? null : this.innerProperties().schema();
     }
 
     /**
@@ -84,7 +70,10 @@ public class SensitivityLabelUpdateInner extends ProxyResource {
      * @return the SensitivityLabelUpdateInner object itself.
      */
     public SensitivityLabelUpdateInner withSchema(String schema) {
-        this.schema = schema;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SensitivityLabelUpdatePropertiesInner();
+        }
+        this.innerProperties().withSchema(schema);
         return this;
     }
 
@@ -94,7 +83,7 @@ public class SensitivityLabelUpdateInner extends ProxyResource {
      * @return the table value.
      */
     public String table() {
-        return this.table;
+        return this.innerProperties() == null ? null : this.innerProperties().table();
     }
 
     /**
@@ -104,7 +93,10 @@ public class SensitivityLabelUpdateInner extends ProxyResource {
      * @return the SensitivityLabelUpdateInner object itself.
      */
     public SensitivityLabelUpdateInner withTable(String table) {
-        this.table = table;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SensitivityLabelUpdatePropertiesInner();
+        }
+        this.innerProperties().withTable(table);
         return this;
     }
 
@@ -114,7 +106,7 @@ public class SensitivityLabelUpdateInner extends ProxyResource {
      * @return the column value.
      */
     public String column() {
-        return this.column;
+        return this.innerProperties() == null ? null : this.innerProperties().column();
     }
 
     /**
@@ -124,7 +116,10 @@ public class SensitivityLabelUpdateInner extends ProxyResource {
      * @return the SensitivityLabelUpdateInner object itself.
      */
     public SensitivityLabelUpdateInner withColumn(String column) {
-        this.column = column;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SensitivityLabelUpdatePropertiesInner();
+        }
+        this.innerProperties().withColumn(column);
         return this;
     }
 
@@ -134,7 +129,7 @@ public class SensitivityLabelUpdateInner extends ProxyResource {
      * @return the sensitivityLabel value.
      */
     public SensitivityLabelInner sensitivityLabel() {
-        return this.sensitivityLabel;
+        return this.innerProperties() == null ? null : this.innerProperties().sensitivityLabel();
     }
 
     /**
@@ -144,7 +139,10 @@ public class SensitivityLabelUpdateInner extends ProxyResource {
      * @return the SensitivityLabelUpdateInner object itself.
      */
     public SensitivityLabelUpdateInner withSensitivityLabel(SensitivityLabelInner sensitivityLabel) {
-        this.sensitivityLabel = sensitivityLabel;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SensitivityLabelUpdatePropertiesInner();
+        }
+        this.innerProperties().withSensitivityLabel(sensitivityLabel);
         return this;
     }
 
@@ -154,8 +152,8 @@ public class SensitivityLabelUpdateInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (sensitivityLabel() != null) {
-            sensitivityLabel().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

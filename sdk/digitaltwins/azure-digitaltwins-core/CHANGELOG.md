@@ -2,6 +2,56 @@
 
 ## 1.2.0-beta.1 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.1.5 (2022-01-13)
+
+### Other Changes
+#### Dependency updates
+- Upgraded `azure-core` dependency from `1.22.0` to `1.24.1`.
+- Upgraded `azure-core-http-netty` dependency from `1.11.2 to `1.11.6`.
+- Upgraded `azure-core-serializer-json-jackson` dependency from `1.2.7` to `1.2.12`.
+- Upgraded `jackson-annotations` dependency from `2.12.5` to `2.13.1`.
+
+## 1.1.4 (2021-11-19)
+
+### Other Changes
+#### Dependency updates
+- Upgraded `azure-core` dependency from `1.21.0` to `1.22.0`.
+- Upgraded `azure-core-http-netty` dependency from `1.11.1 to `1.11.2`.
+
+## 1.1.3 (2021-10-12)
+
+### Other Changes
+#### Dependency updates
+- Upgraded `azure-core` dependency from `1.20.0` to `1.21.0`.
+  - [azure-core changelog](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/CHANGELOG.md#1210-2021-10-01)
+- Upgraded `azure-core-http-netty` dependency from `1.11.0` to `1.11.1`.
+  - [azure-core-http-netty changelog](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-netty/CHANGELOG.md#1111-2021-10-01)
+- Upgraded `azure-core-serializer-json-jackson` dependency from `1.2.7` to `1.2.8`.
+  - [azure-core-serializer-json-jackson changelog](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-serializer-json-jackson/CHANGELOG.md#128-2021-10-01)
+- Upgraded `jackson-annotations` dependency from `2.12.4` to `2.12.5`.
+
+## 1.1.2 (2021-09-10)
+
+### Bugs Fixed
+- Fixed the lack of separation between "per-call" and "per-retry" HttpPipeline policies (#22932).
+
+### Other Changes
+#### Dependency updates
+- Upgraded `azure-core` dependency from `1.16.0` to `1.20.0`.
+  - [azure-core changelog](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/CHANGELOG.md#1200-2021-09-07)
+- Upgraded `azure-core-http-netty` dependency from `1.9.2` to `1.11.0`.
+  - [azure-core-http-netty changelog](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-netty/CHANGELOG.md#1110-2021-09-07)
+- Upgraded `azure-core-serializer-json-jackson` dependency from `1.2.3` to `1.2.7`.
+  - [azure-core-serializer-json-jackson changelog](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-serializer-json-jackson/CHANGELOG.md#127-2021-09-07)
+- Upgraded `jackson-annotations` dependency from `2.12.2` to `2.12.4`.
 
 ## 1.1.1 (2021-05-19)
 

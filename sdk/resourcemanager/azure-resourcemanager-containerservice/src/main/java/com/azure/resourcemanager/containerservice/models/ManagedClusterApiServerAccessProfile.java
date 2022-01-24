@@ -49,6 +49,12 @@ public final class ManagedClusterApiServerAccessProfile {
     @JsonProperty(value = "enablePrivateClusterPublicFQDN")
     private Boolean enablePrivateClusterPublicFqdn;
 
+    /*
+     * Whether to disable run command for the cluster or not.
+     */
+    @JsonProperty(value = "disableRunCommand")
+    private Boolean disableRunCommand;
+
     /**
      * Get the authorizedIpRanges property: The IP ranges authorized to access the Kubernetes API server. IP ranges are
      * specified in CIDR format, e.g. 137.117.106.88/29. This feature is not compatible with clusters that use Public IP
@@ -143,6 +149,26 @@ public final class ManagedClusterApiServerAccessProfile {
     public ManagedClusterApiServerAccessProfile withEnablePrivateClusterPublicFqdn(
         Boolean enablePrivateClusterPublicFqdn) {
         this.enablePrivateClusterPublicFqdn = enablePrivateClusterPublicFqdn;
+        return this;
+    }
+
+    /**
+     * Get the disableRunCommand property: Whether to disable run command for the cluster or not.
+     *
+     * @return the disableRunCommand value.
+     */
+    public Boolean disableRunCommand() {
+        return this.disableRunCommand;
+    }
+
+    /**
+     * Set the disableRunCommand property: Whether to disable run command for the cluster or not.
+     *
+     * @param disableRunCommand the disableRunCommand value to set.
+     * @return the ManagedClusterApiServerAccessProfile object itself.
+     */
+    public ManagedClusterApiServerAccessProfile withDisableRunCommand(Boolean disableRunCommand) {
+        this.disableRunCommand = disableRunCommand;
         return this;
     }
 

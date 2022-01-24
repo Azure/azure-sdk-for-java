@@ -59,7 +59,7 @@
     <dependency>
       <groupId>com.nimbusds</groupId>
       <artifactId>nimbus-jose-jwt</artifactId>
-      <version>9.10</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
+      <version>9.10.1</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -89,7 +89,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>3.9.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>4.0.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

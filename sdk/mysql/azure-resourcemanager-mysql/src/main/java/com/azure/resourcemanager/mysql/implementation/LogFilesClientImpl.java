@@ -82,7 +82,7 @@ public final class LogFilesClientImpl implements LogFilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of log files.
+     * @return a list of log files along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LogFileInner>> listByServerSinglePageAsync(String resourceGroupName, String serverName) {
@@ -135,7 +135,7 @@ public final class LogFilesClientImpl implements LogFilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of log files.
+     * @return a list of log files along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LogFileInner>> listByServerSinglePageAsync(

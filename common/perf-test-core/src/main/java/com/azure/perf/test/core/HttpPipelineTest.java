@@ -21,6 +21,7 @@ public class HttpPipelineTest extends PerfStressTest<HttpPipelineOptions> {
 
     private final HttpPipeline httpPipeline;
     private final byte[] buffer = new byte[BUFFER_SIZE];
+    private boolean firstRun = true;
 
     /**
      * Creates an instance of the {@link HttpPipelineTest}.
@@ -53,6 +54,21 @@ public class HttpPipelineTest extends PerfStressTest<HttpPipelineOptions> {
 
     @Override
     public Mono<Void> runAsync() {
+        if (firstRun) {
+            firstRun = false;
+            return sendRequest().repeat(options.getFirstRunExtraRequests()).then();
+        } else {
+            return sendRequest();
+        }
+    }
+
+    /**
+     * Sends a GET request to the URL provided in the {@link HttpPipelineOptions options} given to this object's
+     * constructor.
+     *
+     * @return An empty {@link Mono}
+     */
+    public Mono<Void> sendRequest() {
         HttpRequest request = new HttpRequest(HttpMethod.GET, options.getUrl());
         return httpPipeline
             .send(request)

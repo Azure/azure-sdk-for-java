@@ -141,7 +141,7 @@ public final class TestUtils {
                 new DataFeedMetric("cost"),
                 new DataFeedMetric("revenue")))
             .setDimensions(Arrays.asList(
-                new DataFeedDimension("city"),
+                new DataFeedDimension("region"),
                 new DataFeedDimension("category"))))
             .setName("java_SQL_create_data_feed_test_sample" + UUID.randomUUID())
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
@@ -154,7 +154,7 @@ public final class TestUtils {
                 new DataFeedMetric("cost"),
                 new DataFeedMetric("revenue")))
             .setDimensions(Arrays.asList(
-                new DataFeedDimension("city"),
+                new DataFeedDimension("region"),
                 new DataFeedDimension("category"))))
             .setName("java_BLOB_create_data_feed_test_sample" + UUID.randomUUID())
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))

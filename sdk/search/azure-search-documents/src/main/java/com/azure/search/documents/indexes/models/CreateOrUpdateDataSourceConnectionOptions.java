@@ -13,7 +13,7 @@ public final class CreateOrUpdateDataSourceConnectionOptions {
     private final SearchIndexerDataSourceConnection dataSourceConnection;
 
     private boolean onlyIfUnchanged;
-    private Boolean resetRequirementsIgnored;
+    private Boolean cacheResetRequirementsIgnored;
 
     /**
      * Creates the property bag used to create or update a {@link SearchIndexerDataSourceConnection data source
@@ -66,12 +66,12 @@ public final class CreateOrUpdateDataSourceConnectionOptions {
      * Sets an optional flag that determines whether the created or updated {@link SearchIndexerDataSourceConnection
      * data source connection} ignores cache reset requirements.
      *
-     * @param resetRequirementsIgnored An optional flag that determines whether the created or updated {@link
+     * @param cacheResetRequirementsIgnored An optional flag that determines whether the created or updated {@link
      * SearchIndexerDataSourceConnection data source connection} ignores cache reset requirements.
      * @return The updated CreateOrUpdateDataSourceConnectionOptions object.
      */
-    public CreateOrUpdateDataSourceConnectionOptions setResetRequirementsIgnored(Boolean resetRequirementsIgnored) {
-        this.resetRequirementsIgnored = resetRequirementsIgnored;
+    public CreateOrUpdateDataSourceConnectionOptions setCacheResetRequirementsIgnored(Boolean cacheResetRequirementsIgnored) {
+        this.cacheResetRequirementsIgnored = cacheResetRequirementsIgnored;
         return this;
     }
 
@@ -82,7 +82,7 @@ public final class CreateOrUpdateDataSourceConnectionOptions {
      * @return Whether the created or updated {@link SearchIndexerDataSourceConnection data source connection} ignores
      * cache reset requirements.
      */
-    public Boolean isResetRequirementsIgnored() {
-        return resetRequirementsIgnored;
+    public Boolean isCacheResetRequirementsIgnored() {
+        return cacheResetRequirementsIgnored;
     }
 }

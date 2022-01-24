@@ -107,3 +107,9 @@ extends:
     AdditionalModules:
       - name: azure-storage-perf
         groupId: com.azure
+    MatrixConfigs:
+      - Name: Storage_ci
+        Path: sdk/storage/platform-matrix-ci.json
+        Selection: sparse
+        NonSparseParameters: Agent
+        GenerateVMJobs: true
