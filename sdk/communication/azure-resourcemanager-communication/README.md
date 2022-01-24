@@ -74,6 +74,9 @@ See [API design][design] for general introduction on design and key concepts on 
 
 ## Examples
 
+[Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/communication/azure-resourcemanager-communication/SAMPLE.md)
+
+
 ## Troubleshooting
 
 ## Next steps
