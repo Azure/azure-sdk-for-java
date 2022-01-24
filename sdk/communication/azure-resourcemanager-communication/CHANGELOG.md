@@ -1,7 +1,67 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.0.1 (2022-01-24)
 
+- Azure Resource Manager Communication client library for Java. This package contains Microsoft Azure SDK for Communication Management SDK. REST API for Azure Communication Services. Package tag package-2020-08-20. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.OperationStatus` was removed
+
+* `models.Status` was removed
+
+* `models.OperationStatuses` was removed
+
+#### `models.CommunicationServices` was modified
+
+* `updateWithResponse(java.lang.String,java.lang.String,fluent.models.CommunicationServiceResourceInner,com.azure.core.util.Context)` was removed
+* `createOrUpdate(java.lang.String,java.lang.String,fluent.models.CommunicationServiceResourceInner,com.azure.core.util.Context)` was removed
+* `update(java.lang.String,java.lang.String)` was removed
+* `createOrUpdate(java.lang.String,java.lang.String,fluent.models.CommunicationServiceResourceInner)` was removed
+* `createOrUpdate(java.lang.String,java.lang.String)` was removed
+
+#### `CommunicationManager` was modified
+
+* `operationStatuses()` was removed
+
+### Features Added
+
+* `models.CommunicationServiceResource$DefinitionStages` was added
+
+* `models.CommunicationServiceResource$Update` was added
+
+* `models.CommunicationServiceResource$UpdateStages` was added
+
+* `models.CommunicationServiceResource$Definition` was added
+
+#### `models.CommunicationServiceResource` was modified
+
+* `id()` was added
+* `listKeys()` was added
+* `listKeysWithResponse(com.azure.core.util.Context)` was added
+* `regenerateKey(models.RegenerateKeyParameters)` was added
+* `type()` was added
+* `refresh(com.azure.core.util.Context)` was added
+* `region()` was added
+* `name()` was added
+* `update()` was added
+* `regenerateKeyWithResponse(models.RegenerateKeyParameters,com.azure.core.util.Context)` was added
+* `regionName()` was added
+* `linkNotificationHub()` was added
+* `linkNotificationHubWithResponse(models.LinkNotificationHubParameters,com.azure.core.util.Context)` was added
+* `refresh()` was added
+
+#### `models.CommunicationServices` was modified
+
+* `define(java.lang.String)` was added
+* `getById(java.lang.String)` was added
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `deleteById(java.lang.String)` was added
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+
+#### `CommunicationManager$Configurable` was modified
+
+* `withScope(java.lang.String)` was added
 
 ## 1.0.0 (2021-04-08)
 
