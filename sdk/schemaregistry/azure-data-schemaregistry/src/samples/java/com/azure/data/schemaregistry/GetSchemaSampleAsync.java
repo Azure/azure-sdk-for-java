@@ -25,7 +25,9 @@ public class GetSchemaSampleAsync {
             .buildAsyncClient();
 
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        // Register a schema
+
+        // Get a schema using its id. The schema id is generated when it is registered via the client or Azure Portal.
+        // `subscribe` is a non-blocking operation. It hooks up the callbacks and then moves onto the next line of code.
         schemaRegistryAsyncClient
             .getSchema("{schema-id}")
             .subscribe(schema -> {

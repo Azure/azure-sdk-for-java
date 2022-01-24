@@ -9,7 +9,9 @@ import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
- * Sample to demonstrate retrieving the schema id of a schema from Schema Registry.
+ * Sample to demonstrate retrieving properties of a schema from Schema Registry.
+ *
+ * @see GetSchemaIdSampleAsync for the async sample.
  */
 public class GetSchemaIdSample {
 
@@ -25,7 +27,7 @@ public class GetSchemaIdSample {
             .credential(tokenCredential)
             .buildClient();
 
-        // Register a schema
+        // Gets the properties of an existing schema.
         SchemaProperties schemaProperties = schemaRegistryClient
             .getSchemaProperties("{group-name}", "{schema-name}", "{schema-string}", SchemaFormat.AVRO);
 

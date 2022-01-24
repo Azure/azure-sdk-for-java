@@ -10,7 +10,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * Sample to demonstrate retrieving the schema id of a schema from Schema Registry using async client.
+ * Sample to demonstrate retrieving properties of a schema from Schema Registry using async client.
  *
  * @see GetSchemaIdSample for the synchronous sample.
  */
@@ -30,7 +30,8 @@ public class GetSchemaIdSampleAsync {
 
         CountDownLatch countDownLatch = new CountDownLatch(1);
 
-        // Register a schema
+        // Gets the properties of an existing schema.
+        // `subscribe` is a non-blocking operation. It hooks up the callbacks and then moves onto the next line of code.
         schemaRegistryAsyncClient
             .getSchemaProperties("{group-name}", "{schema-name}", "{schema-string}", SchemaFormat.AVRO)
             .subscribe(schemaId -> {
@@ -40,6 +41,5 @@ public class GetSchemaIdSampleAsync {
 
         // wait for the async task to complete
         countDownLatch.await();
-
     }
 }
