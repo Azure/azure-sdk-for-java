@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-security-keyvault-keys</artifactId>
-  <version>4.4.0-beta.6</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
+  <version>4.4.0-beta.7</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
 
   <name>Microsoft Azure client library for KeyVault Keys</name>
   <description>This module contains client library for Microsoft Azure KeyVault Keys.</description>
@@ -55,9 +55,6 @@
       --add-opens com.azure.security.keyvault.keys/com.azure.security.keyvault.keys.cryptography=ALL-UNNAMED
       --add-opens com.azure.security.keyvault.keys/com.azure.security.keyvault.keys.models=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <dependencies>

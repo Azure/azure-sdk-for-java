@@ -1057,7 +1057,7 @@ public final class ConfigurationAsyncClient {
      * @return The ETag surrounded by quotations. (ex. "ETag")
      */
     private static String getETagValue(String etag) {
-        return (etag == null || etag.equals("*")) ? etag : "\"" + etag + "\"";
+        return (etag == null || "*".equals(etag)) ? etag : "\"" + etag + "\"";
     }
 
     /*

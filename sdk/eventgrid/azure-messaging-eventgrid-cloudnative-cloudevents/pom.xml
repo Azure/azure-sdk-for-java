@@ -70,9 +70,6 @@
       --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
       --add-opens com.azure.messaging.eventgrid.cloudnative.cloudevents/com.azure.messaging.eventgrid.cloudnative.cloudevents=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <developers>
@@ -86,7 +83,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventgrid</artifactId>
-      <version>4.7.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventgrid;dependency} -->
+      <version>4.8.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventgrid;dependency} -->
     </dependency>
     <dependency>
       <groupId>io.cloudevents</groupId>

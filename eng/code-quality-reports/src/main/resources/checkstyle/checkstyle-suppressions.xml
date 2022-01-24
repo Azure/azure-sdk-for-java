@@ -13,7 +13,7 @@
   <suppress checks="[a-zA-Z0-9]*" files=".*[/\\]com[/\\]microsoft[/\\].*"/>
 
   <!-- Suppress certain checks for samples. -->
-  <suppress checks="(MissingJavadocMethod|MissingJavadocType|MissingJavadocPackage|com\.azure\.tools\.checkstyle\.checks\..*)"
+  <suppress checks="(MissingJavadocMethod|MissingJavadocType|MissingJavadocPackage|EqualsAvoidNullCheck|com\.azure\.tools\.checkstyle\.checks\..*)"
             files=".*[/\\]samples[/\\].*\.java"/>
 
   <!-- Code was taken from Netty and uses its license instead of our usual one. -->
@@ -425,10 +425,12 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
             files="com.azure.search.documents.(SearchIndexingBufferedAsyncSender|SearchIndexingBufferedSender)"/>
 
+  <!-- Allow Attestation Service use of OpenTelemetry -->
+  <suppress checks="IllegalImport" files=".*[/\\]src[/\\]test[/\\]java[/\\]com[/\\]azure[/\\]security[/\\]attestation[/\\]AttestationClientTestBase.java"/>
+  <suppress checks="IllegalImport" files=".*[/\\]src[/\\]test[/\\]java[/\\]com[/\\]azure[/\\]security[/\\]attestation[/\\]AttestationTest.java"/>
+
   <!-- Suppress checks on AutoRest generated Attestation service code -->
-  <suppress checks="ThrowFromClientLogger"
-            files="com.azure.security.attestation.models.JsonWebKey.java"/>
-  <suppress checks="WhitespaceAround|ThrowFromClientLogger"
+ <suppress checks="WhitespaceAround|ThrowFromClientLogger"
             files="com.azure.security.attestation.implementation.models.*\.java"/>
 
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
@@ -471,7 +473,7 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="WhitespaceAround" files="com.azure.search.documents.indexes.models.(DataChangeDetectionPolicy|DataDeletionDetectionPolicy|SearchIndexerDataIdentity|SimilarityAlgorithm)"/>
 
   <!-- Suppression for bug https://github.com/checkstyle/checkstyle/issues/11001 -->
-  <suppress checks="ParenPad" files="com.azure.ai.textanalytics.TextAnalyticsClientTestBase" lines="1020,1024"/>
+  <suppress checks="ParenPad" files="com.azure.ai.textanalytics.TextAnalyticsClientTestBase" lines="1020, 1024"/>
 
   <!-- These APIs have already leaked implementation and cannot be changed -->
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.eventhubs.LogPartitionProcessor"/>

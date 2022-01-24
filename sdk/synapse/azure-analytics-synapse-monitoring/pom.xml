@@ -35,9 +35,6 @@
   <properties>
     <!-- synapse monitoring temporarily skipping code coverage until tests are added -->
     <jacoco.skip>true</jacoco.skip>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <dependencies>

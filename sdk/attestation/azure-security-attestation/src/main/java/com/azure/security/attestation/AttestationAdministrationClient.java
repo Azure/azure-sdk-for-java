@@ -164,7 +164,8 @@ public final class AttestationAdministrationClient {
      * <p><strong>Retrieve the current attestation policy for SGX enclaves.</strong></p>
      * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClient.getPolicyWithResponse -->
      * <pre>
-     * Response&lt;String&gt; response = client.getAttestationPolicyWithResponse&#40;AttestationType.SGX_ENCLAVE, null, Context.NONE&#41;;
+     * Response&lt;String&gt; response = client.getAttestationPolicyWithResponse&#40;AttestationType.SGX_ENCLAVE, null,
+     *     Context.NONE&#41;;
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationAdministrationClient.getPolicyWithResponse -->
      *
