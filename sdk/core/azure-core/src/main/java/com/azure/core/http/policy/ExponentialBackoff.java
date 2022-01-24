@@ -58,6 +58,12 @@ public class ExponentialBackoff implements RetryStrategy {
         this(DEFAULT_MAX_RETRIES, DEFAULT_BASE_DELAY, DEFAULT_MAX_DELAY);
     }
 
+    /**
+     * Creates an instance of {@link ExponentialBackoff}.
+     *
+     * @param options The {@link ExponentialBackoffOptions}.
+     * @throws NullPointerException if {@code options} is {@code null}.
+     */
     public ExponentialBackoff(ExponentialBackoffOptions options) {
         this(
             ObjectsUtil.requireNonNullElse(

@@ -247,6 +247,7 @@ public final class RequestRetryOptions {
      * assumed failed, default is {@link Integer#MAX_VALUE}.
      * @param secondaryHost Optional. Specified a secondary Storage account to retry requests against, default is none.
      * @return The {@link RequestRetryOptions}
+     * @throws IllegalArgumentException if {@code retryOptions} can't be mapped to {@code RequestRetryOptions}.
      */
     public static RequestRetryOptions fromRetryOptions(
         RetryOptions retryOptions,

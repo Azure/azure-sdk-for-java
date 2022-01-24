@@ -33,8 +33,8 @@ public class ServiceBusClientBuilderUnitTest {
                 .credential(FAKE_TOKEN_CREDENTIAL)
                 .sessionProcessor()
                 .queueName("fakequeue")
-                .processMessage(x -> {})
-                .processError(x -> {})
+                .processMessage(x -> { })
+                .processError(x -> { })
                 .buildProcessorClient());
         assertThrows(IllegalArgumentException.class,
             () -> new ServiceBusClientBuilder()
@@ -47,8 +47,8 @@ public class ServiceBusClientBuilderUnitTest {
                 .credential(FAKE_TOKEN_CREDENTIAL)
                 .processor()
                 .queueName("fakequeue")
-                .processMessage(x -> {})
-                .processError(x -> {})
+                .processMessage(x -> { })
+                .processError(x -> { })
                 .buildProcessorClient());
     }
 
@@ -71,8 +71,8 @@ public class ServiceBusClientBuilderUnitTest {
                 .fullyQualifiedNamespace(NAMESPACE_NAME)
                 .sessionProcessor()
                 .queueName("fakequeue")
-                .processMessage(x -> {})
-                .processError(x -> {})
+                .processMessage(x -> { })
+                .processError(x -> { })
                 .buildProcessorClient();
         new ServiceBusClientBuilder()
                 .credential(FAKE_TOKEN_CREDENTIAL)
@@ -85,8 +85,8 @@ public class ServiceBusClientBuilderUnitTest {
                 .fullyQualifiedNamespace(NAMESPACE_NAME)
                 .processor()
                 .queueName("fakequeue")
-                .processMessage(x -> {})
-                .processError(x -> {})
+                .processMessage(x -> { })
+                .processError(x -> { })
                 .buildProcessorClient();
     }
 }

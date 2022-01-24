@@ -105,7 +105,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
     private static RetryStrategy getRetryStrategyFromOptions(RetryOptions retryOptions) {
         if (retryOptions.getExponentialBackoffOptions() != null) {
             return new ExponentialBackoff(retryOptions.getExponentialBackoffOptions());
-        } else if(retryOptions.getFixedDelayOptions() != null) {
+        } else if (retryOptions.getFixedDelayOptions() != null) {
             return new FixedDelay(retryOptions.getFixedDelayOptions());
         } else {
             // This should never happen.
