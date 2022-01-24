@@ -2,7 +2,7 @@
 
 This guide is intended to assist migration to `azure-identity` library. It will focus on side-by-side comparisons for similar operations between the two packages.
 
-We assume that you are familiar with the `microsoft-azure-authentication-msi-token-provider` library. If not, please refer to the [README for azure-identity](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md) and [azure-identity samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity/samples) rather than this guide.
+We assume that you are familiar with the `microsoft-azure-authentication-msi-token-provider` library. If not, please refer to the [README for azure-identity](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md) and [azure-identity samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity/#examples) rather than this guide.
 
 ## Table of contents
  - [Migration benefits](#migration-benefits)
