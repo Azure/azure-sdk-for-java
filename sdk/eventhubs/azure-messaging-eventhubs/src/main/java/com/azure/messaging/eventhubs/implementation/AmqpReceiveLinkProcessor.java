@@ -34,7 +34,7 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import java.util.function.Supplier;
 
 /**
- * Processes AMQP receive links into a stream of AMQP messages.
+ * Processes AMQP receive links into a stream of AMQP messages. (test change)
  */
 public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Message> implements Subscription {
     private final ClientLogger logger = new ClientLogger(AmqpReceiveLinkProcessor.class);
