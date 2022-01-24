@@ -43,12 +43,4 @@ public final class AttestationResponse<T> extends ResponseBase<Void, T> {
     public AttestationToken getToken() {
         return this.token;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-    }
 }

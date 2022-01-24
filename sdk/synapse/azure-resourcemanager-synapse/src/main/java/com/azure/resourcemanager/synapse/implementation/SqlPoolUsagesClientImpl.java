@@ -95,7 +95,7 @@ public final class SqlPoolUsagesClientImpl implements SqlPoolUsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool usages.
+     * @return sQL pool usages along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolUsageInner>> listSinglePageAsync(
@@ -159,7 +159,7 @@ public final class SqlPoolUsagesClientImpl implements SqlPoolUsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool usages.
+     * @return sQL pool usages along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolUsageInner>> listSinglePageAsync(
@@ -289,7 +289,8 @@ public final class SqlPoolUsagesClientImpl implements SqlPoolUsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list Sql pool usages request.
+     * @return the response to a list Sql pool usages request along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolUsageInner>> listNextSinglePageAsync(String nextLink) {
@@ -325,7 +326,8 @@ public final class SqlPoolUsagesClientImpl implements SqlPoolUsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list Sql pool usages request.
+     * @return the response to a list Sql pool usages request along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolUsageInner>> listNextSinglePageAsync(String nextLink, Context context) {

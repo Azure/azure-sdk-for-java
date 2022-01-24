@@ -26,7 +26,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "Microsoft.Sql/Server/Database", value = AzureSqlDatabaseOutputDataSource.class),
     @JsonSubTypes.Type(name = "Microsoft.Sql/Server/DataWarehouse", value = AzureSynapseOutputDataSource.class),
     @JsonSubTypes.Type(name = "Microsoft.Storage/DocumentDB", value = DocumentDbOutputDataSource.class),
-    @JsonSubTypes.Type(name = "Microsoft.AzureFunction", value = AzureFunctionOutputDataSource.class),
     @JsonSubTypes.Type(name = "Microsoft.ServiceBus/Queue", value = ServiceBusQueueOutputDataSource.class),
     @JsonSubTypes.Type(name = "Microsoft.ServiceBus/Topic", value = ServiceBusTopicOutputDataSource.class),
     @JsonSubTypes.Type(name = "PowerBI", value = PowerBIOutputDataSource.class),

@@ -138,7 +138,8 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a AAD server administrator.
+     * @return information about a AAD server administrator along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServerAdministratorResourceInner>> getWithResponseAsync(
@@ -188,7 +189,8 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a AAD server administrator.
+     * @return information about a AAD server administrator along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServerAdministratorResourceInner>> getWithResponseAsync(
@@ -234,7 +236,7 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a AAD server administrator.
+     * @return information about a AAD server administrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ServerAdministratorResourceInner> getAsync(String resourceGroupName, String serverName) {
@@ -273,7 +275,7 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a AAD server administrator.
+     * @return information about a AAD server administrator along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServerAdministratorResourceInner> getWithResponse(
@@ -291,7 +293,8 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a and external administrator to be created.
+     * @return represents a and external administrator to be created along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -349,7 +352,8 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a and external administrator to be created.
+     * @return represents a and external administrator to be created along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -403,9 +407,10 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a and external administrator to be created.
+     * @return represents a and external administrator to be created along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServerAdministratorResourceInner>, ServerAdministratorResourceInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName, String serverName, ServerAdministratorResourceInner properties) {
@@ -418,7 +423,7 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
                 this.client.getHttpPipeline(),
                 ServerAdministratorResourceInner.class,
                 ServerAdministratorResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -432,9 +437,10 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a and external administrator to be created.
+     * @return represents a and external administrator to be created along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServerAdministratorResourceInner>, ServerAdministratorResourceInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName, String serverName, ServerAdministratorResourceInner properties, Context context) {
@@ -461,9 +467,10 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a and external administrator to be created.
+     * @return represents a and external administrator to be created along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerAdministratorResourceInner>, ServerAdministratorResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String serverName, ServerAdministratorResourceInner properties) {
         return beginCreateOrUpdateAsync(resourceGroupName, serverName, properties).getSyncPoller();
@@ -480,9 +487,10 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a and external administrator to be created.
+     * @return represents a and external administrator to be created along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerAdministratorResourceInner>, ServerAdministratorResourceInner>
         beginCreateOrUpdate(
             String resourceGroupName, String serverName, ServerAdministratorResourceInner properties, Context context) {
@@ -499,7 +507,7 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a and external administrator to be created.
+     * @return represents a and external administrator to be created on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ServerAdministratorResourceInner> createOrUpdateAsync(
@@ -520,7 +528,7 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a and external administrator to be created.
+     * @return represents a and external administrator to be created on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ServerAdministratorResourceInner> createOrUpdateAsync(
@@ -575,7 +583,7 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName) {
@@ -624,7 +632,7 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -670,14 +678,15 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serverName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -689,9 +698,9 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serverName, Context context) {
         context = this.client.mergeContext(context);
@@ -709,9 +718,9 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName) {
         return beginDeleteAsync(resourceGroupName, serverName).getSyncPoller();
     }
@@ -725,9 +734,9 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, Context context) {
         return beginDeleteAsync(resourceGroupName, serverName, context).getSyncPoller();
@@ -741,7 +750,7 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String serverName) {
@@ -757,7 +766,7 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String serverName, Context context) {
@@ -803,7 +812,8 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list Active Directory Administrators request.
+     * @return the response to a list Active Directory Administrators request along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerAdministratorResourceInner>> listSinglePageAsync(
@@ -857,7 +867,8 @@ public final class ServerAdministratorsClientImpl implements ServerAdministrator
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list Active Directory Administrators request.
+     * @return the response to a list Active Directory Administrators request along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerAdministratorResourceInner>> listSinglePageAsync(

@@ -16,6 +16,7 @@ import com.azure.resourcemanager.compute.models.UpgradePolicy;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProfile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 
 /** Describes the properties of a Virtual Machine Scale Set. */
 @Fluent
@@ -134,6 +135,13 @@ public final class VirtualMachineScaleSetProperties {
      */
     @JsonProperty(value = "spotRestorePolicy")
     private SpotRestorePolicy spotRestorePolicy;
+
+    /*
+     * Specifies the time at which the Virtual Machine Scale Set resource was
+     * created.<br><br>Minimum api-version: 2021-11-01.
+     */
+    @JsonProperty(value = "timeCreated", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime timeCreated;
 
     /**
      * Get the upgradePolicy property: The upgrade policy.
@@ -455,6 +463,16 @@ public final class VirtualMachineScaleSetProperties {
     public VirtualMachineScaleSetProperties withSpotRestorePolicy(SpotRestorePolicy spotRestorePolicy) {
         this.spotRestorePolicy = spotRestorePolicy;
         return this;
+    }
+
+    /**
+     * Get the timeCreated property: Specifies the time at which the Virtual Machine Scale Set resource was
+     * created.&lt;br&gt;&lt;br&gt;Minimum api-version: 2021-11-01.
+     *
+     * @return the timeCreated value.
+     */
+    public OffsetDateTime timeCreated() {
+        return this.timeCreated;
     }
 
     /**

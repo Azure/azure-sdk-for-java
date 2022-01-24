@@ -290,12 +290,12 @@ public final class AttestationAsyncClient {
      * </p>
      * @return cached signers.
      */
-    Mono<List<AttestationSigner>> getCachedAttestationSigners() {
+    Mono<List<AttestationSigner>> getCachedAttestationSigners(Context context) {
         if (this.cachedSigners.get() != null) {
             return Mono.just(this.cachedSigners.get());
         } else {
-            return this.signerImpl.getAsync()
-                .map(AttestationSignerImpl::attestationSignersFromJwks)
+            return this.signerImpl.getWithResponseAsync(context)
+                .map(response -> AttestationSignerImpl.attestationSignersFromJwks(response.getValue()))
                 .map(signers -> {
                     this.cachedSigners.compareAndSet(null, signers);
                     return this.cachedSigners.get();
@@ -329,31 +329,6 @@ public final class AttestationAsyncClient {
             .flatMap(FluxUtil::toMono);
     }
 
-
-    /**
-     * Attest an OpenEnclave report.
-     *
-     * <p>This method is a convenience method which attests evidence from an OpenEnclave enclave
-     * with no {@code RuntimeData} or {@code InitTimeData}.</p>
-     * <p>The {@code report} is generated via the <a href='https://openenclave.github.io/openenclave/api/enclave_8h_aefcb89c91a9078d595e255bd7901ac71.html'>{@code }oe_get_report}</a>.</p>
-     * It returns an {@link AttestationResult} containing the claims emitted by the attestation service.
-     * <!-- src_embed com.azure.security.attestation.AttestationAsyncClient.attestOpenEnclaveWithReport -->
-     * <pre>
-     * Mono&lt;AttestationResult&gt; resultWithReport = client.attestOpenEnclave&#40;openEnclaveReport&#41;;
-     * </pre>
-     * <!-- end com.azure.security.attestation.AttestationAsyncClient.attestOpenEnclaveWithReport -->
-     *
-     * @param report - OpenEnclave report to attest.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of an attestation operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AttestationResult>> attestOpenEnclaveWithResponse(BinaryData report) {
-        return withContext(context -> this.attestOpenEnclaveWithResponse(new AttestationOptions(report), context));
-    }
-
     /**
      * Attest an OpenEnclave report, specifying RunTimeData and InitTimeData.
      *
@@ -368,8 +343,9 @@ public final class AttestationAsyncClient {
      * <p><strong>Attest an OpenEnclave enclave with attestation options.</strong></p>
      * <!-- src_embed com.azure.security.attestation.AttestationAsyncClient.attestOpenEnclaveWithResponse -->
      * <pre>
-     * Mono&lt;Response&lt;AttestationResult&gt;&gt; openEnclaveResponse = client.attestOpenEnclaveWithResponse&#40;new AttestationOptions&#40;openEnclaveReport&#41;
-     *     .setRunTimeData&#40;new AttestationData&#40;runtimeData, AttestationDataInterpretation.JSON&#41;&#41;, Context.NONE&#41;;
+     * Mono&lt;Response&lt;AttestationResult&gt;&gt; openEnclaveResponse = client.attestOpenEnclaveWithResponse&#40;
+     *     new AttestationOptions&#40;openEnclaveReport&#41;
+     *         .setRunTimeData&#40;new AttestationData&#40;runtimeData, AttestationDataInterpretation.JSON&#41;&#41;, Context.NONE&#41;;
      *
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationAsyncClient.attestOpenEnclaveWithResponse -->
@@ -422,7 +398,7 @@ public final class AttestationAsyncClient {
             .map(response -> Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken())))
             .flatMap(response -> {
                 if (finalValidationOptions.getValidateToken()) {
-                    return getCachedAttestationSigners()
+                    return getCachedAttestationSigners(context)
                         .map(signers -> {
                             response.getValue().validate(signers, finalValidationOptions);
                             return response;
@@ -435,31 +411,6 @@ public final class AttestationAsyncClient {
                 com.azure.security.attestation.implementation.models.AttestationResult generatedResult = response.getValue().getBody(com.azure.security.attestation.implementation.models.AttestationResult.class);
                 return Utilities.generateAttestationResponseFromModelType(response, response.getValue(), AttestationResultImpl.fromGeneratedAttestationResult(generatedResult));
             });
-    }
-
-    /**
-     * Attest an SGX Enclave Quote.
-     *
-     * <p>This method is a convenience method which attests evidence from an OpenEnclave enclave
-     * with no {@code RuntimeData} or {@code InitTimeData}.</p>
-     * <p>The {@code report} is generated via the <a href='https://openenclave.github.io/openenclave/api/enclave_8h_aefcb89c91a9078d595e255bd7901ac71.html'>{@code }oe_get_report}</a>.</p>
-     * It returns an {@link AttestationResult} containing the claims emitted by the attestation service.
-     * <!-- src_embed com.azure.security.attestation.AttestationAsyncClient.attestSgxEnclaveWithResponseWithReport -->
-     * <pre>
-     * Mono&lt;Response&lt;AttestationResult&gt;&gt; responseWithReport = client.attestSgxEnclaveWithResponse&#40;sgxQuote&#41;;
-     * </pre>
-     * <!-- end com.azure.security.attestation.AttestationAsyncClient.attestSgxEnclaveWithResponseWithReport -->
-     *
-     *
-     * @param quote Attestation options for Intel SGX enclaves.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of an attestation operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AttestationResult>> attestSgxEnclaveWithResponse(BinaryData quote) {
-        return withContext(context -> this.attestSgxEnclaveWithResponse(new AttestationOptions(quote), context));
     }
 
     /**
@@ -483,7 +434,7 @@ public final class AttestationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AttestationResult> attestSgxEnclave(BinaryData quote) {
-        return attestSgxEnclaveWithResponse(quote)
+        return attestSgxEnclaveWithResponse(new AttestationOptions(quote))
             .flatMap(FluxUtil::toMono);
     }
 
@@ -501,8 +452,9 @@ public final class AttestationAsyncClient {
      * <p><strong>Attest an OpenEnclave enclave with attestation options.</strong></p>
      * <!-- src_embed com.azure.security.attestation.AttestationAsyncClient.attestSgxEnclaveWithResponse -->
      * <pre>
-     * Mono&lt;Response&lt;AttestationResult&gt;&gt; openEnclaveResponse = client.attestSgxEnclaveWithResponse&#40;new AttestationOptions&#40;sgxQuote&#41;
-     *     .setRunTimeData&#40;new AttestationData&#40;runtimeData, AttestationDataInterpretation.JSON&#41;&#41;, Context.NONE&#41;;
+     * Mono&lt;Response&lt;AttestationResult&gt;&gt; openEnclaveResponse = client.attestSgxEnclaveWithResponse&#40;
+     *     new AttestationOptions&#40;sgxQuote&#41;
+     *         .setRunTimeData&#40;new AttestationData&#40;runtimeData, AttestationDataInterpretation.JSON&#41;&#41;, Context.NONE&#41;;
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationAsyncClient.attestSgxEnclaveWithResponse -->
      *
@@ -564,7 +516,7 @@ public final class AttestationAsyncClient {
             .map(response -> Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken())))
             .flatMap(response -> {
                 if (finalValidationOptions.getValidateToken()) {
-                    return getCachedAttestationSigners()
+                    return getCachedAttestationSigners(context)
                         .map(signers -> {
                             response.getValue().validate(signers, finalValidationOptions);
                             return response;

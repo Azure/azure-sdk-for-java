@@ -13,6 +13,9 @@ public final class SecurityTypes extends ExpandableStringEnum<SecurityTypes> {
     /** Static value TrustedLaunch for SecurityTypes. */
     public static final SecurityTypes TRUSTED_LAUNCH = fromString("TrustedLaunch");
 
+    /** Static value ConfidentialVM for SecurityTypes. */
+    public static final SecurityTypes CONFIDENTIAL_VM = fromString("ConfidentialVM");
+
     /**
      * Creates or finds a SecurityTypes from its string representation.
      *

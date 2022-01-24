@@ -10,6 +10,12 @@
 
 ### Other Changes
 
+## 1.0.1 (2022-01-18)
+
+### Bugs Fixed
+
+- Fixed double serialization of JSON when publishing/reading schemas. #25789
+
 ## 1.0.0 (2021-11-12)
 
 ### Breaking Changes
