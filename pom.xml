@@ -85,7 +85,7 @@
         <!-- Key Vault -->
         <module>sdk/keyvault/azure-security-keyvault-administration</module>
         <module>sdk/keyvault/azure-security-keyvault-certificates</module>
-        <module>sdk/keyvault/azure-security-keyvault-jca</module>
+<!--        <module>sdk/keyvault/azure-security-keyvault-jca</module>-->
         <module>sdk/keyvault/azure-security-keyvault-keys</module>
         <module>sdk/keyvault/azure-security-keyvault-secrets</module>
 
