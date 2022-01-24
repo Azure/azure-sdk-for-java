@@ -52,7 +52,7 @@ public interface KustoPools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
+     * @return the result returned from a check name availability request along with {@link Response}.
      */
     Response<CheckNameResult> checkNameAvailabilityWithResponse(
         String location, KustoPoolCheckNameRequest kustoPoolName, Context context);
@@ -78,7 +78,7 @@ public interface KustoPools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto pools operation response.
+     * @return the list Kusto pools operation response along with {@link Response}.
      */
     Response<KustoPoolListResult> listByWorkspaceWithResponse(
         String resourceGroupName, String workspaceName, Context context);
@@ -106,7 +106,7 @@ public interface KustoPools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Kusto pool.
+     * @return a Kusto pool along with {@link Response}.
      */
     Response<KustoPool> getWithResponse(
         String workspaceName, String kustoPoolName, String resourceGroupName, Context context);
@@ -388,7 +388,7 @@ public interface KustoPools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Kusto pool.
+     * @return a Kusto pool along with {@link Response}.
      */
     KustoPool getById(String id);
 
@@ -400,7 +400,7 @@ public interface KustoPools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Kusto pool.
+     * @return a Kusto pool along with {@link Response}.
      */
     Response<KustoPool> getByIdWithResponse(String id, Context context);
 
