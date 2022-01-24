@@ -93,7 +93,7 @@ Please refer to [azure-identity docs](https://docs.microsoft.com/java/api/overvi
 [GuidelinesJava]: https://azure.github.io/azure-sdk/java_introduction.html
 [GuidelinesJavaDesign]: https://azure.github.io/azure-sdk/java_introduction.html#namespaces
 [project-reactor]: https://projectreactor.io/
-[README-Samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/src/samples/README.md
+[README-Samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#examples
 [README]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%authorization%2Fmicrosoft-azure-authentication-msi-token-provider%2Fmigration-guide.png)
