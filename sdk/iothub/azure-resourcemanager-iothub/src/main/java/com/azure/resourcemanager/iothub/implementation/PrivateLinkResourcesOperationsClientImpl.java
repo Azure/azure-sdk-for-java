@@ -99,7 +99,8 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available private link resources for an IotHub.
+     * @return the available private link resources for an IotHub along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateLinkResourcesInner>> listWithResponseAsync(
@@ -148,7 +149,8 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available private link resources for an IotHub.
+     * @return the available private link resources for an IotHub along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateLinkResourcesInner>> listWithResponseAsync(
@@ -193,7 +195,7 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available private link resources for an IotHub.
+     * @return the available private link resources for an IotHub on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PrivateLinkResourcesInner> listAsync(String resourceGroupName, String resourceName) {
@@ -232,7 +234,7 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available private link resources for an IotHub.
+     * @return the available private link resources for an IotHub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateLinkResourcesInner> listWithResponse(
@@ -249,7 +251,8 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private link resource for the given IotHub.
+     * @return the specified private link resource for the given IotHub along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GroupIdInformationInner>> getWithResponseAsync(
@@ -303,7 +306,8 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private link resource for the given IotHub.
+     * @return the specified private link resource for the given IotHub along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GroupIdInformationInner>> getWithResponseAsync(
@@ -353,7 +357,7 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private link resource for the given IotHub.
+     * @return the specified private link resource for the given IotHub on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GroupIdInformationInner> getAsync(String resourceGroupName, String resourceName, String groupId) {
@@ -394,7 +398,7 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private link resource for the given IotHub.
+     * @return the specified private link resource for the given IotHub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GroupIdInformationInner> getWithResponse(
