@@ -24,9 +24,14 @@ public class AzureStorageFileShareProperties extends AzureStorageProperties impl
      */
     private String shareName;
     /**
-     * Name of the file.
+     * Path to the file.
      */
-    private String fileName;
+    private String filePath;
+    /**
+     * Path to the directory.
+     */
+    private String directoryPath;
+
 
     public String getEndpoint() {
         return endpoint == null ? buildEndpointFromAccountName() : endpoint;
@@ -52,11 +57,19 @@ public class AzureStorageFileShareProperties extends AzureStorageProperties impl
         this.shareName = shareName;
     }
 
-    public String getFileName() {
-        return fileName;
+    public String getFilePath() {
+        return filePath;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public String getDirectoryPath() {
+        return directoryPath;
+    }
+
+    public void setDirectoryPath(String directoryPath) {
+        this.directoryPath = directoryPath;
     }
 }
