@@ -155,8 +155,6 @@ jobs:
           pip install markdown2 BeautifulSoup4
         displayName: 'pip install markdown2 and BeautifulSoup4'
 
-      - template: /eng/pipelines/templates/steps/install-java-17.yml
-
       - task: Maven@3
         displayName: 'Build and Package, JDK Version: $(JavaBuildVersion)'
         inputs:
@@ -270,11 +268,9 @@ jobs:
           ServiceDirectory: "template"
           TestPipeline: ${{ parameters.TestPipeline }}
 
-      - script: |
-          pip install setuptools wheel
-          pip install doc-warden==$(DocWardenVersion)
-          ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
-        displayName: 'Verify Readmes'
+      - template: /eng/common/pipelines/templates/steps/verify-readme.yml
+        parameters:
+          ScanPath: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
 
       - template: /eng/common/pipelines/templates/steps/verify-links.yml
         parameters:
@@ -307,15 +303,13 @@ jobs:
       # reports. This means it is available as part of that, but also so that this is not documented in the project report.
       - template: ../steps/install-reporting-tools.yml
 
-      - template: /eng/pipelines/templates/steps/install-java-17.yml
-
       # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
       - task: Maven@3
         displayName: 'Build and Install'
         inputs:
           mavenPomFile: pom.xml
           goals: 'install'
-          options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+          options: '$(DefaultOptions) -T ${{parameters.MavenBuildInstallParallelization}} ${{parameters.SparkShading}} --quiet -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaBuildVersion)
@@ -326,7 +320,7 @@ jobs:
         displayName: 'Run SpotBugs, Checkstyle, RevApi, and Javadoc'
         inputs:
           mavenPomFile: pom.xml
-          options: '$(DefaultOptions) --no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme -Dmaven.javadoc.skip=true -pl $(ProjectList)'
+          options: '$(DefaultOptions) --no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme -Dmaven.main.skip=true -Dmaven.test.skip=true -Dmaven.javadoc.skip=true ${{ parameters.MavenVerifyAdditionalOptions }} -pl $(ProjectList)'
           mavenOptions: '$(MemoryOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaBuildVersion)
@@ -353,3 +347,6 @@ jobs:
         Artifacts: ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
         PreTestSteps: ${{ parameters.PreTestSteps }}
+        SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
+        PreBuildSteps: ${{ parameters.PreBuildSteps }}
+        BuildOptions: '$(DefaultOptions) -T ${{parameters.MavenBuildInstallParallelization}} ${{parameters.SparkShading}} --quiet -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true'
