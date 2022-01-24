@@ -106,17 +106,17 @@ class AzureStorageFileShareAutoConfigurationTest {
         ShareServiceClient shareServiceClient = mock(ShareServiceClient.class);
         ShareClient shareClient = mock(ShareClient.class);
         when(shareServiceClient.getShareClient("share1")).thenReturn(shareClient);
-        when(shareClient.getFileClient("/directory1/file1")).thenReturn(mock(ShareFileClient.class));
+        when(shareClient.getFileClient("directory1/file1")).thenReturn(mock(ShareFileClient.class));
 
         ShareServiceAsyncClient shareServiceAsyncClient = mock(ShareServiceAsyncClient.class);
         ShareAsyncClient shareAsyncClient = mock(ShareAsyncClient.class);
         when(shareServiceAsyncClient.getShareAsyncClient("share1")).thenReturn(shareAsyncClient);
-        when(shareAsyncClient.getFileClient("/directory1/file1")).thenReturn(mock(ShareFileAsyncClient.class));
+        when(shareAsyncClient.getFileClient("directory1/file1")).thenReturn(mock(ShareFileAsyncClient.class));
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.storage.fileshare.account-name=sa",
                 "spring.cloud.azure.storage.fileshare.share-name=share1",
-                "spring.cloud.azure.storage.fileshare.file-path=/directory1/file1"
+                "spring.cloud.azure.storage.fileshare.file-path=directory1/file1"
             )
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean(ShareServiceClient.class, () -> shareServiceClient)
@@ -154,17 +154,17 @@ class AzureStorageFileShareAutoConfigurationTest {
         ShareServiceClient shareServiceClient = mock(ShareServiceClient.class);
         ShareClient shareClient = mock(ShareClient.class);
         when(shareServiceClient.getShareClient("share1")).thenReturn(shareClient);
-        when(shareClient.getDirectoryClient("/directory1/directory2")).thenReturn(mock(ShareDirectoryClient.class));
+        when(shareClient.getDirectoryClient("directory1/directory2")).thenReturn(mock(ShareDirectoryClient.class));
 
         ShareServiceAsyncClient shareServiceAsyncClient = mock(ShareServiceAsyncClient.class);
         ShareAsyncClient shareAsyncClient = mock(ShareAsyncClient.class);
         when(shareServiceAsyncClient.getShareAsyncClient("share1")).thenReturn(shareAsyncClient);
-        when(shareAsyncClient.getDirectoryClient("/directory1/directory2")).thenReturn(mock(ShareDirectoryAsyncClient.class));
+        when(shareAsyncClient.getDirectoryClient("directory1/directory2")).thenReturn(mock(ShareDirectoryAsyncClient.class));
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.storage.fileshare.account-name=sa",
                 "spring.cloud.azure.storage.fileshare.share-name=share1",
-                "spring.cloud.azure.storage.fileshare.directory-path=/directory1/directory2"
+                "spring.cloud.azure.storage.fileshare.directory-path=directory1/directory2"
             )
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean(ShareServiceClient.class, () -> shareServiceClient)
