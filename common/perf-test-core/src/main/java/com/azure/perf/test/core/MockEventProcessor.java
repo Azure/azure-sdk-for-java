@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.perf.test.core;
 
 import reactor.core.publisher.Mono;
@@ -17,17 +20,17 @@ import java.util.stream.IntStream;
  * Represents a Mock event processor.
  */
 public class MockEventProcessor {
-    private Consumer<MockErrorContext> processError;
-    private Consumer<MockEventContext> processEvent;
+    private final Consumer<MockErrorContext> processError;
+    private final Consumer<MockEventContext> processEvent;
     private boolean process;
-    private double maxEventsPerSecondPerPartition;
-    private int maxEventsPerSecond;
-    private int partitions;
-    private Duration errorAfter;
+    private final double maxEventsPerSecondPerPartition;
+    private final int maxEventsPerSecond;
+    private final int partitions;
+    private final Duration errorAfter;
     private boolean errorRaised;
-    ReentrantLock errorLock;
+    private final ReentrantLock errorLock;
 
-    private MockEventContext[] mockEventContexts;
+    private final MockEventContext[] mockEventContexts;
     private int[] eventsRaised;
     private long startTime;
 
@@ -80,7 +83,7 @@ public class MockEventProcessor {
 
     private Mono<Void> processEvents() {
         while (process) {
-            for (int i =0 ; i < partitions; i++) {
+            for (int i = 0; i < partitions; i++) {
                 process(i);
             }
         }
@@ -94,7 +97,7 @@ public class MockEventProcessor {
             while (process) {
                 long elapsedTime = (System.nanoTime() - startTime);
                 if (errorAfter != null && !errorRaised
-                    && (errorAfter.compareTo(Duration.ofNanos(elapsedTime)) < 0 )) {
+                    && (errorAfter.compareTo(Duration.ofNanos(elapsedTime)) < 0)) {
                     errorLock.lock();
                     if (!errorRaised) {
                         processError(partition, new IllegalStateException("Test Exception"));
@@ -118,7 +121,7 @@ public class MockEventProcessor {
         } else {
             while (process) {
                 if (errorAfter != null && !errorRaised
-                    && (errorAfter.compareTo(Duration.ofNanos((System.nanoTime() - startTime))) < 0 )) {
+                    && (errorAfter.compareTo(Duration.ofNanos((System.nanoTime() - startTime))) < 0)) {
                     errorLock.lock();
                     if (!errorRaised) {
                         processError(partition, new IllegalStateException("Test Exception"));

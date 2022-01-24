@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public abstract class EventPerfTest<TOptions extends PerfStressOptions> extends PerfTestBase<TOptions> {
 
-    private AtomicInteger completedOps;
+    private final AtomicInteger completedOps;
 
     private volatile boolean errorRaised;
 
@@ -75,7 +75,7 @@ public abstract class EventPerfTest<TOptions extends PerfStressOptions> extends 
     }
 
     @Override
-    long getCompletedOperations() {
+    public long getCompletedOperations() {
         return completedOps.longValue();
     }
 

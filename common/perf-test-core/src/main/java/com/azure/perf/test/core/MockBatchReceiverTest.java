@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.perf.test.core;
 
 import com.azure.core.util.IterableStream;
@@ -8,8 +11,11 @@ import reactor.core.publisher.Mono;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/**
+ * Test class for Mock Batch Receiver.
+ */
 public class MockBatchReceiverTest extends BatchPerfTest<MockBatchReceiverTest.MockReceiverOptions> {
-    MockReceiver mockReceiver;
+    final MockReceiver mockReceiver;
     /**
      * Creates an instance of performance test.
      *
@@ -33,12 +39,31 @@ public class MockBatchReceiverTest extends BatchPerfTest<MockBatchReceiverTest.M
             .count().map(count -> count.intValue());
     }
 
+    /**
+     * Options class for Mock Receiver Test.
+     */
     public static class MockReceiverOptions extends PerfStressOptions {
         @Parameter(names = {"--max-message-count" }, description = "Max messages to Receive")
-        public int maxMessageCount = 10;
+        private int maxMessageCount = 10;
 
         @Parameter(names = {"--min-message-count" }, description = "Min messages to Receive")
-        public int minMessageCount = 0;
+        private int minMessageCount = 0;
+
+        /**
+         * Get Max message count;
+         * @return the max message count.
+         */
+        public int getMaxMessageCount() {
+            return maxMessageCount;
+        }
+
+        /**
+         * Get the Min Message count.
+         * @return the Min
+         */
+        public int getMinMessageCount() {
+            return minMessageCount;
+        }
     }
 
     private static class MockReceiver {

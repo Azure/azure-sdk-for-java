@@ -1,11 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.perf.test.core;
 
 /**
  * Represents Mock Error Context class for {@link MockEventProcessor}
  */
 public class MockErrorContext {
-    private Throwable throwable;
-    private int partition;
+    private final Throwable throwable;
+    private final int partition;
 
     /**
      * Creates an instance of the Mock Error Context

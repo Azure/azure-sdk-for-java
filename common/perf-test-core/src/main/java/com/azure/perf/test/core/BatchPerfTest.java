@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono;
  * </p>
  * @param <TOptions> the options configured for the test.
  */
-public abstract class BatchPerfTest<TOptions extends PerfStressOptions> extends HttpPerfTestBase<TOptions> {
+public abstract class BatchPerfTest<TOptions extends PerfStressOptions> extends ApiPerfTestBase<TOptions> {
 
     /**
      * Creates an instance of Batch performance test.
@@ -28,9 +28,16 @@ public abstract class BatchPerfTest<TOptions extends PerfStressOptions> extends 
     }
 
 
-
+    /**
+     * Run batch operation API perf test.
+     * @return the number of operations successfully completed.
+     */
     public abstract int runBatch();
 
+    /**
+     * Run batch operation async API perf test.
+     * @return A {@link Mono} containing number of operations successfully completed.
+     */
     public abstract Mono<Integer> runBatchAsync();
 
     @Override
@@ -42,6 +49,4 @@ public abstract class BatchPerfTest<TOptions extends PerfStressOptions> extends 
     Mono<Integer> runTestAsync() {
         return runBatchAsync();
     }
-
-
 }

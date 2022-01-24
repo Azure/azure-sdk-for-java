@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.perf.test.core;
 
 import com.beust.jcommander.Parameter;
@@ -10,8 +13,12 @@ import java.util.function.Consumer;
  * Represents a Mock Event Processor Test.
  */
 public class MockEventProcessorTest extends EventPerfTest<MockEventProcessorTest.MockEventProcessorPerfOptions> {
-    private MockEventProcessor mockEventProcessor;
+    private final MockEventProcessor mockEventProcessor;
 
+    /**
+     * Creates an instance of Mock Event Processor Test
+     * @param perfStressOptions the options to used to configure the test.
+     */
     public MockEventProcessorTest(MockEventProcessorPerfOptions perfStressOptions) {
         super(perfStressOptions);
         Consumer<MockErrorContext> errorprocessor = mockErrorContext -> errorRaised();

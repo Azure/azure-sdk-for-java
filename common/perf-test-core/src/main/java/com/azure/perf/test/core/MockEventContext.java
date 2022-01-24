@@ -1,11 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.perf.test.core;
 
 /**
  * Represents Mock Event Context for {@link MockEventProcessor}
  */
 public class MockEventContext {
-    private String eventData;
-    private int partition;
+    private final String eventData;
+    private final int partition;
 
     /**
      * Creates an instance of Mock Event Context
@@ -19,7 +22,7 @@ public class MockEventContext {
 
     /**
      * Get the event data.
-     * @return
+     * @return the event data.
      */
     public String getEventData() {
         return eventData;
