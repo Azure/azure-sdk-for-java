@@ -56,6 +56,7 @@ public final class Utility {
         CLIENT_NAME = properties.getOrDefault(Constants.NAME, "UnknownName");
         CLIENT_VERSION = properties.getOrDefault(Constants.VERSION, "UnknownVersion");
     }
+    static final String DEFAULT_SCOPE = "/.default";
 
     private Utility() {
     }
@@ -107,7 +108,8 @@ public final class Utility {
         // Authentications
         if (tokenCredential != null) {
             Objects.requireNonNull(audience, "'audience' is required and can not be null");
-            httpPipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential, audience.toString()));
+            httpPipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential,
+                audience + DEFAULT_SCOPE));
         } else if (azureKeyCredential != null) {
             httpPipelinePolicies.add(new AzureKeyCredentialPolicy(Constants.OCP_APIM_SUBSCRIPTION_KEY,
                 azureKeyCredential));
