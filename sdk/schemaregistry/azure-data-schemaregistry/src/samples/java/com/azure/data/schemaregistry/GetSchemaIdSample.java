@@ -26,7 +26,7 @@ public class GetSchemaIdSample {
             .buildClient();
 
         // Register a schema
-        final SchemaProperties schemaProperties = schemaRegistryClient
+        SchemaProperties schemaProperties = schemaRegistryClient
             .getSchemaProperties("{group-name}", "{schema-name}", "{schema-string}", SchemaFormat.AVRO);
 
         System.out.println("Successfully retrieved the schema id: " + schemaProperties.getId());

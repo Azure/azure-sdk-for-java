@@ -29,6 +29,7 @@ public class GetSchemaIdSampleAsync {
             .buildAsyncClient();
 
         CountDownLatch countDownLatch = new CountDownLatch(1);
+
         // Register a schema
         schemaRegistryAsyncClient
             .getSchemaProperties("{group-name}", "{schema-name}", "{schema-string}", SchemaFormat.AVRO)
