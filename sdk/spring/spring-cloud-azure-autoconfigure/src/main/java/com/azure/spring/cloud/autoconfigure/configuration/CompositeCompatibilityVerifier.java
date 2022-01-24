@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.cloud.autoconfigure.configuration;
 
 import org.apache.commons.logging.Log;
@@ -28,11 +31,11 @@ class CompositeCompatibilityVerifier {
     }
 
     private List<VerificationResult> verifierErrors() {
-        List<VerificationResult> errors = new ArrayList();
-        Iterator var2 = this.verifiers.iterator();
+        List<VerificationResult> errors = new ArrayList<VerificationResult>();
+        Iterator<CompatibilityVerifier> var2 = this.verifiers.iterator();
 
         while(var2.hasNext()) {
-            CompatibilityVerifier verifier = (CompatibilityVerifier)var2.next();
+            CompatibilityVerifier verifier = var2.next();
             VerificationResult result = verifier.verify();
             if (result.isNotCompatible()) {
                 errors.add(result);

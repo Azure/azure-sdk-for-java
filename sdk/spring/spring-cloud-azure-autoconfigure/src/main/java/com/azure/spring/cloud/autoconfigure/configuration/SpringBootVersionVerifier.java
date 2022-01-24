@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.cloud.autoconfigure.configuration;
 
 import org.apache.commons.logging.Log;
@@ -44,17 +47,17 @@ class SpringBootVersionVerifier implements CompatibilityVerifier {
     }
 
     private boolean springBootVersionMatches() {
-        Iterator var1 = this.acceptedVersions.iterator();
+        Iterator<String> var1 = this.acceptedVersions.iterator();
 
         while(var1.hasNext()) {
-            String acceptedVersion = (String)var1.next();
+            String acceptedVersion = var1.next();
             Boolean versionFromManifest = this.bootVersionFromManifest(acceptedVersion);
             if (versionFromManifest != null && versionFromManifest) {
                 return true;
             }
 
             if (versionFromManifest == null) {
-                CompatibilityPredicate predicate = (CompatibilityPredicate)this.ACCEPTED_VERSIONS.get(stripWildCardFromVersion(acceptedVersion));
+                CompatibilityPredicate predicate = this.ACCEPTED_VERSIONS.get(stripWildCardFromVersion(acceptedVersion));
                 if (predicate != null && predicate.isCompatible()) {
                     if (log.isDebugEnabled()) {
                         log.debug("Predicate [" + predicate + "] was matched");

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.cloud.autoconfigure.configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -5,6 +8,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Properties for CompatibilityVerifier
+ */
 @ConfigurationProperties("spring.cloud.azure.compatibility-verifier")
 public class CompatibilityVerifierProperties {
     private boolean enabled;
