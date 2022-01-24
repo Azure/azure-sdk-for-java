@@ -346,7 +346,6 @@
         <file>
           <exists>${basedir}/scalastyle_config.xml</exists>
         </file>
->>>>>>> 25bd0c6ef9b (Resolve From Source Compilation Failure Caused by Spark Modules (#26628))
       </activation>
       <build>
         <plugins>
