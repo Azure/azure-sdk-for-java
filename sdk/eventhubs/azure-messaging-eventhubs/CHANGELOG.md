@@ -4,7 +4,7 @@
 
 ### Bugs Fixed
 
-- Issue  if received message does not have trace context, spans are not created ([#25182](https://github.com/Azure/azure-sdk-for-java/issues/25182))
+- Issue if received message does not have trace context, spans are not created ([#25182](https://github.com/Azure/azure-sdk-for-java/issues/25182))
 
 ## 5.10.4 (2022-01-18)
 
