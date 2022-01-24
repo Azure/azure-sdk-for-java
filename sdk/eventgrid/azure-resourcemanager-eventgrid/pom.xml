@@ -39,7 +39,6 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.skip>true</jacoco.skip>
-    <revapi.skip>true</revapi.skip>
   </properties>
   <dependencies>
     <dependency>
