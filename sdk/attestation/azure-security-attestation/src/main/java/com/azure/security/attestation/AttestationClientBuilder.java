@@ -4,6 +4,7 @@
 package com.azure.security.attestation;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
@@ -85,7 +86,8 @@ import static com.azure.core.util.CoreUtils.getApplicationId;
         })
 public final class AttestationClientBuilder implements
     TokenCredentialTrait<AttestationClientBuilder>,
-    HttpConfigTrait<AttestationClientBuilder> {
+    HttpConfigTrait<AttestationClientBuilder>,
+    ClientOptionsTrait<AttestationClientBuilder> {
     private static final String SDK_NAME = "name";
 
     private static final String SDK_VERSION = "version";
@@ -318,6 +320,7 @@ public final class AttestationClientBuilder implements
      *
      * @return the updated {@link AttestationClientBuilder} object
      */
+    @Override
     public AttestationClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
