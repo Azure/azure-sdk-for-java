@@ -57,6 +57,9 @@
 # PRLabel: %azure-spring
 /sdk/cosmos/azure-spring-data-cosmos-test/          @kushagraThapar @mbhaskar @backwind1233 @chenrujun @hui1110 @jialigit @moarychan @saragluna @stliu @yiliuTo @xinlian12
 
+# ServiceLabel: %Device Update for IoT Hub %Service Attention
+/sdk/deviceupdate/                                  @dpokluda
+
 # PRLabel: %Digital Twins
 /sdk/digitaltwins/                                  @johngallardo @efriesner @abhinav-ghai
 

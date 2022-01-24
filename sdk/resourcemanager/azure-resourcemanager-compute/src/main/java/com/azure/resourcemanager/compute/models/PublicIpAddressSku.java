@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the public IP Sku. */
+/** Describes the public IP Sku. It can only be set with OrchestrationMode as Flexible. */
 @Fluent
 public final class PublicIpAddressSku {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicIpAddressSku.class);

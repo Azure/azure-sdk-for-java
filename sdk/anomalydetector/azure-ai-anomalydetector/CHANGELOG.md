@@ -1,5 +1,9 @@
 # Release History
 
+## 3.0.0-beta.4 (2022-01-23)
+
+- Fix release issues
+
 ## 3.0.0-beta.3 (2022-01-18)
 
 - Introduced the new API `lastDetectAnomaly`

@@ -78,6 +78,10 @@ public final class ExtendedServerBlobAuditingPolicyImpl
         return this.innerModel().queueDelayMs();
     }
 
+    public Boolean isDevopsAuditEnabled() {
+        return this.innerModel().isDevopsAuditEnabled();
+    }
+
     public ExtendedServerBlobAuditingPolicyInner innerModel() {
         return this.innerObject;
     }
@@ -225,6 +229,11 @@ public final class ExtendedServerBlobAuditingPolicyImpl
 
     public ExtendedServerBlobAuditingPolicyImpl withQueueDelayMs(Integer queueDelayMs) {
         this.innerModel().withQueueDelayMs(queueDelayMs);
+        return this;
+    }
+
+    public ExtendedServerBlobAuditingPolicyImpl withIsDevopsAuditEnabled(Boolean isDevopsAuditEnabled) {
+        this.innerModel().withIsDevopsAuditEnabled(isDevopsAuditEnabled);
         return this;
     }
 }

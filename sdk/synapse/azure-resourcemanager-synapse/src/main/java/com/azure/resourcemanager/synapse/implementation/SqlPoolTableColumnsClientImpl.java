@@ -101,7 +101,8 @@ public final class SqlPoolTableColumnsClientImpl implements SqlPoolTableColumnsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return columns in a given table in a SQL pool.
+     * @return columns in a given table in a SQL pool along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolColumnInner>> listByTableNameSinglePageAsync(
@@ -182,7 +183,8 @@ public final class SqlPoolTableColumnsClientImpl implements SqlPoolTableColumnsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return columns in a given table in a SQL pool.
+     * @return columns in a given table in a SQL pool along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolColumnInner>> listByTableNameSinglePageAsync(
@@ -389,7 +391,7 @@ public final class SqlPoolTableColumnsClientImpl implements SqlPoolTableColumnsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Sql pool columns.
+     * @return a list of Sql pool columns along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolColumnInner>> listByTableNameNextSinglePageAsync(String nextLink) {
@@ -425,7 +427,7 @@ public final class SqlPoolTableColumnsClientImpl implements SqlPoolTableColumnsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Sql pool columns.
+     * @return a list of Sql pool columns along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolColumnInner>> listByTableNameNextSinglePageAsync(
