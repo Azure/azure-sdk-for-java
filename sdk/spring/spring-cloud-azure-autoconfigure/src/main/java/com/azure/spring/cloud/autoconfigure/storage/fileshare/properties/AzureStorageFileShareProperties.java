@@ -24,11 +24,11 @@ public class AzureStorageFileShareProperties extends AzureStorageProperties impl
      */
     private String shareName;
     /**
-     * Path to the file.
+     * Path to the file. For instance, 'directory1/file1'.
      */
     private String filePath;
     /**
-     * Path to the directory.
+     * Path to the directory. For instance, 'directory1/directory2'.
      */
     private String directoryPath;
 
