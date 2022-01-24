@@ -1,107 +1,107 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('hotels45133fa224fc5cc9d4c69b80d4f63dd')?allowIndexDowntime=false&api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('hotels86847d3971d42d1a74b6fa0d51df30b')?allowIndexDowntime=false&api-version=2020-06-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b60b8b82-b2ff-48ce-a9fd-63aa7e683b40",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d8838948-3d53-4562-9134-21fb666d64aa",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "6927",
+      "content-length" : "6478",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "b60b8b82-b2ff-48ce-a9fd-63aa7e683b40",
+      "request-id" : "d8838948-3d53-4562-9134-21fb666d64aa",
       "StatusCode" : "201",
-      "Date" : "Tue, 13 Jul 2021 19:16:58 GMT",
+      "Date" : "Thu, 27 May 2021 21:09:02 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D94632C9A08F3D\"",
-      "client-request-id" : "b60b8b82-b2ff-48ce-a9fd-63aa7e683b40",
-      "elapsed-time" : "1724",
+      "ETag" : "W/\"0x8D92153A7B63386\"",
+      "client-request-id" : "d8838948-3d53-4562-9134-21fb666d64aa",
+      "elapsed-time" : "1443",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-test.search.windows.net/$metadata#indexes/$entity\",\"@odata.etag\":\"\\\"0x8D94632C9A08F3D\\\"\",\"name\":\"hotels45133fa224fc5cc9d4c69b80d4f63dd\",\"defaultScoringProfile\":null,\"fields\":[{\"name\":\"HotelId\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":true,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"HotelName\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":false,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Description\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":false,\"retrievable\":true,\"sortable\":false,\"facetable\":false,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"en.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Description_fr\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":false,\"retrievable\":true,\"sortable\":false,\"facetable\":false,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"fr.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Category\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Tags\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"ParkingIncluded\",\"type\":\"Edm.Boolean\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"SmokingAllowed\",\"type\":\"Edm.Boolean\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"LastRenovationDate\",\"type\":\"Edm.DateTimeOffset\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Rating\",\"type\":\"Edm.Int32\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Address\",\"type\":\"Edm.ComplexType\",\"fields\":[{\"name\":\"StreetAddress\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"City\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"StateProvince\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"PostalCode\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Country\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]}]},{\"name\":\"Location\",\"type\":\"Edm.GeographyPoint\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":false,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Rooms\",\"type\":\"Collection(Edm.ComplexType)\",\"fields\":[{\"name\":\"Description\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":false,\"retrievable\":true,\"sortable\":false,\"facetable\":false,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"en.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Description_fr\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":false,\"retrievable\":true,\"sortable\":false,\"facetable\":false,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"fr.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Type\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":false,\"retrievable\":true,\"sortable\":false,\"facetable\":false,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"BaseRate\",\"type\":\"Edm.Double\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"BedOptions\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"SleepsCount\",\"type\":\"Edm.Int32\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"SmokingAllowed\",\"type\":\"Edm.Boolean\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Tags\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]}]}],\"scoringProfiles\":[{\"name\":\"nearest\",\"functionAggregation\":\"sum\",\"text\":null,\"functions\":[{\"fieldName\":\"Location\",\"interpolation\":\"linear\",\"type\":\"distance\",\"boost\":2.0,\"freshness\":null,\"magnitude\":null,\"distance\":{\"referencePointParameter\":\"myloc\",\"boostingDistance\":100.0},\"tag\":null}]},{\"name\":\"text\",\"functionAggregation\":\"sum\",\"text\":null,\"functions\":[{\"fieldName\":\"Tags\",\"interpolation\":\"linear\",\"type\":\"tag\",\"boost\":2.0,\"freshness\":null,\"magnitude\":null,\"distance\":null,\"tag\":{\"tagsParameter\":\"mytag\"}}]}],\"corsOptions\":null,\"suggesters\":[{\"name\":\"sg\",\"searchMode\":\"analyzingInfixMatching\",\"sourceFields\":[\"Description\",\"HotelName\"]}],\"analyzers\":[],\"normalizers\":[],\"tokenizers\":[],\"tokenFilters\":[],\"charFilters\":[],\"encryptionKey\":null,\"similarity\":{\"@odata.type\":\"#Microsoft.Azure.Search.BM25Similarity\",\"k1\":null,\"b\":null}}",
-      "x-ms-client-request-id" : "b60b8b82-b2ff-48ce-a9fd-63aa7e683b40",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-test.search.windows.net/$metadata#indexes/$entity\",\"@odata.etag\":\"\\\"0x8D92153A7B63386\\\"\",\"name\":\"hotels86847d3971d42d1a74b6fa0d51df30b\",\"defaultScoringProfile\":null,\"fields\":[{\"name\":\"HotelId\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":true,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"HotelName\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":false,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"Description\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":false,\"retrievable\":true,\"sortable\":false,\"facetable\":false,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"en.lucene\",\"synonymMaps\":[]},{\"name\":\"Description_fr\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":false,\"retrievable\":true,\"sortable\":false,\"facetable\":false,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"fr.lucene\",\"synonymMaps\":[]},{\"name\":\"Category\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"Tags\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"ParkingIncluded\",\"type\":\"Edm.Boolean\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"SmokingAllowed\",\"type\":\"Edm.Boolean\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"LastRenovationDate\",\"type\":\"Edm.DateTimeOffset\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"Rating\",\"type\":\"Edm.Int32\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"Address\",\"type\":\"Edm.ComplexType\",\"fields\":[{\"name\":\"StreetAddress\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"City\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"StateProvince\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"PostalCode\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"Country\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]}]},{\"name\":\"Location\",\"type\":\"Edm.GeographyPoint\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":false,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"Rooms\",\"type\":\"Collection(Edm.ComplexType)\",\"fields\":[{\"name\":\"Description\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":false,\"retrievable\":true,\"sortable\":false,\"facetable\":false,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"en.lucene\",\"synonymMaps\":[]},{\"name\":\"Description_fr\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":false,\"retrievable\":true,\"sortable\":false,\"facetable\":false,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"fr.lucene\",\"synonymMaps\":[]},{\"name\":\"Type\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":false,\"retrievable\":true,\"sortable\":false,\"facetable\":false,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"BaseRate\",\"type\":\"Edm.Double\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"BedOptions\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"SleepsCount\",\"type\":\"Edm.Int32\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"SmokingAllowed\",\"type\":\"Edm.Boolean\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"Tags\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]}]}],\"scoringProfiles\":[{\"name\":\"nearest\",\"functionAggregation\":\"sum\",\"text\":null,\"functions\":[{\"fieldName\":\"Location\",\"interpolation\":\"linear\",\"type\":\"distance\",\"boost\":2.0,\"freshness\":null,\"magnitude\":null,\"distance\":{\"referencePointParameter\":\"myloc\",\"boostingDistance\":100.0},\"tag\":null}]},{\"name\":\"text\",\"functionAggregation\":\"sum\",\"text\":null,\"functions\":[{\"fieldName\":\"Tags\",\"interpolation\":\"linear\",\"type\":\"tag\",\"boost\":2.0,\"freshness\":null,\"magnitude\":null,\"distance\":null,\"tag\":{\"tagsParameter\":\"mytag\"}}]}],\"corsOptions\":null,\"suggesters\":[{\"name\":\"sg\",\"searchMode\":\"analyzingInfixMatching\",\"sourceFields\":[\"Description\",\"HotelName\"]}],\"analyzers\":[],\"tokenizers\":[],\"tokenFilters\":[],\"charFilters\":[],\"encryptionKey\":null,\"similarity\":{\"@odata.type\":\"#Microsoft.Azure.Search.BM25Similarity\",\"k1\":null,\"b\":null}}",
+      "x-ms-client-request-id" : "d8838948-3d53-4562-9134-21fb666d64aa",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://alzimmer-test.search.windows.net/indexes('hotels45133fa224fc5cc9d4c69b80d4f63dd')?allowIndexDowntime=false&api-version=2021-04-30-Preview"
+      "Location" : "https://alzimmer-test.search.windows.net/indexes('hotels86847d3971d42d1a74b6fa0d51df30b')?allowIndexDowntime=false&api-version=2020-06-30"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('hotels45133fa224fc5cc9d4c69b80d4f63dd')/docs/search.index?api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('hotels86847d3971d42d1a74b6fa0d51df30b')/docs/search.index?api-version=2020-06-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "d186e406-c93c-40a5-95f0-a27c4ef48ba6",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ca41e20d-0723-406a-8cf5-76a73cf66ff5",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "74",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "d186e406-c93c-40a5-95f0-a27c4ef48ba6",
+      "request-id" : "ca41e20d-0723-406a-8cf5-76a73cf66ff5",
       "StatusCode" : "200",
-      "Date" : "Tue, 13 Jul 2021 19:16:59 GMT",
+      "Date" : "Thu, 27 May 2021 21:09:02 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "d186e406-c93c-40a5-95f0-a27c4ef48ba6",
-      "elapsed-time" : "94",
+      "client-request-id" : "ca41e20d-0723-406a-8cf5-76a73cf66ff5",
+      "elapsed-time" : "90",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Body" : "{\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
-      "x-ms-client-request-id" : "d186e406-c93c-40a5-95f0-a27c4ef48ba6",
+      "x-ms-client-request-id" : "ca41e20d-0723-406a-8cf5-76a73cf66ff5",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=none"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('hotels45133fa224fc5cc9d4c69b80d4f63dd')/docs('1')?$select=HotelId%2CRooms/BaseRate%2CRooms/BedOptions%2CRooms/SleepsCount%2CRooms/SmokingAllowed%2CRooms/Tags&api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('hotels86847d3971d42d1a74b6fa0d51df30b')/docs('1')?$select=HotelId%2CRooms/BaseRate%2CRooms/BedOptions%2CRooms/SleepsCount%2CRooms/SmokingAllowed%2CRooms/Tags&api-version=2020-06-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "62147341-c6bf-4eba-9ca2-99038b44b5b0"
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f14d2b8d-f1a5-4451-9028-8c1ce2d32181"
     },
     "Response" : {
       "content-length" : "112",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "62147341-c6bf-4eba-9ca2-99038b44b5b0",
+      "request-id" : "f14d2b8d-f1a5-4451-9028-8c1ce2d32181",
       "StatusCode" : "200",
-      "Date" : "Tue, 13 Jul 2021 19:17:02 GMT",
+      "Date" : "Thu, 27 May 2021 21:09:06 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "62147341-c6bf-4eba-9ca2-99038b44b5b0",
-      "elapsed-time" : "75",
+      "client-request-id" : "f14d2b8d-f1a5-4451-9028-8c1ce2d32181",
+      "elapsed-time" : "11",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Body" : "{\"HotelId\":\"1\",\"Rooms\":[{\"BaseRate\":null,\"BedOptions\":null,\"SleepsCount\":null,\"SmokingAllowed\":null,\"Tags\":[]}]}",
-      "x-ms-client-request-id" : "62147341-c6bf-4eba-9ca2-99038b44b5b0",
+      "x-ms-client-request-id" : "f14d2b8d-f1a5-4451-9028-8c1ce2d32181",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=none"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('hotels45133fa224fc5cc9d4c69b80d4f63dd')?api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('hotels86847d3971d42d1a74b6fa0d51df30b')?api-version=2020-06-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "200bcf38-2ee5-4107-8c76-039b3a7a3683"
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d5ce8ede-929b-450c-a390-6b4498b09f26"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "200bcf38-2ee5-4107-8c76-039b3a7a3683",
-      "elapsed-time" : "573",
+      "client-request-id" : "d5ce8ede-929b-450c-a390-6b4498b09f26",
+      "elapsed-time" : "506",
       "Pragma" : "no-cache",
       "Expires" : "-1",
       "retry-after" : "0",
-      "request-id" : "200bcf38-2ee5-4107-8c76-039b3a7a3683",
+      "request-id" : "d5ce8ede-929b-450c-a390-6b4498b09f26",
       "StatusCode" : "204",
-      "x-ms-client-request-id" : "200bcf38-2ee5-4107-8c76-039b3a7a3683",
-      "Date" : "Tue, 13 Jul 2021 19:17:03 GMT"
+      "x-ms-client-request-id" : "d5ce8ede-929b-450c-a390-6b4498b09f26",
+      "Date" : "Thu, 27 May 2021 21:09:06 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "hotels45133fa224fc5cc9d4c69b80d4f63dd" ]
+  "variables" : [ "hotels86847d3971d42d1a74b6fa0d51df30b" ]
 }
