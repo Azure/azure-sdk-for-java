@@ -148,7 +148,8 @@ public final class SchemaRegistryClient {
     }
 
     /**
-     * Gets the schema properties associated with the given schema id.
+     * Gets schema properties for a schema with matching {@code groupName}, {@code name}, {@code schemaDefinition}, and
+     * {@code format}.
      *
      * @param groupName The schema group.
      * @param name The schema name.
@@ -169,7 +170,8 @@ public final class SchemaRegistryClient {
     }
 
     /**
-     * Gets the schema identifier associated with the given schema.
+     * Gets schema properties for a schema with matching {@code groupName}, {@code name}, {@code schemaDefinition}, and
+     * {@code format} along with its HTTP response.
      *
      * @param groupName The schema group.
      * @param name The schema name.
