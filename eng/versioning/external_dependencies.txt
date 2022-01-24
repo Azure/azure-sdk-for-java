@@ -15,6 +15,7 @@ com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.13.1
 com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.13.1
 com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.13.1
 com.fasterxml.jackson.module:jackson-module-parameter-names;2.13.1
+com.fasterxml.jackson.module:jackson-module-scala_2.12;2.13.1
 com.github.spotbugs:spotbugs;4.2.2
 com.github.spotbugs:spotbugs-annotations;4.2.2
 com.github.spotbugs:spotbugs-maven-plugin;4.2.2
@@ -332,8 +333,6 @@ cosmos_org.scalatest:scalatest-maven-plugin;2.0.2
 cosmos_net.alchim31.maven:scala-maven-plugin;4.5.4
 cosmos_org.scalastyle:scalastyle-maven-plugin;1.0.0
 cosmos_org.apache.maven.plugins:maven-shade-plugin;1.2.7
-cosmos_org.codehaus.mojo:flatten-maven-plugin;1.2.7
-cosmos_com.coderplus.maven.plugins:copy-rename-maven-plugin;1.0.1
 
 # sdk\core\azure-core-serializer-avro-jackson\pom.xml
 # This dependency is needed since Jackson Avro uses an older dependency on Apache Avro which is another library.
