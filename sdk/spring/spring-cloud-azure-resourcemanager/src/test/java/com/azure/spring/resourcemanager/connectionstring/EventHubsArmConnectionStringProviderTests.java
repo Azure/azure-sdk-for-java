@@ -3,12 +3,13 @@
 
 package com.azure.spring.resourcemanager.connectionstring;
 
-import org.junit.jupiter.api.Test;
+import com.azure.spring.core.service.AzureServiceType;
 
-class EventHubsArmConnectionStringProviderTests {
+class EventHubsArmConnectionStringProviderTests extends AbstractArmConnectionStringProviderTests<AzureServiceType.EventHubs> {
 
-    @Test
-    void tes() {
-        System.out.println("''''");
+
+    @Override
+    ArmConnectionStringProvider<AzureServiceType.EventHubs> getArmConnectionStringProvider() {
+        return new EventHubsArmConnectionStringProvider(resourceManager, resourceMetadata, "test");
     }
 }
