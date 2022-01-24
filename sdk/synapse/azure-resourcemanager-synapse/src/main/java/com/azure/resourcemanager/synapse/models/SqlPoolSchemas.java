@@ -64,7 +64,7 @@ public interface SqlPoolSchemas {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Pool schema.
+     * @return sql Pool schema along with {@link Response}.
      */
     Response<SqlPoolSchema> getWithResponse(
         String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName, Context context);

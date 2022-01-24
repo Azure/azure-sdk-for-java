@@ -11,7 +11,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestBase;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableItem;
@@ -53,7 +52,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests methods for {@link TableServiceClient}.
  */
-public class TableServiceClientTest extends TestBase {
+public class TableServiceClientTest extends TableServiceClientTestBase {
     private static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
     private static final boolean IS_COSMOS_TEST = TestUtils.isCosmosTest();
 
@@ -86,7 +85,7 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    void serviceCreateTable() {
+    public void serviceCreateTable() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
 
@@ -95,7 +94,7 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    void serviceCreateTableWithResponse() {
+    public void serviceCreateTableWithResponse() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
 
@@ -104,7 +103,7 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    void serviceCreateTableFailsIfExists() {
+    public void serviceCreateTableFailsIfExists() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         serviceClient.createTable(tableName);
@@ -114,7 +113,7 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    void serviceCreateTableIfNotExists() {
+    public void serviceCreateTableIfNotExists() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
 
@@ -123,7 +122,7 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    void serviceCreateTableIfNotExistsSucceedsIfExists() {
+    public void serviceCreateTableIfNotExistsSucceedsIfExists() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         serviceClient.createTable(tableName);
@@ -132,9 +131,8 @@ public class TableServiceClientTest extends TestBase {
         assertNull(serviceClient.createTableIfNotExists(tableName));
     }
 
-
     @Test
-    void serviceCreateTableIfNotExistsWithResponse() {
+    public void serviceCreateTableIfNotExistsWithResponse() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         int expectedStatusCode = 204;
@@ -147,7 +145,7 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    void serviceCreateTableIfNotExistsWithResponseSucceedsIfExists() {
+    public void serviceCreateTableIfNotExistsWithResponseSucceedsIfExists() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         int expectedStatusCode = 409;
@@ -161,7 +159,7 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    void serviceDeleteTable() {
+    public void serviceDeleteTable() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
         serviceClient.createTable(tableName);
@@ -171,7 +169,7 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    void serviceDeleteNonExistingTable() {
+    public void serviceDeleteNonExistingTable() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
 
@@ -180,7 +178,7 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    void serviceDeleteTableWithResponse() {
+    public void serviceDeleteTableWithResponse() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         int expectedStatusCode = 204;
@@ -191,7 +189,7 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    void serviceDeleteNonExistingTableWithResponse() {
+    public void serviceDeleteNonExistingTableWithResponse() {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         int expectedStatusCode = 404;
@@ -201,7 +199,7 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    void serviceListTables() {
+    public void serviceListTables() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
         final String tableName2 = testResourceNamer.randomName("test", 20);
@@ -216,7 +214,7 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    void serviceListTablesWithFilter() {
+    public void serviceListTablesWithFilter() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
         final String tableName2 = testResourceNamer.randomName("test", 20);
@@ -230,7 +228,7 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    void serviceListTablesWithTop() {
+    public void serviceListTablesWithTop() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
         final String tableName2 = testResourceNamer.randomName("test", 20);
@@ -248,7 +246,7 @@ public class TableServiceClientTest extends TestBase {
     }
 
     @Test
-    void serviceGetTableClient() {
+    public void serviceGetTableClient() {
         // Arrange
         final String tableName = testResourceNamer.randomName("test", 20);
         serviceClient.createTable(tableName);
@@ -256,7 +254,7 @@ public class TableServiceClientTest extends TestBase {
         TableClient tableClient = serviceClient.getTableClient(tableName);
 
         // Act & Assert
-        TableClientTest.getEntityWithResponseImpl(tableClient, this.testResourceNamer);
+        TableClientTest.getEntityWithResponseImpl(tableClient, testResourceNamer, "partitionKey", "rowKey");
     }
 
     @Test

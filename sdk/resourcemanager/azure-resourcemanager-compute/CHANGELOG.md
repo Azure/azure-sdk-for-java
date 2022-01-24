@@ -1,16 +1,24 @@
 # Release History
 
-## 2.11.0-beta.1 (Unreleased)
+## 2.12.0-beta.1 (Unreleased)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-11-01`.
+
+## 2.11.0 (2022-01-17)
 
 ### Features Added
 
 - Supported Flexible orchestration mode for `VirtualMachineScaleSet` during create.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-08-01`.
 
 ## 2.10.0 (2021-11-22)
 

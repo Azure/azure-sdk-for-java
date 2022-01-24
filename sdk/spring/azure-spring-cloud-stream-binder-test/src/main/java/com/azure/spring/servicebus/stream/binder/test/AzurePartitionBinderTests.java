@@ -4,15 +4,16 @@
 package com.azure.spring.servicebus.stream.binder.test;
 
 import org.assertj.core.api.Assertions;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.TestInfo;
 import org.springframework.cloud.stream.binder.AbstractBinder;
+import org.springframework.cloud.stream.binder.Binder;
+import org.springframework.cloud.stream.binder.Binding;
 import org.springframework.cloud.stream.binder.ConsumerProperties;
 import org.springframework.cloud.stream.binder.PartitionCapableBinderTests;
 import org.springframework.cloud.stream.binder.ProducerProperties;
 import org.springframework.cloud.stream.binder.AbstractTestBinder;
 import org.springframework.cloud.stream.binder.Spy;
-import org.springframework.cloud.stream.binder.Binder;
-import org.springframework.cloud.stream.binder.Binding;
 import org.springframework.cloud.stream.config.BindingProperties;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.support.MessageBuilder;
@@ -28,16 +29,20 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Test cases are defined in super class
- *
- * @author Warren Zhu
+ * Abstract Azure class that adds test support for {@link Binder}.
+ * @param <B> binder type
+ * @param <CP> consumer properties type
+ * @param <PP> producer properties type
  */
 public abstract class AzurePartitionBinderTests<B extends AbstractTestBinder<
         ? extends AbstractBinder<MessageChannel, CP, PP>, CP, PP>,
         CP extends ConsumerProperties, PP extends ProducerProperties>
         extends PartitionCapableBinderTests<B, CP, PP> {
 
-    @BeforeClass
+    /**
+     * Execute necessary operations to enable tests.
+     */
+    @BeforeAll
     public static void enableTests() {
     }
 
@@ -52,46 +57,41 @@ public abstract class AzurePartitionBinderTests<B extends AbstractTestBinder<
     }
 
     @Override
-    public void testClean() throws Exception {
+    public void testClean(TestInfo testInfo) throws Exception {
         // No-op
     }
 
     @Override
-    public void testPartitionedModuleJava() {
-        // Partitioned consumer mode unsupported yet
-    }
-
-    @Override
-    public void testPartitionedModuleSpEL() {
+    public void testPartitionedModuleSpEL(TestInfo testInfo) {
         // Partitioned consumer mode unsupported
     }
 
     @Override
-    public void testAnonymousGroup() {
+    public void testAnonymousGroup(TestInfo testInfo) {
         // azure binder not support anonymous group
     }
 
     // Same logic as super.testSendAndReceiveNoOriginalContentType() except one line commented below
     @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public void testSendAndReceiveNoOriginalContentType() throws Exception {
+    public void testSendAndReceiveNoOriginalContentType(TestInfo testInfo) throws Exception {
         Binder binder = getBinder();
 
-        BindingProperties producerBindingProperties = createProducerBindingProperties(createProducerProperties());
+        BindingProperties producerBindingProperties = createProducerBindingProperties(createProducerProperties(null));
         DirectChannel moduleOutputChannel = createBindableChannel("output", producerBindingProperties);
         BindingProperties inputBindingProperties = createConsumerBindingProperties(createConsumerProperties());
         DirectChannel moduleInputChannel = createBindableChannel("input", inputBindingProperties);
         Binding<MessageChannel> producerBinding =
-                binder.bindProducer(String.format("bar%s0", getDestinationNameDelimiter()), moduleOutputChannel,
-                        producerBindingProperties.getProducer());
+            binder.bindProducer(String.format("bar%s0", getDestinationNameDelimiter()), moduleOutputChannel,
+                producerBindingProperties.getProducer());
         Binding<MessageChannel> consumerBinding =
-                binder.bindConsumer(String.format("bar%s0", getDestinationNameDelimiter()),
-                        "testSendAndReceiveNoOriginalContentType", moduleInputChannel, createConsumerProperties());
+            binder.bindConsumer(String.format("bar%s0", getDestinationNameDelimiter()),
+                "testSendAndReceiveNoOriginalContentType", moduleInputChannel, createConsumerProperties());
         binderBindUnbindLatency();
 
         Message<?> message =
-                MessageBuilder.withPayload("foo").setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.TEXT_PLAIN)
-                              .build();
+            MessageBuilder.withPayload("foo").setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.TEXT_PLAIN)
+                          .build();
 
         // Comment line below since service bus topic operation is event driven mode
         // but subscriber is not ready in the downstream
@@ -111,7 +111,7 @@ public abstract class AzurePartitionBinderTests<B extends AbstractTestBinder<
         Assertions.assertThat(inboundMessageRef.get()).isNotNull();
         Assertions.assertThat(inboundMessageRef.get().getPayload()).isEqualTo("foo".getBytes(StandardCharsets.UTF_8));
         Assertions.assertThat(inboundMessageRef.get().getHeaders().get(MessageHeaders.CONTENT_TYPE).toString())
-            .isEqualTo(MimeTypeUtils.TEXT_PLAIN_VALUE);
+                  .isEqualTo(MimeTypeUtils.TEXT_PLAIN_VALUE);
         producerBinding.unbind();
         consumerBinding.unbind();
     }

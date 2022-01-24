@@ -114,7 +114,7 @@ public final class RecommendedActionsClientImpl implements RecommendedActionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Recommendation Action.
+     * @return represents a Recommendation Action along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecommendationActionInner>> getWithResponseAsync(
@@ -175,7 +175,7 @@ public final class RecommendedActionsClientImpl implements RecommendedActionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Recommendation Action.
+     * @return represents a Recommendation Action along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecommendationActionInner>> getWithResponseAsync(
@@ -236,7 +236,7 @@ public final class RecommendedActionsClientImpl implements RecommendedActionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Recommendation Action.
+     * @return represents a Recommendation Action on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RecommendationActionInner> getAsync(
@@ -281,7 +281,7 @@ public final class RecommendedActionsClientImpl implements RecommendedActionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Recommendation Action.
+     * @return represents a Recommendation Action along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecommendationActionInner> getWithResponse(
@@ -303,7 +303,8 @@ public final class RecommendedActionsClientImpl implements RecommendedActionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of recommendation actions.
+     * @return a list of recommendation actions along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecommendationActionInner>> listByServerSinglePageAsync(
@@ -369,7 +370,8 @@ public final class RecommendedActionsClientImpl implements RecommendedActionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of recommendation actions.
+     * @return a list of recommendation actions along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecommendationActionInner>> listByServerSinglePageAsync(
@@ -526,7 +528,8 @@ public final class RecommendedActionsClientImpl implements RecommendedActionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of recommendation actions.
+     * @return a list of recommendation actions along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecommendationActionInner>> listByServerNextSinglePageAsync(String nextLink) {
@@ -562,7 +565,8 @@ public final class RecommendedActionsClientImpl implements RecommendedActionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of recommendation actions.
+     * @return a list of recommendation actions along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecommendationActionInner>> listByServerNextSinglePageAsync(

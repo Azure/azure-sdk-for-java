@@ -82,7 +82,8 @@ public interface SharedGalleryImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a shared gallery image by subscription id or tenant id.
+     * @return a shared gallery image by subscription id or tenant id along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SharedGalleryImageInner>> getWithResponseAsync(
@@ -98,7 +99,7 @@ public interface SharedGalleryImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a shared gallery image by subscription id or tenant id.
+     * @return a shared gallery image by subscription id or tenant id on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<SharedGalleryImageInner> getAsync(String location, String galleryUniqueName, String galleryImageName);
@@ -129,7 +130,7 @@ public interface SharedGalleryImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a shared gallery image by subscription id or tenant id.
+     * @return a shared gallery image by subscription id or tenant id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SharedGalleryImageInner> getWithResponse(

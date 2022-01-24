@@ -53,6 +53,9 @@ public class AzureListenerEndpointRegistrar implements BeanFactoryAware, Initial
         registerAllEndpoints();
     }
 
+    /**
+     * Register all {@link AzureListenerEndpoint}s under the registrar to create the associated containers.
+     */
     protected void registerAllEndpoints() {
         Assert.state(this.endpointRegistry != null, "No AzureListenerEndpointRegistry set");
         synchronized (this.mutex) {
@@ -120,26 +123,50 @@ public class AzureListenerEndpointRegistrar implements BeanFactoryAware, Initial
         registerEndpoint(endpoint, null);
     }
 
+    /**
+     * Set the bean name of the container factory.
+     * @param containerFactoryBeanName the bean name of the container factory.
+     */
     public void setContainerFactoryBeanName(String containerFactoryBeanName) {
         this.containerFactoryBeanName = containerFactoryBeanName;
     }
 
+    /**
+     * Get the {@link AzureListenerEndpointRegistry}.
+     * @return the {@link AzureListenerEndpointRegistry}.
+     */
     public AzureListenerEndpointRegistry getEndpointRegistry() {
         return this.endpointRegistry;
     }
 
+    /**
+     * Set the {@link AzureListenerEndpointRegistry}.
+     * @param endpointRegistry the {@link AzureListenerEndpointRegistry}.
+     */
     public void setEndpointRegistry(AzureListenerEndpointRegistry endpointRegistry) {
         this.endpointRegistry = endpointRegistry;
     }
 
+    /**
+     * Get the {@link MessageHandlerMethodFactory}.
+     * @return the {@link MessageHandlerMethodFactory}.
+     */
     public MessageHandlerMethodFactory getMessageHandlerMethodFactory() {
         return this.messageHandlerMethodFactory;
     }
 
+    /**
+     * Set the {@link MessageHandlerMethodFactory}.
+     * @param messageHandlerMethodFactory the {@link MessageHandlerMethodFactory}.
+     */
     public void setMessageHandlerMethodFactory(MessageHandlerMethodFactory messageHandlerMethodFactory) {
         this.messageHandlerMethodFactory = messageHandlerMethodFactory;
     }
 
+    /**
+     * Set the {@link ListenerContainerFactory}.
+     * @param containerFactory the {@link ListenerContainerFactory}.
+     */
     public void setContainerFactory(ListenerContainerFactory<?> containerFactory) {
         this.containerFactory = containerFactory;
     }

@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.ApiEntityReference;
 import com.azure.resourcemanager.compute.models.ConsistencyModeTypes;
+import com.azure.resourcemanager.compute.models.RestorePointInstanceView;
 import com.azure.resourcemanager.compute.models.RestorePointSourceMetadata;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -51,6 +52,19 @@ public final class RestorePointProperties {
      */
     @JsonProperty(value = "timeCreated")
     private OffsetDateTime timeCreated;
+
+    /*
+     * Resource Id of the source restore point from which a copy needs to be
+     * created.
+     */
+    @JsonProperty(value = "sourceRestorePoint")
+    private ApiEntityReference sourceRestorePoint;
+
+    /*
+     * The restore point instance view.
+     */
+    @JsonProperty(value = "instanceView", access = JsonProperty.Access.WRITE_ONLY)
+    private RestorePointInstanceView instanceView;
 
     /**
      * Get the excludeDisks property: List of disk resource ids that the customer wishes to exclude from the restore
@@ -123,6 +137,37 @@ public final class RestorePointProperties {
     }
 
     /**
+     * Get the sourceRestorePoint property: Resource Id of the source restore point from which a copy needs to be
+     * created.
+     *
+     * @return the sourceRestorePoint value.
+     */
+    public ApiEntityReference sourceRestorePoint() {
+        return this.sourceRestorePoint;
+    }
+
+    /**
+     * Set the sourceRestorePoint property: Resource Id of the source restore point from which a copy needs to be
+     * created.
+     *
+     * @param sourceRestorePoint the sourceRestorePoint value to set.
+     * @return the RestorePointProperties object itself.
+     */
+    public RestorePointProperties withSourceRestorePoint(ApiEntityReference sourceRestorePoint) {
+        this.sourceRestorePoint = sourceRestorePoint;
+        return this;
+    }
+
+    /**
+     * Get the instanceView property: The restore point instance view.
+     *
+     * @return the instanceView value.
+     */
+    public RestorePointInstanceView instanceView() {
+        return this.instanceView;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -133,6 +178,12 @@ public final class RestorePointProperties {
         }
         if (sourceMetadata() != null) {
             sourceMetadata().validate();
+        }
+        if (sourceRestorePoint() != null) {
+            sourceRestorePoint().validate();
+        }
+        if (instanceView() != null) {
+            instanceView().validate();
         }
     }
 }
