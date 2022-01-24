@@ -8,8 +8,10 @@ import com.azure.ai.formrecognizer.DocumentAnalysisServiceVersion;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.administration.models.CreateComposedModelOptions;
 import com.azure.ai.formrecognizer.administration.models.DocumentModel;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationError;
 import com.azure.ai.formrecognizer.implementation.util.Utility;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
+import com.azure.ai.formrecognizer.models.DocumentModelOperationException;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -194,6 +196,33 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
 
             validateDocumentModelData(createdModel1);
             client.deleteModel(createdModel1.getModelId()).block();
+        });
+    }
+
+    /**
+     * Verifies that building a model throws a DocumentModelOperationException when the training container is missing
+     * OCR files.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void beginBuildModelThrowsDocumentModelOperationException(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
+        client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
+        buildModelErrorRunner((errorTrainingFilesUrl) -> {
+            DocumentModelOperationException documentModelOperationException
+                = Assertions.assertThrows(DocumentModelOperationException.class,
+                    () ->
+                        client.beginBuildModel(errorTrainingFilesUrl, null)
+                            .setPollInterval(durationTestMode)
+                            .getSyncPoller()
+                            .getFinalResult());
+
+            Assertions.assertEquals("Invalid request.", documentModelOperationException.getMessage());
+            DocumentModelOperationError actualError =
+                documentModelOperationException.getDocumentModelOperationError();
+            Assertions.assertEquals("InvalidRequest", actualError.getCode());
+            Assertions.assertEquals("Could not build the model: Can't find any OCR files for training.",
+                actualError.getDetails().get(0).getMessage());
+
         });
     }
 

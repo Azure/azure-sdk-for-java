@@ -66,6 +66,13 @@ public final class ImageReference extends SubResource {
     @JsonProperty(value = "sharedGalleryImageId")
     private String sharedGalleryImageId;
 
+    /*
+     * Specified the community gallery image unique id for vm deployment. This
+     * can be fetched from community gallery image GET call.
+     */
+    @JsonProperty(value = "communityGalleryImageId")
+    private String communityGalleryImageId;
+
     /**
      * Get the publisher property: The image publisher.
      *
@@ -184,6 +191,28 @@ public final class ImageReference extends SubResource {
      */
     public ImageReference withSharedGalleryImageId(String sharedGalleryImageId) {
         this.sharedGalleryImageId = sharedGalleryImageId;
+        return this;
+    }
+
+    /**
+     * Get the communityGalleryImageId property: Specified the community gallery image unique id for vm deployment. This
+     * can be fetched from community gallery image GET call.
+     *
+     * @return the communityGalleryImageId value.
+     */
+    public String communityGalleryImageId() {
+        return this.communityGalleryImageId;
+    }
+
+    /**
+     * Set the communityGalleryImageId property: Specified the community gallery image unique id for vm deployment. This
+     * can be fetched from community gallery image GET call.
+     *
+     * @param communityGalleryImageId the communityGalleryImageId value to set.
+     * @return the ImageReference object itself.
+     */
+    public ImageReference withCommunityGalleryImageId(String communityGalleryImageId) {
+        this.communityGalleryImageId = communityGalleryImageId;
         return this;
     }
 

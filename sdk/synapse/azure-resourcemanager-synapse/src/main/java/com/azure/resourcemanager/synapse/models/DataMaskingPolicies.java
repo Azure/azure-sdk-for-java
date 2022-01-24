@@ -32,7 +32,7 @@ public interface DataMaskingPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool data masking policy.
+     * @return a Sql pool data masking policy along with {@link Response}.
      */
     Response<DataMaskingPolicy> getWithResponse(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
@@ -44,7 +44,7 @@ public interface DataMaskingPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool data masking policy.
+     * @return a Sql pool data masking policy along with {@link Response}.
      */
     DataMaskingPolicy getById(String id);
 
@@ -56,7 +56,7 @@ public interface DataMaskingPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool data masking policy.
+     * @return a Sql pool data masking policy along with {@link Response}.
      */
     Response<DataMaskingPolicy> getByIdWithResponse(String id, Context context);
 

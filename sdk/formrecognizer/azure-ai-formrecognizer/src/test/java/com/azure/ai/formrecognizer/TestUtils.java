@@ -66,6 +66,8 @@ public final class TestUtils {
 
     public static final String FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL_CONFIGURATION =
         Configuration.getGlobalConfiguration().get("FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL");
+    public static final String FORM_RECOGNIZER_ERROR_TRAINING_BLOB_CONTAINER_SAS_URL_CONFIGURATION =
+        Configuration.getGlobalConfiguration().get("FORM_RECOGNIZER_ERROR_TRAINING_BLOB_CONTAINER_SAS_URL");
     public static final String FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL_CONFIGURATION =
         Configuration.getGlobalConfiguration().get("FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL");
     public static final String AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION
@@ -128,6 +130,10 @@ public final class TestUtils {
         testRunner.accept(getTrainingFilesContainerUrl(isPlaybackMode));
     }
 
+    public static void getErrorTrainingDataContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
+        testRunner.accept(getErrorTrainingFilesContainerUrl(isPlaybackMode));
+    }
+
     public static void getMultipageTrainingContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
         testRunner.accept(getMultipageTrainingSasUri(isPlaybackMode));
     }
@@ -171,6 +177,15 @@ public final class TestUtils {
      */
     private static String getTrainingFilesContainerUrl(boolean isPlaybackMode) {
         return isPlaybackMode ? "https://isPlaybackmode" : FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL_CONFIGURATION;
+    }
+
+    /**
+     * Get the training data set SAS Url value based on the test running mode.
+     *
+     * @return the training data set Url
+     */
+    private static String getErrorTrainingFilesContainerUrl(boolean isPlaybackMode) {
+        return isPlaybackMode ? "https://isPlaybackmode" : FORM_RECOGNIZER_ERROR_TRAINING_BLOB_CONTAINER_SAS_URL_CONFIGURATION;
     }
 
     /**
