@@ -4,22 +4,16 @@
 package com.azure.monitor.query;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.ClientOptionsTrait;
-import com.azure.core.client.traits.HttpConfigTrait;
-import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.query.implementation.logs.AzureLogAnalyticsImplBuilder;
-
-import java.util.Objects;
 
 /**
  * Fluent builder for creating instances of {@link LogsQueryClient} and {@link LogsQueryAsyncClient}.
@@ -45,10 +39,7 @@ import java.util.Objects;
  * <!-- end com.azure.monitor.query.LogsQueryClient.instantiation -->
  */
 @ServiceClientBuilder(serviceClients = {LogsQueryClient.class, LogsQueryAsyncClient.class})
-public final class LogsQueryClientBuilder implements
-    TokenCredentialTrait<LogsQueryClientBuilder>,
-    HttpConfigTrait<LogsQueryClientBuilder>,
-    ClientOptionsTrait<LogsQueryClientBuilder> {
+public final class LogsQueryClientBuilder {
     private final ClientLogger logger = new ClientLogger(LogsQueryClientBuilder.class);
     private final AzureLogAnalyticsImplBuilder innerLogBuilder = new AzureLogAnalyticsImplBuilder();
     private ClientOptions clientOptions;
@@ -69,7 +60,6 @@ public final class LogsQueryClientBuilder implements
      * @param pipeline the pipeline value.
      * @return the {@link LogsQueryClientBuilder}.
      */
-    @Override
     public LogsQueryClientBuilder pipeline(HttpPipeline pipeline) {
         innerLogBuilder.pipeline(pipeline);
         return this;
@@ -80,7 +70,6 @@ public final class LogsQueryClientBuilder implements
      * @param httpClient the httpClient value.
      * @return the {@link LogsQueryClientBuilder}.
      */
-    @Override
     public LogsQueryClientBuilder httpClient(HttpClient httpClient) {
         innerLogBuilder.httpClient(httpClient);
         return this;
@@ -101,7 +90,6 @@ public final class LogsQueryClientBuilder implements
      * @param httpLogOptions the httpLogOptions value.
      * @return the {@link LogsQueryClientBuilder}.
      */
-    @Override
     public LogsQueryClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         innerLogBuilder.httpLogOptions(httpLogOptions);
         return this;
@@ -118,24 +106,10 @@ public final class LogsQueryClientBuilder implements
     }
 
     /**
-     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @return The updated {@link LogsQueryClientBuilder} object.
-     */
-    @Override
-    public LogsQueryClientBuilder retryOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        return retryPolicy(new RetryPolicy(retryOptions));
-    }
-
-    /**
      * Adds a custom Http pipeline policy.
      * @param customPolicy The custom Http pipeline policy to add.
      * @return the {@link LogsQueryClientBuilder}.
      */
-    @Override
     public LogsQueryClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         innerLogBuilder.addPolicy(customPolicy);
         return this;
@@ -146,7 +120,6 @@ public final class LogsQueryClientBuilder implements
      * @param tokenCredential the tokenCredential value.
      * @return the {@link LogsQueryClientBuilder}.
      */
-    @Override
     public LogsQueryClientBuilder credential(TokenCredential tokenCredential) {
         innerLogBuilder.credential(tokenCredential);
         return this;
@@ -157,7 +130,6 @@ public final class LogsQueryClientBuilder implements
      * @param clientOptions The {@link ClientOptions}.
      * @return the {@link LogsQueryClientBuilder}.
      */
-    @Override
     public LogsQueryClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;

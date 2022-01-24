@@ -8,11 +8,6 @@ import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.identity.implementation.CommunicationIdentityClientImpl;
 import com.azure.communication.identity.implementation.CommunicationIdentityClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.AzureKeyCredentialTrait;
-import com.azure.core.client.traits.ClientOptionsTrait;
-import com.azure.core.client.traits.ConnectionStringTrait;
-import com.azure.core.client.traits.HttpConfigTrait;
-import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
@@ -24,7 +19,6 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
-import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
@@ -41,12 +35,7 @@ import java.util.Objects;
  * CommunicationIdentityClientBuilder that creates CommunicationIdentityAsyncClient and CommunicationIdentityClient.
  */
 @ServiceClientBuilder(serviceClients = {CommunicationIdentityClient.class, CommunicationIdentityAsyncClient.class})
-public final class CommunicationIdentityClientBuilder implements
-    TokenCredentialTrait<CommunicationIdentityClientBuilder>,
-    AzureKeyCredentialTrait<CommunicationIdentityClientBuilder>,
-    ConnectionStringTrait<CommunicationIdentityClientBuilder>,
-    HttpConfigTrait<CommunicationIdentityClientBuilder>,
-    ClientOptionsTrait<CommunicationIdentityClientBuilder> {
+public final class CommunicationIdentityClientBuilder {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
@@ -84,7 +73,6 @@ public final class CommunicationIdentityClientBuilder implements
      * supplied, the credential and httpClient fields must be set
      * @return CommunicationIdentityClientBuilder
      */
-    @Override
     public CommunicationIdentityClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = Objects.requireNonNull(pipeline, "'pipeline' cannot be null.");
         return this;
@@ -97,7 +85,6 @@ public final class CommunicationIdentityClientBuilder implements
      * @return The updated {@link CommunicationIdentityClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
-    @Override
     public CommunicationIdentityClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         return this;
@@ -110,7 +97,6 @@ public final class CommunicationIdentityClientBuilder implements
      * @return The updated {@link CommunicationIdentityClientBuilder} object.
      * @throws NullPointerException If {@code keyCredential} is null.
      */
-    @Override
     public CommunicationIdentityClientBuilder credential(AzureKeyCredential keyCredential)  {
         this.azureKeyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;
@@ -122,7 +108,6 @@ public final class CommunicationIdentityClientBuilder implements
      * @param connectionString connection string for setting endpoint and initalizing CommunicationClientCredential
      * @return CommunicationIdentityClientBuilder
      */
-    @Override
     public CommunicationIdentityClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
         CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);
@@ -141,7 +126,6 @@ public final class CommunicationIdentityClientBuilder implements
      * field.
      * @return CommunicationIdentityClientBuilder
      */
-    @Override
     public CommunicationIdentityClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
         return this;
@@ -154,20 +138,18 @@ public final class CommunicationIdentityClientBuilder implements
      * AzureKeyCredentialPolicy, UserAgentPolicy, RetryPolicy, and CookiePolicy
      * @return CommunicationIdentityClientBuilder
      */
-    @Override
     public CommunicationIdentityClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         this.customPolicies.add(Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null."));
         return this;
     }
 
-    /**
+        /**
      * Sets the client options for all the requests made through the client.
      *
      * @param clientOptions {@link ClientOptions}.
      * @return The updated {@link CommunicationIdentityClientBuilder} object.
      * @throws NullPointerException If {@code clientOptions} is {@code null}.
      */
-    @Override
     public CommunicationIdentityClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
         return this;
@@ -190,7 +172,6 @@ public final class CommunicationIdentityClientBuilder implements
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return the updated CommunicationIdentityClientBuilder object
      */
-    @Override
     public CommunicationIdentityClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
@@ -206,19 +187,6 @@ public final class CommunicationIdentityClientBuilder implements
     public CommunicationIdentityClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "The retry policy cannot be null");
         return this;
-    }
-
-    /**
-     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @return The updated {@link CommunicationIdentityClientBuilder} object.
-     */
-    @Override
-    public CommunicationIdentityClientBuilder retryOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        return retryPolicy(new RetryPolicy(retryOptions));
     }
 
     /**

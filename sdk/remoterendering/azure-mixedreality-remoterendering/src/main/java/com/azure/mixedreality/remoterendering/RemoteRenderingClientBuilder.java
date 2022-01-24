@@ -4,10 +4,6 @@
 package com.azure.mixedreality.remoterendering;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.AzureKeyCredentialTrait;
-import com.azure.core.client.traits.ClientOptionsTrait;
-import com.azure.core.client.traits.HttpConfigTrait;
-import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -19,7 +15,6 @@ import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
@@ -36,11 +31,7 @@ import java.util.UUID;
 
 /** A builder for creating instances of RemoteRenderingClient and RemoteRenderingAsyncClient. */
 @ServiceClientBuilder(serviceClients = {RemoteRenderingClient.class, RemoteRenderingAsyncClient.class})
-public final class RemoteRenderingClientBuilder implements
-    TokenCredentialTrait<RemoteRenderingClientBuilder>,
-    AzureKeyCredentialTrait<RemoteRenderingClientBuilder>,
-    HttpConfigTrait<RemoteRenderingClientBuilder>,
-    ClientOptionsTrait<RemoteRenderingClientBuilder> {
+public final class RemoteRenderingClientBuilder {
 
     private final ClientLogger logger = new ClientLogger(RemoteRenderingClientBuilder.class);
 
@@ -139,7 +130,6 @@ public final class RemoteRenderingClientBuilder implements
      * @param accountKeyCredential the accountKeyCredential value.
      * @return the RemoteRenderingClientBuilder.
      */
-    @Override
     public RemoteRenderingClientBuilder credential(AzureKeyCredential accountKeyCredential) {
         this.stsBuilder.credential(Objects.requireNonNull(accountKeyCredential, "'accountKeyCredential' cannot be null."));
         return this;
@@ -152,7 +142,6 @@ public final class RemoteRenderingClientBuilder implements
      * @return the RemoteRenderingClientBuilder.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
-    @Override
     public RemoteRenderingClientBuilder credential(TokenCredential tokenCredential) {
         this.stsBuilder.credential(Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null."));
         return this;
@@ -192,7 +181,6 @@ public final class RemoteRenderingClientBuilder implements
      * @param httpClient the httpClient value.
      * @return the RemoteRenderingClientBuilder.
      */
-    @Override
     public RemoteRenderingClientBuilder httpClient(HttpClient httpClient) {
         builder.httpClient(Objects.requireNonNull(httpClient, "'httpClient' cannot be null."));
         return this;
@@ -204,7 +192,6 @@ public final class RemoteRenderingClientBuilder implements
      * @param httpLogOptions the httpLogOptions value.
      * @return the RemoteRenderingClientBuilder.
      */
-    @Override
     public RemoteRenderingClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         Objects.requireNonNull(httpLogOptions, "'httpLogOptions' cannot be null.");
 
@@ -219,7 +206,6 @@ public final class RemoteRenderingClientBuilder implements
      * @param pipeline the pipeline value.
      * @return the RemoteRenderingClientBuilder.
      */
-    @Override
     public RemoteRenderingClientBuilder pipeline(HttpPipeline pipeline) {
         builder.pipeline(Objects.requireNonNull(pipeline, "'pipeline' cannot be null."));
         return this;
@@ -234,19 +220,6 @@ public final class RemoteRenderingClientBuilder implements
     public RemoteRenderingClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         builder.retryPolicy(Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null."));
         return this;
-    }
-
-    /**
-     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @return The updated {@link RemoteRenderingClientBuilder} object.
-     */
-    @Override
-    public RemoteRenderingClientBuilder retryOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        return retryPolicy(new RetryPolicy(retryOptions));
     }
 
     /**
@@ -266,7 +239,6 @@ public final class RemoteRenderingClientBuilder implements
      * @param customPolicy The custom Http pipeline policy to add.
      * @return the RemoteRenderingClientBuilder.
      */
-    @Override
     public RemoteRenderingClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         builder.addPolicy(Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null."));
         return this;
@@ -293,7 +265,6 @@ public final class RemoteRenderingClientBuilder implements
      * @param clientOptions the {@link ClientOptions} to be set on the client.
      * @return The RemoteRenderingClientBuilder.
      */
-    @Override
     public RemoteRenderingClientBuilder clientOptions(ClientOptions clientOptions) {
         Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
         this.stsBuilder.clientOptions(clientOptions);

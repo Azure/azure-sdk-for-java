@@ -4,15 +4,12 @@
 package com.azure.iot.modelsrepository;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.ClientOptionsTrait;
-import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -39,9 +36,7 @@ import java.util.Objects;
  * #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired client.
  */
 @ServiceClientBuilder(serviceClients = {ModelsRepositoryClient.class, ModelsRepositoryAsyncClient.class})
-public final class ModelsRepositoryClientBuilder implements
-    HttpConfigTrait<ModelsRepositoryClientBuilder>,
-    ClientOptionsTrait<ModelsRepositoryClientBuilder> {
+public final class ModelsRepositoryClientBuilder {
     // This is the name of the properties file in this repo that contains the default properties
     private static final String MODELS_REPOSITORY_PROPERTIES = "azure-iot-modelsrepository.properties";
 
@@ -249,7 +244,6 @@ public final class ModelsRepositoryClientBuilder implements
      * @param httpClient HttpClient to use for requests.
      * @return the updated ModelsRepositoryClientBuilder instance for fluent building.
      */
-    @Override
     public ModelsRepositoryClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
@@ -262,7 +256,6 @@ public final class ModelsRepositoryClientBuilder implements
      * @return the updated ModelsRepositoryClientBuilder instance for fluent building.
      * @throws NullPointerException If {@code httpLogOptions} is {@code null}.
      */
-    @Override
     public ModelsRepositoryClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;
         return this;
@@ -276,7 +269,6 @@ public final class ModelsRepositoryClientBuilder implements
      * @return the updated ModelsRepositoryClientBuilder instance for fluent building.
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
-    @Override
     public ModelsRepositoryClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         this.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null"));
         return this;
@@ -297,19 +289,6 @@ public final class ModelsRepositoryClientBuilder implements
     }
 
     /**
-     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @return The updated {@link ModelsRepositoryClientBuilder} object.
-     */
-    @Override
-    public ModelsRepositoryClientBuilder retryOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        return retryPolicy(new RetryPolicy(retryOptions));
-    }
-
-    /**
      * Sets the {@link HttpPipeline} to use for the service client.
      * <p>
      * If {@code pipeline} is set, all other settings are ignored, aside from {@link #repositoryEndpoint(String) endpoint}.
@@ -317,7 +296,6 @@ public final class ModelsRepositoryClientBuilder implements
      * @param httpPipeline HttpPipeline to use for sending service requests and receiving responses.
      * @return the updated ModelsRepositoryClientBuilder instance for fluent building.
      */
-    @Override
     public ModelsRepositoryClientBuilder pipeline(HttpPipeline httpPipeline) {
         this.httpPipeline = httpPipeline;
         return this;
@@ -347,7 +325,6 @@ public final class ModelsRepositoryClientBuilder implements
      * @param clientOptions the {@link ClientOptions} to be set on the client.
      * @return The updated KeyClientBuilder object.
      */
-    @Override
     public ModelsRepositoryClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;

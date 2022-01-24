@@ -4,15 +4,11 @@
 package com.azure.monitor.query;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.ClientOptionsTrait;
-import com.azure.core.client.traits.HttpConfigTrait;
-import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
@@ -20,8 +16,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.query.implementation.metrics.MonitorManagementClientImplBuilder;
 import com.azure.monitor.query.implementation.metricsdefinitions.MetricsDefinitionsClientImplBuilder;
 import com.azure.monitor.query.implementation.metricsnamespaces.MetricsNamespacesClientImplBuilder;
-
-import java.util.Objects;
 
 /**
  * Fluent builder for creating instances of {@link MetricsQueryClient} and {@link MetricsQueryAsyncClient}.
@@ -47,10 +41,7 @@ import java.util.Objects;
  * <!-- end com.azure.monitor.query.MetricsQueryClient.instantiation -->
  */
 @ServiceClientBuilder(serviceClients = {MetricsQueryClient.class, MetricsQueryAsyncClient.class})
-public final class MetricsQueryClientBuilder implements
-    TokenCredentialTrait<MetricsQueryClientBuilder>,
-    HttpConfigTrait<MetricsQueryClientBuilder>,
-    ClientOptionsTrait<MetricsQueryClientBuilder> {
+public final class MetricsQueryClientBuilder {
 
     private final MonitorManagementClientImplBuilder innerMetricsBuilder = new MonitorManagementClientImplBuilder();
     private final MetricsDefinitionsClientImplBuilder innerMetricsDefinitionsBuilder =
@@ -79,7 +70,6 @@ public final class MetricsQueryClientBuilder implements
      * @param pipeline the pipeline value.
      * @return the MetricsClientBuilder.
      */
-    @Override
     public MetricsQueryClientBuilder pipeline(HttpPipeline pipeline) {
         innerMetricsBuilder.pipeline(pipeline);
         innerMetricsDefinitionsBuilder.pipeline(pipeline);
@@ -92,7 +82,6 @@ public final class MetricsQueryClientBuilder implements
      * @param httpClient the httpClient value.
      * @return the MetricsClientBuilder.
      */
-    @Override
     public MetricsQueryClientBuilder httpClient(HttpClient httpClient) {
         innerMetricsBuilder.httpClient(httpClient);
         innerMetricsDefinitionsBuilder.httpClient(httpClient);
@@ -117,7 +106,6 @@ public final class MetricsQueryClientBuilder implements
      * @param httpLogOptions the httpLogOptions value.
      * @return the MetricsClientBuilder.
      */
-    @Override
     public MetricsQueryClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         innerMetricsBuilder.httpLogOptions(httpLogOptions);
         innerMetricsDefinitionsBuilder.httpLogOptions(httpLogOptions);
@@ -138,24 +126,10 @@ public final class MetricsQueryClientBuilder implements
     }
 
     /**
-     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @return The updated {@link MetricsQueryClientBuilder} object.
-     */
-    @Override
-    public MetricsQueryClientBuilder retryOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        return retryPolicy(new RetryPolicy(retryOptions));
-    }
-
-    /**
      * Adds a custom Http pipeline policy.
      * @param customPolicy The custom Http pipeline policy to add.
      * @return the MetricsClientBuilder.
      */
-    @Override
     public MetricsQueryClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         innerMetricsBuilder.addPolicy(customPolicy);
         innerMetricsDefinitionsBuilder.addPolicy(customPolicy);
@@ -168,7 +142,6 @@ public final class MetricsQueryClientBuilder implements
      * @param tokenCredential the tokenCredential value.
      * @return the MetricsClientBuilder.
      */
-    @Override
     public MetricsQueryClientBuilder credential(TokenCredential tokenCredential) {
         innerMetricsBuilder.credential(tokenCredential);
         innerMetricsDefinitionsBuilder.credential(tokenCredential);
@@ -181,7 +154,6 @@ public final class MetricsQueryClientBuilder implements
      * @param clientOptions The {@link ClientOptions}.
      * @return the {@link MetricsQueryClientBuilder}
      */
-    @Override
     public MetricsQueryClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;

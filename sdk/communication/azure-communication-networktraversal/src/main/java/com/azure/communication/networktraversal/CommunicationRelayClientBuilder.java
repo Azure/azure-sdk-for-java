@@ -8,11 +8,6 @@ import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.networktraversal.implementation.CommunicationNetworkingClientImpl;
 import com.azure.communication.networktraversal.implementation.CommunicationNetworkingClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.AzureKeyCredentialTrait;
-import com.azure.core.client.traits.ClientOptionsTrait;
-import com.azure.core.client.traits.ConnectionStringTrait;
-import com.azure.core.client.traits.HttpConfigTrait;
-import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
@@ -24,7 +19,6 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
-import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
@@ -41,12 +35,7 @@ import java.util.Objects;
  * CommunicationRelayClientBuilder that creates CommunicationRelayAsyncClient and CommunicationRelayClient.
  */
 @ServiceClientBuilder(serviceClients = {CommunicationRelayClient.class, CommunicationRelayAsyncClient.class})
-public final class CommunicationRelayClientBuilder implements
-    TokenCredentialTrait<CommunicationRelayClientBuilder>,
-    AzureKeyCredentialTrait<CommunicationRelayClientBuilder>,
-    ConnectionStringTrait<CommunicationRelayClientBuilder>,
-    HttpConfigTrait<CommunicationRelayClientBuilder>,
-    ClientOptionsTrait<CommunicationRelayClientBuilder> {
+public final class CommunicationRelayClientBuilder {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
@@ -85,7 +74,6 @@ public final class CommunicationRelayClientBuilder implements
      * supplied, the credential and httpClient fields must be set
      * @return CommunicationRelayClientBuilder
      */
-    @Override
     public CommunicationRelayClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
@@ -97,7 +85,6 @@ public final class CommunicationRelayClientBuilder implements
      * @param tokenCredential {@link TokenCredential} used to authenticate HTTP requests.
      * @return The updated {@link CommunicationRelayClientBuilder} object.
      */
-    @Override
     public CommunicationRelayClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
         return this;
@@ -109,7 +96,6 @@ public final class CommunicationRelayClientBuilder implements
     * @param keyCredential The {@link AzureKeyCredential} used to authenticate HTTP requests.
      * @return The updated {@link CommunicationRelayClientBuilder} object.
      */
-    @Override
     public CommunicationRelayClientBuilder credential(AzureKeyCredential keyCredential)  {
         this.azureKeyCredential = keyCredential;
         return this;
@@ -121,7 +107,6 @@ public final class CommunicationRelayClientBuilder implements
      * @param connectionString connection string for setting endpoint and initalizing CommunicationClientCredential
      * @return CommunicationRelayClientBuilder
      */
-    @Override
     public CommunicationRelayClientBuilder connectionString(String connectionString) {
         CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);
         String endpoint = connectionStringObject.getEndpoint();
@@ -139,7 +124,6 @@ public final class CommunicationRelayClientBuilder implements
      * field.
      * @return CommunicationRelayClientBuilder
      */
-    @Override
     public CommunicationRelayClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
@@ -152,19 +136,17 @@ public final class CommunicationRelayClientBuilder implements
      * AzureKeyCredentialPolicy, UserAgentPolicy, RetryPolicy, and CookiePolicy
      * @return CommunicationRelayClientBuilder
      */
-    @Override
     public CommunicationRelayClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         this.customPolicies.add(customPolicy);
         return this;
     }
 
-    /**
+        /**
      * Sets the client options for all the requests made through the client.
      *
      * @param clientOptions {@link ClientOptions}.
      * @return The updated {@link CommunicationRelayClientBuilder} object.
      */
-    @Override
     public CommunicationRelayClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
@@ -187,7 +169,6 @@ public final class CommunicationRelayClientBuilder implements
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return the updated CommunicationRelayClientBuilder object
      */
-    @Override
     public CommunicationRelayClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;
         return this;
@@ -202,19 +183,6 @@ public final class CommunicationRelayClientBuilder implements
     public CommunicationRelayClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
-    }
-
-    /**
-     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @return The updated {@link CommunicationRelayClientBuilder} object.
-     */
-    @Override
-    public CommunicationRelayClientBuilder retryOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        return retryPolicy(new RetryPolicy(retryOptions));
     }
 
     /**
@@ -320,7 +288,7 @@ public final class CommunicationRelayClientBuilder implements
         } else if (!CoreUtils.isNullOrEmpty(buildLogOptions.getApplicationId())) {
             applicationId = buildLogOptions.getApplicationId();
         }
-
+        
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, configuration));
         policies.add(new RequestIdPolicy());
         policies.add(this.retryPolicy == null ? new RetryPolicy() : this.retryPolicy);

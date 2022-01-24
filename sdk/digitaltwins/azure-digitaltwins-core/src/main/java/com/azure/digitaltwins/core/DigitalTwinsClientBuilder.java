@@ -4,9 +4,6 @@
 package com.azure.digitaltwins.core;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.ClientOptionsTrait;
-import com.azure.core.client.traits.HttpConfigTrait;
-import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
@@ -22,7 +19,6 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
-import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
@@ -42,10 +38,7 @@ import java.util.Objects;
  * #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired client.
  */
 @ServiceClientBuilder(serviceClients = {DigitalTwinsClient.class, DigitalTwinsAsyncClient.class})
-public final class DigitalTwinsClientBuilder implements
-    TokenCredentialTrait<DigitalTwinsClientBuilder>,
-    HttpConfigTrait<DigitalTwinsClientBuilder>,
-    ClientOptionsTrait<DigitalTwinsClientBuilder> {
+public final class DigitalTwinsClientBuilder {
     private static final String[] ADT_PUBLIC_SCOPE = new String[]{"https://digitaltwins.azure.net" + "/.default"};
 
     // This is the name of the properties file in this repo that contains the default properties
@@ -231,7 +224,6 @@ public final class DigitalTwinsClientBuilder implements
      * @param tokenCredential the authentication token provider.
      * @return the updated DigitalTwinsClientBuilder instance for fluent building.
      */
-    @Override
     public DigitalTwinsClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
         return this;
@@ -260,7 +252,6 @@ public final class DigitalTwinsClientBuilder implements
      * @param httpClient HttpClient to use for requests.
      * @return the updated DigitalTwinsClientBuilder instance for fluent building.
      */
-    @Override
     public DigitalTwinsClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
@@ -273,7 +264,6 @@ public final class DigitalTwinsClientBuilder implements
      * @return the updated DigitalTwinsClientBuilder instance for fluent building.
      * @throws NullPointerException If {@code httpLogOptions} is {@code null}.
      */
-    @Override
     public DigitalTwinsClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;
         return this;
@@ -287,7 +277,6 @@ public final class DigitalTwinsClientBuilder implements
      * @return the updated DigitalTwinsClientBuilder instance for fluent building.
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
-    @Override
     public DigitalTwinsClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null.");
 
@@ -315,19 +304,6 @@ public final class DigitalTwinsClientBuilder implements
     }
 
     /**
-     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @return The updated {@link DigitalTwinsClientBuilder} object.
-     */
-    @Override
-    public DigitalTwinsClientBuilder retryOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        return retryPolicy(new RetryPolicy(retryOptions));
-    }
-
-    /**
      * Sets the {@link HttpPipeline} to use for the service client.
      * <p>
      * If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint}.
@@ -335,7 +311,6 @@ public final class DigitalTwinsClientBuilder implements
      * @param httpPipeline HttpPipeline to use for sending service requests and receiving responses.
      * @return the updated DigitalTwinsClientBuilder instance for fluent building.
      */
-    @Override
     public DigitalTwinsClientBuilder pipeline(HttpPipeline httpPipeline) {
         this.httpPipeline = httpPipeline;
         return this;
@@ -376,7 +351,6 @@ public final class DigitalTwinsClientBuilder implements
      * @param clientOptions the {@link ClientOptions} to be set on the client.
      * @return The updated KeyClientBuilder object.
      */
-    @Override
     public DigitalTwinsClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;

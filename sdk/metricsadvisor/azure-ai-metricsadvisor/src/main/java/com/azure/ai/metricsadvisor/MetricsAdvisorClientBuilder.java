@@ -7,9 +7,6 @@ import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAd
 import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2ImplBuilder;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.ClientOptionsTrait;
-import com.azure.core.client.traits.HttpConfigTrait;
-import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpClient;
@@ -25,7 +22,6 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
-import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
@@ -102,10 +98,7 @@ import java.util.Objects;
  * @see MetricsAdvisorClient
  */
 @ServiceClientBuilder(serviceClients = {MetricsAdvisorAsyncClient.class, MetricsAdvisorClient.class})
-public final class MetricsAdvisorClientBuilder implements
-    TokenCredentialTrait<MetricsAdvisorClientBuilder>,
-    HttpConfigTrait<MetricsAdvisorClientBuilder>,
-    ClientOptionsTrait<MetricsAdvisorClientBuilder> {
+public final class MetricsAdvisorClientBuilder {
 
     private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
     private static final String CONTENT_TYPE_HEADER_VALUE = ContentType.APPLICATION_JSON;
@@ -290,7 +283,6 @@ public final class MetricsAdvisorClientBuilder implements
      * @return The updated {@link MetricsAdvisorClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
-    @Override
     public MetricsAdvisorClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         return this;
@@ -321,7 +313,6 @@ public final class MetricsAdvisorClientBuilder implements
      *
      * @return The updated MetricsAdvisorClientBuilder object.
      */
-    @Override
     public MetricsAdvisorClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;
         return this;
@@ -333,7 +324,6 @@ public final class MetricsAdvisorClientBuilder implements
      * @param clientOptions The client options.
      * @return The updated MetricsAdvisorClientBuilder object.
      */
-    @Override
     public MetricsAdvisorClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
@@ -347,7 +337,6 @@ public final class MetricsAdvisorClientBuilder implements
      * @return The updated MetricsAdvisorClientBuilder object.
      * @throws NullPointerException If {@code policy} is null.
      */
-    @Override
     public MetricsAdvisorClientBuilder addPolicy(HttpPipelinePolicy policy) {
         policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
         return this;
@@ -360,7 +349,6 @@ public final class MetricsAdvisorClientBuilder implements
      *
      * @return The updated MetricsAdvisorClientBuilder object.
      */
-    @Override
     public MetricsAdvisorClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
             logger.info("HttpClient is being set to 'null' when it was previously configured.");
@@ -381,7 +369,6 @@ public final class MetricsAdvisorClientBuilder implements
      *
      * @return The updated MetricsAdvisorClientBuilder object.
      */
-    @Override
     public MetricsAdvisorClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
@@ -419,19 +406,6 @@ public final class MetricsAdvisorClientBuilder implements
     public MetricsAdvisorClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
-    }
-
-    /**
-     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @return The updated MetricsAdvisorClientBuilder object.
-     */
-    @Override
-    public MetricsAdvisorClientBuilder retryOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        return retryPolicy(new RetryPolicy(retryOptions));
     }
 
     /**

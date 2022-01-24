@@ -8,8 +8,6 @@ import com.azure.communication.chat.implementation.AzureCommunicationChatService
 import com.azure.communication.chat.implementation.CommunicationBearerTokenCredential;
 import com.azure.communication.common.CommunicationTokenCredential;
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.ClientOptionsTrait;
-import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -19,7 +17,6 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
-import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
@@ -35,9 +32,7 @@ import java.util.Objects;
  * Builder for creating clients of Azure Communication Service Chat Threads
  */
 @ServiceClientBuilder(serviceClients = {ChatThreadAsyncClient.class, ChatThreadClient.class})
-public final class ChatThreadClientBuilder implements
-    HttpConfigTrait<ChatThreadClientBuilder>,
-    ClientOptionsTrait<ChatThreadClientBuilder> {
+public final class ChatThreadClientBuilder {
 
     private String chatThreadId;
     private String endpoint;
@@ -71,7 +66,6 @@ public final class ChatThreadClientBuilder implements
      * @param httpClient HttpClient to use
      * @return the updated ChatThreadClientBuilder object
      */
-    @Override
     public ChatThreadClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
         return this;
@@ -95,7 +89,6 @@ public final class ChatThreadClientBuilder implements
      * @param clientOptions The client options.
      * @return The updated ChatThreadClientBuilder object.
      */
-    @Override
     public ChatThreadClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
@@ -108,7 +101,6 @@ public final class ChatThreadClientBuilder implements
      *                       AzureKeyCredentialPolicy, UserAgentPolicy, RetryPolicy, and CookiePolicy
      * @return the updated ChatThreadClientBuilder object
      */
-    @Override
     public ChatThreadClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         this.customPolicies.add(Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null."));
         return this;
@@ -128,25 +120,11 @@ public final class ChatThreadClientBuilder implements
     }
 
     /**
-     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @return The updated {@link ChatThreadClientBuilder} object.
-     */
-    @Override
-    public ChatThreadClientBuilder retryOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        return retryPolicy(new RetryPolicy(retryOptions));
-    }
-
-    /**
      * Sets the {@link HttpLogOptions} for service requests.
      *
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return the updated ChatThreadClientBuilder object
      */
-    @Override
     public ChatThreadClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
@@ -176,7 +154,6 @@ public final class ChatThreadClientBuilder implements
      * @param httpPipeline HttpPipeline to use for sending service requests and receiving responses.
      * @return the updated ChatThreadClientBuilder object
      */
-    @Override
     public ChatThreadClientBuilder pipeline(HttpPipeline httpPipeline) {
         this.httpPipeline = httpPipeline;
         return this;

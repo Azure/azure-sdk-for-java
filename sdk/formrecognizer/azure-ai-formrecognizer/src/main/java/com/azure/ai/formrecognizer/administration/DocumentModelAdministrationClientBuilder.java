@@ -9,10 +9,6 @@ import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilde
 import com.azure.ai.formrecognizer.implementation.util.Constants;
 import com.azure.ai.formrecognizer.implementation.util.Utility;
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.AzureKeyCredentialTrait;
-import com.azure.core.client.traits.ClientOptionsTrait;
-import com.azure.core.client.traits.HttpConfigTrait;
-import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -21,7 +17,6 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
@@ -89,11 +84,7 @@ import java.util.Objects;
  * @see DocumentModelAdministrationClient
  */
 @ServiceClientBuilder(serviceClients = {DocumentModelAdministrationAsyncClient.class, DocumentModelAdministrationClient.class})
-public final class DocumentModelAdministrationClientBuilder implements
-    TokenCredentialTrait<DocumentModelAdministrationClientBuilder>,
-    AzureKeyCredentialTrait<DocumentModelAdministrationClientBuilder>,
-    HttpConfigTrait<DocumentModelAdministrationClientBuilder>,
-    ClientOptionsTrait<DocumentModelAdministrationClientBuilder> {
+public final class DocumentModelAdministrationClientBuilder {
     private final ClientLogger logger = new ClientLogger(DocumentModelAdministrationClientBuilder.class);
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -207,7 +198,6 @@ public final class DocumentModelAdministrationClientBuilder implements
      * @return The updated DocumentModelAdministrationClientBuilder object.
      * @throws NullPointerException If {@code azureKeyCredential} is null.
      */
-    @Override
     public DocumentModelAdministrationClientBuilder credential(AzureKeyCredential azureKeyCredential) {
         this.credential = Objects.requireNonNull(azureKeyCredential, "'azureKeyCredential' cannot be null.");
         return this;
@@ -220,7 +210,6 @@ public final class DocumentModelAdministrationClientBuilder implements
      * @return The updated {@link DocumentModelAdministrationClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
-    @Override
     public DocumentModelAdministrationClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         return this;
@@ -236,7 +225,6 @@ public final class DocumentModelAdministrationClientBuilder implements
      *
      * @return The updated DocumentModelAdministrationClientBuilder object.
      */
-    @Override
     public DocumentModelAdministrationClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;
         return this;
@@ -258,7 +246,6 @@ public final class DocumentModelAdministrationClientBuilder implements
      * @param clientOptions The client options.
      * @return The updated DocumentModelAdministrationClientBuilder object.
      */
-    @Override
     public DocumentModelAdministrationClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
@@ -272,7 +259,6 @@ public final class DocumentModelAdministrationClientBuilder implements
      * @return The updated DocumentModelAdministrationClientBuilder object.
      * @throws NullPointerException If {@code policy} is null.
      */
-    @Override
     public DocumentModelAdministrationClientBuilder addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy, "'policy' cannot be null.");
 
@@ -291,7 +277,6 @@ public final class DocumentModelAdministrationClientBuilder implements
      *
      * @return The updated DocumentModelAdministrationClientBuilder object.
      */
-    @Override
     public DocumentModelAdministrationClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
             logger.info("HttpClient is being set to 'null' when it was previously configured.");
@@ -312,7 +297,6 @@ public final class DocumentModelAdministrationClientBuilder implements
      *
      * @return The updated DocumentModelAdministrationClientBuilder object.
      */
-    @Override
     public DocumentModelAdministrationClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
@@ -350,19 +334,6 @@ public final class DocumentModelAdministrationClientBuilder implements
     public DocumentModelAdministrationClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
-    }
-
-    /**
-     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @return The updated DocumentModelAdministrationClientBuilder object.
-     */
-    @Override
-    public DocumentModelAdministrationClientBuilder retryOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        return retryPolicy(new RetryPolicy(retryOptions));
     }
 
     /**

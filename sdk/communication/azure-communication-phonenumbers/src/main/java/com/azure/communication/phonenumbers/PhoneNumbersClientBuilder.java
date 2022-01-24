@@ -7,11 +7,6 @@ import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClien
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.AzureKeyCredentialTrait;
-import com.azure.core.client.traits.ClientOptionsTrait;
-import com.azure.core.client.traits.ConnectionStringTrait;
-import com.azure.core.client.traits.HttpConfigTrait;
-import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -24,7 +19,6 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
-import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
@@ -41,12 +35,7 @@ import java.util.Objects;
  * Builder for creating clients of Communication Service phone number configuration
  */
 @ServiceClientBuilder(serviceClients = {PhoneNumbersClient.class, PhoneNumbersAsyncClient.class})
-public final class PhoneNumbersClientBuilder implements
-    TokenCredentialTrait<PhoneNumbersClientBuilder>,
-    AzureKeyCredentialTrait<PhoneNumbersClientBuilder>,
-    ConnectionStringTrait<PhoneNumbersClientBuilder>,
-    HttpConfigTrait<PhoneNumbersClientBuilder>,
-    ClientOptionsTrait<PhoneNumbersClientBuilder> {
+public final class PhoneNumbersClientBuilder {
     private static final Map<String, String> PROPERTIES =
         CoreUtils.getProperties("azure-communication-phonenumbers.properties");
     private static final String SDK_NAME = "name";
@@ -87,7 +76,6 @@ public final class PhoneNumbersClientBuilder implements
      * @param pipeline HttpPipeline to use
      * @return The updated {@link PhoneNumbersClientBuilder} object.
      */
-    @Override
     public PhoneNumbersClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
@@ -100,7 +88,6 @@ public final class PhoneNumbersClientBuilder implements
      * @return The updated {@link PhoneNumbersClientBuilder} object.
      * @throws NullPointerException If {@code httpClient} is {@code null}.
      */
-    @Override
     public PhoneNumbersClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
@@ -114,7 +101,6 @@ public final class PhoneNumbersClientBuilder implements
      * @param httpLogOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return the updated {@link PhoneNumbersClientBuilder} object.
      */
-    @Override
     public PhoneNumbersClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
@@ -127,7 +113,6 @@ public final class PhoneNumbersClientBuilder implements
      * @return The updated {@link PhoneNumbersClientBuilder} object.
      * @throws NullPointerException If {@code keyCredential} is null.
      */
-    @Override
     public PhoneNumbersClientBuilder credential(AzureKeyCredential keyCredential)  {
         this.azureKeyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;
@@ -140,7 +125,6 @@ public final class PhoneNumbersClientBuilder implements
      * @return The updated {@link PhoneNumbersClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
-    @Override
     public PhoneNumbersClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         return this;
@@ -154,7 +138,6 @@ public final class PhoneNumbersClientBuilder implements
      * @return The updated {@link PhoneNumbersClientBuilder} object.
      * @throws NullPointerException If {@code connectionString} is {@code null}.
      */
-    @Override
     public PhoneNumbersClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
         CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);
@@ -184,7 +167,6 @@ public final class PhoneNumbersClientBuilder implements
      * @return The updated {@link PhoneNumbersClientBuilder} object.
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
-    @Override
     public PhoneNumbersClientBuilder addPolicy(HttpPipelinePolicy policy) {
         this.additionalPolicies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
         return this;
@@ -197,7 +179,6 @@ public final class PhoneNumbersClientBuilder implements
      * @return The updated {@link PhoneNumbersClientBuilder} object.
      * @throws NullPointerException If {@code clientOptions} is {@code null}.
      */
-    @Override
     public PhoneNumbersClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
         return this;
@@ -228,19 +209,6 @@ public final class PhoneNumbersClientBuilder implements
     public PhoneNumbersClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "The retry policy cannot be null");
         return this;
-    }
-
-    /**
-     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @return The updated {@link PhoneNumbersClientBuilder} object.
-     */
-    @Override
-    public PhoneNumbersClientBuilder retryOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        return retryPolicy(new RetryPolicy(retryOptions));
     }
 
     /**

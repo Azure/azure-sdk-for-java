@@ -7,10 +7,6 @@ import com.azure.ai.textanalytics.implementation.Constants;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.AzureKeyCredentialTrait;
-import com.azure.core.client.traits.ClientOptionsTrait;
-import com.azure.core.client.traits.HttpConfigTrait;
-import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -29,7 +25,6 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
-import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
@@ -102,11 +97,7 @@ import java.util.Objects;
  * @see TextAnalyticsClient
  */
 @ServiceClientBuilder(serviceClients = {TextAnalyticsAsyncClient.class, TextAnalyticsClient.class})
-public final class TextAnalyticsClientBuilder implements
-    TokenCredentialTrait<TextAnalyticsClientBuilder>,
-    AzureKeyCredentialTrait<TextAnalyticsClientBuilder>,
-    HttpConfigTrait<TextAnalyticsClientBuilder>,
-    ClientOptionsTrait<TextAnalyticsClientBuilder> {
+public final class TextAnalyticsClientBuilder {
     private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
     private static final String NAME = "name";
     private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
@@ -307,7 +298,6 @@ public final class TextAnalyticsClientBuilder implements
      * @return The updated {@link TextAnalyticsClientBuilder} object.
      * @throws NullPointerException If {@code keyCredential} is null
      */
-    @Override
     public TextAnalyticsClientBuilder credential(AzureKeyCredential keyCredential) {
         this.credential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;
@@ -320,7 +310,6 @@ public final class TextAnalyticsClientBuilder implements
      * @return The updated {@link TextAnalyticsClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
-    @Override
     public TextAnalyticsClientBuilder credential(TokenCredential tokenCredential) {
         Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         this.tokenCredential = tokenCredential;
@@ -335,7 +324,6 @@ public final class TextAnalyticsClientBuilder implements
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return The updated {@link TextAnalyticsClientBuilder} object.
      */
-    @Override
     public TextAnalyticsClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;
         return this;
@@ -356,7 +344,6 @@ public final class TextAnalyticsClientBuilder implements
      * @param clientOptions The client options.
      * @return The updated TextAnalyticsClientBuilder object.
      */
-    @Override
     public TextAnalyticsClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
@@ -369,7 +356,6 @@ public final class TextAnalyticsClientBuilder implements
      * @return The updated {@link TextAnalyticsClientBuilder} object.
      * @throws NullPointerException If {@code policy} is null.
      */
-    @Override
     public TextAnalyticsClientBuilder addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy, "'policy' cannot be null.");
 
@@ -388,7 +374,6 @@ public final class TextAnalyticsClientBuilder implements
      * @param client The HTTP client to use for requests.
      * @return The updated {@link TextAnalyticsClientBuilder} object.
      */
-    @Override
     public TextAnalyticsClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
             logger.info("HttpClient is being set to 'null' when it was previously configured.");
@@ -408,7 +393,6 @@ public final class TextAnalyticsClientBuilder implements
      * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return The updated {@link TextAnalyticsClientBuilder} object.
      */
-    @Override
     public TextAnalyticsClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
@@ -444,19 +428,6 @@ public final class TextAnalyticsClientBuilder implements
     public TextAnalyticsClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
-    }
-
-    /**
-     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @return The updated {@link TextAnalyticsClientBuilder} object.
-     */
-    @Override
-    public TextAnalyticsClientBuilder retryOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        return retryPolicy(new RetryPolicy(retryOptions));
     }
 
     /**

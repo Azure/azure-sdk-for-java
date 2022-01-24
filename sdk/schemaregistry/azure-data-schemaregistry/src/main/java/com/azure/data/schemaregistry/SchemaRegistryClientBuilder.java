@@ -4,9 +4,6 @@
 package com.azure.data.schemaregistry;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.ClientOptionsTrait;
-import com.azure.core.client.traits.HttpConfigTrait;
-import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
@@ -24,7 +21,6 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
-import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
@@ -96,10 +92,7 @@ import java.util.Objects;
  * <!-- end com.azure.data.schemaregistry.schemaregistryasyncclient.retrypolicy.instantiation -->
  */
 @ServiceClientBuilder(serviceClients = {SchemaRegistryAsyncClient.class, SchemaRegistryClient.class})
-public class SchemaRegistryClientBuilder implements
-    TokenCredentialTrait<SchemaRegistryClientBuilder>,
-    HttpConfigTrait<SchemaRegistryClientBuilder>,
-    ClientOptionsTrait<SchemaRegistryClientBuilder> {
+public class SchemaRegistryClientBuilder {
     private final ClientLogger logger = new ClientLogger(SchemaRegistryClientBuilder.class);
 
     private static final String DEFAULT_SCOPE = "https://eventhubs.azure.net/.default";
@@ -166,7 +159,6 @@ public class SchemaRegistryClientBuilder implements
      * @param httpClient The HTTP client to use for requests.
      * @return The updated {@link SchemaRegistryClientBuilder} object.
      */
-    @Override
     public SchemaRegistryClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
@@ -180,7 +172,6 @@ public class SchemaRegistryClientBuilder implements
      * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return The updated {@link SchemaRegistryClientBuilder} object.
      */
-    @Override
     public SchemaRegistryClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
@@ -212,7 +203,6 @@ public class SchemaRegistryClientBuilder implements
      * @return The updated {@link SchemaRegistryClientBuilder} object.
      * @throws NullPointerException If {@code credential} is {@code null}
      */
-    @Override
     public SchemaRegistryClientBuilder credential(TokenCredential credential) {
         this.credential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         return this;
@@ -229,7 +219,6 @@ public class SchemaRegistryClientBuilder implements
      * @param clientOptions {@link ClientOptions}.
      * @return The updated SchemaRegistryClientBuilder object.
      */
-    @Override
     public SchemaRegistryClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
@@ -243,7 +232,6 @@ public class SchemaRegistryClientBuilder implements
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return The updated {@link SchemaRegistryClientBuilder} object.
      */
-    @Override
     public SchemaRegistryClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;
         return this;
@@ -260,19 +248,6 @@ public class SchemaRegistryClientBuilder implements
     public SchemaRegistryClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
-    }
-
-    /**
-     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @return The updated {@link SchemaRegistryClientBuilder} object.
-     */
-    @Override
-    public SchemaRegistryClientBuilder retryOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        return retryPolicy(new RetryPolicy(retryOptions));
     }
 
     /**
@@ -293,7 +268,6 @@ public class SchemaRegistryClientBuilder implements
      * @return The updated {@link SchemaRegistryClientBuilder} object.
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
-    @Override
     public SchemaRegistryClientBuilder addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy, "'policy' cannot be null.");
 

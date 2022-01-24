@@ -4,8 +4,6 @@
 package com.azure.security.attestation;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.HttpConfigTrait;
-import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
@@ -22,7 +20,6 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
-import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
@@ -119,9 +116,7 @@ import static com.azure.core.util.CoreUtils.getApplicationId;
             AttestationAdministrationClient.class,
             AttestationAdministrationAsyncClient.class,
         })
-public final class AttestationAdministrationClientBuilder implements
-    TokenCredentialTrait<AttestationAdministrationClientBuilder>,
-    HttpConfigTrait<AttestationAdministrationClientBuilder> {
+public final class AttestationAdministrationClientBuilder {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
@@ -234,7 +229,6 @@ public final class AttestationAdministrationClientBuilder implements
      * @param credential Specifies the credential to be used for authentication.
      * @return the AttestationClientBuilder.
      */
-    @Override
     public AttestationAdministrationClientBuilder credential(TokenCredential credential) {
         Objects.requireNonNull(credential);
         this.tokenCredential = credential;
@@ -247,7 +241,6 @@ public final class AttestationAdministrationClientBuilder implements
      * @param pipeline the pipeline value.
      * @return the AttestationClientBuilder.
      */
-    @Override
     public AttestationAdministrationClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
@@ -270,7 +263,6 @@ public final class AttestationAdministrationClientBuilder implements
      * @param httpClient the httpClient value.
      * @return the AttestationClientBuilder.
      */
-    @Override
     public AttestationAdministrationClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
@@ -293,7 +285,6 @@ public final class AttestationAdministrationClientBuilder implements
      * @param httpLogOptions the httpLogOptions value.
      * @return the AttestationClientBuilder.
      */
-    @Override
     public AttestationAdministrationClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
@@ -327,25 +318,11 @@ public final class AttestationAdministrationClientBuilder implements
     }
 
     /**
-     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @return The updated {@link AttestationAdministrationClientBuilder} object.
-     */
-    @Override
-    public AttestationAdministrationClientBuilder retryOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        return retryPolicy(new RetryPolicy(retryOptions));
-    }
-
-    /**
      * Adds a custom Http pipeline policy.
      *
      * @param policy The custom Http pipeline policy to add.
      * @return this {@link AttestationAdministrationClientBuilder}.
      */
-    @Override
     public AttestationAdministrationClientBuilder addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy, "'policy' cannot be null.");
 

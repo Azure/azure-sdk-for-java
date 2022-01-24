@@ -14,8 +14,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.List;
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.ClientOptionsTrait;
-import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -24,7 +22,6 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
-import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.http.policy.UserAgentPolicy;
@@ -36,9 +33,7 @@ import com.azure.core.util.CoreUtils;
  * Builder for creating clients of Azure Communication Service Chat
  */
 @ServiceClientBuilder(serviceClients = {ChatAsyncClient.class, ChatClient.class})
-public final class ChatClientBuilder implements
-    HttpConfigTrait<ChatClientBuilder>,
-    ClientOptionsTrait<ChatClientBuilder> {
+public final class ChatClientBuilder {
 
     private String endpoint;
     private HttpClient httpClient;
@@ -71,7 +66,6 @@ public final class ChatClientBuilder implements
      * @param httpClient HttpClient to use
      * @return the updated ChatClientBuilder object
      */
-    @Override
     public ChatClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
         return this;
@@ -95,7 +89,6 @@ public final class ChatClientBuilder implements
      * @param clientOptions The client options.
      * @return The updated ChatClientBuilder object.
      */
-    @Override
     public ChatClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
@@ -108,7 +101,6 @@ public final class ChatClientBuilder implements
      *                       AzureKeyCredentialPolicy, UserAgentPolicy, RetryPolicy, and CookiePolicy
      * @return the updated ChatClientBuilder object
      */
-    @Override
     public ChatClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         this.customPolicies.add(Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null."));
         return this;
@@ -128,25 +120,11 @@ public final class ChatClientBuilder implements
     }
 
     /**
-     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @return The updated {@link ChatClientBuilder} object.
-     */
-    @Override
-    public ChatClientBuilder retryOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        return retryPolicy(new RetryPolicy(retryOptions));
-    }
-
-    /**
      * Sets the {@link HttpLogOptions} for service requests.
      *
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return the updated ChatClientBuilder object
      */
-    @Override
     public ChatClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
@@ -176,7 +154,6 @@ public final class ChatClientBuilder implements
      * @param httpPipeline HttpPipeline to use for sending service requests and receiving responses.
      * @return the updated ChatClientBuilder object
      */
-    @Override
     public ChatClientBuilder pipeline(HttpPipeline httpPipeline) {
         this.httpPipeline = httpPipeline;
         return this;

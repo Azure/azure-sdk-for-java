@@ -4,10 +4,6 @@
 package com.azure.mixedreality.authentication;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.AzureKeyCredentialTrait;
-import com.azure.core.client.traits.ClientOptionsTrait;
-import com.azure.core.client.traits.HttpConfigTrait;
-import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -21,7 +17,6 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
@@ -49,11 +44,7 @@ import java.util.UUID;
  * @see MixedRealityStsClient
  */
 @ServiceClientBuilder(serviceClients = {MixedRealityStsClient.class, MixedRealityStsAsyncClient.class})
-public final class MixedRealityStsClientBuilder implements
-    TokenCredentialTrait<MixedRealityStsClientBuilder>,
-    AzureKeyCredentialTrait<MixedRealityStsClientBuilder>,
-    HttpConfigTrait<MixedRealityStsClientBuilder>,
-    ClientOptionsTrait<MixedRealityStsClientBuilder> {
+public final class MixedRealityStsClientBuilder {
     private static final String MIXED_REALITY_STS_PROPERTIES = "azure-mixedreality-authentication.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
@@ -125,7 +116,6 @@ public final class MixedRealityStsClientBuilder implements
      * @param customPolicy An HttpPipelinePolicy object to be applied after the defaults.
      * @return The updated {@link MixedRealityStsClientBuilder} object.
      */
-    @Override
     public MixedRealityStsClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         this.customPolicies.add(Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null."));
 
@@ -216,7 +206,6 @@ public final class MixedRealityStsClientBuilder implements
      * @param clientOptions the {@link ClientOptions} to be set on the client.
      * @return The updated {@link MixedRealityStsClientBuilder} object.
      */
-    @Override
     public MixedRealityStsClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
 
@@ -230,7 +219,6 @@ public final class MixedRealityStsClientBuilder implements
      * @return The updated {@link MixedRealityStsClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
-    @Override
     public MixedRealityStsClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
 
@@ -247,7 +235,6 @@ public final class MixedRealityStsClientBuilder implements
      * @return The updated {@link MixedRealityStsClientBuilder} object.
      * @throws NullPointerException If {@code keyCredential} is null.
      */
-    @Override
     public MixedRealityStsClientBuilder credential(AzureKeyCredential keyCredential) {
         this.keyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
 
@@ -288,7 +275,6 @@ public final class MixedRealityStsClientBuilder implements
      * @param client The HTTP client to use for requests.
      * @return The updated ConfigurationClientBuilder object.
      */
-    @Override
     public MixedRealityStsClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
             logger.info("HttpClient is being set to 'null' when it was previously configured.");
@@ -305,7 +291,6 @@ public final class MixedRealityStsClientBuilder implements
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return The updated {@link MixedRealityStsClientBuilder} object.
      */
-    @Override
     public MixedRealityStsClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
 
@@ -322,7 +307,6 @@ public final class MixedRealityStsClientBuilder implements
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return The updated {@link MixedRealityStsClientBuilder} object.
      */
-    @Override
     public MixedRealityStsClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
@@ -346,19 +330,6 @@ public final class MixedRealityStsClientBuilder implements
         this.retryPolicy = retryPolicy;
 
         return this;
-    }
-
-    /**
-     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @return The updated {@link MixedRealityStsClientBuilder} object.
-     */
-    @Override
-    public MixedRealityStsClientBuilder retryOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        return retryPolicy(new RetryPolicy(retryOptions));
     }
 
     /**

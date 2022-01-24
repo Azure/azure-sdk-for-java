@@ -8,10 +8,6 @@ import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilde
 import com.azure.ai.formrecognizer.implementation.util.Constants;
 import com.azure.ai.formrecognizer.implementation.util.Utility;
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.AzureKeyCredentialTrait;
-import com.azure.core.client.traits.ClientOptionsTrait;
-import com.azure.core.client.traits.HttpConfigTrait;
-import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -20,7 +16,6 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
@@ -91,11 +86,7 @@ import java.util.Objects;
  * @see DocumentAnalysisClient
  */
 @ServiceClientBuilder(serviceClients = {DocumentAnalysisAsyncClient.class, DocumentAnalysisClient.class})
-public final class DocumentAnalysisClientBuilder implements
-    TokenCredentialTrait<DocumentAnalysisClientBuilder>,
-    AzureKeyCredentialTrait<DocumentAnalysisClientBuilder>,
-    HttpConfigTrait<DocumentAnalysisClientBuilder>,
-    ClientOptionsTrait<DocumentAnalysisClientBuilder> {
+public final class DocumentAnalysisClientBuilder {
     private final ClientLogger logger = new ClientLogger(DocumentAnalysisClientBuilder.class);
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -209,7 +200,6 @@ public final class DocumentAnalysisClientBuilder implements
      * @return The updated DocumentAnalysisClientBuilder object.
      * @throws NullPointerException If {@code azureKeyCredential} is null.
      */
-    @Override
     public DocumentAnalysisClientBuilder credential(AzureKeyCredential azureKeyCredential) {
         this.credential = Objects.requireNonNull(azureKeyCredential, "'azureKeyCredential' cannot be null.");
         return this;
@@ -222,7 +212,6 @@ public final class DocumentAnalysisClientBuilder implements
      * @return The updated {@link DocumentAnalysisClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
-    @Override
     public DocumentAnalysisClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         return this;
@@ -238,7 +227,6 @@ public final class DocumentAnalysisClientBuilder implements
      *
      * @return The updated DocumentAnalysisClientBuilder object.
      */
-    @Override
     public DocumentAnalysisClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;
         return this;
@@ -260,7 +248,6 @@ public final class DocumentAnalysisClientBuilder implements
      * @param clientOptions The client options.
      * @return The updated DocumentAnalysisClientBuilder object.
      */
-    @Override
     public DocumentAnalysisClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
@@ -274,7 +261,6 @@ public final class DocumentAnalysisClientBuilder implements
      * @return The updated DocumentAnalysisClientBuilder object.
      * @throws NullPointerException If {@code policy} is null.
      */
-    @Override
     public DocumentAnalysisClientBuilder addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy, "'policy' cannot be null.");
 
@@ -293,7 +279,6 @@ public final class DocumentAnalysisClientBuilder implements
      *
      * @return The updated DocumentAnalysisClientBuilder object.
      */
-    @Override
     public DocumentAnalysisClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
             logger.info("HttpClient is being set to 'null' when it was previously configured.");
@@ -314,7 +299,6 @@ public final class DocumentAnalysisClientBuilder implements
      *
      * @return The updated DocumentAnalysisClientBuilder object.
      */
-    @Override
     public DocumentAnalysisClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
@@ -352,19 +336,6 @@ public final class DocumentAnalysisClientBuilder implements
     public DocumentAnalysisClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
-    }
-
-    /**
-     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @return The updated DocumentAnalysisClientBuilder object.
-     */
-    @Override
-    public DocumentAnalysisClientBuilder retryOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        return retryPolicy(new RetryPolicy(retryOptions));
     }
 
     /**

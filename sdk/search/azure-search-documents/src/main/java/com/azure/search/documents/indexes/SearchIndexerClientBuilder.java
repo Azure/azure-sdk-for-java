@@ -4,10 +4,6 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.AzureKeyCredentialTrait;
-import com.azure.core.client.traits.ClientOptionsTrait;
-import com.azure.core.client.traits.HttpConfigTrait;
-import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -15,7 +11,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
@@ -68,11 +63,7 @@ import java.util.Objects;
  * @see SearchIndexerAsyncClient
  */
 @ServiceClientBuilder(serviceClients = {SearchIndexerClient.class, SearchIndexerAsyncClient.class})
-public class SearchIndexerClientBuilder implements
-    TokenCredentialTrait<SearchIndexerClientBuilder>,
-    AzureKeyCredentialTrait<SearchIndexerClientBuilder>,
-    HttpConfigTrait<SearchIndexerClientBuilder>,
-    ClientOptionsTrait<SearchIndexerClientBuilder> {
+public class SearchIndexerClientBuilder {
     private final ClientLogger logger = new ClientLogger(SearchIndexerClientBuilder.class);
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -162,7 +153,6 @@ public class SearchIndexerClientBuilder implements
      * @param credential The {@link AzureKeyCredential} used to authenticate HTTP requests.
      * @return The updated SearchIndexerClientBuilder object.
      */
-    @Override
     public SearchIndexerClientBuilder credential(AzureKeyCredential credential) {
         this.azureKeyCredential = credential;
         return this;
@@ -174,7 +164,6 @@ public class SearchIndexerClientBuilder implements
      * @param credential The {@link TokenCredential} used to authenticate HTTP requests.
      * @return The updated SearchIndexerClientBuilder object.
      */
-    @Override
     public SearchIndexerClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = credential;
         return this;
@@ -188,7 +177,6 @@ public class SearchIndexerClientBuilder implements
      * @param logOptions The logging configuration for HTTP requests and responses.
      * @return The updated SearchIndexerClientBuilder object.
      */
-    @Override
     public SearchIndexerClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         httpLogOptions = logOptions;
         return this;
@@ -209,7 +197,6 @@ public class SearchIndexerClientBuilder implements
      * @param clientOptions The client options.
      * @return The updated SearchIndexerClientBuilder object.
      */
-    @Override
     public SearchIndexerClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
@@ -225,7 +212,6 @@ public class SearchIndexerClientBuilder implements
      * @return The updated SearchIndexerClientBuilder object.
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
-    @Override
     public SearchIndexerClientBuilder addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy, "'policy' cannot be null.");
 
@@ -244,7 +230,6 @@ public class SearchIndexerClientBuilder implements
      * @param client The HTTP client that will handle sending requests and receiving responses.
      * @return The updated SearchIndexerClientBuilder object.
      */
-    @Override
     public SearchIndexerClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
             logger.info("HttpClient is being set to 'null' when it was previously configured.");
@@ -263,7 +248,6 @@ public class SearchIndexerClientBuilder implements
      * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return The updated SearchIndexerClientBuilder object.
      */
-    @Override
     public SearchIndexerClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
@@ -298,19 +282,6 @@ public class SearchIndexerClientBuilder implements
     public SearchIndexerClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
-    }
-
-    /**
-     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @return The updated {@link SearchIndexerClientBuilder} object.
-     */
-    @Override
-    public SearchIndexerClientBuilder retryOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        return retryPolicy(new RetryPolicy(retryOptions));
     }
 
     /**
