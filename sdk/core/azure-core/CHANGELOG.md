@@ -1,6 +1,24 @@
 # Release History
 
-## 1.24.0 (2022-01-05)
+## 1.25.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.24.1 (2022-01-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.4.12` to `3.4.13`.
+
+## 1.24.0 (2022-01-06)
 
 ### Features Added
 

@@ -8,13 +8,39 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerregistry.fluent.models.RegistryInner;
 import com.azure.resourcemanager.containerregistry.models.Sku;
 import com.azure.resourcemanager.containerregistry.models.SkuName;
+import com.azure.resourcemanager.containerregistry.models.ZoneRedundancy;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for Registries Create. */
 public final class RegistriesCreateSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-12-01-preview/examples/RegistryCreate.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/RegistryCreateZoneRedundant.json
+     */
+    /**
+     * Sample code: RegistryCreateZoneRedundant.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void registryCreateZoneRedundant(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .containerRegistries()
+            .manager()
+            .serviceClient()
+            .getRegistries()
+            .create(
+                "myResourceGroup",
+                "myRegistry",
+                new RegistryInner()
+                    .withLocation("westus")
+                    .withTags(mapOf("key", "value"))
+                    .withSku(new Sku().withName(SkuName.STANDARD))
+                    .withZoneRedundancy(ZoneRedundancy.ENABLED),
+                Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/RegistryCreate.json
      */
     /**
      * Sample code: RegistryCreate.

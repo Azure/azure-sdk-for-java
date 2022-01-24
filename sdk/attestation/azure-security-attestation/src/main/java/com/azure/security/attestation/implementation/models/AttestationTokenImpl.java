@@ -381,7 +381,7 @@ public class AttestationTokenImpl implements AttestationToken {
         try {
             jwt.set(JWSObject.parse(rawToken));
         } catch (ParseException e) {
-            logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
         AtomicReference<AttestationSigner> tokenSigner = new AtomicReference<>();
         List<AttestationSigner> candidateSigners = getCandidateSigners(signers);
@@ -439,7 +439,7 @@ public class AttestationTokenImpl implements AttestationToken {
             // We didn't find a candidate, so if the caller provided a list of candidates, use that
             // as the possible signers.
             if (signers != null && signers.size() != 0) {
-                signers.forEach(signer -> candidates.add(signer));
+                candidates.addAll(signers);
             } else {
                 // The caller didn't provide a set of signers, maybe there's one in the token itself.
                 if (this.getCertificateChain() != null) {

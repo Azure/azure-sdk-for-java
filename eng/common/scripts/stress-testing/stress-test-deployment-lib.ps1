@@ -86,12 +86,6 @@ function DeployStressTests(
         $subscription = 'Azure SDK Test Resources'
     }
 
-    if (!$repository) {
-        $repository = if ($env:USER) { $env:USER } else { "${env:USERNAME}" }
-        # Remove spaces, etc. that may be in $namespace
-        $repository -replace '\W'
-    }
-
     if ($login) {
         if (!$clusterGroup -or !$subscription) {
             throw "clusterGroup and subscription parameters must be specified when logging into an environment that is not test or prod."
@@ -156,9 +150,10 @@ function DeployStressPackage(
     }
     $imageTag += "/$($pkg.Namespace)/$($pkg.ReleaseName):${deployId}"
 
-    if ($pushImages) {
+    $dockerFilePath = "$($pkg.Directory)/Dockerfile"
+    if ($pushImages -and (Test-Path $dockerFilePath)) {
         Write-Host "Building and pushing stress test docker image '$imageTag'"
-        $dockerFile = Get-ChildItem "$($pkg.Directory)/Dockerfile"
+        $dockerFile = Get-ChildItem $dockerFilePath
         Run docker build -t $imageTag -f $dockerFile.FullName $dockerFile.DirectoryName
         if ($LASTEXITCODE) { return }
         Run docker push $imageTag

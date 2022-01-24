@@ -4,26 +4,48 @@
 
 package com.azure.resourcemanager.labservices.implementation;
 
+import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.labservices.fluent.models.OperationResultInner;
-import com.azure.resourcemanager.labservices.models.OperationError;
 import com.azure.resourcemanager.labservices.models.OperationResult;
+import com.azure.resourcemanager.labservices.models.OperationStatus;
+import java.time.OffsetDateTime;
 
 public final class OperationResultImpl implements OperationResult {
     private OperationResultInner innerObject;
 
-    private final com.azure.resourcemanager.labservices.ManagedLabsManager serviceManager;
+    private final com.azure.resourcemanager.labservices.LabServicesManager serviceManager;
 
     OperationResultImpl(
-        OperationResultInner innerObject, com.azure.resourcemanager.labservices.ManagedLabsManager serviceManager) {
+        OperationResultInner innerObject, com.azure.resourcemanager.labservices.LabServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
 
-    public String status() {
+    public String id() {
+        return this.innerModel().id();
+    }
+
+    public String name() {
+        return this.innerModel().name();
+    }
+
+    public OperationStatus status() {
         return this.innerModel().status();
     }
 
-    public OperationError error() {
+    public OffsetDateTime startTime() {
+        return this.innerModel().startTime();
+    }
+
+    public OffsetDateTime endTime() {
+        return this.innerModel().endTime();
+    }
+
+    public Float percentComplete() {
+        return this.innerModel().percentComplete();
+    }
+
+    public ManagementError error() {
         return this.innerModel().error();
     }
 
@@ -31,7 +53,7 @@ public final class OperationResultImpl implements OperationResult {
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.labservices.ManagedLabsManager manager() {
+    private com.azure.resourcemanager.labservices.LabServicesManager manager() {
         return this.serviceManager;
     }
 }

@@ -255,11 +255,11 @@ public class IntelliJCacheAccessor {
         if (CoreUtils.isNullOrEmpty(authType)) {
             return null;
         }
-        if (authType.equalsIgnoreCase("SP")) {
+        if ("SP".equalsIgnoreCase(authType)) {
             if (CoreUtils.isNullOrEmpty(authMethodDetails.getCredFilePath())) {
                 return null;
             }
-        } else if (authType.equalsIgnoreCase("DC")) {
+        } else if ("DC".equalsIgnoreCase(authType)) {
             if (CoreUtils.isNullOrEmpty(authMethodDetails.getAccountEmail())) {
                 return null;
             }
