@@ -37,13 +37,10 @@ public class MonitorExporterClientTestBase extends TestBase {
         } else {
             httpClient = interceptorManager.getPlaybackClient();
         }
-
-        List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new AzureMonitorRedirectPolicy());
-        policies.add(interceptorManager.getRecordPolicy());
+        
         HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .policies(new AzureMonitorRedirectPolicy(), interceptorManager.getRecordPolicy())
             .build();
 
         return new AzureMonitorExporterBuilder().pipeline(httpPipeline);
