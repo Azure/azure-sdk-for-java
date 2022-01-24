@@ -3,6 +3,7 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.implementation.util.ObjectsUtil;
 import com.azure.core.util.logging.ClientLogger;
 import java.time.Duration;
 import java.util.Objects;
@@ -36,7 +37,7 @@ public class FixedDelay implements RetryStrategy {
      */
     public FixedDelay(FixedDelayOptions fixedDelayOptions) {
         this(
-            Objects.requireNonNullElse(
+            ObjectsUtil.requireNonNullElse(
                 Objects.requireNonNull(fixedDelayOptions, "'fixedDelayOptions' cannot be null.").getMaxRetries(),
                 1),
             Objects.requireNonNull(fixedDelayOptions, "'fixedDelayOptions' cannot be null.").getDelay()
