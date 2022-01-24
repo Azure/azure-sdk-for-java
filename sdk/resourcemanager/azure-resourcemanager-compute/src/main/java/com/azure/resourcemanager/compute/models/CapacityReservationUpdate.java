@@ -125,6 +125,16 @@ public final class CapacityReservationUpdate extends UpdateResource {
     }
 
     /**
+     * Get the timeCreated property: Specifies the time at which the Capacity Reservation resource was
+     * created.&lt;br&gt;&lt;br&gt;Minimum api-version: 2021-11-01.
+     *
+     * @return the timeCreated value.
+     */
+    public OffsetDateTime timeCreated() {
+        return this.innerProperties() == null ? null : this.innerProperties().timeCreated();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
