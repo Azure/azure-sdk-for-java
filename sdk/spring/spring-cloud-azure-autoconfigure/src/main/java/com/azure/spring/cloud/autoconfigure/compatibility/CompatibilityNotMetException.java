@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.configuration;
+package com.azure.spring.cloud.autoconfigure.compatibility;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Create CompatibilityNotMetException for CompatibilityNotMetFailureAnalyzer
  */
-public class CompatibilityNotMetException extends RuntimeException{
+public class CompatibilityNotMetException extends RuntimeException {
     final List<VerificationResult> results;
 
     /**

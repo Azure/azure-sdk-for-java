@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.configuration;
+package com.azure.spring.cloud.autoconfigure.compatibility;
 
 import java.util.Objects;
 import org.springframework.core.style.ToStringCreator;
@@ -39,7 +39,7 @@ final class VerificationResult {
         } else if (!(o instanceof VerificationResult)) {
             return false;
         } else {
-            VerificationResult that = (VerificationResult)o;
+            VerificationResult that = (VerificationResult) o;
             return this.description.equals(that.description) && this.action.equals(that.action);
         }
     }

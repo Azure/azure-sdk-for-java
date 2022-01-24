@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.configuration;
+package com.azure.spring.cloud.autoconfigure.compatibility;
 
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -16,11 +16,11 @@ import java.util.List;
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(
-    value = {"spring.cloud.azure.compatibility-verifier.enabled"},
+    value = "spring.cloud.azure.compatibility-verifier.enabled",
     matchIfMissing = true
 )
 @AutoConfigureOrder(0)
-@EnableConfigurationProperties({CompatibilityVerifierProperties.class})
+@EnableConfigurationProperties(CompatibilityVerifierProperties.class)
 public class CompatibilityVerifierAutoConfiguration {
     public CompatibilityVerifierAutoConfiguration() {
     }

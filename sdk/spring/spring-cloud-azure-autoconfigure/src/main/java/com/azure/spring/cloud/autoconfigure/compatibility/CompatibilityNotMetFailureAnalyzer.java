@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.configuration;
+package com.azure.spring.cloud.autoconfigure.compatibility;
 
 import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;
@@ -31,13 +31,11 @@ public class CompatibilityNotMetFailureAnalyzer extends AbstractFailureAnalyzer<
 
     private String descriptions(List<VerificationResult> results) {
         StringBuilder builder = new StringBuilder("\n\n");
-        Iterator<VerificationResult> var3 = results.iterator();
-
-        while(var3.hasNext()) {
-            VerificationResult result = var3.next();
+        Iterator<VerificationResult> resultIterator = results.iterator();
+        while (resultIterator.hasNext()) {
+            VerificationResult result = resultIterator.next();
             builder.append("- ").append(result.description).append("\n");
         }
-
         return builder.toString();
     }
 
@@ -47,13 +45,11 @@ public class CompatibilityNotMetFailureAnalyzer extends AbstractFailureAnalyzer<
 
     private String actions(List<VerificationResult> results) {
         StringBuilder builder = new StringBuilder("\n\n");
-        Iterator<VerificationResult> var3 = results.iterator();
-
-        while(var3.hasNext()) {
-            VerificationResult result = var3.next();
+        Iterator<VerificationResult> resultIterator = results.iterator();
+        while (resultIterator.hasNext()) {
+            VerificationResult result = resultIterator.next();
             builder.append("- ").append(result.action).append("\n");
         }
-
         return builder.toString();
     }
 }

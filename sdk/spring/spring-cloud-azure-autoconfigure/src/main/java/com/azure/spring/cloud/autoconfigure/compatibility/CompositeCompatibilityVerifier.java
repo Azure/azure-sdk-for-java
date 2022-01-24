@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.configuration;
+package com.azure.spring.cloud.autoconfigure.compatibility;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -11,7 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 
 class CompositeCompatibilityVerifier {
-    private static final Log log = LogFactory.getLog(CompositeCompatibilityVerifier.class);
+    private static final Log LOGGER = LogFactory.getLog(CompositeCompatibilityVerifier.class);
     private final List<CompatibilityVerifier> verifiers;
 
     CompositeCompatibilityVerifier(List<CompatibilityVerifier> verifiers) {
@@ -21,10 +21,9 @@ class CompositeCompatibilityVerifier {
     void verifyDependencies() {
         List<VerificationResult> errors = this.verifierErrors();
         if (errors.isEmpty()) {
-            if (log.isDebugEnabled()) {
-                log.debug("All conditions are passing");
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("All conditions are passing");
             }
-
         } else {
             throw new CompatibilityNotMetException(errors);
         }
@@ -32,16 +31,14 @@ class CompositeCompatibilityVerifier {
 
     private List<VerificationResult> verifierErrors() {
         List<VerificationResult> errors = new ArrayList<VerificationResult>();
-        Iterator<CompatibilityVerifier> var2 = this.verifiers.iterator();
-
-        while(var2.hasNext()) {
-            CompatibilityVerifier verifier = var2.next();
+        Iterator<CompatibilityVerifier> verifierIterator = this.verifiers.iterator();
+        while (verifierIterator.hasNext()) {
+            CompatibilityVerifier verifier = verifierIterator.next();
             VerificationResult result = verifier.verify();
             if (result.isNotCompatible()) {
                 errors.add(result);
             }
         }
-
         return errors;
     }
 }
