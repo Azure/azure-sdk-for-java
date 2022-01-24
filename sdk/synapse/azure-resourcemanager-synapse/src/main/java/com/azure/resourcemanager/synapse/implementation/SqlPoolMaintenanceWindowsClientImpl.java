@@ -103,7 +103,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL pool's Maintenance Windows.
+     * @return a SQL pool's Maintenance Windows along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MaintenanceWindowsInner>> getWithResponseAsync(
@@ -164,7 +164,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL pool's Maintenance Windows.
+     * @return a SQL pool's Maintenance Windows along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MaintenanceWindowsInner>> getWithResponseAsync(
@@ -225,7 +225,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL pool's Maintenance Windows.
+     * @return a SQL pool's Maintenance Windows on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MaintenanceWindowsInner> getAsync(
@@ -270,7 +270,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL pool's Maintenance Windows.
+     * @return a SQL pool's Maintenance Windows along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MaintenanceWindowsInner> getWithResponse(
@@ -294,7 +294,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> createOrUpdateWithResponseAsync(
@@ -364,7 +364,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> createOrUpdateWithResponseAsync(
@@ -431,7 +431,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> createOrUpdateAsync(
@@ -479,7 +479,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createOrUpdateWithResponse(

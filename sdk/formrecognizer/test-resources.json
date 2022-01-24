@@ -54,6 +54,10 @@
       "type": "string",
       "defaultValue": "trainingdata"
     },
+    "errorTrainingDataContainer": {
+      "type": "string",
+      "defaultValue": "trainingdata-error"
+    },
     "blobResourceId": {
       "type": "string",
       "defaultValue": "[resourceId('2cd617ea-1866-46b1-90e3-fffb087ebf9b', 'TrainingData', 'Microsoft.Storage/storageAccounts', parameters('blobStorageAccount'))]"
@@ -62,6 +66,15 @@
       "type": "object",
       "defaultValue": {
         "canonicalizedResource": "[concat('/blob/', parameters('blobStorageAccount'), '/', parameters('trainingDataContainer'))]",
+        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT2H')]",
+        "signedPermission": "rl",
+        "signedResource": "c"
+      }
+    },
+    "errorTrainingDataSasProperties": {
+      "type": "object",
+      "defaultValue": {
+        "canonicalizedResource": "[concat('/blob/', parameters('blobStorageAccount'), '/', parameters('errorTrainingDataContainer'))]",
         "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT2H')]",
         "signedPermission": "rl",
         "signedResource": "c"
@@ -165,6 +178,10 @@
     "FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL": {
       "type": "string",
       "value": "[concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('trainingDataContainer'), '?', listServiceSas(parameters('blobResourceId'), '2019-06-01', parameters('trainingDataSasProperties')).serviceSasToken)]"
+    },
+    "FORM_RECOGNIZER_ERROR_TRAINING_BLOB_CONTAINER_SAS_URL": {
+      "type": "string",
+      "value": "[concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('errorTrainingDataContainer'), '?', listServiceSas(parameters('blobResourceId'), '2019-06-01', parameters('errorTrainingDataSasProperties')).serviceSasToken)]"
     },
     "FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL": {
       "type": "string",

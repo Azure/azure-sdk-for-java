@@ -3,6 +3,8 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer;
@@ -106,6 +108,11 @@ class OrderByUtils {
                                 orderByContinuationToken.getCompositeContinuationToken().getToken())));
                     }
                     ResourceId continuationTokenRid = booleanResourceIdPair.getRight();
+
+                    String queryInfoExecution = documentProducerFeedResponse.pageResult.getResponseHeaders().getOrDefault(
+                        HttpConstants.HttpHeaders.QUERY_EXECUTION_INFO, null);
+                    QueryExecutionInfo queryExecutionInfo = Utils.parse(queryInfoExecution, QueryExecutionInfo.class);
+
                     results = results.stream()
                             .filter(tOrderByRowResult -> {
                                 // When we resume a query on a partition there is a possibility that we only read a partial page from the backend
@@ -135,14 +142,27 @@ class OrderByUtils {
                                 if (cmp == 0) {
                                     // Once the item matches the order by items from the continuation tokens
                                     // We still need to remove all the documents that have a lower rid in the rid sort order.
-                                    // If there is a tie in the sort order the documents should be in _rid order in the same direction as the first order by field.
-                                    // So if it's ORDER BY c.age ASC, c.name DESC the _rids are ASC
-                                    // If ti's ORDER BY c.age DESC, c.name DESC the _rids are DESC
+                                    // If there is a tie in the sort order the documents should be in _rid order in the same direction as the index (given by the backend)
                                     cmp = (continuationTokenRid.getDocument() - ResourceId.tryParse(tOrderByRowResult.getResourceId()).getRight().getDocument());
-
-                                    if (sortOrders.iterator().next().equals(SortOrder.Descending)) {
-                                        cmp = -cmp;
+                                    if ((queryExecutionInfo == null) || queryExecutionInfo.getReverseRidEnabled())
+                                    {
+                                        // If reverse rid is enabled on the backend then fallback to the old way of doing it.
+                                        // So if it's ORDER BY c.age ASC, c.name DESC the _rids are ASC
+                                        // If it's ORDER BY c.age DESC, c.name DESC the _rids are DESC
+                                        if (sortOrders.get(0) == SortOrder.Descending)
+                                        {
+                                            cmp = -cmp;
+                                        }
                                     }
+                                    else
+                                    {
+                                        // Go by the whatever order the index wants
+                                        if (queryExecutionInfo.getReverseIndexScan())
+                                        {
+                                            cmp = -cmp;
+                                        }
+                                    }
+
                                     return (cmp <= 0);
                                 }
                                 return true;
