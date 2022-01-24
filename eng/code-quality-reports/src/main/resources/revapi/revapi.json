@@ -126,12 +126,6 @@
         },
         {
           "regex": true,
-          "code": "java.class.nowImplementsInterface",
-          "new": "com\\.azure\\.core\\.client\\.traits\\..*",
-          "justification": "Allow to implement client traits."
-        },
-        {
-          "regex": true,
           "code": "java\\.class\\.externalClassExposedInAPI",
           "new": "(interface|class|enum) com\\.azure\\.(communication\\.common|core|cosmos|data\\.schemaregistry|resourcemanager|security\\.keyvault|storage).*",
           "justification": "SDK classes are allowed to be exposed by dependencies using them."
