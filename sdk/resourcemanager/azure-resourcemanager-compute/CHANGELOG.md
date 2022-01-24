@@ -2,13 +2,11 @@
 
 ## 2.12.0-beta.1 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-11-01`.
 
 ## 2.11.0 (2022-01-17)
 
