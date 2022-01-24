@@ -128,12 +128,18 @@ public class NettyAsyncHttpClientBuilder {
      */
     public com.azure.core.http.HttpClient build() {
         HttpClient nettyHttpClient;
+
+        // Used to track if the builder set the DefaultAddressResolverGroup. If it did, when proxying it allows the
+        // no-op address resolver to be set.
+        boolean addressResolverWasSetByBuilder = false;
         if (this.baseHttpClient != null) {
             nettyHttpClient = baseHttpClient;
         } else if (this.connectionProvider != null) {
             nettyHttpClient = HttpClient.create(this.connectionProvider).resolver(DefaultAddressResolverGroup.INSTANCE);
+            addressResolverWasSetByBuilder = true;
         } else {
             nettyHttpClient = HttpClient.create().resolver(DefaultAddressResolverGroup.INSTANCE);
+            addressResolverWasSetByBuilder = true;
         }
 
         nettyHttpClient = nettyHttpClient
@@ -187,11 +193,6 @@ public class NettyAsyncHttpClientBuilder {
                                 handler, proxyChallengeHolder));
                     }
                 });
-
-                AddressResolverGroup<?> resolver = nettyHttpClient.configuration().resolver();
-                if (resolver == null) {
-                    nettyHttpClient.resolver(NoopAddressResolverGroup.INSTANCE);
-                }
             } else {
                 nettyHttpClient = nettyHttpClient.proxy(proxy ->
                     proxy.type(toReactorNettyProxyType(buildProxyOptions.getType(), logger))
@@ -199,6 +200,11 @@ public class NettyAsyncHttpClientBuilder {
                         .username(buildProxyOptions.getUsername())
                         .password(ignored -> buildProxyOptions.getPassword())
                         .nonProxyHosts(buildProxyOptions.getNonProxyHosts()));
+            }
+
+            AddressResolverGroup<?> resolver = nettyHttpClient.configuration().resolver();
+            if (resolver == null || addressResolverWasSetByBuilder) {
+                nettyHttpClient = nettyHttpClient.resolver(NoopAddressResolverGroup.INSTANCE);
             }
         }
 

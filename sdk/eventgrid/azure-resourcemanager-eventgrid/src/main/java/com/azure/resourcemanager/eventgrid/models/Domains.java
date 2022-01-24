@@ -31,7 +31,7 @@ public interface Domains {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a domain.
+     * @return properties of a domain along with {@link Response}.
      */
     Response<Domain> getByResourceGroupWithResponse(String resourceGroupName, String domainName, Context context);
 
@@ -138,7 +138,7 @@ public interface Domains {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Domain.
+     * @return shared access keys of the Domain along with {@link Response}.
      */
     Response<DomainSharedAccessKeys> listSharedAccessKeysWithResponse(
         String resourceGroupName, String domainName, Context context);
@@ -167,7 +167,7 @@ public interface Domains {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Domain.
+     * @return shared access keys of the Domain along with {@link Response}.
      */
     Response<DomainSharedAccessKeys> regenerateKeyWithResponse(
         String resourceGroupName, String domainName, DomainRegenerateKeyRequest regenerateKeyRequest, Context context);
@@ -179,7 +179,7 @@ public interface Domains {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a domain.
+     * @return properties of a domain along with {@link Response}.
      */
     Domain getById(String id);
 
@@ -191,7 +191,7 @@ public interface Domains {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a domain.
+     * @return properties of a domain along with {@link Response}.
      */
     Response<Domain> getByIdWithResponse(String id, Context context);
 

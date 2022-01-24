@@ -237,20 +237,6 @@ public final class SqlPoolPatchInfo {
     }
 
     /**
-     * Set the status property: Resource status.
-     *
-     * @param status the status value to set.
-     * @return the SqlPoolPatchInfo object itself.
-     */
-    public SqlPoolPatchInfo withStatus(String status) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SqlPoolResourceProperties();
-        }
-        this.innerProperties().withStatus(status);
-        return this;
-    }
-
-    /**
      * Get the restorePointInTime property: Snapshot time to restore.
      *
      * @return the restorePointInTime value.
@@ -327,20 +313,6 @@ public final class SqlPoolPatchInfo {
      */
     public OffsetDateTime creationDate() {
         return this.innerProperties() == null ? null : this.innerProperties().creationDate();
-    }
-
-    /**
-     * Set the creationDate property: Date the SQL pool was created.
-     *
-     * @param creationDate the creationDate value to set.
-     * @return the SqlPoolPatchInfo object itself.
-     */
-    public SqlPoolPatchInfo withCreationDate(OffsetDateTime creationDate) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SqlPoolResourceProperties();
-        }
-        this.innerProperties().withCreationDate(creationDate);
-        return this;
     }
 
     /**
