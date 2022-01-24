@@ -3,13 +3,11 @@
 
 package com.azure.spring.cloud.autoconfigure.jms.properties;
 
-import com.azure.spring.core.implementation.connectionstring.ServiceBusConnectionString;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.jms.JmsPoolConnectionFactoryProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.jms.support.QosSettings;
-import org.springframework.util.StringUtils;
 
 import java.time.Duration;
 
@@ -23,7 +21,7 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
 
     private static final String DEFAULT_REMOTE_URL = "amqp://localhost:5672";
 
-    private static final String AMQP_URI_FORMAT = "amqps://%s?amqp.idleTimeout=%d";
+    public static final String AMQP_URI_FORMAT = "amqps://%s?amqp.idleTimeout=%d";
 
     private String connectionString;
 
@@ -185,20 +183,9 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
      */
     @Override
     public void afterPropertiesSet() throws Exception {
-        if (!StringUtils.hasText(connectionString)) {
-            throw new IllegalArgumentException("'spring.jms.servicebus.connection-string' should be provided");
-        }
-
         if (null == pricingTier || !pricingTier.matches("(?i)premium|standard|basic")) {
             throw new IllegalArgumentException("'spring.jms.servicebus.pricing-tier' is not valid");
         }
-
-        ServiceBusConnectionString serviceBusConnectionString = new ServiceBusConnectionString(connectionString);
-        String host = serviceBusConnectionString.getEndpointUri().getHost();
-
-        this.remoteUrl = String.format(AMQP_URI_FORMAT, host, idleTimeout.toMillis());
-        this.username = serviceBusConnectionString.getSharedAccessKeyName();
-        this.password = serviceBusConnectionString.getSharedAccessKey();
     }
 
     /**

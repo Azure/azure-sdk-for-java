@@ -4,18 +4,26 @@
 package com.azure.spring.cloud.autoconfigure.jms;
 
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
+import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration;
+import com.azure.spring.core.connectionstring.ConnectionStringProvider;
+import com.azure.spring.core.service.AzureServiceType;
 import org.apache.qpid.jms.JmsConnectionExtensions;
 import org.apache.qpid.jms.JmsConnectionFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration;
 import org.springframework.boot.autoconfigure.jms.JmsProperties;
 import org.springframework.boot.autoconfigure.jms.JndiConnectionFactoryAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ConfigurationCondition;
 import org.springframework.context.annotation.Import;
 import org.springframework.jms.core.JmsTemplate;
 
@@ -30,8 +38,11 @@ import static com.azure.spring.core.AzureSpringIdentifier.AZURE_SPRING_SERVICE_B
  */
 @Configuration(proxyBeanMethods = false)
 @AutoConfigureBefore(JmsAutoConfiguration.class)
-@AutoConfigureAfter(JndiConnectionFactoryAutoConfiguration.class)
+@AutoConfigureAfter({
+    JndiConnectionFactoryAutoConfiguration.class,
+    AzureServiceBusResourceManagerAutoConfiguration.class })
 @ConditionalOnClass({ ConnectionFactory.class, JmsConnectionFactory.class, JmsTemplate.class })
+@Conditional(ServiceBusJmsAutoConfiguration.OnConnectionStringProvidedCondition.class)
 @EnableConfigurationProperties({ AzureServiceBusJmsProperties.class, JmsProperties.class })
 @Import({ ServiceBusJmsConnectionFactoryConfiguration.class, ServiceBusJmsContainerConfiguration.class })
 public class ServiceBusJmsAutoConfiguration {
@@ -46,5 +57,30 @@ public class ServiceBusJmsAutoConfiguration {
             factory.setExtension(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES.toString(),
                 (connection, uri) -> properties);
         };
+    }
+
+    static class OnConnectionStringProvidedCondition extends AnyNestedCondition {
+
+        OnConnectionStringProvidedCondition() {
+            super(ConfigurationCondition.ConfigurationPhase.REGISTER_BEAN);
+        }
+
+        @ConditionalOnBean(
+            value = AzureServiceType.ServiceBus.class,
+            parameterizedContainer = ConnectionStringProvider.class
+        )
+        static class HasConnectionStringProviderConfigured {
+            HasConnectionStringProviderConfigured() {
+            }
+        }
+
+        @ConditionalOnProperty(
+            prefix = "spring.jms.servicebus",
+            name = { "connection-string" }
+        )
+        static class HasSpringJmsServiceBusConfigured {
+            HasSpringJmsServiceBusConfigured() {
+            }
+        }
     }
 }
