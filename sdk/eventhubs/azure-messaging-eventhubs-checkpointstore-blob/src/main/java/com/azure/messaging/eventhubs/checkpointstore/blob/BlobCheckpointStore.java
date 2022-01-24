@@ -54,7 +54,7 @@ public class BlobCheckpointStore implements CheckpointStore {
     private static final String PARTITION_ID_LOG_KEY = "partitionId";
     private static final String OWNER_ID_LOG_KEY = "ownerId";
     private static final String SEQUENCE_NUMBER_LOG_KEY = "sequenceNumber";
-    private static final String BLOB_NAME_LOG_KEY = "sequenceNumber";
+    private static final String BLOB_NAME_LOG_KEY = "blobName";
     private static final String OFFSET_LOG_KEY = "offset";
 
     /**
