@@ -10,6 +10,10 @@ import com.azure.spring.cloud.autoconfigure.storage.fileshare.properties.AzureSt
 import com.azure.spring.service.implementation.storage.fileshare.ShareServiceClientBuilderFactory;
 import com.azure.storage.file.share.ShareAsyncClient;
 import com.azure.storage.file.share.ShareClient;
+import com.azure.storage.file.share.ShareDirectoryAsyncClient;
+import com.azure.storage.file.share.ShareDirectoryClient;
+import com.azure.storage.file.share.ShareFileAsyncClient;
+import com.azure.storage.file.share.ShareFileClient;
 import com.azure.storage.file.share.ShareServiceAsyncClient;
 import com.azure.storage.file.share.ShareServiceClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
@@ -94,6 +98,102 @@ class AzureStorageFileShareAutoConfigurationTest {
             .run(context -> {
                 assertThat(context).doesNotHaveBean(ShareClient.class);
                 assertThat(context).doesNotHaveBean(ShareAsyncClient.class);
+            });
+    }
+
+    @Test
+    void filePathSetShouldConfigureFileClient() {
+        ShareServiceClient shareServiceClient = mock(ShareServiceClient.class);
+        ShareClient shareClient = mock(ShareClient.class);
+        when(shareServiceClient.getShareClient("share1")).thenReturn(shareClient);
+        when(shareClient.getFileClient("directory1/file1")).thenReturn(mock(ShareFileClient.class));
+
+        ShareServiceAsyncClient shareServiceAsyncClient = mock(ShareServiceAsyncClient.class);
+        ShareAsyncClient shareAsyncClient = mock(ShareAsyncClient.class);
+        when(shareServiceAsyncClient.getShareAsyncClient("share1")).thenReturn(shareAsyncClient);
+        when(shareAsyncClient.getFileClient("directory1/file1")).thenReturn(mock(ShareFileAsyncClient.class));
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.storage.fileshare.account-name=sa",
+                "spring.cloud.azure.storage.fileshare.share-name=share1",
+                "spring.cloud.azure.storage.fileshare.file-path=directory1/file1"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(ShareServiceClient.class, () -> shareServiceClient)
+            .withBean(ShareServiceAsyncClient.class, () -> shareServiceAsyncClient)
+            .run(context -> {
+                assertThat(context).hasSingleBean(ShareFileClient.class);
+                assertThat(context).hasSingleBean(ShareFileAsyncClient.class);
+            });
+    }
+
+    @Test
+    void filePathNotSetShouldNotConfigureFileClient() {
+        ShareServiceClient shareServiceClient = mock(ShareServiceClient.class);
+        when(shareServiceClient.getShareClient("share1")).thenReturn(mock(ShareClient.class));
+
+        ShareServiceAsyncClient shareServiceAsyncClient = mock(ShareServiceAsyncClient.class);
+        when(shareServiceAsyncClient.getShareAsyncClient("share1")).thenReturn(mock(ShareAsyncClient.class));
+
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.storage.fileshare.account-name=sa",
+                "spring.cloud.azure.storage.fileshare.share-name=share1"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(ShareServiceClient.class, () -> mock(ShareServiceClient.class))
+            .withBean(ShareServiceAsyncClient.class, () -> mock(ShareServiceAsyncClient.class))
+            .run(context -> {
+                assertThat(context).doesNotHaveBean(ShareFileClient.class);
+                assertThat(context).doesNotHaveBean(ShareFileAsyncClient.class);
+            });
+    }
+
+    @Test
+    void directoryPathSetShouldConfigureDirectoryClient() {
+        ShareServiceClient shareServiceClient = mock(ShareServiceClient.class);
+        ShareClient shareClient = mock(ShareClient.class);
+        when(shareServiceClient.getShareClient("share1")).thenReturn(shareClient);
+        when(shareClient.getDirectoryClient("directory1/directory2")).thenReturn(mock(ShareDirectoryClient.class));
+
+        ShareServiceAsyncClient shareServiceAsyncClient = mock(ShareServiceAsyncClient.class);
+        ShareAsyncClient shareAsyncClient = mock(ShareAsyncClient.class);
+        when(shareServiceAsyncClient.getShareAsyncClient("share1")).thenReturn(shareAsyncClient);
+        when(shareAsyncClient.getDirectoryClient("directory1/directory2")).thenReturn(mock(ShareDirectoryAsyncClient.class));
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.storage.fileshare.account-name=sa",
+                "spring.cloud.azure.storage.fileshare.share-name=share1",
+                "spring.cloud.azure.storage.fileshare.directory-path=directory1/directory2"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(ShareServiceClient.class, () -> shareServiceClient)
+            .withBean(ShareServiceAsyncClient.class, () -> shareServiceAsyncClient)
+            .run(context -> {
+                assertThat(context).hasSingleBean(ShareDirectoryClient.class);
+                assertThat(context).hasSingleBean(ShareDirectoryAsyncClient.class);
+            });
+    }
+
+    @Test
+    void directoryNameNotSetShouldNotConfigureDirectoryClient() {
+        ShareServiceClient shareServiceClient = mock(ShareServiceClient.class);
+        when(shareServiceClient.getShareClient("share1")).thenReturn(mock(ShareClient.class));
+
+        ShareServiceAsyncClient shareServiceAsyncClient = mock(ShareServiceAsyncClient.class);
+        when(shareServiceAsyncClient.getShareAsyncClient("share1")).thenReturn(mock(ShareAsyncClient.class));
+
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.storage.fileshare.account-name=sa",
+                "spring.cloud.azure.storage.fileshare.share-name=share1"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(ShareServiceClient.class, () -> mock(ShareServiceClient.class))
+            .withBean(ShareServiceAsyncClient.class, () -> mock(ShareServiceAsyncClient.class))
+            .run(context -> {
+                assertThat(context).doesNotHaveBean(ShareDirectoryClient.class);
+                assertThat(context).doesNotHaveBean(ShareDirectoryAsyncClient.class);
             });
     }
 
