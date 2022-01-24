@@ -777,7 +777,7 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
 
         createItemsAndVerify(cosmosItemOperations);
 
-        Flux<CosmosItemOperation> deleteCosmosItemOperationsFlux = Flux.fromIterable(cosmosItemOperations).map( cosmosItemOperation -> {
+        Flux<CosmosItemOperation> deleteCosmosItemOperationsFlux = Flux.fromIterable(cosmosItemOperations).map(cosmosItemOperation -> {
             EncryptionPojo encryptionPojo = cosmosItemOperation.getItem();
             return CosmosBulkOperations.getDeleteItemOperation(encryptionPojo.getId(), cosmosItemOperation.getPartitionKeyValue());
         });
@@ -817,28 +817,17 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         int totalRequest = getTotalRequest();
 
         List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
-//        Map<String, CosmosItemOperation> indexCosmosItemOperationMap = new HashMap<>();
 
         for (int i = 0; i < totalRequest; i++) {
             String itemId = UUID.randomUUID().toString();
-
-            // use i as a identifier for re check.
             EncryptionPojo createPojo = getItem(itemId);
 
             cosmosItemOperations.add(CosmosBulkOperations.getCreateItemOperation(createPojo, new PartitionKey(createPojo.getMypk())));
-//            indexCosmosItemOperationMap.put(createPojo.getId(), cosmosItemOperation);
         }
 
         createItemsAndVerify(cosmosItemOperations);
 
-//        Flux<CosmosItemOperation> cosmosItemOperationsFlux = Flux.range(0, totalRequest).map(i -> {
-//            String itemId = UUID.randomUUID().toString();
-//            EncryptionPojo createPojo = getItem(itemId);
-//
-//            return CosmosBulkOperations.getCreateItemOperation(createPojo, new PartitionKey(createPojo.getMypk()));
-//        });
-
-        Flux<CosmosItemOperation> readCosmosItemOperationsFlux = Flux.fromIterable(cosmosItemOperations).map( cosmosItemOperation -> {
+        Flux<CosmosItemOperation> readCosmosItemOperationsFlux = Flux.fromIterable(cosmosItemOperations).map(cosmosItemOperation -> {
             EncryptionPojo encryptionPojo = cosmosItemOperation.getItem();
             return CosmosBulkOperations.getReadItemOperation(encryptionPojo.getId(), cosmosItemOperation.getPartitionKeyValue());
         });
@@ -868,7 +857,6 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
                 assertThat(cosmosBulkItemResponse.getRequestCharge()).isNotNull();
 
 
-
                 return Mono.just(cosmosBulkItemResponse);
             }).blockLast();
 
@@ -882,7 +870,7 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
             executeBulkOperations(Flux.fromIterable(cosmosItemOperations), cosmosBulkExecutionOptions);
 
         HashSet<String> distinctIndex = new HashSet<>();
-        AtomicInteger processedDoc =  new AtomicInteger(0);
+        AtomicInteger processedDoc = new AtomicInteger(0);
 
         createResponseFlux.flatMap(cosmosBulkOperationResponse -> {
             processedDoc.incrementAndGet();
