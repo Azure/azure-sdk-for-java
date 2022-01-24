@@ -309,16 +309,6 @@ public final class SqlPoolImpl implements SqlPool, SqlPool.Definition, SqlPool.U
         }
     }
 
-    public SqlPoolImpl withStatus(String status) {
-        if (isInCreateMode()) {
-            this.innerModel().withStatus(status);
-            return this;
-        } else {
-            this.updateSqlPoolInfo.withStatus(status);
-            return this;
-        }
-    }
-
     public SqlPoolImpl withRestorePointInTime(OffsetDateTime restorePointInTime) {
         if (isInCreateMode()) {
             this.innerModel().withRestorePointInTime(restorePointInTime);
@@ -339,16 +329,6 @@ public final class SqlPoolImpl implements SqlPool, SqlPool.Definition, SqlPool.U
         }
     }
 
-    public SqlPoolImpl withCreationDate(OffsetDateTime creationDate) {
-        if (isInCreateMode()) {
-            this.innerModel().withCreationDate(creationDate);
-            return this;
-        } else {
-            this.updateSqlPoolInfo.withCreationDate(creationDate);
-            return this;
-        }
-    }
-
     public SqlPoolImpl withStorageAccountType(StorageAccountType storageAccountType) {
         if (isInCreateMode()) {
             this.innerModel().withStorageAccountType(storageAccountType);
@@ -360,13 +340,8 @@ public final class SqlPoolImpl implements SqlPool, SqlPool.Definition, SqlPool.U
     }
 
     public SqlPoolImpl withSourceDatabaseDeletionDate(OffsetDateTime sourceDatabaseDeletionDate) {
-        if (isInCreateMode()) {
-            this.innerModel().withSourceDatabaseDeletionDate(sourceDatabaseDeletionDate);
-            return this;
-        } else {
-            this.updateSqlPoolInfo.withSourceDatabaseDeletionDate(sourceDatabaseDeletionDate);
-            return this;
-        }
+        this.innerModel().withSourceDatabaseDeletionDate(sourceDatabaseDeletionDate);
+        return this;
     }
 
     private boolean isInCreateMode() {

@@ -31,7 +31,8 @@ public final class VirtualMachinePublicIpAddressConfiguration {
     private VirtualMachinePublicIpAddressConfigurationProperties innerProperties;
 
     /*
-     * Describes the public IP Sku
+     * Describes the public IP Sku. It can only be set with OrchestrationMode
+     * as Flexible.
      */
     @JsonProperty(value = "sku")
     private PublicIpAddressSku sku;
@@ -66,7 +67,7 @@ public final class VirtualMachinePublicIpAddressConfiguration {
     }
 
     /**
-     * Get the sku property: Describes the public IP Sku.
+     * Get the sku property: Describes the public IP Sku. It can only be set with OrchestrationMode as Flexible.
      *
      * @return the sku value.
      */
@@ -75,7 +76,7 @@ public final class VirtualMachinePublicIpAddressConfiguration {
     }
 
     /**
-     * Set the sku property: Describes the public IP Sku.
+     * Set the sku property: Describes the public IP Sku. It can only be set with OrchestrationMode as Flexible.
      *
      * @param sku the sku value to set.
      * @return the VirtualMachinePublicIpAddressConfiguration object itself.
