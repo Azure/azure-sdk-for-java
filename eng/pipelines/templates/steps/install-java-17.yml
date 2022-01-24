@@ -1,6 +1,6 @@
-steps:
-  - pwsh: Invoke-WebRequest -Uri https://download.java.net/java/GA/jdk17/0d483333a00540d886896bac774ff48b/35/GPL/openjdk-17_linux-x64_bin.tar.gz -OutFile $(agent.tempDirectory)/openjdk-17_linux-x64_bin.tar.gz
-    condition: and(succeeded(), contains(variables['Agent.OS'], 'linux'))
+# steps:
+#   - pwsh: Invoke-WebRequest -Uri https://download.java.net/java/GA/jdk17/0d483333a00540d886896bac774ff48b/35/GPL/openjdk-17_linux-x64_bin.tar.gz -OutFile $(agent.tempDirectory)/openjdk-17_linux-x64_bin.tar.gz
+#     condition: and(succeeded(), contains(variables['Agent.OS'], 'linux'))
 
   # - pwsh: Invoke-WebRequest -Uri https://download.java.net/java/GA/jdk17/0d483333a00540d886896bac774ff48b/35/GPL/openjdk-17_macos-x64_bin.tar.gz -OutFile $(agent.tempDirectory)/openjdk-17_macos-x64_bin.tar.gz
   #   condition: and(succeeded(), contains(variables['Agent.OS'], 'darwin'))
@@ -8,15 +8,15 @@ steps:
   # - pwsh: Invoke-WebRequest -Uri https://download.java.net/java/GA/jdk17/0d483333a00540d886896bac774ff48b/35/GPL/openjdk-17_windows-x64_bin.zip -OutFile $(agent.tempDirectory)/openjdk-17_windows-x64_bin.zip
   #   condition: and(succeeded(), contains(variables['Agent.OS'], 'windows'))
 
-  - task: JavaToolInstaller@0
-    inputs:
-      versionSpec: "17"
-      jdkArchitectureOption: x64
-      jdkSourceOption: LocalDirectory
-      jdkFile: "$(agent.tempDirectory)/openjdk-17_linux-x64_bin.tar.gz"
-      jdkDestinationDirectory: "$(agent.toolsDirectory)/jdk17"
-      cleanDestinationDirectory: false
-    condition: and(succeeded(), contains(variables['Agent.OS'], 'linux'))
+  # - task: JavaToolInstaller@0
+  #   inputs:
+  #     versionSpec: "17"
+  #     jdkArchitectureOption: x64
+  #     jdkSourceOption: LocalDirectory
+  #     jdkFile: "$(agent.tempDirectory)/openjdk-17_linux-x64_bin.tar.gz"
+  #     jdkDestinationDirectory: "$(agent.toolsDirectory)/jdk17"
+  #     cleanDestinationDirectory: false
+  #   condition: and(succeeded(), contains(variables['Agent.OS'], 'linux'))
 
   # - task: JavaToolInstaller@0
   #   inputs:
