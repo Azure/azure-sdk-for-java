@@ -114,13 +114,13 @@ public final class SmsClientBuilder implements
         return this;
     }
 
-     /**
+    /**
      * Set endpoint and credential to use
      *
      * @param connectionString connection string for setting endpoint and initalizing AzureKeyCredential
      * @return SmsClientBuilder
      */
-     @Override
+    @Override
     public SmsClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
         CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);
