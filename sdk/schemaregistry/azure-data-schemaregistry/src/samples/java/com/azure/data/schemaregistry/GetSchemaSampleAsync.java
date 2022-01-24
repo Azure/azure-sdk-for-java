@@ -9,9 +9,9 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * Sample to demonstrate retrieving a schema from Schema Registry.
+ * Sample to demonstrate retrieving a schema from Schema Registry using the async client.
  */
-public class GetSchemaSample {
+public class GetSchemaSampleAsync {
     /**
      * The main method to run this program.
      * @param args Ignored args.
