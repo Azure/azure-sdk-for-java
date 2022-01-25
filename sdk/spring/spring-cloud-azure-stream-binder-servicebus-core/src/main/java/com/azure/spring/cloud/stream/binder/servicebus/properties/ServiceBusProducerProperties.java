@@ -5,12 +5,14 @@ package com.azure.spring.cloud.stream.binder.servicebus.properties;
 
 import com.azure.spring.servicebus.core.properties.ProducerProperties;
 
+import java.time.Duration;
+
 /**
  *
  */
 public class ServiceBusProducerProperties extends ProducerProperties {
     private boolean sync = false;
-    private long sendTimeout = 10000;
+    private Duration sendTimeout = Duration.ofMillis(10000);
 
     /**
      * Check whether is sync.
@@ -35,7 +37,7 @@ public class ServiceBusProducerProperties extends ProducerProperties {
      *
      * @return sendTimeout the send time out
      */
-    public long getSendTimeout() {
+    public Duration getSendTimeout() {
         return sendTimeout;
     }
 
@@ -44,7 +46,7 @@ public class ServiceBusProducerProperties extends ProducerProperties {
      *
      * @param sendTimeout the send time out
      */
-    public void setSendTimeout(long sendTimeout) {
+    public void setSendTimeout(Duration sendTimeout) {
         this.sendTimeout = sendTimeout;
     }
 

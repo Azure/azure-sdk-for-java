@@ -8,6 +8,18 @@ This section includes changes in the `spring-cloud-azure-resourcemanager` module
 #### Bugs Fixed
 - Fix the bug that the auto-created consumer group takes the name of Event Hub [#26622](https://github.com/Azure/azure-sdk-for-java/pull/26622).
 
+### Spring Cloud Stream Service Bus Binder
+This section includes changes in `spring-cloud-azure-stream-binder-servicebus` module.
+
+#### Breaking Changes
+- Change the type of the binding producer property of `send-timeout` from `long` to `Duration` [#26625](https://github.com/Azure/azure-sdk-for-java/pull/26625).
+
+### Spring Cloud Stream Event Hubs Binder
+This section includes changes in `spring-cloud-azure-stream-binder-eventhubs` module.
+
+#### Breaking Changes
+- Change the type of the binding producer property of `send-timeout` from `long` to `Duration` [#26625](https://github.com/Azure/azure-sdk-for-java/pull/26625).
+
 ### Other Changes
 
 ## 4.0.0-beta.3 (2022-01-18)
