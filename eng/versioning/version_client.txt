@@ -334,6 +334,7 @@ com.azure.resourcemanager:azure-resourcemanager-loadtestservice;1.0.0-beta.1;1.0
 com.azure.resourcemanager:azure-resourcemanager-automanage;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-edgeorder;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-securityinsights;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-oep;1.0.0-beta.1;1.0.0-beta.1
 com.azure.tools:azure-sdk-archetype;1.0.0;1.0.0
 
 # Unreleased dependencies: Copy the entry from above, prepend "unreleased_" and remove the current
