@@ -315,7 +315,9 @@ class AvroSerializer {
 
         final Schema readerSchema = getSchemaFromTypeReference(clazz);
         if (readerSchema != null && !readerSchema.equals(writerSchema)) {
-            logger.verbose("The writer schema is different than reader schema. Using reader schema.");
+            logger.verbose("The writer schema is different than reader schema. Using reader schema. "
+                + "Writer: '{}'. Reader: '{}'", writerSchema, readerSchema);
+
             return new SpecificDatumReader<>(writerSchema, readerSchema);
         }
 
