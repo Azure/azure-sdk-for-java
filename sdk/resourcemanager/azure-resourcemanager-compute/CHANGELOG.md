@@ -4,11 +4,14 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Supported option of `filter` and `expand` for list instances of virtual machines by `VirtualMachineScaleSetVMs.list`.
+- Changed to include the instance view of the virtual machine, when getting the virtual machine by `VirtualMachineScaleSetVMs.getInstance`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-11-01`.
 
 ## 2.11.0 (2022-01-17)
 

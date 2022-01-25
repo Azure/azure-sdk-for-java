@@ -5,6 +5,8 @@ package com.azure.cosmos.implementation;
 
 import com.azure.core.util.CoreUtils;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 /**
  * Used internally. HTTP constants in the Azure Cosmos DB database service Java
  * SDK.
@@ -284,8 +286,41 @@ public class HttpConstants {
         public static final String QUERY_VERSION = "1.0";
         public static final String AZURE_COSMOS_PROPERTIES_FILE_NAME = "azure-cosmos.properties";
 
-        public static final String SDK_VERSION = CoreUtils.getProperties(AZURE_COSMOS_PROPERTIES_FILE_NAME).get("version");
+        private static boolean SDK_VERSION_SNAPSHOT_INSTEAD_OF_BETA = false;
+
         public static final String SDK_NAME = "cosmos";
+
+        private static final String SDK_VERSION_RAW = CoreUtils.getProperties(AZURE_COSMOS_PROPERTIES_FILE_NAME).get("version");
+        private static final AtomicReference<String> SDK_VERSION_SNAPSHOT_INSTEAD_OF_BETA_CACHED =
+            new AtomicReference<String>(null);
+
+        public static String getSdkVersion() {
+            return SDK_VERSION_SNAPSHOT_INSTEAD_OF_BETA ?
+                getSdkVersionWithSnapshotInsteadOfBeta() :  SDK_VERSION_RAW;
+        }
+
+        public static void useSnapshotInsteadOfBeta() {
+            SDK_VERSION_SNAPSHOT_INSTEAD_OF_BETA = true;
+        }
+
+        public static void resetSnapshotInsteadOfBeta() {
+            SDK_VERSION_SNAPSHOT_INSTEAD_OF_BETA = false;
+        }
+
+        private static String getSdkVersionWithSnapshotInsteadOfBeta() {
+            String snapshot = SDK_VERSION_SNAPSHOT_INSTEAD_OF_BETA_CACHED.get();
+
+            if (snapshot != null) {
+                return snapshot;
+            }
+
+            String newPolishedVersion = SDK_VERSION_RAW.replaceAll("(?i)beta", "snapshot");
+            if (SDK_VERSION_SNAPSHOT_INSTEAD_OF_BETA_CACHED.compareAndSet(null, newPolishedVersion)) {
+                return newPolishedVersion;
+            } else {
+                return SDK_VERSION_SNAPSHOT_INSTEAD_OF_BETA_CACHED.get();
+            }
+        }
     }
 
     public static class StatusCodes {

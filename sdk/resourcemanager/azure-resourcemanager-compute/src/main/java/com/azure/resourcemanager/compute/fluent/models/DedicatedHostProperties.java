@@ -72,6 +72,13 @@ public final class DedicatedHostProperties {
     @JsonProperty(value = "instanceView", access = JsonProperty.Access.WRITE_ONLY)
     private DedicatedHostInstanceView instanceView;
 
+    /*
+     * Specifies the time at which the Dedicated Host resource was
+     * created.<br><br>Minimum api-version: 2021-11-01.
+     */
+    @JsonProperty(value = "timeCreated", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime timeCreated;
+
     /**
      * Get the platformFaultDomain property: Fault domain of the dedicated host within a dedicated host group.
      *
@@ -184,6 +191,16 @@ public final class DedicatedHostProperties {
      */
     public DedicatedHostInstanceView instanceView() {
         return this.instanceView;
+    }
+
+    /**
+     * Get the timeCreated property: Specifies the time at which the Dedicated Host resource was
+     * created.&lt;br&gt;&lt;br&gt;Minimum api-version: 2021-11-01.
+     *
+     * @return the timeCreated value.
+     */
+    public OffsetDateTime timeCreated() {
+        return this.timeCreated;
     }
 
     /**
