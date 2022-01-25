@@ -150,10 +150,10 @@ public final class DateTimeRfc1123 {
     /**
      * Convert the {@link OffsetDateTime datetime} to datetime string in RFC1123 format.
      *
-     * @param datetime The datetime string.
+     * @param datetime The datetime in OffsetDateTime format.
      * @return The datetime string in RFC1123 format.
      */
-    public static String toRFC1123String(OffsetDateTime datetime) {
+    public static String toRfc1123String(OffsetDateTime datetime) {
         // ensure datetime is UTC offset.
         datetime = datetime.withOffsetSameInstant(ZoneOffset.UTC);
 
@@ -212,7 +212,7 @@ public final class DateTimeRfc1123 {
 
     @Override
     public String toString() {
-        return toRFC1123String(this.dateTime);
+        return toRfc1123String(this.dateTime);
     }
 
     @Override

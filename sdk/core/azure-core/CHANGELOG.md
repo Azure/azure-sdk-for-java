@@ -5,6 +5,7 @@
 ### Features Added
 
 - Added `ClientLogger` APIs (`atError`, `atWarning`, `atInfo`, `atVerbose`) that allow adding key-value pairs to log entries and `ClientLogger` constructor overloads that take context to apply to every log entry written with this logger instance. Logger writes entries that have context as JSON similar to `{"az.sdk.message":"on delivery","connectionId":"foo"}`
+- Added a static method `toRfc1123String` that allows to convert the `OffsetDateTime` datetime to datetime string in RFC1123 format.
 
 ### Breaking Changes
 

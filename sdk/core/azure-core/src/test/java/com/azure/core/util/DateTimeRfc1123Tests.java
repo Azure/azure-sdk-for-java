@@ -4,6 +4,9 @@
 package com.azure.core.util;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.DateTimeException;
 import java.time.Instant;
@@ -12,6 +15,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -22,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class DateTimeRfc1123Tests {
     private static final DateTimeFormatter RFC1123_DATE_TIME_FORMATTER =
         DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'").withZone(ZoneId.of("UTC")).withLocale(Locale.US);
+    private static final String ZERO_PAD_DATE = "Wed, 01 Dec 2021 01:01:01 GMT";
 
     @Test
     public void parseDateTimeRfc1123String() {
@@ -54,21 +59,23 @@ public class DateTimeRfc1123Tests {
         assertThrows(DateTimeException.class, () -> new DateTimeRfc1123("00 Jan 1970 00:00:00 GMT"));
     }
 
-    @Test
-    public void toRfc1123String() {
+    @ParameterizedTest
+    @MethodSource("provideStringsForIsBlank")
+    public void toRfc1123String(String expectedDateString, OffsetDateTime instantDate) {
+        assertEquals(expectedDateString, DateTimeRfc1123.toRfc1123String(instantDate));
+    }
+
+    private static Stream<Arguments> provideStringsForIsBlank() {
         // Epoch instant
-        OffsetDateTime instantDate = OffsetDateTime.ofInstant(Instant.EPOCH, ZoneOffset.UTC);
-        String dateString = RFC1123_DATE_TIME_FORMATTER.format(instantDate);
-        assertEquals(dateString, DateTimeRfc1123.toRFC1123String(instantDate));
-
-        //Random anytime
-        instantDate = OffsetDateTime.now();
-        dateString = RFC1123_DATE_TIME_FORMATTER.format(instantDate);
-        assertEquals(dateString, DateTimeRfc1123.toRFC1123String(instantDate));
-
-        // zero pad verified
-        String date1 = "Wed, 01 Dec 2021 01:01:01 GMT";
-        assertEquals(date1,
-            DateTimeRfc1123.toRFC1123String(OffsetDateTime.parse(date1, DateTimeFormatter.RFC_1123_DATE_TIME)));
+        final OffsetDateTime epochInstant = OffsetDateTime.ofInstant(Instant.EPOCH, ZoneOffset.UTC);
+        // Random anytime
+        final OffsetDateTime now = OffsetDateTime.now();
+        // Zero pad verified
+        final OffsetDateTime zeroPadDate = OffsetDateTime.parse(ZERO_PAD_DATE, DateTimeFormatter.RFC_1123_DATE_TIME);
+        return Stream.of(
+            Arguments.of(RFC1123_DATE_TIME_FORMATTER.format(epochInstant), epochInstant),
+            Arguments.of(RFC1123_DATE_TIME_FORMATTER.format(now), now),
+            Arguments.of(ZERO_PAD_DATE, zeroPadDate)
+        );
     }
 }
