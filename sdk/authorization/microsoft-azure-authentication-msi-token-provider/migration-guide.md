@@ -2,7 +2,7 @@
 
 This guide is intended to assist migration to `azure-identity` library. It will focus on side-by-side comparisons for similar operations between the two packages.
 
-We assume that you are familiar with the `microsoft-azure-authentication-msi-token-provider` library. If not, please refer to the [README for azure-identity](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md) and [azure-identity samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity/#examples) rather than this guide.
+We assume that you are familiar with the `microsoft-azure-authentication-msi-token-provider` library. If not, please refer to the [README for azure-identity](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md) and [azure-identity samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#examples) rather than this guide.
 
 ## Table of contents
  - [Migration benefits](#migration-benefits)
@@ -44,7 +44,7 @@ In azure-identity, the modern client libraries have packages and namespaces that
 
 ### Authentication with managed identity
 `microsoft-azure-authentication-msi-token-provider` allows authenticating using system and user assigned managed identity. It supports Azure App Services and Azure Virtual Machines.
-You can use [azure-identity](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity/readme.md) to do the same in the following way.
+You can use [azure-identity](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md) to do the same in the following way.
 
 
 #### Authentication with system assigned managed identity
