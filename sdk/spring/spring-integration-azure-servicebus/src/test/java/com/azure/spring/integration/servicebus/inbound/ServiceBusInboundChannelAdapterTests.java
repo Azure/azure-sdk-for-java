@@ -14,11 +14,9 @@ import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.messaging.converter.AbstractAzureMessageConverter;
 import com.azure.spring.servicebus.core.ServiceBusProcessorContainer;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
@@ -39,7 +37,6 @@ import static org.mockito.Mockito.when;
 class ServiceBusInboundChannelAdapterTests {
 
     private TestServiceBusInboundChannelAdapter adapter;
-
     protected String subscription = "group";
     protected String destination = "dest";
     private String[] payloads = { "payload1", "payload2" };
@@ -47,11 +44,8 @@ class ServiceBusInboundChannelAdapterTests {
                                               .map(p -> MessageBuilder.withPayload(p).build())
                                               .collect(Collectors.toList());
 
-    private AutoCloseable closeable;
-
     @BeforeEach
     public void setUp() {
-        this.closeable = MockitoAnnotations.openMocks(this);
         this.adapter = new TestServiceBusInboundChannelAdapter(mock(ServiceBusProcessorContainer.class),
             destination, subscription, new CheckpointConfig(CheckpointMode.RECORD));
     }
@@ -128,11 +122,6 @@ class ServiceBusInboundChannelAdapterTests {
         for (int i = 0; i < receivedMessages.size(); i++) {
             Assertions.assertEquals(receivedMessages.get(i), payloads[i]);
         }
-    }
-
-    @AfterEach
-    public void close() throws Exception {
-        closeable.close();
     }
 
     static class TestServiceBusInboundChannelAdapter extends ServiceBusInboundChannelAdapter {

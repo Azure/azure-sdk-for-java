@@ -17,9 +17,7 @@ import org.springframework.mock.env.MockEnvironment;
 import org.springframework.util.ClassUtils;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 import static com.azure.spring.cloud.autoconfigure.keyvault.env.KeyVaultPropertySource.DEFAULT_AZURE_KEYVAULT_PROPERTYSOURCE_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,17 +32,15 @@ import static org.springframework.core.env.StandardEnvironment.SYSTEM_ENVIRONMEN
 
 class KeyVaultEnvironmentPostProcessorTests {
 
-    private SpringApplication application = new SpringApplication();
+    private final SpringApplication application = new SpringApplication();
     private KeyVaultEnvironmentPostProcessor processor;
     private MockEnvironment environment;
     private MutablePropertySources propertySources;
-    private final Map<String, Object> keyVaultProperties = new HashMap<>();
 
     @BeforeEach
     void setup() {
         processor = spy(new KeyVaultEnvironmentPostProcessor(new DeferredLog()));
         environment = new MockEnvironment();
-        keyVaultProperties.clear();
         propertySources = environment.getPropertySources();
     }
 
