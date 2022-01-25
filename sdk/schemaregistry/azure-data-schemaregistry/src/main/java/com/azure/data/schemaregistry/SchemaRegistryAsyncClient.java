@@ -22,6 +22,7 @@ import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -202,10 +203,11 @@ public final class SchemaRegistryAsyncClient {
                 //TODO (conniey): Will this change in the future if they support additional formats?
                 final SchemaFormat schemaFormat = SchemaFormat.AVRO;
                 final SchemaProperties schemaObject = new SchemaProperties(schemaId, schemaFormat);
+                final String schema = new String(response.getValue(), StandardCharsets.UTF_8);
 
                 return new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), new SchemaRegistrySchema(schemaObject, response.getValue()));
+                    response.getHeaders(), new SchemaRegistrySchema(schemaObject, schema));
             });
     }
 

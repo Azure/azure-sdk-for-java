@@ -842,6 +842,7 @@ public final class RntbdConstants {
         IsRUPerMinuteUsed((short) 0x0027, RntbdTokenType.Byte, false),
         QueryMetrics((short) 0x0028, RntbdTokenType.String, false),
         IndexUtilization((short) 0x0044, RntbdTokenType.String, false),
+        QueryExecutionInfo((short) 0x0045, RntbdTokenType.String, false),
         GlobalCommittedLSN((short) 0x0029, RntbdTokenType.LongLong, false),
         NumberOfReadRegions((short) 0x0030, RntbdTokenType.ULong, false),
         OfferReplacePending((short) 0x0031, RntbdTokenType.Byte, false),

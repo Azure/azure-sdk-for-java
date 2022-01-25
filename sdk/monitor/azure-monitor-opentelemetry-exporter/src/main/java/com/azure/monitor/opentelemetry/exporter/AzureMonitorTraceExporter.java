@@ -245,11 +245,11 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
             return;
         }
         String azureNamespace = attributes.get(AZURE_NAMESPACE);
-        if (azureNamespace != null && azureNamespace.equals("Microsoft.EventHub")) {
+        if (azureNamespace != null && "Microsoft.EventHub".equals(azureNamespace)) {
             applyEventHubsSpan(attributes, remoteDependencyData);
             return;
         }
-        if (azureNamespace != null && azureNamespace.equals("Microsoft.ServiceBus")) {
+        if (azureNamespace != null && "Microsoft.ServiceBus".equals(azureNamespace)) {
             applyServiceBusSpan(attributes, remoteDependencyData);
             return;
         }
@@ -615,8 +615,8 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         if (azureNamespace == null) {
             return false;
         }
-        return azureNamespace.equals("Microsoft.EventHub")
-            || azureNamespace.equals("Microsoft.ServiceBus");
+        return "Microsoft.EventHub".equals(azureNamespace)
+            || "Microsoft.ServiceBus".equals(azureNamespace);
     }
 
     private static String getOperationName(SpanData span) {
@@ -741,7 +741,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
             }
             // TODO (trask) use az.namespace for something?
             if (stringKey.equals(AZURE_SDK_MESSAGE_BUS_DESTINATION.getKey())
-                || stringKey.equals("az.namespace")) {
+                || "az.namespace".equals(stringKey)) {
                 return;
             }
             // special case mappings

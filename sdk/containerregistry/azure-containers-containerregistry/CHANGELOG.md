@@ -1,6 +1,16 @@
 # Release History
 
-## 1.0.0-beta.6 (2022-1-10)
+## 1.1.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0 (2022-01-11)
 
 ### Breaking Changes
  - Renamed `ArtifactTagOrderBy` to `ArtifactTagOrder`.
@@ -9,8 +19,8 @@
 ### Other Changes
 
 #### Dependency Updates
-- Upgraded `azure-core` to `1.23.1`
-- Upgraded `azure-core-http-netty` to `1.11.2`
+- Upgraded `azure-core` to `1.24.1`
+- Upgraded `azure-core-http-netty` to `1.11.6`
 
 ## 1.0.0-beta.5 (2021-11-09)
 ### New features

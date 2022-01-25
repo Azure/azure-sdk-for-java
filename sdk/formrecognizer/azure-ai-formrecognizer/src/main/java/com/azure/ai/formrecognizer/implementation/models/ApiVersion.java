@@ -10,8 +10,8 @@ import java.util.Collection;
 
 /** Defines values for ApiVersion. */
 public final class ApiVersion extends ExpandableStringEnum<ApiVersion> {
-    /** Static value 2021-09-30-preview for ApiVersion. */
-    public static final ApiVersion TWO_THOUSAND_TWENTY_ONE0930PREVIEW = fromString("2021-09-30-preview");
+    /** Static value 2022-01-30-preview for ApiVersion. */
+    public static final ApiVersion TWO_THOUSAND_TWENTY_TWO0130PREVIEW = fromString("2022-01-30-preview");
 
     /**
      * Creates or finds a ApiVersion from its string representation.

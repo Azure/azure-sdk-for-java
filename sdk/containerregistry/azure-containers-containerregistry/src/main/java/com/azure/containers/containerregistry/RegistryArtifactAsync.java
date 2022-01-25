@@ -15,6 +15,7 @@ import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactTagOrder;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
@@ -58,6 +59,7 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  *
  * @see ContainerRegistryClientBuilder
  */
+@ServiceClient(builder = ContainerRegistryClientBuilder.class, isAsync = true)
 public final class RegistryArtifactAsync {
     private final ContainerRegistriesImpl serviceClient;
     private final String repositoryName;
@@ -150,6 +152,7 @@ public final class RegistryArtifactAsync {
         return tagOrDigest.contains(":");
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<String> getDigestMono() {
         if (this.digest != null) {
             return Mono.just(digest);

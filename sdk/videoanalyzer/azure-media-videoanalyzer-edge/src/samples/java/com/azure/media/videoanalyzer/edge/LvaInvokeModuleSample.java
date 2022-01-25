@@ -73,10 +73,8 @@ public class LvaInvokeModuleSample {
             .setSinks(Arrays.asList(msgSink))
             .setProcessors(Arrays.asList(httpExtension));
 
-        PipelineTopology pipelineTopology = new PipelineTopology(TOPOLOGY_NAME)
+        return new PipelineTopology(TOPOLOGY_NAME)
             .setProperties(pipeProps);
-
-        return pipelineTopology;
     }
     // END: readme-sample-buildPipelineTopology
 
@@ -99,10 +97,8 @@ public class LvaInvokeModuleSample {
             .setParameters(Arrays.asList(urlParam, userParam, passParam, hubParam))
             .setTopologyName(TOPOLOGY_NAME);
 
-        LivePipeline livePipeline = new LivePipeline(LIVE_PIPELINE_NAME)
+        return new LivePipeline(LIVE_PIPELINE_NAME)
             .setProperties(livePipelineProps);
-
-        return livePipeline;
     }
     // END: readme-sample-buildLivePipeline
 
@@ -119,10 +115,9 @@ public class LvaInvokeModuleSample {
             .setCredentials(new SymmetricKeyCredentials(iotDevice.getPrimaryKey()));
 
         RemoteDeviceAdapterProperties remoteDeviceAdapterProperties = new RemoteDeviceAdapterProperties(new RemoteDeviceAdapterTarget("camerasimulator"), iotHubDeviceConnection);
-        RemoteDeviceAdapter remoteDeviceAdapter = new RemoteDeviceAdapter(remoteDeviceName)
-            .setProperties(remoteDeviceAdapterProperties);
 
-        return remoteDeviceAdapter;
+        return new RemoteDeviceAdapter(remoteDeviceName)
+            .setProperties(remoteDeviceAdapterProperties);
     }
     /***
      * Helper method to invoke module method on iot hub device

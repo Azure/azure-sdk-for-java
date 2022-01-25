@@ -1,14 +1,25 @@
 # Release History
 
-## 12.0.0-beta.14 (Unreleased)
+## 12.0.0-beta.15 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed a bug that would prevent deleting an empty directory in the case where one directory name was a prefix of the other.
 
 ### Other Changes
+
+## 12.0.0-beta.14 (2022-01-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.23.0` to version `1.24.1`.
+- Upgraded `azure-core-http-netty` from `1.11.3` to version `1.11.6`.
+- Upgraded `azure-storage-blob` from `12.15.0-beta.2` to version `12.14.3`.
 
 ## 12.0.0-beta.13 (2021-12-07)
 

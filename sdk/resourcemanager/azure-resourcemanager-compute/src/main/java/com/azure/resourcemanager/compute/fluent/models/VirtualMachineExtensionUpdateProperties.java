@@ -77,6 +77,13 @@ public final class VirtualMachineExtensionUpdateProperties {
     @JsonProperty(value = "suppressFailures")
     private Boolean suppressFailures;
 
+    /*
+     * The extensions protected settings that are passed by reference, and
+     * consumed from key vault
+     */
+    @JsonProperty(value = "protectedSettingsFromKeyVault")
+    private Object protectedSettingsFromKeyVault;
+
     /**
      * Get the forceUpdateTag property: How the extension handler should be forced to update even if the extension
      * configuration has not changed.
@@ -268,6 +275,29 @@ public final class VirtualMachineExtensionUpdateProperties {
      */
     public VirtualMachineExtensionUpdateProperties withSuppressFailures(Boolean suppressFailures) {
         this.suppressFailures = suppressFailures;
+        return this;
+    }
+
+    /**
+     * Get the protectedSettingsFromKeyVault property: The extensions protected settings that are passed by reference,
+     * and consumed from key vault.
+     *
+     * @return the protectedSettingsFromKeyVault value.
+     */
+    public Object protectedSettingsFromKeyVault() {
+        return this.protectedSettingsFromKeyVault;
+    }
+
+    /**
+     * Set the protectedSettingsFromKeyVault property: The extensions protected settings that are passed by reference,
+     * and consumed from key vault.
+     *
+     * @param protectedSettingsFromKeyVault the protectedSettingsFromKeyVault value to set.
+     * @return the VirtualMachineExtensionUpdateProperties object itself.
+     */
+    public VirtualMachineExtensionUpdateProperties withProtectedSettingsFromKeyVault(
+        Object protectedSettingsFromKeyVault) {
+        this.protectedSettingsFromKeyVault = protectedSettingsFromKeyVault;
         return this;
     }
 

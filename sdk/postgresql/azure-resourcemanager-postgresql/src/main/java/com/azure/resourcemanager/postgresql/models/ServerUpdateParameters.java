@@ -5,16 +5,16 @@
 package com.azure.resourcemanager.postgresql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.postgresql.fluent.models.ServerUpdateParametersProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Parameters allowed to update for a server. */
-@JsonFlatten
 @Fluent
-public class ServerUpdateParameters {
+public final class ServerUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerUpdateParameters.class);
 
     /*
@@ -30,53 +30,17 @@ public class ServerUpdateParameters {
     private Sku sku;
 
     /*
+     * The properties that can be updated for a server.
+     */
+    @JsonProperty(value = "properties")
+    private ServerUpdateParametersProperties innerProperties;
+
+    /*
      * Application-specific metadata in the form of key-value pairs.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
-
-    /*
-     * Storage profile of a server.
-     */
-    @JsonProperty(value = "properties.storageProfile")
-    private StorageProfile storageProfile;
-
-    /*
-     * The password of the administrator login.
-     */
-    @JsonProperty(value = "properties.administratorLoginPassword")
-    private String administratorLoginPassword;
-
-    /*
-     * The version of a server.
-     */
-    @JsonProperty(value = "properties.version")
-    private ServerVersion version;
-
-    /*
-     * Enable ssl enforcement or not when connect to server.
-     */
-    @JsonProperty(value = "properties.sslEnforcement")
-    private SslEnforcementEnum sslEnforcement;
-
-    /*
-     * Enforce a minimal Tls version for the server.
-     */
-    @JsonProperty(value = "properties.minimalTlsVersion")
-    private MinimalTlsVersionEnum minimalTlsVersion;
-
-    /*
-     * Whether or not public network access is allowed for this server. Value
-     * is optional but if passed in, must be 'Enabled' or 'Disabled'
-     */
-    @JsonProperty(value = "properties.publicNetworkAccess")
-    private PublicNetworkAccessEnum publicNetworkAccess;
-
-    /*
-     * The replication role of the server.
-     */
-    @JsonProperty(value = "properties.replicationRole")
-    private String replicationRole;
 
     /**
      * Get the identity property: The Azure Active Directory identity of the server.
@@ -119,6 +83,15 @@ public class ServerUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: The properties that can be updated for a server.
+     *
+     * @return the innerProperties value.
+     */
+    private ServerUpdateParametersProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the tags property: Application-specific metadata in the form of key-value pairs.
      *
      * @return the tags value.
@@ -144,7 +117,7 @@ public class ServerUpdateParameters {
      * @return the storageProfile value.
      */
     public StorageProfile storageProfile() {
-        return this.storageProfile;
+        return this.innerProperties() == null ? null : this.innerProperties().storageProfile();
     }
 
     /**
@@ -154,7 +127,10 @@ public class ServerUpdateParameters {
      * @return the ServerUpdateParameters object itself.
      */
     public ServerUpdateParameters withStorageProfile(StorageProfile storageProfile) {
-        this.storageProfile = storageProfile;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerUpdateParametersProperties();
+        }
+        this.innerProperties().withStorageProfile(storageProfile);
         return this;
     }
 
@@ -164,7 +140,7 @@ public class ServerUpdateParameters {
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
-        return this.administratorLoginPassword;
+        return this.innerProperties() == null ? null : this.innerProperties().administratorLoginPassword();
     }
 
     /**
@@ -174,7 +150,10 @@ public class ServerUpdateParameters {
      * @return the ServerUpdateParameters object itself.
      */
     public ServerUpdateParameters withAdministratorLoginPassword(String administratorLoginPassword) {
-        this.administratorLoginPassword = administratorLoginPassword;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerUpdateParametersProperties();
+        }
+        this.innerProperties().withAdministratorLoginPassword(administratorLoginPassword);
         return this;
     }
 
@@ -184,7 +163,7 @@ public class ServerUpdateParameters {
      * @return the version value.
      */
     public ServerVersion version() {
-        return this.version;
+        return this.innerProperties() == null ? null : this.innerProperties().version();
     }
 
     /**
@@ -194,7 +173,10 @@ public class ServerUpdateParameters {
      * @return the ServerUpdateParameters object itself.
      */
     public ServerUpdateParameters withVersion(ServerVersion version) {
-        this.version = version;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerUpdateParametersProperties();
+        }
+        this.innerProperties().withVersion(version);
         return this;
     }
 
@@ -204,7 +186,7 @@ public class ServerUpdateParameters {
      * @return the sslEnforcement value.
      */
     public SslEnforcementEnum sslEnforcement() {
-        return this.sslEnforcement;
+        return this.innerProperties() == null ? null : this.innerProperties().sslEnforcement();
     }
 
     /**
@@ -214,7 +196,10 @@ public class ServerUpdateParameters {
      * @return the ServerUpdateParameters object itself.
      */
     public ServerUpdateParameters withSslEnforcement(SslEnforcementEnum sslEnforcement) {
-        this.sslEnforcement = sslEnforcement;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerUpdateParametersProperties();
+        }
+        this.innerProperties().withSslEnforcement(sslEnforcement);
         return this;
     }
 
@@ -224,7 +209,7 @@ public class ServerUpdateParameters {
      * @return the minimalTlsVersion value.
      */
     public MinimalTlsVersionEnum minimalTlsVersion() {
-        return this.minimalTlsVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().minimalTlsVersion();
     }
 
     /**
@@ -234,7 +219,10 @@ public class ServerUpdateParameters {
      * @return the ServerUpdateParameters object itself.
      */
     public ServerUpdateParameters withMinimalTlsVersion(MinimalTlsVersionEnum minimalTlsVersion) {
-        this.minimalTlsVersion = minimalTlsVersion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerUpdateParametersProperties();
+        }
+        this.innerProperties().withMinimalTlsVersion(minimalTlsVersion);
         return this;
     }
 
@@ -245,7 +233,7 @@ public class ServerUpdateParameters {
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccessEnum publicNetworkAccess() {
-        return this.publicNetworkAccess;
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
     }
 
     /**
@@ -256,7 +244,10 @@ public class ServerUpdateParameters {
      * @return the ServerUpdateParameters object itself.
      */
     public ServerUpdateParameters withPublicNetworkAccess(PublicNetworkAccessEnum publicNetworkAccess) {
-        this.publicNetworkAccess = publicNetworkAccess;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerUpdateParametersProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 
@@ -266,7 +257,7 @@ public class ServerUpdateParameters {
      * @return the replicationRole value.
      */
     public String replicationRole() {
-        return this.replicationRole;
+        return this.innerProperties() == null ? null : this.innerProperties().replicationRole();
     }
 
     /**
@@ -276,7 +267,10 @@ public class ServerUpdateParameters {
      * @return the ServerUpdateParameters object itself.
      */
     public ServerUpdateParameters withReplicationRole(String replicationRole) {
-        this.replicationRole = replicationRole;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerUpdateParametersProperties();
+        }
+        this.innerProperties().withReplicationRole(replicationRole);
         return this;
     }
 
@@ -292,8 +286,8 @@ public class ServerUpdateParameters {
         if (sku() != null) {
             sku().validate();
         }
-        if (storageProfile() != null) {
-            storageProfile().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

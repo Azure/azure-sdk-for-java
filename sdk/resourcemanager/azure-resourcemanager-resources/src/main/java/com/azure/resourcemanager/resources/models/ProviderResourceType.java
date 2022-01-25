@@ -54,6 +54,12 @@ public final class ProviderResourceType {
     private String defaultApiVersion;
 
     /*
+     * The zoneMappings property.
+     */
+    @JsonProperty(value = "zoneMappings")
+    private List<ZoneMapping> zoneMappings;
+
+    /*
      * The API profiles for the resource provider.
      */
     @JsonProperty(value = "apiProfiles", access = JsonProperty.Access.WRITE_ONLY)
@@ -182,6 +188,26 @@ public final class ProviderResourceType {
     }
 
     /**
+     * Get the zoneMappings property: The zoneMappings property.
+     *
+     * @return the zoneMappings value.
+     */
+    public List<ZoneMapping> zoneMappings() {
+        return this.zoneMappings;
+    }
+
+    /**
+     * Set the zoneMappings property: The zoneMappings property.
+     *
+     * @param zoneMappings the zoneMappings value to set.
+     * @return the ProviderResourceType object itself.
+     */
+    public ProviderResourceType withZoneMappings(List<ZoneMapping> zoneMappings) {
+        this.zoneMappings = zoneMappings;
+        return this;
+    }
+
+    /**
      * Get the apiProfiles property: The API profiles for the resource provider.
      *
      * @return the apiProfiles value.
@@ -241,6 +267,9 @@ public final class ProviderResourceType {
         }
         if (aliases() != null) {
             aliases().forEach(e -> e.validate());
+        }
+        if (zoneMappings() != null) {
+            zoneMappings().forEach(e -> e.validate());
         }
         if (apiProfiles() != null) {
             apiProfiles().forEach(e -> e.validate());

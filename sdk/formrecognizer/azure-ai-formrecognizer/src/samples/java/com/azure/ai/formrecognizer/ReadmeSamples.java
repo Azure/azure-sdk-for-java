@@ -34,12 +34,9 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS ARE USED TO EXTRACT
- * APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING LINE NUMBERS OF EXISTING CODE
- * SAMPLES.
- * <p>
  * Class containing code snippets that will be injected to README.md.
  */
+@SuppressWarnings("unused")
 public class ReadmeSamples {
     private final DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder().buildClient();
     private final DocumentModelAdministrationClient documentModelAdminClient =
@@ -260,7 +257,7 @@ public class ReadmeSamples {
             analyzedDocument.getFields().forEach((key, documentField) -> {
                 System.out.printf("Document Field content: %s%n", documentField.getContent());
                 System.out.printf("Document Field confidence: %.2f%n", documentField.getConfidence());
-                System.out.printf("Document Field Type: %.2f%n", documentField.getType().toString());
+                System.out.printf("Document Field Type: %s%n", documentField.getType());
                 System.out.printf("Document Field found within bounding region: %s%n",
                     documentField.getBoundingRegions().toString());
             });

@@ -10,6 +10,4 @@ module com.azure.security.attestation {
     opens com.azure.security.attestation.implementation.models to
         com.azure.core,
         com.fasterxml.jackson.databind;
-    opens com.azure.security.attestation to
-        com.fasterxml.jackson.databind;
 }
