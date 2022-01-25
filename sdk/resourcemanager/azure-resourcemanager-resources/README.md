@@ -46,7 +46,7 @@ AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
     .build();
-AzureResourceManager azure = AzureResourceManager
+ResourceManager manager = ResourceManager
     .authenticate(credential, profile)
     .withDefaultSubscription();
 ```
