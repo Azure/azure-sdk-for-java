@@ -110,6 +110,7 @@ class ServiceBusJmsAutoConfigurationTests {
                 "spring.jms.servicebus.connection-string=" + CONNECTION_STRING)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureServiceBusJmsProperties.class);
+                assertThat(context).hasSingleBean(AzureServiceBusJmsPropertiesBeanPostProcessor.class);
                 assertThat(context).hasSingleBean(ServiceBusJmsAutoConfiguration.class);
                 assertThat(context).hasSingleBean(ConnectionFactory.class);
                 assertThat(context).hasSingleBean(JmsTemplate.class);
@@ -129,6 +130,7 @@ class ServiceBusJmsAutoConfigurationTests {
                 "spring.jms.servicebus.connection-string=" + CONNECTION_STRING)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureServiceBusJmsProperties.class);
+                assertThat(context).hasSingleBean(AzureServiceBusJmsPropertiesBeanPostProcessor.class);
                 assertThat(context).hasSingleBean(ServiceBusJmsAutoConfiguration.class);
                 assertThat(context).hasSingleBean(ConnectionFactory.class);
                 assertThat(context).hasSingleBean(JmsTemplate.class);
