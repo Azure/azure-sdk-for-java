@@ -98,10 +98,10 @@ public final class DateTimeRfc1123 {
     }
 
     /**
-     * Parses the specified month substring of datetime to a number value, '1' represents the month of January,
+     * Parses the specified month substring of date time to a number value, '1' represents the month of January,
      * '12' represents the month of December.
      *
-     * @param date The datetime string in RFC1123 format.
+     * @param date The date time string in RFC1123 format.
      * @param beginIndex The beginning index, inclusive, to the
      * @return The number value which represents the month of year. '1' represents the month of January,
      *   '12' represents the month of December.
@@ -148,18 +148,18 @@ public final class DateTimeRfc1123 {
     }
 
     /**
-     * Convert the {@link OffsetDateTime datetime} to datetime string in RFC1123 format.
+     * Convert the {@link OffsetDateTime dateTime} to date time string in RFC1123 format.
      *
-     * @param datetime The datetime in OffsetDateTime format.
-     * @return The datetime string in RFC1123 format.
+     * @param dateTime The date time in OffsetDateTime format.
+     * @return The date time string in RFC1123 format.
      */
-    public static String toRfc1123String(OffsetDateTime datetime) {
+    public static String toRfc1123String(OffsetDateTime dateTime) {
         // ensure datetime is UTC offset.
-        datetime = datetime.withOffsetSameInstant(ZoneOffset.UTC);
+        dateTime = dateTime.withOffsetSameInstant(ZoneOffset.UTC);
 
         StringBuilder sb = new StringBuilder(32);
 
-        final DayOfWeek dayOfWeek = datetime.getDayOfWeek();
+        final DayOfWeek dayOfWeek = dateTime.getDayOfWeek();
         switch (dayOfWeek) {
             case MONDAY: sb.append("Mon, "); break;
             case TUESDAY: sb.append("Tue, "); break;
@@ -171,9 +171,9 @@ public final class DateTimeRfc1123 {
             default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown day of week " + dayOfWeek));
         }
 
-        zeroPad(datetime.getDayOfMonth(), sb);
+        zeroPad(dateTime.getDayOfMonth(), sb);
 
-        final Month month = datetime.getMonth();
+        final Month month = dateTime.getMonth();
         switch (month) {
             case JANUARY: sb.append(" Jan "); break;
             case FEBRUARY: sb.append(" Feb "); break;
@@ -190,14 +190,14 @@ public final class DateTimeRfc1123 {
             default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + month));
         }
 
-        sb.append(datetime.getYear());
+        sb.append(dateTime.getYear());
         sb.append(" ");
 
-        zeroPad(datetime.getHour(), sb);
+        zeroPad(dateTime.getHour(), sb);
         sb.append(":");
-        zeroPad(datetime.getMinute(), sb);
+        zeroPad(dateTime.getMinute(), sb);
         sb.append(":");
-        zeroPad(datetime.getSecond(), sb);
+        zeroPad(dateTime.getSecond(), sb);
         sb.append(" GMT");
 
         return sb.toString();

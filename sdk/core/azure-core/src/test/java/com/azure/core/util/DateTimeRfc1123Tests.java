@@ -60,12 +60,12 @@ public class DateTimeRfc1123Tests {
     }
 
     @ParameterizedTest
-    @MethodSource("provideStringsForIsBlank")
-    public void toRfc1123String(String expectedDateString, OffsetDateTime instantDate) {
-        assertEquals(expectedDateString, DateTimeRfc1123.toRfc1123String(instantDate));
+    @MethodSource("dateTimeInputs")
+    public void toRfc1123String(String expectedDateString, OffsetDateTime dateTime) {
+        assertEquals(expectedDateString, DateTimeRfc1123.toRfc1123String(dateTime));
     }
 
-    private static Stream<Arguments> provideStringsForIsBlank() {
+    private static Stream<Arguments> dateTimeInputs() {
         // Epoch instant
         final OffsetDateTime epochInstant = OffsetDateTime.ofInstant(Instant.EPOCH, ZoneOffset.UTC);
         // Random anytime
