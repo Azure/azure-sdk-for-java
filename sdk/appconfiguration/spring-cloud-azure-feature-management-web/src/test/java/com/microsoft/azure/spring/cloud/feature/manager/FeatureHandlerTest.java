@@ -2,15 +2,14 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.feature.manager;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertSame;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.lang.reflect.UndeclaredThrowableException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -95,18 +94,36 @@ public class FeatureHandlerTest {
     }
 
     @Test
-    public void preHandleFeatureOnRedirect() throws NoSuchMethodException, SecurityException {
-        Method method = TestClass.class.getMethod("featureOnAnnotaitonRedirected");
+    public void preHandleFeatureOnRedirect() throws NoSuchMethodException, SecurityException, IOException {
+        Method method = TestClass.class.getMethod("featureOnAnnotationRedirected");
         when(handlerMethod.getMethod()).thenReturn(method);
         when(featureManager.isEnabledAsync(Mockito.matches("test"))).thenReturn(Mono.just(false));
 
         assertFalse(featureHandler.preHandle(request, response, handlerMethod));
+
+        verify(response).sendRedirect("/redirected");
+        verifyNoMoreInteractions(response);
+        verifyNoInteractions(disabledFeaturesHandler);
+    }
+
+    @Test
+    public void preHandleFeatureOnRedirectError() throws NoSuchMethodException, IOException {
+        Method method = TestClass.class.getMethod("featureOnAnnotationRedirected");
+        when(handlerMethod.getMethod()).thenReturn(method);
+        when(featureManager.isEnabledAsync(Mockito.matches("test"))).thenReturn(Mono.just(false));
+        IOException ioException = new IOException();
+        doThrow(ioException).when(response).sendRedirect("/redirected");
+
+        UndeclaredThrowableException ex = assertThrows(UndeclaredThrowableException.class,
+                () -> featureHandler.preHandle(request, response, handlerMethod));
+
+        assertSame(ioException, ex.getCause());
     }
 
     @Test
     public void preHandleNoDisabledFeatures() throws NoSuchMethodException, SecurityException, IOException {
         featureHandler2 = new FeatureHandler(featureManager, featureManagerSnapshot, null);
-        Method method = TestClass.class.getMethod("featureOnAnnotaitonRedirected");
+        Method method = TestClass.class.getMethod("featureOnAnnotation");
         when(handlerMethod.getMethod()).thenReturn(method);
         when(featureManager.isEnabledAsync(Mockito.matches("test"))).thenReturn(Mono.just(false));
 
@@ -117,7 +134,7 @@ public class FeatureHandlerTest {
     @Test
     public void preHandleNoDisabledFeaturesError() throws NoSuchMethodException, SecurityException, IOException {
         featureHandler2 = new FeatureHandler(featureManager, featureManagerSnapshot, null);
-        Method method = TestClass.class.getMethod("featureOnAnnotaitonRedirected");
+        Method method = TestClass.class.getMethod("featureOnAnnotation");
         when(handlerMethod.getMethod()).thenReturn(method);
         when(featureManager.isEnabledAsync(Mockito.matches("test"))).thenReturn(Mono.just(false));
 
@@ -127,7 +144,7 @@ public class FeatureHandlerTest {
         verify(response, times(1)).sendError(Mockito.eq(HttpServletResponse.SC_NOT_FOUND));
     }
 
-    protected class TestClass {
+    protected static class TestClass {
 
         public void noAnnotation() {
         }
@@ -141,7 +158,7 @@ public class FeatureHandlerTest {
         }
 
         @FeatureGate(feature = "test", fallback = "/redirected")
-        public void featureOnAnnotaitonRedirected() {
+        public void featureOnAnnotationRedirected() {
         }
 
     }

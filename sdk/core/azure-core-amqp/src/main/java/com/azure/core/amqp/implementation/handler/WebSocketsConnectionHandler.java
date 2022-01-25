@@ -4,11 +4,12 @@
 package com.azure.core.amqp.implementation.handler;
 
 import com.azure.core.amqp.implementation.ConnectionOptions;
-import com.azure.core.util.logging.ClientLogger;
 import com.microsoft.azure.proton.transport.ws.impl.WebSocketImpl;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.SslPeerDetails;
 import org.apache.qpid.proton.engine.impl.TransportInternal;
+
+import static com.azure.core.amqp.implementation.ClientConstants.HOSTNAME_KEY;
 
 /**
  * Creates an AMQP connection using web sockets (port 443).
@@ -22,7 +23,6 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
 
     private static final String SOCKET_PATH = "/$servicebus/websocket";
     private static final String PROTOCOL = "AMQPWSB10";
-    private final ClientLogger logger = new ClientLogger(WebSocketsConnectionHandler.class);
 
     /**
      * Creates a handler that handles proton-j's connection events using web sockets.
@@ -44,7 +44,6 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
     @Override
     protected void addTransportLayers(final Event event, final TransportInternal transport) {
         final String hostName = event.getConnection().getHostname();
-
         logger.info("Adding web socket layer");
         final WebSocketImpl webSocket = new WebSocketImpl();
         webSocket.configure(
@@ -58,8 +57,9 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
 
         transport.addTransportLayer(webSocket);
 
-        logger.verbose("connectionId[{}] Adding web sockets transport layer for hostname[{}]",
-            getConnectionId(), hostName);
+        logger.atVerbose()
+            .addKeyValue(HOSTNAME_KEY, hostName)
+            .log("Adding web sockets transport layer.");
 
         super.addTransportLayers(event, transport);
     }

@@ -9,6 +9,7 @@ import com.azure.resourcemanager.compute.models.ResourceIdentityType;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
+import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
@@ -22,7 +23,7 @@ import reactor.core.publisher.Mono;
 
 public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest {
     private String rgName = "";
-    private Region region = Region.fromName("West Central US");
+    private Region region = Region.US_WEST_CENTRAL;
     private final String vmName = "javavm";
 
     @Override
@@ -88,6 +89,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
                 .withSsh(sshPublicKey())
                 .withExistingUserAssignedManagedServiceIdentity(createdIdentity)
                 .withNewUserAssignedManagedServiceIdentity(creatableIdentity)
+                .withSize(VirtualMachineSizeTypes.STANDARD_A0)
                 .create();
 
         Assertions.assertNotNull(virtualMachine);
@@ -298,6 +300,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
                 .withSystemAssignedManagedServiceIdentity()
                 .withSystemAssignedIdentityBasedAccessTo(network.id(), BuiltInRole.CONTRIBUTOR)
                 .withNewUserAssignedManagedServiceIdentity(creatableIdentity)
+                .withSize(VirtualMachineSizeTypes.STANDARD_A0)
                 .create();
 
         Assertions.assertNotNull(virtualMachine);
@@ -398,6 +401,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
                 .withSsh(sshPublicKey())
+                .withSize(VirtualMachineSizeTypes.STANDARD_A0)
                 .create();
 
         // Prepare a definition for yet-to-be-created "User Assigned (External) MSI" with contributor access to the

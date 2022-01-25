@@ -63,7 +63,6 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestBase
             if (useKeyCredential) {
                 builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
             } else {
-                System.out.println("In LIVE MODE");
                 builder.credential(new DefaultAzureCredentialBuilder().build());
             }
         }
@@ -106,6 +105,10 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestBase
 
     void buildModelRunner(Consumer<String> testRunner) {
         TestUtils.getTrainingDataContainerHelper(testRunner, interceptorManager.isPlaybackMode());
+    }
+
+    void buildModelErrorRunner(Consumer<String> testRunner) {
+        TestUtils.getErrorTrainingDataContainerHelper(testRunner, interceptorManager.isPlaybackMode());
     }
 
     void multipageTrainingRunner(Consumer<String> testRunner) {

@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.24.0-beta.1 (Unreleased)
+### 4.26.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,20 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 4.25.0 (2022-01-14)
+#### Key Bug Fixes
+* Fixed `NullPointerException` in bulk mode for deleted/recreated containers.
+* Added missing exception cause in case of `InternalServerException`.
+
+### 4.24.0 (2021-12-21)
+#### Features Added
+* Added implementation for `CosmosAuthorizationTokenResolver`.
+* Scoped session token per partition level for gateway call.
+
+#### Key Bug Fixes
+* Fixed issue causing CosmosException with statusCode 0 to be thrown on connectivity issues for Gateway.
+* Addressed potential race condition in `ChangeFeedProcessor` when check-pointing current state.
 
 ### 4.23.0 (2021-12-10)
 #### Features Added

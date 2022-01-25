@@ -10,7 +10,7 @@ import com.azure.resourcemanager.applicationinsights.models.OperationDisplay;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Azure Workbooks REST API operation. */
+/** CDN REST API operation. */
 @Fluent
 public final class OperationInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);
