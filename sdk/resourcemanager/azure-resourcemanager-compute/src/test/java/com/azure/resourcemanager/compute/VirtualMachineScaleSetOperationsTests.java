@@ -1228,7 +1228,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
     @Test
     public void canListInstancesIncludingInstanceView() {
-        // however, it is hard to verify in automation that we do not send redundant REST call after received the instance view (i.e., not request to virtualMachines/{instanceId}/instanceView)
+        // however, it is hard to verify in automation that we do not send redundant REST call after received the instance view (i.e., no REST call to virtualMachines/{instanceId}/instanceView)
         // currently this is verified manually
 
         final String vmssName = generateRandomResourceName("vmss", 10);
