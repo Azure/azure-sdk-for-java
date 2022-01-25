@@ -5,7 +5,6 @@ package com.azure.spring.cloud.autoconfigure.jms;
 
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
 import org.apache.qpid.jms.JmsConnectionFactory;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.messaginghub.pooled.jms.JmsPoolConnectionFactory;
@@ -88,14 +87,6 @@ class ServiceBusJmsAutoConfigurationTests {
             });
     }
 
-    @Test
-    void contextFailedByConnectionStringNotConfigured() {
-        this.contextRunner
-            .run(context ->
-                assertThrows(IllegalStateException.class,
-                    () -> context.getBean(AzureServiceBusJmsProperties.class)));
-    }
-
     @ParameterizedTest
     @ValueSource(strings = { "Ba", " " })
     void contextFailedByPricingTierNotCorrectlyConfigured(String pricingTier) {
@@ -128,7 +119,6 @@ class ServiceBusJmsAutoConfigurationTests {
                 assertThat(context).doesNotHaveBean("amqpOpenPropertiesCustomizer");
             });
     }
-
 
     @ParameterizedTest
     @ValueSource(strings = { "premium" })
