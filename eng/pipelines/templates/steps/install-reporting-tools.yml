@@ -11,7 +11,7 @@ steps:
       options: ${{ parameters.Options }}
       mavenOptions: ${{ parameters.MavenOptions }}
       javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '1.11'
+      jdkVersionOption: '1.17'
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
       goals: 'install'

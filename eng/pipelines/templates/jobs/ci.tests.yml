@@ -100,7 +100,7 @@ jobs:
           publishJUnitResults: false
           goals: 'install'
         # we want to run this when we aren't running from source and aren't generating Jacoco test coverage
-        condition: and(succeeded(), ne(variables['TestFromSource'], 'true'), not(and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'))))
+        condition: and(succeeded(), ne(variables['TestFromSource'], 'true'), not(and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.17'), eq('${{ parameters.SDKType }}', 'client'))))
 
       - task: Maven@3
         displayName: 'Run tests'
@@ -118,7 +118,7 @@ jobs:
 
       - task: Maven@3
         displayName: 'Generate aggregate code coverage report'
-        condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'), eq('${{ parameters.SkipAggregateReports }}', 'false'))
+        condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.17'), eq('${{ parameters.SDKType }}', 'client'), eq('${{ parameters.SkipAggregateReports }}', 'false'))
         inputs:
           mavenPomFile: sdk/${{ parameters.ServiceDirectory }}/pom.xml
           options: '$(DefaultOptions) -Pcoverage'
@@ -182,7 +182,7 @@ jobs:
       # Azure DevOps only seems to respect the last code coverage result published, so only do this for Windows + Java LTS.
       # Code coverage reporting is setup only for Track 2 modules.
       - task: PublishCodeCoverageResults@1
-        condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'))
+        condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.17'), eq('${{ parameters.SDKType }}', 'client'))
         inputs:
           codeCoverageTool: JaCoCo
           summaryFileLocation: sdk/${{ parameters.ServiceDirectory }}/target/site/test-coverage/jacoco.xml
