@@ -5,13 +5,13 @@ package com.azure.security.attestation;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.attestation.models.AttestationSigner;
+import com.azure.security.attestation.models.AttestationSignerCollection;
 import com.azure.security.attestation.models.AttestationSigningKey;
 import com.azure.security.attestation.models.PolicyCertificatesModificationResult;
 import com.azure.security.attestation.models.PolicyManagementCertificateOptions;
 
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
-import java.util.List;
 
 public class PolicyManagementCertificatesSamples {
 
@@ -28,9 +28,9 @@ public class PolicyManagementCertificatesSamples {
             .buildClient();
 
         // BEGIN: readme-sample-listPolicyCertificates
-        List<AttestationSigner> signers = client.listPolicyManagementCertificates();
-        System.out.printf("Instance %s contains %d signers.\n", endpoint, signers.size());
-        for (AttestationSigner signer : signers) {
+        AttestationSignerCollection signers = client.listPolicyManagementCertificates();
+        System.out.printf("Instance %s contains %d signers.\n", endpoint, signers.getAttestationSigners().size());
+        for (AttestationSigner signer : signers.getAttestationSigners()) {
             System.out.printf("Certificate Subject: %s", signer.getCertificates().get(0).getSubjectDN().toString());
         }
         // END: readme-sample-listPolicyCertificates
@@ -49,8 +49,8 @@ public class PolicyManagementCertificatesSamples {
 
         client.listPolicyManagementCertificates()
                 .subscribe(signers -> {
-                    System.out.printf("Instance %s contains %d signers.\n", endpoint, signers.size());
-                    for (AttestationSigner signer : signers) {
+                    System.out.printf("Instance %s contains %d signers.\n", endpoint, signers.getAttestationSigners().size());
+                    for (AttestationSigner signer : signers.getAttestationSigners()) {
                         System.out.printf("Certificate Subject: %s\n", signer.getCertificates().get(0).getSubjectDN());
                     }
                 });

@@ -7,7 +7,6 @@ import com.azure.core.annotation.Immutable;
 import com.azure.security.attestation.models.AttestationSigner;
 import com.azure.security.attestation.models.AttestationSignerCollection;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +17,7 @@ public class AttestationSignerCollectionImpl implements AttestationSignerCollect
     private List<AttestationSigner> signers;
 
     public AttestationSignerCollectionImpl(List<AttestationSigner> newSigners) {
-        signers = new ArrayList<>(newSigners);
+        signers = newSigners;
     }
     /**
      * Retrieve the list of attestation signers in the collection.

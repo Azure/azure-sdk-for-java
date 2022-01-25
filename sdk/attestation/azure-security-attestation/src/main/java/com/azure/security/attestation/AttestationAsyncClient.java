@@ -25,6 +25,7 @@ import com.azure.security.attestation.implementation.models.AttestationTokenImpl
 import com.azure.security.attestation.models.AttestationData;
 import com.azure.security.attestation.models.AttestationOpenIdMetadata;
 import com.azure.security.attestation.models.AttestationOptions;
+import com.azure.security.attestation.models.AttestationResponse;
 import com.azure.security.attestation.models.AttestationResult;
 import com.azure.security.attestation.models.AttestationSigner;
 import com.azure.security.attestation.models.AttestationSignerCollection;
@@ -345,7 +346,7 @@ public final class AttestationAsyncClient {
      * <p><strong>Attest an OpenEnclave enclave with attestation options.</strong></p>
      * <!-- src_embed com.azure.security.attestation.AttestationAsyncClient.attestOpenEnclaveWithResponse -->
      * <pre>
-     * Mono&lt;Response&lt;AttestationResult&gt;&gt; openEnclaveResponse = client.attestOpenEnclaveWithResponse&#40;
+     * Mono&lt;AttestationResponse&lt;AttestationResult&gt;&gt; openEnclaveResponse = client.attestOpenEnclaveWithResponse&#40;
      *     new AttestationOptions&#40;openEnclaveReport&#41;
      *         .setRunTimeData&#40;new AttestationData&#40;runtimeData, AttestationDataInterpretation.JSON&#41;&#41;, Context.NONE&#41;;
      *
@@ -359,7 +360,7 @@ public final class AttestationAsyncClient {
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AttestationResult>> attestOpenEnclaveWithResponse(AttestationOptions options) {
+    public Mono<AttestationResponse<AttestationResult>> attestOpenEnclaveWithResponse(AttestationOptions options) {
         return withContext(context -> attestOpenEnclaveWithResponse(options, context));
     }
 
@@ -386,7 +387,7 @@ public final class AttestationAsyncClient {
      * @param context - context for the operation.
      * @return The result of the attestation operation.
      */
-    Mono<Response<AttestationResult>> attestOpenEnclaveWithResponse(AttestationOptions options, Context context) {
+    Mono<AttestationResponse<AttestationResult>> attestOpenEnclaveWithResponse(AttestationOptions options, Context context) {
         AttestationOptionsImpl optionsImpl = new AttestationOptionsImpl(options);
 
         AttestationTokenValidationOptions validationOptions = options.getValidationOptions();
@@ -454,7 +455,7 @@ public final class AttestationAsyncClient {
      * <p><strong>Attest an OpenEnclave enclave with attestation options.</strong></p>
      * <!-- src_embed com.azure.security.attestation.AttestationAsyncClient.attestSgxEnclaveWithResponse -->
      * <pre>
-     * Mono&lt;Response&lt;AttestationResult&gt;&gt; openEnclaveResponse = client.attestSgxEnclaveWithResponse&#40;
+     * Mono&lt;AttestationResponse&lt;AttestationResult&gt;&gt; openEnclaveResponse = client.attestSgxEnclaveWithResponse&#40;
      *     new AttestationOptions&#40;sgxQuote&#41;
      *         .setRunTimeData&#40;new AttestationData&#40;runtimeData, AttestationDataInterpretation.JSON&#41;&#41;, Context.NONE&#41;;
      * </pre>
@@ -467,7 +468,7 @@ public final class AttestationAsyncClient {
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AttestationResult>> attestSgxEnclaveWithResponse(AttestationOptions options) {
+    public Mono<AttestationResponse<AttestationResult>> attestSgxEnclaveWithResponse(AttestationOptions options) {
         return withContext(context -> attestSgxEnclaveWithResponse(options, context));
     }
 
@@ -503,7 +504,7 @@ public final class AttestationAsyncClient {
             .flatMap(FluxUtil::toMono);
     }
 
-    Mono<Response<AttestationResult>> attestSgxEnclaveWithResponse(AttestationOptions options, Context context) {
+    Mono<AttestationResponse<AttestationResult>> attestSgxEnclaveWithResponse(AttestationOptions options, Context context) {
         // Ensure that the incoming request makes sense.
         AttestationOptionsImpl optionsImpl = new AttestationOptionsImpl(options);
 

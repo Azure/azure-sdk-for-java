@@ -225,9 +225,9 @@ the policy management tokens. This interaction ensures that the client is in pos
 one of the policy management certificates and is thus authorized to perform the operation.
 
 ```java readme-sample-listPolicyCertificates
-List<AttestationSigner> signers = client.listPolicyManagementCertificates();
-System.out.printf("Instance %s contains %d signers.\n", endpoint, signers.size());
-for (AttestationSigner signer : signers) {
+AttestationSignerCollection signers = client.listPolicyManagementCertificates();
+System.out.printf("Instance %s contains %d signers.\n", endpoint, signers.getAttestationSigners().size());
+for (AttestationSigner signer : signers.getAttestationSigners()) {
     System.out.printf("Certificate Subject: %s", signer.getCertificates().get(0).getSubjectDN().toString());
 }
 ```

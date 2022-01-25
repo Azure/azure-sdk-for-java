@@ -12,15 +12,13 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.security.attestation.models.AttestationPolicySetOptions;
 import com.azure.security.attestation.models.AttestationResponse;
-import com.azure.security.attestation.models.AttestationSigner;
+import com.azure.security.attestation.models.AttestationSignerCollection;
 import com.azure.security.attestation.models.AttestationSigningKey;
 import com.azure.security.attestation.models.AttestationTokenValidationOptions;
 import com.azure.security.attestation.models.AttestationType;
 import com.azure.security.attestation.models.PolicyCertificatesModificationResult;
 import com.azure.security.attestation.models.PolicyManagementCertificateOptions;
 import com.azure.security.attestation.models.PolicyResult;
-
-import java.util.List;
 
 /**
  *
@@ -413,8 +411,8 @@ public final class AttestationAdministrationClient {
      * <p><strong>Retrieve the set of policy management certificates for this instance.</strong></p>
      * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClient.listPolicyManagementCertificatesSimple -->
      * <pre>
-     * List&lt;AttestationSigner&gt; signers = client.listPolicyManagementCertificates&#40;&#41;;
-     * System.out.printf&#40;&quot;There are %d signers on the instance&#92;n&quot;, signers.size&#40;&#41;&#41;;
+     * AttestationSignerCollection signers = client.listPolicyManagementCertificates&#40;&#41;;
+     * System.out.printf&#40;&quot;There are %d signers on the instance&#92;n&quot;, signers.getAttestationSigners&#40;&#41;.size&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationAdministrationClient.listPolicyManagementCertificatesSimple -->
      *
@@ -424,7 +422,7 @@ public final class AttestationAdministrationClient {
      * @return the response to an attestation policy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AttestationSigner> listPolicyManagementCertificates() {
+    public AttestationSignerCollection listPolicyManagementCertificates() {
         return asyncClient.listPolicyManagementCertificates().block();
     }
 
@@ -446,9 +444,11 @@ public final class AttestationAdministrationClient {
      * <p><strong>Retrieve the set of policy management certificates for this instance.</strong></p>
      * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClient.listPolicyManagementCertificatesWithResponse -->
      * <pre>
-     * Response&lt;List&lt;AttestationSigner&gt;&gt; signersResponse = client.listPolicyManagementCertificatesWithResponse&#40;
-     *     new AttestationTokenValidationOptions&#40;&#41;.setValidationSlack&#40;Duration.ofSeconds&#40;10&#41;&#41;, Context.NONE&#41;;
-     * System.out.printf&#40;&quot;There are %d signers on the instance&#92;n&quot;, signersResponse.getValue&#40;&#41;.size&#40;&#41;&#41;;
+     * AttestationResponse&lt;AttestationSignerCollection&gt; signersResponse =
+     *     client.listPolicyManagementCertificatesWithResponse&#40;
+     *         new AttestationTokenValidationOptions&#40;&#41;.setValidationSlack&#40;Duration.ofSeconds&#40;10&#41;&#41;, Context.NONE&#41;;
+     * System.out.printf&#40;&quot;There are %d signers on the instance&#92;n&quot;,
+     *     signersResponse.getValue&#40;&#41;.getAttestationSigners&#40;&#41;.size&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationAdministrationClient.listPolicyManagementCertificatesWithResponse -->
      *
@@ -460,7 +460,7 @@ public final class AttestationAdministrationClient {
      * @return the attestation policy expressed as a string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<AttestationSigner>> listPolicyManagementCertificatesWithResponse(AttestationTokenValidationOptions tokenValidationOptions, Context context) {
+    public AttestationResponse<AttestationSignerCollection> listPolicyManagementCertificatesWithResponse(AttestationTokenValidationOptions tokenValidationOptions, Context context) {
         return asyncClient.listPolicyManagementCertificatesWithResponse(tokenValidationOptions, context).block();
     }
 

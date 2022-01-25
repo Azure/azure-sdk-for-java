@@ -14,6 +14,7 @@ import com.azure.core.util.Context;
 import com.azure.security.attestation.models.AttestationData;
 import com.azure.security.attestation.models.AttestationOpenIdMetadata;
 import com.azure.security.attestation.models.AttestationOptions;
+import com.azure.security.attestation.models.AttestationResponse;
 import com.azure.security.attestation.models.AttestationResult;
 import com.azure.security.attestation.models.AttestationSigner;
 import com.azure.security.attestation.models.AttestationSignerCollection;
@@ -344,7 +345,7 @@ public final class AttestationClient {
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AttestationResult> attestOpenEnclaveWithResponse(
+    public AttestationResponse<AttestationResult> attestOpenEnclaveWithResponse(
         AttestationOptions options, Context context) {
         return asyncClient.attestOpenEnclaveWithResponse(options, context).block();
     }
@@ -432,7 +433,7 @@ public final class AttestationClient {
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AttestationResult> attestSgxEnclaveWithResponse(
+    public AttestationResponse<AttestationResult> attestSgxEnclaveWithResponse(
         AttestationOptions request, Context context) {
         return asyncClient.attestSgxEnclaveWithResponse(request, context).block();
     }
