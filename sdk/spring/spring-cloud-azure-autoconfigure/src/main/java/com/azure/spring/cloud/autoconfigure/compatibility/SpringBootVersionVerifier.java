@@ -3,18 +3,16 @@
 
 package com.azure.spring.cloud.autoconfigure.compatibility;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringBootVersion;
 import org.springframework.util.StringUtils;
-
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 class SpringBootVersionVerifier implements CompatibilityVerifier {
-    private static final Log LOGGER = LogFactory.getLog(SpringBootVersionVerifier.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SpringBootVersionVerifier.class);
     final Map<String, CompatibilityPredicate> ACCEPTED_VERSIONS = new HashMap<String, CompatibilityPredicate>() {
         {
             this.put("2.5", SpringBootVersionVerifier.this.is2with5());
@@ -51,9 +49,7 @@ class SpringBootVersionVerifier implements CompatibilityVerifier {
     }
 
     private boolean springBootVersionMatches() {
-        Iterator<String> versionsIterator = this.acceptedVersions.iterator();
-        while (versionsIterator.hasNext()) {
-            String acceptedVersion = versionsIterator.next();
+        for(String acceptedVersion : acceptedVersions) {
             Boolean versionFromManifest = this.bootVersionFromManifest(acceptedVersion);
             if (versionFromManifest != null && versionFromManifest) {
                 return true;

@@ -5,8 +5,6 @@ package com.azure.spring.cloud.autoconfigure.compatibility;
 
 import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;
-
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -31,9 +29,7 @@ public class CompatibilityNotMetFailureAnalyzer extends AbstractFailureAnalyzer<
 
     private String descriptions(List<VerificationResult> results) {
         StringBuilder builder = new StringBuilder("\n\n");
-        Iterator<VerificationResult> resultIterator = results.iterator();
-        while (resultIterator.hasNext()) {
-            VerificationResult result = resultIterator.next();
+        for(VerificationResult result : results) {
             builder.append("- ").append(result.description).append("\n");
         }
         return builder.toString();
@@ -45,9 +41,7 @@ public class CompatibilityNotMetFailureAnalyzer extends AbstractFailureAnalyzer<
 
     private String actions(List<VerificationResult> results) {
         StringBuilder builder = new StringBuilder("\n\n");
-        Iterator<VerificationResult> resultIterator = results.iterator();
-        while (resultIterator.hasNext()) {
-            VerificationResult result = resultIterator.next();
+        for(VerificationResult result : results) {
             builder.append("- ").append(result.action).append("\n");
         }
         return builder.toString();

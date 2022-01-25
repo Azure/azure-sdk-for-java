@@ -3,15 +3,13 @@
 
 package com.azure.spring.cloud.autoconfigure.compatibility;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 class CompositeCompatibilityVerifier {
-    private static final Log LOGGER = LogFactory.getLog(CompositeCompatibilityVerifier.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CompositeCompatibilityVerifier.class);
     private final List<CompatibilityVerifier> verifiers;
 
     CompositeCompatibilityVerifier(List<CompatibilityVerifier> verifiers) {
@@ -22,7 +20,7 @@ class CompositeCompatibilityVerifier {
         List<VerificationResult> errors = this.verifierErrors();
         if (errors.isEmpty()) {
             if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("All conditions are passing");
+                LOGGER.debug("All conditions are passed");
             }
         } else {
             throw new CompatibilityNotMetException(errors);
@@ -31,9 +29,7 @@ class CompositeCompatibilityVerifier {
 
     private List<VerificationResult> verifierErrors() {
         List<VerificationResult> errors = new ArrayList<VerificationResult>();
-        Iterator<CompatibilityVerifier> verifierIterator = this.verifiers.iterator();
-        while (verifierIterator.hasNext()) {
-            CompatibilityVerifier verifier = verifierIterator.next();
+        for (CompatibilityVerifier verifier : verifiers) {
             VerificationResult result = verifier.verify();
             if (result.isNotCompatible()) {
                 errors.add(result);
