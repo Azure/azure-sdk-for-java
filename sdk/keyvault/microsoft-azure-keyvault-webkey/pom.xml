@@ -12,12 +12,12 @@
 
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-keyvault-webkey</artifactId>
-  <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault-webkey;current} -->
+  <version>1.2.6</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault-webkey;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Key Vault WebKey</name>
   <description>
-    This library has been replaced by new Azure SDKs, you can read about them at https://aka.ms/azsdkvalueprop. The latest libraries to interact with the Azure KeyVault service are:
+    This library has been replaced by new Azure SDKs, you can read about them at https://aka.ms/azsdkvalueprop. The latest libraries to interact with the Azure Key Vault service are:
     (1) https://search.maven.org/artifact/com.azure/azure-security-keyvault-keys.
     (2) https://search.maven.org/artifact/com.azure/azure-security-keyvault-secrets.
     (3) https://search.maven.org/artifact/com.azure/azure-security-keyvault-certificates.
@@ -30,15 +30,6 @@
       <id>azure-java-build-docs</id>
       <url>${site.url}/site/${project.artifactId}</url>
     </site>
-    <relocation>
-      <message>
-        This library has been replaced by new Azure SDKs, you can read about them at https://aka.ms/azsdkvalueprop. The latest libraries to interact with the Azure KeyVault service are:
-        (1) https://search.maven.org/artifact/com.azure/azure-security-keyvault-keys.
-        (2) https://search.maven.org/artifact/com.azure/azure-security-keyvault-secrets.
-        (3) https://search.maven.org/artifact/com.azure/azure-security-keyvault-certificates.
-        It is recommended that you move to the new package.
-      </message>
-    </relocation>
   </distributionManagement>
 
   <scm><url>https://github.com/Azure/azure-sdk-for-java</url></scm>
