@@ -3,12 +3,7 @@
 ### 4.26.0-beta.1 (2022-01-25)
 
 #### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
-
-#### Other Changes
+* Added support to resume a "multi order by query" from a continuation token - See [PR 26267](https://github.com/Azure/azure-sdk-for-java/pull/26267)
 
 ### 4.25.0 (2022-01-14)
 #### Key Bug Fixes
