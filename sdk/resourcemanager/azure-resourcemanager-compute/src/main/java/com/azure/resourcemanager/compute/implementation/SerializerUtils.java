@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 
 public final class SerializerUtils {
 
-    private static ObjectMapper objectMapper = new ObjectMapper();
+    private static ObjectMapper objectMapper;
 
     public static synchronized ObjectMapper getObjectMapper() {
         if (objectMapper == null) {
