@@ -47,7 +47,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-keyvault-webkey</artifactId>
-      <version>1.2.6</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault-webkey;current} -->
+      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault-webkey;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
