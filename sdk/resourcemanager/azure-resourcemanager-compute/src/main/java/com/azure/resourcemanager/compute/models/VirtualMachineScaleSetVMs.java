@@ -4,6 +4,8 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
 import java.util.Collection;
 import reactor.core.publisher.Mono;
@@ -106,4 +108,24 @@ public interface VirtualMachineScaleSetVMs extends SupportsListing<VirtualMachin
      * @param instanceId The instance ID of the virtual machine.
      */
     void simulateEviction(String instanceId);
+
+    /**
+     * Lists all the resources of the specified type in the currently selected subscription.
+     *
+     * @param filter The filter to apply to the operation. Allowed values are 'startswith(instanceView/statuses/code,
+     *     'PowerState') eq true', 'properties/latestModelApplied eq true', 'properties/latestModelApplied eq false'.
+     * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
+     * @return A {@link PagedIterable} of resources
+     */
+    PagedIterable<VirtualMachineScaleSetVM> list(String filter, VirtualMachineScaleSetVMExpandType expand);
+
+    /**
+     * Lists all the resources of the specified type in the currently selected subscription.
+     *
+     * @param filter The filter to apply to the operation. Allowed values are 'startswith(instanceView/statuses/code,
+     *     'PowerState') eq true', 'properties/latestModelApplied eq true', 'properties/latestModelApplied eq false'.
+     * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
+     * @return A {@link PagedFlux} of resources
+     */
+    PagedFlux<VirtualMachineScaleSetVM> listAsync(String filter, VirtualMachineScaleSetVMExpandType expand);
 }
