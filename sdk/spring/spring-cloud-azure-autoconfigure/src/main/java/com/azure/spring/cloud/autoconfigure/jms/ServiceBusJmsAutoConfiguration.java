@@ -70,8 +70,6 @@ public class ServiceBusJmsAutoConfiguration {
             parameterizedContainer = ConnectionStringProvider.class
         )
         static class HasConnectionStringProviderConfigured {
-            HasConnectionStringProviderConfigured() {
-            }
         }
 
         @ConditionalOnProperty(
@@ -79,8 +77,6 @@ public class ServiceBusJmsAutoConfiguration {
             name = { "connection-string" }
         )
         static class HasSpringJmsServiceBusConfigured {
-            HasSpringJmsServiceBusConfigured() {
-            }
         }
     }
 }
