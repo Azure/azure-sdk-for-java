@@ -5,7 +5,6 @@ package com.azure.spring.cloud.autoconfigure.jms;
 
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
 import org.apache.qpid.jms.JmsConnectionFactory;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.messaginghub.pooled.jms.JmsPoolConnectionFactory;
@@ -88,14 +87,6 @@ class ServiceBusJmsAutoConfigurationTests {
             });
     }
 
-    @Test
-    void contextFailedByConnectionStringNotConfigured() {
-        this.contextRunner
-            .run(context ->
-                assertThrows(IllegalStateException.class,
-                    () -> context.getBean(AzureServiceBusJmsProperties.class)));
-    }
-
     @ParameterizedTest
     @ValueSource(strings = { "Ba", " " })
     void contextFailedByPricingTierNotCorrectlyConfigured(String pricingTier) {
@@ -119,6 +110,7 @@ class ServiceBusJmsAutoConfigurationTests {
                 "spring.jms.servicebus.connection-string=" + CONNECTION_STRING)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureServiceBusJmsProperties.class);
+                assertThat(context).hasSingleBean(AzureServiceBusJmsPropertiesBeanPostProcessor.class);
                 assertThat(context).hasSingleBean(ServiceBusJmsAutoConfiguration.class);
                 assertThat(context).hasSingleBean(ConnectionFactory.class);
                 assertThat(context).hasSingleBean(JmsTemplate.class);
@@ -138,6 +130,7 @@ class ServiceBusJmsAutoConfigurationTests {
                 "spring.jms.servicebus.connection-string=" + CONNECTION_STRING)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureServiceBusJmsProperties.class);
+                assertThat(context).hasSingleBean(AzureServiceBusJmsPropertiesBeanPostProcessor.class);
                 assertThat(context).hasSingleBean(ServiceBusJmsAutoConfiguration.class);
                 assertThat(context).hasSingleBean(ConnectionFactory.class);
                 assertThat(context).hasSingleBean(JmsTemplate.class);
