@@ -6,6 +6,8 @@ package com.azure.spring.cloud.stream.binder.eventhubs.properties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -22,13 +24,14 @@ class EventHubsProducerPropertiesTests {
 
     @Test
     void sendTimeoutDefaultsTo10000() {
-        assertEquals(10000, producerProperties.getSendTimeout());
+        assertEquals(Duration.ofMillis(10000), producerProperties.getSendTimeout());
     }
 
     @Test
     void customSendTimeout() {
-        producerProperties.setSendTimeout(15000);
-        assertEquals(15000, producerProperties.getSendTimeout());
+        Duration duration = Duration.ofSeconds(10);
+        producerProperties.setSendTimeout(duration);
+        assertEquals(duration, producerProperties.getSendTimeout());
     }
 
     @Test
