@@ -1,14 +1,9 @@
 # Release History
 
-## 2.5.0-beta.1 (Unreleased)
+## 2.5.0 (2022-01-25)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+### Dependency Upgrades
+Regular updates for dependency versions.
 
 ## 2.4.0 (2021-12-24)
 
