@@ -425,10 +425,12 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
             files="com.azure.search.documents.(SearchIndexingBufferedAsyncSender|SearchIndexingBufferedSender)"/>
 
+  <!-- Allow Attestation Service use of OpenTelemetry -->
+  <suppress checks="IllegalImport" files=".*[/\\]src[/\\]test[/\\]java[/\\]com[/\\]azure[/\\]security[/\\]attestation[/\\]AttestationClientTestBase.java"/>
+  <suppress checks="IllegalImport" files=".*[/\\]src[/\\]test[/\\]java[/\\]com[/\\]azure[/\\]security[/\\]attestation[/\\]AttestationTest.java"/>
+
   <!-- Suppress checks on AutoRest generated Attestation service code -->
-  <suppress checks="ThrowFromClientLogger"
-            files="com.azure.security.attestation.models.JsonWebKey.java"/>
-  <suppress checks="WhitespaceAround|ThrowFromClientLogger"
+ <suppress checks="WhitespaceAround|ThrowFromClientLogger"
             files="com.azure.security.attestation.implementation.models.*\.java"/>
 
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
