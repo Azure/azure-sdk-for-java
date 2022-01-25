@@ -22,8 +22,6 @@ import java.util.List;
 @AutoConfigureOrder(0)
 @EnableConfigurationProperties(SpringCloudAzureCompatibilityVerifierProperties.class)
 public class SpringCloudAzureCompatibilityVerifierAutoConfiguration {
-    public SpringCloudAzureCompatibilityVerifierAutoConfiguration() {
-    }
 
     @Bean
     SpringCloudAzureCompositeCompatibilityVerifier springCloudAzureCompositeCompatibilityVerifier(List<CompatibilityVerifier> verifiers) {

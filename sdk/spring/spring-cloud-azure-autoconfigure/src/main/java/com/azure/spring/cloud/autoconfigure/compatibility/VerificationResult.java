@@ -3,11 +3,12 @@
 
 package com.azure.spring.cloud.autoconfigure.compatibility;
 
+import java.io.Serializable;
 import java.util.Objects;
 import org.springframework.core.style.ToStringCreator;
 import org.springframework.util.StringUtils;
 
-final class VerificationResult {
+final class VerificationResult implements Serializable {
     final String description;
     final String action;
 
