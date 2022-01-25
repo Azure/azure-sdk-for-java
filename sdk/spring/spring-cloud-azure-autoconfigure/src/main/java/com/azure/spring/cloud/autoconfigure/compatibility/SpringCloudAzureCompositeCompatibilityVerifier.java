@@ -8,11 +8,11 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-class CompositeCompatibilityVerifier {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CompositeCompatibilityVerifier.class);
+class SpringCloudAzureCompositeCompatibilityVerifier {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SpringCloudAzureCompositeCompatibilityVerifier.class);
     private final List<CompatibilityVerifier> verifiers;
 
-    CompositeCompatibilityVerifier(List<CompatibilityVerifier> verifiers) {
+    SpringCloudAzureCompositeCompatibilityVerifier(List<CompatibilityVerifier> verifiers) {
         this.verifiers = verifiers;
     }
 

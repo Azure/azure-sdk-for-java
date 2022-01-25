@@ -11,17 +11,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class SpringBootVersionVerifier implements CompatibilityVerifier {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SpringBootVersionVerifier.class);
-    final Map<String, CompatibilityPredicate> aCCEPTED_VERSIONS = new HashMap<String, CompatibilityPredicate>() {
+class SpringCloudAzureSpringBootVersionVerifier implements CompatibilityVerifier {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SpringCloudAzureSpringBootVersionVerifier.class);
+    final Map<String, CompatibilityPredicate> supportedVersions = new HashMap<String, CompatibilityPredicate>() {
         {
-            this.put("2.5", SpringBootVersionVerifier.this.is2with5());
-            this.put("2.6", SpringBootVersionVerifier.this.is2with6());
+            this.put("2.5", SpringCloudAzureSpringBootVersionVerifier.this.is2_5());
+            this.put("2.6", SpringCloudAzureSpringBootVersionVerifier.this.is2_6());
         }
     };
     private final List<String> acceptedVersions;
 
-    SpringBootVersionVerifier(List<String> acceptedVersions) {
+    SpringCloudAzureSpringBootVersionVerifier(List<String> acceptedVersions) {
         this.acceptedVersions = acceptedVersions;
     }
 
@@ -54,7 +54,7 @@ class SpringBootVersionVerifier implements CompatibilityVerifier {
                 return true;
             }
             if (versionFromManifest == null) {
-                CompatibilityPredicate predicate = this.aCCEPTED_VERSIONS.get(stripWildCardFromVersion(acceptedVersion));
+                CompatibilityPredicate predicate = this.supportedVersions.get(stripWildCardFromVersion(acceptedVersion));
                 if (predicate != null && predicate.isCompatible()) {
                     if (LOGGER.isDebugEnabled()) {
                         LOGGER.debug("Predicate [" + predicate + "] was matched");
@@ -83,7 +83,7 @@ class SpringBootVersionVerifier implements CompatibilityVerifier {
         return version.endsWith(".x") ? version.substring(0, version.indexOf(".x")) : version;
     }
 
-    CompatibilityPredicate is2with6() {
+    CompatibilityPredicate is2_6() {
         return new CompatibilityPredicate() {
             public String toString() {
                 return "Predicate for Boot 2.6";
@@ -99,7 +99,7 @@ class SpringBootVersionVerifier implements CompatibilityVerifier {
         };
     }
 
-    CompatibilityPredicate is2with5() {
+    CompatibilityPredicate is2_5() {
         return new CompatibilityPredicate() {
             public String toString() {
                 return "Predicate for Boot 2.5";

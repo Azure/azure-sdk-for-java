@@ -20,20 +20,20 @@ import java.util.List;
     matchIfMissing = true
 )
 @AutoConfigureOrder(0)
-@EnableConfigurationProperties(CompatibilityVerifierProperties.class)
-public class CompatibilityVerifierAutoConfiguration {
-    public CompatibilityVerifierAutoConfiguration() {
+@EnableConfigurationProperties(SpringCloudAzureCompatibilityVerifierProperties.class)
+public class SpringCloudAzureCompatibilityVerifierAutoConfiguration {
+    public SpringCloudAzureCompatibilityVerifierAutoConfiguration() {
     }
 
     @Bean
-    CompositeCompatibilityVerifier compositeCompatibilityVerifier(List<CompatibilityVerifier> verifiers) {
-        CompositeCompatibilityVerifier verifier = new CompositeCompatibilityVerifier(verifiers);
+    SpringCloudAzureCompositeCompatibilityVerifier springCloudAzureCompositeCompatibilityVerifier(List<CompatibilityVerifier> verifiers) {
+        SpringCloudAzureCompositeCompatibilityVerifier verifier = new SpringCloudAzureCompositeCompatibilityVerifier(verifiers);
         verifier.verifyDependencies();
         return verifier;
     }
 
     @Bean
-    SpringBootVersionVerifier springBootVersionVerifier(CompatibilityVerifierProperties properties) {
-        return new SpringBootVersionVerifier(properties.getCompatibleBootVersions());
+    SpringCloudAzureSpringBootVersionVerifier springCloudAzureSpringBootVersionVerifier(SpringCloudAzureCompatibilityVerifierProperties properties) {
+        return new SpringCloudAzureSpringBootVersionVerifier(properties.getCompatibleBootVersions());
     }
 }

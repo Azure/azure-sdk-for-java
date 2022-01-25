@@ -12,11 +12,11 @@ import java.util.List;
  * Properties for CompatibilityVerifier
  */
 @ConfigurationProperties("spring.cloud.azure.compatibility-verifier")
-public class CompatibilityVerifierProperties {
+public class SpringCloudAzureCompatibilityVerifierProperties {
     private boolean enabled;
     private List<String> compatibleBootVersions = Arrays.asList("2.5.x", "2.6.x");
 
-    public CompatibilityVerifierProperties() {
+    public SpringCloudAzureCompatibilityVerifierProperties() {
     }
 
     public boolean isEnabled() {
