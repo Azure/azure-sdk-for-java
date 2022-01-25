@@ -41,6 +41,8 @@ Licensed under the MIT License.
     <!-- CosmosSkip - This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
     <!-- This can only be enabled once we release GA, as it needs a stable version to check for breaking changes. -->
     <revapi.skip>true</revapi.skip>
+    <!-- We are adding code for AAP jars, once AAP jar is GAed to maven, we will remove spotbugs.skip-->
+    <spotbugs.skip>true</spotbugs.skip>
   </properties>
 
   <dependencies>
@@ -70,7 +72,6 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <scope>test</scope>
       <version>1.4.3</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <exclusions>
         <exclusion>
@@ -80,6 +81,10 @@ Licensed under the MIT License.
         <exclusion>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-http-netty</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>stax</groupId>
+          <artifactId>stax-api</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -179,22 +184,6 @@ Licensed under the MIT License.
       <artifactId>bcprov-jdk15on</artifactId>
       <version>1.68</version>  <!-- {x-version-update;org.bouncycastle:bcprov-jdk15on;external_dependency} -->
     </dependency>
-    <dependency>
-      <groupId>com.microsoft.data.encryption</groupId>
-      <artifactId>cryptography</artifactId>
-      <version>0.2.2.jre8-preview</version> <!-- {x-version-update;cosmos_com.microsoft.data.encryption:cryptography;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.data.encryption</groupId>
-      <artifactId>azure-key-vault-keystoreprovider</artifactId>
-      <version>0.2.2.jre8-preview</version> <!-- {x-version-update;cosmos_com.microsoft.data.encryption:azure-key-vault-keystoreprovider;external_dependency} -->
-      <exclusions>
-        <exclusion>
-          <groupId>com.microsoft.data.encryption</groupId>
-          <artifactId>cryptography</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
   </dependencies>
 
   <build>
@@ -237,14 +226,11 @@ Licensed under the MIT License.
               <includes>
                 <include>com.azure:*</include>
                 <include>org.bouncycastle:bcprov-jdk15on:[1.68]</include> <!-- {x-include-update;org.bouncycastle:bcprov-jdk15on;external_dependency} -->
-                <include>com.microsoft.data.encryption:cryptography:[0.2.2.jre8-preview]</include> <!-- {x-include-update;cosmos_com.microsoft.data.encryption:cryptography;external_dependency} -->
-                <include>com.microsoft.data.encryption:azure-key-vault-keystoreprovider:[0.2.2.jre8-preview]</include> <!-- {x-include-update;cosmos_com.microsoft.data.encryption:azure-key-vault-keystoreprovider;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
         </configuration>
       </plugin>
-
     </plugins>
   </build>
   <profiles>
@@ -270,6 +256,7 @@ Licensed under the MIT License.
         </plugins>
       </build>
     </profile>
+
     <profile>
       <!-- integration tests, requires Cosmos DB Emulator Endpoint -->
       <id>encryption-integration</id>

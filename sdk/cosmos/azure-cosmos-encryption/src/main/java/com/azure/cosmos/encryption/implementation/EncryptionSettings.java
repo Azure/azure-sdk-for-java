@@ -4,19 +4,18 @@
 package com.azure.cosmos.encryption.implementation;
 
 import com.azure.cosmos.encryption.EncryptionBridgeInternal;
+import com.azure.cosmos.encryption.mdesrc.cryptography.AeadAes256CbcHmac256EncryptionAlgorithm;
+import com.azure.cosmos.encryption.mdesrc.cryptography.EncryptionKeyStoreProvider;
+import com.azure.cosmos.encryption.mdesrc.cryptography.EncryptionType;
+import com.azure.cosmos.encryption.mdesrc.cryptography.KeyEncryptionKey;
+import com.azure.cosmos.encryption.mdesrc.cryptography.MicrosoftDataEncryptionException;
+import com.azure.cosmos.encryption.mdesrc.cryptography.ProtectedDataEncryptionKey;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
-import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
-import com.microsoft.data.encryption.cryptography.AeadAes256CbcHmac256EncryptionAlgorithm;
-import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
-import com.microsoft.data.encryption.cryptography.EncryptionType;
-import com.microsoft.data.encryption.cryptography.KeyEncryptionKey;
-import com.microsoft.data.encryption.cryptography.MicrosoftDataEncryptionException;
-import com.microsoft.data.encryption.cryptography.ProtectedDataEncryptionKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
