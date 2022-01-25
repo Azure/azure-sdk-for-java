@@ -13,7 +13,7 @@ import java.util.Map;
 
 class SpringBootVersionVerifier implements CompatibilityVerifier {
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringBootVersionVerifier.class);
-    final Map<String, CompatibilityPredicate> ACCEPTED_VERSIONS = new HashMap<String, CompatibilityPredicate>() {
+    final Map<String, CompatibilityPredicate> aCCEPTED_VERSIONS = new HashMap<String, CompatibilityPredicate>() {
         {
             this.put("2.5", SpringBootVersionVerifier.this.is2with5());
             this.put("2.6", SpringBootVersionVerifier.this.is2with6());
@@ -28,8 +28,7 @@ class SpringBootVersionVerifier implements CompatibilityVerifier {
     public VerificationResult verify() {
         if (this.springBootVersionMatches()) {
             return VerificationResult.compatible();
-        }
-        else {
+        } else {
             return VerificationResult.notCompatible(this.errorDescription(), this.action());
         }
     }
@@ -49,13 +48,13 @@ class SpringBootVersionVerifier implements CompatibilityVerifier {
     }
 
     private boolean springBootVersionMatches() {
-        for(String acceptedVersion : acceptedVersions) {
+        for (String acceptedVersion : acceptedVersions) {
             Boolean versionFromManifest = this.bootVersionFromManifest(acceptedVersion);
             if (versionFromManifest != null && versionFromManifest) {
                 return true;
             }
             if (versionFromManifest == null) {
-                CompatibilityPredicate predicate = this.ACCEPTED_VERSIONS.get(stripWildCardFromVersion(acceptedVersion));
+                CompatibilityPredicate predicate = this.aCCEPTED_VERSIONS.get(stripWildCardFromVersion(acceptedVersion));
                 if (predicate != null && predicate.isCompatible()) {
                     if (LOGGER.isDebugEnabled()) {
                         LOGGER.debug("Predicate [" + predicate + "] was matched");

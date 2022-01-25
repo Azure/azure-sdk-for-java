@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.context;
 import org.apache.commons.logging.Log;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.env.EnvironmentPostProcessor;
+import org.springframework.boot.logging.DeferredLog;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
@@ -53,7 +54,7 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
      * Construct a {@link AzureGlobalConfigurationEnvironmentPostProcessor} instance with default value.
      */
     public AzureGlobalConfigurationEnvironmentPostProcessor() {
-        this.logger = null;
+        this.logger = new DeferredLog();
         AzureCoreEnvMapping.setLogger(logger);
     }
 
@@ -123,9 +124,7 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
                 try {
                     return Duration.ofMillis(Integer.parseInt(ms));
                 } catch (Exception ignore) {
-                    if (logger != null) {
-                        logger.debug("The millisecond value " + ms + " is malformed.");
-                    }
+                    logger.debug("The millisecond value " + ms + " is malformed.");
                     return null;
                 }
             };
@@ -177,9 +176,7 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
         if (!source.isEmpty()) {
             environment.getPropertySources().addLast(new AzureCoreEnvPropertySource("Azure Core/SDK", source));
         } else {
-            if (logger != null) {
-                logger.debug("No env predefined by Azure Core/SDKs are set, skip adding the AzureCoreEnvPropertySource.");
-            }
+            logger.debug("No env predefined by Azure Core/SDKs are set, skip adding the AzureCoreEnvPropertySource.");
         }
     }
 

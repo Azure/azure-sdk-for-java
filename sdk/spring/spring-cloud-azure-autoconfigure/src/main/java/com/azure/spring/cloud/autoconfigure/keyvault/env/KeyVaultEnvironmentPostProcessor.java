@@ -16,6 +16,7 @@ import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.env.EnvironmentPostProcessor;
+import org.springframework.boot.logging.DeferredLog;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MutablePropertySources;
@@ -38,6 +39,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
 
     private final Log logger;
 
+
     /**
      * Creates a new instance of {@link KeyVaultEnvironmentPostProcessor}.
      * @param logger The logger used in this class.
@@ -50,7 +52,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
      * Construct a {@link KeyVaultEnvironmentPostProcessor} instance with default value.
      */
     public KeyVaultEnvironmentPostProcessor() {
-        this.logger = null;
+        this.logger = new DeferredLog();
     }
 
     /**
@@ -67,9 +69,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
         if (!isKeyVaultClientAvailable()) {
-            if (this.logger != null) {
-                logger.info("Key Vault client is not present, skip the Key Vault property source");
-            }
+            logger.info("Key Vault client is not present, skip the Key Vault property source");
             return;
         }
 
@@ -93,9 +93,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
                 }
             }
         } else {
-            if (this.logger != null) {
-                logger.debug("Key Vault 'propertySourceEnabled' or 'enabled' is not enabled");
-            }
+            logger.debug("Key Vault 'propertySourceEnabled' or 'enabled' is not enabled");
         }
     }
 

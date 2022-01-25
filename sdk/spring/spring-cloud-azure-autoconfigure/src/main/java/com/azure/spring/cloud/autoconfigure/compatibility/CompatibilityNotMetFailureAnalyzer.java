@@ -29,7 +29,7 @@ public class CompatibilityNotMetFailureAnalyzer extends AbstractFailureAnalyzer<
 
     private String descriptions(List<VerificationResult> results) {
         StringBuilder builder = new StringBuilder("\n\n");
-        for(VerificationResult result : results) {
+        for (VerificationResult result : results) {
             builder.append("- ").append(result.description).append("\n");
         }
         return builder.toString();
@@ -41,7 +41,7 @@ public class CompatibilityNotMetFailureAnalyzer extends AbstractFailureAnalyzer<
 
     private String actions(List<VerificationResult> results) {
         StringBuilder builder = new StringBuilder("\n\n");
-        for(VerificationResult result : results) {
+        for (VerificationResult result : results) {
             builder.append("- ").append(result.action).append("\n");
         }
         return builder.toString();
