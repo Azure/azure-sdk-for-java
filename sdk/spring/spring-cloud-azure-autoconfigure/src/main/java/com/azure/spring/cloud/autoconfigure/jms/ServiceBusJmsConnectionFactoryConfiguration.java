@@ -4,9 +4,6 @@
 package com.azure.spring.cloud.autoconfigure.jms;
 
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
-import com.azure.spring.core.connectionstring.ConnectionStringProvider;
-import com.azure.spring.core.implementation.connectionstring.ServiceBusConnectionString;
-import com.azure.spring.core.service.AzureServiceType;
 import org.apache.commons.pool2.PooledObject;
 import org.messaginghub.pooled.jms.JmsPoolConnectionFactory;
 import org.springframework.beans.factory.ObjectProvider;
@@ -18,7 +15,6 @@ import org.springframework.boot.autoconfigure.jms.JmsProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.connection.CachingConnectionFactory;
-import org.springframework.util.StringUtils;
 
 import javax.jms.ConnectionFactory;
 import java.util.stream.Collectors;
@@ -31,30 +27,11 @@ import java.util.stream.Collectors;
 public class ServiceBusJmsConnectionFactoryConfiguration {
 
     @Bean
+    @ConditionalOnMissingBean
     ServiceBusJmsConnectionFactoryFactory serviceBusJmsConnectionFactoryFactory(AzureServiceBusJmsProperties jmsProperties,
-                                                                                ObjectProvider<ServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers,
-                                                                                ObjectProvider<ConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders) {
-        if (!StringUtils.hasText(jmsProperties.getConnectionString())) {
-            connectionStringProviders.ifAvailable(provider -> jmsProperties.setConnectionString(provider.getConnectionString()));
-        }
-
-        String connectionString = jmsProperties.getConnectionString();
-        if (!StringUtils.hasText(connectionString)) {
-            throw new IllegalArgumentException("'spring.jms.servicebus.connection-string' should be provided");
-        } else {
-            ServiceBusConnectionString serviceBusConnectionString = new ServiceBusConnectionString(connectionString);
-            String host = serviceBusConnectionString.getEndpointUri().getHost();
-
-            String remoteUrl = String.format(AzureServiceBusJmsProperties.AMQP_URI_FORMAT, host,
-                jmsProperties.getIdleTimeout().toMillis());
-            String username = serviceBusConnectionString.getSharedAccessKeyName();
-            String password = serviceBusConnectionString.getSharedAccessKey();
-            jmsProperties.setRemoteUrl(remoteUrl);
-            jmsProperties.setUsername(username);
-            jmsProperties.setPassword(password);
-            return new ServiceBusJmsConnectionFactoryFactory(jmsProperties,
-                factoryCustomizers.orderedStream().collect(Collectors.toList()));
-        }
+                                                                                ObjectProvider<ServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
+        return new ServiceBusJmsConnectionFactoryFactory(jmsProperties,
+            factoryCustomizers.orderedStream().collect(Collectors.toList()));
     }
 
     private static ServiceBusJmsConnectionFactory createJmsConnectionFactory(ServiceBusJmsConnectionFactoryFactory serviceBusJmsConnectionFactoryFactory) {

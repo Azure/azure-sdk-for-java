@@ -9,12 +9,14 @@ import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
 import org.apache.qpid.jms.JmsConnectionExtensions;
 import org.apache.qpid.jms.JmsConnectionFactory;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration;
 import org.springframework.boot.autoconfigure.jms.JmsProperties;
@@ -59,6 +61,12 @@ public class ServiceBusJmsAutoConfiguration {
         };
     }
 
+    @Bean
+    @ConditionalOnMissingBean
+    AzureServiceBusJmsPropertiesBeanPostProcessor azureServiceBusJmsPropertiesBeanPostProcessor(ObjectProvider<ConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders) {
+        return new AzureServiceBusJmsPropertiesBeanPostProcessor(connectionStringProviders);
+    }
+
     static class OnConnectionStringProvidedCondition extends AnyNestedCondition {
 
         OnConnectionStringProvidedCondition() {
@@ -74,7 +82,7 @@ public class ServiceBusJmsAutoConfiguration {
 
         @ConditionalOnProperty(
             prefix = "spring.jms.servicebus",
-            name = { "connection-string" }
+            name = "connection-string"
         )
         static class HasSpringJmsServiceBusConfigured {
         }
