@@ -8,6 +8,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
+/**
+ * Expand type for virtual machine in virtual machine scale set.
+ */
 public class VirtualMachineScaleSetVMExpandType extends ExpandableStringEnum<VirtualMachineScaleSetVMExpandType> {
 
     /** Static value 'instanceView' for VirtualMachineScaleSetVMExpandType. */

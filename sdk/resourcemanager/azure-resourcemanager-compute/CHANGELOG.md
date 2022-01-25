@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Supported option of `filter` and `expand` for list instance of virtual machines by `VirtualMachineScaleSetVMs.list`.
+- Supported option of `filter` and `expand` for list instances of virtual machines by `VirtualMachineScaleSetVMs.list`.
 - Changed to include the instance view of the virtual machine, when getting the virtual machine by `VirtualMachineScaleSetVMs.getInstance`.
 
 ### Other Changes
