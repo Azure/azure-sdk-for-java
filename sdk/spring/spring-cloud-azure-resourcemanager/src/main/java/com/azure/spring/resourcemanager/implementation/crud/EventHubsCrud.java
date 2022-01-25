@@ -6,9 +6,7 @@ package com.azure.spring.resourcemanager.implementation.crud;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.eventhubs.models.EventHub;
-import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.spring.core.properties.resource.AzureResourceMetadata;
-import org.springframework.util.Assert;
 import reactor.util.function.Tuple2;
 
 /**
@@ -33,10 +31,6 @@ public class EventHubsCrud extends AbstractResourceCrud<EventHub, Tuple2<String,
     @Override
     public EventHub internalGet(Tuple2<String, String> namespaceAndName) {
         try {
-            EventHubNamespace eventHubNamespace = new EventHubNamespaceCrud(this.resourceManager,
-                this.resourceMetadata)
-                .get(namespaceAndName.getT1());
-            Assert.notNull(eventHubNamespace, "The Event Hubs namespace should exist first.");
             return this.resourceManager.eventHubs()
                                        .getByName(this.resourceMetadata.getResourceGroup(),
                                                   namespaceAndName.getT1(),

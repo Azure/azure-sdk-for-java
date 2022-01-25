@@ -8,11 +8,9 @@ import com.azure.resourcemanager.eventhubs.models.EventHub;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaces;
 import com.azure.resourcemanager.eventhubs.models.EventHubs;
-import org.junit.jupiter.api.Test;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -68,13 +66,5 @@ public class EventHubsCrudTests extends AbstractResourceCrudTests<EventHub, Tupl
     @Override
     Tuple2<String, String> getKey() {
         return Tuples.of(NAMESPACE, EVENTHUB_NAME);
-    }
-
-    @Test
-    void getResourceFoundIllegalArgumentExceptionWhenNamespaceNotExist() {
-        EventHubNamespaces namespaces = mock(EventHubNamespaces.class);
-        when(resourceManager.eventHubNamespaces()).thenReturn(namespaces);
-        when(namespaces.getByResourceGroup(resourceMetadata.getResourceGroup(), getKey().getT1())).thenReturn(null);
-        assertThrows(IllegalArgumentException.class, () -> crud.internalGet(getKey()));
     }
 }
