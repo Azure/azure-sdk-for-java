@@ -43,7 +43,7 @@
         {
             "type": "Microsoft.Authorization/roleAssignments",
             "apiVersion": "[variables('authorizationApiVersion')]",
-            "name": "[guid(concat('contributorRoleId', resourceGroup()))]",
+            "name": "[guid(concat('contributorRoleId', resourceGroup().name))]",
             "properties": {
                 "roleDefinitionId": "[variables('contributorRoleId')]",
                 "principalId": "[parameters('testApplicationOid')]"
@@ -69,7 +69,7 @@
         },
         "AZURE_RESOURCE_GROUP_NAME": {
             "type": "string",
-            "value": "[resourceGroup()]"
+            "value": "[resourceGroup().name]"
         }
     }
 }
