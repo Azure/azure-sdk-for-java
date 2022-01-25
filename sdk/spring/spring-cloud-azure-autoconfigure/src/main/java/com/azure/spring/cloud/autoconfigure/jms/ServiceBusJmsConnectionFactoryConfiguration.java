@@ -26,19 +26,12 @@ import java.util.stream.Collectors;
 @ConditionalOnMissingBean(ConnectionFactory.class)
 public class ServiceBusJmsConnectionFactoryConfiguration {
 
-    @Bean
-    @ConditionalOnMissingBean
-    ServiceBusJmsConnectionFactoryFactory serviceBusJmsConnectionFactoryFactory(AzureServiceBusJmsProperties jmsProperties,
-                                                                                ObjectProvider<ServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
-        return new ServiceBusJmsConnectionFactoryFactory(jmsProperties,
-            factoryCustomizers.orderedStream().collect(Collectors.toList()));
-    }
-
-    private static ServiceBusJmsConnectionFactory createJmsConnectionFactory(ServiceBusJmsConnectionFactoryFactory serviceBusJmsConnectionFactoryFactory) {
-        return serviceBusJmsConnectionFactoryFactory
+    private static ServiceBusJmsConnectionFactory createJmsConnectionFactory(AzureServiceBusJmsProperties properties,
+                                                                             ObjectProvider<ServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
+        return new ServiceBusJmsConnectionFactoryFactory(properties,
+            factoryCustomizers.orderedStream().collect(Collectors.toList()))
             .createConnectionFactory(ServiceBusJmsConnectionFactory.class);
     }
-
 
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnProperty(prefix = "spring.jms.servicebus.pool", name = "enabled", havingValue = "false",
@@ -47,8 +40,9 @@ public class ServiceBusJmsConnectionFactoryConfiguration {
 
         @Bean
         @ConditionalOnProperty(prefix = "spring.jms.cache", name = "enabled", havingValue = "false")
-        ServiceBusJmsConnectionFactory jmsConnectionFactory(ServiceBusJmsConnectionFactoryFactory serviceBusJmsConnectionFactoryFactory) {
-            return createJmsConnectionFactory(serviceBusJmsConnectionFactoryFactory);
+        ServiceBusJmsConnectionFactory jmsConnectionFactory(AzureServiceBusJmsProperties properties,
+                                                            ObjectProvider<ServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
+            return createJmsConnectionFactory(properties, factoryCustomizers);
         }
 
         @Configuration(proxyBeanMethods = false)
@@ -59,9 +53,9 @@ public class ServiceBusJmsConnectionFactoryConfiguration {
 
             @Bean
             CachingConnectionFactory jmsConnectionFactory(JmsProperties jmsProperties,
-                                                          ServiceBusJmsConnectionFactoryFactory serviceBusJmsConnectionFactoryFactory) {
-                ServiceBusJmsConnectionFactory factory =
-                    createJmsConnectionFactory(serviceBusJmsConnectionFactoryFactory);
+                                                          AzureServiceBusJmsProperties properties,
+                                                          ObjectProvider<ServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
+                ServiceBusJmsConnectionFactory factory = createJmsConnectionFactory(properties, factoryCustomizers);
                 CachingConnectionFactory connectionFactory = new CachingConnectionFactory(factory);
                 JmsProperties.Cache cacheProperties = jmsProperties.getCache();
                 connectionFactory.setCacheConsumers(cacheProperties.isConsumers());
@@ -70,8 +64,8 @@ public class ServiceBusJmsConnectionFactoryConfiguration {
                 return connectionFactory;
             }
         }
-    }
 
+    }
 
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnClass({ JmsPoolConnectionFactory.class, PooledObject.class })
@@ -80,8 +74,8 @@ public class ServiceBusJmsConnectionFactoryConfiguration {
         @Bean(destroyMethod = "stop")
         @ConditionalOnProperty(prefix = "spring.jms.servicebus.pool", name = "enabled", havingValue = "true")
         JmsPoolConnectionFactory jmsPoolConnectionFactory(AzureServiceBusJmsProperties properties,
-                                                          ServiceBusJmsConnectionFactoryFactory serviceBusJmsConnectionFactoryFactory) {
-            ServiceBusJmsConnectionFactory factory = createJmsConnectionFactory(serviceBusJmsConnectionFactoryFactory);
+                                                          ObjectProvider<ServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
+            ServiceBusJmsConnectionFactory factory = createJmsConnectionFactory(properties, factoryCustomizers);
             return new JmsPoolConnectionFactoryFactory(properties.getPool())
                 .createPooledConnectionFactory(factory);
         }
