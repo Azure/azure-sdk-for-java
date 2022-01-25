@@ -301,6 +301,7 @@ public class HttpLoggingPolicyTests {
         EnvironmentConfiguration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(logLevelToSet));
     }
 
+    @SuppressWarnings("deprecation")
     private void setPropertyToOriginalOrClear(String originalValue) {
         if (CoreUtils.isNullOrEmpty(originalValue)) {
             EnvironmentConfiguration.getGlobalConfiguration().remove(PROPERTY_AZURE_LOG_LEVEL);

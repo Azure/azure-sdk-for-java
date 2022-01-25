@@ -3,6 +3,7 @@ package com.azure.core.implementation.util;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationSource;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,7 +13,7 @@ public class EnvironmentConfigurationSource implements ConfigurationSource {
     /*
      * Configurations that are loaded into the global configuration store when the application starts.
      */
-    private static final Set<String> DEFAULT_CONFIGURATIONS = Set.of(
+    private static final Set<String> DEFAULT_CONFIGURATIONS = new HashSet<>(Arrays.asList(
         Configuration.PROPERTY_HTTP_PROXY,
         Configuration.PROPERTY_HTTPS_PROXY,
         Configuration.PROPERTY_IDENTITY_ENDPOINT,
@@ -42,7 +43,7 @@ public class EnvironmentConfigurationSource implements ConfigurationSource {
         Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
         Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT,
         Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT
-    );
+    ));
 
     @Override
     public Set<String> getChildKeys(String path) {

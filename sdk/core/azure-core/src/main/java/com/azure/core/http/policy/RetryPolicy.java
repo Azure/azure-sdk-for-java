@@ -21,7 +21,6 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static com.azure.core.util.CoreUtils.isNullOrEmpty;
@@ -39,20 +38,19 @@ public class RetryPolicy implements HttpPipelinePolicy {
     private final String retryAfterHeader;
     private final ChronoUnit retryAfterTimeUnit;
 
-    private final static ConfigurationProperty<String> RETRY_MODE_PROPERTY = ConfigurationProperty.stringPropertyBuilder("http-retry.mode")
-                                            .global(true)
-                                            .canLogValue(true)
-                                            .build();
-
-    private final static ConfigurationProperty<String> RETRY_AFTER_HEADER_PROPERTY = ConfigurationProperty.stringPropertyBuilder("http-retry.retry-after-header")
+    private static final ConfigurationProperty<String> RETRY_MODE_PROPERTY = ConfigurationProperty.stringPropertyBuilder("http-retry.mode")
+        .defaultValue(EXPONENTIAL_RETRY_MODE)
         .global(true)
         .canLogValue(true)
         .build();
 
-    private static final Function<String, ChronoUnit> CHRONOUNIT_CONVERTER = (value) -> ChronoUnit.valueOf(value);
-    private final static ConfigurationProperty<ChronoUnit> RETRY_AFTER_TIME_UNIT_PROPERTY= new ConfigurationPropertyBuilder<>("http-retry.retry-after-time-unit", CHRONOUNIT_CONVERTER)
+    private static final ConfigurationProperty<String> RETRY_AFTER_HEADER_PROPERTY = ConfigurationProperty.stringPropertyBuilder("http-retry.retry-after-header")
         .global(true)
         .canLogValue(true)
+        .build();
+
+    private static final ConfigurationProperty<ChronoUnit> RETRY_AFTER_TIME_UNIT_PROPERTY= new ConfigurationPropertyBuilder<>("http-retry.retry-after-time-unit", (value) -> ChronoUnit.valueOf(value))
+        .global(true)
         .build();
 
     /**
@@ -111,33 +109,27 @@ public class RetryPolicy implements HttpPipelinePolicy {
         this(retryStrategy, null, null);
     }
 
-    public static RetryPolicy fromConfiguration(Configuration configuration, RetryPolicy defaultPolicy) {
+    public static RetryPolicy fromConfiguration(Configuration configuration) {
         Objects.requireNonNull(configuration, "'configuration' cannot be null");
         if (configuration == Configuration.NONE) {
             throw LOGGER.logThrowableAsError(new IllegalArgumentException("'configuration' cannot be 'Configuration.NONE'."));
         }
 
         String retryMode = configuration.get(RETRY_MODE_PROPERTY);
-        RetryStrategy retryStrategy = null;
+        RetryStrategy retryStrategy;
         if (FIXED_RETRY_MODE.equals(retryMode)) {
             // fixed strategy does not have defaults, it will throw if required properties are missing
             retryStrategy = FixedDelay.fromConfiguration(configuration);
-        } else if (EXPONENTIAL_RETRY_MODE.equals(retryMode) || retryMode == null) {
-            retryStrategy = ExponentialBackoff.fromConfiguration(configuration, null);
-        } else  if (retryMode != null) {
+        } else if (EXPONENTIAL_RETRY_MODE.equals(retryMode)) {
+            retryStrategy = ExponentialBackoff.fromConfiguration(configuration);
+        } else {
             throw LOGGER.logThrowableAsError(new IllegalArgumentException("Unknown retry mode: " + retryMode));
         }
 
-        if (retryStrategy == null) {
-            if (!configuration.contains(RETRY_AFTER_HEADER_PROPERTY) &&
-                !configuration.contains(RETRY_AFTER_TIME_UNIT_PROPERTY)) {
-                return defaultPolicy;
-            }
+        String retryAfterHeader = configuration.get(RETRY_AFTER_HEADER_PROPERTY);
+        ChronoUnit retryAfterUnit = configuration.get(RETRY_AFTER_TIME_UNIT_PROPERTY);
 
-            retryStrategy = new ExponentialBackoff();
-        }
-
-        return new RetryPolicy(retryStrategy, configuration.get(RETRY_AFTER_HEADER_PROPERTY), configuration.get(RETRY_AFTER_TIME_UNIT_PROPERTY));
+        return new RetryPolicy(retryStrategy, retryAfterHeader, retryAfterUnit);
     }
 
     /**

@@ -8,6 +8,11 @@ import java.util.function.Function;
  * Noop Configuration used to opt out of using global configurations when constructing client libraries.
  */
 class NoopConfiguration extends Configuration {
+
+    @SuppressWarnings("deprecation")
+    public NoopConfiguration() {
+    }
+
     @Override
     public String get(String name) {
         return null;
@@ -41,6 +46,7 @@ class NoopConfiguration extends Configuration {
     }
 
     @Override
+    @Deprecated
     @SuppressWarnings("CloneDoesntCallSuperClone")
     public NoopConfiguration clone() {
         return new NoopConfiguration();

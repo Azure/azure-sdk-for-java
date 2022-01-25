@@ -21,14 +21,15 @@ import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RETRY_COU
  */
 public class ExponentialBackoff implements RetryStrategy {
 
-    private static final ClientLogger LOGGER = new ClientLogger(RetryStrategy.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExponentialBackoff.class);
     private static final double JITTER_FACTOR = 0.05;
     private static final int DEFAULT_MAX_RETRIES;
     private static final Duration DEFAULT_BASE_DELAY = Duration.ofMillis(800);
     private static final Duration DEFAULT_MAX_DELAY = Duration.ofSeconds(8);
 
     static {
-        // TODO (configuration) move logging and range validation to common config code
+        // This can't be done with new configuration since this code is tolerant to format issues.
+        // keeping it for backward compatibility
         String envDefaultMaxRetries = Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_REQUEST_RETRY_COUNT);
 
         int defaultMaxRetries = 3;
@@ -39,7 +40,7 @@ public class ExponentialBackoff implements RetryStrategy {
                     defaultMaxRetries = 3;
                 }
             } catch (NumberFormatException ignored) {
-                new ClientLogger(ExponentialBackoff.class).verbose("{} was loaded but is an invalid number. "
+                LOGGER.verbose("{} was loaded but is an invalid number. "
                     + "Using 3 retries as the maximum.", PROPERTY_AZURE_REQUEST_RETRY_COUNT);
             }
         }
@@ -47,18 +48,18 @@ public class ExponentialBackoff implements RetryStrategy {
         DEFAULT_MAX_RETRIES = defaultMaxRetries;
     }
 
-    private final static ConfigurationProperty<Integer> MAX_RETRIES_CONFIG = ConfigurationProperty.integerPropertyBuilder("http-retry.exponential.max-retries")
-            .defaultValue(DEFAULT_MAX_RETRIES)
-            .environmentVariables(PROPERTY_AZURE_REQUEST_RETRY_COUNT)
-            .global(true)
-            .build();
+    private final static ConfigurationProperty<Integer> MAX_RETRIES_PROPERTY = ConfigurationProperty.integerPropertyBuilder("http-retry.exponential.max-retries")
+        .defaultValue(DEFAULT_MAX_RETRIES)
+        .environmentVariables(PROPERTY_AZURE_REQUEST_RETRY_COUNT)
+        .global(true)
+        .build();
 
-    private final static ConfigurationProperty<Duration> BASE_DELAY_CONFIG = ConfigurationProperty.durationPropertyBuilder("http-retry.exponential.base-delay")
+    private final static ConfigurationProperty<Duration> BASE_DELAY_PROPERTY = ConfigurationProperty.durationPropertyBuilder("http-retry.exponential.base-delay")
         .defaultValue(DEFAULT_BASE_DELAY)
         .global(true)
         .build();
 
-    private final static ConfigurationProperty<Duration> MAX_DELAY_CONFIG = ConfigurationProperty.durationPropertyBuilder("http-retry.exponential.max-delay")
+    private final static ConfigurationProperty<Duration> MAX_DELAY_PROPERTY = ConfigurationProperty.durationPropertyBuilder("http-retry.exponential.max-delay")
         .defaultValue(DEFAULT_MAX_DELAY)
         .global(true)
         .build();
@@ -77,14 +78,8 @@ public class ExponentialBackoff implements RetryStrategy {
         this(DEFAULT_MAX_RETRIES, DEFAULT_BASE_DELAY, DEFAULT_MAX_DELAY);
     }
 
-    static RetryStrategy fromConfiguration(Configuration configuration, RetryStrategy defaultStrategy) {
-        if (configuration.contains(MAX_RETRIES_CONFIG) ||
-            configuration.contains(BASE_DELAY_CONFIG) ||
-            configuration.contains(MAX_DELAY_CONFIG)) {
-            return new ExponentialBackoff(configuration.get(MAX_RETRIES_CONFIG), configuration.get(BASE_DELAY_CONFIG), configuration.get(MAX_DELAY_CONFIG));
-        }
-
-        return defaultStrategy;
+    static RetryStrategy fromConfiguration(Configuration configuration) {
+        return new ExponentialBackoff(configuration.get(MAX_RETRIES_PROPERTY), configuration.get(BASE_DELAY_PROPERTY), configuration.get(MAX_DELAY_PROPERTY));
     }
 
     /**
@@ -97,19 +92,18 @@ public class ExponentialBackoff implements RetryStrategy {
      * to 0 or {@code maxDelay} is less than {@code baseDelay}.
      */
     public ExponentialBackoff(int maxRetries, Duration baseDelay, Duration maxDelay) {
-        ClientLogger logger = new ClientLogger(ExponentialBackoff.class);
         if (maxRetries < 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Max retries cannot be less than 0."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Max retries cannot be less than 0."));
         }
         Objects.requireNonNull(baseDelay, "'baseDelay' cannot be null.");
         Objects.requireNonNull(maxDelay, "'maxDelay' cannot be null.");
 
         if (baseDelay.isZero() || baseDelay.isNegative()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'baseDelay' cannot be negative or 0."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'baseDelay' cannot be negative or 0."));
         }
 
         if (baseDelay.compareTo(maxDelay) > 0) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("'baseDelay' cannot be greater than 'maxDelay'."));
         }
         this.maxRetries = maxRetries;

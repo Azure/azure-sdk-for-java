@@ -3,9 +3,7 @@
 
 package com.azure.core.util.logging;
 
-import com.azure.core.util.Configuration;
-import org.openjdk.jmh.Main;
-import org.openjdk.jmh.annotations.Benchmark;
+import com.azure.core.implementation.util.EnvironmentConfiguration;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
 import org.openjdk.jmh.annotations.Measurement;
@@ -15,7 +13,6 @@ import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
-import org.openjdk.jmh.runner.RunnerException;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -36,7 +33,7 @@ public class LoggingBenchmark {
     @Setup
     @SuppressWarnings("deprecation")
     public void setup() {
-        Configuration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(LogLevel.WARNING));
+        EnvironmentConfiguration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(LogLevel.WARNING));
         this.logger = new ClientLogger(LoggingBenchmark.class);
 
         System.setOut(new PrintStream(new OutputStream() {
@@ -46,7 +43,7 @@ public class LoggingBenchmark {
         }));
     }
 
-    @Benchmark
+    /*@Benchmark
     public void loggingAtDisabledLevel() {
         logger.info("hello, connectionId={}, linkName={}", "foo", 1);
     }
@@ -74,5 +71,5 @@ public class LoggingBenchmark {
 
     public static void main(String... args) throws IOException, RunnerException {
         Main.main(args);
-    }
+    }*/
 }

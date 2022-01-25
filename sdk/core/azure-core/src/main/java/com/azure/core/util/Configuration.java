@@ -5,7 +5,7 @@ package com.azure.core.util;
 
 import com.azure.core.implementation.util.EnvironmentConfiguration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LoggingEventBuilder;
+import com.azure.core.util.logging.LogLevel;
 import reactor.core.Exceptions;
 
 import java.util.Collections;
@@ -190,6 +190,7 @@ public class Configuration implements Cloneable {
     private final String path;
     private final Configuration defaults;
     private final ClientLogger logger;
+    private final boolean isEmpty;
 
     /**
      * Constructs a configuration containing the known Azure properties constants.
@@ -201,6 +202,7 @@ public class Configuration implements Cloneable {
 
     Configuration(Map<String, String> configurations, EnvironmentConfiguration environmentConfiguration, String path, Configuration defaults) {
         this.configurations = Collections.unmodifiableMap(Objects.requireNonNull(configurations, "'configurations' cannot be null"));
+        this.isEmpty = configurations.isEmpty();
         this.environmentConfiguration = Objects.requireNonNull(environmentConfiguration, "'environmentConfiguration' cannot be null");;
         this.path = path;
         this.defaults = defaults;
@@ -341,7 +343,7 @@ public class Configuration implements Cloneable {
         if (valueStr == null) {
             if (property.isRequired()) {
                 throw logger.atError()
-                    .addKeyValue("property", property.getName())
+                    .addKeyValue("name", property.getName())
                     .addKeyValue("path", path)
                     .log(new IllegalArgumentException("Missing required property."));
             }
@@ -352,39 +354,46 @@ public class Configuration implements Cloneable {
             return property.getConverter().apply(valueStr);
         } catch (Throwable t) {
             throw logger.atError()
-                .addKeyValue("property", property.getName())
+                .addKeyValue("name", property.getName())
                 .addKeyValue("value", property.canLogValue() ? valueStr : "redacted")
                 .log(Exceptions.propagate(t));
         }
     }
 
     private String getLocalProperty(String name, String[] aliases, boolean canLogValue) {
+        if (this.isEmpty) {
+            return null;
+        }
+
         String value = configurations.get(name);
-
-        LoggingEventBuilder logEvent = logger.atVerbose()
-                .addKeyValue("name", name)
-                .addKeyValue("path", path);
-
         if (value != null) {
-            logEvent
-                .addKeyValue("value", canLogValue ? value : "redacted")
-                .log("Got property value by name.");
+            if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
+                logger.atVerbose()
+                    .addKeyValue("name", name)
+                    .addKeyValue("path", path)
+                    .addKeyValue("value", canLogValue ? value : "redacted")
+                    .log("Got property value by name.");
+            }
             return value;
         }
 
         for(String alias : aliases) {
             value = configurations.get(alias);
             if (value != null) {
-                logEvent
-                    .addKeyValue("value", canLogValue ? value : "redacted")
-                    .log("Got property value by alias.");
+                if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
+                    logger.atVerbose()
+                        .addKeyValue("name", name)
+                        .addKeyValue("path", path)
+                        .addKeyValue("alias", alias)
+                        .addKeyValue("value", canLogValue ? value : "redacted")
+                        .log("Got property value by alias.");
+                }
                 return value;
             }
         }
 
         return null;
     }
-
 
     private <T> String getWithFallback(ConfigurationProperty<T> property) {
         String value = getLocalProperty(property.getName(), property.getAliases(), property.canLogValue());
@@ -402,10 +411,13 @@ public class Configuration implements Cloneable {
         for (String name : property.getEnvironmentVariables()) {
             value = environmentConfiguration.get(name);
             if (value != null) {
-                logger.atVerbose()
-                    .addKeyValue("name", name)
-                    .addKeyValue("value", property.canLogValue() ? value : "redacted")
-                    .log("Got property from environment.");
+                if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
+                    logger.atVerbose()
+                        .addKeyValue("name", property.getName())
+                        .addKeyValue("envVar", name)
+                        .addKeyValue("value", property.canLogValue() ? value : "redacted")
+                        .log("Got property from environment.");
+                }
                 return value;
             }
         }

@@ -3,22 +3,7 @@
 
 package com.azure.core.util.serializer;
 
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.openjdk.jmh.Main;
-import org.openjdk.jmh.annotations.*;
-import org.openjdk.jmh.infra.Blackhole;
-import org.openjdk.jmh.runner.RunnerException;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-@Fork(3)
+/*@Fork(3)
 @Warmup(iterations = 5, time = 2)
 @Measurement(iterations = 5, time = 10)
 @BenchmarkMode(Mode.AverageTime)
@@ -166,4 +151,5 @@ public class SerializationBenchmark {
     public static void main(String... args) throws IOException, RunnerException {
         Main.main(args);
     }
-}
+}*/
+

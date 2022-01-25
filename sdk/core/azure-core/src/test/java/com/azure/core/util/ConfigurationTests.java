@@ -341,36 +341,6 @@ public class ConfigurationTests {
             return configBuilder.build();
         }
 
-        return configBuilder.clientSection(section).build();
+        return configBuilder.section(section).build();
     }
-
-
-    /*
-    @Test
-    public void multipleNestedSections() {
-        ConfigurationSource source = new TestConfigurationSource(
-            "http-retry.mode", "fixed",
-            "appconfiguration.http-retry.fixed.max-retries", "1",
-            "appconfiguration.http-retry.fixed.delay", "1000");
-
-        ConfigurationBuilder configBuilder = new ConfigurationBuilder(source);
-        Configuration root = configBuilder.build();
-        Configuration appconfigSection = configBuilder.clientSection("appconfiguration").build();
-
-        ConfigurationProperty<String> globalProp = ConfigurationProperty.stringPropertyBuilder("http-retry.mode").global(true).build();
-        ConfigurationProperty<String> globalMissingProp = ConfigurationProperty.stringPropertyBuilder("mode").global(true).build();
-        ConfigurationProperty<String> globalMaxTries = ConfigurationProperty.stringPropertyBuilder("http-retry.fixed.max-retries").global(true).build();
-
-        assertNull(root.get(globalMissingProp));
-        assertEquals("fixed", root.get(globalProp));
-        assertEquals("fixed", appconfigSection.get(globalProp));
-
-        assertNull(root.get(globalMaxTries));
-        assertEquals("1", appconfigSection.get(globalMaxTries));
-
-        assertNotNull(RetryPolicy.fromConfiguration(appconfigSection, null));
-
-        // todo : should throw
-        assertThrows(Throwable.class, () -> RetryPolicy.fromConfiguration(root, null));
-    }*/
 }

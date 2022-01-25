@@ -134,7 +134,8 @@ public final class ConfigurationClientBuilder {
 
     /**
      * Constructs a new builder used to configure and build {@link ConfigurationClient ConfigurationClients} and {@link
-     * ConfigurationAsyncClient ConfigurationAsyncClients}.
+     * ConfigurationAsyncClient Confighttps://github.com/Azure/azure-sdk-for-java/pull/26420configurationprop
+     * urationAsyncClients}.
      */
     public ConfigurationClientBuilder() {
     }

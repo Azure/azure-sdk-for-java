@@ -17,7 +17,7 @@ public class ConfigurationBuilder {
     private final ClientLogger logger;
     private String rootPath;
     private Configuration defaults;
-    private String clientPath;
+    private String path;
 
     public ConfigurationBuilder(ConfigurationSource source) {
         this.source = Objects.requireNonNull(source, "'source' cannot be null");
@@ -35,35 +35,29 @@ public class ConfigurationBuilder {
 
     public ConfigurationBuilder root(String rootPath) {
         this.rootPath = Objects.requireNonNull(rootPath, "'rootPath' cannot be null");
+        this.defaults = null;
         return this;
     }
 
-    public ConfigurationBuilder defaultsSection(String defaultsPath) {
-        Objects.requireNonNull(defaultsPath, "'defaultsPath' cannot be null");
-        String absoluteDefaultsPath = getAbsolutePath(rootPath, defaultsPath);
-        defaults = new Configuration(readConfigurations(this.source, absoluteDefaultsPath), environmentConfiguration, absoluteDefaultsPath, null);
-        return this;
-    }
-
-    public ConfigurationBuilder clientSection(String clientPath) {
-        Objects.requireNonNull(clientPath, "'clientPath' cannot be null");
-        this.clientPath = clientPath;
+    public ConfigurationBuilder section(String path) {
+        Objects.requireNonNull(path, "'clientPath' cannot be null");
+        this.path = path;
         return this;
     }
 
     public Configuration build() {
         if (defaults == null) {
-            logger.verbose("Defaults section is not set, falling back to root path: '{}'.", rootPath);
+            // defaults can be reused to get different client sections.
             defaults = new Configuration(readConfigurations(this.source, rootPath), environmentConfiguration, rootPath, null);
         }
 
-        if (CoreUtils.isNullOrEmpty(clientPath)) {
-            logger.warning("Client section is not set, falling back to defaults section");
+        if (CoreUtils.isNullOrEmpty(path)) {
+            logger.warning("Client section is not set, falling back to root section");
             return defaults;
         }
 
-        String absoluteClientPath = getAbsolutePath(rootPath, clientPath);
-        return new Configuration(readConfigurations(this.source, absoluteClientPath), environmentConfiguration, absoluteClientPath, defaults);
+        String absolutePath = getAbsolutePath(rootPath, path);
+        return new Configuration(readConfigurations(this.source, absolutePath), environmentConfiguration, absolutePath, defaults);
     }
 
     private Map<String, String> readConfigurations(ConfigurationSource source, String path) {
