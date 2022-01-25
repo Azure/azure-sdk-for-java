@@ -11,6 +11,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetInner;
+import com.azure.resourcemanager.compute.implementation.VirtualMachineScaleSetImpl;
 import com.azure.resourcemanager.compute.models.ImageReference;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
@@ -1722,6 +1723,60 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         Assertions.assertNotNull(vmss2);
         Assertions.assertEquals(vmss2.orchestrationMode(), OrchestrationMode.FLEXIBLE);
+    }
+
+    @Test
+    public void npeProtectionTest() throws Exception {
+        String euapRegion = "eastus2euap";
+
+        final String vmssName = generateRandomResourceName("vmss", 10);
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName)
+            .withRegion(euapRegion)
+            .create();
+
+        VirtualMachineScaleSetImpl vmss = (VirtualMachineScaleSetImpl) this.computeManager
+            .virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(euapRegion)
+            .withExistingResourceGroup(resourceGroup)
+            .withFlexibleOrchestrationMode()
+            .create();
+
+        vmss.setInner(vmss.innerModel().withVirtualMachineProfile(null));
+        vmss.orchestrationMode();
+        vmss.computerNamePrefix();
+        vmss.osType();
+        vmss.osDiskCachingType();
+        vmss.osDiskName();
+        vmss.upgradeModel();
+        vmss.overProvisionEnabled();
+        vmss.sku();
+        vmss.capacity();
+        vmss.getPrimaryNetwork();
+        vmss.getPrimaryInternetFacingLoadBalancer();
+        vmss.listPrimaryInternetFacingLoadBalancerBackends();
+        vmss.listPrimaryInternetFacingLoadBalancerInboundNatPools();
+        vmss.getPrimaryInternalLoadBalancer();
+        vmss.listPrimaryInternalLoadBalancerBackends();
+        vmss.listPrimaryInternalLoadBalancerInboundNatPools();
+        vmss.primaryPublicIpAddressIds();
+        vmss.vhdContainers();
+        vmss.storageProfile();
+        vmss.networkProfile();
+        vmss.extensions();
+        vmss.virtualMachinePriority();
+        vmss.billingProfile();
+        vmss.virtualMachinePublicIpConfig();
+        vmss.isIpForwardingEnabled();
+        vmss.isAcceleratedNetworkingEnabled();
+        vmss.networkSecurityGroupId();
+        vmss.isSinglePlacementGroupEnabled();
+        vmss.applicationGatewayBackendAddressPoolsIds();
+        vmss.applicationSecurityGroupIds();
+        vmss.doNotRunExtensionsOnOverprovisionedVMs();
+        vmss.proximityPlacementGroup();
+        vmss.additionalCapabilities();
+        vmss.plan();
     }
 
 }
