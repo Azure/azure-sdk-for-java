@@ -6,26 +6,38 @@ import com.azure.cosmos.CosmosAsyncContainer
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
 import com.azure.cosmos.models.ThroughputProperties
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.streaming.StreamingQueryListener
+import org.apache.spark.sql.streaming.{StreamingQueryListener, Trigger}
 import org.apache.spark.sql.streaming.StreamingQueryListener.{QueryProgressEvent, QueryStartedEvent, QueryTerminatedEvent}
 
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicLong
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
+import org.scalatest.Retries
+import org.scalatest.tagobjects.Retryable
 
 class SparkE2EStructuredStreamingITest
   extends IntegrationSpec
     with CosmosClient
     with CosmosContainerWithRetention
-    with BasicLoggingTrait {
+    with BasicLoggingTrait
+    with Retries {
 
   override def afterEach(): Unit = {
     this.reinitializeContainer()
   }
 
+  override def withFixture(test: NoArgTest) = {
+    if (isRetryable(test))
+      withRetry { super.withFixture(test) }
+    else
+      super.withFixture(test)
+  }
+
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
-  "spark change feed micro batch (incremental)" can "be used to copy data to another container" in {
+  "spark change feed micro batch (incremental)" can
+    "be used to copy data to another container" taggedAs(Retryable) in {
+
     val processedRecordCount = new AtomicLong()
     var spark = this.createSparkSession(processedRecordCount)
     val cosmosEndpoint = TestConfigurations.HOST
@@ -45,7 +57,7 @@ class SparkE2EStructuredStreamingITest
       this.ingestTestDocument(sourceContainer, i)
     }
 
-    Thread.sleep(5000)
+    Thread.sleep(2100)
 
     val changeFeedCfg = Map(
       "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
@@ -74,6 +86,7 @@ class SparkE2EStructuredStreamingITest
     val microBatchQuery = changeFeedDF
       .writeStream
       .format("cosmos.oltp")
+      .trigger(Trigger.ProcessingTime("500 milliseconds"))
       .queryName(testId)
       .options(writeCfg)
       .outputMode("append")
@@ -104,7 +117,7 @@ class SparkE2EStructuredStreamingITest
       this.ingestTestDocument(sourceContainer, i)
     }
 
-    Thread.sleep(5000)
+    Thread.sleep(2100)
 
     val secondChangeFeedDF = spark
       .readStream
@@ -116,12 +129,13 @@ class SparkE2EStructuredStreamingITest
     val secondMicroBatchQuery = secondChangeFeedDF
       .writeStream
       .format("cosmos.oltp")
+      .trigger(Trigger.ProcessingTime("500 milliseconds"))
       .queryName(testId)
       .options(writeCfg)
       .outputMode("append")
       .start()
 
-    Thread.sleep(20000)
+    Thread.sleep(15500)
     secondMicroBatchQuery.stop()
 
     sourceCount = getRecordCountOfContainer(sourceContainer)
@@ -135,7 +149,9 @@ class SparkE2EStructuredStreamingITest
     targetContainer.delete()
   }
 
-  "spark change feed micro batch (incremental)" can "be used to copy data to another container with limit" in {
+  "spark change feed micro batch (incremental)" can
+    "be used to copy data to another container with limit" taggedAs(Retryable)  in {
+
     val processedRecordCount = new AtomicLong()
     var spark = this.createSparkSession(processedRecordCount)
     val cosmosEndpoint = TestConfigurations.HOST
@@ -155,7 +171,7 @@ class SparkE2EStructuredStreamingITest
       this.ingestTestDocument(sourceContainer, i)
     }
 
-    Thread.sleep(5000)
+    Thread.sleep(2100)
 
     val changeFeedCfg = Map(
       "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
@@ -185,12 +201,13 @@ class SparkE2EStructuredStreamingITest
     val microBatchQuery = changeFeedDF
       .writeStream
       .format("cosmos.oltp")
+      .trigger(Trigger.ProcessingTime("100 milliseconds"))
       .queryName(testId)
       .options(writeCfg)
       .outputMode("append")
       .start()
 
-    Thread.sleep(70000)
+    Thread.sleep(25500)
     microBatchQuery.stop()
 
     var sourceCount: Long = getRecordCountOfContainer(sourceContainer)
@@ -215,7 +232,7 @@ class SparkE2EStructuredStreamingITest
       this.ingestTestDocument(sourceContainer, i)
     }
 
-    Thread.sleep(5000)
+    Thread.sleep(2100)
 
     val secondChangeFeedDF = spark
       .readStream
@@ -227,12 +244,13 @@ class SparkE2EStructuredStreamingITest
     val secondMicroBatchQuery = secondChangeFeedDF
       .writeStream
       .format("cosmos.oltp")
+      .trigger(Trigger.ProcessingTime("100 milliseconds"))
       .queryName(testId)
       .options(writeCfg)
       .outputMode("append")
       .start()
 
-    Thread.sleep(20000)
+    Thread.sleep(25500)
     secondMicroBatchQuery.stop()
 
     sourceCount = getRecordCountOfContainer(sourceContainer)

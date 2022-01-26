@@ -171,4 +171,8 @@ private[cosmos] object SparkBridgeImplementationInternal {
       .getDirectConnectionConfigAccessor
       .setIoThreadCountPerCoreFactor(config, ioThreadCountPerCoreFactor)
   }
+
+  def setUserAgentWithSnapshotInsteadOfBeta() = {
+    HttpConstants.Versions.useSnapshotInsteadOfBeta();
+  }
 }

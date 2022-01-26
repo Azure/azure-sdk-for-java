@@ -118,7 +118,7 @@ public class SchemaRegistryClientBuilder {
     private ServiceVersion serviceVersion;
 
     /**
-     * Constructor for CachedSchemaRegistryClientBuilder.  Supplies client defaults.
+     * Constructor for SchemaRegistryClientBuilder. Supplies client defaults.
      */
     public SchemaRegistryClientBuilder() {
         this.httpLogOptions = new HttpLogOptions();

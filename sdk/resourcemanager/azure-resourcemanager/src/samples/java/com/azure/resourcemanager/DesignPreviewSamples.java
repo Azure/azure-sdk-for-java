@@ -13,10 +13,6 @@ import com.azure.resourcemanager.resources.models.DeploymentMode;
 import java.time.Duration;
 
 /**
- * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
- * ARE USED TO EXTRACT APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING
- * LINE NUMBERS OF EXISTING CODE SAMPLES.
- *
  * Code samples for the README.md
  */
 public class DesignPreviewSamples {
@@ -26,39 +22,8 @@ public class DesignPreviewSamples {
     private final String templateUri = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-cognitive-services-translate/azuredeploy.json";
     private final String parametersUri = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-cognitive-services-translate/azuredeploy.parameters.json";
 
-    // extra empty lines to compensate import lines
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // THIS LINE MUST BE AT LINE NO. 60
     public void pollLongRunningOperation(AzureResourceManager azure) throws InterruptedException {
+        // BEGIN: readme-sample-pollLongRunningOperation
         Duration defaultDelay = Duration.ofSeconds(10);
         // begin provision
         Accepted<Deployment> acceptedDeployment = azure.deployments()
@@ -87,6 +52,7 @@ public class DesignPreviewSamples {
         // pollStatus == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, if successful
         // get final result
         Deployment deployment = acceptedDeployment.getFinalResult();
+        // END: readme-sample-pollLongRunningOperation
     }
 
     public String getResourceGroupName() {

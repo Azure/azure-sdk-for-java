@@ -10,7 +10,7 @@ parameters:
     default: "not-specified"
   - name: RetryLimit
     type: number
-    default: 30
+    default: 5
 
 steps:
   - download: current
@@ -26,14 +26,14 @@ steps:
         exit 1
       }
       foreach ($retry in 0..${{ parameters.RetryLimit }}) {
-        Write-Host "mvn --no-transfer-progress -f $pomf compile"
-        mvn --no-transfer-progress -f $pomf compile
-        if (!$LASTEXITCODE -or ($retry -ge ${{ parameters.RetryLimit }})) { break }
+        Write-Host "mvn --no-transfer-progress --update-snapshots -f $pomf clean compile"
+        mvn --no-transfer-progress --update-snapshots -f $pomf clean compile
+        if (!$LASTEXITCODE) { exit 0 }
         Write-Host "Install failed, retrying in 1 minute..."
         Start-Sleep -s 60
       }
 
-      exit $LASTEXITCODE
+      exit 1
 
     workingDirectory: ${{parameters.ArtifactDirectory}}
     displayName: "Verify Package Compilation"
