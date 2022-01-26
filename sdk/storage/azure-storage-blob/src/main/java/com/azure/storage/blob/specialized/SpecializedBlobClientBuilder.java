@@ -7,6 +7,7 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
@@ -71,7 +72,8 @@ public final class SpecializedBlobClientBuilder implements
     AzureNamedKeyCredentialTrait<SpecializedBlobClientBuilder>,
     AzureSasCredentialTrait<SpecializedBlobClientBuilder>,
     HttpConfigTrait<SpecializedBlobClientBuilder>,
-    ClientOptionsTrait<SpecializedBlobClientBuilder> {
+    ClientOptionsTrait<SpecializedBlobClientBuilder>,
+    ConfigurationTrait<SpecializedBlobClientBuilder> {
     private final ClientLogger logger = new ClientLogger(SpecializedBlobClientBuilder.class);
 
     private String endpoint;
@@ -615,6 +617,7 @@ public final class SpecializedBlobClientBuilder implements
      * @param configuration Configuration store used to retrieve environment configurations.
      * @return the updated SpecializedBlobClientBuilder object
      */
+    @Override
     public SpecializedBlobClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;

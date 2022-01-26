@@ -12,6 +12,7 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
@@ -108,7 +109,8 @@ public class EventProcessorClientBuilder implements
     ConnectionStringTrait<EventProcessorClientBuilder>,
     AzureSasCredentialTrait<EventProcessorClientBuilder>,
     AmqpConfigTrait<EventProcessorClientBuilder>,
-    ClientOptionsTrait<EventProcessorClientBuilder> {
+    ClientOptionsTrait<EventProcessorClientBuilder>,
+    ConfigurationTrait<EventProcessorClientBuilder> {
     /**
      * Default load balancing update interval.
      */
@@ -229,6 +231,7 @@ public class EventProcessorClientBuilder implements
      * @param configuration The configuration store used to configure the {@link EventHubAsyncClient}.
      * @return The updated {@link EventProcessorClientBuilder} object.
      */
+    @Override
     public EventProcessorClientBuilder configuration(Configuration configuration) {
         eventHubClientBuilder.configuration(configuration);
         return this;

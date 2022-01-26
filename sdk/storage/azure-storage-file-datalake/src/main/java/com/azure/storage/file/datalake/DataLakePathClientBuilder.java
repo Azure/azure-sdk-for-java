@@ -7,6 +7,7 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
@@ -61,7 +62,8 @@ public final class DataLakePathClientBuilder implements
     AzureNamedKeyCredentialTrait<DataLakePathClientBuilder>,
     AzureSasCredentialTrait<DataLakePathClientBuilder>,
     HttpConfigTrait<DataLakePathClientBuilder>,
-    ClientOptionsTrait<DataLakePathClientBuilder> {
+    ClientOptionsTrait<DataLakePathClientBuilder>,
+    ConfigurationTrait<DataLakePathClientBuilder> {
 
     private final ClientLogger logger = new ClientLogger(DataLakePathClientBuilder.class);
     private final BlobClientBuilder blobClientBuilder;
@@ -450,6 +452,7 @@ public final class DataLakePathClientBuilder implements
      * @param configuration Configuration store used to retrieve environment configurations.
      * @return the updated DataLakePathClientBuilder object
      */
+    @Override
     public DataLakePathClientBuilder configuration(Configuration configuration) {
         blobClientBuilder.configuration(configuration);
         this.configuration = configuration;

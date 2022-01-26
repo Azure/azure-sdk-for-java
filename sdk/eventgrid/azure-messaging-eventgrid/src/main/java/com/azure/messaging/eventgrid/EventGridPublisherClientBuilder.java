@@ -7,6 +7,7 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
@@ -57,7 +58,8 @@ public final class EventGridPublisherClientBuilder implements
     AzureKeyCredentialTrait<EventGridPublisherClientBuilder>,
     AzureSasCredentialTrait<EventGridPublisherClientBuilder>,
     HttpConfigTrait<EventGridPublisherClientBuilder>,
-    ClientOptionsTrait<EventGridPublisherClientBuilder> {
+    ClientOptionsTrait<EventGridPublisherClientBuilder>,
+    ConfigurationTrait<EventGridPublisherClientBuilder> {
 
     private static final String AEG_SAS_KEY = "aeg-sas-key";
 
@@ -267,6 +269,7 @@ public final class EventGridPublisherClientBuilder implements
      *
      * @return the builder itself.
      */
+    @Override
     public EventGridPublisherClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;

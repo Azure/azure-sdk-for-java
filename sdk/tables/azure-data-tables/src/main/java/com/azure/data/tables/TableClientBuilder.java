@@ -6,6 +6,7 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
@@ -80,7 +81,8 @@ public final class TableClientBuilder implements
     ConnectionStringTrait<TableClientBuilder>,
     AzureSasCredentialTrait<TableClientBuilder>,
     HttpConfigTrait<TableClientBuilder>,
-    ClientOptionsTrait<TableClientBuilder> {
+    ClientOptionsTrait<TableClientBuilder>,
+    ConfigurationTrait<TableClientBuilder> {
     private static final SerializerAdapter TABLES_SERIALIZER = new TablesJacksonSerializer();
     private static final TablesMultipartSerializer TRANSACTIONAL_BATCH_SERIALIZER = new TablesMultipartSerializer();
 
@@ -276,6 +278,7 @@ public final class TableClientBuilder implements
      *
      * @return The updated {@link TableClientBuilder}.
      */
+    @Override
     public TableClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
 

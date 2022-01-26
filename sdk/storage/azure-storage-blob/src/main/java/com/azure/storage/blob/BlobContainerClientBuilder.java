@@ -7,6 +7,7 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
@@ -63,7 +64,8 @@ public final class BlobContainerClientBuilder implements
     AzureSasCredentialTrait<BlobContainerClientBuilder>,
     AzureNamedKeyCredentialTrait<BlobContainerClientBuilder>,
     HttpConfigTrait<BlobContainerClientBuilder>,
-    ClientOptionsTrait<BlobContainerClientBuilder> {
+    ClientOptionsTrait<BlobContainerClientBuilder>,
+    ConfigurationTrait<BlobContainerClientBuilder> {
     private final ClientLogger logger = new ClientLogger(BlobContainerClientBuilder.class);
 
     private String endpoint;
@@ -429,6 +431,7 @@ public final class BlobContainerClientBuilder implements
      * @param configuration Configuration store used to retrieve environment configurations.
      * @return the updated BlobContainerClientBuilder object
      */
+    @Override
     public BlobContainerClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;

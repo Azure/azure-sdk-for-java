@@ -5,6 +5,7 @@ package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
@@ -125,7 +126,8 @@ import java.util.Objects;
 public final class CryptographyClientBuilder implements
     TokenCredentialTrait<CryptographyClientBuilder>,
     HttpConfigTrait<CryptographyClientBuilder>,
-    ClientOptionsTrait<CryptographyClientBuilder> {
+    ClientOptionsTrait<CryptographyClientBuilder>,
+    ConfigurationTrait<CryptographyClientBuilder> {
     private final ClientLogger logger = new ClientLogger(CryptographyClientBuilder.class);
 
     // This is properties file's name.
@@ -431,6 +433,7 @@ public final class CryptographyClientBuilder implements
      *
      * @return The updated {@link CryptographyClientBuilder} object.
      */
+    @Override
     public CryptographyClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
 

@@ -6,6 +6,7 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
@@ -78,7 +79,8 @@ public final class TableServiceClientBuilder implements
     ConnectionStringTrait<TableServiceClientBuilder>,
     AzureSasCredentialTrait<TableServiceClientBuilder>,
     HttpConfigTrait<TableServiceClientBuilder>,
-    ClientOptionsTrait<TableServiceClientBuilder> {
+    ClientOptionsTrait<TableServiceClientBuilder>,
+    ConfigurationTrait<TableServiceClientBuilder> {
     private final ClientLogger logger = new ClientLogger(TableServiceClientBuilder.class);
     private final SerializerAdapter serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -269,6 +271,7 @@ public final class TableServiceClientBuilder implements
      *
      * @return The updated {@link TableServiceClientBuilder}.
      */
+    @Override
     public TableServiceClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
 

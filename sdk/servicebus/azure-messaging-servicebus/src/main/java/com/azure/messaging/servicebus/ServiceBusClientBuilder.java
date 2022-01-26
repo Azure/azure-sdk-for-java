@@ -23,6 +23,7 @@ import com.azure.core.annotation.ServiceClientProtocol;
 import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
@@ -185,7 +186,8 @@ public final class ServiceBusClientBuilder implements
     ConnectionStringTrait<ServiceBusClientBuilder>,
     AzureSasCredentialTrait<ServiceBusClientBuilder>,
     AmqpConfigTrait<ServiceBusClientBuilder>,
-    ClientOptionsTrait<ServiceBusClientBuilder> {
+    ClientOptionsTrait<ServiceBusClientBuilder>,
+    ConfigurationTrait<ServiceBusClientBuilder> {
     private static final AmqpRetryOptions DEFAULT_RETRY =
         new AmqpRetryOptions().setTryTimeout(ServiceBusConstants.OPERATION_TIMEOUT);
 
@@ -352,6 +354,7 @@ public final class ServiceBusClientBuilder implements
      *
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
+    @Override
     public ServiceBusClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;

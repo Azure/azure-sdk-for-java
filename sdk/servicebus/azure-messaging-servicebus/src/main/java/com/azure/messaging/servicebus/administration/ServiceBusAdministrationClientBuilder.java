@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus.administration;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
@@ -89,7 +90,8 @@ public final class ServiceBusAdministrationClientBuilder implements
     TokenCredentialTrait<ServiceBusAdministrationClientBuilder>,
     ConnectionStringTrait<ServiceBusAdministrationClientBuilder>,
     HttpConfigTrait<ServiceBusAdministrationClientBuilder>,
-    ClientOptionsTrait<ServiceBusAdministrationClientBuilder> {
+    ClientOptionsTrait<ServiceBusAdministrationClientBuilder>,
+    ConfigurationTrait<ServiceBusAdministrationClientBuilder> {
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
 
@@ -228,6 +230,7 @@ public final class ServiceBusAdministrationClientBuilder implements
      *
      * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
      */
+    @Override
     public ServiceBusAdministrationClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;

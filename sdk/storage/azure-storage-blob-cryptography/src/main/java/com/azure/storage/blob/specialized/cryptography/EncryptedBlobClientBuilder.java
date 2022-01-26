@@ -7,6 +7,7 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
@@ -100,7 +101,8 @@ public final class EncryptedBlobClientBuilder implements
     AzureNamedKeyCredentialTrait<EncryptedBlobClientBuilder>,
     AzureSasCredentialTrait<EncryptedBlobClientBuilder>,
     HttpConfigTrait<EncryptedBlobClientBuilder>,
-    ClientOptionsTrait<EncryptedBlobClientBuilder> {
+    ClientOptionsTrait<EncryptedBlobClientBuilder>,
+    ConfigurationTrait<EncryptedBlobClientBuilder> {
     private final ClientLogger logger = new ClientLogger(EncryptedBlobClientBuilder.class);
     private static final Map<String, String> PROPERTIES =
         CoreUtils.getProperties("azure-storage-blob-cryptography.properties");
@@ -614,6 +616,7 @@ public final class EncryptedBlobClientBuilder implements
      * @param configuration Configuration store used to retrieve environment configurations.
      * @return the updated EncryptedBlobClientBuilder object
      */
+    @Override
     public EncryptedBlobClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;

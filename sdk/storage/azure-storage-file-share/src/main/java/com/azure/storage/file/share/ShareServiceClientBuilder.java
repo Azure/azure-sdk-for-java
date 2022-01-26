@@ -7,6 +7,7 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
@@ -128,7 +129,8 @@ public final class ShareServiceClientBuilder implements
     ConnectionStringTrait<ShareServiceClientBuilder>,
     AzureNamedKeyCredentialTrait<ShareServiceClientBuilder>,
     AzureSasCredentialTrait<ShareServiceClientBuilder>,
-    ClientOptionsTrait<ShareServiceClientBuilder> {
+    ClientOptionsTrait<ShareServiceClientBuilder>,
+    ConfigurationTrait<ShareServiceClientBuilder> {
     private final ClientLogger logger = new ClientLogger(ShareServiceClientBuilder.class);
 
     private String endpoint;
@@ -400,6 +402,7 @@ public final class ShareServiceClientBuilder implements
      * @param configuration Configuration store used to retrieve environment configurations.
      * @return the updated ShareServiceClientBuilder object
      */
+    @Override
     public ShareServiceClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;

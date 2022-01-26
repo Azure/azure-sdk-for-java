@@ -23,6 +23,7 @@ import com.azure.core.annotation.ServiceClientProtocol;
 import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
@@ -145,7 +146,8 @@ public class EventHubClientBuilder implements
     ConnectionStringTrait<EventHubClientBuilder>,
     AzureSasCredentialTrait<EventHubClientBuilder>,
     AmqpConfigTrait<EventHubClientBuilder>,
-    ClientOptionsTrait<EventHubClientBuilder> {
+    ClientOptionsTrait<EventHubClientBuilder>,
+    ConfigurationTrait<EventHubClientBuilder> {
 
     // Default number of events to fetch when creating the consumer.
     static final int DEFAULT_PREFETCH_COUNT = 500;
@@ -314,6 +316,7 @@ public class EventHubClientBuilder implements
      *
      * @return The updated {@link EventHubClientBuilder} object.
      */
+    @Override
     public EventHubClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;

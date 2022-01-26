@@ -6,6 +6,7 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ClientOptionsTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
@@ -129,7 +130,8 @@ public final class QueueServiceClientBuilder implements
     AzureNamedKeyCredentialTrait<QueueServiceClientBuilder>,
     AzureSasCredentialTrait<QueueServiceClientBuilder>,
     HttpConfigTrait<QueueServiceClientBuilder>,
-    ClientOptionsTrait<QueueServiceClientBuilder> {
+    ClientOptionsTrait<QueueServiceClientBuilder>,
+    ConfigurationTrait<QueueServiceClientBuilder> {
     private final ClientLogger logger = new ClientLogger(QueueServiceClientBuilder.class);
 
     private String endpoint;
@@ -412,6 +414,7 @@ public final class QueueServiceClientBuilder implements
      * @param configuration Configuration store used to retrieve environment configurations.
      * @return the updated QueueServiceClientBuilder object
      */
+    @Override
     public QueueServiceClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
