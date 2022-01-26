@@ -1742,7 +1742,6 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withFlexibleOrchestrationMode()
             .create();
 
-        vmss.setInner(vmss.innerModel().withVirtualMachineProfile(null));
         vmss.orchestrationMode();
         vmss.computerNamePrefix();
         vmss.osType();
