@@ -1,6 +1,8 @@
 jobs:
   - job: 'Linting'
 
+    timeoutInMinutes: 120
+
     variables:
       - template: /eng/pipelines/templates/variables/globals.yml
 
