@@ -9,14 +9,14 @@ import java.util.List;
 /**
  * Create CompatibilityNotMetException for CompatibilityNotMetFailureAnalyzer
  */
-public class CompatibilityNotMetException extends RuntimeException {
+public class SpringCloudAzureCompatibilityNotMetException extends RuntimeException {
     final List<VerificationResult> results;
 
     /**
      * Constructor of CompatibilityNotMetException
      * @param results VerificationResult List
      */
-    public CompatibilityNotMetException(List<VerificationResult> results) {
+    public SpringCloudAzureCompatibilityNotMetException(List<VerificationResult> results) {
         super("Spring Cloud Azure/ Spring Boot version compatibility checks have failed: " + Arrays.toString(results.toArray()));
         this.results = results;
     }

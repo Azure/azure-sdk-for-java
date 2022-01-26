@@ -10,20 +10,20 @@ import java.util.List;
 /**
  * FailureAnalyzer of Compatibility
  */
-public class CompatibilityNotMetFailureAnalyzer extends AbstractFailureAnalyzer<CompatibilityNotMetException> {
+public class SpringCloudAzureCompatibilityNotMetFailureAnalyzer extends AbstractFailureAnalyzer<SpringCloudAzureCompatibilityNotMetException> {
 
     /**
      * Constructor of CompatibilityNotMetFailureAnalyzer
      */
-    public CompatibilityNotMetFailureAnalyzer() {
+    public SpringCloudAzureCompatibilityNotMetFailureAnalyzer() {
     }
 
     @Override
-    protected FailureAnalysis analyze(Throwable rootFailure, CompatibilityNotMetException cause) {
+    protected FailureAnalysis analyze(Throwable rootFailure, SpringCloudAzureCompatibilityNotMetException cause) {
         return new FailureAnalysis(this.getDescription(cause), this.getAction(cause), cause);
     }
 
-    private String getDescription(CompatibilityNotMetException ex) {
+    private String getDescription(SpringCloudAzureCompatibilityNotMetException ex) {
         return String.format("Your project setup is incompatible with our requirements due to following reasons:%s", this.descriptions(ex.results));
     }
 
@@ -35,7 +35,7 @@ public class CompatibilityNotMetFailureAnalyzer extends AbstractFailureAnalyzer<
         return builder.toString();
     }
 
-    private String getAction(CompatibilityNotMetException ex) {
+    private String getAction(SpringCloudAzureCompatibilityNotMetException ex) {
         return String.format("Consider applying the following actions:%s", this.actions(ex.results));
     }
 

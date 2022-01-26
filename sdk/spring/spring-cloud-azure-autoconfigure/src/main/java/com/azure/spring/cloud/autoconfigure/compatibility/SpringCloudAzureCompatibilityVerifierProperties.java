@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.autoconfigure.compatibility;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-
 import java.util.Arrays;
 import java.util.List;
 

@@ -38,5 +38,5 @@ com.azure.spring.cloud.autoconfigure.resourcemanager.AzureStorageQueueResourceMa
 com.azure.spring.cloud.autoconfigure.compatibility.SpringCloudAzureCompatibilityVerifierAutoConfiguration
 
 org.springframework.boot.diagnostics.FailureAnalyzer=\
-com.azure.spring.cloud.autoconfigure.compatibility.CompatibilityNotMetFailureAnalyzer
+com.azure.spring.cloud.autoconfigure.compatibility.SpringCloudAzureCompatibilityNotMetFailureAnalyzer
 

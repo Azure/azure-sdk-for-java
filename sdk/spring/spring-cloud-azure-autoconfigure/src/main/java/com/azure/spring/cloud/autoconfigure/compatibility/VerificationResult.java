@@ -6,9 +6,9 @@ package com.azure.spring.cloud.autoconfigure.compatibility;
 import java.io.Serializable;
 import java.util.Objects;
 import org.springframework.core.style.ToStringCreator;
-import org.springframework.util.StringUtils;
 
 final class VerificationResult implements Serializable {
+    private static final long serialVersionUID = 7175132562403990299L;
     final String description;
     final String action;
 
@@ -28,10 +28,6 @@ final class VerificationResult implements Serializable {
 
     static VerificationResult notCompatible(String errorDescription, String action) {
         return new VerificationResult(errorDescription, action);
-    }
-
-    boolean isNotCompatible() {
-        return StringUtils.hasText(this.description) || StringUtils.hasText(this.action);
     }
 
     public boolean equals(Object o) {
