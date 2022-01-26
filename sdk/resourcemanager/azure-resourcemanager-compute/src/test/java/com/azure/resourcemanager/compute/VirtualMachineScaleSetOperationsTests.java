@@ -1766,6 +1766,19 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         vmss.extensions();
         vmss.virtualMachinePriority();
         vmss.billingProfile();
+        vmss.plan();
+        vmss.virtualMachineEvictionPolicy();
+        vmss.listNetworkInterfaces();
+        vmss.isManagedDiskEnabled();
+        vmss.isManagedServiceIdentityEnabled();
+        vmss.systemAssignedManagedServiceIdentityTenantId();
+        vmss.systemAssignedManagedServiceIdentityPrincipalId();
+        vmss.managedServiceIdentityType();
+        vmss.userAssignedManagedServiceIdentityIds();
+        vmss.availabilityZones();
+        vmss.isBootDiagnosticsEnabled();
+        vmss.bootDiagnosticsStorageUri();
+        vmss.managedOSDiskStorageAccountType();
         vmss.virtualMachinePublicIpConfig();
         vmss.isIpForwardingEnabled();
         vmss.isAcceleratedNetworkingEnabled();
@@ -1776,7 +1789,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         vmss.doNotRunExtensionsOnOverprovisionedVMs();
         vmss.proximityPlacementGroup();
         vmss.additionalCapabilities();
-        vmss.plan();
+        vmss.orchestrationMode();
     }
 
 }
