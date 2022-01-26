@@ -91,7 +91,7 @@ public class CertificatesTests extends DeviceProvisioningTestBase {
 
         } finally {
             // No matter if the test fails or not, delete the resource group that contains these test resources
-            resourceManager.resourceGroups().beginDeleteByName(resourceGroup.name());
+            deleteResourceGroup(resourceManager, resourceGroup);
         }
     }
 }

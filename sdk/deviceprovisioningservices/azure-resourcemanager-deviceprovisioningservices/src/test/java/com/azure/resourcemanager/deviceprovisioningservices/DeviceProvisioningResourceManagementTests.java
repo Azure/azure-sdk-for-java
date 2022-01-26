@@ -82,7 +82,7 @@ public class DeviceProvisioningResourceManagementTests extends DeviceProvisionin
             iotDpsManager.iotDpsResources().delete(resourceGroup.name(), serviceName, Context.NONE);
         } finally {
             // No matter if the test fails or not, delete the resource group that contains these test resources
-            resourceManager.resourceGroups().beginDeleteByName(resourceGroup.name());
+            deleteResourceGroup(resourceManager, resourceGroup);
         }
     }
 
@@ -117,7 +117,7 @@ public class DeviceProvisioningResourceManagementTests extends DeviceProvisionin
             assertEquals(expectedSkuCapacity, provisioningServiceDescription.sku().capacity());
         } finally {
             // No matter if the test fails or not, delete the resource group that contains these test resources
-            resourceManager.resourceGroups().beginDeleteByName(resourceGroup.name());
+            deleteResourceGroup(resourceManager, resourceGroup);
         }
     }
 
@@ -143,7 +143,7 @@ public class DeviceProvisioningResourceManagementTests extends DeviceProvisionin
             // expected throw
         } finally {
             // No matter if the test fails or not, delete the resource group that contains these test resources
-            resourceManager.resourceGroups().beginDeleteByName(resourceGroup.name());
+            deleteResourceGroup(resourceManager, resourceGroup);
         }
     }
 }
