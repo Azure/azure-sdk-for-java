@@ -10,10 +10,22 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A site for the Direct Line channel. */
+/** A site for the channel. */
 @Fluent
-public class DirectLineSite {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DirectLineSite.class);
+public final class Site extends WebChatSite {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Site.class);
+
+    /*
+     * Whether this site is token enabled for channel
+     */
+    @JsonProperty(value = "isTokenEnabled")
+    private Boolean isTokenEnabled;
+
+    /*
+     * Entity Tag
+     */
+    @JsonProperty(value = "eTag")
+    private String etag;
 
     /*
      * Site Id
@@ -79,6 +91,46 @@ public class DirectLineSite {
     private List<String> trustedOrigins;
 
     /**
+     * Get the isTokenEnabled property: Whether this site is token enabled for channel.
+     *
+     * @return the isTokenEnabled value.
+     */
+    public Boolean isTokenEnabled() {
+        return this.isTokenEnabled;
+    }
+
+    /**
+     * Set the isTokenEnabled property: Whether this site is token enabled for channel.
+     *
+     * @param isTokenEnabled the isTokenEnabled value to set.
+     * @return the Site object itself.
+     */
+    public Site withIsTokenEnabled(Boolean isTokenEnabled) {
+        this.isTokenEnabled = isTokenEnabled;
+        return this;
+    }
+
+    /**
+     * Get the etag property: Entity Tag.
+     *
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
+    }
+
+    /**
+     * Set the etag property: Entity Tag.
+     *
+     * @param etag the etag value to set.
+     * @return the Site object itself.
+     */
+    public Site withEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
+    /**
      * Get the siteId property: Site Id.
      *
      * @return the siteId value.
@@ -100,9 +152,9 @@ public class DirectLineSite {
      * Set the siteName property: Site name.
      *
      * @param siteName the siteName value to set.
-     * @return the DirectLineSite object itself.
+     * @return the Site object itself.
      */
-    public DirectLineSite withSiteName(String siteName) {
+    public Site withSiteName(String siteName) {
         this.siteName = siteName;
         return this;
     }
@@ -140,9 +192,9 @@ public class DirectLineSite {
      * Set the isEnabled property: Whether this site is enabled for DirectLine channel.
      *
      * @param isEnabled the isEnabled value to set.
-     * @return the DirectLineSite object itself.
+     * @return the Site object itself.
      */
-    public DirectLineSite withIsEnabled(boolean isEnabled) {
+    public Site withIsEnabled(boolean isEnabled) {
         this.isEnabled = isEnabled;
         return this;
     }
@@ -160,9 +212,9 @@ public class DirectLineSite {
      * Set the isV1Enabled property: Whether this site is enabled for Bot Framework V1 protocol.
      *
      * @param isV1Enabled the isV1Enabled value to set.
-     * @return the DirectLineSite object itself.
+     * @return the Site object itself.
      */
-    public DirectLineSite withIsV1Enabled(boolean isV1Enabled) {
+    public Site withIsV1Enabled(boolean isV1Enabled) {
         this.isV1Enabled = isV1Enabled;
         return this;
     }
@@ -180,9 +232,9 @@ public class DirectLineSite {
      * Set the isV3Enabled property: Whether this site is enabled for Bot Framework V1 protocol.
      *
      * @param isV3Enabled the isV3Enabled value to set.
-     * @return the DirectLineSite object itself.
+     * @return the Site object itself.
      */
-    public DirectLineSite withIsV3Enabled(boolean isV3Enabled) {
+    public Site withIsV3Enabled(boolean isV3Enabled) {
         this.isV3Enabled = isV3Enabled;
         return this;
     }
@@ -200,9 +252,9 @@ public class DirectLineSite {
      * Set the isSecureSiteEnabled property: Whether this site is enabled for authentication with Bot Framework.
      *
      * @param isSecureSiteEnabled the isSecureSiteEnabled value to set.
-     * @return the DirectLineSite object itself.
+     * @return the Site object itself.
      */
-    public DirectLineSite withIsSecureSiteEnabled(Boolean isSecureSiteEnabled) {
+    public Site withIsSecureSiteEnabled(Boolean isSecureSiteEnabled) {
         this.isSecureSiteEnabled = isSecureSiteEnabled;
         return this;
     }
@@ -220,9 +272,9 @@ public class DirectLineSite {
      * Set the isBlockUserUploadEnabled property: Whether this site is enabled for block user upload.
      *
      * @param isBlockUserUploadEnabled the isBlockUserUploadEnabled value to set.
-     * @return the DirectLineSite object itself.
+     * @return the Site object itself.
      */
-    public DirectLineSite withIsBlockUserUploadEnabled(Boolean isBlockUserUploadEnabled) {
+    public Site withIsBlockUserUploadEnabled(Boolean isBlockUserUploadEnabled) {
         this.isBlockUserUploadEnabled = isBlockUserUploadEnabled;
         return this;
     }
@@ -242,10 +294,17 @@ public class DirectLineSite {
      * isSecureSiteEnabled is True.
      *
      * @param trustedOrigins the trustedOrigins value to set.
-     * @return the DirectLineSite object itself.
+     * @return the Site object itself.
      */
-    public DirectLineSite withTrustedOrigins(List<String> trustedOrigins) {
+    public Site withTrustedOrigins(List<String> trustedOrigins) {
         this.trustedOrigins = trustedOrigins;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Site withIsWebchatPreviewEnabled(boolean isWebchatPreviewEnabled) {
+        super.withIsWebchatPreviewEnabled(isWebchatPreviewEnabled);
         return this;
     }
 
@@ -254,11 +313,12 @@ public class DirectLineSite {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
         if (siteName() == null) {
             throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property siteName in model DirectLineSite"));
+                .logExceptionAsError(new IllegalArgumentException("Missing required property siteName in model Site"));
         }
     }
 }
