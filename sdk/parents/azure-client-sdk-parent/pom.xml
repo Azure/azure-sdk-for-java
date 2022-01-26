@@ -630,7 +630,7 @@
               com.azure.endtoend*:
               com.azure.perf*:
               com.azure.storage.internal.avro*:
-			  com.azure.cosmos.encryption.mdesrc*
+			        com.azure.cosmos.encryption.mdesrc*
             </excludePackageNames>
             <!-- CosmosSkip - This is temporary, BridgeInternal gets converted to implementation -->
             <sourceFileExcludes>
