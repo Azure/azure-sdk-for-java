@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-Determines the Checkstyle, RevApi, and Spotbugs linting commands that should be ran as validation in the 
+Determines the Checkstyle, RevApi, and Spotbugs linting commands that should be ran as validation in the
 code-quality-reports pipeline.
 
 .DESCRIPTION
@@ -20,8 +20,11 @@ Otherwise, the linting steps are determined based on which directories have code
 .PARAMETER BuildReason
 Which pipeline build reason triggered execution of code-quality-reports.
 
+.PARAMETER SourceBranch
+The branch containing changes.
+
 .PARAMETER TargetBranch
-Which branch the PR is being merged into once CI passes.
+The branch being merged into once CI passes.
 
 .PARAMETER LintingPipelineVariable
 The pipeline variable that should be set containing the linting goals.
@@ -32,6 +35,9 @@ param(
   [string]$BuildReason,
 
   [Parameter(Mandatory = $true)]
+  [string]$SourceBranch,
+
+  [Parameter(Mandatory = $true)]
   [string]$TargetBranch,
 
   [Parameter(Mandatory = $true)]
@@ -39,11 +45,10 @@ param(
 )
 
 Write-Host "Build reason: ${BuildReason}"
+Write-Host "Source branch: ${SourceBranch}"
 Write-Host "Target branch: ${TargetBranch}"
 Write-Host "Linting pipeline variable: ${LintingPipelineVariable}"
 
-$targetBranch = $TargetBranch -replace "refs/heads/"
-          
 if ($BuildReason -eq "Scheduled") {
     Write-Host "Scheduled pipeline runs always use linting goals 'checkstyle:check revapi:check spotbugs:check'"
     Write-Host "##vso[task.setvariable variable=${LintingPipelineVariable};]checkstyle:check revapi:check spotbugs:check"
@@ -53,21 +58,23 @@ if ($BuildReason -eq "Scheduled") {
 $lintingGoals = ''
 $baseDiffDirectory = 'eng/code-quality-reports/src/main'
 
-$checkstyleSourceChanged = (git diff "origin/${targetBranch}" HEAD --name-only -- "${baseDiffDirectory}/java/*").Count -gt 0
-$checkstyleConfigChanged = (git diff "origin/${targetBranch}" HEAD --name-only -- "${baseDiffDirectory}/resources/checkstyle/*").Count -gt 0
+$checkstyleSourceChanged = (git diff "origin/${targetBranch}" HEAD --name-only --relative -- "${baseDiffDirectory}/java/*").Count -gt 0
+$checkstyleConfigChanged = (git diff "origin/${targetBranch}" HEAD --name-only --relative -- "${baseDiffDirectory}/resources/checkstyle/*").Count -gt 0
 if ($checkstyleSourceChanged -or $checkstyleConfigChanged) {
     $lintingGoals += 'checkstyle:check'
 }
 
-$revapiConfigChanged = (git diff "origin/${targetBranch}" HEAD --name-only -- "${baseDiffDirectory}/resources/revapi/*").Count -gt 0
+$revapiConfigChanged = (git diff "origin/${targetBranch}" HEAD --name-only --relative -- "${baseDiffDirectory}/resources/revapi/*").Count -gt 0
 if ($revapiConfigChanged) {
     $lintingGoals += ' revapi:check'
 }
 
-$spotbugsConfigChanged = (git diff "origin/${targetBranch}" HEAD --name-only -- "${baseDiffDirectory}/resources/spotbugs/*").Count -gt 0
+$spotbugsConfigChanged = (git diff "origin/${targetBranch}" HEAD --name-only --relative -- "${baseDiffDirectory}/resources/spotbugs/*").Count -gt 0
 if ($spotbugsConfigChanged) {
     $lintingGoals += ' spotbugs:check'
 }
 
 Write-Host "Using linting goals '${lintingGoals}'"
 Write-Host "##vso[task.setvariable variable=${LintingPipelineVariable};]${lintingGoals}"
+
+exit 0
