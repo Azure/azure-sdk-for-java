@@ -115,11 +115,11 @@ function GetAdjustedReadmeContent($ReadmeContent, $PackageInfo, $PackageMetadata
     Write-Host "Code Owners are $($codeOwnerArray -join ",")"
     $author = $codeOwnerArray[0]
     try {
-      $msauthor = "$PSScriptRoot/Get-AADIdentityFromGithubUser.ps1" `
-        -TenantId $TenantId `
-        -ClientId $ClientId `
-        -ClientSecret $ClientSecret `
-        -GithubUser $author
+      $msauthor = ."$PSScriptRoot/Get-AADIdentityFromGithubUser.ps1" `
+                    -TenantId $TenantId `
+                    -ClientId $ClientId `
+                    -ClientSecret $ClientSecret `
+                    -GithubUser $author
     }
     catch {
       LogError $_
