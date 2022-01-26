@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.storage.fileshare.properties;
 
 import com.azure.spring.cloud.autoconfigure.storage.common.AzureStorageProperties;
-import com.azure.spring.service.storage.fileshare.ShareServiceClientProperties;
+import com.azure.spring.service.implementation.storage.fileshare.ShareServiceClientProperties;
 import com.azure.storage.file.share.ShareServiceVersion;
 
 /**
@@ -15,10 +15,23 @@ public class AzureStorageFileShareProperties extends AzureStorageProperties impl
     public static final String PREFIX = "spring.cloud.azure.storage.fileshare";
     public static final String FILE_ENDPOINT_PATTERN = "https://%s.file%s";
 
+    /**
+     * Share service version used when making API requests
+     */
     private ShareServiceVersion serviceVersion;
-
+    /**
+     * Name of the share.
+     */
     private String shareName;
-    private String fileName;
+    /**
+     * Path to the file. For instance, 'directory1/file1'.
+     */
+    private String filePath;
+    /**
+     * Path to the directory. For instance, 'directory1/directory2'.
+     */
+    private String directoryPath;
+
 
     public String getEndpoint() {
         return endpoint == null ? buildEndpointFromAccountName() : endpoint;
@@ -44,11 +57,19 @@ public class AzureStorageFileShareProperties extends AzureStorageProperties impl
         this.shareName = shareName;
     }
 
-    public String getFileName() {
-        return fileName;
+    public String getFilePath() {
+        return filePath;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public String getDirectoryPath() {
+        return directoryPath;
+    }
+
+    public void setDirectoryPath(String directoryPath) {
+        this.directoryPath = directoryPath;
     }
 }

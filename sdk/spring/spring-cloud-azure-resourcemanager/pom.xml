@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-resourcemanager</artifactId>
-  <version>4.0.0-beta.3</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-resourcemanager;current} -->
+  <version>4.0.0-beta.4</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-resourcemanager;current} -->
 
   <name>Spring Cloud Azure Resource Manager</name>
   <description>Spring Cloud Azure Resource Manager</description>
@@ -34,15 +34,18 @@
   </issueManagement>
 
   <properties>
-    <jacoco.min.linecoverage>0.09</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.14</jacoco.min.branchcoverage>
+    <javaModulesSurefireArgLine>
+      --add-opens com.azure.spring.resourcemanager/com.azure.spring.resourcemanager.connectionstring=ALL-UNNAMED
+      --add-opens com.azure.spring.resourcemanager/com.azure.spring.resourcemanager.provisioning.servicebus=ALL-UNNAMED
+      --add-opens com.azure.spring.resourcemanager/com.azure.spring.resourcemanager.provisioning.eventhubs=ALL-UNNAMED
+      --add-opens com.azure.spring.resourcemanager/com.azure.spring.resourcemanager.implementation.crud=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
   </properties>
-
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-core</artifactId>
-      <version>4.0.0-beta.3</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-core;current} -->
+      <version>4.0.0-beta.4</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-core;current} -->
     </dependency>
 
     <!-- com.azure.resourcemanager dependencies -->
@@ -52,6 +55,34 @@
       <version>2.10.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->
     </dependency>
 
-  </dependencies>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>4.0.0</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>5.8.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>5.3.13</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
 
+    <!-- Used to eliminate warnings when generate Java Docs.
+        Added this dependency to include necessary annotations used by reactor core.
+        Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
+        which is used in @Nullable annotation in reactor core classes -->
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+      <version>3.0.2</version> <!-- {x-version-update;com.google.code.findbugs:jsr305;external_dependency} -->
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
 </project>

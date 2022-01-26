@@ -10,6 +10,10 @@ package com.azure.spring.core.factory;
  */
 public interface AzureServiceClientBuilderFactory<T> {
 
+    /**
+     * Build an Azure SDK service client builder.
+     * @return the service client builder.
+     */
     T build();
 }
 

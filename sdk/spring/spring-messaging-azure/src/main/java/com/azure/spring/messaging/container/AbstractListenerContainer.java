@@ -15,8 +15,6 @@ abstract class AbstractListenerContainer implements BeanNameAware, DisposableBea
     private String destination;
     private String group;
     private AzureMessageHandler messageHandler;
-    private boolean autoStartup = true;
-    private int phase = 0;
 
     //Settings that are changed at runtime
     private boolean active;
@@ -105,7 +103,7 @@ abstract class AbstractListenerContainer implements BeanNameAware, DisposableBea
 
     @Override
     public int getPhase() {
-        return phase;
+        return 0;
     }
 
     @Override
@@ -116,10 +114,5 @@ abstract class AbstractListenerContainer implements BeanNameAware, DisposableBea
     @Override
     public void setMessageHandler(AzureMessageHandler messageHandler) {
         this.messageHandler = messageHandler;
-    }
-
-    @Override
-    public boolean isAutoStartup() {
-        return autoStartup;
     }
 }

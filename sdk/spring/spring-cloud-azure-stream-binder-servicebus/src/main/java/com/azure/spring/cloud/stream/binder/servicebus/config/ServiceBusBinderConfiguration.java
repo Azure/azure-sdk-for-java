@@ -9,7 +9,7 @@ import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResou
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
-import com.azure.spring.resourcemanager.provisioner.servicebus.ServiceBusProvisioner;
+import com.azure.spring.resourcemanager.provisioning.servicebus.ServiceBusProvisioner;
 import com.azure.spring.cloud.stream.binder.servicebus.ServiceBusMessageChannelBinder;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelProvisioner;

@@ -13,7 +13,7 @@ import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.service.AzureServiceType;
-import com.azure.spring.service.eventhubs.factory.EventHubClientBuilderFactory;
+import com.azure.spring.service.implementation.eventhubs.factory.EventHubClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -81,7 +81,7 @@ class AzureEventHubsConsumerClientConfiguration {
 
         @Bean(EVENT_HUB_CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME)
         @ConditionalOnMissingBean(name = EVENT_HUB_CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME)
-        public EventHubClientBuilderFactory eventHubClientBuilderFactoryForConsumer(
+        EventHubClientBuilderFactory eventHubClientBuilderFactoryForConsumer(
             ObjectProvider<ConnectionStringProvider<AzureServiceType.EventHubs>> connectionStringProviders,
             ObjectProvider<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>> customizers) {
 
@@ -96,7 +96,7 @@ class AzureEventHubsConsumerClientConfiguration {
         @Bean(EVENT_HUB_CONSUMER_CLIENT_BUILDER_BEAN_NAME)
         @ConditionalOnBean(name = EVENT_HUB_CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME)
         @ConditionalOnMissingBean(name = EVENT_HUB_CONSUMER_CLIENT_BUILDER_BEAN_NAME)
-        public EventHubClientBuilder eventHubClientBuilderForConsumer(
+        EventHubClientBuilder eventHubClientBuilderForConsumer(
             @Qualifier(EVENT_HUB_CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME) EventHubClientBuilderFactory clientBuilderFactory) {
 
             return clientBuilderFactory.build();

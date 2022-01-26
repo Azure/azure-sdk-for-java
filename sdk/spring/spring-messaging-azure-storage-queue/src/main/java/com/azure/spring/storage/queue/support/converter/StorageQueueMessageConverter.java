@@ -3,6 +3,7 @@
 
 package com.azure.spring.storage.queue.support.converter;
 
+import com.azure.core.util.BinaryData;
 import com.azure.spring.messaging.converter.AbstractAzureMessageConverter;
 import com.azure.storage.queue.models.QueueMessageItem;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,10 +17,17 @@ public class StorageQueueMessageConverter extends AbstractAzureMessageConverter<
 
     private final ObjectMapper objectMapper;
 
+    /**
+     * Create an instance of {@link StorageQueueMessageConverter}.
+     */
     public StorageQueueMessageConverter() {
         this.objectMapper = OBJECT_MAPPER;
     }
 
+    /**
+     * Create an instance of {@link StorageQueueMessageConverter}.
+     * @param objectMapper the object mapper.
+     */
     public StorageQueueMessageConverter(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
@@ -31,20 +39,20 @@ public class StorageQueueMessageConverter extends AbstractAzureMessageConverter<
 
     @Override
     protected byte[] getPayload(QueueMessageItem azureMessage) {
-        return azureMessage.getMessageText().getBytes(StandardCharsets.UTF_8);
+        return azureMessage.getBody().toBytes();
     }
 
     @Override
     protected QueueMessageItem fromString(String payload) {
         final QueueMessageItem queueMessageItem = new QueueMessageItem();
-        queueMessageItem.setMessageText(payload);
+        queueMessageItem.setBody(BinaryData.fromString(payload));
         return queueMessageItem;
     }
 
     @Override
     protected QueueMessageItem fromByte(byte[] payload) {
         final QueueMessageItem queueMessageItem = new QueueMessageItem();
-        queueMessageItem.setMessageText(new String(payload, StandardCharsets.UTF_8));
+        queueMessageItem.setBody(BinaryData.fromString(new String(payload, StandardCharsets.UTF_8)));
         return queueMessageItem;
     }
 

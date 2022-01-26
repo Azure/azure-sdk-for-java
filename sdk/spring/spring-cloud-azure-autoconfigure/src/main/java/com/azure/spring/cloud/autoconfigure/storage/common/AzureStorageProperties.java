@@ -6,7 +6,7 @@ package com.azure.spring.cloud.autoconfigure.storage.common;
 import com.azure.spring.cloud.autoconfigure.properties.core.AbstractAzureServiceConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.properties.core.client.HttpClientConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.properties.core.proxy.HttpProxyConfigurationProperties;
-import com.azure.spring.service.storage.common.StorageProperties;
+import com.azure.spring.service.implementation.storage.common.StorageProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
@@ -14,14 +14,28 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
  */
 public class AzureStorageProperties extends AbstractAzureServiceConfigurationProperties implements StorageProperties {
 
+    /**
+     * Endpoint for Azure Storage service.
+     */
     protected String endpoint;
-
+    /**
+     * Storage account access key.
+     */
     protected String accountKey;
 
+    /**
+     * Shared access signatures (SAS) token used to authorize requests sent to the service.
+     */
     protected String sasToken;
 
+    /**
+     * Connection string to connect to the service.
+     */
     protected String connectionString;
 
+    /**
+     * Name for the storage account.
+     */
     protected String accountName;
 
     @NestedConfigurationProperty

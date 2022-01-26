@@ -15,7 +15,7 @@ import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChan
 import com.azure.spring.eventhubs.core.EventHubsProcessorContainer;
 import com.azure.spring.eventhubs.core.EventHubsTemplate;
 import com.azure.spring.eventhubs.core.producer.DefaultEventHubsNamespaceProducerFactory;
-import com.azure.spring.integration.eventhubs.inbound.health.EventHusProcessorInstrumentation;
+import com.azure.spring.integration.eventhubs.inbound.health.EventHubsProcessorInstrumentation;
 import com.azure.spring.integration.instrumentation.Instrumentation;
 import com.azure.spring.integration.instrumentation.InstrumentationManager;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
@@ -24,7 +24,7 @@ import com.azure.spring.service.eventhubs.processor.BatchEventProcessingListener
 import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
 import com.azure.spring.service.eventhubs.processor.RecordEventProcessingListener;
 import com.azure.spring.service.eventhubs.processor.consumer.EventHubsErrorContextConsumer;
-import com.azure.spring.service.eventhubs.properties.EventProcessorClientProperties;
+import com.azure.spring.service.eventhubs.properties.EventBatchProperties;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -167,7 +167,7 @@ public class EventHubsHealthIndicatorTests {
         prepareConsumerProperties();
         CheckpointConfig checkpoint = eventHubsConsumerProperties.getCheckpoint();
         checkpoint.setMode(CheckpointMode.BATCH);
-        EventProcessorClientProperties.EventBatch batch = eventHubsConsumerProperties.getBatch();
+        EventBatchProperties batch = eventHubsConsumerProperties.getBatch();
         batch.setMaxSize(10);
         batch.setMaxWaitTime(Duration.ofMillis(1));
         when(consumerDestination.getName()).thenReturn(CONSUMER_NAME);
@@ -188,7 +188,7 @@ public class EventHubsHealthIndicatorTests {
         prepareConsumerProperties();
         CheckpointConfig checkpoint = eventHubsConsumerProperties.getCheckpoint();
         checkpoint.setMode(CheckpointMode.BATCH);
-        EventProcessorClientProperties.EventBatch batch = eventHubsConsumerProperties.getBatch();
+        EventBatchProperties batch = eventHubsConsumerProperties.getBatch();
         batch.setMaxSize(10);
         batch.setMaxWaitTime(Duration.ofMillis(1));
         when(consumerDestination.getName()).thenReturn(CONSUMER_NAME);
@@ -247,8 +247,8 @@ public class EventHubsHealthIndicatorTests {
                                            String instrumentationId) {
             Instrumentation instrumentation = instrumentationManager.getHealthInstrumentation(instrumentationId);
             if (instrumentation != null) {
-                if (instrumentation instanceof EventHusProcessorInstrumentation) {
-                    ((EventHusProcessorInstrumentation) instrumentation).markError(errorContext);
+                if (instrumentation instanceof EventHubsProcessorInstrumentation) {
+                    ((EventHubsProcessorInstrumentation) instrumentation).markError(errorContext);
                 } else {
                     instrumentation.markDown(errorContext.getThrowable());
                 }

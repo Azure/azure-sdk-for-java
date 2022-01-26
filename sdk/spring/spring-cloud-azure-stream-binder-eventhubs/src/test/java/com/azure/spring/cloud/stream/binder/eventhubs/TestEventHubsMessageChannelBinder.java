@@ -6,6 +6,7 @@ package com.azure.spring.cloud.stream.binder.eventhubs;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsConsumerProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsProducerProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelProvisioner;
+import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
 import com.azure.spring.integration.handler.DefaultMessageHandler;
 import com.azure.spring.integration.instrumentation.DefaultInstrumentation;
 import com.azure.spring.integration.instrumentation.Instrumentation;
@@ -21,6 +22,7 @@ public class TestEventHubsMessageChannelBinder extends EventHubsMessageChannelBi
 
     private DefaultMessageHandler messageHandler;
     private MessageProducer messageProducer;
+    private EventHubsInboundChannelAdapter inboundAdapter;
 
     public TestEventHubsMessageChannelBinder(String[] headersToEmbed,
                                              EventHubsChannelProvisioner provisioningProvider,
@@ -63,18 +65,24 @@ public class TestEventHubsMessageChannelBinder extends EventHubsMessageChannelBi
                                                        ExtendedProducerProperties<EventHubsProducerProperties> producerProperties,
                                                        MessageChannel channel,
                                                        MessageChannel errorChannel) throws Exception {
-        return super.createProducerMessageHandler(destination, producerProperties, channel, errorChannel);
+        MessageHandler handler;
+        if (messageHandler == null) {
+            handler = super.createProducerMessageHandler(destination, producerProperties, channel, errorChannel);
+        } else {
+            handler = messageHandler;
+        }
+        return handler;
     }
 
     public void addProducerDownInstrumentation() {
         DefaultInstrumentation producer = new DefaultInstrumentation("producer", Instrumentation.Type.PRODUCER);
         producer.markDown(new IllegalArgumentException("Producer exception"));
-        getInstrumentationManager().addHealthInstrumentation("producer", producer);
+        getInstrumentationManager().addHealthInstrumentation(producer);
     }
 
     public void addProcessorDownInstrumentation() {
         DefaultInstrumentation processor = new DefaultInstrumentation("Processor", Instrumentation.Type.PRODUCER);
         processor.markDown(new IllegalArgumentException("Processor exception"));
-        getInstrumentationManager().addHealthInstrumentation("Processor", processor);
+        getInstrumentationManager().addHealthInstrumentation(processor);
     }
 }

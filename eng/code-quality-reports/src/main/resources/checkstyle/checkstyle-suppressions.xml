@@ -422,8 +422,7 @@ the main ServiceBusClientBuilder. -->
       files="com.azure.cosmos.ClientSideRequestStatistics"/>
   <suppress checks="IllegalImport"
             files="com.azure.cosmos.ClientSideRequestStatistics"/> <!-- Need OperatingSystemMXBean from sun to obtain cpu info -->
-  <suppress checks="EnforceFinalFields" files="com.azure.spring.cloud.config.AppConfigurationPropertySourceLocator"
-/>
+  <suppress checks="EnforceFinalFields" files="com.azure.spring.cloud.config.AppConfigurationPropertySourceLocator"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-spring-cloud-feature-management[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-spring-cloud-feature-management-web[/\\]"/>
 
@@ -476,15 +475,10 @@ the main ServiceBusClientBuilder. -->
   <!-- ExternalDependencyExposedCheck: Spring will directly use classes from spring dependencies in methods-->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
 
-  <!-- JavadocPackage: Temporarily skip -->
-  <suppress checks="JavadocPackage" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
-
-  <!-- MissingJavadocMethod: Temporarily skip -->
-  <suppress checks="MissingJavadocMethod" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
-  <!-- JavadocThrowsChecks: Temporarily skip -->
-  <suppress checks="JavadocThrowsChecks" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
-  <!-- MissingJavadocMethod: internal packages -->
-  <suppress checks="MissingJavadocType|JavadocThrowsChecks|EnforceFinalFields" files=".*[/\\]com[/\\]azure[/\\]spring[/\\]integration[/\\]test.*"/>
+  <suppress files="com.azure.spring[\\/].*Properties\.java" checks="MissingJavadocMethod" />
+  <suppress files="com.azure.spring[\\/].*AutoConfiguration\.java" checks="MissingJavadocMethod|JavadocThrowsChecks" />
+  <suppress files="com.azure.spring[\\/].*Configuration\.java" checks="MissingJavadocMethod" />
+  <suppress files="com.azure.spring[\\/].*Metadata\.java" checks="MissingJavadocMethod" />
 
   <!--BlacklistedWordsCheck: URL is the name -->
   <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files="com.azure.spring.core.resource.StorageBlobResource.java"/>
@@ -493,32 +487,14 @@ the main ServiceBusClientBuilder. -->
   <!-- EnforceFinalFieldsCheck: The property will be filled by Spring framework -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.data.cosmos.core.query.CosmosPageRequest.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.messaging.container.AbstractListenerContainer.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="ServiceBusTopicBinderConfiguration.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="ServiceBusQueueBinderConfiguration.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.stream.binder.eventhubs.config.EventHubsBinderConfiguration.java"/>
 
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.autoconfigure.keyvault.env.KeyVaultOperation.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.autoconfigure.data.cosmos.CosmosDataAutoConfiguration.java"/>
-
-  <suppress checks="MethodName" files="com.azure.spring.messaging.checkpoint.CheckpointConfig.java"/>
-  <suppress checks="MethodName" files="com.azure.spring.servicebus.support.ServiceBusClientConfig.java"/>
-
-  <!-- Suppress warnings for EventProcessorSharedAuthenticationClientBuilder and EventHubSharedAuthenticationClientBuilder. They are used by Azure Spring. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="EventHubNamespaceProcessorClientBuilder.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="EventHubNamespaceClientBuilder.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusConsumerClientConfiguration.java"/>
 
   <!-- Checkstyle suppressions for azure.spring.data.cosmos package -->
   <suppress checks="MethodName|MemberName|ParameterName" files="src[/\\]test[/\\]java[/\\]com[/\\]azure[/\\]spring[/\\]data[/\\]cosmos[/\\]domain|repository.*.java"/>
   <suppress checks="MethodName" files="com.azure.spring.data.cosmos.config.CosmosConfig.java"/>
   <suppress checks="PackageName" files="com.azure.spring.data.cosmos.multidatasource.*\.java"/>
   <suppress checks="MemberName" files="com.azure.spring.data.cosmos.MyItem.java"/>
-
-  <!-- Checkstyle suppressions for com.microsoft.azure.spring package,
-  if you change the package name to com.azure.spring, please remove the configuration here. -->
-  <suppress checks="ConstantName|VisibilityModifier" files="src[/\\]test[/\\]java[/\\]com[/\\]microsoft[/\\]azure[/\\]spring[/\\]cloud[/\\]config|properties.*.java"/>
-
   <!-- ### end: Spring related suppression -->
 
   <!-- False positive as the methods are implemented in an anonymous class that is not exposed publicly. EntityHelper's

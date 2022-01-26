@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-core</artifactId>
-  <version>4.0.0-beta.3</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-core;current} -->
+  <version>4.0.0-beta.4</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-core;current} -->
 
   <name>Spring Cloud Azure Core</name>
   <url>https://microsoft.github.io/spring-cloud-azure</url>
@@ -38,13 +38,13 @@
     <!-- https://issues.apache.org/jira/browse/SUREFIRE-1563 -->
     <javaModulesSurefireArgLine>
       --add-modules com.azure.storage.blob
-      --add-modules com.azure.storage.internal.avro
       --add-modules com.azure.storage.file.share
-      --add-opens com.azure.spring.core/com.azure.spring.core=ALL-UNNAMED
+      --add-modules com.azure.storage.internal.avro
       --add-opens com.azure.spring.core/com.azure.spring.core.factory=ALL-UNNAMED
       --add-opens com.azure.spring.core/com.azure.spring.core.implementation.connectionstring=ALL-UNNAMED
       --add-opens com.azure.spring.core/com.azure.spring.core.resource=ALL-UNNAMED
       --add-opens com.azure.spring.core/com.azure.spring.core.util=ALL-UNNAMED
+      --add-opens com.azure.spring.core/com.azure.spring.core=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 

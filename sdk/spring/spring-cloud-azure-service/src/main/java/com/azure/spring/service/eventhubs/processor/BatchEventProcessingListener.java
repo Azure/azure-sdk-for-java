@@ -11,6 +11,10 @@ import com.azure.messaging.eventhubs.models.EventBatchContext;
  */
 public interface BatchEventProcessingListener extends EventProcessingListener {
 
+    /**
+     * The event batch processing callback.
+     * @param eventBatchContext the event batch context.
+     */
     void onEventBatch(EventBatchContext eventBatchContext);
 
 }

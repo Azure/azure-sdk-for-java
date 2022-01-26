@@ -24,6 +24,12 @@ abstract class AzureStorageResource extends AbstractResource implements Writable
         return location.toLowerCase(Locale.ROOT).startsWith(getProtocolPrefix());
     }
 
+    /**
+     * Get the storage container(fileShare) name from the given location.
+     *
+     * @param location the location represents the resource
+     * @return the container name of current location
+     */
     String getContainerName(String location) {
         assertIsAzureStorageLocation(location);
         int containerEndIndex = assertContainerValid(location);
@@ -44,6 +50,12 @@ abstract class AzureStorageResource extends AbstractResource implements Writable
         return null;
     }
 
+    /**
+     * Get the file name from the given location.
+     *
+     * @param location the location represents the resource
+     * @return the file name of current location
+     */
     String getFilename(String location) {
         assertIsAzureStorageLocation(location);
         int containerEndIndex = assertContainerValid(location);

@@ -15,7 +15,7 @@ import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.service.AzureServiceType;
-import com.azure.spring.service.appconfiguration.ConfigurationClientBuilderFactory;
+import com.azure.spring.service.implementation.appconfiguration.ConfigurationClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -55,13 +55,13 @@ public class AzureAppConfigurationAutoConfiguration extends AzureServiceConfigur
 
     @Bean
     @ConditionalOnMissingBean
-    public ConfigurationClientBuilder configurationClientBuilder(ConfigurationClientBuilderFactory factory) {
+    ConfigurationClientBuilder configurationClientBuilder(ConfigurationClientBuilderFactory factory) {
         return factory.build();
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public ConfigurationClientBuilderFactory configurationClientBuilderFactory(
+    ConfigurationClientBuilderFactory configurationClientBuilderFactory(
         AzureAppConfigurationProperties properties,
         ObjectProvider<ConnectionStringProvider<AzureServiceType.AppConfiguration>> connectionStringProviders,
         ObjectProvider<AzureServiceClientBuilderCustomizer<ConfigurationClientBuilder>> customizers) {

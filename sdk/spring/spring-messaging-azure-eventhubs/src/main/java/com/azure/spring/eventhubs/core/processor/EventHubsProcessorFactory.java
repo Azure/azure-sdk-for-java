@@ -43,8 +43,20 @@ public interface EventHubsProcessorFactory {
      */
     interface Listener {
 
+        /**
+         * The callback method that the processor has been added.
+         * @param eventHub the event hub name.
+         * @param consumerGroup the consumer group.
+         * @param client the client for the processor.
+         */
         void processorAdded(String eventHub, String consumerGroup, EventProcessorClient client);
 
+        /**
+         * The default callback method that the processor has been removed.
+         * @param eventHub the event hub name.
+         * @param consumerGroup the consumer group.
+         * @param client the client for the processor.
+         */
         default void processorRemoved(String eventHub, String consumerGroup, EventProcessorClient client) {
         }
 

@@ -16,7 +16,7 @@ import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.eventhubs.core.properties.ProcessorProperties;
 import com.azure.spring.eventhubs.core.properties.ProducerProperties;
 import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
-import com.azure.spring.integration.eventhubs.inbound.health.EventHusProcessorInstrumentation;
+import com.azure.spring.integration.eventhubs.inbound.health.EventHubsProcessorInstrumentation;
 import com.azure.spring.integration.handler.DefaultMessageHandler;
 import com.azure.spring.integration.instrumentation.DefaultInstrumentation;
 import com.azure.spring.integration.instrumentation.DefaultInstrumentationManager;
@@ -100,7 +100,7 @@ public class EventHubsMessageChannelBinder extends
 
         handler.setBeanFactory(getBeanFactory());
         handler.setSync(producerProperties.getExtension().isSync());
-        handler.setSendTimeout(producerProperties.getExtension().getSendTimeout());
+        handler.setSendTimeout(producerProperties.getExtension().getSendTimeout().toMillis());
         handler.setSendFailureChannel(errorChannel);
 
         String instrumentationId = Instrumentation.buildId(PRODUCER, destination.getName());
@@ -209,7 +209,7 @@ public class EventHubsMessageChannelBinder extends
             factory.addListener((name, producerAsyncClient) -> {
                 DefaultInstrumentation instrumentation = new DefaultInstrumentation(name, PRODUCER);
                 instrumentation.markUp();
-                instrumentationManager.addHealthInstrumentation(instrumentation.getId(), instrumentation);
+                instrumentationManager.addHealthInstrumentation(instrumentation);
             });
             this.eventHubsTemplate = new EventHubsTemplate(factory);
         }
@@ -222,9 +222,9 @@ public class EventHubsMessageChannelBinder extends
                 this.checkpointStore, this.namespaceProperties, getProcessorPropertiesSupplier());
             factory.addListener((name, consumerGroup, processorClient) -> {
                 String instrumentationName = name + "/" + consumerGroup;
-                Instrumentation instrumentation = new EventHusProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));
+                Instrumentation instrumentation = new EventHubsProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));
                 instrumentation.markUp();
-                instrumentationManager.addHealthInstrumentation(instrumentation.getId(), instrumentation);
+                instrumentationManager.addHealthInstrumentation(instrumentation);
             });
             this.processorContainer = new EventHubsProcessorContainer(factory);
         }

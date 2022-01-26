@@ -10,16 +10,15 @@ import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.cosmos.properties.AzureCosmosProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
+import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
-import com.azure.spring.service.cosmos.CosmosClientBuilderFactory;
+import com.azure.spring.service.implementation.cosmos.CosmosClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-
-import static com.azure.spring.core.AzureSpringIdentifier.AZURE_SPRING_COSMOS;
 
 /**
  * Auto-configuration for a {@link CosmosClientBuilder} and cosmos clients.
@@ -54,16 +53,16 @@ public class AzureCosmosAutoConfiguration extends AzureServiceConfigurationBase 
 
     @Bean
     @ConditionalOnMissingBean
-    public CosmosClientBuilder cosmosClientBuilder(CosmosClientBuilderFactory factory) {
+    CosmosClientBuilder cosmosClientBuilder(CosmosClientBuilderFactory factory) {
         return factory.build();
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public CosmosClientBuilderFactory cosmosClientBuilderFactory(AzureCosmosProperties properties,
+    CosmosClientBuilderFactory cosmosClientBuilderFactory(AzureCosmosProperties properties,
         ObjectProvider<AzureServiceClientBuilderCustomizer<CosmosClientBuilder>> customizers) {
         CosmosClientBuilderFactory factory = new CosmosClientBuilderFactory(properties);
-        factory.setSpringIdentifier(AZURE_SPRING_COSMOS);
+        factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_COSMOS);
         customizers.orderedStream().forEach(factory::addBuilderCustomizer);
         return factory;
     }

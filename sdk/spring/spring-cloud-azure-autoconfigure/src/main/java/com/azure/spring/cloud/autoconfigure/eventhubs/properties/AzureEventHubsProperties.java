@@ -3,16 +3,18 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhubs.properties;
 
+import com.azure.messaging.eventhubs.LoadBalancingStrategy;
 import com.azure.spring.cloud.autoconfigure.storage.blob.properties.AzureStorageBlobProperties;
 import com.azure.spring.core.util.AzurePropertiesUtils;
-import com.azure.spring.service.eventhubs.properties.EventHubConsumerProperties;
-import com.azure.spring.service.eventhubs.properties.EventHubProducerProperties;
-import com.azure.spring.service.eventhubs.properties.EventHubsNamespaceProperties;
-import com.azure.spring.service.eventhubs.properties.EventProcessorClientProperties;
+import com.azure.spring.service.implementation.eventhubs.properties.EventHubConsumerProperties;
+import com.azure.spring.service.implementation.eventhubs.properties.EventHubProducerProperties;
+import com.azure.spring.service.implementation.eventhubs.properties.EventHubsNamespaceProperties;
+import com.azure.spring.service.implementation.eventhubs.properties.EventProcessorClientProperties;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.context.properties.PropertyMapper;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,7 +25,10 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties imp
 
     public static final String PREFIX = "spring.cloud.azure.eventhubs";
 
-    private Boolean isSharedConnection;
+    /**
+     * Whether to share the same connection for producers or consumers.
+     */
+    private Boolean sharedConnection;
     private final Producer producer = new Producer();
     private final Consumer consumer = new Consumer();
     private final Processor processor = new Processor();
@@ -107,11 +112,11 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties imp
     }
 
     public Boolean getSharedConnection() {
-        return isSharedConnection;
+        return sharedConnection;
     }
 
     public void setSharedConnection(Boolean sharedConnection) {
-        isSharedConnection = sharedConnection;
+        this.sharedConnection = sharedConnection;
     }
 
     public Producer getProducer() {
@@ -172,8 +177,17 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties imp
      */
     public static class Processor extends Consumer implements EventProcessorClientProperties {
 
+        /**
+         * Whether request information on the last enqueued event on its associated partition, and track that information as events are received.
+         */
         private Boolean trackLastEnqueuedEventProperties;
+        /**
+         * Map event position to use for each partition if a checkpoint for the partition does not exist in CheckpointStore.
+         */
         private Map<String, StartPosition> initialPartitionEventPosition = new HashMap<>();
+        /**
+         * Duration after which the ownership of partition expires if it's not renewed.
+         */
         private Duration partitionOwnershipExpirationInterval;
         private final EventBatch batch = new EventBatch();
         private final LoadBalancing loadBalancing = new LoadBalancing();
@@ -216,17 +230,135 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties imp
         }
 
         /**
+         * The starting position from which to consume events.
+         */
+        public static class StartPosition implements EventProcessorClientProperties.StartPosition {
+
+            /**
+             * The offset of the event within that partition. String keyword, "earliest" and "latest" (case-insensitive),
+             * are reserved for specifying the start and end of the partition. Other provided value will be cast to Long.
+             */
+            private String offset;
+            /**
+             * The sequence number of the event within that partition.
+             */
+            private Long sequenceNumber;
+            /**
+             * The event enqueued after the requested enqueuedDateTime becomes the current position.
+             */
+            private Instant enqueuedDateTime;
+            /**
+             * Whether the event of the specified sequence number is included.
+             */
+            private boolean inclusive;
+
+            @Override
+            public String getOffset() {
+                return offset;
+            }
+
+            public void setOffset(String offset) {
+                this.offset = offset;
+            }
+
+            @Override
+            public Long getSequenceNumber() {
+                return sequenceNumber;
+            }
+
+            public void setSequenceNumber(Long sequenceNumber) {
+                this.sequenceNumber = sequenceNumber;
+            }
+
+            @Override
+            public Instant getEnqueuedDateTime() {
+                return enqueuedDateTime;
+            }
+
+            public void setEnqueuedDateTime(Instant enqueuedDateTime) {
+                this.enqueuedDateTime = enqueuedDateTime;
+            }
+
+            public boolean isInclusive() {
+                return inclusive;
+            }
+
+            public void setInclusive(boolean inclusive) {
+                this.inclusive = inclusive;
+            }
+        }
+
+        /**
          * Event processor load balancing properties.
          */
-        public static class LoadBalancing extends EventProcessorClientProperties.LoadBalancing {
+        public static class LoadBalancing implements EventProcessorClientProperties.LoadBalancing {
+            /**
+             * The time interval between load balancing update cycles.
+             */
+            private Duration updateInterval;
+            /**
+             * The load balancing strategy for claiming partition ownership.
+             */
+            private LoadBalancingStrategy strategy = LoadBalancingStrategy.BALANCED;
+            /**
+             * The time duration after which the ownership of partition expires.
+             */
+            private Duration partitionOwnershipExpirationInterval;
 
+            public Duration getUpdateInterval() {
+                return updateInterval;
+            }
+
+            public void setUpdateInterval(Duration updateInterval) {
+                this.updateInterval = updateInterval;
+            }
+
+            public LoadBalancingStrategy getStrategy() {
+                return strategy;
+            }
+
+            public void setStrategy(LoadBalancingStrategy strategy) {
+                this.strategy = strategy;
+            }
+
+            public Duration getPartitionOwnershipExpirationInterval() {
+                return partitionOwnershipExpirationInterval;
+            }
+
+            public void setPartitionOwnershipExpirationInterval(Duration partitionOwnershipExpirationInterval) {
+                this.partitionOwnershipExpirationInterval = partitionOwnershipExpirationInterval;
+            }
         }
 
         /**
          * Event processor batch properties.
          */
-        public static class EventBatch extends EventProcessorClientProperties.EventBatch {
+        public static class EventBatch implements EventProcessorClientProperties.EventBatch {
 
+            /**
+             * The max time duration to wait to receive an event before processing events.
+             */
+            private Duration maxWaitTime;
+            /**
+             * The maximum number of events that will be in the batch.
+             */
+            private Integer maxSize;
+
+            public Duration getMaxWaitTime() {
+                return maxWaitTime;
+            }
+
+            public void setMaxWaitTime(Duration maxWaitTime) {
+                this.maxWaitTime = maxWaitTime;
+            }
+
+            public Integer getMaxSize() {
+                return maxSize;
+            }
+
+            public void setMaxSize(Integer maxSize) {
+                this.maxSize = maxSize;
+            }
         }
 
         /**
@@ -234,6 +366,9 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties imp
          */
         public static class BlobCheckpointStore extends AzureStorageBlobProperties {
 
+            /**
+             * Whether to create the container if it does not exist.
+             */
             private Boolean createContainerIfNotExists;
 
 
