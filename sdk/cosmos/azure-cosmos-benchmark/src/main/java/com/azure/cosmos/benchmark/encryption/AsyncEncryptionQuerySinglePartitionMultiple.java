@@ -5,11 +5,11 @@ package com.azure.cosmos.benchmark.encryption;
 
 import com.azure.cosmos.benchmark.Configuration;
 import com.azure.cosmos.benchmark.PojoizedJson;
+import com.azure.cosmos.encryption.mdesrc.cryptography.MicrosoftDataEncryptionException;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.CosmosPagedFlux;
-import com.microsoft.data.encryption.cryptography.MicrosoftDataEncryptionException;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.scheduler.Schedulers;
 
