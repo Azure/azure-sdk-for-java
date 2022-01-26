@@ -10,23 +10,20 @@ import com.azure.resourcemanager.deviceprovisioningservices.models.IotDpsSkuInfo
 import java.util.Arrays;
 import java.util.List;
 
-public class Constants
-{
+public class Constants {
     static final String DEFAULT_LOCATION = "WestUS2";
     static final String OWNER_ACCESS_KEY_NAME = "provisioningserviceowner";
     static final String IOTHUB_OWNER_ACCESS_KEY_NAME = "iothubowner";
 
-    public static class DefaultSku
-    {
+    public static class DefaultSku {
         static final String NAME = "S1";
         static final Long CAPACITY = 1L;
-        static IotDpsSkuInfo INSTANCE = new IotDpsSkuInfo()
+        static final IotDpsSkuInfo INSTANCE = new IotDpsSkuInfo()
             .withCapacity(Constants.DefaultSku.CAPACITY)
             .withName(IotDpsSku.fromString(Constants.DefaultSku.NAME));
     }
 
-    public static class Certificate
-    {
+    public static class Certificate {
         static final String CONTENT =
             "MIIBvjCCAWOgAwIBAgIQG6PoBFT6GLJGNKn/EaxltTAKBggqhkjOPQQDAjAcMRow"
             + "GAYDVQQDDBFBenVyZSBJb1QgUm9vdCBDQTAeFw0xNzExMDMyMDUyNDZaFw0xNzEy"

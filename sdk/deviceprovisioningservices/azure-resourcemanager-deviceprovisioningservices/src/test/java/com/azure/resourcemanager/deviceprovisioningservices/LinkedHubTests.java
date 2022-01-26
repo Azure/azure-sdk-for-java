@@ -22,11 +22,10 @@ import static com.azure.resourcemanager.deviceprovisioningservices.Constants.DEF
 import static com.azure.resourcemanager.deviceprovisioningservices.Constants.IOTHUB_OWNER_ACCESS_KEY_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class LinkedHubTests extends DeviceProvisioningTestBase
-{
+public class LinkedHubTests extends DeviceProvisioningTestBase {
     @Test
     @DoNotRecord(skipInPlayback = true)
-    public void LinkedHubsCRUD() {
+    public void linkedHubsCRUD() {
         ResourceManager resourceManager = createResourceManager();
         IotDpsManager iotDpsManager = createIotDpsManager();
         IotHubManager iotHubManager = createIotHubManager();
@@ -76,7 +75,7 @@ public class LinkedHubTests extends DeviceProvisioningTestBase
             assertEquals(hubName + ".azure-devices.net", provisioningServiceDescription.properties().iotHubs().iterator().next().name());
         } finally {
             // No matter if the test fails or not, delete the resource group that contains these test resources
-            resourceManager.resourceGroups().beginDeleteByName(resourceGroup.name());
+            deleteResourceGroup(resourceManager, resourceGroup);
         }
     }
 }

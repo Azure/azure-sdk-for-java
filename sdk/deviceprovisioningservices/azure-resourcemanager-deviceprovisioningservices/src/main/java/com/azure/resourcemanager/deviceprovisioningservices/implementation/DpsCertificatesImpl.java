@@ -353,8 +353,7 @@ public final class DpsCertificatesImpl implements DpsCertificates {
                 localCertificateLastUpdated,
                 localCertificateHasPrivateKey,
                 localCertificateNonce,
-                Context.NONE)
-            .getValue();
+                Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(

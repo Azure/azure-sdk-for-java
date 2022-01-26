@@ -44,6 +44,20 @@ public final class EmailChannel extends Channel {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public EmailChannel withEtag(String etag) {
+        super.withEtag(etag);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EmailChannel withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

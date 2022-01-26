@@ -18,11 +18,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class DeviceProvisioningResourceManagementTests extends DeviceProvisioningTestBase
-{
+public class DeviceProvisioningResourceManagementTests extends DeviceProvisioningTestBase {
     @Test
     @DoNotRecord(skipInPlayback = true)
-    public void ServiceCRUD() {
+    public void serviceCRUD() {
         ResourceManager resourceManager = createResourceManager();
         IotDpsManager iotDpsManager = createIotDpsManager();
         ResourceGroup resourceGroup = createResourceGroup(resourceManager);
@@ -83,7 +82,7 @@ public class DeviceProvisioningResourceManagementTests extends DeviceProvisionin
             iotDpsManager.iotDpsResources().delete(resourceGroup.name(), serviceName, Context.NONE);
         } finally {
             // No matter if the test fails or not, delete the resource group that contains these test resources
-            resourceManager.resourceGroups().beginDeleteByName(resourceGroup.name());
+            deleteResourceGroup(resourceManager, resourceGroup);
         }
     }
 
@@ -118,13 +117,13 @@ public class DeviceProvisioningResourceManagementTests extends DeviceProvisionin
             assertEquals(expectedSkuCapacity, provisioningServiceDescription.sku().capacity());
         } finally {
             // No matter if the test fails or not, delete the resource group that contains these test resources
-            resourceManager.resourceGroups().beginDeleteByName(resourceGroup.name());
+            deleteResourceGroup(resourceManager, resourceGroup);
         }
     }
 
     @Test
     @DoNotRecord(skipInPlayback = true)
-    public void CreateFailure() {
+    public void createFailure() {
         ResourceManager resourceManager = createResourceManager();
         IotDpsManager iotDpsManager = createIotDpsManager();
         ResourceGroup resourceGroup = createResourceGroup(resourceManager);
@@ -144,7 +143,7 @@ public class DeviceProvisioningResourceManagementTests extends DeviceProvisionin
             // expected throw
         } finally {
             // No matter if the test fails or not, delete the resource group that contains these test resources
-            resourceManager.resourceGroups().beginDeleteByName(resourceGroup.name());
+            deleteResourceGroup(resourceManager, resourceGroup);
         }
     }
 }
