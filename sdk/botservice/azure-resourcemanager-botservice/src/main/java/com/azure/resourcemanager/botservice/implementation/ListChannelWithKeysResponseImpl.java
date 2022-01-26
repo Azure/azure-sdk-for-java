@@ -4,21 +4,24 @@
 
 package com.azure.resourcemanager.botservice.implementation;
 
-import com.azure.resourcemanager.botservice.fluent.models.BotChannelInner;
-import com.azure.resourcemanager.botservice.models.BotChannel;
+import com.azure.resourcemanager.botservice.fluent.models.ListChannelWithKeysResponseInner;
 import com.azure.resourcemanager.botservice.models.Channel;
+import com.azure.resourcemanager.botservice.models.ChannelSettings;
 import com.azure.resourcemanager.botservice.models.Kind;
+import com.azure.resourcemanager.botservice.models.ListChannelWithKeysResponse;
 import com.azure.resourcemanager.botservice.models.Sku;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public final class BotChannelImpl implements BotChannel {
-    private BotChannelInner innerObject;
+public final class ListChannelWithKeysResponseImpl implements ListChannelWithKeysResponse {
+    private ListChannelWithKeysResponseInner innerObject;
 
     private final com.azure.resourcemanager.botservice.BotServiceManager serviceManager;
 
-    BotChannelImpl(BotChannelInner innerObject, com.azure.resourcemanager.botservice.BotServiceManager serviceManager) {
+    ListChannelWithKeysResponseImpl(
+        ListChannelWithKeysResponseInner innerObject,
+        com.azure.resourcemanager.botservice.BotServiceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -73,7 +76,27 @@ public final class BotChannelImpl implements BotChannel {
         }
     }
 
-    public BotChannelInner innerModel() {
+    public Channel resource() {
+        return this.innerModel().resource();
+    }
+
+    public ChannelSettings setting() {
+        return this.innerModel().setting();
+    }
+
+    public String provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
+    public String entityTag() {
+        return this.innerModel().entityTag();
+    }
+
+    public String changedTime() {
+        return this.innerModel().changedTime();
+    }
+
+    public ListChannelWithKeysResponseInner innerModel() {
         return this.innerObject;
     }
 
