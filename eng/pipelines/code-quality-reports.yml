@@ -71,7 +71,6 @@ jobs:
           filePath: $(System.DefaultWorkingDirectory)/eng/pipelines/scripts/Get-Linting-Commands.ps1
           arguments: -BuildReason $(Build.Reason) -SourceBranch "HEAD" -TargetBranch "origin/$("$(System.PullRequest.TargetBranch)" -replace "refs/heads/")" -LintingPipelineVariable "LintingGoals"
           pwsh: true
-          workingDirectory: $(Pipeline.Workspace)
         displayName: 'Generate Linting Commands'
 
       - ${{ if not(eq(variables['LintingGoals'], '')) }}:
