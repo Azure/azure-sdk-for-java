@@ -66,34 +66,13 @@ jobs:
           SkipDefaultCheckout: true
           Paths: $(CheckoutDirectories)
 
-      - pwsh: |
-          $targetBranch = "$(System.PullRequest.TargetBranch)" -replace "refs/heads/"
-          
-          if ("$(Build.Reason)" -eq "Scheduled") {
-            Write-Host "Scheduled pipeline runs always use linting goals 'checkstyle:check revapi:check spotbugs:check'"
-            Write-Host "##vso[task.setvariable variable=LintingGoals;]checkstyle:check revapi:check spotbugs:check"
-          }
-          
-          $lintingGoals = ''
-          $baseDiffDirectory = 'eng/code-quality-reports/src/main'
-          $checkstyleSourceChanged = (git diff "origin/${targetBranch}" HEAD --name-only -- "${baseDiffDirectory}/java/*").Count > 0
-          $checkstyleConfigChanged = (git diff "origin/${targetBranch}" HEAD --name-only -- "${baseDiffDirectory}/resources/checkstyle/*").Count > 0
-          if ($checkstyleSourceChanged -or $checkstyleConfigChanged) {
-            $lintingGoals += 'checkstyle:check'
-          }
-          
-          $revapiConfigChanged = (git diff "origin/${targetBranch}" HEAD --name-only -- "${baseDiffDirectory}/resources/revapi/*").Count > 0
-          if ($revapiConfigChanged) {
-            $lintingGoals += ' revapi:check'
-          }
-          
-          $spotbugsConfigChanged = (git diff "origin/${targetBranch}" HEAD --name-only -- "${baseDiffDirectory}/resources/spotbugs/*").Count > 0
-          if ($spotbugsConfigChanged) {
-            $lintingGoals += ' spotbugs:check'
-          }
-          
-          Write-Host "Using linting goals '${lintingGoals}'"
-          Write-Host "##vso[task.setvariable variable=LintingGoals;]${lintingGoals}"
+      - task: PowerShell@2
+        inputs:
+          filePath: $(System.DefaultWorkingDirectory)/eng/pipelines/scripts/Get-Linting-Commands.ps1
+          arguments: -BuildReason $(Build.Reason) -TargetBranch $(System.PullRequest.TargetBranch) -PipelineVariable "LintingGoals"
+          pwsh: true
+          workingDirectory: $(Pipeline.Workspace)
+        displayName: 'Generate Linting Commands'
 
       - ${{ if not(eq(variables['LintingGoals'], '')) }}:
         - task: Maven@3
