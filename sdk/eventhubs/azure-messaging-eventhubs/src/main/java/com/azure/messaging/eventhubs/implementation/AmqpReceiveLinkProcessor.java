@@ -617,16 +617,16 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                     .addKeyValue(ENTITY_PATH_KEY, entityPath)
                     .addKeyValue(CREDITS_KEY, credits)
                     .addKeyValue("message", message)
-                    .log("Link running low on credits. Adding more.");                
-                link.addCredits(credits).subscribe(noop -> {
-                }, error -> {
-                    logger.atInfo()
-                        .addKeyValue(LINK_NAME_KEY, linkName)
-                        .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                        .log("Link was already closed. Could not add credits.");
+                    .log("Link running low on credits. Adding more.");
+               link.addCredits(credits).subscribe(noop -> {
+               }, error -> {
+                   logger.atInfo()
+                       .addKeyValue(LINK_NAME_KEY, linkName)
+                       .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                       .log("Link was already closed. Could not add credits.");
 
-                    linkHasNoCredits.compareAndSet(false, true);
-                });
+                   linkHasNoCredits.compareAndSet(false, true);
+               });
             }
         }
     }

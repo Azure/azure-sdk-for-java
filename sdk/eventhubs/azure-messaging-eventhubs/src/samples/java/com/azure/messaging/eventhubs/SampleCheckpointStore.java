@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.OWNER_ID_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.SEQUENCE_NUMBER_KEY;
 
@@ -87,7 +88,7 @@ public class SampleCheckpointStore implements CheckpointStore {
             .doOnNext(partitionOwnership ->
                 logger.atInfo()
                     .addKeyValue(PARTITION_ID_KEY, partitionOwnership.getPartitionId())
-                    .addKeyValue("ownerId", partitionOwnership.getOwnerId())
+                    .addKeyValue(OWNER_ID_KEY, partitionOwnership.getOwnerId())
                     .log("Ownership claimed."))
             .map(partitionOwnership -> {
                 partitionOwnership.setETag(UUID.randomUUID().toString())
