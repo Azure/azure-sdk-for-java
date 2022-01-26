@@ -21,10 +21,21 @@
     <developerConnection></developerConnection>
     <url>https://github.com/Azure/azure-sdk-for-java/sdk/cosmos/azure-cosmos-spark_3-2_2-12</url>
   </scm>
+  <organization>
+    <name>Microsoft Corporation</name>
+    <url>http://microsoft.com</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>The MIT License (MIT)</name>
+      <url>http://opensource.org/licenses/MIT</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
   <developers>
     <developer>
       <id>microsoft</id>
-      <name>Microsoft</name>
+      <name>Microsoft Corporation</name>
     </developer>
   </developers>
   <properties>

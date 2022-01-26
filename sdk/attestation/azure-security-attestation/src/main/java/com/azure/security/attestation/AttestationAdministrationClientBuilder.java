@@ -182,7 +182,7 @@ public final class AttestationAdministrationClientBuilder {
      *
      * Instantiating a synchronous Attestation client:
      * <br>
-     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClientBuilder.buildClient -->
+     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClientBuilder.buildAsyncClient -->
      * <pre>
      * AttestationAdministrationAsyncClient asyncClient = new AttestationAdministrationClientBuilder&#40;&#41;
      *     .endpoint&#40;endpoint&#41;
