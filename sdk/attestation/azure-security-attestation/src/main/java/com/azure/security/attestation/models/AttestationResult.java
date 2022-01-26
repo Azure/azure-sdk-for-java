@@ -6,7 +6,7 @@ package com.azure.security.attestation.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
 
-import java.time.Instant;
+import java.time.OffsetDateTime;
 
 /**
  * An AttestationResult contains the defined claims included in a Microsoft Azure Attestation Token.
@@ -43,7 +43,7 @@ public interface AttestationResult {
      *
      * @return the IssuedAt value.
      */
-    Instant getIssuedAt();
+    OffsetDateTime getIssuedAt();
 
     /**
      * Get the ExpiresOn property: The expiration time after which the token is no longer valid. The ExpiresOn property
@@ -51,7 +51,7 @@ public interface AttestationResult {
      *
      * @return the expiration time for the token.
      */
-    Instant getExpiresOn();
+    OffsetDateTime getExpiresOn();
 
     /**
      * Get the NotBefore property: The time before which a token cannot be considered valid. The ExpiresOn property
@@ -59,7 +59,7 @@ public interface AttestationResult {
      *
      * @return the time before which the token is invalid.
      */
-    Instant getNotBefore();
+    OffsetDateTime getNotBefore();
 
     /**
      * Returns the  Nonce input to the attestation request, if provided. The Nonce claim corresponds to the
@@ -146,7 +146,7 @@ public interface AttestationResult {
      *
      * @return the productId value.
      */
-    Float getProductId();
+    int getProductId();
 
     /**
      * Get the mrEnclave property: The HEX encoded SGX MRENCLAVE value for the enclave.
@@ -175,7 +175,7 @@ public interface AttestationResult {
      *
      * @return the svn value.
      */
-    Float getSvn();
+    int getSvn();
 
     /**
      * Get the enclaveHeldData property: A copy of the RuntimeData specified as an input to the call to attest if

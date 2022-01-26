@@ -27,7 +27,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.security.attestation.implementation.AttestationClientImpl;
 import com.azure.security.attestation.models.AttestationPolicySetOptions;
 import com.azure.security.attestation.models.AttestationTokenValidationOptions;
@@ -138,7 +137,6 @@ public final class AttestationAdministrationClientBuilder {
     private Configuration configuration;
     private AttestationServiceVersion serviceVersion;
     private AttestationTokenValidationOptions tokenValidationOptions;
-    private SerializerAdapter serializerAdapter;
     private TokenCredential tokenCredential = null;
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
@@ -184,10 +182,10 @@ public final class AttestationAdministrationClientBuilder {
      * <br>
      * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClientBuilder.buildAsyncClient -->
      * <pre>
-     * AttestationAdministrationAsyncClient asyncClient = new AttestationAdministrationClientBuilder&#40;&#41;
+     * AttestationAdministrationClient client = new AttestationAdministrationClientBuilder&#40;&#41;
      *     .endpoint&#40;endpoint&#41;
      *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
-     *     .buildAsyncClient&#40;&#41;;
+     *     .buildClient&#40;&#41;;
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationAdministrationClientBuilder.buildAsyncClient -->
      * @return an instance of {@link AttestationClient}.
@@ -243,17 +241,6 @@ public final class AttestationAdministrationClientBuilder {
      */
     public AttestationAdministrationClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
-        return this;
-    }
-
-    /**
-     * Sets The serializer to serialize an object into a string.
-     *
-     * @param serializerAdapter the serializerAdapter value.
-     * @return the AttestationClientBuilder.
-     */
-    public AttestationAdministrationClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
-        this.serializerAdapter = serializerAdapter;
         return this;
     }
 
@@ -430,11 +417,6 @@ public final class AttestationAdministrationClientBuilder {
                 .build();
         }
 
-        SerializerAdapter serializerAdapter = this.serializerAdapter;
-        if (serializerAdapter == null) {
-            serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        }
-
-        return new AttestationClientImpl(pipeline, serializerAdapter, endpoint, version.getVersion());
+        return new AttestationClientImpl(pipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, version.getVersion());
     }
 }
