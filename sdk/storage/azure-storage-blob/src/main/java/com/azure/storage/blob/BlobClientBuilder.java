@@ -317,7 +317,7 @@ public final class BlobClientBuilder {
             this.endpoint = BuilderHelper.getEndpoint(parts);
             this.containerName = parts.getBlobContainerName() == null ? this.containerName
                 : parts.getBlobContainerName();
-            this.blobName = parts.getBlobName() == null ? Utility.urlEncode(parts.getBlobName()) : this.blobName;
+            this.blobName = parts.getBlobName() == null ? this.blobName : Utility.urlEncode(parts.getBlobName());
             this.snapshot = parts.getSnapshot();
             this.versionId = parts.getVersionId();
 
