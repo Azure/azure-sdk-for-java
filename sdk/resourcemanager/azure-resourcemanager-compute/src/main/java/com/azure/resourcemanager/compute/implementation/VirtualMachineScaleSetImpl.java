@@ -2442,7 +2442,7 @@ public class VirtualMachineScaleSetImpl
     private static void removeBackendsFromIpConfiguration(
         String loadBalancerId, VirtualMachineScaleSetIpConfiguration ipConfig, String... backendNames) {
         if (ipConfig == null || ipConfig.loadBalancerBackendAddressPools() == null) {
-           return;
+            return;
         }
         List<SubResource> toRemove = new ArrayList<>();
         for (String backendName : backendNames) {
