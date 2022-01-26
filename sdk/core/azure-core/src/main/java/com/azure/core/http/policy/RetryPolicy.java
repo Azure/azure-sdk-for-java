@@ -133,11 +133,30 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     /**
+     * Creates a {@link RetryPolicy} with the provided {@link RetryOptions}.
      *
-      * @param context The request context.
-     * @param next The next policy to invoke.
-     * @return
+     * @param retryOptions The {@link RetryOptions} used to configure this {@link RetryPolicy}.
+     * @throws NullPointerException If {@code retryOptions} is null.
      */
+    public RetryPolicy(RetryOptions retryOptions) {
+        this(
+            getRetryStrategyFromOptions(
+                Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.")),
+            Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.").getRetryAfterHeader(),
+            Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.").getRetryAfterTimeUnit());
+    }
+
+    private static RetryStrategy getRetryStrategyFromOptions(RetryOptions retryOptions) {
+        if (retryOptions.getExponentialBackoffOptions() != null) {
+            return new ExponentialBackoff(retryOptions.getExponentialBackoffOptions());
+        } else if (retryOptions.getFixedDelayOptions() != null) {
+            return new FixedDelay(retryOptions.getFixedDelayOptions());
+        } else {
+            // This should never happen.
+            throw new IllegalArgumentException("'retryOptions' didn't define any retry strategy options");
+        }
+    }
+
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return attemptAsync(context, next, context.getHttpRequest(), 0);

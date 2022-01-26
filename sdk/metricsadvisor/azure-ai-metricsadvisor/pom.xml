@@ -38,9 +38,6 @@
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
       --add-opens com.azure.ai.metricsadvisor/com.azure.ai.metricsadvisor=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <dependencies>
@@ -89,7 +86,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.4.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.4.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

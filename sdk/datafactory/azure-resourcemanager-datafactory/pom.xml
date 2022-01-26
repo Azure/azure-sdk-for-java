@@ -9,7 +9,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-datafactory</artifactId>
-  <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-datafactory;current} -->
+  <version>1.0.0-beta.11</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-datafactory;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for DataFactory Management</name>
@@ -39,9 +39,6 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.skip>true</jacoco.skip>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
   </properties>
   <dependencies>
     <dependency>
@@ -57,7 +54,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.4.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.4.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -69,13 +66,13 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-storage</artifactId>
-      <version>2.10.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storage;dependency} -->
+      <version>2.11.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storage;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.14.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.14.3</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

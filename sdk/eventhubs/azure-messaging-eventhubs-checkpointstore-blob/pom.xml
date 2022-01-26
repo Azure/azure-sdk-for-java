@@ -43,9 +43,6 @@
 
       --add-reads com.azure.messaging.eventhubs=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <dependencies>
@@ -57,14 +54,14 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.14.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.14.3</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.4.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.4.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

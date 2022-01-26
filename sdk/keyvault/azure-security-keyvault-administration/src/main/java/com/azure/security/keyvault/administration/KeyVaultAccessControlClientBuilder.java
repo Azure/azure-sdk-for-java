@@ -4,6 +4,9 @@
 package com.azure.security.keyvault.administration;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
@@ -17,6 +20,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
@@ -31,6 +35,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the
@@ -65,7 +70,10 @@ import java.util.Map;
  * @see KeyVaultAccessControlAsyncClient
  */
 @ServiceClientBuilder(serviceClients = {KeyVaultAccessControlClient.class, KeyVaultAccessControlAsyncClient.class})
-public final class KeyVaultAccessControlClientBuilder {
+public final class KeyVaultAccessControlClientBuilder implements
+    TokenCredentialTrait<KeyVaultAccessControlClientBuilder>,
+    HttpTrait<KeyVaultAccessControlClientBuilder>,
+    ConfigurationTrait<KeyVaultAccessControlClientBuilder> {
     // This is the properties file name.
     private static final String AZURE_KEY_VAULT_RBAC = "azure-key-vault-administration.properties";
     private static final String SDK_NAME = "name";
@@ -220,6 +228,7 @@ public final class KeyVaultAccessControlClientBuilder {
      *
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
+    @Override
     public KeyVaultAccessControlClientBuilder credential(TokenCredential credential) {
         if (credential == null) {
             throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
@@ -239,6 +248,7 @@ public final class KeyVaultAccessControlClientBuilder {
      *
      * @return The updated {@link KeyVaultAccessControlClientBuilder} object.
      */
+    @Override
     public KeyVaultAccessControlClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         httpLogOptions = logOptions;
 
@@ -255,6 +265,7 @@ public final class KeyVaultAccessControlClientBuilder {
      *
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
+    @Override
     public KeyVaultAccessControlClientBuilder addPolicy(HttpPipelinePolicy policy) {
         if (policy == null) {
             throw logger.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
@@ -276,6 +287,7 @@ public final class KeyVaultAccessControlClientBuilder {
      *
      * @return The updated {@link KeyVaultAccessControlClientBuilder} object.
      */
+    @Override
     public KeyVaultAccessControlClientBuilder httpClient(HttpClient client) {
         this.httpClient = client;
 
@@ -293,6 +305,7 @@ public final class KeyVaultAccessControlClientBuilder {
      *
      * @return The updated {@link KeyVaultAccessControlClientBuilder} object.
      */
+    @Override
     public KeyVaultAccessControlClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
 
@@ -309,6 +322,7 @@ public final class KeyVaultAccessControlClientBuilder {
      *
      * @return The updated {@link KeyVaultAccessControlClientBuilder} object.
      */
+    @Override
     public KeyVaultAccessControlClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
 
@@ -328,6 +342,19 @@ public final class KeyVaultAccessControlClientBuilder {
         this.retryPolicy = retryPolicy;
 
         return this;
+    }
+
+    /**
+     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * @return The updated {@link KeyVaultAccessControlClientBuilder} object.
+     */
+    @Override
+    public KeyVaultAccessControlClientBuilder retryOptions(RetryOptions retryOptions) {
+        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+        return retryPolicy(new RetryPolicy(retryOptions));
     }
 
     /**

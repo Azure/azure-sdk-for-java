@@ -4,6 +4,12 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
+import com.azure.core.client.traits.AzureSasCredentialTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -11,6 +17,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -44,7 +51,12 @@ import java.util.Objects;
  * </ul>
  */
 @ServiceClientBuilder(serviceClients = {DataLakeServiceClient.class, DataLakeServiceAsyncClient.class})
-public class DataLakeServiceClientBuilder {
+public class DataLakeServiceClientBuilder implements
+    TokenCredentialTrait<DataLakeServiceClientBuilder>,
+    AzureNamedKeyCredentialTrait<DataLakeServiceClientBuilder>,
+    AzureSasCredentialTrait<DataLakeServiceClientBuilder>,
+        HttpTrait<DataLakeServiceClientBuilder>,
+    ConfigurationTrait<DataLakeServiceClientBuilder> {
     private final ClientLogger logger = new ClientLogger(DataLakeServiceClientBuilder.class);
 
     private final BlobServiceClientBuilder blobServiceClientBuilder;
@@ -152,12 +164,26 @@ public class DataLakeServiceClientBuilder {
     }
 
     /**
+     * Sets the {@link AzureNamedKeyCredential} used to authorize requests sent to the service.
+     *
+     * @param credential {@link AzureNamedKeyCredential}.
+     * @return the updated DataLakeServiceClientBuilder
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     */
+    @Override
+    public DataLakeServiceClientBuilder credential(AzureNamedKeyCredential credential) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        return credential(StorageSharedKeyCredential.fromAzureNamedKeyCredential(credential));
+    }
+
+    /**
      * Sets the {@link TokenCredential} used to authorize requests sent to the service.
      *
      * @param credential {@link TokenCredential}.
      * @return the updated DataLakeServiceClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
+    @Override
     public DataLakeServiceClientBuilder credential(TokenCredential credential) {
         blobServiceClientBuilder.credential(credential);
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
@@ -190,6 +216,7 @@ public class DataLakeServiceClientBuilder {
      * @return the updated DataLakeServiceClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
+    @Override
     public DataLakeServiceClientBuilder credential(AzureSasCredential credential) {
         blobServiceClientBuilder.credential(credential);
         this.azureSasCredential = Objects.requireNonNull(credential,
@@ -205,6 +232,7 @@ public class DataLakeServiceClientBuilder {
      * @param httpClient HttpClient to use for requests.
      * @return the updated DataLakeServiceClientBuilder object
      */
+    @Override
     public DataLakeServiceClientBuilder httpClient(HttpClient httpClient) {
         blobServiceClientBuilder.httpClient(httpClient);
         if (this.httpClient != null && httpClient == null) {
@@ -223,6 +251,7 @@ public class DataLakeServiceClientBuilder {
      * @return the updated DataLakeServiceClientBuilder object
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
+    @Override
     public DataLakeServiceClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         blobServiceClientBuilder.addPolicy(pipelinePolicy);
         Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null");
@@ -241,6 +270,7 @@ public class DataLakeServiceClientBuilder {
      * @return the updated DataLakeServiceClientBuilder object
      * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
+    @Override
     public DataLakeServiceClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         blobServiceClientBuilder.httpLogOptions(logOptions);
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
@@ -262,6 +292,7 @@ public class DataLakeServiceClientBuilder {
      * @param configuration Configuration store used to retrieve environment configurations.
      * @return the updated DataLakeServiceClientBuilder object
      */
+    @Override
     public DataLakeServiceClientBuilder configuration(Configuration configuration) {
         blobServiceClientBuilder.configuration(configuration);
         this.configuration = configuration;
@@ -282,6 +313,21 @@ public class DataLakeServiceClientBuilder {
     }
 
     /**
+     * Sets the request retry options for all the requests made through the client.
+     *
+     * Consider using {@link #retryOptions(RequestRetryOptions)} to also set storage specific options.
+     *
+     * @param retryOptions {@link RetryOptions}.
+     * @return the updated DataLakeServiceClientBuilder object
+     * @throws NullPointerException If {@code retryOptions} is {@code null}.
+     */
+    @Override
+    public DataLakeServiceClientBuilder retryOptions(RetryOptions retryOptions) {
+        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+        return this.retryOptions(RequestRetryOptions.fromRetryOptions(retryOptions, null, null));
+    }
+
+    /**
      * Sets the {@link HttpPipeline} to use for the service client.
      *
      * If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint}.
@@ -289,6 +335,7 @@ public class DataLakeServiceClientBuilder {
      * @param httpPipeline HttpPipeline to use for sending service requests and receiving responses.
      * @return the updated DataLakeServiceClientBuilder object
      */
+    @Override
     public DataLakeServiceClientBuilder pipeline(HttpPipeline httpPipeline) {
         blobServiceClientBuilder.pipeline(httpPipeline);
         if (this.httpPipeline != null && httpPipeline == null) {

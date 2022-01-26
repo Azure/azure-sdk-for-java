@@ -39,9 +39,6 @@
       --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
       --add-opens com.azure.digitaltwins.core/com.azure.digitaltwins.core=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
 
     <!-- TODO: (https://github.com/Azure/azure-sdk-for-java/issues/18279) -->
     <checkstyle.excludes>**/implementation/**/*.java</checkstyle.excludes>
@@ -79,7 +76,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.4.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.4.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

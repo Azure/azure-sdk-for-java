@@ -5,6 +5,7 @@ package com.azure.core.http.policy;
 
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationProperty;
+import com.azure.core.implementation.util.ObjectsUtil;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
@@ -39,6 +40,20 @@ public class FixedDelay implements RetryStrategy {
         }
         this.maxRetries = maxRetries;
         this.delay = Objects.requireNonNull(delay, "'delay' cannot be null.");
+    }
+
+    /**
+     * Creates an instance of {@link FixedDelay}.
+     *
+     * @param fixedDelayOptions The {@link FixedDelayOptions}.
+     */
+    public FixedDelay(FixedDelayOptions fixedDelayOptions) {
+        this(
+            ObjectsUtil.requireNonNullElse(
+                Objects.requireNonNull(fixedDelayOptions, "'fixedDelayOptions' cannot be null.").getMaxRetries(),
+                1),
+            Objects.requireNonNull(fixedDelayOptions, "'fixedDelayOptions' cannot be null.").getDelay()
+        );
     }
 
     @Override

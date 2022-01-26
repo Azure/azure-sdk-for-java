@@ -3,6 +3,8 @@
 package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureKeyCredentialTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.implementation.ApiType;
@@ -88,7 +90,9 @@ import java.util.Objects;
  * </pre>
  */
 @ServiceClientBuilder(serviceClients = {CosmosClient.class, CosmosAsyncClient.class})
-public class CosmosClientBuilder {
+public class CosmosClientBuilder implements
+    TokenCredentialTrait<CosmosClientBuilder>,
+    AzureKeyCredentialTrait<CosmosClientBuilder> {
     private Configs configs = new Configs();
     private String serviceEndpoint;
     private String keyOrResourceToken;
@@ -339,6 +343,7 @@ public class CosmosClientBuilder {
      * @return the updated CosmosClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
+    @Override
     public CosmosClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.keyOrResourceToken = null;
@@ -422,6 +427,7 @@ public class CosmosClientBuilder {
      * @param credential {@link AzureKeyCredential}
      * @return current cosmosClientBuilder
      */
+    @Override
     public CosmosClientBuilder credential(AzureKeyCredential credential) {
         this.credential = Objects.requireNonNull(credential, "'cosmosKeyCredential' cannot be null.");
         this.keyOrResourceToken = null;

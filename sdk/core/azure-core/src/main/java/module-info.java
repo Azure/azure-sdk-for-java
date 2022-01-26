@@ -15,6 +15,7 @@ module com.azure.core {
 
     // public API surface area
     exports com.azure.core.annotation;
+    exports com.azure.core.client.traits;
     exports com.azure.core.credential;
     exports com.azure.core.cryptography;
     exports com.azure.core.exception;

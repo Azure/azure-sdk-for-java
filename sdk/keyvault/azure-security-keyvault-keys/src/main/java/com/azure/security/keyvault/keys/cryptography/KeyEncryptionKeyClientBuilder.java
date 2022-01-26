@@ -4,6 +4,9 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver;
@@ -15,6 +18,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
@@ -22,6 +26,8 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import reactor.core.publisher.Mono;
+
+import java.util.Objects;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the
@@ -50,7 +56,10 @@ import reactor.core.publisher.Mono;
  * @see KeyEncryptionKeyClient
  */
 @ServiceClientBuilder(serviceClients = {KeyEncryptionKeyClient.class, KeyEncryptionKeyAsyncClient.class})
-public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyResolver, AsyncKeyEncryptionKeyResolver {
+public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyResolver, AsyncKeyEncryptionKeyResolver,
+    TokenCredentialTrait<KeyEncryptionKeyClientBuilder>,
+        HttpTrait<KeyEncryptionKeyClientBuilder>,
+    ConfigurationTrait<KeyEncryptionKeyClientBuilder> {
     private final ClientLogger logger = new ClientLogger(KeyEncryptionKeyClientBuilder.class);
     private final CryptographyClientBuilder builder;
 
@@ -175,6 +184,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      *
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
+    @Override
     public KeyEncryptionKeyClientBuilder credential(TokenCredential credential) {
         if (credential == null) {
             throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
@@ -194,6 +204,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
      */
+    @Override
     public KeyEncryptionKeyClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         builder.httpLogOptions(logOptions);
 
@@ -209,6 +220,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      *
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
+    @Override
     public KeyEncryptionKeyClientBuilder addPolicy(HttpPipelinePolicy policy) {
         if (policy == null) {
             throw logger.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
@@ -226,6 +238,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
      */
+    @Override
     public KeyEncryptionKeyClientBuilder httpClient(HttpClient client) {
         builder.httpClient(client);
 
@@ -242,6 +255,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
      */
+    @Override
     public KeyEncryptionKeyClientBuilder pipeline(HttpPipeline pipeline) {
         builder.pipeline(pipeline);
 
@@ -259,6 +273,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
      */
+    @Override
     public KeyEncryptionKeyClientBuilder configuration(Configuration configuration) {
         builder.configuration(configuration);
 
@@ -295,6 +310,19 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
         builder.retryPolicy(retryPolicy);
 
         return this;
+    }
+
+    /**
+     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
+     */
+    @Override
+    public KeyEncryptionKeyClientBuilder retryOptions(RetryOptions retryOptions) {
+        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+        return retryPolicy(new RetryPolicy(retryOptions));
     }
 
     /**

@@ -9,7 +9,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-synapse</artifactId>
-  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-synapse;current} -->
+  <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-synapse;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Synapse Management</name>
@@ -39,9 +39,6 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.skip>true</jacoco.skip>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
   </properties>
   <dependencies>
     <dependency>

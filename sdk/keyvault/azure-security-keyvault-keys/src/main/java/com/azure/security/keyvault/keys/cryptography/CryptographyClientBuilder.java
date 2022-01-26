@@ -4,6 +4,9 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
@@ -17,6 +20,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
@@ -29,6 +33,7 @@ import com.azure.security.keyvault.keys.models.JsonWebKey;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the
@@ -117,7 +122,10 @@ import java.util.Map;
  * @see CryptographyClient
  */
 @ServiceClientBuilder(serviceClients = CryptographyClient.class)
-public final class CryptographyClientBuilder {
+public final class CryptographyClientBuilder implements
+    TokenCredentialTrait<CryptographyClientBuilder>,
+        HttpTrait<CryptographyClientBuilder>,
+    ConfigurationTrait<CryptographyClientBuilder> {
     private final ClientLogger logger = new ClientLogger(CryptographyClientBuilder.class);
 
     // This is properties file's name.
@@ -309,6 +317,7 @@ public final class CryptographyClientBuilder {
      *
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
+    @Override
     public CryptographyClientBuilder credential(TokenCredential credential) {
         if (credential == null) {
             throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
@@ -349,6 +358,7 @@ public final class CryptographyClientBuilder {
      *
      * @return The updated {@link CryptographyClientBuilder} object.
      */
+    @Override
     public CryptographyClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         httpLogOptions = logOptions;
 
@@ -364,6 +374,7 @@ public final class CryptographyClientBuilder {
      *
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
+    @Override
     public CryptographyClientBuilder addPolicy(HttpPipelinePolicy policy) {
         if (policy == null) {
             throw logger.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
@@ -385,6 +396,7 @@ public final class CryptographyClientBuilder {
      *
      * @return The updated {@link CryptographyClientBuilder} object.
      */
+    @Override
     public CryptographyClientBuilder httpClient(HttpClient client) {
         this.httpClient = client;
 
@@ -401,6 +413,7 @@ public final class CryptographyClientBuilder {
      *
      * @return The updated {@link CryptographyClientBuilder} object.
      */
+    @Override
     public CryptographyClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
 
@@ -418,6 +431,7 @@ public final class CryptographyClientBuilder {
      *
      * @return The updated {@link CryptographyClientBuilder} object.
      */
+    @Override
     public CryptographyClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
 
@@ -453,6 +467,19 @@ public final class CryptographyClientBuilder {
         this.retryPolicy = retryPolicy;
 
         return this;
+    }
+
+    /**
+     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * @return The updated {@link CryptographyClientBuilder} object.
+     */
+    @Override
+    public CryptographyClientBuilder retryOptions(RetryOptions retryOptions) {
+        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+        return retryPolicy(new RetryPolicy(retryOptions));
     }
 
     /**

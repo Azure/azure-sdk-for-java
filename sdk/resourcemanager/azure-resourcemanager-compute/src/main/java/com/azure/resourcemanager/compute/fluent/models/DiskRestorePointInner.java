@@ -48,7 +48,7 @@ public final class DiskRestorePointInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the sourceResourceId property: arm id of source disk.
+     * Get the sourceResourceId property: arm id of source disk or source disk restore point.
      *
      * @return the sourceResourceId value.
      */
@@ -257,8 +257,8 @@ public final class DiskRestorePointInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the completionPercent property: Percentage complete for the background copy when a resource is created via
-     * the CopyStart operation.
+     * Get the completionPercent property: Percentage complete for the background copy of disk restore point when source
+     * resource is from a different region.
      *
      * @return the completionPercent value.
      */
@@ -267,8 +267,8 @@ public final class DiskRestorePointInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the completionPercent property: Percentage complete for the background copy when a resource is created via
-     * the CopyStart operation.
+     * Set the completionPercent property: Percentage complete for the background copy of disk restore point when source
+     * resource is from a different region.
      *
      * @param completionPercent the completionPercent value to set.
      * @return the DiskRestorePointInner object itself.
@@ -279,6 +279,26 @@ public final class DiskRestorePointInner extends ProxyOnlyResource {
         }
         this.innerProperties().withCompletionPercent(completionPercent);
         return this;
+    }
+
+    /**
+     * Get the replicationState property: Replication state of disk restore point when source resource is from a
+     * different region.
+     *
+     * @return the replicationState value.
+     */
+    public String replicationState() {
+        return this.innerProperties() == null ? null : this.innerProperties().replicationState();
+    }
+
+    /**
+     * Get the sourceResourceLocation property: Location of source disk or source disk restore point when source
+     * resource is from a different region.
+     *
+     * @return the sourceResourceLocation value.
+     */
+    public String sourceResourceLocation() {
+        return this.innerProperties() == null ? null : this.innerProperties().sourceResourceLocation();
     }
 
     /**

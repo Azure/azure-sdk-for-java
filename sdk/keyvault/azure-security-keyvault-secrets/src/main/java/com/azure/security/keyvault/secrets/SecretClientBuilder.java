@@ -4,6 +4,9 @@
 package com.azure.security.keyvault.secrets;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
@@ -17,6 +20,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
@@ -31,6 +35,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link
@@ -97,7 +102,10 @@ import java.util.Map;
  * @see SecretAsyncClient
  */
 @ServiceClientBuilder(serviceClients = SecretClient.class)
-public final class SecretClientBuilder {
+public final class SecretClientBuilder implements
+    TokenCredentialTrait<SecretClientBuilder>,
+        HttpTrait<SecretClientBuilder>,
+    ConfigurationTrait<SecretClientBuilder> {
     private final ClientLogger logger = new ClientLogger(SecretClientBuilder.class);
     // This is properties file's name.
     private static final String AZURE_KEY_VAULT_SECRETS = "azure-key-vault-secrets.properties";
@@ -263,6 +271,7 @@ public final class SecretClientBuilder {
      *
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
+    @Override
     public SecretClientBuilder credential(TokenCredential credential) {
         if (credential == null) {
             throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
@@ -282,6 +291,7 @@ public final class SecretClientBuilder {
      *
      * @return The updated {@link SecretClientBuilder} object.
      */
+    @Override
     public SecretClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         httpLogOptions = logOptions;
 
@@ -298,6 +308,7 @@ public final class SecretClientBuilder {
      *
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
+    @Override
     public SecretClientBuilder addPolicy(HttpPipelinePolicy policy) {
         if (policy == null) {
             throw logger.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
@@ -319,6 +330,7 @@ public final class SecretClientBuilder {
      *
      * @return The updated {@link SecretClientBuilder} object.
      */
+    @Override
     public SecretClientBuilder httpClient(HttpClient client) {
         this.httpClient = client;
 
@@ -335,6 +347,7 @@ public final class SecretClientBuilder {
      *
      * @return The updated {@link SecretClientBuilder} object.
      */
+    @Override
     public SecretClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
 
@@ -351,6 +364,7 @@ public final class SecretClientBuilder {
      *
      * @return The updated {@link SecretClientBuilder} object.
      */
+    @Override
     public SecretClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
 
@@ -387,6 +401,19 @@ public final class SecretClientBuilder {
         this.retryPolicy = retryPolicy;
 
         return this;
+    }
+
+    /**
+     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * @return The updated {@link SecretClientBuilder} object.
+     */
+    @Override
+    public SecretClientBuilder retryOptions(RetryOptions retryOptions) {
+        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+        return retryPolicy(new RetryPolicy(retryOptions));
     }
 
     /**

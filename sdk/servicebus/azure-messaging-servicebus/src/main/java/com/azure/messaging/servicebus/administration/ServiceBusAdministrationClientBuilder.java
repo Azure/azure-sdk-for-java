@@ -5,6 +5,10 @@ package com.azure.messaging.servicebus.administration;
 
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
+import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
 import com.azure.core.http.HttpClient;
@@ -20,6 +24,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
@@ -80,7 +85,11 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = {ServiceBusAdministrationClient.class,
     ServiceBusAdministrationAsyncClient.class})
-public final class ServiceBusAdministrationClientBuilder {
+public final class ServiceBusAdministrationClientBuilder implements
+    TokenCredentialTrait<ServiceBusAdministrationClientBuilder>,
+    ConnectionStringTrait<ServiceBusAdministrationClientBuilder>,
+    HttpTrait<ServiceBusAdministrationClientBuilder>,
+    ConfigurationTrait<ServiceBusAdministrationClientBuilder> {
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
 
@@ -176,6 +185,7 @@ public final class ServiceBusAdministrationClientBuilder {
      * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
+    @Override
     public ServiceBusAdministrationClientBuilder addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy);
         if (policy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
@@ -218,6 +228,7 @@ public final class ServiceBusAdministrationClientBuilder {
      *
      * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
      */
+    @Override
     public ServiceBusAdministrationClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
@@ -233,6 +244,7 @@ public final class ServiceBusAdministrationClientBuilder {
      * @throws IllegalArgumentException If {@code connectionString} is an entity specific connection string, and not
      *     a {@code connectionString} for the Service Bus namespace.
      */
+    @Override
     public ServiceBusAdministrationClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
 
@@ -278,12 +290,26 @@ public final class ServiceBusAdministrationClientBuilder {
     }
 
     /**
+     * Sets the credential used to authenticate HTTP requests to the Service Bus namespace.
+     *
+     * @param credential {@link TokenCredential} to be used for authentication.
+     *
+     * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
+     */
+    @Override
+    public ServiceBusAdministrationClientBuilder credential(TokenCredential credential) {
+        this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+        return this;
+    }
+
+    /**
      * Sets the HTTP client to use for sending and receiving requests to and from the service.
      *
      * @param client The HTTP client to use for requests.
      *
      * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
      */
+    @Override
     public ServiceBusAdministrationClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
             logger.info("HttpClient is being set to 'null' when it was previously configured.");
@@ -302,6 +328,7 @@ public final class ServiceBusAdministrationClientBuilder {
      *
      * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
      */
+    @Override
     public ServiceBusAdministrationClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         httpLogOptions = logOptions;
         return this;
@@ -335,6 +362,7 @@ public final class ServiceBusAdministrationClientBuilder {
      *
      * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
      */
+    @Override
     public ServiceBusAdministrationClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
@@ -357,6 +385,19 @@ public final class ServiceBusAdministrationClientBuilder {
     public ServiceBusAdministrationClientBuilder retryPolicy(HttpPipelinePolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
+    }
+
+    /**
+     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
+     */
+    @Override
+    public ServiceBusAdministrationClientBuilder retryOptions(RetryOptions retryOptions) {
+        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+        return retryPolicy(new RetryPolicy(retryOptions));
     }
 
     /**

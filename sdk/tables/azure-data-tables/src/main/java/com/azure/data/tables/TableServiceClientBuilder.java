@@ -3,6 +3,12 @@
 package com.azure.data.tables;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
+import com.azure.core.client.traits.AzureSasCredentialTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
+import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
@@ -12,6 +18,7 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
@@ -26,6 +33,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.azure.data.tables.BuilderHelper.validateCredentials;
 
@@ -64,7 +72,13 @@ import static com.azure.data.tables.BuilderHelper.validateCredentials;
  * @see TableServiceClient
  */
 @ServiceClientBuilder(serviceClients = {TableServiceClient.class, TableServiceAsyncClient.class})
-public final class TableServiceClientBuilder {
+public final class TableServiceClientBuilder implements
+    TokenCredentialTrait<TableServiceClientBuilder>,
+    AzureNamedKeyCredentialTrait<TableServiceClientBuilder>,
+    ConnectionStringTrait<TableServiceClientBuilder>,
+    AzureSasCredentialTrait<TableServiceClientBuilder>,
+    HttpTrait<TableServiceClientBuilder>,
+    ConfigurationTrait<TableServiceClientBuilder> {
     private final ClientLogger logger = new ClientLogger(TableServiceClientBuilder.class);
     private final SerializerAdapter serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -190,6 +204,7 @@ public final class TableServiceClientBuilder {
      * @throws NullPointerException If {@code connectionString} is {@code null}.
      * @throws IllegalArgumentException If {@code connectionString} isn't a valid connection string.
      */
+    @Override
     public TableServiceClientBuilder connectionString(String connectionString) {
         if (connectionString == null) {
             throw logger.logExceptionAsError(new NullPointerException("'connectionString' cannot be null."));
@@ -235,6 +250,7 @@ public final class TableServiceClientBuilder {
      *
      * @return The updated {@link TableServiceClientBuilder}.
      */
+    @Override
     public TableServiceClientBuilder pipeline(HttpPipeline pipeline) {
         this.httpPipeline = pipeline;
 
@@ -253,6 +269,7 @@ public final class TableServiceClientBuilder {
      *
      * @return The updated {@link TableServiceClientBuilder}.
      */
+    @Override
     public TableServiceClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
 
@@ -298,6 +315,7 @@ public final class TableServiceClientBuilder {
      *
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
+    @Override
     public TableServiceClientBuilder credential(AzureSasCredential credential) {
         if (credential == null) {
             throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
@@ -320,6 +338,7 @@ public final class TableServiceClientBuilder {
      *
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
+    @Override
     public TableServiceClientBuilder credential(AzureNamedKeyCredential credential) {
         if (credential == null) {
             throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
@@ -342,6 +361,7 @@ public final class TableServiceClientBuilder {
      *
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
+    @Override
     public TableServiceClientBuilder credential(TokenCredential credential) {
         if (credential == null) {
             throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
@@ -359,6 +379,7 @@ public final class TableServiceClientBuilder {
      *
      * @return The updated {@link TableServiceClientBuilder}.
      */
+    @Override
     public TableServiceClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
             logger.warning("'httpClient' is being set to 'null' when it was previously configured.");
@@ -378,6 +399,7 @@ public final class TableServiceClientBuilder {
      *
      * @return The updated {@link TableServiceClientBuilder}.
      */
+    @Override
     public TableServiceClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;
 
@@ -395,6 +417,7 @@ public final class TableServiceClientBuilder {
      *
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
+    @Override
     public TableServiceClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         if (pipelinePolicy == null) {
             throw logger.logExceptionAsError(new NullPointerException("'pipelinePolicy' cannot be null."));
@@ -443,6 +466,19 @@ public final class TableServiceClientBuilder {
         this.retryPolicy = retryPolicy;
 
         return this;
+    }
+
+    /**
+     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * @return The updated {@link TableServiceClientBuilder} object.
+     */
+    @Override
+    public TableServiceClientBuilder retryOptions(RetryOptions retryOptions) {
+        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+        return retryPolicy(new RetryPolicy(retryOptions));
     }
 
     /**

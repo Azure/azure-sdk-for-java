@@ -4,6 +4,13 @@
 package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
+import com.azure.core.client.traits.AzureSasCredentialTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
+import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
@@ -22,6 +29,7 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
@@ -86,7 +94,13 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
  * </ul>
  */
 @ServiceClientBuilder(serviceClients = {EncryptedBlobAsyncClient.class, EncryptedBlobClient.class})
-public final class EncryptedBlobClientBuilder {
+public final class EncryptedBlobClientBuilder implements
+    TokenCredentialTrait<EncryptedBlobClientBuilder>,
+    ConnectionStringTrait<EncryptedBlobClientBuilder>,
+    AzureNamedKeyCredentialTrait<EncryptedBlobClientBuilder>,
+    AzureSasCredentialTrait<EncryptedBlobClientBuilder>,
+        HttpTrait<EncryptedBlobClientBuilder>,
+    ConfigurationTrait<EncryptedBlobClientBuilder> {
     private final ClientLogger logger = new ClientLogger(EncryptedBlobClientBuilder.class);
     private static final Map<String, String> PROPERTIES =
         CoreUtils.getProperties("azure-storage-blob-cryptography.properties");
@@ -348,12 +362,26 @@ public final class EncryptedBlobClientBuilder {
     }
 
     /**
+     * Sets the {@link AzureNamedKeyCredential} used to authorize requests sent to the service.
+     *
+     * @param credential {@link AzureNamedKeyCredential}.
+     * @return the updated EncryptedBlobClientBuilder
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     */
+    @Override
+    public EncryptedBlobClientBuilder credential(AzureNamedKeyCredential credential) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        return credential(StorageSharedKeyCredential.fromAzureNamedKeyCredential(credential));
+    }
+
+    /**
      * Sets the {@link TokenCredential} used to authorize requests sent to the service.
      *
      * @param credential {@link TokenCredential}.
      * @return the updated EncryptedBlobClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
+    @Override
     public EncryptedBlobClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.storageSharedKeyCredential = null;
@@ -384,6 +412,7 @@ public final class EncryptedBlobClientBuilder {
      * @return the updated EncryptedBlobClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
+    @Override
     public EncryptedBlobClientBuilder credential(AzureSasCredential credential) {
         this.azureSasCredential = Objects.requireNonNull(credential,
             "'credential' cannot be null.");
@@ -412,6 +441,7 @@ public final class EncryptedBlobClientBuilder {
      * @return the updated EncryptedBlobClientBuilder
      * @throws IllegalArgumentException If {@code connectionString} is invalid.
      */
+    @Override
     public EncryptedBlobClientBuilder connectionString(String connectionString) {
         StorageConnectionString storageConnectionString
             = StorageConnectionString.create(connectionString, logger);
@@ -527,6 +557,7 @@ public final class EncryptedBlobClientBuilder {
      * @param httpClient HttpClient to use for requests.
      * @return the updated EncryptedBlobClientBuilder object
      */
+    @Override
     public EncryptedBlobClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
             logger.info("'httpClient' is being set to 'null' when it was previously configured.");
@@ -544,6 +575,7 @@ public final class EncryptedBlobClientBuilder {
      * @return the updated EncryptedBlobClientBuilder object
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
+    @Override
     public EncryptedBlobClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null");
         if (pipelinePolicy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
@@ -561,6 +593,7 @@ public final class EncryptedBlobClientBuilder {
      * @return the updated EncryptedBlobClientBuilder object
      * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
+    @Override
     public EncryptedBlobClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
@@ -581,6 +614,7 @@ public final class EncryptedBlobClientBuilder {
      * @param configuration Configuration store used to retrieve environment configurations.
      * @return the updated EncryptedBlobClientBuilder object
      */
+    @Override
     public EncryptedBlobClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
@@ -599,6 +633,21 @@ public final class EncryptedBlobClientBuilder {
     }
 
     /**
+     * Sets the request retry options for all the requests made through the client.
+     *
+     * Consider using {@link #retryOptions(RequestRetryOptions)} to also set storage specific options.
+     *
+     * @param retryOptions {@link RetryOptions}.
+     * @return the updated EncryptedBlobClientBuilder object
+     * @throws NullPointerException If {@code retryOptions} is {@code null}.
+     */
+    @Override
+    public EncryptedBlobClientBuilder retryOptions(RetryOptions retryOptions) {
+        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+        return this.retryOptions(RequestRetryOptions.fromRetryOptions(retryOptions, null, null));
+    }
+
+    /**
      * Sets the {@link HttpPipeline} to use for the service client, and adds a decryption policy if one is not present.
      * Note that the underlying pipeline should not already be configured for encryption/decryption.
      * <p>
@@ -608,6 +657,7 @@ public final class EncryptedBlobClientBuilder {
      * @param httpPipeline HttpPipeline to use for sending service requests and receiving responses.
      * @return the updated EncryptedBlobClientBuilder object
      */
+    @Override
     public EncryptedBlobClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");

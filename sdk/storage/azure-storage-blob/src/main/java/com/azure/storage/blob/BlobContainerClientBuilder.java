@@ -4,6 +4,13 @@
 package com.azure.storage.blob;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
+import com.azure.core.client.traits.AzureSasCredentialTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
+import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -11,6 +18,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -49,7 +57,13 @@ import java.util.Objects;
  * </ul>
  */
 @ServiceClientBuilder(serviceClients = {BlobContainerClient.class, BlobContainerAsyncClient.class})
-public final class BlobContainerClientBuilder {
+public final class BlobContainerClientBuilder implements
+    TokenCredentialTrait<BlobContainerClientBuilder>,
+    ConnectionStringTrait<BlobContainerClientBuilder>,
+    AzureSasCredentialTrait<BlobContainerClientBuilder>,
+    AzureNamedKeyCredentialTrait<BlobContainerClientBuilder>,
+        HttpTrait<BlobContainerClientBuilder>,
+    ConfigurationTrait<BlobContainerClientBuilder> {
     private final ClientLogger logger = new ClientLogger(BlobContainerClientBuilder.class);
 
     private String endpoint;
@@ -237,12 +251,26 @@ public final class BlobContainerClientBuilder {
     }
 
     /**
+     * Sets the {@link AzureNamedKeyCredential} used to authorize requests sent to the service.
+     *
+     * @param credential {@link AzureNamedKeyCredential}.
+     * @return the updated BlobContainerClientBuilder
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     */
+    @Override
+    public BlobContainerClientBuilder credential(AzureNamedKeyCredential credential) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        return credential(StorageSharedKeyCredential.fromAzureNamedKeyCredential(credential));
+    }
+
+    /**
      * Sets the {@link TokenCredential} used to authorize requests sent to the service.
      *
      * @param credential {@link TokenCredential}.
      * @return the updated BlobContainerClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
+    @Override
     public BlobContainerClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.storageSharedKeyCredential = null;
@@ -273,6 +301,7 @@ public final class BlobContainerClientBuilder {
      * @return the updated BlobContainerClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
+    @Override
     public BlobContainerClientBuilder credential(AzureSasCredential credential) {
         this.azureSasCredential = Objects.requireNonNull(credential,
             "'credential' cannot be null.");
@@ -301,6 +330,7 @@ public final class BlobContainerClientBuilder {
      * @return the updated BlobContainerClientBuilder
      * @throws IllegalArgumentException If {@code connectionString} in invalid.
      */
+    @Override
     public BlobContainerClientBuilder connectionString(String connectionString) {
         StorageConnectionString storageConnectionString
                 = StorageConnectionString.create(connectionString, logger);
@@ -342,6 +372,7 @@ public final class BlobContainerClientBuilder {
      * @param httpClient HttpClient to use for requests.
      * @return the updated BlobContainerClientBuilder object
      */
+    @Override
     public BlobContainerClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
             logger.info("'httpClient' is being set to 'null' when it was previously configured.");
@@ -359,6 +390,7 @@ public final class BlobContainerClientBuilder {
      * @return the updated BlobContainerClientBuilder object
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
+    @Override
     public BlobContainerClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null");
         if (pipelinePolicy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
@@ -376,6 +408,7 @@ public final class BlobContainerClientBuilder {
      * @return the updated BlobContainerClientBuilder object
      * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
+    @Override
     public BlobContainerClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
@@ -396,6 +429,7 @@ public final class BlobContainerClientBuilder {
      * @param configuration Configuration store used to retrieve environment configurations.
      * @return the updated BlobContainerClientBuilder object
      */
+    @Override
     public BlobContainerClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
@@ -411,6 +445,21 @@ public final class BlobContainerClientBuilder {
     public BlobContainerClientBuilder retryOptions(RequestRetryOptions retryOptions) {
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         return this;
+    }
+
+    /**
+     * Sets the request retry options for all the requests made through the client.
+     *
+     * Consider using {@link #retryOptions(RequestRetryOptions)} to also set storage specific options.
+     *
+     * @param retryOptions {@link RetryOptions}.
+     * @return the updated BlobContainerClientBuilder object
+     * @throws NullPointerException If {@code retryOptions} is {@code null}.
+     */
+    @Override
+    public BlobContainerClientBuilder retryOptions(RetryOptions retryOptions) {
+        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+        return this.retryOptions(RequestRetryOptions.fromRetryOptions(retryOptions, null, null));
     }
 
     /**
@@ -433,6 +482,7 @@ public final class BlobContainerClientBuilder {
      * @param httpPipeline HttpPipeline to use for sending service requests and receiving responses.
      * @return the updated BlobContainerClientBuilder object
      */
+    @Override
     public BlobContainerClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");

@@ -4,6 +4,10 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
+import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
@@ -21,6 +25,7 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
@@ -99,7 +104,11 @@ import static com.azure.core.util.CoreUtils.getApplicationId;
  * @see ConfigurationClient
  */
 @ServiceClientBuilder(serviceClients = {ConfigurationAsyncClient.class, ConfigurationClient.class})
-public final class ConfigurationClientBuilder {
+public final class ConfigurationClientBuilder implements
+    TokenCredentialTrait<ConfigurationClientBuilder>,
+    ConnectionStringTrait<ConfigurationClientBuilder>,
+    HttpTrait<ConfigurationClientBuilder>,
+    ConfigurationTrait<ConfigurationClientBuilder> {
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
 
     private static final String CLIENT_NAME;
@@ -293,6 +302,7 @@ public final class ConfigurationClientBuilder {
      * @throws IllegalArgumentException If {@code connectionString} is an empty string, the {@code connectionString}
      * secret is invalid, or the HMAC-SHA256 MAC algorithm cannot be instantiated.
      */
+    @Override
     public ConfigurationClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
 
@@ -323,6 +333,7 @@ public final class ConfigurationClientBuilder {
      * @return The updated ConfigurationClientBuilder object.
      * @throws NullPointerException If {@code credential} is null.
      */
+    @Override
     public ConfigurationClientBuilder credential(TokenCredential tokenCredential) {
         // token credential can not be null value
         Objects.requireNonNull(tokenCredential);
@@ -338,6 +349,7 @@ public final class ConfigurationClientBuilder {
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return The updated ConfigurationClientBuilder object.
      */
+    @Override
     public ConfigurationClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         httpLogOptions = logOptions;
         return this;
@@ -350,6 +362,7 @@ public final class ConfigurationClientBuilder {
      * @return The updated ConfigurationClientBuilder object.
      * @throws NullPointerException If {@code policy} is null.
      */
+    @Override
     public ConfigurationClientBuilder addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy, "'policy' cannot be null.");
 
@@ -368,6 +381,7 @@ public final class ConfigurationClientBuilder {
      * @param client The HTTP client to use for requests.
      * @return The updated ConfigurationClientBuilder object.
      */
+    @Override
     public ConfigurationClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
             LOGGER.info("HttpClient is being set to 'null' when it was previously configured.");
@@ -387,6 +401,7 @@ public final class ConfigurationClientBuilder {
      * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
      * @return The updated ConfigurationClientBuilder object.
      */
+    @Override
     public ConfigurationClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
             LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
@@ -408,6 +423,7 @@ public final class ConfigurationClientBuilder {
      * @param configuration The configuration store used to
      * @return The updated ConfigurationClientBuilder object.
      */
+    @Override
     public ConfigurationClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
@@ -427,6 +443,19 @@ public final class ConfigurationClientBuilder {
     public ConfigurationClientBuilder retryPolicy(HttpPipelinePolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
+    }
+
+    /**
+     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * @return The updated {@link ConfigurationClientBuilder} object.
+     */
+    @Override
+    public ConfigurationClientBuilder retryOptions(RetryOptions retryOptions) {
+        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+        return retryPolicy(new RetryPolicy(retryOptions));
     }
 
     /**

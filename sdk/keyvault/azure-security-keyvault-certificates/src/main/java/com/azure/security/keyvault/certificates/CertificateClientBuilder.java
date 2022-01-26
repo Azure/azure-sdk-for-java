@@ -4,6 +4,9 @@
 package com.azure.security.keyvault.certificates;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
@@ -17,6 +20,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
@@ -31,6 +35,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link
@@ -102,7 +107,10 @@ import java.util.Map;
  * @see CertificateClient
  */
 @ServiceClientBuilder(serviceClients = {CertificateClient.class, CertificateAsyncClient.class})
-public final class CertificateClientBuilder {
+public final class CertificateClientBuilder implements
+    TokenCredentialTrait<CertificateClientBuilder>,
+        HttpTrait<CertificateClientBuilder>,
+    ConfigurationTrait<CertificateClientBuilder> {
     private final ClientLogger logger = new ClientLogger(CertificateClientBuilder.class);
     // This is properties file's name.
     private static final String AZURE_KEY_VAULT_CERTIFICATES_PROPERTIES = "azure-key-vault-certificates.properties";
@@ -268,6 +276,7 @@ public final class CertificateClientBuilder {
      * @throws NullPointerException If {@code credential} is {@code null}.
      *
      */
+    @Override
     public CertificateClientBuilder credential(TokenCredential credential) {
         if (credential == null) {
             throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
@@ -287,6 +296,7 @@ public final class CertificateClientBuilder {
      *
      * @return The updated {@link CertificateClientBuilder} object.
      */
+    @Override
     public CertificateClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         httpLogOptions = logOptions;
 
@@ -303,6 +313,7 @@ public final class CertificateClientBuilder {
      *
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
+    @Override
     public CertificateClientBuilder addPolicy(HttpPipelinePolicy policy) {
         if (policy == null) {
             throw logger.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
@@ -324,6 +335,7 @@ public final class CertificateClientBuilder {
      *
      * @return The updated {@link CertificateClientBuilder} object.
      */
+    @Override
     public CertificateClientBuilder httpClient(HttpClient client) {
         this.httpClient = client;
 
@@ -341,6 +353,7 @@ public final class CertificateClientBuilder {
      *
      * @return The updated {@link CertificateClientBuilder} object.
      */
+    @Override
     public CertificateClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
 
@@ -357,6 +370,7 @@ public final class CertificateClientBuilder {
      *
      * @return The updated {@link CertificateClientBuilder} object.
      */
+    @Override
     public CertificateClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
 
@@ -393,6 +407,19 @@ public final class CertificateClientBuilder {
         this.retryPolicy = retryPolicy;
 
         return this;
+    }
+
+    /**
+     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * @return The updated {@link CertificateClientBuilder} object.
+     */
+    @Override
+    public CertificateClientBuilder retryOptions(RetryOptions retryOptions) {
+        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+        return retryPolicy(new RetryPolicy(retryOptions));
     }
 
     /**

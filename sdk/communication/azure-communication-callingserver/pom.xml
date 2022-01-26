@@ -47,9 +47,6 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.communication.callingserver/com.azure.communication.callingserver.implementation=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <dependencies>
@@ -61,7 +58,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
-      <version>1.0.6</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
+      <version>1.0.7</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -126,7 +123,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.4.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.4.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

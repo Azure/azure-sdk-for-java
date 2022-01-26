@@ -3,6 +3,7 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.implementation.util.ObjectsUtil;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationProperty;
 import com.azure.core.util.CoreUtils;
@@ -80,6 +81,26 @@ public class ExponentialBackoff implements RetryStrategy {
 
     static RetryStrategy fromConfiguration(Configuration configuration) {
         return new ExponentialBackoff(configuration.get(MAX_RETRIES_PROPERTY), configuration.get(BASE_DELAY_PROPERTY), configuration.get(MAX_DELAY_PROPERTY));
+    }
+
+    /**
+     * Creates an instance of {@link ExponentialBackoff}.
+     *
+     * @param options The {@link ExponentialBackoffOptions}.
+     * @throws NullPointerException if {@code options} is {@code null}.
+     */
+    public ExponentialBackoff(ExponentialBackoffOptions options) {
+        this(
+            ObjectsUtil.requireNonNullElse(
+                Objects.requireNonNull(options, "'options' cannot be null.").getMaxRetries(),
+                DEFAULT_MAX_RETRIES),
+            ObjectsUtil.requireNonNullElse(
+                Objects.requireNonNull(options, "'options' cannot be null.").getBaseDelay(),
+                DEFAULT_BASE_DELAY),
+            ObjectsUtil.requireNonNullElse(
+                Objects.requireNonNull(options, "'options' cannot be null.").getMaxDelay(),
+                DEFAULT_MAX_DELAY)
+        );
     }
 
     /**

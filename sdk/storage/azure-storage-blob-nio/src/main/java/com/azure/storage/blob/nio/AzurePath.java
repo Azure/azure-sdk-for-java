@@ -395,9 +395,9 @@ public final class AzurePath implements Path {
         Path root = this.getRoot();
         String rootStr = root == null ? null : root.toString();
         for (String element : pathElements) {
-            if (element.equals(".")) {
+            if (".".equals(element)) {
                 continue;
-            } else if (element.equals("..")) {
+            } else if ("..".equals(element)) {
                 if (rootStr != null) {
                     // Root path. We never push "..".
                     if (!stack.isEmpty() && stack.peekLast().equals(rootStr)) {

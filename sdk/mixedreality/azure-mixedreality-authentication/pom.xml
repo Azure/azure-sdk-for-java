@@ -30,12 +30,6 @@
     <url>https://github.com/Azure/azure-sdk-for-java</url>
   </scm>
 
-  <properties>
-    <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
@@ -94,7 +88,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.4.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.4.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

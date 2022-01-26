@@ -4,6 +4,11 @@
 package com.azure.messaging.eventgrid;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureKeyCredentialTrait;
+import com.azure.core.client.traits.AzureSasCredentialTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
@@ -21,6 +26,7 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.models.CloudEvent;
@@ -46,7 +52,12 @@ import java.util.Objects;
  * @see CloudEvent
  */
 @ServiceClientBuilder(serviceClients = {EventGridPublisherClient.class, EventGridPublisherAsyncClient.class})
-public final class EventGridPublisherClientBuilder {
+public final class EventGridPublisherClientBuilder implements
+    TokenCredentialTrait<EventGridPublisherClientBuilder>,
+    AzureKeyCredentialTrait<EventGridPublisherClientBuilder>,
+    AzureSasCredentialTrait<EventGridPublisherClientBuilder>,
+    HttpTrait<EventGridPublisherClientBuilder>,
+    ConfigurationTrait<EventGridPublisherClientBuilder> {
 
     private static final String AEG_SAS_KEY = "aeg-sas-key";
 
@@ -204,6 +215,7 @@ public final class EventGridPublisherClientBuilder {
      *
      * @return the builder itself.
      */
+    @Override
     public EventGridPublisherClientBuilder addPolicy(HttpPipelinePolicy httpPipelinePolicy) {
         this.policies.add(Objects.requireNonNull(httpPipelinePolicy));
         return this;
@@ -218,6 +230,19 @@ public final class EventGridPublisherClientBuilder {
     public EventGridPublisherClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
+    }
+
+    /**
+     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * @return the builder itself.
+     */
+    @Override
+    public EventGridPublisherClientBuilder retryOptions(RetryOptions retryOptions) {
+        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+        return retryPolicy(new RetryPolicy(retryOptions));
     }
 
     /**
@@ -241,6 +266,7 @@ public final class EventGridPublisherClientBuilder {
      *
      * @return the builder itself.
      */
+    @Override
     public EventGridPublisherClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
@@ -252,6 +278,7 @@ public final class EventGridPublisherClientBuilder {
      *
      * @return the builder itself.
      */
+    @Override
     public EventGridPublisherClientBuilder credential(AzureKeyCredential credential) {
         this.keyCredential = credential;
         return this;
@@ -263,6 +290,7 @@ public final class EventGridPublisherClientBuilder {
      *
      * @return the builder itself.
      */
+    @Override
     public EventGridPublisherClientBuilder credential(AzureSasCredential credential) {
         this.sasToken = credential;
         return this;
@@ -276,6 +304,7 @@ public final class EventGridPublisherClientBuilder {
      *
      * @return the builder itself.
      */
+    @Override
     public EventGridPublisherClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = credential;
         return this;
@@ -306,6 +335,7 @@ public final class EventGridPublisherClientBuilder {
      *
      * @return the builder itself.
      */
+    @Override
     public EventGridPublisherClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
             logger.info("Http client is set to null when it was not previously null");
@@ -320,6 +350,7 @@ public final class EventGridPublisherClientBuilder {
      *
      * @return the builder itself.
      */
+    @Override
     public EventGridPublisherClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
@@ -331,6 +362,7 @@ public final class EventGridPublisherClientBuilder {
      *
      * @return the builder itself.
      */
+    @Override
     public EventGridPublisherClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("Http client is set to null when it was not previously null");

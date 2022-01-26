@@ -4,6 +4,12 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
+import com.azure.core.client.traits.AzureSasCredentialTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
+import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -11,6 +17,7 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AzureSasCredentialPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -122,7 +129,12 @@ import java.util.Objects;
  * @see StorageSharedKeyCredential
  */
 @ServiceClientBuilder(serviceClients = {ShareClient.class, ShareAsyncClient.class})
-public class ShareClientBuilder {
+public class ShareClientBuilder implements
+        HttpTrait<ShareClientBuilder>,
+    ConnectionStringTrait<ShareClientBuilder>,
+    AzureNamedKeyCredentialTrait<ShareClientBuilder>,
+    AzureSasCredentialTrait<ShareClientBuilder>,
+    ConfigurationTrait<ShareClientBuilder> {
     private final ClientLogger logger = new ClientLogger(ShareClientBuilder.class);
 
     private String endpoint;
@@ -308,6 +320,19 @@ public class ShareClientBuilder {
     }
 
     /**
+     * Sets the {@link AzureNamedKeyCredential} used to authorize requests sent to the service.
+     *
+     * @param credential {@link AzureNamedKeyCredential}.
+     * @return the updated ShareClientBuilder
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     */
+    @Override
+    public ShareClientBuilder credential(AzureNamedKeyCredential credential) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        return credential(StorageSharedKeyCredential.fromAzureNamedKeyCredential(credential));
+    }
+
+    /**
      * Sets the SAS token used to authorize requests sent to the service.
      *
      * @param sasToken The SAS token to use for authenticating requests. This string should only be the query parameters
@@ -329,6 +354,7 @@ public class ShareClientBuilder {
      * @return the updated ShareClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
+    @Override
     public ShareClientBuilder credential(AzureSasCredential credential) {
         this.azureSasCredential = Objects.requireNonNull(credential,
             "'credential' cannot be null.");
@@ -343,6 +369,7 @@ public class ShareClientBuilder {
      * @throws IllegalArgumentException If {@code connectionString} in invalid.
      * @throws NullPointerException If {@code connectionString} is {@code null}.
      */
+    @Override
     public ShareClientBuilder connectionString(String connectionString) {
         StorageConnectionString storageConnectionString
                 = StorageConnectionString.create(connectionString, logger);
@@ -372,6 +399,7 @@ public class ShareClientBuilder {
      * @param httpClient HttpClient to use for requests.
      * @return the updated ShareClientBuilder object
      */
+    @Override
     public ShareClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
             logger.info("'httpClient' is being set to 'null' when it was previously configured.");
@@ -389,6 +417,7 @@ public class ShareClientBuilder {
      * @return the updated ShareClientBuilder object
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
+    @Override
     public ShareClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null");
         if (pipelinePolicy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
@@ -406,6 +435,7 @@ public class ShareClientBuilder {
      * @return the updated ShareClientBuilder object
      * @throws NullPointerException If {@code logOptions} is {@code null}.
      */
+    @Override
     public ShareClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.logOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
@@ -426,6 +456,7 @@ public class ShareClientBuilder {
      * @param configuration Configuration store used to retrieve environment configurations.
      * @return the updated ShareClientBuilder object
      */
+    @Override
     public ShareClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
@@ -444,6 +475,21 @@ public class ShareClientBuilder {
     }
 
     /**
+     * Sets the request retry options for all the requests made through the client.
+     *
+     * Consider using {@link #retryOptions(RequestRetryOptions)} to also set storage specific options.
+     *
+     * @param retryOptions {@link RetryOptions}.
+     * @return the updated ShareClientBuilder object
+     * @throws NullPointerException If {@code retryOptions} is {@code null}.
+     */
+    @Override
+    public ShareClientBuilder retryOptions(RetryOptions retryOptions) {
+        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+        return this.retryOptions(RequestRetryOptions.fromRetryOptions(retryOptions, null, null));
+    }
+
+    /**
      * Sets the {@link HttpPipeline} to use for the service client.
      *
      * If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint}.
@@ -451,6 +497,7 @@ public class ShareClientBuilder {
      * @param httpPipeline HttpPipeline to use for sending service requests and receiving responses.
      * @return the updated ShareClientBuilder object
      */
+    @Override
     public ShareClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");

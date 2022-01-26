@@ -21,6 +21,9 @@
   <properties>
     <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.15</jacoco.min.branchcoverage>
+
+    <!-- TODO: Remove this once all Javadoc warnings and errors are resolved -->
+    <doclint>all,-missing</doclint>
   </properties>
 
   <dependencies>
@@ -38,7 +41,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.11.2</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+      <version>12.11.3</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
     </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
