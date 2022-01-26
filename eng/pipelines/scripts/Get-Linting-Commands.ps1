@@ -23,7 +23,7 @@ Which pipeline build reason triggered execution of code-quality-reports.
 .PARAMETER TargetBranch
 Which branch the PR is being merged into once CI passes.
 
-.PARAMETER PipelineVariable
+.PARAMETER LintingPipelineVariable
 The pipeline variable that should be set containing the linting goals.
 #>
 
@@ -35,18 +35,19 @@ param(
   [string]$TargetBranch,
 
   [Parameter(Mandatory = $true)]
-  [string]$PipelineVariable
+  [string]$LintingPipelineVariable
 )
 
 Write-Host "Build reason: ${BuildReason}"
 Write-Host "Target branch: ${TargetBranch}"
-Write-Host "PipelineVariable: ${PipelineVariable}"
+Write-Host "Linting pipeline variable: ${LintingPipelineVariable}"
 
-$targetBranch = "$(TargetBranch)" -replace "refs/heads/"
+$targetBranch = $TargetBranch -replace "refs/heads/"
           
-if ("$(BuildReason)" -eq "Scheduled") {
+if ($BuildReason -eq "Scheduled") {
     Write-Host "Scheduled pipeline runs always use linting goals 'checkstyle:check revapi:check spotbugs:check'"
-    Write-Host "##vso[task.setvariable variable=LintingGoals;]checkstyle:check revapi:check spotbugs:check"
+    Write-Host "##vso[task.setvariable variable=${LintingPipelineVariable};]checkstyle:check revapi:check spotbugs:check"
+    exit 0
 }
 
 $lintingGoals = ''
@@ -69,4 +70,4 @@ if ($spotbugsConfigChanged) {
 }
 
 Write-Host "Using linting goals '${lintingGoals}'"
-Write-Host "##vso[task.setvariable variable=${PipelineVariable};]${lintingGoals}"
+Write-Host "##vso[task.setvariable variable=${LintingPipelineVariable};]${lintingGoals}"
