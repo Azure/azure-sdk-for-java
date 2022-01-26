@@ -4,12 +4,12 @@
 
 package com.azure.resourcemanager.botservice.models;
 
-import com.azure.resourcemanager.botservice.fluent.models.BotChannelInner;
+import com.azure.resourcemanager.botservice.fluent.models.ListChannelWithKeysResponseInner;
 import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of BotChannel. */
-public interface BotChannel {
+/** An immutable client-side representation of ListChannelWithKeysResponse. */
+public interface ListChannelWithKeysResponse {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
      *
@@ -81,9 +81,44 @@ public interface BotChannel {
     List<String> zones();
 
     /**
-     * Gets the inner com.azure.resourcemanager.botservice.fluent.models.BotChannelInner object.
+     * Gets the resource property: The set of properties specific to bot channel resource.
+     *
+     * @return the resource value.
+     */
+    Channel resource();
+
+    /**
+     * Gets the setting property: Channel settings.
+     *
+     * @return the setting value.
+     */
+    ChannelSettings setting();
+
+    /**
+     * Gets the provisioningState property: Provisioning state of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    String provisioningState();
+
+    /**
+     * Gets the entityTag property: Entity tag of the resource.
+     *
+     * @return the entityTag value.
+     */
+    String entityTag();
+
+    /**
+     * Gets the changedTime property: Changed time of the resource.
+     *
+     * @return the changedTime value.
+     */
+    String changedTime();
+
+    /**
+     * Gets the inner com.azure.resourcemanager.botservice.fluent.models.ListChannelWithKeysResponseInner object.
      *
      * @return the inner object.
      */
-    BotChannelInner innerModel();
+    ListChannelWithKeysResponseInner innerModel();
 }
