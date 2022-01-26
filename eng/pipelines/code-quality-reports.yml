@@ -70,7 +70,8 @@ jobs:
           $targetBranch = "$(System.PullRequest.TargetBranch)" -replace "refs/heads/"
           
           if ("$(Build.Reason)" -eq "Scheduled") {
-            Write-Host "##vso[task.setvariable variable=LintingGoals;]checkstyle:check spotbugs:check revapi:check"
+            Write-Host "Scheduled pipeline runs always use linting goals 'checkstyle:check revapi:check spotbugs:check'"
+            Write-Host "##vso[task.setvariable variable=LintingGoals;]checkstyle:check revapi:check spotbugs:check"
           }
           
           $lintingGoals = ''
@@ -91,6 +92,7 @@ jobs:
             $lintingGoals += ' spotbugs:check'
           }
           
+          Write-Host "Using linting goals '${lintingGoals}'"
           Write-Host "##vso[task.setvariable variable=LintingGoals;]${lintingGoals}"
 
       - ${{ if not(eq(variables['LintingGoals'], '')) }}:
