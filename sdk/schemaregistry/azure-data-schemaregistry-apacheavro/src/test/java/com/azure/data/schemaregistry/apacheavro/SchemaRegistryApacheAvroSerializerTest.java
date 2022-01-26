@@ -76,8 +76,8 @@ public class SchemaRegistryApacheAvroSerializerTest {
     private static final int MOCK_CACHE_SIZE = 128;
     private static final DecoderFactory DECODER_FACTORY = DecoderFactory.get();
     private static final EncoderFactory ENCODER_FACTORY = EncoderFactory.get();
-    private static InterceptorManager interceptorManager;
 
+    private InterceptorManager interceptorManager;
     private Schema.Parser parser;
     private AutoCloseable mocksCloseable;
     private TestInfo testInfo;
@@ -385,7 +385,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
      *
      * @return Corresponding SchemaRegistryAsyncClient.
      */
-    private static SchemaRegistryAsyncClient getSchemaRegistryClient(TestInfo testInfo, TestMode testMode) {
+    private SchemaRegistryAsyncClient getSchemaRegistryClient(TestInfo testInfo, TestMode testMode) {
         final TestContextManager testContextManager = new TestContextManager(testInfo.getTestMethod().get(), testMode);
         try {
             interceptorManager = new InterceptorManager(testContextManager);
