@@ -58,18 +58,18 @@ if ($BuildReason -eq "Scheduled") {
 $lintingGoals = ''
 $baseDiffDirectory = 'eng/code-quality-reports/src/main'
 
-$checkstyleSourceChanged = (git diff "origin/${targetBranch}" HEAD --name-only --relative -- "${baseDiffDirectory}/java/*").Count -gt 0
-$checkstyleConfigChanged = (git diff "origin/${targetBranch}" HEAD --name-only --relative -- "${baseDiffDirectory}/resources/checkstyle/*").Count -gt 0
+$checkstyleSourceChanged = (git diff $TargetBranch $SourceBranch --name-only --relative -- "${baseDiffDirectory}/java/*").Count -gt 0
+$checkstyleConfigChanged = (git diff $targetBranch $SourceBranch --name-only --relative -- "${baseDiffDirectory}/resources/checkstyle/*").Count -gt 0
 if ($checkstyleSourceChanged -or $checkstyleConfigChanged) {
     $lintingGoals += 'checkstyle:check'
 }
 
-$revapiConfigChanged = (git diff "origin/${targetBranch}" HEAD --name-only --relative -- "${baseDiffDirectory}/resources/revapi/*").Count -gt 0
+$revapiConfigChanged = (git diff $TargetBranch $SourceBranch --name-only --relative -- "${baseDiffDirectory}/resources/revapi/*").Count -gt 0
 if ($revapiConfigChanged) {
     $lintingGoals += ' revapi:check'
 }
 
-$spotbugsConfigChanged = (git diff "origin/${targetBranch}" HEAD --name-only --relative -- "${baseDiffDirectory}/resources/spotbugs/*").Count -gt 0
+$spotbugsConfigChanged = (git diff $TargetBranch $SourceBranch --name-only --relative -- "${baseDiffDirectory}/resources/spotbugs/*").Count -gt 0
 if ($spotbugsConfigChanged) {
     $lintingGoals += ' spotbugs:check'
 }
