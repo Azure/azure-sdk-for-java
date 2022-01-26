@@ -5,7 +5,7 @@ package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
-import com.azure.core.client.traits.HttpConfigTrait;
+import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -124,7 +124,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = CryptographyClient.class)
 public final class CryptographyClientBuilder implements
     TokenCredentialTrait<CryptographyClientBuilder>,
-    HttpConfigTrait<CryptographyClientBuilder>,
+        HttpTrait<CryptographyClientBuilder>,
     ConfigurationTrait<CryptographyClientBuilder> {
     private final ClientLogger logger = new ClientLogger(CryptographyClientBuilder.class);
 

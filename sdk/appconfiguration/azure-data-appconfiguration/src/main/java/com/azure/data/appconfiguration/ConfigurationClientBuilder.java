@@ -6,7 +6,7 @@ package com.azure.data.appconfiguration;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
-import com.azure.core.client.traits.HttpConfigTrait;
+import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -105,7 +105,7 @@ import static com.azure.core.util.CoreUtils.getApplicationId;
 public final class ConfigurationClientBuilder implements
     TokenCredentialTrait<ConfigurationClientBuilder>,
     ConnectionStringTrait<ConfigurationClientBuilder>,
-    HttpConfigTrait<ConfigurationClientBuilder>,
+    HttpTrait<ConfigurationClientBuilder>,
     ConfigurationTrait<ConfigurationClientBuilder> {
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
 

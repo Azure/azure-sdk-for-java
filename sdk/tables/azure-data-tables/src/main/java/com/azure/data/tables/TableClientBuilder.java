@@ -7,7 +7,7 @@ import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
-import com.azure.core.client.traits.HttpConfigTrait;
+import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
@@ -79,7 +79,7 @@ public final class TableClientBuilder implements
     AzureNamedKeyCredentialTrait<TableClientBuilder>,
     ConnectionStringTrait<TableClientBuilder>,
     AzureSasCredentialTrait<TableClientBuilder>,
-    HttpConfigTrait<TableClientBuilder>,
+    HttpTrait<TableClientBuilder>,
     ConfigurationTrait<TableClientBuilder> {
     private static final SerializerAdapter TABLES_SERIALIZER = new TablesJacksonSerializer();
     private static final TablesMultipartSerializer TRANSACTIONAL_BATCH_SERIALIZER = new TablesMultipartSerializer();

@@ -11,7 +11,7 @@ import com.azure.core.amqp.ProxyOptions;
  * The interface for client builders that support an AMQP protocol.
  * @param <TBuilder> the type of client builder.
  */
-public interface AmqpConfigTrait<TBuilder extends AmqpConfigTrait<TBuilder>> {
+public interface AmqpTrait<TBuilder extends AmqpTrait<TBuilder>> {
     /**
      * Sets the retry policy. If not specified, the default retry options are used.
      *

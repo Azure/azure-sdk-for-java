@@ -5,7 +5,7 @@ package com.azure.security.keyvault.keys;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
-import com.azure.core.client.traits.HttpConfigTrait;
+import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -103,7 +103,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = KeyClient.class)
 public final class KeyClientBuilder implements
     TokenCredentialTrait<KeyClientBuilder>,
-    HttpConfigTrait<KeyClientBuilder>,
+        HttpTrait<KeyClientBuilder>,
     ConfigurationTrait<KeyClientBuilder> {
     private final ClientLogger logger = new ClientLogger(KeyClientBuilder.class);
     // This is properties file's name.

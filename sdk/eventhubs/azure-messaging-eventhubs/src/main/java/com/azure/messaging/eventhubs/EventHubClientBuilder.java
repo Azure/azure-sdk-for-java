@@ -7,7 +7,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.client.traits.AmqpConfigTrait;
+import com.azure.core.amqp.client.traits.AmqpTrait;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
@@ -144,7 +144,7 @@ public class EventHubClientBuilder implements
     AzureNamedKeyCredentialTrait<EventHubClientBuilder>,
     ConnectionStringTrait<EventHubClientBuilder>,
     AzureSasCredentialTrait<EventHubClientBuilder>,
-    AmqpConfigTrait<EventHubClientBuilder>,
+    AmqpTrait<EventHubClientBuilder>,
     ConfigurationTrait<EventHubClientBuilder> {
 
     // Default number of events to fetch when creating the consumer.

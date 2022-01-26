@@ -6,7 +6,7 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.client.traits.AmqpConfigTrait;
+import com.azure.core.amqp.client.traits.AmqpTrait;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
@@ -107,7 +107,7 @@ public class EventProcessorClientBuilder implements
     AzureNamedKeyCredentialTrait<EventProcessorClientBuilder>,
     ConnectionStringTrait<EventProcessorClientBuilder>,
     AzureSasCredentialTrait<EventProcessorClientBuilder>,
-    AmqpConfigTrait<EventProcessorClientBuilder>,
+    AmqpTrait<EventProcessorClientBuilder>,
     ConfigurationTrait<EventProcessorClientBuilder> {
     /**
      * Default load balancing update interval.

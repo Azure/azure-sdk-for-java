@@ -8,7 +8,7 @@ import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
-import com.azure.core.client.traits.HttpConfigTrait;
+import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpClient;
@@ -130,7 +130,7 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = {ShareClient.class, ShareAsyncClient.class})
 public class ShareClientBuilder implements
-    HttpConfigTrait<ShareClientBuilder>,
+        HttpTrait<ShareClientBuilder>,
     ConnectionStringTrait<ShareClientBuilder>,
     AzureNamedKeyCredentialTrait<ShareClientBuilder>,
     AzureSasCredentialTrait<ShareClientBuilder>,

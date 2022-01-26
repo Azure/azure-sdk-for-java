@@ -7,7 +7,7 @@ import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
-import com.azure.core.client.traits.HttpConfigTrait;
+import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
@@ -128,7 +128,7 @@ public final class QueueServiceClientBuilder implements
     ConnectionStringTrait<QueueServiceClientBuilder>,
     AzureNamedKeyCredentialTrait<QueueServiceClientBuilder>,
     AzureSasCredentialTrait<QueueServiceClientBuilder>,
-    HttpConfigTrait<QueueServiceClientBuilder>,
+        HttpTrait<QueueServiceClientBuilder>,
     ConfigurationTrait<QueueServiceClientBuilder> {
     private final ClientLogger logger = new ClientLogger(QueueServiceClientBuilder.class);
 

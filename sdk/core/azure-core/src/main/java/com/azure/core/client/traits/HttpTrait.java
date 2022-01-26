@@ -13,7 +13,7 @@ import com.azure.core.http.policy.RetryOptions;
  * The interface for client builders that support an HTTP protocol.
  * @param <TBuilder> the type of client builder.
  */
-public interface HttpConfigTrait<TBuilder extends HttpConfigTrait<TBuilder>> {
+public interface HttpTrait<TBuilder extends HttpTrait<TBuilder>> {
     /**
      * Sets the {@link HttpClient} to use for sending a receiving requests to and from the service.
      *

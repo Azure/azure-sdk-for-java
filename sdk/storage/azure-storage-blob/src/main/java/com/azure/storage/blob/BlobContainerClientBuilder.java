@@ -8,7 +8,7 @@ import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
-import com.azure.core.client.traits.HttpConfigTrait;
+import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
@@ -62,7 +62,7 @@ public final class BlobContainerClientBuilder implements
     ConnectionStringTrait<BlobContainerClientBuilder>,
     AzureSasCredentialTrait<BlobContainerClientBuilder>,
     AzureNamedKeyCredentialTrait<BlobContainerClientBuilder>,
-    HttpConfigTrait<BlobContainerClientBuilder>,
+        HttpTrait<BlobContainerClientBuilder>,
     ConfigurationTrait<BlobContainerClientBuilder> {
     private final ClientLogger logger = new ClientLogger(BlobContainerClientBuilder.class);
 

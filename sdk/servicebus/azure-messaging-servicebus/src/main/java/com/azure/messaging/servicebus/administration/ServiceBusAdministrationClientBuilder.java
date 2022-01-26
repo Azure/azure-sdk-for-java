@@ -7,7 +7,7 @@ import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
-import com.azure.core.client.traits.HttpConfigTrait;
+import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
@@ -88,7 +88,7 @@ import java.util.Objects;
 public final class ServiceBusAdministrationClientBuilder implements
     TokenCredentialTrait<ServiceBusAdministrationClientBuilder>,
     ConnectionStringTrait<ServiceBusAdministrationClientBuilder>,
-    HttpConfigTrait<ServiceBusAdministrationClientBuilder>,
+    HttpTrait<ServiceBusAdministrationClientBuilder>,
     ConfigurationTrait<ServiceBusAdministrationClientBuilder> {
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;

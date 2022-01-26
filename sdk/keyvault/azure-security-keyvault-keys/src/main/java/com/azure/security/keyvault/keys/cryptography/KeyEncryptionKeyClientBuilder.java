@@ -5,7 +5,7 @@ package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
-import com.azure.core.client.traits.HttpConfigTrait;
+import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
@@ -58,7 +58,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {KeyEncryptionKeyClient.class, KeyEncryptionKeyAsyncClient.class})
 public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyResolver, AsyncKeyEncryptionKeyResolver,
     TokenCredentialTrait<KeyEncryptionKeyClientBuilder>,
-    HttpConfigTrait<KeyEncryptionKeyClientBuilder>,
+        HttpTrait<KeyEncryptionKeyClientBuilder>,
     ConfigurationTrait<KeyEncryptionKeyClientBuilder> {
     private final ClientLogger logger = new ClientLogger(KeyEncryptionKeyClientBuilder.class);
     private final CryptographyClientBuilder builder;

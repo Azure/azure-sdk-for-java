@@ -7,7 +7,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.client.traits.AmqpConfigTrait;
+import com.azure.core.amqp.client.traits.AmqpTrait;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
@@ -184,7 +184,7 @@ public final class ServiceBusClientBuilder implements
     AzureNamedKeyCredentialTrait<ServiceBusClientBuilder>,
     ConnectionStringTrait<ServiceBusClientBuilder>,
     AzureSasCredentialTrait<ServiceBusClientBuilder>,
-    AmqpConfigTrait<ServiceBusClientBuilder>,
+    AmqpTrait<ServiceBusClientBuilder>,
     ConfigurationTrait<ServiceBusClientBuilder> {
     private static final AmqpRetryOptions DEFAULT_RETRY =
         new AmqpRetryOptions().setTryTimeout(ServiceBusConstants.OPERATION_TIMEOUT);

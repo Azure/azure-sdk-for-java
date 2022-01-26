@@ -7,7 +7,7 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
-import com.azure.core.client.traits.HttpConfigTrait;
+import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
@@ -60,7 +60,7 @@ public final class DataLakePathClientBuilder implements
     TokenCredentialTrait<DataLakePathClientBuilder>,
     AzureNamedKeyCredentialTrait<DataLakePathClientBuilder>,
     AzureSasCredentialTrait<DataLakePathClientBuilder>,
-    HttpConfigTrait<DataLakePathClientBuilder>,
+        HttpTrait<DataLakePathClientBuilder>,
     ConfigurationTrait<DataLakePathClientBuilder> {
 
     private final ClientLogger logger = new ClientLogger(DataLakePathClientBuilder.class);
