@@ -72,7 +72,7 @@ param(
 )
 
 . (Join-Path $PSScriptRoot common.ps1)
-. (Join-Path $PSScriptRoot Helpers\DocMs-Metadata-Helper.ps1)
+. (Join-Path $PSScriptRoot Helpers\Metadata-Helper.ps1)
 
 $releaseReplaceRegex = "(https://github.com/$RepoId/(?:blob|tree)/)(?:master|main)"
 $TITLE_REGEX = "(\#\s+(?<filetitle>Azure .+? (?:client|plugin|shared) library for (?:JavaScript|Java|Python|\.NET|C)))"
@@ -110,10 +110,9 @@ function GetAdjustedReadmeContent($ReadmeContent, $PackageInfo, $PackageMetadata
   $msauthor = "ramyar"
   Write-Host "Retrieve the code owner from $($PackageInfo.DirectoryPath)."
   $author = GetPrimaryCodeOwner -TargetDirectory $PackageInfo.DirectoryPath 
-  $msauthor = GetMsAliasFromGithub -TenantId $TenantId -ClientId $ClientId -ClientSecret $ClientSecret
+  $msauthor = GetMsAliasFromGithub -TenantId $TenantId -ClientId $ClientId -ClientSecret $ClientSecret -GithubUser $author -ErrorAction Continue
   # Default value
-  
-  if (!$author -and !$msauthor ) {
+  if (!$author -and !$msauthor) {
     $author = "ramya-rao-a" 
     $msauthor = "ramyar"
   }
