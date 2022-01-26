@@ -17,5 +17,5 @@ public interface ConfigurationTrait<TBuilder extends ConfigurationTrait<TBuilder
      * @param configuration Configuration store used to retrieve environment configurations.
      * @return the updated TBuilder object
      */
-    public TBuilder configuration(Configuration configuration);
+    TBuilder configuration(Configuration configuration);
 }
