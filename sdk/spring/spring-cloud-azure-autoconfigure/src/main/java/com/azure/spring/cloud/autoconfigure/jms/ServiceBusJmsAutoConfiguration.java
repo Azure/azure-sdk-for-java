@@ -59,7 +59,7 @@ public class ServiceBusJmsAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnMissingProperty(prefix = "spring.jms.servicebus", name = "connection-string")
-    AzureServiceBusJmsPropertiesBeanPostProcessor azureServiceBusJmsPropertiesBeanPostProcessor(ObjectProvider<ConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders) {
+    public static AzureServiceBusJmsPropertiesBeanPostProcessor azureServiceBusJmsPropertiesBeanPostProcessor(ObjectProvider<ConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders) {
         return new AzureServiceBusJmsPropertiesBeanPostProcessor(connectionStringProviders);
     }
 }
