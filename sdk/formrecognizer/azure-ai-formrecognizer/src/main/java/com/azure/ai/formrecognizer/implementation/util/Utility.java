@@ -109,7 +109,7 @@ public final class Utility {
         if (tokenCredential != null) {
             Objects.requireNonNull(audience, "'audience' is required and can not be null");
             httpPipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential,
-                audience.toString(), DEFAULT_SCOPE));
+                audience.toString() + DEFAULT_SCOPE));
         } else if (azureKeyCredential != null) {
             httpPipelinePolicies.add(new AzureKeyCredentialPolicy(Constants.OCP_APIM_SUBSCRIPTION_KEY,
                 azureKeyCredential));
