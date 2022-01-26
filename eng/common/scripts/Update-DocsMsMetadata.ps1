@@ -114,16 +114,15 @@ function GetAdjustedReadmeContent($ReadmeContent, $PackageInfo, $PackageMetadata
   if ($codeOwnerArray) {
     Write-Host "Code Owners are $($codeOwnerArray -join ",")"
     $author = $codeOwnerArray[0]
-    try {
-      $msauthor = ."$PSScriptRoot/Get-AADIdentityFromGithubUser.ps1" `
-                    -TenantId $TenantId `
-                    -ClientId $ClientId `
-                    -ClientSecret $ClientSecret `
-                    -GithubUser $author
-    }
-    catch {
-      LogError $_
+    
+    $msauthor = ."$PSScriptRoot/Get-AADIdentityFromGithubUser.ps1" `
+                  -TenantId $TenantId `
+                  -ClientId $ClientId `
+                  -ClientSecret $ClientSecret `
+                  -GithubUser $author
+    if ($LASTEXITCODE -ne 0) {
       Write-Host "No msalias fetching from github username: $author. Use github username for default value."
+      $global:LASTEXITCODE = 0
       $msauthor = $author # Default to github username
     }
   }
