@@ -10,6 +10,8 @@ import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.mediaservices.models.Asset;
 import com.azure.resourcemanager.mediaservices.models.BuiltInStandardEncoderPreset;
@@ -35,9 +37,10 @@ public class MediaServicesTests extends TestBase {
     private static final Random RANDOM = new Random();
 
     private static final Region REGION = Region.US_WEST3;
-    private static final String RESOURCE_GROUP = "rg" + randomPadding();
     private static final String STORAGE_ACCOUNT = "sa" + randomPadding();
     private static final String ACCOUNT = "media" + randomPadding();
+
+    private String resourceGroup = "rg" + randomPadding();
 
     @Test
     @DoNotRecord(skipInPlayback = true)
@@ -50,22 +53,28 @@ public class MediaServicesTests extends TestBase {
             .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
-        storageManager.resourceManager().resourceGroups().define(RESOURCE_GROUP)
-            .withRegion(REGION)
-            .create();
+        String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
+        boolean testEnv = !CoreUtils.isNullOrEmpty(testResourceGroup);
+        if (testEnv) {
+            resourceGroup = testResourceGroup;
+        } else {
+            storageManager.resourceManager().resourceGroups().define(resourceGroup)
+                .withRegion(REGION)
+                .create();
+        }
 
         try {
             // @embedmeStart
             // storage account
             StorageAccount storageAccount = storageManager.storageAccounts().define(STORAGE_ACCOUNT)
                 .withRegion(REGION)
-                .withExistingResourceGroup(RESOURCE_GROUP)
+                .withExistingResourceGroup(resourceGroup)
                 .create();
 
             // media service account
             MediaService account = manager.mediaservices().define(ACCOUNT)
                 .withRegion(Region.US_WEST3)
-                .withExistingResourceGroup(RESOURCE_GROUP)
+                .withExistingResourceGroup(resourceGroup)
                 .withStorageAccounts(Collections.singletonList(
                     new com.azure.resourcemanager.mediaservices.models.StorageAccount()
                         .withId(storageAccount.id())
@@ -75,7 +84,7 @@ public class MediaServicesTests extends TestBase {
             // transform
             Transform transform = manager.transforms()
                 .define("transform1")
-                .withExistingMediaService(RESOURCE_GROUP, ACCOUNT)
+                .withExistingMediaService(resourceGroup, ACCOUNT)
                 .withOutputs(Collections.singletonList(new TransformOutput()
                     .withPreset(new BuiltInStandardEncoderPreset()
                         .withPresetName(EncoderNamedPreset.CONTENT_AWARE_ENCODING))))
@@ -84,7 +93,7 @@ public class MediaServicesTests extends TestBase {
             // output asset
             Asset asset = manager.assets()
                 .define("output1")
-                .withExistingMediaService(RESOURCE_GROUP, ACCOUNT)
+                .withExistingMediaService(resourceGroup, ACCOUNT)
                 .create();
 
             // input uri
@@ -93,7 +102,7 @@ public class MediaServicesTests extends TestBase {
 
             // job
             Job job = manager.jobs().define("job1")
-                .withExistingTransform(RESOURCE_GROUP, ACCOUNT, "transform1")
+                .withExistingTransform(resourceGroup, ACCOUNT, "transform1")
                 .withInput(new JobInputHttp()
                     .withFiles(Collections.singletonList(jobFile))
                     .withBaseUri(jobHttpBaseUri)
@@ -115,8 +124,13 @@ public class MediaServicesTests extends TestBase {
             Assertions.assertEquals(JobState.FINISHED, jobState);
             Assertions.assertEquals(storageAccount.name(), asset.storageAccountName());
             Assertions.assertNotNull(asset.container());
+
+            manager.mediaservices().deleteById(account.id());
+            storageManager.storageAccounts().deleteById(storageAccount.id());
         } finally {
-            storageManager.resourceManager().resourceGroups().beginDeleteByName(RESOURCE_GROUP);
+            if (!testEnv) {
+                storageManager.resourceManager().resourceGroups().beginDeleteByName(resourceGroup);
+            }
         }
     }
 
