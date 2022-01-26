@@ -72,6 +72,7 @@ param(
 )
 
 . (Join-Path $PSScriptRoot common.ps1)
+. (Join-Path $PSScriptRoot Helpers\DocMs-Metadata-Helper.ps1)
 
 $releaseReplaceRegex = "(https://github.com/$RepoId/(?:blob|tree)/)(?:master|main)"
 $TITLE_REGEX = "(\#\s+(?<filetitle>Azure .+? (?:client|plugin|shared) library for (?:JavaScript|Java|Python|\.NET|C)))"
@@ -106,25 +107,18 @@ function GetAdjustedReadmeContent($ReadmeContent, $PackageInfo, $PackageMetadata
   }
   
   # Get the first code owners of the package.
-  $author = "ramya-rao-a"
   $msauthor = "ramyar"
   Write-Host "Retrieve the code owner from $($PackageInfo.DirectoryPath)."
-  $codeOwnerArray = ."$PSScriptRoot/get-codeowners.ps1" `
-                    -TargetDirectory $PackageInfo.DirectoryPath 
-  if ($codeOwnerArray) {
-    Write-Host "Code Owners are $($codeOwnerArray -join ",")"
-    $author = $codeOwnerArray[0]
-    
-    $msauthor = ."$PSScriptRoot/Get-AADIdentityFromGithubUser.ps1" `
-                  -TenantId $TenantId `
-                  -ClientId $ClientId `
-                  -ClientSecret $ClientSecret `
-                  -GithubUser $author
-    if ($LASTEXITCODE -ne 0) {
-      Write-Host "No msalias fetching from github username: $author. Use github username for default value."
-      $global:LASTEXITCODE = 0
-      $msauthor = $author # Default to github username
-    }
+  $author = GetPrimaryCodeOwner -TargetDirectory $PackageInfo.DirectoryPath 
+  $msauthor = GetMsAliasFromGithub -TenantId $TenantId -ClientId $ClientId -ClientSecret $ClientSecret
+  # Default value
+  
+  if (!$author -and !$msauthor ) {
+    $author = "ramya-rao-a" 
+    $msauthor = "ramyar"
+  }
+  elseif (!$msauthor) {
+    $msauthor = $author
   }
   Write-Host "The author of package: $author"
   Write-Host "The ms author of package: $msauthor"
