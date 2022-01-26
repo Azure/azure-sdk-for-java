@@ -22,11 +22,10 @@ import static com.azure.resourcemanager.deviceprovisioningservices.Constants.DEF
 import static com.azure.resourcemanager.deviceprovisioningservices.Constants.IOTHUB_OWNER_ACCESS_KEY_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class LinkedHubTests extends DeviceProvisioningTestBase
-{
+public class LinkedHubTests extends DeviceProvisioningTestBase {
     @Test
     @DoNotRecord(skipInPlayback = true)
-    public void LinkedHubsCRUD() {
+    public void linkedHubsCRUD() {
         ResourceManager resourceManager = createResourceManager();
         IotDpsManager iotDpsManager = createIotDpsManager();
         IotHubManager iotHubManager = createIotHubManager();

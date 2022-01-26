@@ -13,11 +13,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AllocationPolicyTests extends DeviceProvisioningTestBase
-{
+public class AllocationPolicyTests extends DeviceProvisioningTestBase {
     @Test
     @DoNotRecord(skipInPlayback = true)
-    public void Get() {
+    public void get() {
         ResourceManager resourceManager = createResourceManager();
         IotDpsManager iotDpsManager = createIotDpsManager();
         ResourceGroup resourceGroup = createResourceGroup(resourceManager);
@@ -40,7 +39,7 @@ public class AllocationPolicyTests extends DeviceProvisioningTestBase
 
     @Test
     @DoNotRecord(skipInPlayback = true)
-    public void Update() {
+    public void update() {
         ResourceManager resourceManager = createResourceManager();
         IotDpsManager iotDpsManager = createIotDpsManager();
         ResourceGroup resourceGroup = createResourceGroup(resourceManager);

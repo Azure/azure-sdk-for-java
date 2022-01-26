@@ -18,11 +18,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class DeviceProvisioningResourceManagementTests extends DeviceProvisioningTestBase
-{
+public class DeviceProvisioningResourceManagementTests extends DeviceProvisioningTestBase {
     @Test
     @DoNotRecord(skipInPlayback = true)
-    public void ServiceCRUD() {
+    public void serviceCRUD() {
         ResourceManager resourceManager = createResourceManager();
         IotDpsManager iotDpsManager = createIotDpsManager();
         ResourceGroup resourceGroup = createResourceGroup(resourceManager);
@@ -124,7 +123,7 @@ public class DeviceProvisioningResourceManagementTests extends DeviceProvisionin
 
     @Test
     @DoNotRecord(skipInPlayback = true)
-    public void CreateFailure() {
+    public void createFailure() {
         ResourceManager resourceManager = createResourceManager();
         IotDpsManager iotDpsManager = createIotDpsManager();
         ResourceGroup resourceGroup = createResourceGroup(resourceManager);

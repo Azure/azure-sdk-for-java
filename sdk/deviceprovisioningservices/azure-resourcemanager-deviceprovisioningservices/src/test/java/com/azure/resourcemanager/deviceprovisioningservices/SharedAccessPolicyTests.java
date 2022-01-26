@@ -22,11 +22,10 @@ import static com.azure.resourcemanager.deviceprovisioningservices.Constants.OWN
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class SharedAccessPolicyTests extends DeviceProvisioningTestBase
-{
+public class SharedAccessPolicyTests extends DeviceProvisioningTestBase {
     @Test
     @DoNotRecord(skipInPlayback = true)
-    public void SharedAccessPolicyCRUD() {
+    public void sharedAccessPolicyCRUD() {
         ResourceManager resourceManager = createResourceManager();
         IotDpsManager iotDpsManager = createIotDpsManager();
         ResourceGroup resourceGroup = createResourceGroup(resourceManager);
