@@ -1,5 +1,12 @@
 # Release History
 
+## 1.0.0-beta.8 (2022-01-26)
+
+### Features Added
+
+- Added `MetaStoreClient` and `MetaStoreAsyncClient`
+- Added `MetastoreRegistrationResponse`, `MetastoreRequestSuccessResponse`, `MetastoreUpdateObject`, `MetastoreUpdationResponse`, `NotebookParameter`, `NotebookParameterType`, `RequestStatus`, `ResourceStatus` model classes.
+
 ## 1.0.0-beta.7 (2021-11-18)
 
 ### Breaking Changes
