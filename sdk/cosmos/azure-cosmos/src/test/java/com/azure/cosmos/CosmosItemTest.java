@@ -155,7 +155,7 @@ public class CosmosItemTest extends TestSuiteBase {
         assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void deleteAllItemsByPartitionKey() throws Exception {
         String pkValue1 = UUID.randomUUID().toString();
         String pkValue2 = UUID.randomUUID().toString();
