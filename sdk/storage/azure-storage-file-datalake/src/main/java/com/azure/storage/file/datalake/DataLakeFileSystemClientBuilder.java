@@ -153,7 +153,8 @@ public class DataLakeFileSystemClientBuilder {
             BlobUrlParts parts = BlobUrlParts.parse(url);
 
             this.accountName = parts.getAccountName();
-            this.fileSystemName = parts.getBlobContainerName();
+            this.fileSystemName = parts.getBlobContainerName() == null ? this.fileSystemName
+                : parts.getBlobContainerName();
             this.endpoint = BuilderHelper.getEndpoint(parts);
 
             String sasToken = parts.getCommonSasQueryParameters().encode();
