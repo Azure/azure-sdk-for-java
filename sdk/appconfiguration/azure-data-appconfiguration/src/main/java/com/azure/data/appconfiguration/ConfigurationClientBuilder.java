@@ -177,6 +177,8 @@ public final class ConfigurationClientBuilder {
             ? Configuration.getGlobalConfiguration()
             : configuration;
 
+        readConfiguration(buildConfiguration);
+
         // Service version
         ConfigurationServiceVersion serviceVersion = (version != null)
             ? version
@@ -394,8 +396,8 @@ public final class ConfigurationClientBuilder {
         return this;
     }
 
-    private static final ConfigurationProperty<String> ENDPOINT_PROP = ConfigurationProperty.stringPropertyBuilder("endpoint").build();
-    private static final ConfigurationProperty<String> CONNECTION_STRING_PROP = ConfigurationProperty.stringPropertyBuilder("connection-string").build();
+    private static final ConfigurationProperty<String> ENDPOINT_PROPERTY = ConfigurationProperty.stringPropertyBuilder("endpoint").build();
+    private static final ConfigurationProperty<String> CONNECTION_STRING_PROPERTY = ConfigurationProperty.stringPropertyBuilder("connection-string").build();
 
     /**
      * Sets the configuration store that is used during construction of the service client.
@@ -408,42 +410,6 @@ public final class ConfigurationClientBuilder {
      */
     public ConfigurationClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
-
-        if (this.clientOptions == null) {
-            ClientOptions configClientOptions = HttpClientOptions.fromConfiguration(this.configuration, null);
-            if (configClientOptions != null) {
-                clientOptions(configClientOptions);
-            }
-        }
-
-        if (this.httpLogOptions == null) {
-            HttpLogOptions configHttpLogOptions = HttpLogOptions.fromConfiguration(this.configuration, null);
-            if (configHttpLogOptions != null) {
-                httpLogOptions(configHttpLogOptions);
-            }
-        }
-
-        if (this.endpoint == null) {
-            String configConnectionString = this.configuration.get(CONNECTION_STRING_PROP);
-            if (configConnectionString != null) {
-                connectionString(configConnectionString);
-            }
-        }
-
-        if (this.endpoint == null) {
-            String configEndpoint = this.configuration.get(ENDPOINT_PROP);
-            if (configEndpoint != null) {
-                endpoint(configEndpoint);
-            }
-        }
-
-        if (retryPolicy == null) {
-            RetryPolicy configRetryPolicy = RetryPolicy.fromConfiguration(this.configuration, null);
-            if (configRetryPolicy != null) {
-                retryPolicy(configRetryPolicy);
-            }
-        }
-
         return this;
     }
 
@@ -485,6 +451,36 @@ public final class ConfigurationClientBuilder {
             return credential.getBaseUri();
         } else {
             return null;
+        }
+    }
+
+    private void readConfiguration(Configuration configuration) {
+        if (this.clientOptions == null) {
+            ClientOptions configClientOptions = HttpClientOptions.fromConfiguration(this.configuration, null);
+            if (configClientOptions != null) {
+                clientOptions(configClientOptions);
+            }
+        }
+
+        if (this.httpLogOptions == null) {
+            HttpLogOptions configHttpLogOptions = HttpLogOptions.fromConfiguration(this.configuration);
+            httpLogOptions(configHttpLogOptions);
+        }
+
+        if (this.endpoint == null) {
+            String configEndpoint = this.configuration.get(ENDPOINT_PROPERTY);
+            if (configEndpoint != null) {
+                endpoint(configEndpoint);
+            }
+
+            String configConnectionString = this.configuration.get(CONNECTION_STRING_PROPERTY);
+            if (configConnectionString != null) {
+                connectionString(configConnectionString);
+            }
+        }
+
+        if (this.retryPolicy == null) {
+            retryPolicy(RetryPolicy.fromConfiguration(this.configuration));
         }
     }
 }

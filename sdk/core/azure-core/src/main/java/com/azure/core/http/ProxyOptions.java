@@ -68,12 +68,13 @@ public class ProxyOptions {
         .environmentVariables("http.proxyPort")
         .global(true)
         .build();
+
     private static final ConfigurationProperty<Integer> PROPERTY_HTTPS_PROXY_PORT = ConfigurationProperty.integerPropertyBuilder("http-client.proxy.https.port")
         .environmentVariables("https.proxyPort")
         .global(true)
         .build();
 
-    private static final ConfigurationProperty<String> PROPERTY_HTTP_PROXY_USER = ConfigurationProperty.stringPropertyBuilder("http-client.proxy.user")
+    private static final ConfigurationProperty<String> PROPERTY_HTTP_PROXY_USER = ConfigurationProperty.stringPropertyBuilder("http-client.proxy.http.user")
         .environmentVariables("http.proxyUser")
         .global(true)
         .build();

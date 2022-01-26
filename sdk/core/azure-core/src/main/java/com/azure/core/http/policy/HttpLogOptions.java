@@ -60,36 +60,32 @@ public class HttpLogOptions {
         "User-Agent"
     );
 
-    // skip headers and query params as they need should be rather configured in code
-    private static final ConfigurationProperty<String> APPLICATION_ID_PROP = ConfigurationProperty.stringPropertyBuilder("http.logging.application-id").canLogValue(true).build();
-    private static final ConfigurationProperty<Boolean> PRETTY_PRINT_BODY_PROP = ConfigurationProperty.booleanPropertyBuilder("http.logging.pretty-print-body").build();
+    // skip headers and query params as they need should be rather configured in code, application id is deprecated
+    private static final ConfigurationProperty<String> ALLOWED_HEADERS_PROPERTY = ConfigurationProperty.stringPropertyBuilder("http.logging.headers").canLogValue(true).global(true).build();
+    private static final ConfigurationProperty<Boolean> PRETTY_PRINT_BODY_PROPERTY = ConfigurationProperty.booleanPropertyBuilder("http.logging.pretty-print-body").global(true).build();
 
-    public static HttpLogOptions fromConfiguration(Configuration configuration, HttpLogOptions defaultOptions) {
+    public static HttpLogOptions fromConfiguration(Configuration configuration) {
         Objects.requireNonNull(configuration, "'configuration' cannot be null");
         if (configuration == Configuration.NONE) {
             throw LOGGER.logThrowableAsError(new IllegalArgumentException("'configuration' cannot be 'Configuration.NONE'."));
         }
 
-        if (!configuration.contains(APPLICATION_ID_PROP) && !configuration.contains(PRETTY_PRINT_BODY_PROP)) {
-            return defaultOptions;
-        }
-
         HttpLogOptions httpLogOptions = new HttpLogOptions();
-
-        String applicationId = configuration.get(APPLICATION_ID_PROP);
-        if (applicationId != null) {
-            httpLogOptions.setApplicationId(applicationId);
+        String headers = configuration.get(ALLOWED_HEADERS_PROPERTY);
+        if (CoreUtils.isNullOrEmpty(headers)) {
+            String[] headerList = headers.split(",");
+            for (String h : headerList) {
+                httpLogOptions.addAllowedHeaderName(h);
+            }
         }
 
-        HttpLogDetailLevel logLevel = configuration.get(HttpLogDetailLevel.LOG_LEVEL_PROP);;
+        HttpLogDetailLevel logLevel = configuration.get(HttpLogDetailLevel.LOG_LEVEL_PROPERTY);
         if (logLevel != null) {
             httpLogOptions.setLogLevel(logLevel);
         }
 
         // there is no real validation for boolean anyway
-        httpLogOptions.setPrettyPrintBody(configuration.get(PRETTY_PRINT_BODY_PROP));
-
-
+        httpLogOptions.setPrettyPrintBody(configuration.get(PRETTY_PRINT_BODY_PROPERTY));
         return httpLogOptions;
     }
 

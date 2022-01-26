@@ -20,7 +20,7 @@ public class HttpLogDetailLevelTests {
     @ParameterizedTest
     @MethodSource("fromConfigurationSupplier")
     public void fromConfiguration(Configuration configuration, HttpLogDetailLevel expected) {
-        assertEquals(expected, configuration.get(HttpLogDetailLevel.LOG_LEVEL_PROP));
+        assertEquals(expected, configuration.get(HttpLogDetailLevel.LOG_LEVEL_PROPERTY));
     }
 
     private static Stream<Arguments> fromConfigurationSupplier() {

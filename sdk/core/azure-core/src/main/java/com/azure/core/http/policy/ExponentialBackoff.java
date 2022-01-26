@@ -40,7 +40,7 @@ public class ExponentialBackoff implements RetryStrategy {
                     defaultMaxRetries = 3;
                 }
             } catch (NumberFormatException ignored) {
-                LOGGER.verbose("{} was loaded but is an invalid number. "
+                LOGGER.warning("{} was loaded but is an invalid number. "
                     + "Using 3 retries as the maximum.", PROPERTY_AZURE_REQUEST_RETRY_COUNT);
             }
         }

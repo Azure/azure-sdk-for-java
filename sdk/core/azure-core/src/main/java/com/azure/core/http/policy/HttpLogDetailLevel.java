@@ -64,14 +64,14 @@ public enum HttpLogDetailLevel {
             return logDetailLevel;
         };
 
-    static final ConfigurationProperty<HttpLogDetailLevel> LOG_LEVEL_PROP = new ConfigurationPropertyBuilder<>("http.logging.level", LOG_LEVEL_CONVERTER)
+    static final ConfigurationProperty<HttpLogDetailLevel> LOG_LEVEL_PROPERTY = new ConfigurationPropertyBuilder<>("http.logging.level", LOG_LEVEL_CONVERTER)
         .defaultValue(NONE)
         .canLogValue(true)
         .global(true)
         .environmentVariables(Configuration.PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL)
         .build();
 
-    static final HttpLogDetailLevel ENVIRONMENT_HTTP_LOG_DETAIL_LEVEL = Configuration.getGlobalConfiguration().get(LOG_LEVEL_PROP);
+    static final HttpLogDetailLevel ENVIRONMENT_HTTP_LOG_DETAIL_LEVEL = Configuration.getGlobalConfiguration().get(LOG_LEVEL_PROPERTY);
 
     /**
      * @return a value indicating whether a request's URL should be logged.
