@@ -28,6 +28,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryImpl;
 import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryImplBuilder;
 
@@ -117,7 +118,7 @@ public class SchemaRegistryClientBuilder {
     private ServiceVersion serviceVersion;
 
     /**
-     * Constructor for CachedSchemaRegistryClientBuilder.  Supplies client defaults.
+     * Constructor for SchemaRegistryClientBuilder. Supplies client defaults.
      */
     public SchemaRegistryClientBuilder() {
         this.httpLogOptions = new HttpLogOptions();
@@ -349,8 +350,10 @@ public class SchemaRegistryClientBuilder {
         }
 
         ServiceVersion version = (serviceVersion == null) ? SchemaRegistryVersion.getLatest() : serviceVersion;
+        SerializerAdapter serializerAdapter = new SchemaRegistryJsonSerializer();
 
         AzureSchemaRegistryImpl restService = new AzureSchemaRegistryImplBuilder()
+            .serializerAdapter(serializerAdapter)
             .endpoint(fullyQualifiedNamespace)
             .apiVersion(version.getVersion())
             .pipeline(buildPipeline)

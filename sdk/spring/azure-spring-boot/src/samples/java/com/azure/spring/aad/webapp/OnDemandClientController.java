@@ -14,6 +14,7 @@ import static com.azure.spring.aad.JsonMapper.toJsonString;
 @Controller
 public class OnDemandClientController {
 
+    // BEGIN: readme-sample-arm
     @GetMapping("/arm")
     @ResponseBody
     public String arm(
@@ -23,4 +24,5 @@ public class OnDemandClientController {
         // oAuth2AuthorizedClient contains access_token. We can use this access_token to access resource server.
         return toJsonString(armClient);
     }
+    // END: readme-sample-arm
 }

@@ -825,7 +825,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAtScopeAsync(String scope, String deploymentName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteAtScopeWithResponseAsync(scope, deploymentName);
         return this
@@ -850,7 +850,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAtScopeAsync(
         String scope, String deploymentName, Context context) {
         context = this.client.mergeContext(context);
@@ -875,7 +875,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAtScope(String scope, String deploymentName) {
         return beginDeleteAtScopeAsync(scope, deploymentName).getSyncPoller();
     }
@@ -896,7 +896,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAtScope(String scope, String deploymentName, Context context) {
         return beginDeleteAtScopeAsync(scope, deploymentName, context).getSyncPoller();
     }
@@ -1217,7 +1217,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtScopeAsync(
         String scope, String deploymentName, DeploymentInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1244,7 +1244,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtScopeAsync(
         String scope, String deploymentName, DeploymentInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -1271,7 +1271,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtScope(
         String scope, String deploymentName, DeploymentInner parameters) {
         return beginCreateOrUpdateAtScopeAsync(scope, deploymentName, parameters).getSyncPoller();
@@ -1289,7 +1289,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtScope(
         String scope, String deploymentName, DeploymentInner parameters, Context context) {
         return beginCreateOrUpdateAtScopeAsync(scope, deploymentName, parameters, context).getSyncPoller();
@@ -1727,7 +1727,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
         beginValidateAtScopeAsync(String scope, String deploymentName, DeploymentInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = validateAtScopeWithResponseAsync(scope, deploymentName, parameters);
@@ -1754,7 +1754,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
         beginValidateAtScopeAsync(String scope, String deploymentName, DeploymentInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -1782,7 +1782,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidateAtScope(
         String scope, String deploymentName, DeploymentInner parameters) {
         return beginValidateAtScopeAsync(scope, deploymentName, parameters).getSyncPoller();
@@ -1801,7 +1801,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidateAtScope(
         String scope, String deploymentName, DeploymentInner parameters, Context context) {
         return beginValidateAtScopeAsync(scope, deploymentName, parameters, context).getSyncPoller();
@@ -2276,7 +2276,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAtTenantScopeAsync(String deploymentName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteAtTenantScopeWithResponseAsync(deploymentName);
         return this
@@ -2300,7 +2300,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAtTenantScopeAsync(String deploymentName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteAtTenantScopeWithResponseAsync(deploymentName, context);
@@ -2323,7 +2323,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAtTenantScope(String deploymentName) {
         return beginDeleteAtTenantScopeAsync(deploymentName).getSyncPoller();
     }
@@ -2343,7 +2343,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAtTenantScope(String deploymentName, Context context) {
         return beginDeleteAtTenantScopeAsync(deploymentName, context).getSyncPoller();
     }
@@ -2628,7 +2628,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
         beginCreateOrUpdateAtTenantScopeAsync(String deploymentName, ScopedDeployment parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2654,7 +2654,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
         beginCreateOrUpdateAtTenantScopeAsync(String deploymentName, ScopedDeployment parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -2680,7 +2680,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtTenantScope(
         String deploymentName, ScopedDeployment parameters) {
         return beginCreateOrUpdateAtTenantScopeAsync(deploymentName, parameters).getSyncPoller();
@@ -2697,7 +2697,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtTenantScope(
         String deploymentName, ScopedDeployment parameters, Context context) {
         return beginCreateOrUpdateAtTenantScopeAsync(deploymentName, parameters, context).getSyncPoller();
@@ -3081,7 +3081,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
         beginValidateAtTenantScopeAsync(String deploymentName, ScopedDeployment parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = validateAtTenantScopeWithResponseAsync(deploymentName, parameters);
@@ -3107,7 +3107,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
         beginValidateAtTenantScopeAsync(String deploymentName, ScopedDeployment parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -3134,7 +3134,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
         beginValidateAtTenantScope(String deploymentName, ScopedDeployment parameters) {
         return beginValidateAtTenantScopeAsync(deploymentName, parameters).getSyncPoller();
@@ -3152,7 +3152,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
         beginValidateAtTenantScope(String deploymentName, ScopedDeployment parameters, Context context) {
         return beginValidateAtTenantScopeAsync(deploymentName, parameters, context).getSyncPoller();
@@ -3318,7 +3318,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the What-If operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIfAtTenantScopeAsync(
         String deploymentName, ScopedDeploymentWhatIf parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = whatIfAtTenantScopeWithResponseAsync(deploymentName, parameters);
@@ -3343,7 +3343,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the What-If operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner>
         beginWhatIfAtTenantScopeAsync(String deploymentName, ScopedDeploymentWhatIf parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -3369,7 +3369,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the What-If operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIfAtTenantScope(
         String deploymentName, ScopedDeploymentWhatIf parameters) {
         return beginWhatIfAtTenantScopeAsync(deploymentName, parameters).getSyncPoller();
@@ -3386,7 +3386,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the What-If operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIfAtTenantScope(
         String deploymentName, ScopedDeploymentWhatIf parameters, Context context) {
         return beginWhatIfAtTenantScopeAsync(deploymentName, parameters, context).getSyncPoller();
@@ -3829,7 +3829,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAtManagementGroupScopeAsync(
         String groupId, String deploymentName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteAtManagementGroupScopeWithResponseAsync(groupId, deploymentName);
@@ -3855,7 +3855,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAtManagementGroupScopeAsync(
         String groupId, String deploymentName, Context context) {
         context = this.client.mergeContext(context);
@@ -3881,7 +3881,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAtManagementGroupScope(String groupId, String deploymentName) {
         return beginDeleteAtManagementGroupScopeAsync(groupId, deploymentName).getSyncPoller();
     }
@@ -3902,7 +3902,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAtManagementGroupScope(
         String groupId, String deploymentName, Context context) {
         return beginDeleteAtManagementGroupScopeAsync(groupId, deploymentName, context).getSyncPoller();
@@ -4228,7 +4228,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
         beginCreateOrUpdateAtManagementGroupScopeAsync(
             String groupId, String deploymentName, ScopedDeployment parameters) {
@@ -4256,7 +4256,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
         beginCreateOrUpdateAtManagementGroupScopeAsync(
             String groupId, String deploymentName, ScopedDeployment parameters, Context context) {
@@ -4284,7 +4284,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
         beginCreateOrUpdateAtManagementGroupScope(String groupId, String deploymentName, ScopedDeployment parameters) {
         return beginCreateOrUpdateAtManagementGroupScopeAsync(groupId, deploymentName, parameters).getSyncPoller();
@@ -4302,7 +4302,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
         beginCreateOrUpdateAtManagementGroupScope(
             String groupId, String deploymentName, ScopedDeployment parameters, Context context) {
@@ -4747,7 +4747,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
         beginValidateAtManagementGroupScopeAsync(String groupId, String deploymentName, ScopedDeployment parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -4775,7 +4775,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
         beginValidateAtManagementGroupScopeAsync(
             String groupId, String deploymentName, ScopedDeployment parameters, Context context) {
@@ -4804,7 +4804,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
         beginValidateAtManagementGroupScope(String groupId, String deploymentName, ScopedDeployment parameters) {
         return beginValidateAtManagementGroupScopeAsync(groupId, deploymentName, parameters).getSyncPoller();
@@ -4823,7 +4823,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
         beginValidateAtManagementGroupScope(
             String groupId, String deploymentName, ScopedDeployment parameters, Context context) {
@@ -5011,7 +5011,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the What-If operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner>
         beginWhatIfAtManagementGroupScopeAsync(
             String groupId, String deploymentName, ScopedDeploymentWhatIf parameters) {
@@ -5039,7 +5039,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the What-If operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner>
         beginWhatIfAtManagementGroupScopeAsync(
             String groupId, String deploymentName, ScopedDeploymentWhatIf parameters, Context context) {
@@ -5067,7 +5067,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the What-If operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner>
         beginWhatIfAtManagementGroupScope(String groupId, String deploymentName, ScopedDeploymentWhatIf parameters) {
         return beginWhatIfAtManagementGroupScopeAsync(groupId, deploymentName, parameters).getSyncPoller();
@@ -5085,7 +5085,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the What-If operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner>
         beginWhatIfAtManagementGroupScope(
             String groupId, String deploymentName, ScopedDeploymentWhatIf parameters, Context context) {
@@ -5584,7 +5584,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAtSubscriptionScopeAsync(String deploymentName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteAtSubscriptionScopeWithResponseAsync(deploymentName);
         return this
@@ -5608,7 +5608,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAtSubscriptionScopeAsync(
         String deploymentName, Context context) {
         context = this.client.mergeContext(context);
@@ -5632,7 +5632,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAtSubscriptionScope(String deploymentName) {
         return beginDeleteAtSubscriptionScopeAsync(deploymentName).getSyncPoller();
     }
@@ -5652,7 +5652,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAtSubscriptionScope(String deploymentName, Context context) {
         return beginDeleteAtSubscriptionScopeAsync(deploymentName, context).getSyncPoller();
     }
@@ -5980,7 +5980,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
         beginCreateOrUpdateAtSubscriptionScopeAsync(String deploymentName, DeploymentInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -6006,7 +6006,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
         beginCreateOrUpdateAtSubscriptionScopeAsync(
             String deploymentName, DeploymentInner parameters, Context context) {
@@ -6033,7 +6033,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
         beginCreateOrUpdateAtSubscriptionScope(String deploymentName, DeploymentInner parameters) {
         return beginCreateOrUpdateAtSubscriptionScopeAsync(deploymentName, parameters).getSyncPoller();
@@ -6050,7 +6050,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
         beginCreateOrUpdateAtSubscriptionScope(String deploymentName, DeploymentInner parameters, Context context) {
         return beginCreateOrUpdateAtSubscriptionScopeAsync(deploymentName, parameters, context).getSyncPoller();
@@ -6500,7 +6500,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
         beginValidateAtSubscriptionScopeAsync(String deploymentName, DeploymentInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -6527,7 +6527,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
         beginValidateAtSubscriptionScopeAsync(String deploymentName, DeploymentInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -6554,7 +6554,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
         beginValidateAtSubscriptionScope(String deploymentName, DeploymentInner parameters) {
         return beginValidateAtSubscriptionScopeAsync(deploymentName, parameters).getSyncPoller();
@@ -6572,7 +6572,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
         beginValidateAtSubscriptionScope(String deploymentName, DeploymentInner parameters, Context context) {
         return beginValidateAtSubscriptionScopeAsync(deploymentName, parameters, context).getSyncPoller();
@@ -6758,7 +6758,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the What-If operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner>
         beginWhatIfAtSubscriptionScopeAsync(String deploymentName, DeploymentWhatIf parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = whatIfAtSubscriptionScopeWithResponseAsync(deploymentName, parameters);
@@ -6783,7 +6783,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the What-If operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner>
         beginWhatIfAtSubscriptionScopeAsync(String deploymentName, DeploymentWhatIf parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -6809,7 +6809,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the What-If operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner>
         beginWhatIfAtSubscriptionScope(String deploymentName, DeploymentWhatIf parameters) {
         return beginWhatIfAtSubscriptionScopeAsync(deploymentName, parameters).getSyncPoller();
@@ -6826,7 +6826,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the What-If operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner>
         beginWhatIfAtSubscriptionScope(String deploymentName, DeploymentWhatIf parameters, Context context) {
         return beginWhatIfAtSubscriptionScopeAsync(deploymentName, parameters, context).getSyncPoller();
@@ -7340,7 +7340,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String deploymentName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, deploymentName);
         return this
@@ -7367,7 +7367,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String deploymentName, Context context) {
         context = this.client.mergeContext(context);
@@ -7394,7 +7394,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentName) {
         return beginDeleteAsync(resourceGroupName, deploymentName).getSyncPoller();
     }
@@ -7417,7 +7417,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String deploymentName, Context context) {
         return beginDeleteAsync(resourceGroupName, deploymentName, context).getSyncPoller();
@@ -7795,7 +7795,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String deploymentName, DeploymentInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -7823,7 +7823,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String deploymentName, DeploymentInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -7851,7 +7851,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdate(
         String resourceGroupName, String deploymentName, DeploymentInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, deploymentName, parameters).getSyncPoller();
@@ -7870,7 +7870,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdate(
         String resourceGroupName, String deploymentName, DeploymentInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, deploymentName, parameters, context).getSyncPoller();
@@ -8376,7 +8376,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidateAsync(
         String resourceGroupName, String deploymentName, DeploymentInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -8405,7 +8405,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidateAsync(
         String resourceGroupName, String deploymentName, DeploymentInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -8434,7 +8434,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidate(
         String resourceGroupName, String deploymentName, DeploymentInner parameters) {
         return beginValidateAsync(resourceGroupName, deploymentName, parameters).getSyncPoller();
@@ -8454,7 +8454,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidate(
         String resourceGroupName, String deploymentName, DeploymentInner parameters, Context context) {
         return beginValidateAsync(resourceGroupName, deploymentName, parameters, context).getSyncPoller();
@@ -8664,7 +8664,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the What-If operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIfAsync(
         String resourceGroupName, String deploymentName, DeploymentWhatIf parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = whatIfWithResponseAsync(resourceGroupName, deploymentName, parameters);
@@ -8691,7 +8691,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the What-If operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIfAsync(
         String resourceGroupName, String deploymentName, DeploymentWhatIf parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -8719,7 +8719,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the What-If operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIf(
         String resourceGroupName, String deploymentName, DeploymentWhatIf parameters) {
         return beginWhatIfAsync(resourceGroupName, deploymentName, parameters).getSyncPoller();
@@ -8738,7 +8738,7 @@ public final class DeploymentsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the What-If operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIf(
         String resourceGroupName, String deploymentName, DeploymentWhatIf parameters, Context context) {
         return beginWhatIfAsync(resourceGroupName, deploymentName, parameters, context).getSyncPoller();

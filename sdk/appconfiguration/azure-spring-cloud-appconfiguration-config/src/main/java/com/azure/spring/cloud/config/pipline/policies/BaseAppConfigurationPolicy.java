@@ -39,7 +39,7 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
     final boolean isDev;
 
     final boolean isKeyVaultConfigured;
-    
+
     /**
      * App Configuraiton Http Pipeline Policy
      * @param isDev is using dev profile
@@ -51,7 +51,7 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
     }
 
     /**
-     * 
+     *
      * Checks if Azure App Configuration Tracing is disabled, and if not gets tracing information.
      *
      * @param request The http request that will be traced, used to check operation being run.
@@ -59,7 +59,7 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
      */
     private String getTracingInfo(HttpRequest request) {
         String track = System.getenv(RequestTracingConstants.REQUEST_TRACING_DISABLED_ENVIRONMENT_VARIABLE.toString());
-        if (track != null && track.equalsIgnoreCase("false")) {
+        if (track != null && "false".equalsIgnoreCase(track)) {
             return "";
         }
 

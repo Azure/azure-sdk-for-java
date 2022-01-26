@@ -19,7 +19,7 @@ public final class AppConfigurationBusRefreshEvent extends RemoteApplicationEven
 
     /**
      * Event object for when a push event is triggered from a web hook. This event is sent to all registered application instances.
-     * 
+     *
      * @param endpoint App Configuration Store endpoint that is requesting a refresh.
      */
     AppConfigurationBusRefreshEvent(String endpoint, AppConfigurationBusRefreshEndpoint source, String origin, Destination destination) {
@@ -33,7 +33,7 @@ public final class AppConfigurationBusRefreshEvent extends RemoteApplicationEven
 
     /**
      * Endpoint of the App Configuration store that triggered the Event.
-     * 
+     *
      * @return the endpoint
      */
     public String getEndpoint() {
@@ -45,7 +45,7 @@ public final class AppConfigurationBusRefreshEvent extends RemoteApplicationEven
      * @param endpoint the endpoint of the application that triggered the event
      */
     public void setEndpoint(String endpoint) {
-        if (this.endpoint.equals("")) {
+        if ("".equals(this.endpoint)) {
             this.endpoint = endpoint;
         }
     }

@@ -11,6 +11,7 @@ import com.azure.core.implementation.FileWriteSubscriber;
 import com.azure.core.implementation.RetriableDownloadFlux;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LoggingEventBuilder;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
@@ -311,6 +312,18 @@ public final class FluxUtil {
      */
     public static <T> Mono<T> monoError(ClientLogger logger, RuntimeException ex) {
         return Mono.error(logger.logExceptionAsError(Exceptions.propagate(ex)));
+    }
+
+    /**
+     * Propagates a {@link RuntimeException} through the error channel of {@link Mono}.
+     *
+     * @param logBuilder The {@link LoggingEventBuilder} with context to log the exception.
+     * @param ex The {@link RuntimeException}.
+     * @param <T> The return type.
+     * @return A {@link Mono} that terminates with error wrapping the {@link RuntimeException}.
+     */
+    public static <T> Mono<T> monoError(LoggingEventBuilder logBuilder, RuntimeException ex) {
+        return Mono.error(logBuilder.log(Exceptions.propagate(ex)));
     }
 
     /**

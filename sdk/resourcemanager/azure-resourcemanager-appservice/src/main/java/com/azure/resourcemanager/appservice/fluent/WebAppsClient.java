@@ -269,7 +269,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a web app, a mobile app backend, or an API app.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<SiteInner>, SiteInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String name, SiteInner siteEnvelope);
 
@@ -286,7 +286,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a web app, a mobile app backend, or an API app.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SiteInner>, SiteInner> beginCreateOrUpdate(
         String resourceGroupName, String name, SiteInner siteEnvelope);
 
@@ -304,7 +304,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a web app, a mobile app backend, or an API app.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SiteInner>, SiteInner> beginCreateOrUpdate(
         String resourceGroupName, String name, SiteInner siteEnvelope, Context context);
 
@@ -971,7 +971,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRestoreAsync(
         String resourceGroupName, String name, String backupId, RestoreRequestInner request);
 
@@ -988,7 +988,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestore(
         String resourceGroupName, String name, String backupId, RestoreRequestInner request);
 
@@ -1006,7 +1006,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestore(
         String resourceGroupName, String name, String backupId, RestoreRequestInner request, Context context);
 
@@ -1657,6 +1657,65 @@ public interface WebAppsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SiteAuthSettingsInner> getAuthSettingsWithResponse(String resourceGroupName, String name, Context context);
+
+    /**
+     * Description for Gets site's Authentication / Authorization settings for apps via the V2 format.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configuration settings for the Azure App Service Authentication / Authorization V2 feature.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<SiteAuthSettingsV2Inner>> getAuthSettingsV2WithoutSecretsWithResponseAsync(
+        String resourceGroupName, String name);
+
+    /**
+     * Description for Gets site's Authentication / Authorization settings for apps via the V2 format.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configuration settings for the Azure App Service Authentication / Authorization V2 feature.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SiteAuthSettingsV2Inner> getAuthSettingsV2WithoutSecretsAsync(String resourceGroupName, String name);
+
+    /**
+     * Description for Gets site's Authentication / Authorization settings for apps via the V2 format.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configuration settings for the Azure App Service Authentication / Authorization V2 feature.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SiteAuthSettingsV2Inner getAuthSettingsV2WithoutSecrets(String resourceGroupName, String name);
+
+    /**
+     * Description for Gets site's Authentication / Authorization settings for apps via the V2 format.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configuration settings for the Azure App Service Authentication / Authorization V2 feature.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SiteAuthSettingsV2Inner> getAuthSettingsV2WithoutSecretsWithResponse(
+        String resourceGroupName, String name, Context context);
 
     /**
      * Description for Updates site's Authentication / Authorization settings for apps via the V2 format.
@@ -2703,7 +2762,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return user credentials used for publishing activity.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<UserInner>, UserInner> beginListPublishingCredentialsAsync(
         String resourceGroupName, String name);
 
@@ -2718,7 +2777,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return user credentials used for publishing activity.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<UserInner>, UserInner> beginListPublishingCredentials(String resourceGroupName, String name);
 
     /**
@@ -2733,7 +2792,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return user credentials used for publishing activity.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<UserInner>, UserInner> beginListPublishingCredentials(
         String resourceGroupName, String name, Context context);
 
@@ -4569,7 +4628,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<MSDeployStatusInner>, MSDeployStatusInner> beginCreateMSDeployOperationAsync(
         String resourceGroupName, String name, MSDeploy mSDeploy);
 
@@ -4584,7 +4643,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MSDeployStatusInner>, MSDeployStatusInner> beginCreateMSDeployOperation(
         String resourceGroupName, String name, MSDeploy mSDeploy);
 
@@ -4600,7 +4659,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MSDeployStatusInner>, MSDeployStatusInner> beginCreateMSDeployOperation(
         String resourceGroupName, String name, MSDeploy mSDeploy, Context context);
 
@@ -4887,7 +4946,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return function information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<FunctionEnvelopeInner>, FunctionEnvelopeInner> beginCreateFunctionAsync(
         String resourceGroupName, String name, String functionName, FunctionEnvelopeInner functionEnvelope);
 
@@ -4904,7 +4963,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return function information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FunctionEnvelopeInner>, FunctionEnvelopeInner> beginCreateFunction(
         String resourceGroupName, String name, String functionName, FunctionEnvelopeInner functionEnvelope);
 
@@ -4922,7 +4981,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return function information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FunctionEnvelopeInner>, FunctionEnvelopeInner> beginCreateFunction(
         String resourceGroupName,
         String name,
@@ -6740,7 +6799,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<MSDeployStatusInner>, MSDeployStatusInner> beginCreateInstanceMSDeployOperationAsync(
         String resourceGroupName, String name, String instanceId, MSDeploy mSDeploy);
 
@@ -6756,7 +6815,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MSDeployStatusInner>, MSDeployStatusInner> beginCreateInstanceMSDeployOperation(
         String resourceGroupName, String name, String instanceId, MSDeploy mSDeploy);
 
@@ -6773,7 +6832,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MSDeployStatusInner>, MSDeployStatusInner> beginCreateInstanceMSDeployOperation(
         String resourceGroupName, String name, String instanceId, MSDeploy mSDeploy, Context context);
 
@@ -7512,7 +7571,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for a migration of app content request.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<StorageMigrationResponseInner>, StorageMigrationResponseInner> beginMigrateStorageAsync(
         String subscriptionName, String resourceGroupName, String name, StorageMigrationOptions migrationOptions);
 
@@ -7529,7 +7588,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for a migration of app content request.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<StorageMigrationResponseInner>, StorageMigrationResponseInner> beginMigrateStorage(
         String subscriptionName, String resourceGroupName, String name, StorageMigrationOptions migrationOptions);
 
@@ -7547,7 +7606,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for a migration of app content request.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<StorageMigrationResponseInner>, StorageMigrationResponseInner> beginMigrateStorage(
         String subscriptionName,
         String resourceGroupName,
@@ -7639,7 +7698,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an operation on a resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<OperationInner>, OperationInner> beginMigrateMySqlAsync(
         String resourceGroupName, String name, MigrateMySqlRequest migrationRequestEnvelope);
 
@@ -7655,7 +7714,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an operation on a resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationInner>, OperationInner> beginMigrateMySql(
         String resourceGroupName, String name, MigrateMySqlRequest migrationRequestEnvelope);
 
@@ -7672,7 +7731,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an operation on a resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationInner>, OperationInner> beginMigrateMySql(
         String resourceGroupName, String name, MigrateMySqlRequest migrationRequestEnvelope, Context context);
 
@@ -8286,7 +8345,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of NetworkTrace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Object>, Object> beginStartWebSiteNetworkTraceOperationAsync(
         String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl);
 
@@ -8304,7 +8363,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of NetworkTrace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginStartWebSiteNetworkTraceOperation(
         String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl);
 
@@ -8323,7 +8382,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of NetworkTrace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginStartWebSiteNetworkTraceOperation(
         String resourceGroupName,
         String name,
@@ -9446,7 +9505,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return remote Private Endpoint Connection ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<
             PollResult<RemotePrivateEndpointConnectionArmResourceInner>,
             RemotePrivateEndpointConnectionArmResourceInner>
@@ -9469,7 +9528,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return remote Private Endpoint Connection ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<
             PollResult<RemotePrivateEndpointConnectionArmResourceInner>,
             RemotePrivateEndpointConnectionArmResourceInner>
@@ -9493,7 +9552,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return remote Private Endpoint Connection ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<
             PollResult<RemotePrivateEndpointConnectionArmResourceInner>,
             RemotePrivateEndpointConnectionArmResourceInner>
@@ -9594,7 +9653,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Object>, Object> beginDeletePrivateEndpointConnectionAsync(
         String resourceGroupName, String name, String privateEndpointConnectionName);
 
@@ -9610,7 +9669,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginDeletePrivateEndpointConnection(
         String resourceGroupName, String name, String privateEndpointConnectionName);
 
@@ -9627,7 +9686,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginDeletePrivateEndpointConnection(
         String resourceGroupName, String name, String privateEndpointConnectionName, Context context);
 
@@ -10598,7 +10657,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRestoreFromBackupBlobAsync(
         String resourceGroupName, String name, RestoreRequestInner request);
 
@@ -10614,7 +10673,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestoreFromBackupBlob(
         String resourceGroupName, String name, RestoreRequestInner request);
 
@@ -10631,7 +10690,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestoreFromBackupBlob(
         String resourceGroupName, String name, RestoreRequestInner request, Context context);
 
@@ -10707,7 +10766,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRestoreFromDeletedAppAsync(
         String resourceGroupName, String name, DeletedAppRestoreRequest restoreRequest);
 
@@ -10723,7 +10782,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestoreFromDeletedApp(
         String resourceGroupName, String name, DeletedAppRestoreRequest restoreRequest);
 
@@ -10740,7 +10799,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestoreFromDeletedApp(
         String resourceGroupName, String name, DeletedAppRestoreRequest restoreRequest, Context context);
 
@@ -10820,7 +10879,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRestoreSnapshotAsync(
         String resourceGroupName, String name, SnapshotRestoreRequest restoreRequest);
 
@@ -10837,7 +10896,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestoreSnapshot(
         String resourceGroupName, String name, SnapshotRestoreRequest restoreRequest);
 
@@ -10855,7 +10914,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestoreSnapshot(
         String resourceGroupName, String name, SnapshotRestoreRequest restoreRequest, Context context);
 
@@ -11031,7 +11090,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return site Extension Information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<SiteExtensionInfoInner>, SiteExtensionInfoInner> beginInstallSiteExtensionAsync(
         String resourceGroupName, String name, String siteExtensionId);
 
@@ -11046,7 +11105,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return site Extension Information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SiteExtensionInfoInner>, SiteExtensionInfoInner> beginInstallSiteExtension(
         String resourceGroupName, String name, String siteExtensionId);
 
@@ -11062,7 +11121,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return site Extension Information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SiteExtensionInfoInner>, SiteExtensionInfoInner> beginInstallSiteExtension(
         String resourceGroupName, String name, String siteExtensionId, Context context);
 
@@ -11303,7 +11362,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a web app, a mobile app backend, or an API app.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<SiteInner>, SiteInner> beginCreateOrUpdateSlotAsync(
         String resourceGroupName, String name, String slot, SiteInner siteEnvelope);
 
@@ -11322,7 +11381,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a web app, a mobile app backend, or an API app.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SiteInner>, SiteInner> beginCreateOrUpdateSlot(
         String resourceGroupName, String name, String slot, SiteInner siteEnvelope);
 
@@ -11342,7 +11401,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a web app, a mobile app backend, or an API app.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SiteInner>, SiteInner> beginCreateOrUpdateSlot(
         String resourceGroupName, String name, String slot, SiteInner siteEnvelope, Context context);
 
@@ -12093,7 +12152,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRestoreSlotAsync(
         String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request);
 
@@ -12112,7 +12171,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestoreSlot(
         String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request);
 
@@ -12132,7 +12191,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestoreSlot(
         String resourceGroupName,
         String name,
@@ -14065,7 +14124,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return user credentials used for publishing activity.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<UserInner>, UserInner> beginListPublishingCredentialsSlotAsync(
         String resourceGroupName, String name, String slot);
 
@@ -14082,7 +14141,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return user credentials used for publishing activity.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<UserInner>, UserInner> beginListPublishingCredentialsSlot(
         String resourceGroupName, String name, String slot);
 
@@ -14100,7 +14159,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return user credentials used for publishing activity.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<UserInner>, UserInner> beginListPublishingCredentialsSlot(
         String resourceGroupName, String name, String slot, Context context);
 
@@ -16035,7 +16094,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<MSDeployStatusInner>, MSDeployStatusInner> beginCreateMSDeployOperationSlotAsync(
         String resourceGroupName, String name, String slot, MSDeploy mSDeploy);
 
@@ -16051,7 +16110,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MSDeployStatusInner>, MSDeployStatusInner> beginCreateMSDeployOperationSlot(
         String resourceGroupName, String name, String slot, MSDeploy mSDeploy);
 
@@ -16068,7 +16127,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MSDeployStatusInner>, MSDeployStatusInner> beginCreateMSDeployOperationSlot(
         String resourceGroupName, String name, String slot, MSDeploy mSDeploy, Context context);
 
@@ -16388,7 +16447,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return function information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<FunctionEnvelopeInner>, FunctionEnvelopeInner> beginCreateInstanceFunctionSlotAsync(
         String resourceGroupName,
         String name,
@@ -16410,7 +16469,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return function information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FunctionEnvelopeInner>, FunctionEnvelopeInner> beginCreateInstanceFunctionSlot(
         String resourceGroupName,
         String name,
@@ -16433,7 +16492,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return function information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FunctionEnvelopeInner>, FunctionEnvelopeInner> beginCreateInstanceFunctionSlot(
         String resourceGroupName,
         String name,
@@ -18480,7 +18539,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<MSDeployStatusInner>, MSDeployStatusInner> beginCreateInstanceMSDeployOperationSlotAsync(
         String resourceGroupName, String name, String slot, String instanceId, MSDeploy mSDeploy);
 
@@ -18497,7 +18556,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MSDeployStatusInner>, MSDeployStatusInner> beginCreateInstanceMSDeployOperationSlot(
         String resourceGroupName, String name, String slot, String instanceId, MSDeploy mSDeploy);
 
@@ -18515,7 +18574,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MSDeployStatusInner>, MSDeployStatusInner> beginCreateInstanceMSDeployOperationSlot(
         String resourceGroupName, String name, String slot, String instanceId, MSDeploy mSDeploy, Context context);
 
@@ -19956,7 +20015,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of NetworkTrace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Object>, Object> beginStartWebSiteNetworkTraceOperationSlotAsync(
         String resourceGroupName,
         String name,
@@ -19980,7 +20039,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of NetworkTrace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginStartWebSiteNetworkTraceOperationSlot(
         String resourceGroupName,
         String name,
@@ -20005,7 +20064,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of NetworkTrace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginStartWebSiteNetworkTraceOperationSlot(
         String resourceGroupName,
         String name,
@@ -21276,7 +21335,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return remote Private Endpoint Connection ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<
             PollResult<RemotePrivateEndpointConnectionArmResourceInner>,
             RemotePrivateEndpointConnectionArmResourceInner>
@@ -21301,7 +21360,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return remote Private Endpoint Connection ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<
             PollResult<RemotePrivateEndpointConnectionArmResourceInner>,
             RemotePrivateEndpointConnectionArmResourceInner>
@@ -21327,7 +21386,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return remote Private Endpoint Connection ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<
             PollResult<RemotePrivateEndpointConnectionArmResourceInner>,
             RemotePrivateEndpointConnectionArmResourceInner>
@@ -21437,7 +21496,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Object>, Object> beginDeletePrivateEndpointConnectionSlotAsync(
         String resourceGroupName, String name, String privateEndpointConnectionName, String slot);
 
@@ -21454,7 +21513,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginDeletePrivateEndpointConnectionSlot(
         String resourceGroupName, String name, String privateEndpointConnectionName, String slot);
 
@@ -21472,7 +21531,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginDeletePrivateEndpointConnectionSlot(
         String resourceGroupName, String name, String privateEndpointConnectionName, String slot, Context context);
 
@@ -22590,7 +22649,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRestoreFromBackupBlobSlotAsync(
         String resourceGroupName, String name, String slot, RestoreRequestInner request);
 
@@ -22608,7 +22667,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestoreFromBackupBlobSlot(
         String resourceGroupName, String name, String slot, RestoreRequestInner request);
 
@@ -22627,7 +22686,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestoreFromBackupBlobSlot(
         String resourceGroupName, String name, String slot, RestoreRequestInner request, Context context);
 
@@ -22713,7 +22772,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRestoreFromDeletedAppSlotAsync(
         String resourceGroupName, String name, String slot, DeletedAppRestoreRequest restoreRequest);
 
@@ -22730,7 +22789,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestoreFromDeletedAppSlot(
         String resourceGroupName, String name, String slot, DeletedAppRestoreRequest restoreRequest);
 
@@ -22748,7 +22807,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestoreFromDeletedAppSlot(
         String resourceGroupName, String name, String slot, DeletedAppRestoreRequest restoreRequest, Context context);
 
@@ -22834,7 +22893,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRestoreSnapshotSlotAsync(
         String resourceGroupName, String name, String slot, SnapshotRestoreRequest restoreRequest);
 
@@ -22852,7 +22911,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestoreSnapshotSlot(
         String resourceGroupName, String name, String slot, SnapshotRestoreRequest restoreRequest);
 
@@ -22871,7 +22930,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestoreSnapshotSlot(
         String resourceGroupName, String name, String slot, SnapshotRestoreRequest restoreRequest, Context context);
 
@@ -23064,7 +23123,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return site Extension Information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<SiteExtensionInfoInner>, SiteExtensionInfoInner> beginInstallSiteExtensionSlotAsync(
         String resourceGroupName, String name, String siteExtensionId, String slot);
 
@@ -23080,7 +23139,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return site Extension Information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SiteExtensionInfoInner>, SiteExtensionInfoInner> beginInstallSiteExtensionSlot(
         String resourceGroupName, String name, String siteExtensionId, String slot);
 
@@ -23097,7 +23156,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return site Extension Information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SiteExtensionInfoInner>, SiteExtensionInfoInner> beginInstallSiteExtensionSlot(
         String resourceGroupName, String name, String siteExtensionId, String slot, Context context);
 
@@ -23298,7 +23357,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginSwapSlotAsync(
         String resourceGroupName, String name, String slot, CsmSlotEntity slotSwapEntity);
 
@@ -23315,7 +23374,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginSwapSlot(
         String resourceGroupName, String name, String slot, CsmSlotEntity slotSwapEntity);
 
@@ -23333,7 +23392,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginSwapSlot(
         String resourceGroupName, String name, String slot, CsmSlotEntity slotSwapEntity, Context context);
 
@@ -23576,7 +23635,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return source control configuration for an app.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<SiteSourceControlInner>, SiteSourceControlInner> beginCreateOrUpdateSourceControlSlotAsync(
         String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl);
 
@@ -23594,7 +23653,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return source control configuration for an app.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SiteSourceControlInner>, SiteSourceControlInner> beginCreateOrUpdateSourceControlSlot(
         String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl);
 
@@ -23613,7 +23672,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return source control configuration for an app.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SiteSourceControlInner>, SiteSourceControlInner> beginCreateOrUpdateSourceControlSlot(
         String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl, Context context);
 
@@ -23924,7 +23983,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of NetworkTrace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Object>, Object> beginStartNetworkTraceSlotAsync(
         String resourceGroupName,
         String name,
@@ -23948,7 +24007,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of NetworkTrace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginStartNetworkTraceSlot(
         String resourceGroupName,
         String name,
@@ -23973,7 +24032,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of NetworkTrace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginStartNetworkTraceSlot(
         String resourceGroupName,
         String name,
@@ -25617,7 +25676,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginSwapSlotWithProductionAsync(
         String resourceGroupName, String name, CsmSlotEntity slotSwapEntity);
 
@@ -25633,7 +25692,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginSwapSlotWithProduction(
         String resourceGroupName, String name, CsmSlotEntity slotSwapEntity);
 
@@ -25650,7 +25709,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginSwapSlotWithProduction(
         String resourceGroupName, String name, CsmSlotEntity slotSwapEntity, Context context);
 
@@ -25870,7 +25929,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return source control configuration for an app.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<SiteSourceControlInner>, SiteSourceControlInner> beginCreateOrUpdateSourceControlAsync(
         String resourceGroupName, String name, SiteSourceControlInner siteSourceControl);
 
@@ -25886,7 +25945,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return source control configuration for an app.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SiteSourceControlInner>, SiteSourceControlInner> beginCreateOrUpdateSourceControl(
         String resourceGroupName, String name, SiteSourceControlInner siteSourceControl);
 
@@ -25903,7 +25962,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return source control configuration for an app.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SiteSourceControlInner>, SiteSourceControlInner> beginCreateOrUpdateSourceControl(
         String resourceGroupName, String name, SiteSourceControlInner siteSourceControl, Context context);
 
@@ -26179,7 +26238,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of NetworkTrace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Object>, Object> beginStartNetworkTraceAsync(
         String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl);
 
@@ -26197,7 +26256,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of NetworkTrace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginStartNetworkTrace(
         String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl);
 
@@ -26216,7 +26275,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of NetworkTrace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginStartNetworkTrace(
         String resourceGroupName,
         String name,

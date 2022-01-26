@@ -158,6 +158,24 @@ public interface ServerBlobAuditingPolicy {
     Integer queueDelayMs();
 
     /**
+     * Gets the isDevopsAuditEnabled property: Specifies the state of devops audit. If state is Enabled, devops logs
+     * will be sent to Azure Monitor. In order to send the events to Azure Monitor, specify 'State' as 'Enabled',
+     * 'IsAzureMonitorTargetEnabled' as true and 'IsDevopsAuditEnabled' as true
+     *
+     * <p>When using REST API to configure auditing, Diagnostic Settings with 'DevOpsOperationsAudit' diagnostic logs
+     * category on the master database should also be created.
+     *
+     * <p>Diagnostic Settings URI format: PUT
+     * https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
+     *
+     * <p>For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207) or
+     * [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043).
+     *
+     * @return the isDevopsAuditEnabled value.
+     */
+    Boolean isDevopsAuditEnabled();
+
+    /**
      * Gets the inner com.azure.resourcemanager.synapse.fluent.models.ServerBlobAuditingPolicyInner object.
      *
      * @return the inner object.
@@ -197,7 +215,8 @@ public interface ServerBlobAuditingPolicy {
                 DefinitionStages.WithStorageAccountSubscriptionId,
                 DefinitionStages.WithIsStorageSecondaryKeyInUse,
                 DefinitionStages.WithIsAzureMonitorTargetEnabled,
-                DefinitionStages.WithQueueDelayMs {
+                DefinitionStages.WithQueueDelayMs,
+                DefinitionStages.WithIsDevopsAuditEnabled {
             /**
              * Executes the create request.
              *
@@ -424,6 +443,37 @@ public interface ServerBlobAuditingPolicy {
              */
             WithCreate withQueueDelayMs(Integer queueDelayMs);
         }
+        /** The stage of the ServerBlobAuditingPolicy definition allowing to specify isDevopsAuditEnabled. */
+        interface WithIsDevopsAuditEnabled {
+            /**
+             * Specifies the isDevopsAuditEnabled property: Specifies the state of devops audit. If state is Enabled,
+             * devops logs will be sent to Azure Monitor. In order to send the events to Azure Monitor, specify 'State'
+             * as 'Enabled', 'IsAzureMonitorTargetEnabled' as true and 'IsDevopsAuditEnabled' as true
+             *
+             * <p>When using REST API to configure auditing, Diagnostic Settings with 'DevOpsOperationsAudit' diagnostic
+             * logs category on the master database should also be created.
+             *
+             * <p>Diagnostic Settings URI format: PUT
+             * https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
+             *
+             * <p>For more information, see [Diagnostic Settings REST
+             * API](https://go.microsoft.com/fwlink/?linkid=2033207) or [Diagnostic Settings
+             * PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043) .
+             *
+             * @param isDevopsAuditEnabled Specifies the state of devops audit. If state is Enabled, devops logs will be
+             *     sent to Azure Monitor. In order to send the events to Azure Monitor, specify 'State' as 'Enabled',
+             *     'IsAzureMonitorTargetEnabled' as true and 'IsDevopsAuditEnabled' as true
+             *     <p>When using REST API to configure auditing, Diagnostic Settings with 'DevOpsOperationsAudit'
+             *     diagnostic logs category on the master database should also be created.
+             *     <p>Diagnostic Settings URI format: PUT
+             *     https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
+             *     <p>For more information, see [Diagnostic Settings REST
+             *     API](https://go.microsoft.com/fwlink/?linkid=2033207) or [Diagnostic Settings
+             *     PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043).
+             * @return the next definition stage.
+             */
+            WithCreate withIsDevopsAuditEnabled(Boolean isDevopsAuditEnabled);
+        }
     }
     /**
      * Begins update for the ServerBlobAuditingPolicy resource.
@@ -442,7 +492,8 @@ public interface ServerBlobAuditingPolicy {
             UpdateStages.WithStorageAccountSubscriptionId,
             UpdateStages.WithIsStorageSecondaryKeyInUse,
             UpdateStages.WithIsAzureMonitorTargetEnabled,
-            UpdateStages.WithQueueDelayMs {
+            UpdateStages.WithQueueDelayMs,
+            UpdateStages.WithIsDevopsAuditEnabled {
         /**
          * Executes the update request.
          *
@@ -670,6 +721,37 @@ public interface ServerBlobAuditingPolicy {
              * @return the next definition stage.
              */
             Update withQueueDelayMs(Integer queueDelayMs);
+        }
+        /** The stage of the ServerBlobAuditingPolicy update allowing to specify isDevopsAuditEnabled. */
+        interface WithIsDevopsAuditEnabled {
+            /**
+             * Specifies the isDevopsAuditEnabled property: Specifies the state of devops audit. If state is Enabled,
+             * devops logs will be sent to Azure Monitor. In order to send the events to Azure Monitor, specify 'State'
+             * as 'Enabled', 'IsAzureMonitorTargetEnabled' as true and 'IsDevopsAuditEnabled' as true
+             *
+             * <p>When using REST API to configure auditing, Diagnostic Settings with 'DevOpsOperationsAudit' diagnostic
+             * logs category on the master database should also be created.
+             *
+             * <p>Diagnostic Settings URI format: PUT
+             * https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
+             *
+             * <p>For more information, see [Diagnostic Settings REST
+             * API](https://go.microsoft.com/fwlink/?linkid=2033207) or [Diagnostic Settings
+             * PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043) .
+             *
+             * @param isDevopsAuditEnabled Specifies the state of devops audit. If state is Enabled, devops logs will be
+             *     sent to Azure Monitor. In order to send the events to Azure Monitor, specify 'State' as 'Enabled',
+             *     'IsAzureMonitorTargetEnabled' as true and 'IsDevopsAuditEnabled' as true
+             *     <p>When using REST API to configure auditing, Diagnostic Settings with 'DevOpsOperationsAudit'
+             *     diagnostic logs category on the master database should also be created.
+             *     <p>Diagnostic Settings URI format: PUT
+             *     https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/master/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
+             *     <p>For more information, see [Diagnostic Settings REST
+             *     API](https://go.microsoft.com/fwlink/?linkid=2033207) or [Diagnostic Settings
+             *     PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043).
+             * @return the next definition stage.
+             */
+            Update withIsDevopsAuditEnabled(Boolean isDevopsAuditEnabled);
         }
     }
     /**

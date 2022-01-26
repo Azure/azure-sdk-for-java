@@ -10,10 +10,12 @@ trigger:
     include:
       - sdk/eventgrid/ci.yml
       - sdk/eventgrid/azure-messaging-eventgrid/
+      - sdk/eventgrid/azure-messaging-eventgrid-cloudnative-cloudevents/
       - sdk/eventgrid/azure-resourcemanager-eventgrid/
     exclude:
       - sdk/eventgrid/pom.xml
       - sdk/eventgrid/azure-messaging-eventgrid/pom.xml
+      - sdk/eventgrid/azure-messaging-eventgrid-cloudnative-cloudevents/pom.xml
       - sdk/eventgrid/azure-resourcemanager-eventgrid/pom.xml
 
 pr:
@@ -27,10 +29,12 @@ pr:
     include:
       - sdk/eventgrid/ci.yml
       - sdk/eventgrid/azure-messaging-eventgrid/
+      - sdk/eventgrid/azure-messaging-eventgrid-cloudnative-cloudevents/
       - sdk/eventgrid/azure-resourcemanager-eventgrid/
     exclude:
       - sdk/eventgrid/pom.xml
       - sdk/eventgrid/azure-messaging-eventgrid/pom.xml
+      - sdk/eventgrid/azure-messaging-eventgrid-cloudnative-cloudevents/pom.xml
       - sdk/eventgrid/azure-resourcemanager-eventgrid/pom.xml
 
 extends:
@@ -41,6 +45,9 @@ extends:
       - name: azure-messaging-eventgrid
         groupId: com.azure
         safeName: azuremessagingeventgrid
+      - name: azure-messaging-eventgrid-cloudnative-cloudevents
+        groupId: com.azure
+        safeName: azuremessagingeventgridcloudnativecloudevents
       - name: azure-resourcemanager-eventgrid
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagereventgrid

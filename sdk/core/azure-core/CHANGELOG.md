@@ -3,12 +3,21 @@
 ## 1.25.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added a static method `toRfc1123String` that allows to convert the `OffsetDateTime` datetime to datetime string in RFC1123 format.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.24.1 (2022-01-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.4.12` to `3.4.13`.
 
 ## 1.24.0 (2022-01-06)
 
