@@ -4,7 +4,6 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
@@ -107,7 +106,6 @@ public final class ConfigurationClientBuilder implements
     TokenCredentialTrait<ConfigurationClientBuilder>,
     ConnectionStringTrait<ConfigurationClientBuilder>,
     HttpConfigTrait<ConfigurationClientBuilder>,
-    ClientOptionsTrait<ConfigurationClientBuilder>,
     ConfigurationTrait<ConfigurationClientBuilder> {
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
 
@@ -283,7 +281,6 @@ public final class ConfigurationClientBuilder implements
      *
      * @return the updated ConfigurationClientBuilder object
      */
-    @Override
     public ConfigurationClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;

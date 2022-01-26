@@ -11,7 +11,6 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
-import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
@@ -109,7 +108,6 @@ public class EventProcessorClientBuilder implements
     ConnectionStringTrait<EventProcessorClientBuilder>,
     AzureSasCredentialTrait<EventProcessorClientBuilder>,
     AmqpConfigTrait<EventProcessorClientBuilder>,
-    ClientOptionsTrait<EventProcessorClientBuilder>,
     ConfigurationTrait<EventProcessorClientBuilder> {
     /**
      * Default load balancing update interval.
@@ -423,7 +421,6 @@ public class EventProcessorClientBuilder implements
      * @param clientOptions The client options.
      * @return The updated {@link EventProcessorClientBuilder} object.
      */
-    @Override
     public EventProcessorClientBuilder clientOptions(ClientOptions clientOptions) {
         eventHubClientBuilder.clientOptions(clientOptions);
         return this;

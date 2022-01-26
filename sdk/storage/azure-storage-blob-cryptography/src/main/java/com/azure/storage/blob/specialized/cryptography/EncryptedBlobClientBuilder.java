@@ -6,7 +6,6 @@ package com.azure.storage.blob.specialized.cryptography;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
-import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
@@ -101,7 +100,6 @@ public final class EncryptedBlobClientBuilder implements
     AzureNamedKeyCredentialTrait<EncryptedBlobClientBuilder>,
     AzureSasCredentialTrait<EncryptedBlobClientBuilder>,
     HttpConfigTrait<EncryptedBlobClientBuilder>,
-    ClientOptionsTrait<EncryptedBlobClientBuilder>,
     ConfigurationTrait<EncryptedBlobClientBuilder> {
     private final ClientLogger logger = new ClientLogger(EncryptedBlobClientBuilder.class);
     private static final Map<String, String> PROPERTIES =
@@ -676,7 +674,6 @@ public final class EncryptedBlobClientBuilder implements
      * @return the updated EncryptedBlobClientBuilder object
      * @throws NullPointerException If {@code clientOptions} is {@code null}.
      */
-    @Override
     public EncryptedBlobClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
         return this;

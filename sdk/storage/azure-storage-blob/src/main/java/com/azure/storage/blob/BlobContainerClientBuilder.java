@@ -6,7 +6,6 @@ package com.azure.storage.blob;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
-import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
@@ -64,7 +63,6 @@ public final class BlobContainerClientBuilder implements
     AzureSasCredentialTrait<BlobContainerClientBuilder>,
     AzureNamedKeyCredentialTrait<BlobContainerClientBuilder>,
     HttpConfigTrait<BlobContainerClientBuilder>,
-    ClientOptionsTrait<BlobContainerClientBuilder>,
     ConfigurationTrait<BlobContainerClientBuilder> {
     private final ClientLogger logger = new ClientLogger(BlobContainerClientBuilder.class);
 
@@ -471,7 +469,6 @@ public final class BlobContainerClientBuilder implements
      * @return the updated BlobContainerClientBuilder object
      * @throws NullPointerException If {@code clientOptions} is {@code null}.
      */
-    @Override
     public BlobContainerClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
         return this;

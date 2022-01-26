@@ -6,7 +6,6 @@ package com.azure.storage.file.datalake;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
-import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
@@ -59,7 +58,6 @@ public class DataLakeFileSystemClientBuilder implements
     AzureNamedKeyCredentialTrait<DataLakeFileSystemClientBuilder>,
     AzureSasCredentialTrait<DataLakeFileSystemClientBuilder>,
     HttpConfigTrait<DataLakeFileSystemClientBuilder>,
-    ClientOptionsTrait<DataLakeFileSystemClientBuilder>,
     ConfigurationTrait<DataLakeFileSystemClientBuilder> {
     private final ClientLogger logger = new ClientLogger(DataLakeFileSystemClientBuilder.class);
 
@@ -414,7 +412,6 @@ public class DataLakeFileSystemClientBuilder implements
      * @return the updated DataLakeFileSystemClientBuilder object
      * @throws NullPointerException If {@code clientOptions} is {@code null}.
      */
-    @Override
     public DataLakeFileSystemClientBuilder clientOptions(ClientOptions clientOptions) {
         blobContainerClientBuilder.clientOptions(clientOptions);
         this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");

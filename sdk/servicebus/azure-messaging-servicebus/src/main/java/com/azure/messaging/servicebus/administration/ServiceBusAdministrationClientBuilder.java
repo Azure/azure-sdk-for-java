@@ -5,7 +5,6 @@ package com.azure.messaging.servicebus.administration;
 
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
@@ -90,7 +89,6 @@ public final class ServiceBusAdministrationClientBuilder implements
     TokenCredentialTrait<ServiceBusAdministrationClientBuilder>,
     ConnectionStringTrait<ServiceBusAdministrationClientBuilder>,
     HttpConfigTrait<ServiceBusAdministrationClientBuilder>,
-    ClientOptionsTrait<ServiceBusAdministrationClientBuilder>,
     ConfigurationTrait<ServiceBusAdministrationClientBuilder> {
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
@@ -348,7 +346,6 @@ public final class ServiceBusAdministrationClientBuilder implements
      * @see <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry
      *      policy</a>
      */
-    @Override
     public ServiceBusAdministrationClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;

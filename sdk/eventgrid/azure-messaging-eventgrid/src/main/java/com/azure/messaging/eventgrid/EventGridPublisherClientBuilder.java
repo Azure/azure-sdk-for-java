@@ -6,7 +6,6 @@ package com.azure.messaging.eventgrid;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
-import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
@@ -58,7 +57,6 @@ public final class EventGridPublisherClientBuilder implements
     AzureKeyCredentialTrait<EventGridPublisherClientBuilder>,
     AzureSasCredentialTrait<EventGridPublisherClientBuilder>,
     HttpConfigTrait<EventGridPublisherClientBuilder>,
-    ClientOptionsTrait<EventGridPublisherClientBuilder>,
     ConfigurationTrait<EventGridPublisherClientBuilder> {
 
     private static final String AEG_SAS_KEY = "aeg-sas-key";
@@ -257,7 +255,6 @@ public final class EventGridPublisherClientBuilder implements
      * @param clientOptions the {@link ClientOptions} to be set on the client.
      * @return The updated EventGridPublisherClientBuilder object.
      */
-    @Override
     public EventGridPublisherClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;

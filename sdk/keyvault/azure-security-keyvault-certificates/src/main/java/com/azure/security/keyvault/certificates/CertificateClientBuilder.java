@@ -4,7 +4,6 @@
 package com.azure.security.keyvault.certificates;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
@@ -111,7 +110,6 @@ import java.util.Objects;
 public final class CertificateClientBuilder implements
     TokenCredentialTrait<CertificateClientBuilder>,
     HttpConfigTrait<CertificateClientBuilder>,
-    ClientOptionsTrait<CertificateClientBuilder>,
     ConfigurationTrait<CertificateClientBuilder> {
     private final ClientLogger logger = new ClientLogger(CertificateClientBuilder.class);
     // This is properties file's name.
@@ -436,7 +434,6 @@ public final class CertificateClientBuilder implements
      *
      * @return The updated {@link CertificateClientBuilder} object.
      */
-    @Override
     public CertificateClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
 

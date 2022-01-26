@@ -6,7 +6,6 @@ package com.azure.storage.file.share;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
-import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
@@ -129,7 +128,6 @@ public final class ShareServiceClientBuilder implements
     ConnectionStringTrait<ShareServiceClientBuilder>,
     AzureNamedKeyCredentialTrait<ShareServiceClientBuilder>,
     AzureSasCredentialTrait<ShareServiceClientBuilder>,
-    ClientOptionsTrait<ShareServiceClientBuilder>,
     ConfigurationTrait<ShareServiceClientBuilder> {
     private final ClientLogger logger = new ClientLogger(ShareServiceClientBuilder.class);
 
@@ -460,7 +458,6 @@ public final class ShareServiceClientBuilder implements
      * @return the updated ShareServiceClientBuilder object
      * @throws NullPointerException If {@code clientOptions} is {@code null}.
      */
-    @Override
     public ShareServiceClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
         return this;

@@ -4,7 +4,6 @@
 package com.azure.security.keyvault.administration;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.HttpConfigTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
@@ -74,7 +73,6 @@ import java.util.Objects;
 public final class KeyVaultAccessControlClientBuilder implements
     TokenCredentialTrait<KeyVaultAccessControlClientBuilder>,
     HttpConfigTrait<KeyVaultAccessControlClientBuilder>,
-    ClientOptionsTrait<KeyVaultAccessControlClientBuilder>,
     ConfigurationTrait<KeyVaultAccessControlClientBuilder> {
     // This is the properties file name.
     private static final String AZURE_KEY_VAULT_RBAC = "azure-key-vault-administration.properties";
@@ -371,7 +369,6 @@ public final class KeyVaultAccessControlClientBuilder implements
      *
      * @return The updated {@link KeyVaultAccessControlClientBuilder} object.
      */
-    @Override
     public KeyVaultAccessControlClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
 

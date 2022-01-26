@@ -22,7 +22,6 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.annotation.ServiceClientProtocol;
 import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
-import com.azure.core.client.traits.ClientOptionsTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
@@ -146,7 +145,6 @@ public class EventHubClientBuilder implements
     ConnectionStringTrait<EventHubClientBuilder>,
     AzureSasCredentialTrait<EventHubClientBuilder>,
     AmqpConfigTrait<EventHubClientBuilder>,
-    ClientOptionsTrait<EventHubClientBuilder>,
     ConfigurationTrait<EventHubClientBuilder> {
 
     // Default number of events to fetch when creating the consumer.
@@ -258,7 +256,6 @@ public class EventHubClientBuilder implements
      * @param clientOptions The client options.
      * @return The updated {@link EventHubClientBuilder} object.
      */
-    @Override
     public EventHubClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
