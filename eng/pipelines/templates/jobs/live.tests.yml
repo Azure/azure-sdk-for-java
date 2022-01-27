@@ -18,7 +18,7 @@ parameters:
   DependsOn: ''
   UsePlatformContainer: false
   DisableAzureResourceCreation: false
-  MavenBuildInstallParallelization: '1C'
+  MavenBuildInstallParallelization: '2C'
   BuildOptions: '$(DefaultOptions) --quiet -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true'
   SparkShading: ''
 
@@ -52,6 +52,8 @@ jobs:
           AdditionalModules: ${{ parameters.AdditionalModules }}
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           SDKType: ${{ parameters.SDKType }}
+
+      - template: ../steps/install-reporting-tools.yml
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
         - template: /eng/common/TestResources/build-test-resource-config.yml
