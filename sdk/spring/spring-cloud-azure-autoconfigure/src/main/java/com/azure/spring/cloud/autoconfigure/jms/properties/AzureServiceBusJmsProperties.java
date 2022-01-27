@@ -24,16 +24,21 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
     private static final String DEFAULT_REMOTE_URL = "amqp://localhost:5672";
 
     private static final String AMQP_URI_FORMAT = "amqps://%s?amqp.idleTimeout=%d";
-
-    private String connectionString;
-
     /**
-     * JMS clientID. Only works for the bean of topicJmsListenerContainerFactory.
+     * Connection string to connect to service bus.
+     */
+    private String connectionString;
+    /**
+     * Service bus topic client ID. Only works for the bean of topicJmsListenerContainerFactory.
      */
     private String topicClientId;
-
+    /**
+     * Connection idle timeout duration.
+     */
     private Duration idleTimeout = Duration.ofMinutes(30);
-
+    /**
+     * Pricing tier for service bus namespace.
+     */
     private String pricingTier;
 
     @NestedConfigurationProperty
@@ -88,92 +93,42 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
         return pool;
     }
 
-    /**
-     * Gets the connection string.
-     *
-     * @return the connection string
-     */
     public String getConnectionString() {
         return connectionString;
     }
 
-    /**
-     * Sets the connection string.
-     *
-     * @param connectionString the connection string
-     */
     public void setConnectionString(String connectionString) {
         this.connectionString = connectionString;
     }
 
-    /**
-     * Gets the topic client ID.
-     *
-     * @return the topic client ID
-     */
     public String getTopicClientId() {
         return topicClientId;
     }
 
-    /**
-     * Sets the topic client ID.
-     *
-     * @param topicClientId the topic client ID
-     */
     public void setTopicClientId(String topicClientId) {
         this.topicClientId = topicClientId;
     }
 
-    /**
-     * Gets the pricing tier.
-     *
-     * @return the pricing tier
-     */
     public String getPricingTier() {
         return this.pricingTier;
     }
 
-    /**
-     * Sets the pricing tier.
-     *
-     * @param pricingTier the pricing tier
-     */
     public void setPricingTier(String pricingTier) {
         this.pricingTier = pricingTier;
     }
 
-    /**
-     * Gets the idle timeout.
-     *
-     * @return the idle timeout
-     */
     public Duration getIdleTimeout() {
         return idleTimeout;
     }
 
-    /**
-     * Sets the idle timeout.
-     *
-     * @param idleTimeout the idle timeout
-     */
     public void setIdleTimeout(Duration idleTimeout) {
         this.idleTimeout = idleTimeout;
     }
 
-    /**
-     * Gets the listener.
-     *
-     * @return the listener
-     */
     public Listener getListener() {
         return listener;
     }
 
-    /**
-     * Gets the prefetch policy.
-     *
-     * @return the prefetch policy
-     */
     public PrefetchPolicy getPrefetchPolicy() {
         return prefetchPolicy;
     }
@@ -207,92 +162,67 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
      */
     public static class PrefetchPolicy {
 
+        /**
+         * Fall back value for option in this namespace.
+         */
         private int all = 0;
-
+        /**
+         * The number of prefetch for durable topic.
+         */
         private int durableTopicPrefetch = 0;
-
+        /**
+         * The number of prefetch for queue browser.
+         */
         private int queueBrowserPrefetch = 0;
-
+        /**
+         * The number of prefetch for queue.
+         */
         private int queuePrefetch = 0;
-
+        /**
+         * The number of prefetch for topic.
+         */
         private int topicPrefetch = 0;
 
-        /**
-         * Gets all.
-         *
-         * @return all
-         */
         public int getAll() {
             return Math.max(all, 0);
         }
 
-        /**
-         * Sets all.
-         *
-         * @param all all
-         */
         public void setAll(int all) {
             this.all = all;
         }
 
-        /**
-         * @return Returns the durableTopicPrefetch.
-         */
         public int getDurableTopicPrefetch() {
             return durableTopicPrefetch > 0 ? durableTopicPrefetch : getAll();
         }
 
-        /**
-         * @param durableTopicPrefetch Sets the durable topic prefetch value
-         */
         public void setDurableTopicPrefetch(int durableTopicPrefetch) {
             this.durableTopicPrefetch = durableTopicPrefetch;
         }
 
-        /**
-         * @return Returns the queueBrowserPrefetch.
-         */
         public int getQueueBrowserPrefetch() {
             return queueBrowserPrefetch > 0 ? queueBrowserPrefetch : getAll();
         }
 
-        /**
-         * @param queueBrowserPrefetch The queueBrowserPrefetch to set.
-         */
         public void setQueueBrowserPrefetch(int queueBrowserPrefetch) {
             this.queueBrowserPrefetch = queueBrowserPrefetch;
         }
 
-        /**
-         * @return Returns the queuePrefetch.
-         */
         public int getQueuePrefetch() {
             return queuePrefetch > 0 ? queuePrefetch : getAll();
         }
 
-        /**
-         * @param queuePrefetch The queuePrefetch to set.
-         */
         public void setQueuePrefetch(int queuePrefetch) {
             this.queuePrefetch = queuePrefetch;
         }
 
-        /**
-         * @return Returns the topicPrefetch.
-         */
         public int getTopicPrefetch() {
             return topicPrefetch > 0 ? topicPrefetch : getAll();
         }
 
-        /**
-         * @param topicPrefetch The topicPrefetch to set.
-         */
         public void setTopicPrefetch(int topicPrefetch) {
             this.topicPrefetch = topicPrefetch;
         }
-
     }
-
 
     /**
      * Properties to configure {@link org.springframework.jms.annotation.JmsListener} for {@link
@@ -306,7 +236,7 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
         private Boolean replyPubSubDomain;
 
         /**
-         * Configure the {@link QosSettings} to use when sending a reply.
+         * The QosSettings to use when sending a reply.
          */
         private QosSettings replyQosSettings;
 
@@ -321,96 +251,46 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
         private Boolean subscriptionShared;
 
         /**
-         * Specify the phase in which this container should be started and stopped.
+         * The phase in which this container should be started and stopped.
          */
         private Integer phase;
 
-        /**
-         * Whether the reply destination is topic.
-         *
-         * @return whether the reply destination is topic
-         */
         public Boolean isReplyPubSubDomain() {
             return replyPubSubDomain;
         }
 
-        /**
-         * Sets whether the reply destination is topic.
-         *
-         * @param replyPubSubDomain whether the reply destination is topic
-         */
         public void setReplyPubSubDomain(Boolean replyPubSubDomain) {
             this.replyPubSubDomain = replyPubSubDomain;
         }
 
-        /**
-         * Gets the reply QoS settings.
-         *
-         * @return the reply QoS settings
-         */
         public QosSettings getReplyQosSettings() {
             return replyQosSettings;
         }
 
-        /**
-         * Sets the reply QoS settings.
-         *
-         * @param replyQosSettings the reply QoS settings
-         */
         public void setReplyQosSettings(QosSettings replyQosSettings) {
             this.replyQosSettings = replyQosSettings;
         }
 
-        /**
-         * Whether to make the subscription durable.
-         *
-         * @return whether to make the subscription durable
-         */
         public Boolean isSubscriptionDurable() {
             return subscriptionDurable;
         }
 
-        /**
-         * Sets whether to make the subscription durable.
-         *
-         * @param subscriptionDurable whether to make the subscription durable.
-         */
         public void setSubscriptionDurable(Boolean subscriptionDurable) {
             this.subscriptionDurable = subscriptionDurable;
         }
 
-        /**
-         * Whether to make the subscription shared.
-         *
-         * @return whether to make the subscription shared.
-         */
         public Boolean isSubscriptionShared() {
             return subscriptionShared;
         }
 
-        /**
-         * Sets whether to make the subscription shared.
-         *
-         * @param subscriptionShared whether to make the subscription shared
-         */
         public void setSubscriptionShared(Boolean subscriptionShared) {
             this.subscriptionShared = subscriptionShared;
         }
 
-        /**
-         * Gets the phase in which this container should be started and stopped.
-         *
-         * @return the phase in which this container should be started and stopped
-         */
         public Integer getPhase() {
             return phase;
         }
 
-        /**
-         * Sets the phase in which this container should be started and stopped.
-         *
-         * @param phase the phase in which this container should be started and stopped
-         */
         public void setPhase(Integer phase) {
             this.phase = phase;
         }
