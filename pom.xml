@@ -18,12 +18,12 @@
         <module>sdk/anomalydetector/azure-ai-anomalydetector</module>
 
         <!-- App Configuration -->
-        <module>sdk/appconfiguration/spring-cloud-starter-azure-appconfiguration-config</module>
-        <module>sdk/appconfiguration/spring-cloud-azure-appconfiguration-config</module>
+<!--        <module>sdk/appconfiguration/spring-cloud-starter-azure-appconfiguration-config</module>-->
+<!--        <module>sdk/appconfiguration/spring-cloud-azure-appconfiguration-config</module>-->
         <module>sdk/appconfiguration/azure-data-appconfiguration</module>
-        <module>sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config</module>
-        <module>sdk/appconfiguration/azure-spring-cloud-appconfiguration-config</module>
-        <module>sdk/appconfiguration/azure-spring-cloud-appconfiguration-config-web</module>
+<!--        <module>sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config</module>-->
+<!--        <module>sdk/appconfiguration/azure-spring-cloud-appconfiguration-config</module>-->
+<!--        <module>sdk/appconfiguration/azure-spring-cloud-appconfiguration-config-web</module>-->
 
         <!-- Attestation -->
         <module>sdk/attestation/azure-security-attestation</module>
@@ -61,7 +61,7 @@
         <!-- Cosmos -->
         <module>sdk/cosmos/azure-cosmos</module>
         <module>sdk/cosmos/azure-cosmos-encryption</module>
-        <module>sdk/cosmos/azure-spring-data-cosmos</module>
+<!--        <module>sdk/cosmos/azure-spring-data-cosmos</module>-->
 
         <!-- Device Update -->
         <module>sdk/deviceupdate/azure-iot-deviceupdate</module>
@@ -113,7 +113,7 @@
         <module>sdk/remoterendering/azure-mixedreality-remoterendering</module>
 
         <!-- Resource manager libraries -->
-        <module>sdk/resourcemanager</module>
+<!--        <module>sdk/resourcemanager</module>-->
 
         <!-- Schema Registry -->
         <module>sdk/schemaregistry/azure-data-schemaregistry</module>
@@ -126,7 +126,7 @@
         <module>sdk/servicebus/azure-messaging-servicebus</module>
 
         <!-- Spring libraries -->
-        <module>sdk/spring</module>
+<!--        <module>sdk/spring</module>-->
 
         <!-- Azure Storage -->
         <module>sdk/storage/azure-storage-blob</module>
