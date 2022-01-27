@@ -19,7 +19,7 @@ parameters:
   UsePlatformContainer: false
   DisableAzureResourceCreation: false
   MavenBuildInstallParallelization: '2C'
-  BuildOptions: '$(DefaultOptions) --quiet -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true'
+  BuildOptions: ''
   SparkShading: ''
 
 jobs:
@@ -85,14 +85,16 @@ jobs:
         parameters:
           SDKType: ${{ parameters.SDKType }}
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
-          BuildOptions: ${{ parameters.BuildOptions }}
+          ${{ if ne(parameters.BuildOptions, '') }}:
+            BuildOptions: ${{ parameters.BuildOptions }}
           ParallelTestPlayback: 'false'
           SkipAggregateReports: 'true'
           BuildParallelization: ${{ parameters.MavenBuildInstallParallelization }}
           SparkShading: ${{ parameters.SparkShading }}
           IsLiveTest: true
-          MatrixTestOptions: $(TestOptions)
-          MatrixAdditionalOptions: $(ProcessedAdditionalOptions)
+          MatrixTestOptions: $[ coalesce($(TestOptions), 'surefire:test') ]
+          ${{ if ne(variables.AdditionalOptions, '') }}:
+            MatrixAdditionalOptions: $(AdditionalOptions)
           TestEnvVars:
             AZURE_TEST_MODE: ${{ parameters.TestMode }}
             ${{ each var in parameters.EnvVars }}:

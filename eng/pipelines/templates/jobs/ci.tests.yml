@@ -79,9 +79,12 @@ jobs:
         parameters:
           SDKType: ${{ parameters.SDKType }}
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
-          BuildOptions: ${{ parameters.BuildOptions }}
-          TestOptions: ${{ parameters.TestOptions }}
+          ${{ if ne(parameters.BuildOptions, '') }}:
+            BuildOptions: ${{ parameters.BuildOptions }}
+          ${{ if ne(parameters.TestOptions, '') }}:
+            TestOptions: ${{ parameters.TestOptions }}
           ParallelTestPlayback: 'true'
           SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
-          MatrixTestOptions: $(TestOptions)
-          MatrixAdditionalOptions: $(AdditionalOptions)
+          MatrixTestOptions: $[ coalesce($(TestOptions), 'surefire:test') ]
+          ${{ if ne(variables.AdditionalOptions, '') }}:
+            MatrixAdditionalOptions: $(AdditionalOptions)
