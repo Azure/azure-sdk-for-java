@@ -3,44 +3,45 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendBatchFailedContext;
 import com.azure.messaging.eventhubs.models.SendBatchSucceededContext;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.Closeable;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-@ServiceClient(builder = EventHubBufferedProducerClientBuilder.class)
+/**
+ * An <strong>asynchronous</strong> producer responsible for transmitting {@link EventData} to a specific Event Hub
+ * without building and managing batches.
+ */
+@ServiceClient(builder = EventHubBufferedProducerClientBuilder.class, isAsync = true)
 public final class EventHubBufferedProducerAsyncClient implements Closeable {
-    private final ClientLogger logger  = new ClientLogger(EventHubBufferedProducerAsyncClient.class);
     private final EventHubAsyncClient client;
-    private final EventHubClientBuilder builder;
     private final EventHubProducerAsyncClient producer;
     private final BufferedProducerClientOptions clientOptions;
     private static final SendOptions DEFAULT_SEND_OPTIONS = new SendOptions();
 
-
     //  Key: partitionId.
-    private final HashMap<String, ConcurrentLinkedDeque<EventDataBatch>> partitionBatchMap = new HashMap<>();
+    private final ConcurrentHashMap<String, LinkedBlockingDeque<EventData>> partitionBatchMap = new ConcurrentHashMap<>();
 
     EventHubBufferedProducerAsyncClient(EventHubClientBuilder builder, BufferedProducerClientOptions clientOptions) {
-        this.builder = builder;
         this.client = builder.buildAsyncClient();
         this.clientOptions = clientOptions;
         this.producer = this.client.createProducer();
@@ -80,7 +81,6 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
      *
      * @return A Flux of identifiers for the partitions of an Event Hub.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<String> getPartitionIds() {
         return client.getPartitionIds();
     }
@@ -100,87 +100,174 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
         return client.getPartitionProperties(partitionId);
     }
 
+    /**
+     * Retrieves the quantity of events in the buffered client that have not been sent.
+     *
+     * @return The quantity of events.
+     */
     public int getBufferedEventCount() {
-        AtomicInteger total = new AtomicInteger();
-        partitionBatchMap.forEach((String key, ConcurrentLinkedDeque<EventDataBatch> item) -> {
-            total.addAndGet(item.size());
-        });
-        return total.get();
+        AtomicInteger count = new AtomicInteger();
+        partitionBatchMap.values().forEach(queue -> count.addAndGet(queue.size()));
+        return count.get();
     }
 
+    /**
+     * Retrieves the quantity of events in the buffered client that will send to a specific partition.
+     *
+     * @param partitionId The unique identifier of a partition associated with the Event Hub.
+     *
+     * @return the quantity of events for the specific partition.
+     */
     public int getBufferedEventCount(String partitionId) {
         return partitionBatchMap.get(partitionId).size();
     }
 
+    /**
+     * Enqueue a single event without send options, will be sent to event hub by default send options.
+     *
+     * @param eventData The {@link EventData} to store in client temporarily to send to event hub.
+     * @throws AmqpException if the size of {@code events} exceed the maximum size of a single batch.
+     * @return Gets a {@link Mono} that completes when eventData enqueued.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> enqueueEvent(EventData eventData) {
         return enqueueEvent(eventData, DEFAULT_SEND_OPTIONS);
     }
 
+    /**
+     * Enqueue a single event with send options.
+     *
+     * @param eventData The {@link EventData} will be stored in client temporarily and sent to event hub.
+     * @param options A set of options used to configure the {@link EventDataBatch}.
+     * @throws AmqpException if the size of {@code events} exceed the maximum size of a single batch.
+     * @return Gets a {@link Mono} that completes when eventData enqueued.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> enqueueEvent(EventData eventData, SendOptions options) {
-        Objects.requireNonNull(eventData, "'eventData' cannot be null.");
-        CreateBatchOptions createBatchOptions = new CreateBatchOptions().setPartitionId(options.getPartitionId()).setPartitionKey(options.getPartitionKey());
-        EventDataBatch eventDataBatch = this.producer.createBatch(createBatchOptions).block();
-        if (eventDataBatch.tryAdd(eventData)) {
-            throw new IllegalArgumentException(String.format(Locale.US,
-                "Size of the payload exceeded maximum message size: %s kb",
-                createBatchOptions.getMaximumSizeInBytes()/1024));
-        }
-        addBatchToPartitionMap(options.getPartitionId(), eventDataBatch);
-        return publish(options.getPartitionId());
+        List<EventData> list = new ArrayList<>();
+        list.add(eventData);
+        return enqueueEvents(list, options);
     }
 
+    /**
+     * Enqueue iterable events without send options, will be sent to event hub by default send options.
+     *
+     * @param events Events will be stored in client temporarily and sent to event hub.
+     * @throws AmqpException if the size of {@code events} exceed the maximum size of a single batch.
+     * @return Gets a {@link Mono} that completes when eventData enqueued.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> enqueueEvents(Iterable<EventData> events) {
         return enqueueEvents(events, DEFAULT_SEND_OPTIONS);
     }
 
+    /**
+     * Enqueue iterable events with send options.
+     *
+     * @param events Events will be stored in client temporarily and sent to event hub.
+     * @param options A set of options used to configure the {@link EventDataBatch}.
+     * @throws AmqpException if the size of {@code events} exceed the maximum size of a single batch.
+     * @return Gets a {@link Mono} that completes when eventData enqueued.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> enqueueEvents(Iterable<EventData> events, SendOptions options) {
         Objects.requireNonNull(events, "'eventData' cannot be null.");
-        CreateBatchOptions createBatchOptions = new CreateBatchOptions().setPartitionId(options.getPartitionId()).setPartitionKey(options.getPartitionKey());
-        AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(
-            producer.createBatch(createBatchOptions).block());
-
-        events.forEach(item -> {
-            Objects.requireNonNull(item, "'eventData' cannot be null.");
-            if (!currentBatch.get().tryAdd(item)) {
-                addBatchToPartitionMap(options.getPartitionId(), currentBatch.get());
-                currentBatch.set(producer.createBatch(createBatchOptions).block());
-                if (!currentBatch.get().tryAdd(item)) {
-                    throw new IllegalArgumentException(String.format(Locale.US,
-                        "Size of the payload exceeded maximum message size: %s kb",
-                        createBatchOptions.getMaximumSizeInBytes()/1024));
-                }
-            }
-        });
-        EventDataBatch batch = currentBatch.getAndSet(null);
-        addBatchToPartitionMap(options.getPartitionId(), batch);
-        return publish(options.getPartitionId());
+        ArrayList<EventData> list = new ArrayList<>();
+        events.forEach(list::add);
+        addBatchToPartitionMap(options.getPartitionId(), list);
+        return Mono.empty();
     }
 
-    private void addBatchToPartitionMap(String partitionId, EventDataBatch eventDataBatch) {
+    private void addBatchToPartitionMap(String partitionId, List<EventData> list) {
         partitionBatchMap.compute(partitionId, (k, v) -> {
-            if (v == null) {
-                v =  new ConcurrentLinkedDeque<>();
+            if (v != null) {
+                v.addAll(list);
+            } else {
+                LinkedBlockingDeque<EventData> queue = new LinkedBlockingDeque<>(list);
+                v = queue;
+                Flux.generate((sink) -> {
+                    try {
+                        EventData eventData = queue.take();
+                        sink.next(eventData);
+                    } catch (InterruptedException e) {
+                        sink.error(e);
+                    }
+                }).publishOn(Schedulers.newSingle(partitionId))
+                    .map(event -> (EventData) event)
+                    .windowTimeout(clientOptions.maxPendingEventCount, clientOptions.maxWaitTime)
+                    .flatMap(Flux::collectList)
+                    .flatMap(eventList -> {
+                        if (eventList.size() == 0) {
+                            return Mono.empty();
+                        }
+                        CreateBatchOptions options = new CreateBatchOptions();
+                        options.setPartitionId(partitionId);
+                        AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>();
+                        return producer.createBatch(options).map(eventDataBatch -> {
+                            currentBatch.set(eventDataBatch);
+                            return Flux.fromIterable(eventList).flatMap(event -> {
+                                EventDataBatch batch = currentBatch.get();
+                                if (batch.tryAdd(event)) {
+                                    return Mono.empty();
+                                }
+                                return Mono.when(
+                                    producer.send(batch).doOnEach(signal -> {
+                                        if (signal.hasError()) {
+                                            this.clientOptions.getSendFailedContext()
+                                                .accept(new SendBatchFailedContext(batch.getEvents(), batch.getPartitionId(), signal.getThrowable()));
+                                        } else {
+                                            this.clientOptions.getSendSucceededContext()
+                                                .accept(new SendBatchSucceededContext(batch.getEvents(), batch.getPartitionId()));
+                                        }
+                                    }),
+                                    producer.createBatch(options).map(newBatch -> {
+                                        currentBatch.set(newBatch);
+                                        if (!newBatch.tryAdd(event)) {
+                                            this.clientOptions.getSendFailedContext()
+                                                .accept(
+                                                    new SendBatchFailedContext(
+                                                        eventDataBatch.getEvents(),
+                                                        eventDataBatch.getPartitionId(),
+                                                        new IllegalArgumentException(String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb", options.getMaximumSizeInBytes() / 1024)))
+                                                );
+                                        }
+                                        return newBatch;
+                                    })
+                                );
+                            });
+                        }).then().doFinally(sig -> {
+                            EventDataBatch batch = currentBatch.getAndSet(null);
+                            producer.send(batch).doOnEach(signal -> {
+                                if (signal.hasError()) {
+                                    this.clientOptions.getSendFailedContext()
+                                        .accept(new SendBatchFailedContext(batch.getEvents(), batch.getPartitionId(), signal.getThrowable()));
+                                } else {
+                                    this.clientOptions.getSendSucceededContext()
+                                        .accept(new SendBatchSucceededContext(batch.getEvents(), batch.getPartitionId()));
+                                }
+                            });
+                        });
+                    })
+                    .subscribeOn(Schedulers.newSingle(partitionId))
+                    .subscribe();
             }
-            v.add(eventDataBatch);
             return v;
         });
     }
 
+    // TODO
+    /**
+     * Send all events stored in the client to event hub.
+     *
+     * @return Gets a {@link Mono} that completes when all events have been sent or reach max wait time.
+     */
     public Mono<Void> flush() {
-        return Mono.when(Flux.fromIterable(partitionBatchMap.values()).flatMap((cdq) -> Flux.fromIterable(cdq).flatMap(this.producer::send)));
-
+        return Mono.empty();
     }
 
-    private Mono<Void> publish(String partitionId) {
-        EventDataBatch dataBatch = partitionBatchMap.get(partitionId).poll();
-        List<EventDataBatch> list = new ArrayList<>();
-        while (dataBatch != null) {
-            list.add(dataBatch);
-            dataBatch = partitionBatchMap.get(partitionId).poll();
-        }
-        return Mono.when(Flux.fromIterable(list).flatMap(this.producer::send));
-    }
-
+    /**
+     * Disposes of the {@link EventHubBufferedProducerAsyncClient}. This operation will trigger {@link EventHubBufferedProducerAsyncClient#flush()} operation.
+     */
     @Override
     public void close() {
         flush().block();
