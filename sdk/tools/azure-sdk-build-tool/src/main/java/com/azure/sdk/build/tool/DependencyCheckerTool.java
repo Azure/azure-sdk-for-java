@@ -7,6 +7,7 @@ import com.azure.sdk.build.tool.util.logging.Logger;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.DependencyManagement;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -39,9 +40,7 @@ public class DependencyCheckerTool implements Runnable {
 
         checkForBom();
         checkForAzureSdkDependencyVersions();
-        checkForAzureSdkTransitiveDependencyConflicts();
         checkForAzureSdkTrackOneDependencies();
-        checkForOutdatedAzureSdkDependencies();
     }
 
     private void checkForBom() {
@@ -66,11 +65,16 @@ public class DependencyCheckerTool implements Runnable {
     }
 
     private void checkForAzureSdkDependencyVersions() {
-        // TODO
-    }
+        List<Dependency> dependencies = AzureSdkMojo.MOJO.getProject().getDependencies();
+        List<Dependency> dependenciesWithOverriddenVersions = dependencies.stream()
+                .filter(dependency -> dependency.getGroupId().equals("com.azure"))
+                .filter(dependency -> {
+                    String version = dependency.getVersion();
+                    return version != null && !version.isEmpty();
+                }).collect(Collectors.toList());
 
-    private void checkForAzureSdkTransitiveDependencyConflicts() {
-        // TODO
+        dependenciesWithOverriddenVersions.forEach(dependency -> failOrError(AzureSdkMojo.MOJO::isValidateBomVersionsAreUsed,
+                dependency.getArtifactId() + " " + getString("overrideBomVersion"));
     }
 
     private void checkForAzureSdkTrackOneDependencies() {
@@ -112,10 +116,6 @@ public class DependencyCheckerTool implements Runnable {
             }
             failOrError(AzureSdkMojo.MOJO::isValidateNoDeprecatedMicrosoftLibraryUsed, message);
         }
-    }
-
-    private void checkForOutdatedAzureSdkDependencies() {
-        // TODO
     }
 
     private void failOrError(Supplier<Boolean> condition, String message) {
