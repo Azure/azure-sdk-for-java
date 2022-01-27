@@ -46,6 +46,14 @@ public final class AnnotationUtils {
         return Optional.empty();
     }
 
+    /**
+     * Returns a list of methods that call methods that are annotated with the given annotation.
+     * @param annotation The annotation on the method to look for.
+     * @param paths The paths to scan.
+     * @param interestedPackages The packages that this scan should be limited to.
+     * @param recursive If true, look for packages in the sub-directories of the given paths.
+     * @return A set of methods that call methods with the annotation.
+     */
     public static Set<AnnotatedMethodCallerResult> findCallsToAnnotatedMethod(final Class<? extends Annotation> annotation,
                                                                               final Stream<Path> paths,
                                                                               final Set<String> interestedPackages,
@@ -71,7 +79,7 @@ public final class AnnotationUtils {
                 method.invoke(contextClassLoader, url);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Unable to reflectively call addURL method on URL class. " + e.getMessage());
         }
 
         final Reflections reflections = new Reflections(config);

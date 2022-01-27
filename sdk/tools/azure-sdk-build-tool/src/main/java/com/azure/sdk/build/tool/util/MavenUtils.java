@@ -2,7 +2,6 @@ package com.azure.sdk.build.tool.util;
 
 import com.azure.sdk.build.tool.util.logging.Logger;
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.model.Dependency;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -13,16 +12,24 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/**
+ * Utility class to perform Maven related operations.
+ */
 public class MavenUtils {
     private static final Logger LOGGER = Logger.getInstance();
 
-    public static String toGAV(Artifact a) {
-        return a.getGroupId() + ":" + a.getArtifactId() + ":" + a.getVersion();
+    /**
+     * Creates artifact string representation of an artifact.
+     * @param artifact The artifact.
+     * @return The string representation of the artifact.
+     */
+    public static String toGAV(Artifact artifact) {
+        return artifact.getGroupId() + ":" + artifact.getArtifactId() + ":" + artifact.getVersion();
     }
 
     /**
-     * Gets the latest released Azure SDK BOM version from Maven repository.
-     * @return The latest Azure SDK BOM version or {@code null} if an error occurred while retrieving the latest
+     * Gets the latest released version of the given artifact from Maven repository.
+     * @return The latest version or {@code null} if an error occurred while retrieving the latest
      * version.
      */
     public static String getLatestArtifactVersion(String groupId, String artifactId) {
@@ -56,14 +63,13 @@ public class MavenUtils {
                     }
                 }
 
-                LOGGER.info("The latest version for SDK BOM is " + latestVersion);
+                LOGGER.info("The latest version of " + artifactId + " is " + latestVersion);
                 return latestVersion;
             } else {
                 LOGGER.info("Got a non-successful response for  " + artifactId + ": " + responseCode);
             }
         } catch (Exception exception) {
-            LOGGER.error("Got error getting latest maven dependency version ");
-            exception.printStackTrace();
+            LOGGER.error("Got error getting latest maven dependency version. " + exception.getMessage());
         } finally {
             if (connection != null) {
                 // closes the input streams and discards the socket
