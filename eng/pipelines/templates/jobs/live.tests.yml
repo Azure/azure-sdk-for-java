@@ -81,6 +81,11 @@ jobs:
 
       - ${{ parameters.PreSteps }}
 
+      - pwsh: |
+          $processedAdditionalOptions = $AdditionalOptions -replace "-amd"
+          $processedAdditionalOptions = $processedAdditionalOptions -replace "-am"
+          Write-Host "##vso[task.setvariable variable=ProcessedAdditionalOptions;]${processedAdditionalOptions}"
+
       - template: /eng/pipelines/templates/steps/build-and-test.yml
         parameters:
           SDKType: ${{ parameters.SDKType }}
@@ -92,7 +97,7 @@ jobs:
           SparkShading: ${{ parameters.SparkShading }}
           IsLiveTest: true
           MatrixTestOptions: $(TestOptions)
-          MatrixAdditionalOptions: ${{ replace(replace($(AdditionalOptions), "-amd", ""), "-am", "") }}
+          MatrixAdditionalOptions: $(ProcessedAdditionalOptions)
           TestEnvVars:
             AZURE_TEST_MODE: ${{ parameters.TestMode }}
             ${{ each var in parameters.EnvVars }}:
