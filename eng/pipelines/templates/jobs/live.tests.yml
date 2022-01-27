@@ -19,6 +19,7 @@ parameters:
   UsePlatformContainer: false
   DisableAzureResourceCreation: false
   MavenBuildInstallParallelization: '1C'
+  BuildOptions: '$(DefaultOptions) --quiet -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true'
   SparkShading: ''
 
 jobs:
@@ -78,12 +79,26 @@ jobs:
 
       - ${{ parameters.PreSteps }}
 
+      - template: /eng/pipelines/templates/steps/build-and-test.yml
+        parameters:
+          SDKType: ${{ parameters.SDKType }}
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          BuildOptions: ${{ parameters.BuildOptions }}
+          ParallelTestPlayback: 'false'
+          SkipAggregateReports: 'true'
+          MavenBuildInstallParallelization: ${{ parameters.MavenBuildInstallParallelization }}
+          SparkShading: ${{ parameters.SparkShading }}
+          TestEnvVars:
+            AZURE_TEST_MODE: ${{ parameters.TestMode }}
+            ${{ each var in parameters.EnvVars }}:
+              ${{ var.key }}: ${{ var.value }}
+
       - task: Maven@3
         displayName: 'Build and Install, JDK Version: $(JavaTestVersion)'
         inputs:
           mavenPomFile: pom.xml
           goals: 'install'
-          options: '$(DefaultOptions) -T ${{parameters.MavenBuildInstallParallelization}} ${{parameters.SparkShading}} -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+          options: '${{ parameters.BuildOptions }} -T ${{ parameters.MavenBuildInstallParallelization }} ${{ parameters.SparkShading }} -pl $(ProjectList) -am'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaTestVersion)
@@ -100,8 +115,6 @@ jobs:
           ${{ each var in parameters.EnvVars }}:
             ${{ var.key }}: ${{ var.value }}
 
-      - template: ../steps/retain-heap-dump-hprofs.yml
-
       - ${{ parameters.PostSteps }}
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
@@ -116,13 +129,3 @@ jobs:
             parameters:
               ServiceDirectory: '${{ parameters.ServiceDirectory }}'
               SubscriptionConfiguration: $(SubscriptionConfiguration)
-
-      - template: ../steps/upload-repository-on-failure.yml
-
-      - task: PublishTestResults@2
-        condition: always()
-        inputs:
-          mergeTestResults: true
-          testRunTitle: 'Live tests for ${{ parameters.ServiceDirectory }} ${{ parameters.CloudConfig.Cloud }} $(Agent.JobName)'
-          ${{ if ne(parameters.TestResultsFiles, '') }}:
-            testResultsFiles: ${{ parameters.TestResultsFiles }}
