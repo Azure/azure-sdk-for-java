@@ -3,6 +3,8 @@
 
 package com.azure.resourcemanager.deviceprovisioningservices;
 
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
@@ -45,6 +47,7 @@ public class DeviceProvisioningTestBase extends TestBase {
 
     public IotDpsManager createIotDpsManager() {
         return IotDpsManager
+            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
     }
 
@@ -68,6 +71,7 @@ public class DeviceProvisioningTestBase extends TestBase {
 
     public IotHubManager createIotHubManager() {
         return IotHubManager
+            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
     }
 

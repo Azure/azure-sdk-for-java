@@ -21,6 +21,7 @@ import com.azure.resourcemanager.datafactory.models.BlobSource;
 import com.azure.resourcemanager.datafactory.models.CopyActivity;
 import com.azure.resourcemanager.datafactory.models.CreateRunResponse;
 import com.azure.resourcemanager.datafactory.models.DatasetReference;
+import com.azure.resourcemanager.datafactory.models.Factory;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceReference;
 import com.azure.resourcemanager.datafactory.models.PipelineResource;
 import com.azure.resourcemanager.datafactory.models.PipelineRun;
@@ -51,11 +52,10 @@ public class DataFactoryTests extends TestBase {
     @DoNotRecord(skipInPlayback = true)
     public void dataFactoryTest() {
         StorageManager storageManager = StorageManager
-            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
         DataFactoryManager manager = DataFactoryManager
-            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
@@ -94,7 +94,7 @@ public class DataFactoryTests extends TestBase {
             blobClient.upload(BinaryData.fromString("data"));
 
             // data factory
-            manager.factories().define(DATA_FACTORY)
+            Factory dataFactory = manager.factories().define(DATA_FACTORY)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroup)
                 .create();
@@ -160,6 +160,9 @@ public class DataFactoryTests extends TestBase {
             manager.linkedServices().listByFactory(resourceGroup, DATA_FACTORY).stream().count();
             manager.datasets().listByFactory(resourceGroup, DATA_FACTORY).stream().count();
             manager.pipelines().listByFactory(resourceGroup, DATA_FACTORY).stream().count();
+
+            manager.factories().deleteById(dataFactory.id());
+            storageManager.storageAccounts().deleteById(storageAccount.id());
         } finally {
             if (!testEnv) {
                 storageManager.resourceManager().resourceGroups().beginDeleteByName(resourceGroup);
