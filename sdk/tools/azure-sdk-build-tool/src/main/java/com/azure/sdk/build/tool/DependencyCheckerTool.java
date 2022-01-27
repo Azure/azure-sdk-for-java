@@ -74,7 +74,7 @@ public class DependencyCheckerTool implements Runnable {
                 }).collect(Collectors.toList());
 
         dependenciesWithOverriddenVersions.forEach(dependency -> failOrError(AzureSdkMojo.MOJO::isValidateBomVersionsAreUsed,
-                dependency.getArtifactId() + " " + getString("overrideBomVersion"));
+                dependency.getArtifactId() + " " + getString("overrideBomVersion")));
     }
 
     private void checkForAzureSdkTrackOneDependencies() {
