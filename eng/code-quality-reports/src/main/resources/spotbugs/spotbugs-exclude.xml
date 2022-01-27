@@ -2305,6 +2305,19 @@
     <Bug pattern="NP_NULL_ON_SOME_PATH"/>
   </Match>
 
+  <!-- Suppressing error for using anonymous inner classes. -->
+  <Match>
+    <Class name="com.azure.spring.cloud.autoconfigure.compatibility.SpringCloudAzureSpringBootVersionVerifier"/>
+    <Method name="is2_6"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.spring.cloud.autoconfigure.compatibility.SpringCloudAzureSpringBootVersionVerifier"/>
+    <Method name="is2_5"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
   <!-- The transient fields are not used if deserialization happens. -->
   <Match>
     <Class name="com.azure.identity.implementation.MsalAuthenticationAccount"/>
