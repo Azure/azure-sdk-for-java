@@ -39,7 +39,7 @@ public class DeviceUpdateClientTests extends TestBase {
         } else if (getTestMode() == TestMode.LIVE) {
             builder.credential(new DefaultAzureCredentialBuilder().build());
         }
-        return builder.buildDeviceUpdateAsyncClient();
+        return builder.buildAsyncClient();
     }
 
     @Test

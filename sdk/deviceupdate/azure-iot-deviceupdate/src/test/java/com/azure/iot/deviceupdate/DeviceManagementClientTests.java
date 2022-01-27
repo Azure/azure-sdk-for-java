@@ -22,8 +22,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class DeviceManagementClientTests extends TestBase {
 
     private DeviceManagementAsyncClient createClient() {
-        DeviceUpdateClientBuilder builder =
-            new DeviceUpdateClientBuilder()
+        DeviceManagementClientBuilder builder =
+            new DeviceManagementClientBuilder()
                 .endpoint(TestData.ACCOUNT_ENDPOINT)
                 .instanceId(TestData.INSTANCE_ID)
                 .httpClient(HttpClient.createDefault())
@@ -37,7 +37,7 @@ public class DeviceManagementClientTests extends TestBase {
         } else if (getTestMode() == TestMode.LIVE) {
             builder.credential(new DefaultAzureCredentialBuilder().build());
         }
-        return builder.buildDeviceManagementAsyncClient();
+        return builder.buildAsyncClient();
     }
 
     @Test

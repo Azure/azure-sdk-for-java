@@ -18,16 +18,16 @@ import com.azure.iot.deviceupdate.implementation.DeviceUpdateClientBuilderImpl;
 
 /** A builder for creating a new instance of the DeviceUpdateClient type. */
 @ServiceClientBuilder(
-        serviceClients = {
-            DeviceUpdateClient.class,
-            DeviceUpdateAsyncClient.class,
-        })
-public final class DeviceUpdateClientBuilder {
+    serviceClients = {
+        DeviceManagementClient.class,
+        DeviceManagementAsyncClient.class,
+    })
+public final class DeviceManagementClientBuilder {
     @Generated private final DeviceUpdateClientBuilderImpl clientBuilder;
 
     /** Create an instance of the DeviceUpdateClientBuilder. */
     @Generated
-    public DeviceUpdateClientBuilder() {
+    public DeviceManagementClientBuilder() {
         clientBuilder = new DeviceUpdateClientBuilderImpl();
     }
 
@@ -38,7 +38,7 @@ public final class DeviceUpdateClientBuilder {
      * @return the DeviceUpdateClientBuilder.
      */
     @Generated
-    public DeviceUpdateClientBuilder  endpoint(String endpoint) {
+    public DeviceManagementClientBuilder endpoint(String endpoint) {
         clientBuilder.endpoint(endpoint);
         return this;
     }
@@ -50,7 +50,7 @@ public final class DeviceUpdateClientBuilder {
      * @return the DeviceUpdateClientBuilder.
      */
     @Generated
-    public DeviceUpdateClientBuilder  instanceId(String instanceId) {
+    public DeviceManagementClientBuilder instanceId(String instanceId) {
         clientBuilder.instanceId(instanceId);
         return this;
     }
@@ -62,7 +62,7 @@ public final class DeviceUpdateClientBuilder {
      * @return the DeviceUpdateClientBuilder.
      */
     @Generated
-    public DeviceUpdateClientBuilder  serviceVersion(DeviceUpdateServiceVersion serviceVersion) {
+    public DeviceManagementClientBuilder serviceVersion(DeviceUpdateServiceVersion serviceVersion) {
         clientBuilder.serviceVersion(serviceVersion);
         return this;
     }
@@ -74,7 +74,7 @@ public final class DeviceUpdateClientBuilder {
      * @return the DeviceUpdateClientBuilder.
      */
     @Generated
-    public DeviceUpdateClientBuilder  pipeline(HttpPipeline pipeline) {
+    public DeviceManagementClientBuilder pipeline(HttpPipeline pipeline) {
         clientBuilder.pipeline(pipeline);
         return this;
     }
@@ -86,7 +86,7 @@ public final class DeviceUpdateClientBuilder {
      * @return the DeviceUpdateClientBuilder.
      */
     @Generated
-    public DeviceUpdateClientBuilder  httpClient(HttpClient httpClient) {
+    public DeviceManagementClientBuilder httpClient(HttpClient httpClient) {
         clientBuilder.httpClient(httpClient);
         return this;
     }
@@ -98,7 +98,7 @@ public final class DeviceUpdateClientBuilder {
      * @return the DeviceUpdateClientBuilder.
      */
     @Generated
-    public DeviceUpdateClientBuilder  configuration(Configuration configuration) {
+    public DeviceManagementClientBuilder configuration(Configuration configuration) {
         clientBuilder.configuration(configuration);
         return this;
     }
@@ -110,7 +110,7 @@ public final class DeviceUpdateClientBuilder {
      * @return the DeviceUpdateClientBuilder.
      */
     @Generated
-    public DeviceUpdateClientBuilder  credential(TokenCredential tokenCredential) {
+    public DeviceManagementClientBuilder credential(TokenCredential tokenCredential) {
         clientBuilder.credential(tokenCredential);
         return this;
     }
@@ -122,7 +122,7 @@ public final class DeviceUpdateClientBuilder {
      * @return the DeviceUpdateClientBuilder.
      */
     @Generated
-    public DeviceUpdateClientBuilder  httpLogOptions(HttpLogOptions httpLogOptions) {
+    public DeviceManagementClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         clientBuilder.httpLogOptions(httpLogOptions);
         return this;
     }
@@ -134,7 +134,7 @@ public final class DeviceUpdateClientBuilder {
      * @return the DeviceUpdateClientBuilder.
      */
     @Generated
-    public DeviceUpdateClientBuilder  retryPolicy(RetryPolicy retryPolicy) {
+    public DeviceManagementClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         clientBuilder.retryPolicy(retryPolicy);
         return this;
     }
@@ -146,7 +146,7 @@ public final class DeviceUpdateClientBuilder {
      * @return the DeviceUpdateClientBuilder.
      */
     @Generated
-    public DeviceUpdateClientBuilder  clientOptions(ClientOptions clientOptions) {
+    public DeviceManagementClientBuilder clientOptions(ClientOptions clientOptions) {
         clientBuilder.clientOptions(clientOptions);
         return this;
     }
@@ -158,28 +158,28 @@ public final class DeviceUpdateClientBuilder {
      * @return the DeviceUpdateClientBuilder.
      */
     @Generated
-    public DeviceUpdateClientBuilder  addPolicy(HttpPipelinePolicy customPolicy) {
+    public DeviceManagementClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         clientBuilder.addPolicy(customPolicy);
         return this;
     }
 
     /**
-     * Builds an instance of DeviceUpdateAsyncClient async client.
+     * Builds an instance of DeviceManagementAsyncClient async client.
      *
-     * @return an instance of DeviceUpdateAsyncClient.
+     * @return an instance of DeviceManagementAsyncClient.
      */
     @Generated
-    public DeviceUpdateAsyncClient buildAsyncClient() {
-        return new DeviceUpdateAsyncClient(clientBuilder.buildInnerClient().getDeviceUpdates());
+    public DeviceManagementAsyncClient buildAsyncClient() {
+        return new DeviceManagementAsyncClient(clientBuilder.buildInnerClient().getDeviceManagements());
     }
 
     /**
-     * Builds an instance of DeviceUpdateClient sync client.
+     * Builds an instance of DeviceManagementClient sync client.
      *
-     * @return an instance of DeviceUpdateClient.
+     * @return an instance of DeviceManagementClient.
      */
     @Generated
-    public DeviceUpdateClient buildClient() {
-        return new DeviceUpdateClient(clientBuilder.buildInnerClient().getDeviceUpdates());
+    public DeviceManagementClient buildClient() {
+        return new DeviceManagementClient(clientBuilder.buildInnerClient().getDeviceManagements());
     }
 }

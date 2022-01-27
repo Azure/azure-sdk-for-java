@@ -15,7 +15,7 @@ public class GetUpdateNotFoundSample {
             .instanceId(Configuration.getGlobalConfiguration().get("AZURE_INSTANCE_ID"))
             .credential(new DefaultAzureCredentialBuilder().build())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .buildDeviceUpdateAsyncClient();
+            .buildAsyncClient();
 
         // BEGIN: com.azure.iot.deviceupdate.DeviceUpdateAsyncClient.notfound
         try {

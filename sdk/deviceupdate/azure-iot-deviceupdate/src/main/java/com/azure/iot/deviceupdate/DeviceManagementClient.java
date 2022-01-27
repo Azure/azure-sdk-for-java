@@ -18,7 +18,7 @@ import com.azure.iot.deviceupdate.implementation.DeviceManagementsImpl;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the synchronous DeviceUpdateClient type. */
-@ServiceClient(builder = DeviceUpdateClientBuilder.class)
+@ServiceClient(builder = DeviceManagementClientBuilder.class)
 public final class DeviceManagementClient {
     @Generated private final DeviceManagementsImpl serviceClient;
 
