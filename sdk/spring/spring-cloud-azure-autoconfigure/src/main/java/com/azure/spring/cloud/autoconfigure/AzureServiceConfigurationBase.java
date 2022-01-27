@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure;
 
+import com.azure.core.util.ConfigurationBuilder;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.core.aware.ClientAware;
 import com.azure.spring.core.aware.ProxyAware;
@@ -10,8 +11,19 @@ import com.azure.spring.core.aware.RetryAware;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.util.AzurePropertiesUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.AbstractEnvironment;
+import org.springframework.core.env.EnumerablePropertySource;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.MutablePropertySources;
+
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * A configuration base class for all Azure SDK configuration.

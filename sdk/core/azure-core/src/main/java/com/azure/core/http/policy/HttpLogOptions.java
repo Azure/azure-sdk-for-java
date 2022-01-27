@@ -72,7 +72,7 @@ public class HttpLogOptions {
 
         HttpLogOptions httpLogOptions = new HttpLogOptions();
         String headers = configuration.get(ALLOWED_HEADERS_PROPERTY);
-        if (CoreUtils.isNullOrEmpty(headers)) {
+        if (!CoreUtils.isNullOrEmpty(headers)) {
             String[] headerList = headers.split(",");
             for (String h : headerList) {
                 httpLogOptions.addAllowedHeaderName(h);
@@ -84,8 +84,11 @@ public class HttpLogOptions {
             httpLogOptions.setLogLevel(logLevel);
         }
 
-        // there is no real validation for boolean anyway
-        httpLogOptions.setPrettyPrintBody(configuration.get(PRETTY_PRINT_BODY_PROPERTY));
+        Boolean prettyPrint = configuration.get(PRETTY_PRINT_BODY_PROPERTY);
+        if (prettyPrint != null) {
+            httpLogOptions.setPrettyPrintBody(prettyPrint);
+        }
+
         return httpLogOptions;
     }
 
