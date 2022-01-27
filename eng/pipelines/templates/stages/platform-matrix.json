@@ -37,8 +37,7 @@
       },
       "JavaTestVersion": "1.11",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
-      "AdditionalOptions": "-am",
-      "TestGoals": "verify",
+      "TestGoals": "jacoco:prepare-agent jacoco:instrument surefire:test jacoco:restore-instrumented-classes jacoco: prepare-agent jacoco:report jacoco:check",
       "TestOptions": ""
     }
   ]

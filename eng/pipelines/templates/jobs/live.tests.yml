@@ -81,11 +81,6 @@ jobs:
 
       - ${{ parameters.PreSteps }}
 
-      - pwsh: |
-          $processedAdditionalOptions = $AdditionalOptions -replace "-amd"
-          $processedAdditionalOptions = $processedAdditionalOptions -replace "-am"
-          Write-Host "##vso[task.setvariable variable=ProcessedAdditionalOptions;]${processedAdditionalOptions}"
-
       - template: /eng/pipelines/templates/steps/build-and-test.yml
         parameters:
           SDKType: ${{ parameters.SDKType }}
