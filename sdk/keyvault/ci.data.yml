@@ -62,6 +62,9 @@ extends:
       - name: azure-keyvault
         groupId: com.microsoft.azure
         safeName: azurekeyvault
+      - name: azure-keyvault-complete
+        groupId: com.microsoft.azure
+        safeName: azurekeyvaultcomplete
       - name: azure-keyvault-core
         groupId: com.microsoft.azure
         safeName: azurekeyvaultcore
