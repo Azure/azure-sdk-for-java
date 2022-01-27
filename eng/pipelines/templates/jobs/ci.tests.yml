@@ -19,7 +19,7 @@ parameters:
     default: []
   - name: BuildOptions
     type: string
-    default: '$(DefaultOptions) -T 2C --quiet -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true'
+    default: '$(DefaultOptions) -T 2C --quiet -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true'
   - name: TestOptions
     type: string
     default: '$(DefaultTestOptions) -Dparallel-test-playback -DAZURE_TEST_DEBUG=$(IsDebug)'

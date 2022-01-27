@@ -19,7 +19,7 @@ parameters:
   UsePlatformContainer: false
   DisableAzureResourceCreation: false
   MavenBuildInstallParallelization: '1C'
-  BuildOptions: '$(DefaultOptions) --quiet -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true'
+  BuildOptions: '$(DefaultOptions) --quiet -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true'
   SparkShading: ''
 
 jobs:
@@ -92,28 +92,6 @@ jobs:
             AZURE_TEST_MODE: ${{ parameters.TestMode }}
             ${{ each var in parameters.EnvVars }}:
               ${{ var.key }}: ${{ var.value }}
-
-      - task: Maven@3
-        displayName: 'Build and Install, JDK Version: $(JavaTestVersion)'
-        inputs:
-          mavenPomFile: pom.xml
-          goals: 'install'
-          options: '${{ parameters.BuildOptions }} -T ${{ parameters.MavenBuildInstallParallelization }} ${{ parameters.SparkShading }} -pl $(ProjectList) -am'
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaTestVersion)
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-
-      - task: Maven@3
-        displayName: 'Run tests: $(Agent.JobName)'
-        inputs:
-          mavenPomFile: pom.xml
-          ${{ insert }}: ${{ parameters.TestStepMavenInputs }}
-        env:
-          AZURE_TEST_MODE: ${{ parameters.TestMode }}
-          ${{ each var in parameters.EnvVars }}:
-            ${{ var.key }}: ${{ var.value }}
 
       - ${{ parameters.PostSteps }}
 

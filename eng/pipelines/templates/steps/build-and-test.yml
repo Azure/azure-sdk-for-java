@@ -7,10 +7,16 @@ parameters:
     default: 'not-specified' # Set a default that breaks in obvious ways.
   - name: BuildOptions
     type: string
-    default: '$(DefaultOptions) --quiet -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Djacoco.skip=true'
+    default: '$(DefaultOptions) --quiet -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true'
+  - name: BuildParallelization
+    type: string
+    default: '2C'
   - name: TestOptions
     type: string
-    default: '$(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug)'
+    default: '$(DefaultTestOptions) --quiet -DAZURE_TEST_DEBUG=$(IsDebug)'
+  - name: TestParallelization
+    type: string
+    default: '1C'
   - name: ParallelTestPlayback
     type: string
     default: 'false'
@@ -20,9 +26,6 @@ parameters:
   - name: TestResultsFiles
     type: string
     default: ''
-  - name: MavenBuildInstallParallelization
-    type: string
-    default: '2C'
   - name: SparkShading
     type: string
     default: ''
@@ -38,7 +41,7 @@ steps:
     displayName: 'Build for non-From Source run'
     inputs:
       mavenPomFile: pom.xml
-      options: ${{ parameters.BuildOptions }} -T ${{ parameters.MavenBuildInstallParallelization }} ${{ parameters.SparkShading }} -pl $(ProjectList) -am
+      options: ${{ parameters.BuildOptions }} -T ${{ parameters.BuildParallelization }} ${{ parameters.SparkShading }} -pl $(ProjectList) -am
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: $(JavaTestVersion)
@@ -52,7 +55,7 @@ steps:
     displayName: 'Run tests'
     inputs:
       mavenPomFile: pom.xml
-      options: '${{ parameters.TestOptions }} -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} $(TestOptions) $(AdditionalOptions)'
+      options: '${{ parameters.TestOptions }} -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} $(TestOptions) $(AdditionalOptions) -T ${{ parameters.TestParallelization }}'
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: $(JavaTestVersion)
@@ -85,7 +88,7 @@ steps:
       # bloated the ci.yml files' AdditionalModules because we ended up having to list every transitive azure client
       # dependency. Note: The -T 1C says spin up a build thread per core. Since we're building
       # all the track 2, client, libraries (which is now over 100) this effectively cuts the build time in half.
-      options: ${{ parameters.BuildOptions }} -T ${{ parameters.MavenBuildInstallParallelization }} ${{ parameters.SparkShading }}
+      options: ${{ parameters.BuildOptions }} -T ${{ parameters.BuildParallelization }} ${{ parameters.SparkShading }}
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: $(JavaBuildVersion)
@@ -99,7 +102,7 @@ steps:
       mavenPomFile: ClientFromSourcePom.xml
       # For the "From Source" runs we don't want the -am switch as we don't care about running tests for our
       # dependencies, but we do want the -amd switch because we want to run tests on things that depend on us.
-      options: ${{ parameters.TestOptions }} $(TestOptions) ${{ parameters.FromSourceAmd }} -T 1C
+      options: ${{ parameters.TestOptions }} $(TestOptions) ${{ parameters.FromSourceAmd }} -T ${{ parameters.TestParallelization }}
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: $(JavaTestVersion)
