@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.context.AzureEnvironmentAutoConfiguration

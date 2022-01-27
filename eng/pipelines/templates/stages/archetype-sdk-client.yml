@@ -47,9 +47,15 @@ parameters:
 - name: PreBuildSteps
   type: object
   default: []
+<<<<<<< HEAD
 - name: MavenVerifyAdditionalOptions
   type: string
   default: ''
+=======
+- name: AdditionalStagesAfterBuild
+  type: object
+  default: {}
+>>>>>>> feature/azure-spring-cloud-4.0
 
 stages:
   - stage: Build
@@ -84,6 +90,7 @@ stages:
         PreBuildSteps: ${{ parameters.PreBuildSteps }}
         MavenVerifyAdditionalOptions: ${{ parameters.MavenVerifyAdditionalOptions }}
 
+  - ${{ parameters.AdditionalStagesAfterBuild }}
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:

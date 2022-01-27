@@ -90,7 +90,11 @@
               <includes>
                 <include>org.springframework.boot:spring-boot-starter-actuator:[2.6.2]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
                 <include>com.microsoft.azure:spring-cloud-azure-appconfiguration-config:[1.4.0-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-azure-appconfiguration-config;current} -->
+<<<<<<< HEAD
                 <include>org.springframework.boot:spring-boot-starter-web:[2.6.2]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
+=======
+                <include>org.springframework.boot:spring-boot-starter-web:[2.6.1]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
+>>>>>>> feature/azure-spring-cloud-4.0
                 <include>org.springframework.cloud:spring-cloud-bus:[3.1.0]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-bus;external_dependency} -->
               </includes>
             </bannedDependencies>

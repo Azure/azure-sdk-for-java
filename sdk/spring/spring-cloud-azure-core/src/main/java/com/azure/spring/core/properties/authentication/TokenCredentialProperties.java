@@ -1,0 +1,162 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.spring.core.properties.authentication;
+
+
+import com.azure.spring.core.aware.authentication.TokenCredentialAware;
+
+/**
+ * Azure properties used for getting token credential.
+ */
+public final class TokenCredentialProperties implements TokenCredentialAware.TokenCredential {
+
+    /**
+     * Client id to use when performing service principal authentication with Azure.
+     */
+    private String clientId;
+
+    /**
+     * Client secret to use when performing service principal authentication with Azure.
+     */
+    private String clientSecret;
+
+    /**
+     * Path of a PEM certificate file to use when performing service principal authentication with Azure.
+     */
+    private String clientCertificatePath;
+
+    /**
+     * Password of the certificate file.
+     */
+    private String clientCertificatePassword;
+
+    /**
+     * Username to use when performing username/password authentication with Azure.
+     */
+    private String username;
+
+    /**
+     * Password to use when performing username/password authentication with Azure.
+     */
+    private String password;
+
+    /**
+     * Client id to use when using user-assigned managed identity or app registration (when working with AKS
+     * pod-identity) to authenticate with Azure.
+     */
+    private String managedIdentityClientId;
+
+    /**
+     * Get the client id.
+     * @return The client id.
+     */
+    public String getClientId() {
+        return clientId;
+    }
+
+    /**
+     * Set the client id.
+     * @param clientId The client id.
+     */
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    /**
+     * Get the client secret.
+     * @return The client secret.
+     */
+    public String getClientSecret() {
+        return clientSecret;
+    }
+
+    /**
+     * Set the client secret.
+     * @param clientSecret The client secret.
+     */
+    public void setClientSecret(String clientSecret) {
+        this.clientSecret = clientSecret;
+    }
+
+    /**
+     * Get the client certificate path.
+     * @return The client certificate path.
+     */
+    public String getClientCertificatePath() {
+        return clientCertificatePath;
+    }
+
+    /**
+     * Set the client certificate path.
+     * @param clientCertificatePath The client certificate path.
+     */
+    public void setClientCertificatePath(String clientCertificatePath) {
+        this.clientCertificatePath = clientCertificatePath;
+    }
+
+    /**
+     * Get the client certificate password.
+     * @return The client certificate password.
+     */
+    public String getClientCertificatePassword() {
+        return clientCertificatePassword;
+    }
+
+    /**
+     * Set the client certificate password.
+     * @param clientCertificatePassword The client certificate password.
+     */
+    public void setClientCertificatePassword(String clientCertificatePassword) {
+        this.clientCertificatePassword = clientCertificatePassword;
+    }
+
+    /**
+     * Get the username.
+     * @return The username.
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * Set the username.
+     * @param username The username.
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    /**
+     * Get the password.
+     * @return The password.
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * Set the password.
+     * @param password The password.
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    /**
+     * Get the managed identity client id.
+     * @return The managed identity client id.
+     */
+    public String getManagedIdentityClientId() {
+        return managedIdentityClientId;
+    }
+
+    /**
+     * Set the managed identity client id.
+     * @param managedIdentityClientId The managed identity client id.
+     */
+    public void setManagedIdentityClientId(String managedIdentityClientId) {
+        this.managedIdentityClientId = managedIdentityClientId;
+    }
+
+}

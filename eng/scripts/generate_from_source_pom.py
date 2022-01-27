@@ -195,7 +195,11 @@ def create_project_for_pom(pom_path: str, project_list_identifiers: list, artifa
         return Project(project_identifier, directory_path, module_path, parent_pom)
 
     # If the project isn't a track 2 POM skip it and not one of the project list identifiers.
+<<<<<<< HEAD
     if not project_identifier in project_list_identifiers and not parent_pom in valid_parents:
+=======
+    if not project_identifier in project_list_identifiers and not is_spring_child_pom(tree_root) and not is_track_two_pom(tree_root): # Spring pom's parent can be empty.
+>>>>>>> feature/azure-spring-cloud-4.0
         return
 
     project = Project(project_identifier, directory_path, module_path, parent_pom)
@@ -242,6 +246,7 @@ def resolve_project_dependencies(pom_identifier: str, dependency_modules: Set[st
 
     return dependency_modules
 
+<<<<<<< HEAD
 # Get parent POM.
 def get_parent_pom(tree_root: ET.Element):
     parent_node = element_find(tree_root, 'parent')
@@ -250,6 +255,19 @@ def get_parent_pom(tree_root: ET.Element):
         return None
     
     return create_artifact_identifier(parent_node)
+=======
+# Determines if the passed POM XML is a Spring library.
+def is_spring_child_pom(tree_root: ET.Element):
+    group_id_node = element_find(tree_root, 'groupId')
+    artifact_id_node = element_find(tree_root, 'artifactId')
+    return not group_id_node is None and group_id_node.text == 'com.azure.spring' \
+       and not artifact_id_node is None and artifact_id_node.text != 'spring-cloud-azure' # Exclude parent pom to fix this error: "Project is duplicated in the reactor"
+
+# Determines if the passed POM XML is a track 2 library.
+def is_track_two_pom(tree_root: ET.Element):
+    parent_node = element_find(tree_root, 'parent')
+    return not parent_node is None and element_find(parent_node, 'artifactId').text in valid_parents
+>>>>>>> feature/azure-spring-cloud-4.0
 
 # Creates an artifacts identifier.
 def create_artifact_identifier(element: ET.Element):
