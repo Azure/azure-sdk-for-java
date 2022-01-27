@@ -14,6 +14,12 @@ parameters:
   - name: TestOptions
     type: string
     default: '$(DefaultTestOptions) --quiet -DAZURE_TEST_DEBUG=$(IsDebug)'
+  - name: MatrixTestOptions
+    type: string
+    default: ''
+  - name: MatrixAdditionalOptions
+    type: string
+    default: ''
   - name: TestParallelization
     type: string
     default: '1C'
@@ -29,12 +35,12 @@ parameters:
   - name: SparkShading
     type: string
     default: ''
-  - name: FromSourceAmd
-    type: string
-    default: ''
   - name: TestEnvVars
     type: object
     default: {}
+  - name: IsLiveTest
+    type: boolean
+    default: false
 
 steps:
   - task: Maven@3
@@ -55,7 +61,7 @@ steps:
     displayName: 'Run tests'
     inputs:
       mavenPomFile: pom.xml
-      options: '${{ parameters.TestOptions }} -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} $(TestOptions) $(AdditionalOptions) -T ${{ parameters.TestParallelization }}'
+      options: '${{ parameters.TestOptions }} -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.MatrixTestOptions }} ${{ parameters.MatrixAdditionalOptions}} -T ${{ parameters.TestParallelization }}'
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: $(JavaTestVersion)
@@ -102,7 +108,10 @@ steps:
       mavenPomFile: ClientFromSourcePom.xml
       # For the "From Source" runs we don't want the -am switch as we don't care about running tests for our
       # dependencies, but we do want the -amd switch because we want to run tests on things that depend on us.
-      options: ${{ parameters.TestOptions }} $(TestOptions) ${{ parameters.FromSourceAmd }} -T ${{ parameters.TestParallelization }}
+      ${{ if eq(parameters.IsLiveTest, 'true') }}:
+        options: ${{ parameters.TestOptions }} ${{ parameters.MatrixTestOptions }} -T ${{ parameters.TestParallelization }}
+      ${{ else }}:
+        options: ${{ parameters.TestOptions }} ${{ parameters.MatrixTestOptions }} -amd -T ${{ parameters.TestParallelization }}
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: $(JavaTestVersion)

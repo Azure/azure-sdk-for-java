@@ -83,4 +83,5 @@ jobs:
           TestOptions: ${{ parameters.TestOptions }}
           ParallelTestPlayback: 'true'
           SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
-          FromSourceAmd: '-amd'
+          MatrixTestOptions: $(TestOptions)
+          MatrixAdditionalOptions: $(AdditionalOptions)

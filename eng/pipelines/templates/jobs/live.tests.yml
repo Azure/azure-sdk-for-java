@@ -90,6 +90,9 @@ jobs:
           SkipAggregateReports: 'true'
           BuildParallelization: ${{ parameters.MavenBuildInstallParallelization }}
           SparkShading: ${{ parameters.SparkShading }}
+          IsLiveTest: true
+          MatrixTestOptions: $(TestOptions)
+          MatrixAdditionalOptions: ${{ replace(replace($(AdditionalOptions), "-amd", ""), "-am", "") }}
           TestEnvVars:
             AZURE_TEST_MODE: ${{ parameters.TestMode }}
             ${{ each var in parameters.EnvVars }}:
