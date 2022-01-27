@@ -163,7 +163,7 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
     public static class PrefetchPolicy {
 
         /**
-         * Fall back value for option in this namespace.
+         * Fallback value for prefetch option in this Service Bus namespace.
          */
         private int all = 0;
         /**
