@@ -7,7 +7,9 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestBase;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.ProvisioningServiceDescriptionInner;
 import com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException;
@@ -27,6 +29,14 @@ public class DeviceProvisioningTestBase extends TestBase {
     protected static final String DEFAULT_INSTANCE_NAME = "JavaDpsControlPlaneSDKTest";
     protected static final Region DEFAULT_REGION = Region.US_WEST_CENTRAL;
 
+    protected boolean testEnv = false;
+    protected String testResourceGroup;
+
+    protected DeviceProvisioningTestBase() {
+        testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
+        testEnv = !CoreUtils.isNullOrEmpty(testResourceGroup);
+    }
+
     public ResourceManager createResourceManager() {
         return ResourceManager
             .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE))
@@ -39,11 +49,21 @@ public class DeviceProvisioningTestBase extends TestBase {
     }
 
     public ResourceGroup createResourceGroup(ResourceManager resourceManager) {
-        String resourceGroupName = DEFAULT_INSTANCE_NAME + "-" + createRandomSuffix();
-        return resourceManager.resourceGroups()
-            .define(resourceGroupName)
-            .withRegion(DEFAULT_REGION)
-            .create();
+        if (testEnv) {
+            return resourceManager.resourceGroups().getByName(testResourceGroup);
+        } else {
+            String resourceGroupName = DEFAULT_INSTANCE_NAME + "-" + createRandomSuffix();
+            return resourceManager.resourceGroups()
+                .define(resourceGroupName)
+                .withRegion(DEFAULT_REGION)
+                .create();
+        }
+    }
+
+    public void deleteResourceGroup(ResourceManager resourceManager, ResourceGroup resourceGroup) {
+        if (!testEnv) {
+            resourceManager.resourceGroups().beginDeleteByName(resourceGroup.name());
+        }
     }
 
     public IotHubManager createIotHubManager() {

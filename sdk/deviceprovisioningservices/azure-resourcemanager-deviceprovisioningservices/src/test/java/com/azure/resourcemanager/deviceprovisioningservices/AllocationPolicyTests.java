@@ -13,11 +13,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AllocationPolicyTests extends DeviceProvisioningTestBase
-{
+public class AllocationPolicyTests extends DeviceProvisioningTestBase {
     @Test
     @DoNotRecord(skipInPlayback = true)
-    public void Get() {
+    public void get() {
         ResourceManager resourceManager = createResourceManager();
         IotDpsManager iotDpsManager = createIotDpsManager();
         ResourceGroup resourceGroup = createResourceGroup(resourceManager);
@@ -34,13 +33,13 @@ public class AllocationPolicyTests extends DeviceProvisioningTestBase
             assertTrue(Constants.ALLOCATION_POLICIES.contains(allocationPolicy));
         } finally {
             // No matter if the test fails or not, delete the resource group that contains these test resources
-            resourceManager.resourceGroups().beginDeleteByName(resourceGroup.name());
+            deleteResourceGroup(resourceManager, resourceGroup);
         }
     }
 
     @Test
     @DoNotRecord(skipInPlayback = true)
-    public void Update() {
+    public void update() {
         ResourceManager resourceManager = createResourceManager();
         IotDpsManager iotDpsManager = createIotDpsManager();
         ResourceGroup resourceGroup = createResourceGroup(resourceManager);
@@ -74,7 +73,7 @@ public class AllocationPolicyTests extends DeviceProvisioningTestBase
 
         } finally {
             // No matter if the test fails or not, delete the resource group that contains these test resources
-            resourceManager.resourceGroups().beginDeleteByName(resourceGroup.name());
+            deleteResourceGroup(resourceManager, resourceGroup);
         }
     }
 }

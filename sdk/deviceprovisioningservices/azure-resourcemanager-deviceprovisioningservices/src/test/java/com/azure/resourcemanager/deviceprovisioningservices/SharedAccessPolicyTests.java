@@ -22,11 +22,10 @@ import static com.azure.resourcemanager.deviceprovisioningservices.Constants.OWN
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class SharedAccessPolicyTests extends DeviceProvisioningTestBase
-{
+public class SharedAccessPolicyTests extends DeviceProvisioningTestBase {
     @Test
     @DoNotRecord(skipInPlayback = true)
-    public void SharedAccessPolicyCRUD() {
+    public void sharedAccessPolicyCRUD() {
         ResourceManager resourceManager = createResourceManager();
         IotDpsManager iotDpsManager = createIotDpsManager();
         ResourceGroup resourceGroup = createResourceGroup(resourceManager);
@@ -111,7 +110,7 @@ public class SharedAccessPolicyTests extends DeviceProvisioningTestBase
             }
         } finally {
             // No matter if the test fails or not, delete the resource group that contains these test resources
-            resourceManager.resourceGroups().beginDeleteByName(resourceGroup.name());
+            deleteResourceGroup(resourceManager, resourceGroup);
         }
     }
 }
