@@ -32,7 +32,7 @@ public final class IdentityUtil {
                     + "scenario. To resolve this issue, set the env var AZURE_IDENTITY_DISABLE_MULTITENANTAUTH"
                     + " to false ",
                     null));
-            } else if (currentTenantId.equals("adfs")) {
+            } else if ("adfs".equals(currentTenantId)) {
                 throw LOGGER.logExceptionAsError(new ClientAuthenticationException("The credential is configured with"
                     + "`adfs` tenant id and it cannot be replaced with a tenant id challenge provided via "
                     + "TokenRequestContext class. ", null));

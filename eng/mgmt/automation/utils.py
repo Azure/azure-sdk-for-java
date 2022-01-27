@@ -195,6 +195,58 @@ def write_version(
         fout.write('\n')
 
 
+def set_or_default_version(
+    sdk_root: str,
+    group: str,
+    module: str,
+) -> Tuple[str, str]:
+    version_file = os.path.join(sdk_root, 'eng/versioning/version_client.txt')
+    project = '{0}:{1}'.format(group, module)
+    default_version = DEFAULT_VERSION
+
+    with open(version_file, 'r') as fin:
+        lines = fin.read().splitlines()
+        version_index = -1
+        for i, version_line in enumerate(lines):
+            version_line = version_line.strip()
+            if version_line.startswith('#'):
+                continue
+            versions = version_line.split(';')
+            if versions[0] == project:
+                if len(versions) != 3:
+                    logging.error(
+                        '[VERSION][Fallback] Unexpected version format "{0}"'.
+                        format(version_line))
+                    stable_version = ''
+                    current_version = default_version
+                else:
+                    logging.info(
+                        '[VERSION][Found] current version "{0}"'.format(
+                            version_line))
+                    stable_version = versions[1]
+                    current_version = versions[2]
+                version_index = i
+                break
+        else:
+            logging.info(
+                '[VERSION][Not Found] cannot find version for "{0}"'.format(
+                    project))
+            for i, version_line in enumerate(lines):
+                if version_line.startswith('{0}:'.format(group)):
+                    version_index = i + 1
+            lines = lines[:version_index] + [''] + lines[version_index:]
+            stable_version = ''
+            current_version = default_version
+
+    if not stable_version:
+        stable_version = current_version
+
+    write_version(version_file, lines, version_index, project,
+                  stable_version, current_version)
+
+    return stable_version, current_version
+
+
 def set_or_increase_version(
     sdk_root: str,
     group: str,

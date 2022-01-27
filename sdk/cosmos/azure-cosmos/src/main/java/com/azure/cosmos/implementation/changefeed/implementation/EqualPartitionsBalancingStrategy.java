@@ -24,6 +24,7 @@ class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingStrategy
     private final int minPartitionCount;
     private final int maxPartitionCount;
     private final Duration leaseExpirationInterval;
+    private volatile int countAssignedLeases;
 
     public EqualPartitionsBalancingStrategy(String hostName, int minPartitionCount, int maxPartitionCount, Duration leaseExpirationInterval) {
         if (hostName == null) {
@@ -34,6 +35,7 @@ class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingStrategy
         this.minPartitionCount = minPartitionCount;
         this.maxPartitionCount = maxPartitionCount;
         this.leaseExpirationInterval = leaseExpirationInterval;
+        this.countAssignedLeases = 0;
     }
 
     @Override
@@ -53,6 +55,7 @@ class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingStrategy
 
         int target = this.calculateTargetPartitionCount(partitionCount, workerCount);
         int myCount = workerToPartitionCount.get(this.hostName);
+        this.countAssignedLeases = myCount;
         int partitionsNeededForMe = target - myCount;
 
         /*
@@ -147,7 +150,8 @@ class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingStrategy
             allPartitions.put(lease.getLeaseToken(), lease);
 
             if (lease.getOwner() == null || lease.getOwner().isEmpty() || this.isExpired(lease)) {
-                this.logger.info("Found unused or expired lease {}", lease.getLeaseToken());
+                this.logger.info("Found unused or expired lease {}; current lease count for instance owner {} is {} and maxScaleCount {} ",
+                    lease.getLeaseToken(), this.hostName, this.countAssignedLeases, this.maxPartitionCount);
                 expiredLeases.add(lease);
             } else {
                 String assignedTo = lease.getOwner();

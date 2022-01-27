@@ -4,60 +4,59 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.DirectConnectionConfig;
-import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.CosmosAsyncStoredProcedure;
+import com.azure.cosmos.CosmosAsyncUser;
+import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.implementation.CosmosResourceType;
-import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyImpl;
-import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedRange;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.PermissionMode;
-import com.azure.cosmos.implementation.RequestVerb;
-import com.azure.cosmos.implementation.Resource;
-import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.Database;
-import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.Permission;
-import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.implementation.ResourceResponse;
-import com.azure.cosmos.implementation.ResourceResponseValidator;
-import com.azure.cosmos.implementation.StoredProcedure;
-import com.azure.cosmos.implementation.StoredProcedureResponse;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.implementation.TestSuiteBase;
-import com.azure.cosmos.implementation.User;
-import org.testng.SkipException;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosPermissionProperties;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosStoredProcedureProperties;
+import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
+import com.azure.cosmos.models.CosmosStoredProcedureResponse;
+import com.azure.cosmos.models.CosmosUserProperties;
+import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PermissionMode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Ignore("CosmosAuthorizationTokenResolver is removed from public")
 public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
+    private final static Logger log = LoggerFactory.getLogger(CosmosAuthorizationTokenResolverTest.class);
+    private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
 
     private class UserClass {
         public String userName;
@@ -69,19 +68,18 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
         }
     }
 
-    private Database createdDatabase;
-    private DocumentCollection createdCollection;
-    private User userWithReadPermission;
-    private User userWithAllPermission;
+    private CosmosAsyncDatabase createdDatabase;
+    private CosmosAsyncContainer createdCollection;
+    private CosmosAsyncUser userWithReadPermission;
+    private CosmosAsyncUser userWithAllPermission;
 
-    private Permission readPermission;
-    private Permission allPermission;
+    private CosmosPermissionProperties readPermission;
+    private CosmosPermissionProperties allPermission;
 
-    private AsyncDocumentClient.Builder clientBuilder;
-    private AsyncDocumentClient client;
+    private CosmosAsyncClient client;
 
     @Factory(dataProvider = "clientBuilders")
-    public CosmosAuthorizationTokenResolverTest(AsyncDocumentClient.Builder clientBuilder) {
+    public CosmosAuthorizationTokenResolverTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
 
@@ -93,272 +91,319 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
         };
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void before_TokenResolverTest() {
-        createdDatabase = SHARED_DATABASE;
-        createdCollection = SHARED_MULTI_PARTITION_COLLECTION;
+    @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
+    public void before_TokenResolverTest() throws InterruptedException {
+        this.client = getClientBuilder().buildAsyncClient();
 
-        client = clientBuilder().build();
+        createdDatabase = getSharedCosmosDatabase(this.client); // SHARED_DATABASE
+        CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
+        CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(
+            "monitor_" + UUID.randomUUID(),
+            "/mypk");
+        createdCollection = createCollection(createdDatabase, collectionDefinition, options);
+
 
         userWithReadPermission = createUser(client, createdDatabase.getId(), getUserDefinition());
-        readPermission = client.createPermission(userWithReadPermission.getSelfLink(), getPermission(createdCollection, "ReadPermissionOnColl", PermissionMode.READ), null).block()
-                .getResource();
+
+        //create read permission
+        Thread.sleep(1000);
+        CosmosPermissionProperties permissionReadSettings = new CosmosPermissionProperties()
+            .setId("ReadPermissionOnColl")
+            .setPermissionMode(PermissionMode.READ)
+            .setContainerName(createdCollection.getId());
+
+        readPermission = userWithReadPermission.createPermission(permissionReadSettings, null).block().getProperties();
 
         userWithAllPermission = createUser(client, createdDatabase.getId(), getUserDefinition());
-        allPermission = client.createPermission(userWithAllPermission.getSelfLink(), getPermission(createdCollection, "AllPermissionOnColl", PermissionMode.ALL), null).block()
-                .getResource();
+        //create all permission
+        Thread.sleep(1000);
+        CosmosPermissionProperties permissionAllSettings = new CosmosPermissionProperties()
+            .setId("AllPermissionOnColl")
+            .setPermissionMode(PermissionMode.ALL)
+            .setContainerName(createdCollection.getId());
+
+        allPermission = userWithAllPermission.createPermission(permissionAllSettings, null).block().getProperties();
     }
 
-    @Test(groups = {"simple"}, dataProvider = "connectionMode", timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, dataProvider = "connectionMode", timeOut = TIMEOUT)
     public void readDocumentWithReadPermission(ConnectionMode connectionMode) {
-        Document docDefinition = getDocumentDefinition();
-        ResourceResponse<Document> resourceResponse = client
-                .createDocument(BridgeInternal.getAltLink(createdCollection), docDefinition, null, false).block();
-        AsyncDocumentClient asyncClientWithTokenResolver = null;
+        InternalObjectNode docDef = getDocumentDefinition();
+        InternalObjectNode doc = createdCollection.createItem(docDef).block().getItem();
+
+        CosmosAsyncClient asyncClientWithTokenResolver = null;
+
         try {
-            asyncClientWithTokenResolver = buildClient(connectionMode, PermissionMode.READ);
-            RequestOptions requestOptions = new RequestOptions();
-            requestOptions.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(resourceResponse.getResource(), "mypk")));
-            HashMap<String, Object> properties = new HashMap<String, Object>();
-            properties.put("UserId", "readUser");
-            requestOptions.setProperties(properties);
-            Mono<ResourceResponse<Document>> readObservable = asyncClientWithTokenResolver.readDocument(resourceResponse.getResource().getSelfLink(), requestOptions);
-            ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
-                    .withId(resourceResponse.getResource().getId()).build();
-            validateSuccess(readObservable, validator);
+
+            asyncClientWithTokenResolver = buildClientWithAuthTokenResolver(connectionMode, PermissionMode.READ);
+
+            Mono<CosmosItemResponse<InternalObjectNode>> readItemObservable = asyncClientWithTokenResolver
+                .getDatabase(createdDatabase.getId())
+                .getContainer(createdCollection.getId())
+                .readItem(doc.getId(), new PartitionKey(doc.getId()), InternalObjectNode.class);
+
+            CosmosItemResponseValidator validator =
+                new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
+                    .withId(doc.getId())
+                    .build();
+            this.validateItemSuccess(readItemObservable, validator);
         } finally {
             safeClose(asyncClientWithTokenResolver);
         }
     }
 
-    @Test(groups = {"simple"}, dataProvider = "connectionMode", timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, dataProvider = "connectionMode", timeOut = TIMEOUT)
     public void deleteDocumentWithReadPermission(ConnectionMode connectionMode) {
-        Document docDefinition = getDocumentDefinition();
-        ResourceResponse<Document> resourceResponse = client
-                .createDocument(BridgeInternal.getAltLink(createdCollection), docDefinition, null, false).block();
-        AsyncDocumentClient asyncClientWithTokenResolver = null;
+        InternalObjectNode docDef = getDocumentDefinition();
+        InternalObjectNode doc = createdCollection.createItem(docDef).block().getItem();
+
+        CosmosAsyncClient asyncClientWithTokenResolver = null;
+
         try {
-            asyncClientWithTokenResolver = buildClient(connectionMode, PermissionMode.READ);
-            RequestOptions requestOptions = new RequestOptions();
-            requestOptions.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(resourceResponse.getResource(), "mypk")));
-            Mono<ResourceResponse<Document>> readObservable = asyncClientWithTokenResolver.deleteDocument(resourceResponse.getResource().getSelfLink(), requestOptions);
-            FailureValidator validator = new FailureValidator.Builder().statusCode(HttpConstants.StatusCodes.FORBIDDEN).build();
-            validateFailure(readObservable, validator);
+            asyncClientWithTokenResolver = buildClientWithAuthTokenResolver(connectionMode, PermissionMode.READ);
+
+            Mono<CosmosItemResponse<Object>> deleteItemObservable = asyncClientWithTokenResolver
+                .getDatabase(createdDatabase.getId())
+                .getContainer(createdCollection.getId())
+                .deleteItem(doc.getId(), new PartitionKey(doc.getId()));
+
+            FailureValidator validator = new FailureValidator
+                .Builder()
+                .statusCode(HttpConstants.StatusCodes.FORBIDDEN)
+                .build();
+            validateItemFailure(deleteItemObservable, validator);
         } finally {
             safeClose(asyncClientWithTokenResolver);
         }
     }
 
-    @Test(groups = {"simple"}, dataProvider = "connectionMode", timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, dataProvider = "connectionMode", timeOut = TIMEOUT)
     public void writeDocumentWithReadPermission(ConnectionMode connectionMode) {
-        AsyncDocumentClient asyncClientWithTokenResolver = null;
+        InternalObjectNode docDef = getDocumentDefinition();
+        CosmosAsyncClient asyncClientWithTokenResolver = null;
+
         try {
-            asyncClientWithTokenResolver = buildClient(connectionMode, PermissionMode.READ);
-            Mono<ResourceResponse<Document>> readObservable = asyncClientWithTokenResolver.createDocument(createdCollection.getSelfLink(), getDocumentDefinition(), null, true);
-            FailureValidator validator = new FailureValidator.Builder().statusCode(HttpConstants.StatusCodes.FORBIDDEN).build();
-            validateFailure(readObservable, validator);
+            asyncClientWithTokenResolver = buildClientWithAuthTokenResolver(connectionMode, PermissionMode.READ);
+
+            Mono<CosmosItemResponse<Object>> createItemObservable = asyncClientWithTokenResolver
+                .getDatabase(createdDatabase.getId())
+                .getContainer(createdCollection.getId())
+                .createItem(docDef);
+
+            FailureValidator validator = new FailureValidator
+                .Builder()
+                .statusCode(HttpConstants.StatusCodes.FORBIDDEN)
+                .build();
+            validateItemFailure(createItemObservable, validator);
         } finally {
             safeClose(asyncClientWithTokenResolver);
         }
     }
 
-    @Test(groups = {"simple"}, dataProvider = "connectionMode", timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, dataProvider = "connectionMode", timeOut = TIMEOUT)
     public void writeDocumentWithAllPermission(ConnectionMode connectionMode) {
-        AsyncDocumentClient asyncClientWithTokenResolver = null;
+        InternalObjectNode docDef = getDocumentDefinition();
+
+        CosmosAsyncClient asyncClientWithTokenResolver = null;
+
         try {
-            asyncClientWithTokenResolver = buildClient(connectionMode, PermissionMode.ALL);
-            Document documentDefinition = getDocumentDefinition();
-            Mono<ResourceResponse<Document>> readObservable = asyncClientWithTokenResolver.createDocument(createdCollection.getSelfLink(), documentDefinition, null, true);
-            ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
-                    .withId(documentDefinition.getId()).build();
-            validateSuccess(readObservable, validator);
+
+            asyncClientWithTokenResolver = buildClientWithAuthTokenResolver(connectionMode, PermissionMode.ALL);
+
+            Mono<CosmosItemResponse<InternalObjectNode>> createItemObservable = asyncClientWithTokenResolver
+                .getDatabase(createdDatabase.getId())
+                .getContainer(createdCollection.getId())
+                .createItem(docDef);
+
+            CosmosItemResponseValidator validator =
+                new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
+                    .withId(docDef.getId())
+                    .build();
+            this.validateItemSuccess(createItemObservable, validator);
         } finally {
             safeClose(asyncClientWithTokenResolver);
         }
     }
 
-    @Test(groups = {"simple"}, dataProvider = "connectionMode", timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, dataProvider = "connectionMode", timeOut = TIMEOUT)
     public void deleteDocumentWithAllPermission(ConnectionMode connectionMode) {
-        Document docDefinition = getDocumentDefinition();
-        ResourceResponse<Document> resourceResponse = client
-                .createDocument(BridgeInternal.getAltLink(createdCollection), docDefinition, null, false).block();
-        AsyncDocumentClient asyncClientWithTokenResolver = null;
+        InternalObjectNode docDef = getDocumentDefinition();
+        InternalObjectNode doc = createdCollection.createItem(docDef).block().getItem();
+
+        CosmosAsyncClient asyncClientWithTokenResolver = null;
+
         try {
-            asyncClientWithTokenResolver = buildClient(connectionMode, PermissionMode.ALL);
-            RequestOptions requestOptions = new RequestOptions();
-            requestOptions.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(resourceResponse.getResource(), "mypk")));
-            Mono<ResourceResponse<Document>> readObservable = asyncClientWithTokenResolver.deleteDocument(resourceResponse.getResource().getSelfLink(), requestOptions);
-            ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
-                    .nullResource().build();
-            validateSuccess(readObservable, validator);
+            asyncClientWithTokenResolver = buildClientWithAuthTokenResolver(connectionMode, PermissionMode.ALL);
+
+            Mono<CosmosItemResponse<Object>> deleteItemObservable = asyncClientWithTokenResolver
+                .getDatabase(createdDatabase.getId())
+                .getContainer(createdCollection.getId())
+                .deleteItem(doc.getId(), new PartitionKey(doc.getId()));
+
+            CosmosItemResponseValidator validator =
+                new CosmosItemResponseValidator.Builder<CosmosItemResponse<Object>>()
+                    .nullResource()
+                    .build();
+            this.validateItemSuccess(deleteItemObservable, validator);
         } finally {
             safeClose(asyncClientWithTokenResolver);
         }
     }
 
-    @Test(groups = {"simple"}, dataProvider = "connectionMode", timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, dataProvider = "connectionMode", timeOut = TIMEOUT)
     public void readCollectionWithReadPermission(ConnectionMode connectionMode) {
-        AsyncDocumentClient asyncClientWithTokenResolver = null;
+        CosmosAsyncClient asyncClientWithTokenResolver = null;
+
         try {
-            asyncClientWithTokenResolver = buildClient(connectionMode, PermissionMode.READ);
-            Mono<ResourceResponse<DocumentCollection>> readObservable = asyncClientWithTokenResolver.readCollection(createdCollection.getSelfLink(), null);
-            ResourceResponseValidator<DocumentCollection> validator = new ResourceResponseValidator.Builder<DocumentCollection>()
-                    .withId(createdCollection.getId()).build();
-            validateSuccess(readObservable, validator);
+            asyncClientWithTokenResolver = buildClientWithAuthTokenResolver(connectionMode, PermissionMode.READ);
+
+            Mono<CosmosContainerResponse> readCollectionObservable = asyncClientWithTokenResolver
+                .getDatabase(createdDatabase.getId())
+                .getContainer(createdCollection.getId())
+                .read();
+
+            CosmosResponseValidator<CosmosContainerResponse> validator =
+                new CosmosResponseValidator.Builder<CosmosContainerResponse>()
+                    .withId(createdCollection.getId())
+                    .build();
+            this.validateSuccess(readCollectionObservable, validator);
         } finally {
             safeClose(asyncClientWithTokenResolver);
         }
     }
 
-    @Test(groups = {"simple"}, dataProvider = "connectionMode", timeOut = TIMEOUT)
-    public void deleteCollectionWithReadPermission(ConnectionMode connectionMode) {
-        AsyncDocumentClient asyncClientWithTokenResolver = null;
+    @Test(groups = { "emulator" }, dataProvider = "connectionMode", timeOut = TIMEOUT)
+    public void deleteCollectionWithReadPermission(ConnectionMode connectionMode) throws InterruptedException{
+        CosmosAsyncClient asyncClientWithTokenResolver = null;
+
         try {
-            asyncClientWithTokenResolver = buildClient(connectionMode, PermissionMode.READ);
-            Mono<ResourceResponse<DocumentCollection>> readObservable = asyncClientWithTokenResolver.deleteCollection(createdCollection.getSelfLink(), null);
-            FailureValidator validator = new FailureValidator.Builder().statusCode(HttpConstants.StatusCodes.FORBIDDEN).build();
-            validateFailure(readObservable, validator);
+            asyncClientWithTokenResolver = buildClientWithAuthTokenResolver(connectionMode, PermissionMode.READ);
+
+            Mono<CosmosContainerResponse> deleteCollectionObservable = asyncClientWithTokenResolver
+                .getDatabase(createdDatabase.getId())
+                .getContainer(createdCollection.getId())
+                .delete();
+
+            FailureValidator validator = new FailureValidator
+                .Builder()
+                .statusCode(HttpConstants.StatusCodes.FORBIDDEN)
+                .build();
+            validateFailure(deleteCollectionObservable, validator);
         } finally {
             safeClose(asyncClientWithTokenResolver);
         }
     }
 
-    @Test(groups = {"simple"}, dataProvider = "connectionMode", timeOut = TIMEOUT)
-    public void verifyingAuthTokenAPISequence(ConnectionMode connectionMode) {
-        Document docDefinition = getDocumentDefinition();
-        ResourceResponse<Document> resourceResponse = client
-                .createDocument(BridgeInternal.getAltLink(createdCollection), docDefinition, null, false).block();
-        AsyncDocumentClient asyncClientWithTokenResolver = null;
+    // TBD: Validate if deleting the current container using a resource token is allowed and expected.
+//    @Test(groups = { "emulator" }, dataProvider = "connectionMode", timeOut = TIMEOUT)
+    public void deleteCollectionWithAllPermission(ConnectionMode connectionMode) throws InterruptedException{
+        InternalObjectNode docDef = getDocumentDefinition();
+        InternalObjectNode doc = createdCollection.createItem(docDef).block().getItem();
+
+        CosmosAsyncClient asyncClientWithTokenResolver = null;
+
         try {
-            ConnectionPolicy connectionPolicy;
-            if (connectionMode.equals(ConnectionMode.DIRECT)) {
-                connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
-            } else {
-                connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
-            }
+            asyncClientWithTokenResolver = buildClientWithAuthTokenResolver(connectionMode, PermissionMode.ALL);
 
-            //Unauthorized error with invalid token resolver, valid  master key and valid permission feed, making it sure tokenResolver has higher priority than all.
-            List<Permission> permissionFeed = new ArrayList<>();
-            permissionFeed.add(readPermission);
-            asyncClientWithTokenResolver = new AsyncDocumentClient.Builder()
-                    .withServiceEndpoint(TestConfigurations.HOST)
-                    .withConnectionPolicy(connectionPolicy)
-                    .withConsistencyLevel(ConsistencyLevel.SESSION)
-                    .withTokenResolver(getTokenResolver(null)) //TokenResolver always generating invalid token.
-                    .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                    .withPermissionFeed(permissionFeed)
-                    .withContentResponseOnWriteEnabled(true)
-                    .build();
-            RequestOptions requestOptions = new RequestOptions();
-            requestOptions.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(resourceResponse.getResource(), "mypk")));
-            Mono<ResourceResponse<Document>> readObservable = asyncClientWithTokenResolver.readDocument(resourceResponse.getResource().getSelfLink(), requestOptions);
-            FailureValidator failureValidator = new FailureValidator.Builder().statusCode(HttpConstants.StatusCodes.UNAUTHORIZED).build();
-            validateFailure(readObservable, failureValidator);
+            Mono<CosmosContainerResponse> deleteCollectionObservable = asyncClientWithTokenResolver
+                .getDatabase(createdDatabase.getId())
+                .getContainer(createdCollection.getId())
+                .delete();
 
-            //Success read operation with valid token resolver, invalid  master key and invalid permission feed, making it sure tokenResolver has higher priority than all.
-            asyncClientWithTokenResolver = new AsyncDocumentClient.Builder()
-                    .withServiceEndpoint(TestConfigurations.HOST)
-                    .withConnectionPolicy(connectionPolicy)
-                    .withConsistencyLevel(ConsistencyLevel.SESSION)
-                    .withTokenResolver(getTokenResolver(PermissionMode.READ))
-                    .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                    .withPermissionFeed(permissionFeed)
-                    .withContentResponseOnWriteEnabled(true)
-                    .build();
-            readObservable = asyncClientWithTokenResolver.readDocument(resourceResponse.getResource().getSelfLink(), requestOptions);
-            ResourceResponseValidator<Document> sucessValidator = new ResourceResponseValidator.Builder<Document>()
-                    .withId(resourceResponse.getResource().getId()).build();
-            validateSuccess(readObservable, sucessValidator);
-
-
-            //Success read operation with valid permission feed, supporting above hypothesis.
-            asyncClientWithTokenResolver = new AsyncDocumentClient.Builder()
-                    .withServiceEndpoint(TestConfigurations.HOST)
-                    .withConnectionPolicy(connectionPolicy)
-                    .withConsistencyLevel(ConsistencyLevel.SESSION)
-                    .withPermissionFeed(permissionFeed)
-                    .withContentResponseOnWriteEnabled(true)
-                    .build();
-            readObservable = asyncClientWithTokenResolver.readDocument(resourceResponse.getResource().getSelfLink(), requestOptions);
-            validateSuccess(readObservable, sucessValidator);
-
-
-            //Success read operation with valid master key, supporting above hypothesis.
-            asyncClientWithTokenResolver = new AsyncDocumentClient.Builder()
-                    .withServiceEndpoint(TestConfigurations.HOST)
-                    .withConnectionPolicy(connectionPolicy)
-                    .withConsistencyLevel(ConsistencyLevel.SESSION)
-                    .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                    .withContentResponseOnWriteEnabled(true)
-                    .build();
-            readObservable = asyncClientWithTokenResolver.readDocument(resourceResponse.getResource().getSelfLink(), requestOptions);
-            validateSuccess(readObservable, sucessValidator);
-
+            FailureValidator validator = new FailureValidator
+                .Builder()
+                .statusCode(HttpConstants.StatusCodes.FORBIDDEN)
+                .build();
+            validateFailure(deleteCollectionObservable, validator);
         } finally {
             safeClose(asyncClientWithTokenResolver);
         }
     }
 
-    @Test(groups = {"simple"}, dataProvider = "connectionMode", timeOut = 6000000)
+    @Test(groups = { "emulator" }, dataProvider = "connectionMode", timeOut = 6000000)
     public void createAndExecuteSprocWithWritePermission(ConnectionMode connectionMode) throws InterruptedException {
-        AsyncDocumentClient asyncClientWithTokenResolver = null;
+        CosmosAsyncClient asyncClientWithTokenResolver = null;
+
         try {
-            asyncClientWithTokenResolver = buildClient(connectionMode, PermissionMode.ALL);
+            asyncClientWithTokenResolver = buildClientWithAuthTokenResolver(connectionMode, PermissionMode.ALL);
             String sprocId = "storedProcedure" + UUID.randomUUID().toString();
-            StoredProcedure sproc = new StoredProcedure(
-                    "{" +
-                    "  'id':'" + sprocId + "'," +
-                    "  'body':" +
-                    "    'function() {" +
-                    "        var mytext = \"x\";" +
-                    "        var myval = 1;" +
-                    "        try {" +
-                    "            getContext().getResponse().setBody(\"Success!\");" +
-                    "        }" +
-                    "        catch(err) {" +
-                    "            getContext().getResponse().setBody(\"inline err: [\" + err.number + \"] \" + err);" +
-                    "        }" +
-                    "    }'" +
-                    "}");
+            CosmosStoredProcedureProperties storedProcedureDef = BridgeInternal
+                .createCosmosStoredProcedureProperties("{" + "  'id': '" + sprocId + "',"
+                    + "  'body':" + "    'function () {" + "      for (var i = 0; i < 10; i++) {"
+                    + "        getContext().getResponse().appendValue(\"Body\", i);" + "      }" + "    }'" + "}");
 
-            Mono<ResourceResponse<StoredProcedure>> createObservable = asyncClientWithTokenResolver.createStoredProcedure(createdCollection.getSelfLink(), sproc, null);
-            ResourceResponseValidator<StoredProcedure> createSucessValidator = new ResourceResponseValidator.Builder<StoredProcedure>()
-                    .withId(sprocId).build();
-            validateSuccess(createObservable, createSucessValidator);
+            Mono<CosmosStoredProcedureResponse> createObservable = asyncClientWithTokenResolver
+                .getDatabase(createdDatabase.getId())
+                .getContainer(createdCollection.getId())
+                .getScripts()
+                .createStoredProcedure(storedProcedureDef, new CosmosStoredProcedureRequestOptions());
 
-            RequestOptions options = new RequestOptions();
-            options.setPartitionKey(new PartitionKey(""));
-            String sprocLink = "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId() + "/sprocs/" + sprocId;
-            StoredProcedureResponse result = asyncClientWithTokenResolver.executeStoredProcedure(sprocLink, options, null).block();
-            assertThat(result.getResponseAsString()).isEqualTo("\"Success!\"");
+            CosmosResponseValidator<CosmosStoredProcedureResponse> validator = new CosmosResponseValidator.Builder<CosmosStoredProcedureResponse>()
+                .withId(storedProcedureDef.getId())
+                .notNullEtag()
+                .build();
+
+            validateSuccess(createObservable, validator);
+
+            Thread.sleep(1000);
+
+            CosmosAsyncStoredProcedure storedProcedure = null;
+            storedProcedure = asyncClientWithTokenResolver
+                .getDatabase(createdDatabase.getId())
+                .getContainer(createdCollection.getId())
+                .getScripts()
+                .getStoredProcedure(storedProcedureDef.getId());
+
+            String result = null;
+
+            CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions();
+            options.setPartitionKey(PartitionKey.NONE);
+            result = storedProcedure.execute(null, options).block().getResponseAsString();
+
+            assertThat(result).isEqualTo("\"0123456789\"");
+
         } finally {
             safeClose(asyncClientWithTokenResolver);
         }
     }
 
-    @Test(groups = {"simple"}, dataProvider = "connectionMode", timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, dataProvider = "connectionMode", timeOut = TIMEOUT)
     public void readDocumentsWithAllPermission(ConnectionMode connectionMode) {
-        AsyncDocumentClient asyncClientWithTokenResolver = null;
-        String id1 = UUID.randomUUID().toString();
-        String id2 = UUID.randomUUID().toString();
+        InternalObjectNode docDef1 = getDocumentDefinition();
+        InternalObjectNode docDef2 = getDocumentDefinition();
+
+        CosmosAsyncClient asyncClientWithTokenResolver = null;
 
         try {
-            asyncClientWithTokenResolver = buildClient(connectionMode, PermissionMode.ALL);
-            Document document1 = asyncClientWithTokenResolver.createDocument(createdCollection.getSelfLink(), new Document("{'id': '" + id1 + "'}"), null, false)
-                    .block().getResource();
-            Document document2 = asyncClientWithTokenResolver.createDocument(createdCollection.getSelfLink(), new Document("{'id': '" + id2 + "'}"), null, false)
-                    .block().getResource();
+
+            asyncClientWithTokenResolver = buildClientWithAuthTokenResolver(connectionMode, PermissionMode.ALL);
+            InternalObjectNode createItem1 = asyncClientWithTokenResolver
+                .getDatabase(createdDatabase.getId())
+                .getContainer(createdCollection.getId())
+                .createItem(docDef1)
+                .block()
+                .getItem();
+            InternalObjectNode createItem2 = asyncClientWithTokenResolver
+                .getDatabase(createdDatabase.getId())
+                .getContainer(createdCollection.getId())
+                .createItem(docDef2)
+                .block()
+                .getItem();
+
             List<String> expectedIds = new ArrayList<String>();
-            String rid1 = document1.getResourceId();
-            String rid2 = document2.getResourceId();
+            String rid1 = createItem1.getResourceId();
+            String rid2 = createItem2.getResourceId();
             expectedIds.add(rid1);
             expectedIds.add(rid2);
             String query = "SELECT * FROM r WHERE r._rid=\"" + rid1 + "\" or r._rid=\"" + rid2 + "\"";
 
             CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+            Flux<FeedResponse<InternalObjectNode>> queryObservable = asyncClientWithTokenResolver
+                .getDatabase(createdDatabase.getId())
+                .getContainer(createdCollection.getId())
+                .queryItems(query, InternalObjectNode.class)
+                .byPage();
 
-            Flux<FeedResponse<Document>> queryObservable = asyncClientWithTokenResolver.queryDocuments(createdCollection.getSelfLink(), query, options);
-            FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
+            FeedResponseListValidator<InternalObjectNode> validator = new FeedResponseListValidator.Builder<InternalObjectNode>()
                 .totalSize(2)
                 .exactlyContainsInAnyOrder(expectedIds).build();
             validateQuerySuccess(queryObservable, validator, TIMEOUT);
@@ -367,186 +412,130 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"}, dataProvider = "connectionMode", timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, dataProvider = "connectionMode", timeOut = TIMEOUT)
     public void readChangeFeedWithAllPermission(ConnectionMode connectionMode) throws InterruptedException {
+        String uuid = UUID.randomUUID().toString();
+        String uuid1 = UUID.randomUUID().toString();
+        InternalObjectNode docDef1 = new InternalObjectNode(String.format("{ "
+                + "\"id\": \"%s\", "
+                + "\"mypk\": \"%s\", "
+                + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"
+                + "}"
+            , uuid1, uuid));
 
-        //setStartDateTime is not currently supported in multimaster mode. So skipping the test
-        if(BridgeInternal.isEnableMultipleWriteLocations(client.getDatabaseAccount().single().block())){
-            throw new SkipException("StartTime/IfModifiedSince is not currently supported when EnableMultipleWriteLocations is set");
-        }
+        String uuid2= UUID.randomUUID().toString();
+        InternalObjectNode docDef2 = new InternalObjectNode(String.format("{ "
+                + "\"id\": \"%s\", "
+                + "\"mypk\": \"%s\", "
+                + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"
+                + "}"
+            , uuid2, uuid));
 
-        AsyncDocumentClient asyncClientWithTokenResolver = null;
-        String id1 = UUID.randomUUID().toString();
-        String id2 = UUID.randomUUID().toString();
-        String partitionKey = createdCollection.getPartitionKey().getPaths().get(0).substring(1);
-        String partitionKeyValue = "pk";
-        Document document1 = new Document();
-        document1.setId(id1);
-        BridgeInternal.setProperty(document1, partitionKey, partitionKeyValue);
-        Document document2 = new Document();
-        document2.setId(id2);
-        BridgeInternal.setProperty(document2, partitionKey, partitionKeyValue);
+        CosmosAsyncClient asyncClientWithTokenResolver = null;
+
         try {
-            asyncClientWithTokenResolver = buildClient(connectionMode, PermissionMode.ALL);
-            Instant befTime = Instant.now();
-            Thread.sleep(1500);
 
-            document1 = asyncClientWithTokenResolver
-                    .createDocument(
-                        createdCollection.getSelfLink(),
-                        document1,
-                        null,
-                        false)
-                    .block()
-                    .getResource();
-            document2 = asyncClientWithTokenResolver
-                    .createDocument(
-                        createdCollection.getSelfLink(),
-                        document2,
-                        null,
-                        false)
-                    .block()
-                    .getResource();
+            asyncClientWithTokenResolver = buildClientWithAuthTokenResolver(connectionMode, PermissionMode.ALL);
+            InternalObjectNode createItem1 = asyncClientWithTokenResolver
+                .getDatabase(createdDatabase.getId())
+                .getContainer(createdCollection.getId())
+                .createItem(docDef1)
+                .block()
+                .getItem();
+            InternalObjectNode createItem2 = asyncClientWithTokenResolver
+                .getDatabase(createdDatabase.getId())
+                .getContainer(createdCollection.getId())
+                .createItem(docDef2)
+                .block()
+                .getItem();
+
             List<String> expectedIds = new ArrayList<String>();
-            String rid1 = document1.getResourceId();
-            String rid2 = document2.getResourceId();
-            expectedIds.add(rid1);
-            expectedIds.add(rid2);
+            String id1 = createItem1.getId();
+            String id2 = createItem2.getId();
+            expectedIds.add(id1);
+            expectedIds.add(id2);
 
-            FeedRange feedRange = new FeedRangePartitionKeyImpl(
-                ModelBridgeInternal.getPartitionKeyInternal(new PartitionKey(partitionKeyValue)));
             CosmosChangeFeedRequestOptions options =
-                CosmosChangeFeedRequestOptions.createForProcessingFromPointInTime(befTime, feedRange);
+                CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(FeedRange.forLogicalPartition(new PartitionKey(uuid)));
 
             Thread.sleep(1000);
-            Flux<FeedResponse<Document>> queryObservable = asyncClientWithTokenResolver
-                    .queryDocumentChangeFeed(createdCollection, options);
-            FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
-                    .exactlyContainsInAnyOrder(expectedIds).build();
+            Flux<FeedResponse<InternalObjectNode>> queryObservable = asyncClientWithTokenResolver
+                .getDatabase(createdDatabase.getId())
+                .getContainer(createdCollection.getId())
+                .queryChangeFeed(options, InternalObjectNode.class)
+                .byPage();
+            FeedResponseListValidator<InternalObjectNode> validator = new FeedResponseListValidator.Builder<InternalObjectNode>()
+                    .exactlyContainsIdsInAnyOrder(expectedIds).build();
             validateQuerySuccess(queryObservable, validator, TIMEOUT);
         } finally {
             safeClose(asyncClientWithTokenResolver);
         }
     }
 
-    @Test(groups = {"simple"}, dataProvider = "connectionMode", timeOut = TIMEOUT)
-    public void verifyRuntimeExceptionWhenUserModifiesProperties(ConnectionMode connectionMode) {
-        AsyncDocumentClient asyncClientWithTokenResolver = null;
+    @Test(groups = { "emulator" }, dataProvider = "connectionMode", timeOut = TIMEOUT)
+    public void verifyRuntimeExceptionWhenUserModifiesProperties(ConnectionMode connectionMode) throws InterruptedException {
+        CosmosAsyncClient asyncClientWithTokenResolver = null;
 
         try {
-            ConnectionPolicy connectionPolicy;
-            if (connectionMode.equals(ConnectionMode.DIRECT)) {
-                connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
-            } else {
-                connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
-            }
-            asyncClientWithTokenResolver = new AsyncDocumentClient.Builder()
-                    .withServiceEndpoint(TestConfigurations.HOST)
-                    .withConnectionPolicy(connectionPolicy)
-                    .withConsistencyLevel(ConsistencyLevel.SESSION)
-                    .withTokenResolver(getBadTokenResolver())
-                    .withContentResponseOnWriteEnabled(true)
-                    .build();
+            CosmosClientBuilder builder = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .authorizationTokenResolver(getBadTokenResolver())
+                .consistencyLevel(ConsistencyLevel.SESSION)
+                .contentResponseOnWriteEnabled(true);
 
-            RequestOptions options = new RequestOptions();
-            options.setProperties(new HashMap<String, Object>());
-            Mono<ResourceResponse<DocumentCollection>> readObservable = asyncClientWithTokenResolver.readCollection(createdCollection.getSelfLink(), options);
-            FailureValidator validator = new FailureValidator.Builder().withRuntimeExceptionClass(UnsupportedOperationException.class).build();
-            validateFailure(readObservable, validator);
+            if (connectionMode.equals(ConnectionMode.DIRECT)) {
+                builder = builder.directMode();
+            } else {
+                builder = builder.gatewayMode();
+            }
+            asyncClientWithTokenResolver = builder.buildAsyncClient();
+
+            Mono<CosmosContainerResponse> readCollectionObservable = asyncClientWithTokenResolver
+                .getDatabase(createdDatabase.getId())
+                .getContainer(createdCollection.getId())
+                .read();
+
+            FailureValidator validator = new FailureValidator.Builder()
+                .statusCode(HttpConstants.StatusCodes.UNAUTHORIZED)
+                .build();
+            validateFailure(readCollectionObservable, validator);
         } finally {
             safeClose(asyncClientWithTokenResolver);
         }
     }
 
-    @Test(groups = {"simple"}, dataProvider = "connectionMode", timeOut = TIMEOUT)
-    public void verifyBlockListedUserThrows(ConnectionMode connectionMode) {
-        String field = "user";
-        UserClass blockListedUser = new UserClass("block listed user", 0);
-        String errorMessage = "block listed user! access denied!";
 
-        AsyncDocumentClient asyncClientWithTokenResolver = null;
-        try {
-            ConnectionPolicy connectionPolicy;
-            if (connectionMode.equals(ConnectionMode.DIRECT)) {
-                connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
-            } else {
-                connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
-            }
-            asyncClientWithTokenResolver = new AsyncDocumentClient.Builder()
-                    .withServiceEndpoint(TestConfigurations.HOST)
-                    .withConnectionPolicy(connectionPolicy)
-                    .withConsistencyLevel(ConsistencyLevel.SESSION)
-                    .withTokenResolver(getTokenResolverWithBlockList(PermissionMode.READ, field, blockListedUser, errorMessage))
-                    .withContentResponseOnWriteEnabled(true)
-                    .build();
-
-            RequestOptions options = new RequestOptions();
-            HashMap<String, Object> properties = new HashMap<String, Object>();
-            properties.put(field, blockListedUser);
-            options.setProperties(properties);
-            Mono<ResourceResponse<DocumentCollection>> readObservable = asyncClientWithTokenResolver.readCollection(createdCollection.getSelfLink(), options);
-            FailureValidator validator = new FailureValidator.Builder().withRuntimeExceptionMessage(errorMessage).build();
-            validateFailure(readObservable, validator);
-
-            properties.put(field, new UserClass("valid user", 1));
-            options.setProperties(properties);
-            readObservable = asyncClientWithTokenResolver.readCollection(createdCollection.getSelfLink(), options);
-            ResourceResponseValidator<DocumentCollection> sucessValidator = new ResourceResponseValidator.Builder<DocumentCollection>()
-                    .withId(createdCollection.getId()).build();
-            validateSuccess(readObservable, sucessValidator);
-        } finally {
-            safeClose(asyncClientWithTokenResolver);
-        }
-    }
-
-    @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         client.close();
     }
 
-    private Document getDocumentDefinition() {
-        String uuid = UUID.randomUUID().toString();
-        Document doc = new Document(String.format("{ "
-                        + "\"id\": \"%s\", "
-                        + "\"mypk\": \"%s\", "
-                        + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"
-                        + "}"
-                , uuid, uuid));
-        return doc;
-    }
+    private CosmosAsyncClient buildClientWithAuthTokenResolver(ConnectionMode connectionMode, PermissionMode permissionMode) {
+        CosmosClientBuilder builder = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .authorizationTokenResolver(getTokenResolver(permissionMode))
+            .consistencyLevel(ConsistencyLevel.SESSION)
+            .contentResponseOnWriteEnabled(true);
 
-    private AsyncDocumentClient buildClient(ConnectionMode connectionMode, PermissionMode permissionMode) {
-        ConnectionPolicy connectionPolicy;
         if (connectionMode.equals(ConnectionMode.DIRECT)) {
-            connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
+            builder = builder.directMode();
         } else {
-            connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
+            builder = builder.gatewayMode();
         }
-        return new AsyncDocumentClient.Builder()
-                .withServiceEndpoint(TestConfigurations.HOST)
-                .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION)
-                .withTokenResolver(getTokenResolver(permissionMode))
-                .build();
+
+        return builder
+            .buildAsyncClient();
     }
 
-    private static User getUserDefinition() {
-        User user = new User();
+    private static CosmosUserProperties getUserDefinition() {
+        CosmosUserProperties user = new CosmosUserProperties();
         user.setId(UUID.randomUUID().toString());
         return user;
     }
 
-    private Permission getPermission(Resource resource, String permissionId, PermissionMode permissionMode) {
-        Permission permission = new Permission();
-        permission.setId(permissionId);
-        permission.setPermissionMode(permissionMode);
-        permission.setResourceLink(resource.getSelfLink());
-        return permission;
-    }
-
     private CosmosAuthorizationTokenResolver getTokenResolver(PermissionMode permissionMode) {
-        return (RequestVerb requestVerb, String resourceIdOrFullName, CosmosResourceType resourceType, Map<String, Object>  properties) -> {
-            if(resourceType.equals(CosmosResourceType.SYSTEM)) {
+        return (String requestVerb, String resourceIdOrFullName, String resourceType, Map<String, Object>  properties) -> {
+            if(resourceType.equals(CosmosResourceType.SYSTEM.toString())) {
                 return readPermission.getToken();
             } if (permissionMode == null) {
                 return "invalid";
@@ -559,37 +548,22 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
     }
 
     private CosmosAuthorizationTokenResolver getBadTokenResolver() {
-        return (RequestVerb requestVerb, String resourceIdOrFullName, CosmosResourceType resourceType, Map<String, Object>  properties) -> {
-            if (resourceType.equals(CosmosResourceType.SYSTEM)) {
-                return readPermission.getToken();
+        return (String requestVerb, String resourceIdOrFullName, String resourceType, Map<String, Object>  properties) -> {
+            if (resourceType.equals(CosmosResourceType.DOCUMENT_COLLECTION.toString())) {
+                return "";
             }
-            if (properties != null) {
-                properties.put("key", "value");
-            }
-            return null;
+            return readPermission.getToken();
         };
     }
 
-    private CosmosAuthorizationTokenResolver getTokenResolverWithBlockList(PermissionMode permissionMode, String field, UserClass blockListedUser, String errorMessage) {
-        return (RequestVerb requestVerb, String resourceIdOrFullName, CosmosResourceType resourceType, Map<String, Object>  properties) -> {
-            UserClass currentUser = null;
-            if (properties != null && properties.get(field) != null) {
-                currentUser = (UserClass) properties.get(field);
-            }
-
-            if (resourceType.equals(CosmosResourceType.SYSTEM)) {
-                return readPermission.getToken();
-            } else if (currentUser != null &&
-                    !currentUser.userName.equals(blockListedUser.userName) &&
-                    currentUser.userId != blockListedUser.userId) {
-                if (permissionMode.equals(PermissionMode.READ)) {
-                    return readPermission.getToken();
-                } else {
-                    return allPermission.getToken();
-                }
-            } else {
-                throw new RuntimeException(errorMessage);
-            }
-        };
+    private InternalObjectNode getDocumentDefinition() {
+        String uuid = UUID.randomUUID().toString();
+        InternalObjectNode doc = new InternalObjectNode(String.format("{ "
+                + "\"id\": \"%s\", "
+                + "\"mypk\": \"%s\", "
+                + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"
+                + "}"
+            , uuid, uuid));
+        return doc;
     }
 }
