@@ -86,7 +86,7 @@ jobs:
           BuildOptions: ${{ parameters.BuildOptions }}
           ParallelTestPlayback: 'false'
           SkipAggregateReports: 'true'
-          MavenBuildInstallParallelization: ${{ parameters.MavenBuildInstallParallelization }}
+          BuildParallelization: ${{ parameters.MavenBuildInstallParallelization }}
           SparkShading: ${{ parameters.SparkShading }}
           TestEnvVars:
             AZURE_TEST_MODE: ${{ parameters.TestMode }}
