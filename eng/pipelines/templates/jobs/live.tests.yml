@@ -20,7 +20,6 @@ parameters:
   BuildParallelization: '2C'
   TestGoals: $(TestGoals)
   TestFromSource: $(TestFromSource)
-  AdditionalTestGoals: $(AdditionalTestGoals)
   AdditionalTestOptions: $(AdditionalTestOptions)
   AdditionalBuildOptions: $(AdditionalBuildOptions)
 
@@ -94,7 +93,6 @@ jobs:
           IsLiveTest: true
           TestGoals: ${{ parameters.TestGoals }}
           TestFromSource: ${{ parameters.TestFromSource }}
-          AdditionalTestGoals: ${{ parameters.AdditionalTestGoals }}
           AdditionalTestOptions: ${{ parameters.AdditionalTestOptions }}
           AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}
           TestEnvVars:

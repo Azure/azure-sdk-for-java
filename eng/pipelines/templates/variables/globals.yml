@@ -28,7 +28,6 @@ variables:
   # This will be overridden by the test matrix if configured.
   TestFromSource: $(DefaultTestFromSource)
 
-  AdditionalTestGoals: ''
   AdditionalTestOptions: ''
   AdditionalBuildOptions: ''
 

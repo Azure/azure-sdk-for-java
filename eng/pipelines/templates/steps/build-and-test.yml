@@ -14,9 +14,6 @@ parameters:
   - name: TestFromSource
     type: string
     default: $(TestFromSource)
-  - name: AdditionalTestGoals
-    type: string
-    default: $(AdditionalTestGoals)
   - name: AdditionalTestOptions
     type: string
     default: ''
@@ -69,7 +66,7 @@ steps:
       jdkVersionOption: $(JavaTestVersion)
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
-      goals: ${{ parameters.TestGoals }} ${{ parameters.AdditionalTestGoals }}
+      goals: ${{ parameters.TestGoals }}
     env: ${{ parameters.TestEnvVars }}
     # we want to run this when TestFromSource isn't true
     condition: and(succeeded(), ne('${{ parameters.TestFromSource }}', 'true'))
@@ -123,7 +120,7 @@ steps:
       # as well as libraries which depend on them and not the other stages in the Maven
       # lifecycle that test or verify targets would execute. The libraries were already
       # compiled and installed in the previous task, this tasks only runs tests.
-      goals: ${{ parameters.TestGoals }} ${{ parameters.AdditionalTestGoals }}
+      goals: ${{ parameters.TestGoals }}
     env: ${{ parameters.TestEnvVars }}
     condition: and(succeeded(), eq('${{ parameters.TestFromSource }}','true'))
 
