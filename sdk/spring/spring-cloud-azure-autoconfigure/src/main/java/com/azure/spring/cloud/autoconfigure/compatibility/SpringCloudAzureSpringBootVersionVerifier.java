@@ -16,7 +16,7 @@ import java.util.Map;
 
 class SpringCloudAzureSpringBootVersionVerifier {
     private static final Logger LOGGER = LoggerFactory.getLogger(SpringCloudAzureSpringBootVersionVerifier.class);
-    private final Map<String, CompatibilityPredicate> supportedVersions = new HashMap<String, CompatibilityPredicate>() {
+    final Map<String, CompatibilityPredicate> supportedVersions = new HashMap<String, CompatibilityPredicate>() {
         {
             this.put("2.5", SpringCloudAzureSpringBootVersionVerifier.this.is2_5());
             this.put("2.6", SpringCloudAzureSpringBootVersionVerifier.this.is2_6());
@@ -52,7 +52,7 @@ class SpringCloudAzureSpringBootVersionVerifier {
             + "just set the property [spring.cloud.azure.compatibility-verifier.enabled=false]", this.acceptedVersions, "https://spring.io/projects/spring-boot#learn", "https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Versions-Mapping");
     }
 
-    private String getVersionFromManifest() {
+    String getVersionFromManifest() {
         return SpringBootVersion.getVersion();
     }
 
@@ -93,7 +93,7 @@ class SpringCloudAzureSpringBootVersionVerifier {
         return version.endsWith(".x") ? version.substring(0, version.indexOf(".x")) : version;
     }
 
-    private CompatibilityPredicate is2_6() {
+    CompatibilityPredicate is2_6() {
         return new CompatibilityPredicate() {
             public String toString() {
                 return "Predicate for Boot 2.6";
@@ -109,7 +109,7 @@ class SpringCloudAzureSpringBootVersionVerifier {
         };
     }
 
-    private CompatibilityPredicate is2_5() {
+    CompatibilityPredicate is2_5() {
         return new CompatibilityPredicate() {
             public String toString() {
                 return "Predicate for Boot 2.5";
