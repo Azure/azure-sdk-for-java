@@ -96,6 +96,10 @@ public class EventHubClientBuilderFactory extends AbstractAzureAmqpClientBuilder
         PropertyMapper mapper = new PropertyMapper();
 
         mapper.from(eventHubsProperties.getCustomEndpointAddress()).to(builder::customEndpointAddress);
+        // TODO kasobol-msft this requires latest EH version.
+        // mapper.from(eventHubsProperties.getFullyQualifiedNamespace()).to(builder::fullyQualifiedNamespace);
+        // mapper.from(eventHubsProperties.getEventHubName()).to(builder::eventHubName);
+        mapper.from(eventHubsProperties.getCustomEndpointAddress()).to(builder::customEndpointAddress);
 
         if (this.eventHubsProperties instanceof EventHubsNamespaceProperties) {
             mapper.from(((EventHubsNamespaceProperties) this.eventHubsProperties).getSharedConnection())
@@ -108,27 +112,6 @@ public class EventHubClientBuilderFactory extends AbstractAzureAmqpClientBuilder
             mapper.from(consumerProperties.getConsumerGroup()).to(builder::consumerGroup);
             mapper.from(consumerProperties.getPrefetchCount()).to(builder::prefetchCount);
         }
-    }
-
-
-    //Credentials have not been set. They can be set using:
-    // connectionString(String),
-    // connectionString(String, String),
-    // credentials(String, String, TokenCredential),
-    // or setting the environment variable 'AZURE_EVENT_HUBS_CONNECTION_STRING' with a connection string
-    @Override
-    protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(EventHubClientBuilder builder) {
-        return Arrays.asList(
-            new NamedKeyAuthenticationDescriptor(provider -> builder.credential(eventHubsProperties.getFullyQualifiedNamespace(),
-                                                                                eventHubsProperties.getEventHubName(),
-                                                                                provider.getCredential())),
-            new SasAuthenticationDescriptor(provider -> builder.credential(eventHubsProperties.getFullyQualifiedNamespace(),
-                                                                           eventHubsProperties.getEventHubName(),
-                                                                           provider.getCredential())),
-            new TokenAuthenticationDescriptor(provider -> builder.credential(eventHubsProperties.getFullyQualifiedNamespace(),
-                                                                             eventHubsProperties.getEventHubName(),
-                                                                             provider.getCredential()))
-        );
     }
 
 }

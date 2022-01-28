@@ -3,6 +3,9 @@
 
 package com.azure.spring.core.factory;
 
+import com.azure.core.client.traits.AzureKeyCredentialTrait;
+import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
+import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
@@ -13,6 +16,10 @@ import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.credential.AzureCredentialResolver;
 import com.azure.spring.core.credential.AzureCredentialResolvers;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
+import com.azure.spring.core.credential.descriptor.KeyAuthenticationDescriptor;
+import com.azure.spring.core.credential.descriptor.NamedKeyAuthenticationDescriptor;
+import com.azure.spring.core.credential.descriptor.SasAuthenticationDescriptor;
+import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
 import com.azure.spring.core.credential.provider.AzureCredentialProvider;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.properties.AzureProperties;
@@ -57,7 +64,27 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
      * @param builder The service client builder.
      * @return A list of {@link AuthenticationDescriptor}.
      */
-    protected abstract List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(T builder);
+    private List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(T builder) {
+        List<AuthenticationDescriptor<?>> descriptors = new ArrayList<>();
+        if (builder instanceof AzureKeyCredentialTrait) {
+            descriptors.add(new KeyAuthenticationDescriptor(provider -> ((AzureKeyCredentialTrait) builder)
+                .credential(provider.getCredential())));
+        }
+        if (builder instanceof AzureNamedKeyCredentialTrait) {
+            descriptors.add(new NamedKeyAuthenticationDescriptor(provider -> ((AzureNamedKeyCredentialTrait) builder)
+                .credential(provider.getCredential())));
+        }
+        if (builder instanceof TokenCredentialTrait) {
+            descriptors.add(new TokenAuthenticationDescriptor(provider -> ((TokenCredentialTrait) builder)
+                .credential(provider.getCredential())));
+        }
+        if (builder instanceof AzureSasCredentialTrait) {
+            descriptors.add(new SasAuthenticationDescriptor(provider -> ((AzureSasCredentialTrait) builder)
+                .credential(provider.getCredential())));
+        }
+
+        return descriptors;
+    }
 
     /**
      * Configure proxy to the builder.

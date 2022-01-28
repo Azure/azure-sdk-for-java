@@ -115,11 +115,6 @@ public abstract class AbstractAzureCredentialBuilderFactory<T extends Credential
     }
 
     @Override
-    protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(T builder) {
-        return Collections.emptyList();
-    }
-
-    @Override
     protected BiConsumer<T, ClientOptions> consumeClientOptions() {
         return (a, b) -> { };
     }

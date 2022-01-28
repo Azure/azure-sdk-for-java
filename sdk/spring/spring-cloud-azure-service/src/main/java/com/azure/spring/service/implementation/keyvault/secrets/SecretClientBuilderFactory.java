@@ -77,12 +77,6 @@ public class SecretClientBuilderFactory extends AbstractAzureHttpClientBuilderFa
     }
 
     @Override
-    protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(SecretClientBuilder builder) {
-        return Collections.singletonList(
-            new TokenAuthenticationDescriptor(provider -> builder.credential(provider.getCredential())));
-    }
-
-    @Override
     protected void configureService(SecretClientBuilder builder) {
         PropertyMapper map = new PropertyMapper();
         map.from(secretClientProperties.getEndpoint()).to(builder::vaultUrl);

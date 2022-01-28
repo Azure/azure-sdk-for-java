@@ -102,6 +102,9 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
         map.from(eventProcessorClientProperties.getLoadBalancing().getPartitionOwnershipExpirationInterval()).to(builder::partitionOwnershipExpirationInterval);
         map.from(eventProcessorClientProperties.getLoadBalancing().getStrategy()).to(builder::loadBalancingStrategy);
         map.from(eventProcessorClientProperties.getLoadBalancing().getUpdateInterval()).to(builder::loadBalancingUpdateInterval);
+        // TODO kasobol-msft this requires latest EH version.
+        // mapper.from(eventProcessorClientProperties.getFullyQualifiedNamespace()).to(builder::fullyQualifiedNamespace);
+        // mapper.from(eventProcessorClientProperties.getEventHubName()).to(builder::eventHubName);
 
         map.from(eventProcessorClientProperties.getInitialPartitionEventPosition()).when(c -> !CollectionUtils.isEmpty(c))
                 .to(m -> {
@@ -113,26 +116,6 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
                 });
         configureCheckpointStore(builder);
         configureProcessorListener(builder);
-    }
-
-    //Credentials have not been set. They can be set using:
-    // connectionString(String),
-    // connectionString(String, String),
-    // credentials(String, String, TokenCredential),
-    // or setting the environment variable 'AZURE_EVENT_HUBS_CONNECTION_STRING' with a connection string
-    @Override
-    protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(EventProcessorClientBuilder builder) {
-        return Arrays.asList(
-            new NamedKeyAuthenticationDescriptor(provider -> builder.credential(eventProcessorClientProperties.getFullyQualifiedNamespace(),
-                eventProcessorClientProperties.getEventHubName(),
-                provider.getCredential())),
-            new SasAuthenticationDescriptor(provider -> builder.credential(eventProcessorClientProperties.getFullyQualifiedNamespace(),
-                eventProcessorClientProperties.getEventHubName(),
-                provider.getCredential())),
-            new TokenAuthenticationDescriptor(provider -> builder.credential(eventProcessorClientProperties.getFullyQualifiedNamespace(),
-                eventProcessorClientProperties.getEventHubName(),
-                provider.getCredential()))
-        );
     }
 
     @Override

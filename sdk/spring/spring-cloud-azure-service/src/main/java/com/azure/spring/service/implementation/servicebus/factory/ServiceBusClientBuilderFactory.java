@@ -69,7 +69,8 @@ public class ServiceBusClientBuilderFactory extends AbstractAzureAmqpClientBuild
         return this.clientCommonProperties;
     }
 
-    @Override
+    // TODO kasobol-msft FQN should be set somewhere else - this requires latest SB
+/*    @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(ServiceBusClientBuilder builder) {
         return Arrays.asList(
             new NamedKeyAuthenticationDescriptor(provider -> builder.credential(
@@ -79,7 +80,7 @@ public class ServiceBusClientBuilderFactory extends AbstractAzureAmqpClientBuild
             new TokenAuthenticationDescriptor(provider -> builder.credential(
                 clientCommonProperties.getFullyQualifiedNamespace(), provider.getCredential()))
         );
-    }
+    }*/
 
     @Override
     protected void configureService(ServiceBusClientBuilder builder) {

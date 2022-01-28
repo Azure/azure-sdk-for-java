@@ -105,7 +105,8 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
         return this.properties;
     }
 
-    @Override
+    // TODO kasobol-msft FQN should be set somewhere else - this requires latest SB
+/*    @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(T builder) {
         return Arrays.asList(
             new NamedKeyAuthenticationDescriptor(provider -> {
@@ -127,7 +128,7 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
                 }
             })
         );
-    }
+    }*/
 
     @Override
     protected BiConsumer<T, Configuration> consumeConfiguration() {

@@ -77,13 +77,6 @@ public class CertificateClientBuilderFactory extends AbstractAzureHttpClientBuil
     }
 
     @Override
-    protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(CertificateClientBuilder builder) {
-        return Arrays.asList(
-            new TokenAuthenticationDescriptor(provider -> builder.credential(provider.getCredential()))
-        );
-    }
-
-    @Override
     protected void configureService(CertificateClientBuilder builder) {
         PropertyMapper map = new PropertyMapper();
         map.from(certificateClientProperties.getEndpoint()).to(builder::vaultUrl);

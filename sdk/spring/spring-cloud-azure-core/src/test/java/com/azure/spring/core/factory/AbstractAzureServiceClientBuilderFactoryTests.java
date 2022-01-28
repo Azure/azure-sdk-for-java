@@ -131,11 +131,6 @@ class AbstractAzureServiceClientBuilderFactoryTests {
         }
 
         @Override
-        protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(TestClientBuilder builder) {
-            return Collections.emptyList();
-        }
-
-        @Override
         protected void configureProxy(TestClientBuilder builder) {
 
         }

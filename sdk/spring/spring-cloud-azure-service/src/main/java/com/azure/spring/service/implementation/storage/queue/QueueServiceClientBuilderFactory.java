@@ -10,18 +10,12 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
-import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.SasAuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.PropertyMapper;
-import com.azure.spring.service.implementation.storage.common.credential.StorageSharedKeyAuthenticationDescriptor;
 import com.azure.spring.service.implementation.storage.common.AbstractAzureStorageClientBuilderFactory;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.queue.QueueServiceClientBuilder;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.function.BiConsumer;
 
 /**
@@ -73,14 +67,6 @@ public class QueueServiceClientBuilderFactory extends AbstractAzureStorageClient
     @Override
     protected AzureProperties getAzureProperties() {
         return this.queueServiceClientProperties;
-    }
-
-    @Override
-    protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(QueueServiceClientBuilder builder) {
-        return Arrays.asList(
-            new StorageSharedKeyAuthenticationDescriptor(provider -> builder.credential(provider.getCredential())),
-            new SasAuthenticationDescriptor(provider -> builder.credential(provider.getCredential())),
-            new TokenAuthenticationDescriptor(provider -> builder.credential(provider.getCredential())));
     }
 
     @Override
