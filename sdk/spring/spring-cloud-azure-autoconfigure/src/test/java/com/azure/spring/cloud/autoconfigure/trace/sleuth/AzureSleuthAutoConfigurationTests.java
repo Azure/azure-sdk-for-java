@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.trace.sleuth;
 
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.spring.core.trace.AzureHttpClientBuilderFactoryBeanPostProcessor;
+import com.azure.spring.core.trace.HttpTraitPostProcessor;
 import com.azure.spring.tracing.sleuth.SleuthHttpPolicy;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -42,7 +42,7 @@ public class AzureSleuthAutoConfigurationTests {
             .withUserConfiguration(BraveAutoConfiguration.class, TraceWebAutoConfiguration.class)
             .run(context -> {
                 assertThat(context).hasBean(DEFAULT_SLEUTH_HTTP_POLICY_BEAN_NAME);
-                assertThat(context).hasSingleBean(AzureHttpClientBuilderFactoryBeanPostProcessor.class);
+                assertThat(context).hasSingleBean(HttpTraitPostProcessor.class);
             });
     }
 }

@@ -3,6 +3,7 @@
 
 package com.azure.spring.core.factory;
 
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -248,9 +249,12 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
      * @param builder The service client builder.
      */
     protected void configureDefaultCredential(T builder) {
-        if (!credentialConfigured) {
+        if (!credentialConfigured && builder instanceof TokenCredentialTrait) {
             LOGGER.info("Will configure the default credential for {}.", builder.getClass());
-            consumeDefaultTokenCredential().accept(builder, this.defaultTokenCredential);
+            // TODO kasobol-msft how do we keep track if default credential has been set?
+            // Should builder or configuration do it implicitly if nothing was configured?
+            // Perhaps there could be some default/global flag driving such behavior - enabled by default for Spring.
+            ((TokenCredentialTrait<?>) builder).credential(this.defaultTokenCredential);
         }
     }
 
