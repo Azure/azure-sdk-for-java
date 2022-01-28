@@ -11,7 +11,7 @@ import rx.Observable;
  *
  * @author Warren Zhu
  *
- * @deprecated {@link rx} API will be dropped in version 4.0.0, please migrate to reactor API in
+ * @deprecated {@link rx} API will be dropped in version 4.x, please migrate to reactor API in
  * {@link com.azure.spring.integration.core.api.reactor.SendOperation}. From version 4.0.0, the reactor API support will
  * be moved to com.azure.spring.messaging.core.SendOperation.
  */

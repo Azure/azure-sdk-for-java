@@ -10,10 +10,6 @@ import com.azure.storage.blob.BlobContainerClientBuilder;
 import java.util.concurrent.TimeUnit;
 
 /**
- * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS ARE USED TO EXTRACT
- * APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING LINE NUMBERS OF EXISTING CODE
- * SAMPLES.
- *
  * Class containing code snippets that will be injected to README.md.
  */
 public class ReadmeSamples {
@@ -22,11 +18,13 @@ public class ReadmeSamples {
      * Code sample for creating an async blob container client.
      */
     public void createBlobContainerClient() {
+        // BEGIN: readme-sample-createBlobContainerClient
         BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
             .connectionString("<STORAGE_ACCOUNT_CONNECTION_STRING>")
             .containerName("<CONTAINER_NAME>")
             .sasToken("<SAS_TOKEN>")
             .buildAsyncClient();
+        // END: readme-sample-createBlobContainerClient
     }
 
     /**
@@ -34,6 +32,7 @@ public class ReadmeSamples {
      * @throws InterruptedException If the thread is interrupted.
      */
     public void consumeEventsUsingEventProcessor() throws InterruptedException {
+        // BEGIN: readme-sample-consumeEventsUsingEventProcessor
         BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
             .connectionString("<STORAGE_ACCOUNT_CONNECTION_STRING>")
             .containerName("<CONTAINER_NAME>")
@@ -61,5 +60,6 @@ public class ReadmeSamples {
 
         // When the user wishes to stop processing events, they can call `stop()`.
         eventProcessorClient.stop();
+        // END: readme-sample-consumeEventsUsingEventProcessor
     }
 }

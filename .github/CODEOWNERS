@@ -87,6 +87,9 @@
 # PRLabel: %Cognitive - Metrics Advisor
 /sdk/metricsadvisor/                                @samvaity @anuchandy
 
+# PRLabel: %Cognitive - Anomaly Detector
+/sdk/anomalydetector/                               @conhua @mengaims @juaduan @moreOver0
+
 # PRLabel: %Azure.Identity
 /sdk/identity/                                      @g2vinay @schaabs @joshfree @billwert
 

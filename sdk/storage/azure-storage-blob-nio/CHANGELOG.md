@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed a bug that would prevent deleting an empty directory in the case where one directory name was a prefix of the other.
 
 ### Other Changes
 

@@ -426,7 +426,7 @@ for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {
     analyzedDocument.getFields().forEach((key, documentField) -> {
         System.out.printf("Document Field content: %s%n", documentField.getContent());
         System.out.printf("Document Field confidence: %.2f%n", documentField.getConfidence());
-        System.out.printf("Document Field Type: %.2f%n", documentField.getType().toString());
+        System.out.printf("Document Field Type: %s%n", documentField.getType());
         System.out.printf("Document Field found within bounding region: %s%n",
             documentField.getBoundingRegions().toString());
     });

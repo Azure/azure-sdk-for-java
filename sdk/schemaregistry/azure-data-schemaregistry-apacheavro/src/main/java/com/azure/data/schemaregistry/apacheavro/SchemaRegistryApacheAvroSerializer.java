@@ -115,7 +115,7 @@ public final class SchemaRegistryApacheAvroSerializer implements ObjectSerialize
                         new IllegalStateException("Illegal format: unsupported record format indicator in payload"));
                 }
 
-                String schemaId = getSchemaIdFromPayload(buffer);
+                final String schemaId = getSchemaIdFromPayload(buffer);
 
                 return this.schemaRegistryClient.getSchema(schemaId)
                     .handle((registryObject, sink) -> {
@@ -171,7 +171,10 @@ public final class SchemaRegistryApacheAvroSerializer implements ObjectSerialize
             return monoError(logger, exception);
         }
 
-        return this.maybeRegisterSchema(serializerOptions.getSchemaGroup(), schema.getFullName(), schema.toString())
+        final String schemaFullName = schema.getFullName();
+        final String schemaString = schema.toString();
+
+        return this.maybeRegisterSchema(serializerOptions.getSchemaGroup(), schemaFullName, schemaString)
             .handle((id, sink) -> {
                 ByteBuffer recordFormatIndicatorBuffer = ByteBuffer
                     .allocate(RECORD_FORMAT_INDICATOR_SIZE)
