@@ -45,7 +45,7 @@ steps:
     inputs:
       scriptPath: 'eng/versioning/update_versions.py'
       arguments: '--update-type library --build-type client --sr'
-    condition: and(succeeded(), eq(''$[ coalesce(variables.TestFromSource, variables.DefaultTestFromSource) ]'', 'true'))
+    condition: and(succeeded(), eq('$[ coalesce(variables.TestFromSource, variables.DefaultTestFromSource) ]', 'true'))
 
   - template: generate-project-list.yml
     parameters:
