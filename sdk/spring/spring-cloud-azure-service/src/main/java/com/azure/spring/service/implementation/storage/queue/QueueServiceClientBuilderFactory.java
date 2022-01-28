@@ -3,13 +3,7 @@
 
 package com.azure.spring.service.implementation.storage.queue;
 
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.ClientOptions;
-import com.azure.core.util.Configuration;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.PropertyMapper;
 import com.azure.spring.service.implementation.storage.common.AbstractAzureStorageClientBuilderFactory;
@@ -40,26 +34,6 @@ public class QueueServiceClientBuilderFactory extends AbstractAzureStorageClient
     }
 
     @Override
-    protected BiConsumer<QueueServiceClientBuilder, HttpClient> consumeHttpClient() {
-        return QueueServiceClientBuilder::httpClient;
-    }
-
-    @Override
-    protected BiConsumer<QueueServiceClientBuilder, HttpPipelinePolicy> consumeHttpPipelinePolicy() {
-        return QueueServiceClientBuilder::addPolicy;
-    }
-
-    @Override
-    protected BiConsumer<QueueServiceClientBuilder, HttpPipeline> consumeHttpPipeline() {
-        return QueueServiceClientBuilder::pipeline;
-    }
-
-    @Override
-    protected BiConsumer<QueueServiceClientBuilder, HttpLogOptions> consumeHttpLogOptions() {
-        return QueueServiceClientBuilder::httpLogOptions;
-    }
-
-    @Override
     protected QueueServiceClientBuilder createBuilderInstance() {
         return new QueueServiceClientBuilder();
     }
@@ -75,21 +49,6 @@ public class QueueServiceClientBuilderFactory extends AbstractAzureStorageClient
         map.from(queueServiceClientProperties.getMessageEncoding()).to(builder::messageEncoding);
         map.from(queueServiceClientProperties.getServiceVersion()).to(builder::serviceVersion);
         map.from(queueServiceClientProperties.getEndpoint()).to(builder::endpoint);
-    }
-
-    @Override
-    protected BiConsumer<QueueServiceClientBuilder, Configuration> consumeConfiguration() {
-        return QueueServiceClientBuilder::configuration;
-    }
-
-    @Override
-    protected BiConsumer<QueueServiceClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
-        return QueueServiceClientBuilder::credential;
-    }
-
-    @Override
-    protected BiConsumer<QueueServiceClientBuilder, String> consumeConnectionString() {
-        return QueueServiceClientBuilder::connectionString;
     }
 
     @Override

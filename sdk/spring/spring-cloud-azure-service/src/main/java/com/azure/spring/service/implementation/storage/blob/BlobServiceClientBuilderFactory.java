@@ -3,13 +3,7 @@
 
 package com.azure.spring.service.implementation.storage.blob;
 
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.ClientOptions;
-import com.azure.core.util.Configuration;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.PropertyMapper;
 import com.azure.spring.service.implementation.storage.common.AbstractAzureStorageClientBuilderFactory;
@@ -52,41 +46,6 @@ public class BlobServiceClientBuilderFactory extends AbstractAzureStorageClientB
         map.from(blobServiceClientProperties.getEncryptionScope()).to(builder::encryptionScope);
         map.from(blobServiceClientProperties.getEndpoint()).to(builder::endpoint);
         map.from(blobServiceClientProperties.getServiceVersion()).to(builder::serviceVersion);
-    }
-
-    @Override
-    protected BiConsumer<BlobServiceClientBuilder, HttpClient> consumeHttpClient() {
-        return BlobServiceClientBuilder::httpClient;
-    }
-
-    @Override
-    protected BiConsumer<BlobServiceClientBuilder, HttpPipelinePolicy> consumeHttpPipelinePolicy() {
-        return BlobServiceClientBuilder::addPolicy;
-    }
-
-    @Override
-    protected BiConsumer<BlobServiceClientBuilder, HttpPipeline> consumeHttpPipeline() {
-        return BlobServiceClientBuilder::pipeline;
-    }
-
-    @Override
-    protected BiConsumer<BlobServiceClientBuilder, HttpLogOptions> consumeHttpLogOptions() {
-        return BlobServiceClientBuilder::httpLogOptions;
-    }
-
-    @Override
-    protected BiConsumer<BlobServiceClientBuilder, Configuration> consumeConfiguration() {
-        return BlobServiceClientBuilder::configuration;
-    }
-
-    @Override
-    protected BiConsumer<BlobServiceClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
-        return BlobServiceClientBuilder::credential;
-    }
-
-    @Override
-    protected BiConsumer<BlobServiceClientBuilder, String> consumeConnectionString() {
-        return BlobServiceClientBuilder::connectionString;
     }
 
     @Override

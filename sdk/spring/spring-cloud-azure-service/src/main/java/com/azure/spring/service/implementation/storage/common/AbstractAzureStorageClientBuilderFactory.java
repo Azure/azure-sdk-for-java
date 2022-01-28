@@ -3,7 +3,6 @@
 
 package com.azure.spring.service.implementation.storage.common;
 
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.spring.core.aware.RetryAware;
 import com.azure.spring.core.factory.AbstractAzureHttpClientBuilderFactory;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -37,15 +36,5 @@ public abstract class AbstractAzureStorageClientBuilderFactory<T> extends Abstra
         } else {
             LOGGER.warn("The retry in a storage client builder is of type {}", retry.getClass().getName());
         }
-    }
-
-    /**
-     * The default implementation for setting retry policy in Storage clients. The storage clients are not using the
-     * retry policy as other HTTP-based clients.
-     * @return the empty consumer for setting retry policy.
-     */
-    @Override
-    protected BiConsumer<T, RetryPolicy> consumeRetryPolicy() {
-        return (a, b) -> { };
     }
 }

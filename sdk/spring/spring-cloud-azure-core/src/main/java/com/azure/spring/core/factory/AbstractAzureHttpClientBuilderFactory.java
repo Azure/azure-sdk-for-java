@@ -3,13 +3,14 @@
 
 package com.azure.spring.core.factory;
 
+import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Header;
 import com.azure.core.util.HttpClientOptions;
@@ -50,36 +51,6 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
      */
     protected abstract BiConsumer<T, ClientOptions> consumeClientOptions();
 
-    /**
-     * Return a {@link BiConsumer} of how the {@link T} builder consume a {@link HttpClient}.
-     * @return The consumer of how the {@link T} builder consume a {@link HttpClient}.
-     */
-    protected abstract BiConsumer<T, HttpClient> consumeHttpClient();
-
-    /**
-     * Return a {@link BiConsumer} of how the {@link T} builder consume a {@link HttpPipelinePolicy}.
-     * @return The consumer of how the {@link T} builder consume a {@link HttpPipelinePolicy}.
-     */
-    protected abstract BiConsumer<T, HttpPipelinePolicy> consumeHttpPipelinePolicy();
-
-    /**
-     * Return a {@link BiConsumer} of how the {@link T} builder consume a {@link HttpPipeline}.
-     * @return The consumer of how the {@link T} builder consume a {@link HttpPipeline}.
-     */
-    protected abstract BiConsumer<T, HttpPipeline> consumeHttpPipeline();
-
-    /**
-     * Return a {@link BiConsumer} of how the {@link T} builder consume a {@link HttpLogOptions}.
-     * @return The consumer of how the {@link T} builder consume a {@link HttpLogOptions}.
-     */
-    protected abstract BiConsumer<T, HttpLogOptions> consumeHttpLogOptions();
-
-    /**
-     * Return a {@link BiConsumer} of how the {@link T} builder consume a {@link RetryPolicy}.
-     * @return The consumer of how the {@link T} builder consume a {@link RetryPolicy}.
-     */
-    protected abstract BiConsumer<T, RetryPolicy> consumeRetryPolicy();
-
     @Override
     protected void configureCore(T builder) {
         super.configureCore(builder);
@@ -97,13 +68,21 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
     protected void configureHttpClient(T builder) {
         consumeClientOptions().accept(builder, httpClientOptions);
         if (this.httpPipeline != null) {
-            consumeHttpPipeline().accept(builder, this.httpPipeline);
+            if (builder instanceof HttpTrait) {
+                ((HttpTrait<?>) builder).pipeline(this.httpPipeline);
+            } else {
+                throw new IllegalArgumentException("builder isn't http");
+            }
         } else {
             configureHttpHeaders(builder);
             configureHttpTransportProperties(builder);
             configureHttpPipelinePolicies(builder);
             final HttpClient httpClient = getHttpClientProvider().createInstance(this.httpClientOptions);
-            consumeHttpClient().accept(builder, httpClient);
+            if (builder instanceof HttpTrait) {
+                ((HttpTrait<?>) builder).httpClient(httpClient);
+            } else {
+                throw new IllegalArgumentException("builder isn't http");
+            }
         }
     }
 
@@ -144,10 +123,10 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
     protected void configureHttpLogOptions(T builder) {
         ClientAware.Client client = getAzureProperties().getClient();
 
-        if (client instanceof ClientAware.HttpClient) {
+        if (client instanceof ClientAware.HttpClient && builder instanceof HttpTrait) {
             HttpLogOptions logOptions =
                 HTTP_LOG_OPTIONS_CONVERTER.convert(((ClientAware.HttpClient) client).getLogging());
-            consumeHttpLogOptions().accept(builder, logOptions);
+            ((HttpTrait<?>) builder).httpLogOptions(logOptions);
         } else {
             LOGGER.warn("The client properties of an http-based client is of type {}", client.getClass().getName());
         }
@@ -184,8 +163,14 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
         }
 
         if (retry instanceof RetryAware.HttpRetry) {
-            RetryPolicy retryPolicy = HTTP_RETRY_CONVERTER.convert((RetryAware.HttpRetry) retry);
-            consumeRetryPolicy().accept(builder, retryPolicy);
+            RetryOptions retryOptions = HTTP_RETRY_CONVERTER.convert((RetryAware.HttpRetry) retry);
+            if (retryOptions != null) {
+                if (builder instanceof HttpTrait) {
+                    ((HttpTrait<?>) builder).retryOptions(retryOptions);
+                } else {
+                    throw new IllegalArgumentException("not an http builder");
+                }
+            }
         } else {
             LOGGER.warn("Retry properties of type {} in an http client builder factory.", retry.getClass().getName());
         }
@@ -197,8 +182,12 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
      * @param builder The builder of the HTTP-based service client.
      */
     protected void configureHttpPipelinePolicies(T builder) {
-        for (HttpPipelinePolicy policy : this.httpPipelinePolicies) {
-            consumeHttpPipelinePolicy().accept(builder, policy);
+        if (builder instanceof HttpTrait) {
+            for (HttpPipelinePolicy policy : this.httpPipelinePolicies) {
+                ((HttpTrait<?>) builder).addPolicy(policy);
+            }
+        } else {
+            throw new IllegalArgumentException("builder isn't http");
         }
     }
 

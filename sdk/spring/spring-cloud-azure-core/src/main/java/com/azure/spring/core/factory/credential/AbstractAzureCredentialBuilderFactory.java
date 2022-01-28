@@ -3,18 +3,10 @@
 
 package com.azure.spring.core.factory.credential;
 
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
-import com.azure.core.util.Configuration;
 import com.azure.identity.CredentialBuilderBase;
 import com.azure.spring.core.aware.RetryAware;
 import com.azure.spring.core.aware.authentication.TokenCredentialAware;
-import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.factory.AbstractAzureHttpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.PropertyMapper;
@@ -22,8 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
-import java.util.Collections;
-import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -52,23 +42,8 @@ public abstract class AbstractAzureCredentialBuilderFactory<T extends Credential
     }
 
     @Override
-    protected BiConsumer<T, HttpClient> consumeHttpClient() {
-        return T::httpClient;
-    }
-
-    @Override
-    protected BiConsumer<T, HttpPipeline> consumeHttpPipeline() {
-        return T::httpPipeline;
-    }
-
-    @Override
     protected AzureProperties getAzureProperties() {
         return this.azureProperties;
-    }
-
-    @Override
-    protected BiConsumer<T, Configuration> consumeConfiguration() {
-        return T::configuration;
     }
 
     @Override
@@ -117,32 +92,6 @@ public abstract class AbstractAzureCredentialBuilderFactory<T extends Credential
     @Override
     protected BiConsumer<T, ClientOptions> consumeClientOptions() {
         return (a, b) -> { };
-    }
-
-    @Override
-    protected BiConsumer<T, TokenCredential> consumeDefaultTokenCredential() {
-        return (a, b) -> { };
-    }
-
-    @Override
-    protected BiConsumer<T, String> consumeConnectionString() {
-        return (a, b) -> { };
-    }
-
-    @Override
-    protected BiConsumer<T, HttpLogOptions> consumeHttpLogOptions() {
-        return (a, b) -> { };
-    }
-
-    @Override
-    protected BiConsumer<T, HttpPipelinePolicy> consumeHttpPipelinePolicy() {
-        return (a, b) -> { };
-    }
-
-    @Override
-    protected BiConsumer<T, RetryPolicy> consumeRetryPolicy() {
-        LOGGER.debug("No need to specify retry policy.");
-        return null;
     }
 
     @Override

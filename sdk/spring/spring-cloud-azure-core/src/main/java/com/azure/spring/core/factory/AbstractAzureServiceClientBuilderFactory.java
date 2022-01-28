@@ -6,6 +6,8 @@ package com.azure.spring.core.factory;
 import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
@@ -110,24 +112,6 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
      */
     protected abstract BiConsumer<T, String> consumeApplicationId();
 
-    /**
-     * Return a {@link BiConsumer} of how the {@link T} builder consume a {@link Configuration}.
-     * @return The consumer of how the {@link T} builder consume a {@link Configuration}.
-     */
-    protected abstract BiConsumer<T, Configuration> consumeConfiguration();
-
-    /**
-     * Return a {@link BiConsumer} of how the {@link T} builder consume a default {@link TokenCredential}.
-     * @return The consumer of how the {@link T} builder consume a default {@link TokenCredential}.
-     */
-    protected abstract BiConsumer<T, TokenCredential> consumeDefaultTokenCredential();
-
-    /**
-     * Return a {@link BiConsumer} of how the {@link T} builder consume a connection string.
-     * @return The consumer of how the {@link T} builder consume a connection string.
-     */
-    protected abstract BiConsumer<T, String> consumeConnectionString();
-
     private String springIdentifier;
     private ConnectionStringProvider<?> connectionStringProvider;
     private boolean credentialConfigured = false;
@@ -206,7 +190,9 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
      * @param builder The service client builder.
      */
     protected void configureConfiguration(T builder) {
-        consumeConfiguration().accept(builder, configuration);
+        if (builder instanceof ConfigurationTrait) {
+            ((ConfigurationTrait<?>) builder).configuration(configuration);
+        }
     }
 
     /**
@@ -254,18 +240,26 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
             String connectionString = ((ConnectionStringAware) azureProperties).getConnectionString();
 
             if (StringUtils.hasText(connectionString)) {
-                consumeConnectionString().accept(builder, connectionString);
-                credentialConfigured = true;
-                LOGGER.debug("Connection string configured for class {}.", builder.getClass().getSimpleName());
-                return;
+                if (builder instanceof ConnectionStringTrait) {
+                    ((ConnectionStringTrait<?>) builder).connectionString(connectionString);
+                    credentialConfigured = true;
+                    LOGGER.debug("Connection string configured for class {}.", builder.getClass().getSimpleName());
+                    return;
+                } else {
+                    throw new IllegalArgumentException("builder can't accept connection string");
+                }
             }
         }
 
         if (this.connectionStringProvider != null
                 && StringUtils.hasText(this.connectionStringProvider.getConnectionString())) {
-            consumeConnectionString().accept(builder, this.connectionStringProvider.getConnectionString());
-            credentialConfigured = true;
-            LOGGER.debug("Connection string configured for class {}.", builder.getClass().getSimpleName());
+            if (builder instanceof ConnectionStringTrait) {
+                ((ConnectionStringTrait<?>) builder).connectionString(this.connectionStringProvider.getConnectionString());
+                credentialConfigured = true;
+                LOGGER.debug("Connection string configured for class {}.", builder.getClass().getSimpleName());
+            } else {
+                throw new IllegalArgumentException("builder can't accept connection string");
+            }
         }
     }
 

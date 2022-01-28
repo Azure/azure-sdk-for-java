@@ -3,25 +3,14 @@
 
 package com.azure.spring.service.implementation.keyvault.secrets;
 
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
-import com.azure.core.util.Configuration;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
-import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
 import com.azure.spring.core.factory.AbstractAzureHttpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.PropertyMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.function.BiConsumer;
 
 /**
@@ -47,26 +36,6 @@ public class SecretClientBuilderFactory extends AbstractAzureHttpClientBuilderFa
     }
 
     @Override
-    protected BiConsumer<SecretClientBuilder, HttpClient> consumeHttpClient() {
-        return SecretClientBuilder::httpClient;
-    }
-
-    @Override
-    protected BiConsumer<SecretClientBuilder, HttpPipelinePolicy> consumeHttpPipelinePolicy() {
-        return SecretClientBuilder::addPolicy;
-    }
-
-    @Override
-    protected BiConsumer<SecretClientBuilder, HttpPipeline> consumeHttpPipeline() {
-        return SecretClientBuilder::pipeline;
-    }
-
-    @Override
-    protected BiConsumer<SecretClientBuilder, HttpLogOptions> consumeHttpLogOptions() {
-        return SecretClientBuilder::httpLogOptions;
-    }
-
-    @Override
     protected SecretClientBuilder createBuilderInstance() {
         return new SecretClientBuilder();
     }
@@ -81,26 +50,5 @@ public class SecretClientBuilderFactory extends AbstractAzureHttpClientBuilderFa
         PropertyMapper map = new PropertyMapper();
         map.from(secretClientProperties.getEndpoint()).to(builder::vaultUrl);
         map.from(secretClientProperties.getServiceVersion()).to(builder::serviceVersion);
-    }
-
-    @Override
-    protected BiConsumer<SecretClientBuilder, Configuration> consumeConfiguration() {
-        return SecretClientBuilder::configuration;
-    }
-
-    @Override
-    protected BiConsumer<SecretClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
-        return SecretClientBuilder::credential;
-    }
-
-    @Override
-    protected BiConsumer<SecretClientBuilder, String> consumeConnectionString() {
-        LOGGER.debug("Connection string is not supported to configure in SecretClientBuilder");
-        return (a, b) -> { };
-    }
-
-    @Override
-    protected BiConsumer<SecretClientBuilder, RetryPolicy> consumeRetryPolicy() {
-        return SecretClientBuilder::retryPolicy;
     }
 }

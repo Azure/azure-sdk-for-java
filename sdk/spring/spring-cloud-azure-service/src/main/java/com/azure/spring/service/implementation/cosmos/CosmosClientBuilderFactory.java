@@ -3,25 +3,19 @@
 
 package com.azure.spring.service.implementation.cosmos;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.util.Configuration;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.spring.core.aware.ProxyAware;
 import com.azure.spring.core.aware.RetryAware;
-import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.KeyAuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
 import com.azure.spring.core.factory.AbstractAzureServiceClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.PropertyMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
 
@@ -160,22 +154,5 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
     @Override
     protected BiConsumer<CosmosClientBuilder, String> consumeApplicationId() {
         return CosmosClientBuilder::userAgentSuffix;
-    }
-
-    @Override
-    protected BiConsumer<CosmosClientBuilder, Configuration> consumeConfiguration() {
-        LOGGER.warn("Configuration instance is not supported to configure in CosmosClientBuilder");
-        return (a, b) -> { };
-    }
-
-    @Override
-    protected BiConsumer<CosmosClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
-        return CosmosClientBuilder::credential;
-    }
-
-    @Override
-    protected BiConsumer<CosmosClientBuilder, String> consumeConnectionString() {
-        LOGGER.debug("Connection string is not supported to configure in CosmosClientBuilder");
-        return (a, b) -> { };
     }
 }

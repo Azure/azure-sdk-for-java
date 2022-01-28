@@ -4,8 +4,8 @@
 package com.azure.spring.core.factory;
 
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.client.traits.AmqpTrait;
 import com.azure.core.util.ClientOptions;
 import com.azure.spring.core.aware.ClientAware;
 import com.azure.spring.core.aware.ProxyAware;
@@ -27,24 +27,6 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAzureAmqpClientBuilderFactory.class);
     private ClientOptions clientOptions = new ClientOptions();
-
-    /**
-     * Return a {@link BiConsumer} of how the {@link T} builder consume a {@link ProxyOptions}.
-     * @return The consumer of how the {@link T} builder consume a {@link ProxyOptions}.
-     */
-    protected abstract BiConsumer<T, ProxyOptions> consumeProxyOptions();
-
-    /**
-     * Return a {@link BiConsumer} of how the {@link T} builder consume a {@link AmqpTransportType}.
-     * @return The consumer of how the {@link T} builder consume a {@link AmqpTransportType}.
-     */
-    protected abstract BiConsumer<T, AmqpTransportType> consumeAmqpTransportType();
-
-    /**
-     * Return a {@link BiConsumer} of how the {@link T} builder consume a {@link AmqpRetryOptions}.
-     * @return The consumer of how the {@link T} builder consume a {@link AmqpRetryOptions}.
-     */
-    protected abstract BiConsumer<T, AmqpRetryOptions> consumeAmqpRetryOptions();
 
     /**
      * Return a {@link BiConsumer} of how the {@link T} builder consume a {@link ClientOptions}.
@@ -81,7 +63,11 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
         final ClientAware.AmqpClient amqpClient;
         if (client instanceof ClientAware.AmqpClient) {
             amqpClient = (ClientAware.AmqpClient) client;
-            consumeAmqpTransportType().accept(builder, amqpClient.getTransportType());
+            if (builder instanceof AmqpTrait) {
+                ((AmqpTrait<?>) builder).transportType(amqpClient.getTransportType());
+            } else {
+                throw new IllegalArgumentException("non amqp builder");
+            }
         }
     }
 
@@ -105,7 +91,11 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
             return;
         }
         AmqpRetryOptions retryOptions = AMQP_RETRY_CONVERTER.convert(retry);
-        consumeAmqpRetryOptions().accept(builder, retryOptions);
+        if (builder instanceof AmqpTrait) {
+            ((AmqpTrait<?>) builder).retryOptions(retryOptions);
+        } else  {
+            throw new IllegalArgumentException("non amqp builder");
+        }
     }
 
     @Override
@@ -117,7 +107,11 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
 
         final ProxyOptions proxyOptions = AMQP_PROXY_CONVERTER.convert(proxy);
         if (proxyOptions != null) {
-            consumeProxyOptions().accept(builder, proxyOptions);
+            if (builder instanceof AmqpTrait) {
+                ((AmqpTrait<?>) builder).proxyOptions(proxyOptions);
+            } else {
+                throw new IllegalArgumentException("non amqp buider");
+            }
         } else {
             LOGGER.debug("No AMQP proxy properties available.");
         }

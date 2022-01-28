@@ -3,21 +3,16 @@
 
 package com.azure.spring.core.factory;
 
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.util.Configuration;
 import com.azure.spring.core.aware.authentication.ConnectionStringAware;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
-import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
-import com.azure.spring.core.properties.AzureSdkProperties;
 import com.azure.spring.core.properties.AzureProperties;
+import com.azure.spring.core.properties.AzureSdkProperties;
 import com.azure.spring.core.properties.client.ClientProperties;
 import com.azure.spring.core.properties.proxy.ProxyProperties;
 import com.azure.spring.core.properties.retry.RetryProperties;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.function.BiConsumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -148,21 +143,6 @@ class AbstractAzureServiceClientBuilderFactoryTests {
         @Override
         protected BiConsumer<TestClientBuilder, String> consumeApplicationId() {
             return TestClientBuilder::setApplicationId;
-        }
-
-        @Override
-        protected BiConsumer<TestClientBuilder, Configuration> consumeConfiguration() {
-            return (a, b) -> { };
-        }
-
-        @Override
-        protected BiConsumer<TestClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
-            return (a, b) -> { };
-        }
-
-        @Override
-        protected BiConsumer<TestClientBuilder, String> consumeConnectionString() {
-            return TestClientBuilder::setConnectionString;
         }
     }
 

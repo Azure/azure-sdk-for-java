@@ -3,17 +3,8 @@
 
 package com.azure.spring.service.implementation.eventhubs.factory;
 
-import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.AmqpTransportType;
-import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
-import com.azure.core.util.Configuration;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
-import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.NamedKeyAuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.SasAuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
 import com.azure.spring.core.factory.AbstractAzureAmqpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.PropertyMapper;
@@ -21,8 +12,6 @@ import com.azure.spring.service.implementation.eventhubs.properties.EventHubClie
 import com.azure.spring.service.implementation.eventhubs.properties.EventHubConsumerProperties;
 import com.azure.spring.service.implementation.eventhubs.properties.EventHubsNamespaceProperties;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.function.BiConsumer;
 
 /**
@@ -42,40 +31,8 @@ public class EventHubClientBuilderFactory extends AbstractAzureAmqpClientBuilder
     }
 
     @Override
-    protected BiConsumer<EventHubClientBuilder, ProxyOptions> consumeProxyOptions() {
-        return EventHubClientBuilder::proxyOptions;
-    }
-
-    @Override
-    protected BiConsumer<EventHubClientBuilder, AmqpTransportType> consumeAmqpTransportType() {
-        return EventHubClientBuilder::transportType;
-    }
-
-    @Override
-    protected BiConsumer<EventHubClientBuilder, AmqpRetryOptions> consumeAmqpRetryOptions() {
-        return EventHubClientBuilder::retry;
-    }
-
-    @Override
     protected BiConsumer<EventHubClientBuilder, ClientOptions> consumeClientOptions() {
         return EventHubClientBuilder::clientOptions;
-    }
-
-    @Override
-    protected BiConsumer<EventHubClientBuilder, Configuration> consumeConfiguration() {
-        return EventHubClientBuilder::configuration;
-    }
-
-    @Override
-    protected BiConsumer<EventHubClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
-        return (builder, tokenCredential) -> builder.credential(eventHubsProperties.getFullyQualifiedNamespace(),
-                                                                eventHubsProperties.getEventHubName(),
-                                                                tokenCredential);
-    }
-
-    @Override
-    protected BiConsumer<EventHubClientBuilder, String> consumeConnectionString() {
-        return (builder, connectionString) -> builder.connectionString(connectionString, this.eventHubsProperties.getEventHubName());
     }
 
     @Override
@@ -96,9 +53,8 @@ public class EventHubClientBuilderFactory extends AbstractAzureAmqpClientBuilder
         PropertyMapper mapper = new PropertyMapper();
 
         mapper.from(eventHubsProperties.getCustomEndpointAddress()).to(builder::customEndpointAddress);
-        // TODO kasobol-msft this requires latest EH version.
-        // mapper.from(eventHubsProperties.getFullyQualifiedNamespace()).to(builder::fullyQualifiedNamespace);
-        // mapper.from(eventHubsProperties.getEventHubName()).to(builder::eventHubName);
+        mapper.from(eventHubsProperties.getFullyQualifiedNamespace()).to(builder::fullyQualifiedNamespace);
+        mapper.from(eventHubsProperties.getEventHubName()).to(builder::eventHubName);
         mapper.from(eventHubsProperties.getCustomEndpointAddress()).to(builder::customEndpointAddress);
 
         if (this.eventHubsProperties instanceof EventHubsNamespaceProperties) {

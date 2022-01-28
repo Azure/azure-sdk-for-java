@@ -3,8 +3,9 @@
 
 package com.azure.spring.core.implementation.converter;
 
-import com.azure.core.http.policy.ExponentialBackoff;
-import com.azure.core.http.policy.FixedDelay;
+import com.azure.core.http.policy.ExponentialBackoffOptions;
+import com.azure.core.http.policy.FixedDelayOptions;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.spring.core.aware.RetryAware;
@@ -14,7 +15,7 @@ import org.springframework.lang.NonNull;
 /**
  * Converts a {@link RetryAware.HttpRetry} to a {@link RetryPolicy}.
  */
-public final class AzureHttpRetryPolicyConverter implements Converter<RetryAware.HttpRetry, RetryPolicy> {
+public final class AzureHttpRetryPolicyConverter implements Converter<RetryAware.HttpRetry, RetryOptions> {
 
     public static final AzureHttpRetryPolicyConverter HTTP_RETRY_CONVERTER = new AzureHttpRetryPolicyConverter();
 
@@ -23,10 +24,10 @@ public final class AzureHttpRetryPolicyConverter implements Converter<RetryAware
     }
 
     @Override
-    public RetryPolicy convert(@NonNull RetryAware.HttpRetry httpRetry) {
+    public RetryOptions convert(@NonNull RetryAware.HttpRetry httpRetry) {
         Integer maxAttempts = httpRetry.getMaxAttempts();
         if (maxAttempts == null) {
-            return new RetryPolicy();
+            return null;
         }
 
         final RetryAware.Backoff backoff = httpRetry.getBackoff();
@@ -34,11 +35,14 @@ public final class AzureHttpRetryPolicyConverter implements Converter<RetryAware
 
         if (backoff.getMultiplier() != null && backoff.getMultiplier() > 0) {
             // TODO (xiada): multiplier can't be set to the ExponentialBackoff, should we write our own strategy here?
-            retryStrategy = new ExponentialBackoff(maxAttempts, backoff.getDelay(), backoff.getMaxDelay());
+            return new RetryOptions(new ExponentialBackoffOptions()
+                .setMaxRetries(maxAttempts)
+                .setBaseDelay(backoff.getDelay())
+                .setMaxDelay(backoff.getMaxDelay()));
         } else {
-            retryStrategy = new FixedDelay(maxAttempts, backoff.getDelay());
+            return new RetryOptions(new FixedDelayOptions()
+                .setMaxRetries(maxAttempts)
+                .setDelay(backoff.getDelay()));
         }
-
-        return new RetryPolicy(retryStrategy, httpRetry.getRetryAfterHeader(), httpRetry.getRetryAfterTimeUnit());
     }
 }

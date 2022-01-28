@@ -3,13 +3,7 @@
 
 package com.azure.spring.service.implementation.storage.fileshare;
 
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.ClientOptions;
-import com.azure.core.util.Configuration;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.PropertyMapper;
 import com.azure.spring.service.implementation.storage.common.AbstractAzureStorageClientBuilderFactory;
@@ -44,26 +38,6 @@ public class ShareServiceClientBuilderFactory extends AbstractAzureStorageClient
     }
 
     @Override
-    protected BiConsumer<ShareServiceClientBuilder, HttpClient> consumeHttpClient() {
-        return ShareServiceClientBuilder::httpClient;
-    }
-
-    @Override
-    protected BiConsumer<ShareServiceClientBuilder, HttpPipelinePolicy> consumeHttpPipelinePolicy() {
-        return ShareServiceClientBuilder::addPolicy;
-    }
-
-    @Override
-    protected BiConsumer<ShareServiceClientBuilder, HttpPipeline> consumeHttpPipeline() {
-        return ShareServiceClientBuilder::pipeline;
-    }
-
-    @Override
-    protected BiConsumer<ShareServiceClientBuilder, HttpLogOptions> consumeHttpLogOptions() {
-        return ShareServiceClientBuilder::httpLogOptions;
-    }
-
-    @Override
     protected ShareServiceClientBuilder createBuilderInstance() {
         return new ShareServiceClientBuilder();
     }
@@ -78,22 +52,6 @@ public class ShareServiceClientBuilderFactory extends AbstractAzureStorageClient
         PropertyMapper map = new PropertyMapper();
         map.from(this.shareServiceClientProperties.getEndpoint()).to(builder::endpoint);
         map.from(this.shareServiceClientProperties.getServiceVersion()).to(builder::serviceVersion);
-    }
-
-    @Override
-    protected BiConsumer<ShareServiceClientBuilder, Configuration> consumeConfiguration() {
-        return ShareServiceClientBuilder::configuration;
-    }
-
-    @Override
-    protected BiConsumer<ShareServiceClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
-        LOGGER.warn("TokenCredential is not supported to configure in ShareServiceClientBuilder.");
-        return (a, b) -> { };
-    }
-
-    @Override
-    protected BiConsumer<ShareServiceClientBuilder, String> consumeConnectionString() {
-        return ShareServiceClientBuilder::connectionString;
     }
 
     @Override
