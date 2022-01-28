@@ -34,7 +34,8 @@ jobs:
       - template: ../variables/globals.yml
       - name: ArmTemplateParameters
         value: '@{}'
-      - TestFromSourceValue: $[ coalesce(variables.TestFromSource, variables.DefaultTestFromSource) ]
+      - name: TestFromSourceValue
+        value: $[ coalesce(variables.TestFromSource, 'false') ]
 
     timeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
 

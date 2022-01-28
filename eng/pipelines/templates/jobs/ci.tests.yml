@@ -65,7 +65,8 @@ jobs:
 
     variables:
       - template: ../variables/globals.yml
-      - TestFromSourceValue: $[ coalesce(variables.TestFromSource, variables.DefaultTestFromSource) ]
+      - name: TestFromSourceValue
+        value: $[ coalesce(variables.TestFromSource, 'false') ]
 
     steps:
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
