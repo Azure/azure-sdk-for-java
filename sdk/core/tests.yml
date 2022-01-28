@@ -78,5 +78,4 @@ stages:
           safeName: azurecorejacksontests
   - template: /sdk/storage/tests-template.yml
     parameters:
-      AdditionalMatrixReplace:
-        - TestFromSource=(.*)/true
+      TestFromSource: 'true'

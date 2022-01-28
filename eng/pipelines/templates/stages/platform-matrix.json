@@ -37,7 +37,12 @@
       },
       "JavaTestVersion": "1.11",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
-      "TestGoals": "jacoco:prepare-agent jacoco:instrument surefire:test jacoco:restore-instrumented-classes jacoco:prepare-agent jacoco:report jacoco:check",
+      "TestGoalsConfig": {
+        "test-coverage": {
+          "TestGoals": "jacoco:prepare-agent jacoco:instrument surefire:test jacoco:restore-instrumented-classes jacoco:prepare-agent jacoco:report jacoco:check",
+        }
+      },
+      "AdditionalTestGoals": "",
       "TestOptions": ""
     }
   ]

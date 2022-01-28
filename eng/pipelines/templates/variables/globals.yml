@@ -17,8 +17,20 @@ variables:
   DefaultTestOptions: '$(DefaultOptions) $(DefaultSkipOptions) -pl $(ProjectList)'
   DefaultTestMavenOptions: '$(MemoryOptions) $(LoggingOptions)'
   AdditionalOptions: ''
-  TestFromSource: false
+
+  # Exists if needed in coalesce situations.
+  DefaultTestGoals: 'surefire:test'
+  # This will be overridden by the test matrix if configured.
+  TestGoals: $(DefaultTestGoals)
+
+  # Exists if needed in coalesce situations.
+  DefaultTestFromSource: 'false'
+  # This will be overridden by the test matrix if configured.
+  TestFromSource: $(DefaultTestFromSource)
+
   AdditionalTestGoals: ''
+  AdditionalTestOptions: ''
+  AdditionalBuildOptions: ''
 
   skipComponentGovernanceDetection: true
   IsDebug: $[coalesce(variables['System.Debug'], 'false')]

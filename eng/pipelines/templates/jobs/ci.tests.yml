@@ -17,9 +17,6 @@ parameters:
   - name: PreTestSteps
     type: object
     default: []
-  - name: BuildOptions
-    type: string
-    default: ''
   - name: TestOptions
     type: string
     default: ''
@@ -40,6 +37,21 @@ parameters:
   - name: PreBuildSteps
     type: object
     default: []
+  - name: TestGoals
+    type: string
+    default: $(TestGoals)
+  - name: TestFromSource
+    type: string
+    default: $(TestFromSource)
+  - name: AdditionalTestGoals
+    type: string
+    default: $(AdditionalTestGoals)
+  - name: AdditionalTestOptions
+    type: string
+    default: $(AdditionalTestOptions)
+  - name: AdditionalBuildOptions
+    type: string
+    default: $(AdditionalBuildOptions)
 
 jobs:
   - job: 'Test'
@@ -79,12 +91,10 @@ jobs:
         parameters:
           SDKType: ${{ parameters.SDKType }}
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
-          ${{ if ne(parameters.BuildOptions, '') }}:
-            BuildOptions: ${{ parameters.BuildOptions }}
-          ${{ if ne(parameters.TestOptions, '') }}:
-            TestOptions: ${{ parameters.TestOptions }}
           ParallelTestPlayback: 'true'
           SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
-          MatrixTestOptions: $[ coalesce($(TestOptions), 'surefire:test') ]
-          ${{ if ne(variables.AdditionalOptions, '') }}:
-            MatrixAdditionalOptions: $(AdditionalOptions)
+          TestGoals: ${{ parameters.TestGoals }}
+          TestFromSource: ${{ parameters.TestFromSource }}
+          AdditionalTestGoals: ${{ parameters.AdditionalTestGoals }}
+          AdditionalTestOptions: ${{ parameters.AdditionalTestOptions }}
+          AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}

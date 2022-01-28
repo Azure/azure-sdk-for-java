@@ -5,16 +5,22 @@ parameters:
   - name: ServiceDirectory
     type: string
     default: 'not-specified' # Set a default that breaks in obvious ways.
-  - name: BuildOptions
-    type: string
-    default: '$(DefaultOptions) --quiet -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true'
   - name: BuildParallelization
     type: string
     default: '2C'
-  - name: TestOptions
+  - name: TestGoals
     type: string
-    default: '$(DefaultTestOptions) --quiet -DAZURE_TEST_DEBUG=$(IsDebug)'
-  - name: MatrixTestOptions
+    default: $(TestGoals)
+  - name: TestFromSource
+    type: string
+    default: $(TestFromSource)
+  - name: AdditionalTestGoals
+    type: string
+    default: $(AdditionalTestGoals)
+  - name: AdditionalTestOptions
+    type: string
+    default: ''
+  - name: AdditionalBuildOptions
     type: string
     default: ''
   - name: MatrixAdditionalOptions
@@ -32,9 +38,6 @@ parameters:
   - name: TestResultsFiles
     type: string
     default: ''
-  - name: SparkShading
-    type: string
-    default: ''
   - name: TestEnvVars
     type: object
     default: {}
@@ -47,29 +50,29 @@ steps:
     displayName: 'Build for non-From Source run'
     inputs:
       mavenPomFile: pom.xml
-      options: ${{ parameters.BuildOptions }} -T ${{ parameters.BuildParallelization }} ${{ parameters.SparkShading }} -pl $(ProjectList) -am
+      options: $(DefaultOptions) --quiet -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true -T ${{ parameters.BuildParallelization }} ${{ parameters.AdditionalBuildOptions }} -pl $(ProjectList) -am
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: $(JavaTestVersion)
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
       goals: 'install'
-    condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
+    condition: and(succeeded(), ne(parameters['TestFromSource'], 'true'))
 
   - task: Maven@3
     displayName: 'Run tests'
     inputs:
       mavenPomFile: pom.xml
-      options: '${{ parameters.TestOptions }} -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.MatrixTestOptions }} ${{ parameters.MatrixAdditionalOptions}} -T ${{ parameters.TestParallelization }}'
+      options: '$(DefaultTestOptions) --quiet -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.AdditionalTestOptions }} -T ${{ parameters.TestParallelization }}'
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: $(JavaTestVersion)
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
-      goals: $(TestGoals) $(AdditionalTestGoals)
+      goals: ${{ parameters.TestGoals }} ${{ parameter.AdditionalTestGoals }}
     env: ${{ parameters.TestEnvVars }}
     # we want to run this when TestFromSource isn't true
-    condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
+    condition: and(succeeded(), ne(parameters['TestFromSource'], 'true'))
 
   - task: Maven@3
     displayName: 'Generate aggregate code coverage report'
@@ -93,13 +96,13 @@ steps:
       # bloated the ci.yml files' AdditionalModules because we ended up having to list every transitive azure client
       # dependency. Note: The -T 1C says spin up a build thread per core. Since we're building
       # all the track 2, client, libraries (which is now over 100) this effectively cuts the build time in half.
-      options: ${{ parameters.BuildOptions }} -T ${{ parameters.BuildParallelization }} ${{ parameters.SparkShading }}
+      options: $(DefaultOptions) --quiet -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true -T ${{ parameters.BuildParallelization }} ${{ parameters.AdditionalBuildOptions }}
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: $(JavaBuildVersion)
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
-    condition: and(succeeded(), eq(variables['TestFromSource'],'true'))
+    condition: and(succeeded(), eq(parameters['TestFromSource'],'true'))
 
   - task: Maven@3
     displayName: 'Run tests for From Source run'
@@ -108,9 +111,9 @@ steps:
       # For the "From Source" runs we don't want the -am switch as we don't care about running tests for our
       # dependencies, but we do want the -amd switch because we want to run tests on things that depend on us.
       ${{ if eq(parameters.IsLiveTest, 'true') }}:
-        options: ${{ parameters.TestOptions }} ${{ parameters.MatrixTestOptions }} -T ${{ parameters.TestParallelization }}
+        options: $(DefaultTestOptions) --quiet -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.AdditionalTestOptions }} -T ${{ parameters.TestParallelization }}
       ${{ else }}:
-        options: ${{ parameters.TestOptions }} ${{ parameters.MatrixTestOptions }} -amd -T ${{ parameters.TestParallelization }}
+        options: $(DefaultTestOptions) --quiet -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.AdditionalTestOptions }} -amd -T ${{ parameters.TestParallelization }}
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: $(JavaTestVersion)
@@ -120,16 +123,16 @@ steps:
       # as well as libraries which depend on them and not the other stages in the Maven
       # lifecycle that test or verify targets would execute. The libraries were already
       # compiled and installed in the previous task, this tasks only runs tests.
-      goals: $(TestGoals) $(AdditionalTestGoals)
+      goals: ${{ parameters.TestGoals }} ${{ parameter.AdditionalTestGoals }}
     env: ${{ parameters.TestEnvVars }}
-    condition: and(succeeded(), eq(variables['TestFromSource'],'true'))
+    condition: and(succeeded(), eq(parameters['TestFromSource'],'true'))
 
   - template: ../steps/upload-repository-on-failure.yml
 
   - template: ../steps/retain-heap-dump-hprofs.yml
 
   - task: PublishTestResults@2
-    condition: and(always(), ne(variables['TestFromSource'],'true'))
+    condition: and(always(), ne(parameters['TestFromSource'],'true'))
     inputs:
       mergeTestResults: true
       testRunTitle: $(Agent.JobName)

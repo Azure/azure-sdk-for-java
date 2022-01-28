@@ -28,7 +28,7 @@
       "JavaTestVersion": ["1.8", "1.11"],
       "AZURE_TEST_HTTP_CLIENTS": "netty",
       "StorageRunStressScenarios" : "true",
-      "AdditionalOptions": "-DskipTests"
+      "AdditionalTestOptions": "-DskipTests"
     }
   ]
 }
