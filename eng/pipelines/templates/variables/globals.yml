@@ -23,10 +23,8 @@ variables:
   # This will be overridden by the test matrix if configured.
   TestGoals: $(DefaultTestGoals)
 
-  # Exists if needed in coalesce situations.
+  # Used in coalesce situations.
   DefaultTestFromSource: 'false'
-  # This will be overridden by the test matrix if configured.
-  TestFromSource: $(DefaultTestFromSource)
 
   AdditionalTestOptions: ''
   AdditionalBuildOptions: ''

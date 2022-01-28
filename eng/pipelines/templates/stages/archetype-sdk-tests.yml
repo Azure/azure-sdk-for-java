@@ -98,9 +98,6 @@ parameters:
 - name: TestGoals
   type: string
   default: $(TestGoals)
-- name: TestFromSource
-  type: string
-  default: $(TestFromSource)
 - name: AdditionalTestOptions
   type: string
   default: $(AdditionalTestOptions)
@@ -139,7 +136,6 @@ stages:
               TestResultsFiles: ${{ parameters.TestResultsFiles }}
               DisableAzureResourceCreation: ${{ parameters.DisableAzureResourceCreation }}
               TestGoals: ${{ parameters.TestGoals }}
-              TestFromSource: ${{ parameters.TestFromSource }}
               AdditionalTestOptions: ${{ parameters.AdditionalTestOptions }}
               AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}
 

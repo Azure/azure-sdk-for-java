@@ -19,7 +19,6 @@ parameters:
   DisableAzureResourceCreation: false
   BuildParallelization: '2C'
   TestGoals: $(TestGoals)
-  TestFromSource: $(TestFromSource)
   AdditionalTestOptions: $(AdditionalTestOptions)
   AdditionalBuildOptions: $(AdditionalBuildOptions)
 
@@ -53,7 +52,6 @@ jobs:
           AdditionalModules: ${{ parameters.AdditionalModules }}
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           SDKType: ${{ parameters.SDKType }}
-          TestFromSource: ${{ parameters.TestFromSource }}
 
       - template: ../steps/install-reporting-tools.yml
 
@@ -92,7 +90,6 @@ jobs:
           BuildParallelization: ${{ parameters.BuildParallelization }}
           IsLiveTest: true
           TestGoals: ${{ parameters.TestGoals }}
-          TestFromSource: ${{ parameters.TestFromSource }}
           AdditionalTestOptions: ${{ parameters.AdditionalTestOptions }}
           AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}
           TestEnvVars:
