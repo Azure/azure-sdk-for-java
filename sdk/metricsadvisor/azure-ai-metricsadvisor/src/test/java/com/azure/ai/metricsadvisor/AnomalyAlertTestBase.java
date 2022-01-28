@@ -46,7 +46,7 @@ public abstract class AnomalyAlertTestBase extends MetricsAdvisorAdministrationC
         return new AnomalyAlertConfiguration("test_alert_configuration")
             .setDescription("testing_alert_configuration_description")
             .addMetricAlertConfiguration(metricAnomalyAlertConfiguration)
-            .setHookIdsToAlert(new ArrayList<String>() {{ add(ALERT_HOOK_ID); }});
+            .setHookIdsToAlert(Collections.emptyList());
     }
 
     void validateAnomalyAlertResult(AnomalyAlertConfiguration expectedAnomalyAlertConfiguration,
