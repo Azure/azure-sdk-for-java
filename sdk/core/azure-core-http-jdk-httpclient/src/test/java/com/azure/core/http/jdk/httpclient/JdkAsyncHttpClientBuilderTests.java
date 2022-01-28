@@ -11,16 +11,16 @@ import com.azure.core.util.Configuration;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import java.util.Arrays;
-import java.util.Properties;
-import java.util.Set;
-import java.util.TreeSet;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledForJreRange;
 import org.junit.jupiter.api.condition.JRE;
 import reactor.test.StepVerifier;
 
 import java.net.InetSocketAddress;
+import java.util.Arrays;
+import java.util.Properties;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -164,6 +164,7 @@ public class JdkAsyncHttpClientBuilderTests {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     public void buildWithHttpProxyFromConfiguration() {
         final String proxyUserName = "foo";
         final String proxyPassword = "bar";
@@ -218,6 +219,7 @@ public class JdkAsyncHttpClientBuilderTests {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     public void buildWithNonProxyConfigurationProxy() {
         final Configuration configuration = new Configuration()
             .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:8888")
@@ -259,6 +261,7 @@ public class JdkAsyncHttpClientBuilderTests {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     void testAllowedHeadersFromConfiguration() {
         Configuration configuration = Configuration.getGlobalConfiguration();
         configuration.put("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade");
@@ -277,6 +280,7 @@ public class JdkAsyncHttpClientBuilderTests {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     void testAllowedHeadersFromBoth() {
         Configuration configuration = Configuration.getGlobalConfiguration();
         configuration.put("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade");

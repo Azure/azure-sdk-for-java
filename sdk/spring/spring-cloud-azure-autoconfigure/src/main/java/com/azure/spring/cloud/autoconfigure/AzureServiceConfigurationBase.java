@@ -31,7 +31,6 @@ import java.util.stream.StreamSupport;
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties
 public abstract class AzureServiceConfigurationBase {
-
     protected AzureGlobalProperties azureGlobalProperties;
 
     /**
@@ -41,6 +40,14 @@ public abstract class AzureServiceConfigurationBase {
     public AzureServiceConfigurationBase(AzureGlobalProperties azureProperties) {
         this.azureGlobalProperties = azureProperties;
     }
+
+    @Bean
+    @ConditionalOnMissingBean
+    com.azure.core.util.ConfigurationBuilder sdkConfigurationBuilder(Environment env) {
+        return new ConfigurationBuilder( new SdkPropertySource(env))
+            .root(AzureGlobalProperties.PREFIX);
+    }
+
 
     /**
      * Load the default value to an Azure Service properties from the global Azure properties.
@@ -77,5 +84,29 @@ public abstract class AzureServiceConfigurationBase {
         }
 
         return target;
+    }
+
+    private static class SdkPropertySource implements com.azure.core.util.ConfigurationSource {
+
+        private final Environment env;
+        public SdkPropertySource(Environment env) {
+            this.env = env;
+        }
+
+        @Override
+        public Set<String> getChildKeys(String path) {
+            MutablePropertySources propSrcs = ((AbstractEnvironment) env).getPropertySources();
+            return StreamSupport.stream(propSrcs.spliterator(), false)
+                .filter(ps -> ps instanceof EnumerablePropertySource)
+                .map(ps -> ((EnumerablePropertySource) ps).getPropertyNames())
+                .flatMap(Arrays::<String>stream)
+                .filter(propName -> propName.startsWith(path) && propName.length() > path.length() && propName.charAt(path.length()) == '.')
+                .collect(Collectors.toSet());
+        }
+
+        @Override
+        public String getValue(String propertyName) {
+            return env.getProperty(propertyName);
+        }
     }
 }

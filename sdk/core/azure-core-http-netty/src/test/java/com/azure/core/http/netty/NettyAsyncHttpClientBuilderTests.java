@@ -52,6 +52,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * Tests {@link NettyAsyncHttpClientBuilder}.
  */
+@SuppressWarnings("deprecation")
 public class NettyAsyncHttpClientBuilderTests {
     private static final String DEFAULT_PATH = "/default";
     private static final String PREBUILT_CLIENT_PATH = "/prebuiltClient";
