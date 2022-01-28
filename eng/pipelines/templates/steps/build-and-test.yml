@@ -17,9 +17,6 @@ parameters:
   - name: AdditionalBuildOptions
     type: string
     default: ''
-  - name: MatrixAdditionalOptions
-    type: string
-    default: ''
   - name: TestParallelization
     type: string
     default: '1C'
@@ -38,9 +35,6 @@ parameters:
   - name: IsLiveTest
     type: boolean
     default: false
-  - name: TestFromSource
-    type: string
-    default: ''
 
 steps:
   - task: Maven@3
@@ -54,7 +48,7 @@ steps:
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
       goals: 'install'
-    condition: and(succeeded(), ne('${{ parameters.TestFromSource }}', 'true'))
+    condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
 
   - task: Maven@3
     displayName: 'Run tests'
@@ -69,7 +63,7 @@ steps:
       goals: ${{ parameters.TestGoals }}
     env: ${{ parameters.TestEnvVars }}
     # we want to run this when TestFromSource isn't true
-    condition: and(succeeded(), ne('${{ parameters.TestFromSource }}', 'true'))
+    condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
 
   - task: Maven@3
     displayName: 'Generate aggregate code coverage report'
@@ -99,7 +93,7 @@ steps:
       jdkVersionOption: $(JavaBuildVersion)
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
-    condition: and(succeeded(), eq('${{ parameters.TestFromSource }}', 'true'))
+    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   - task: Maven@3
     displayName: 'Run tests for From Source run'
@@ -122,14 +116,14 @@ steps:
       # compiled and installed in the previous task, this tasks only runs tests.
       goals: ${{ parameters.TestGoals }}
     env: ${{ parameters.TestEnvVars }}
-    condition: and(succeeded(), eq('${{ parameters.TestFromSource }}', 'true'))
+    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   - template: ../steps/upload-repository-on-failure.yml
 
   - template: ../steps/retain-heap-dump-hprofs.yml
 
   - task: PublishTestResults@2
-    condition: and(always(), ne('${{ parameters.TestFromSource }}', 'true'))
+    condition: and(always(), ne(variables['TestFromSource'], 'true'))
     inputs:
       mergeTestResults: true
       testRunTitle: $(Agent.JobName)

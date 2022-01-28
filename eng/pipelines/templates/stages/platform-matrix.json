@@ -10,6 +10,7 @@
     },
     "JavaTestVersion": [ "1.8", "1.11" ],
     "AZURE_TEST_HTTP_CLIENTS": [ "okhttp", "netty" ],
+    "TestFromSource": false,
     "TestGoals": "surefire:test",
     "TestOptions": ""
   },
@@ -36,6 +37,7 @@
       },
       "JavaTestVersion": "1.11",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
+      "TestFromSource": false,
       "TestGoals": "verify",
       "AdditionalTestOptions": "-Dmaven.main.skip=true",
       "TestOptions": ""

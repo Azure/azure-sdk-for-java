@@ -1,7 +1,7 @@
 parameters:
-  - name: TestFromSource
-    type: string
-    default: $(TestFromSource)
+  - name: AdditionalMatrixReplace
+    type: object
+    default: []
 
 stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
@@ -56,6 +56,8 @@ stages:
       MatrixReplace:
         # Use dedicated storage pool in canadacentral with higher memory capacity
         - Pool=(.*)-general/$1-storage
+        - ${{ each additionalReplace in parameters.AdditionalMatrixReplace }}:
+            - ${{ additionalReplace }}
       MatrixConfigs:
         - ${{ if contains(variables['Build.DefinitionName'], 'tests-weekly') }}:
             - Name: Storage_all_versions_live_test

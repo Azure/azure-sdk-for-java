@@ -34,8 +34,6 @@ jobs:
       - template: ../variables/globals.yml
       - name: ArmTemplateParameters
         value: '@{}'
-      - name: TestFromSourceValue
-        value: $[ coalesce(variables.TestFromSource, 'false') ]
 
     timeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
 
@@ -54,7 +52,6 @@ jobs:
           AdditionalModules: ${{ parameters.AdditionalModules }}
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           SDKType: ${{ parameters.SDKType }}
-          TestFromSource: $(TestFromSourceValue)
 
       - template: ../steps/install-reporting-tools.yml
 
@@ -95,7 +92,6 @@ jobs:
           TestGoals: ${{ parameters.TestGoals }}
           AdditionalTestOptions: ${{ parameters.AdditionalTestOptions }}
           AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}
-          TestFromSource: $(TestFromSourceValue)
           TestEnvVars:
             AZURE_TEST_MODE: ${{ parameters.TestMode }}
             ${{ each var in parameters.EnvVars }}:
