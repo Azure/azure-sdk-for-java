@@ -14,7 +14,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-eventhubs</artifactId>
-  <version>3.2.0-rcca-5308-1</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs;current} -->
+  <version>3.2.0-rcca-5308-2</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs;current} -->
 
   <name>Microsoft Azure SDK for Event Hubs</name>
   <description>Libraries built on Microsoft Azure Event Hubs</description>
@@ -35,7 +35,7 @@
     <dependency>
       <groupId>org.apache.qpid</groupId>
       <artifactId>proton-j</artifactId>
-      <version>0.33.4</version> <!-- {x-version-update;org.apache.qpid:proton-j;external_dependency} -->
+      <version>0.33.4-rcca-5308-1</version> <!-- {x-version-update;org.apache.qpid:proton-j;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
