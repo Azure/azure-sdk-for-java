@@ -119,12 +119,13 @@ stages:
           displayName: Generate Interdependency Report Data
 
         - pwsh: |
-            Copy-Item -Path target/site/apidocs/* -Destination $(Build.ArtifactStagingDirectory)/staging/apidocs -Recurse
-            Copy-Item -Path eng/jacoco-test-coverage/target/site/test-coverage -Destination $(Build.ArtifactStagingDirectory)/staging/test-coverage -Recurse
+            Copy-Item -Path target/site/apidocs/* -Destination $(Build.ArtifactStagingDirectory)/staging/apidocs -Force -Recurse
+            Copy-Item -Path eng/jacoco-test-coverage/target/site/test-coverage -Destination $(Build.ArtifactStagingDirectory)/staging/test-coverage -Force -Recurse
             Copy-Item eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
             Copy-Item eng/code-quality-reports/src/main/resources/dependency-allowlist.html $(Build.ArtifactStagingDirectory)/staging
             Copy-Item eng/common/InterdependencyGraph.html $(Build.ArtifactStagingDirectory)/staging
             Copy-Item data.js $(Build.ArtifactStagingDirectory)/staging
+            Get-ChildItem -Path $(Build.ArtifactStagingDirectory) -Recurse
           displayName: 'Copy reports to artifact staging'
 
         - pwsh: |
