@@ -3,25 +3,14 @@
 
 package com.azure.spring.service.implementation.servicebus.factory;
 
-import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.AmqpTransportType;
-import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
-import com.azure.core.util.Configuration;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.NamedKeyAuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.SasAuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
 import com.azure.spring.core.factory.AbstractAzureAmqpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.PropertyMapper;
 import com.azure.spring.service.implementation.servicebus.properties.ServiceBusClientCommonProperties;
 import com.azure.spring.service.implementation.servicebus.properties.ServiceBusNamespaceProperties;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.function.BiConsumer;
 
 /**
@@ -40,21 +29,6 @@ public class ServiceBusClientBuilderFactory extends AbstractAzureAmqpClientBuild
     }
 
     @Override
-    protected BiConsumer<ServiceBusClientBuilder, ProxyOptions> consumeProxyOptions() {
-        return ServiceBusClientBuilder::proxyOptions;
-    }
-
-    @Override
-    protected BiConsumer<ServiceBusClientBuilder, AmqpTransportType> consumeAmqpTransportType() {
-        return ServiceBusClientBuilder::transportType;
-    }
-
-    @Override
-    protected BiConsumer<ServiceBusClientBuilder, AmqpRetryOptions> consumeAmqpRetryOptions() {
-        return ServiceBusClientBuilder::retryOptions;
-    }
-
-    @Override
     protected BiConsumer<ServiceBusClientBuilder, ClientOptions> consumeClientOptions() {
         return ServiceBusClientBuilder::clientOptions;
     }
@@ -70,40 +44,14 @@ public class ServiceBusClientBuilderFactory extends AbstractAzureAmqpClientBuild
     }
 
     @Override
-    protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(ServiceBusClientBuilder builder) {
-        return Arrays.asList(
-            new NamedKeyAuthenticationDescriptor(provider -> builder.credential(
-                clientCommonProperties.getFullyQualifiedNamespace(), provider.getCredential())),
-            new SasAuthenticationDescriptor(provider -> builder.credential(
-                clientCommonProperties.getFullyQualifiedNamespace(), provider.getCredential())),
-            new TokenAuthenticationDescriptor(provider -> builder.credential(
-                clientCommonProperties.getFullyQualifiedNamespace(), provider.getCredential()))
-        );
-    }
-
-    @Override
     protected void configureService(ServiceBusClientBuilder builder) {
         PropertyMapper mapper = new PropertyMapper();
 
         if (this.clientCommonProperties instanceof ServiceBusNamespaceProperties) {
             mapper.from(((ServiceBusNamespaceProperties) this.clientCommonProperties).getCrossEntityTransactions())
                   .whenTrue().to(t -> builder.enableCrossEntityTransactions());
+            mapper.from(this.clientCommonProperties.getFullyQualifiedNamespace())
+                .to(builder::fullyQualifiedNamespace);
         }
-    }
-
-    @Override
-    protected BiConsumer<ServiceBusClientBuilder, Configuration> consumeConfiguration() {
-        return ServiceBusClientBuilder::configuration;
-    }
-
-    @Override
-    protected BiConsumer<ServiceBusClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
-        return (builder, tokenCredential) -> builder.credential(clientCommonProperties.getFullyQualifiedNamespace(),
-            tokenCredential);
-    }
-
-    @Override
-    protected BiConsumer<ServiceBusClientBuilder, String> consumeConnectionString() {
-        return ServiceBusClientBuilder::connectionString;
     }
 }

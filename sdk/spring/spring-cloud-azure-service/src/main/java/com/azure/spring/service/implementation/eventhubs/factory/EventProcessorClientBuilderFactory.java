@@ -3,20 +3,11 @@
 
 package com.azure.spring.service.implementation.eventhubs.factory;
 
-import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.AmqpTransportType;
-import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
-import com.azure.core.util.Configuration;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.NamedKeyAuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.SasAuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
 import com.azure.spring.core.factory.AbstractAzureAmqpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.PropertyMapper;
@@ -27,8 +18,6 @@ import com.azure.spring.service.implementation.eventhubs.properties.EventProcess
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
@@ -61,21 +50,6 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
     }
 
     @Override
-    protected BiConsumer<EventProcessorClientBuilder, ProxyOptions> consumeProxyOptions() {
-        return EventProcessorClientBuilder::proxyOptions;
-    }
-
-    @Override
-    protected BiConsumer<EventProcessorClientBuilder, AmqpTransportType> consumeAmqpTransportType() {
-        return EventProcessorClientBuilder::transportType;
-    }
-
-    @Override
-    protected BiConsumer<EventProcessorClientBuilder, AmqpRetryOptions> consumeAmqpRetryOptions() {
-        return EventProcessorClientBuilder::retry;
-    }
-
-    @Override
     protected BiConsumer<EventProcessorClientBuilder, ClientOptions> consumeClientOptions() {
         return EventProcessorClientBuilder::clientOptions;
     }
@@ -102,6 +76,8 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
         map.from(eventProcessorClientProperties.getLoadBalancing().getPartitionOwnershipExpirationInterval()).to(builder::partitionOwnershipExpirationInterval);
         map.from(eventProcessorClientProperties.getLoadBalancing().getStrategy()).to(builder::loadBalancingStrategy);
         map.from(eventProcessorClientProperties.getLoadBalancing().getUpdateInterval()).to(builder::loadBalancingUpdateInterval);
+        map.from(eventProcessorClientProperties.getFullyQualifiedNamespace()).to(builder::fullyQualifiedNamespace);
+        map.from(eventProcessorClientProperties.getEventHubName()).to(builder::eventHubName);
 
         map.from(eventProcessorClientProperties.getInitialPartitionEventPosition()).when(c -> !CollectionUtils.isEmpty(c))
                 .to(m -> {
@@ -113,43 +89,6 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
                 });
         configureCheckpointStore(builder);
         configureProcessorListener(builder);
-    }
-
-    //Credentials have not been set. They can be set using:
-    // connectionString(String),
-    // connectionString(String, String),
-    // credentials(String, String, TokenCredential),
-    // or setting the environment variable 'AZURE_EVENT_HUBS_CONNECTION_STRING' with a connection string
-    @Override
-    protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(EventProcessorClientBuilder builder) {
-        return Arrays.asList(
-            new NamedKeyAuthenticationDescriptor(provider -> builder.credential(eventProcessorClientProperties.getFullyQualifiedNamespace(),
-                eventProcessorClientProperties.getEventHubName(),
-                provider.getCredential())),
-            new SasAuthenticationDescriptor(provider -> builder.credential(eventProcessorClientProperties.getFullyQualifiedNamespace(),
-                eventProcessorClientProperties.getEventHubName(),
-                provider.getCredential())),
-            new TokenAuthenticationDescriptor(provider -> builder.credential(eventProcessorClientProperties.getFullyQualifiedNamespace(),
-                eventProcessorClientProperties.getEventHubName(),
-                provider.getCredential()))
-        );
-    }
-
-    @Override
-    protected BiConsumer<EventProcessorClientBuilder, Configuration> consumeConfiguration() {
-        return EventProcessorClientBuilder::configuration;
-    }
-
-    @Override
-    protected BiConsumer<EventProcessorClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
-        return (builder, tokenCredential) -> builder.credential(eventProcessorClientProperties.getFullyQualifiedNamespace(),
-            eventProcessorClientProperties.getEventHubName(),
-            tokenCredential);
-    }
-
-    @Override
-    protected BiConsumer<EventProcessorClientBuilder, String> consumeConnectionString() {
-        return (builder, s) -> builder.connectionString(s, this.eventProcessorClientProperties.getEventHubName());
     }
 
     private void configureCheckpointStore(EventProcessorClientBuilder builder) {

@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.trace.sleuth;
 
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.spring.core.trace.AzureHttpClientBuilderFactoryBeanPostProcessor;
+import com.azure.spring.core.trace.HttpTraitPostProcessor;
 import com.azure.spring.tracing.sleuth.SleuthHttpPolicy;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -36,7 +36,7 @@ public class AzureSleuthAutoConfiguration {
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     @Bean
     @ConditionalOnMissingBean
-    public AzureHttpClientBuilderFactoryBeanPostProcessor httpClientBuilderFactoryBeanPostProcessor() {
-        return new AzureHttpClientBuilderFactoryBeanPostProcessor(DEFAULT_SLEUTH_HTTP_POLICY_BEAN_NAME);
+    public HttpTraitPostProcessor httpClientBuilderFactoryBeanPostProcessor() {
+        return new HttpTraitPostProcessor(DEFAULT_SLEUTH_HTTP_POLICY_BEAN_NAME);
     }
 }

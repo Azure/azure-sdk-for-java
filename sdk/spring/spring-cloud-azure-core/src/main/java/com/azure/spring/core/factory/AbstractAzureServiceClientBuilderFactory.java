@@ -3,6 +3,12 @@
 
 package com.azure.spring.core.factory;
 
+import com.azure.core.client.traits.AzureKeyCredentialTrait;
+import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
+import com.azure.core.client.traits.AzureSasCredentialTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -12,6 +18,10 @@ import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.credential.AzureCredentialResolver;
 import com.azure.spring.core.credential.AzureCredentialResolvers;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
+import com.azure.spring.core.credential.descriptor.KeyAuthenticationDescriptor;
+import com.azure.spring.core.credential.descriptor.NamedKeyAuthenticationDescriptor;
+import com.azure.spring.core.credential.descriptor.SasAuthenticationDescriptor;
+import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
 import com.azure.spring.core.credential.provider.AzureCredentialProvider;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.properties.AzureProperties;
@@ -56,7 +66,27 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
      * @param builder The service client builder.
      * @return A list of {@link AuthenticationDescriptor}.
      */
-    protected abstract List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(T builder);
+    private List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(T builder) {
+        List<AuthenticationDescriptor<?>> descriptors = new ArrayList<>();
+        if (builder instanceof AzureKeyCredentialTrait) {
+            descriptors.add(new KeyAuthenticationDescriptor(provider -> ((AzureKeyCredentialTrait) builder)
+                .credential(provider.getCredential())));
+        }
+        if (builder instanceof AzureNamedKeyCredentialTrait) {
+            descriptors.add(new NamedKeyAuthenticationDescriptor(provider -> ((AzureNamedKeyCredentialTrait) builder)
+                .credential(provider.getCredential())));
+        }
+        if (builder instanceof TokenCredentialTrait) {
+            descriptors.add(new TokenAuthenticationDescriptor(provider -> ((TokenCredentialTrait) builder)
+                .credential(provider.getCredential())));
+        }
+        if (builder instanceof AzureSasCredentialTrait) {
+            descriptors.add(new SasAuthenticationDescriptor(provider -> ((AzureSasCredentialTrait) builder)
+                .credential(provider.getCredential())));
+        }
+
+        return descriptors;
+    }
 
     /**
      * Configure proxy to the builder.
@@ -81,24 +111,6 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
      * @return The consumer of how the {@link T} builder consume the application id.
      */
     protected abstract BiConsumer<T, String> consumeApplicationId();
-
-    /**
-     * Return a {@link BiConsumer} of how the {@link T} builder consume a {@link Configuration}.
-     * @return The consumer of how the {@link T} builder consume a {@link Configuration}.
-     */
-    protected abstract BiConsumer<T, Configuration> consumeConfiguration();
-
-    /**
-     * Return a {@link BiConsumer} of how the {@link T} builder consume a default {@link TokenCredential}.
-     * @return The consumer of how the {@link T} builder consume a default {@link TokenCredential}.
-     */
-    protected abstract BiConsumer<T, TokenCredential> consumeDefaultTokenCredential();
-
-    /**
-     * Return a {@link BiConsumer} of how the {@link T} builder consume a connection string.
-     * @return The consumer of how the {@link T} builder consume a connection string.
-     */
-    protected abstract BiConsumer<T, String> consumeConnectionString();
 
     private String springIdentifier;
     private ConnectionStringProvider<?> connectionStringProvider;
@@ -178,7 +190,9 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
      * @param builder The service client builder.
      */
     protected void configureConfiguration(T builder) {
-        consumeConfiguration().accept(builder, configuration);
+        if (builder instanceof ConfigurationTrait) {
+            ((ConfigurationTrait<?>) builder).configuration(configuration);
+        }
     }
 
     /**
@@ -226,18 +240,26 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
             String connectionString = ((ConnectionStringAware) azureProperties).getConnectionString();
 
             if (StringUtils.hasText(connectionString)) {
-                consumeConnectionString().accept(builder, connectionString);
-                credentialConfigured = true;
-                LOGGER.debug("Connection string configured for class {}.", builder.getClass().getSimpleName());
-                return;
+                if (builder instanceof ConnectionStringTrait) {
+                    ((ConnectionStringTrait<?>) builder).connectionString(connectionString);
+                    credentialConfigured = true;
+                    LOGGER.debug("Connection string configured for class {}.", builder.getClass().getSimpleName());
+                    return;
+                } else {
+                    throw new IllegalArgumentException("builder can't accept connection string");
+                }
             }
         }
 
         if (this.connectionStringProvider != null
                 && StringUtils.hasText(this.connectionStringProvider.getConnectionString())) {
-            consumeConnectionString().accept(builder, this.connectionStringProvider.getConnectionString());
-            credentialConfigured = true;
-            LOGGER.debug("Connection string configured for class {}.", builder.getClass().getSimpleName());
+            if (builder instanceof ConnectionStringTrait) {
+                ((ConnectionStringTrait<?>) builder).connectionString(this.connectionStringProvider.getConnectionString());
+                credentialConfigured = true;
+                LOGGER.debug("Connection string configured for class {}.", builder.getClass().getSimpleName());
+            } else {
+                throw new IllegalArgumentException("builder can't accept connection string");
+            }
         }
     }
 
@@ -248,9 +270,12 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
      * @param builder The service client builder.
      */
     protected void configureDefaultCredential(T builder) {
-        if (!credentialConfigured) {
+        if (!credentialConfigured && builder instanceof TokenCredentialTrait) {
             LOGGER.info("Will configure the default credential for {}.", builder.getClass());
-            consumeDefaultTokenCredential().accept(builder, this.defaultTokenCredential);
+            // TODO kasobol-msft how do we keep track if default credential has been set?
+            // Should builder or configuration do it implicitly if nothing was configured?
+            // Perhaps there could be some default/global flag driving such behavior - enabled by default for Spring.
+            ((TokenCredentialTrait<?>) builder).credential(this.defaultTokenCredential);
         }
     }
 
