@@ -13,6 +13,9 @@ parameters:
   - name: SDKType
     type: string
     default: client
+  - name: TestFromSource
+    type: string
+    default: ''
 
 steps:
   - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
@@ -38,14 +41,14 @@ steps:
     inputs:
       scriptPath: 'eng/versioning/set_versions.py'
       arguments: '--build-type client --pst'
-    condition: and(succeeded(), eq('$[ coalesce(variables.TestFromSource, variables.DefaultTestFromSource) ]', 'true'))
+    condition: and(succeeded(), eq('${{ parameters.TestFromSource }}', 'true'))
 
   - task: PythonScript@0
     displayName: 'Update versions for source build'
     inputs:
       scriptPath: 'eng/versioning/update_versions.py'
       arguments: '--update-type library --build-type client --sr'
-    condition: and(succeeded(), eq('$[ coalesce(variables.TestFromSource, variables.DefaultTestFromSource) ]', 'true'))
+    condition: and(succeeded(), eq('${{ parameters.TestFromSource }}', 'true'))
 
   - template: generate-project-list.yml
     parameters:

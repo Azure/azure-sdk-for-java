@@ -65,6 +65,7 @@ jobs:
 
     variables:
       - template: ../variables/globals.yml
+      - TestFromSourceValue: $[ coalesce(variables.TestFromSource, variables.DefaultTestFromSource) ]
 
     steps:
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
@@ -74,6 +75,7 @@ jobs:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           CheckoutRecordings: true
           SDKType: ${{ parameters.SDKType }}
+          TestFromSource: $(TestFromSourceValue)
 
       - template: ../steps/install-reporting-tools.yml
 
@@ -90,3 +92,4 @@ jobs:
           TestGoals: ${{ parameters.TestGoals }}
           AdditionalTestOptions: ${{ parameters.AdditionalTestOptions }}
           AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}
+          TestFromSource: $(TestFromSourceValue)
