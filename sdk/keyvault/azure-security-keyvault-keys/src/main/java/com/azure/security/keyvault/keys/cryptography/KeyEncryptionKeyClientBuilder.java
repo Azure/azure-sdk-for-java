@@ -322,7 +322,8 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
     @Override
     public KeyEncryptionKeyClientBuilder retryOptions(RetryOptions retryOptions) {
         Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        return retryPolicy(new RetryPolicy(retryOptions));
+        builder.retryOptions(retryOptions);
+        return this;
     }
 
     /**

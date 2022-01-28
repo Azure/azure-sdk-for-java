@@ -136,6 +136,7 @@ public final class ConfigurationClientBuilder implements
     private HttpLogOptions httpLogOptions;
     private HttpPipeline pipeline;
     private HttpPipelinePolicy retryPolicy;
+    private RetryOptions retryOptions;
     private Configuration configuration;
     private ConfigurationServiceVersion version;
 
@@ -215,7 +216,7 @@ public final class ConfigurationClientBuilder implements
         policies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
-        policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
+        policies.add(getRetryPolicy());
 
         policies.add(new AddDatePolicy());
 
@@ -251,6 +252,20 @@ public final class ConfigurationClientBuilder implements
                                     .build();
 
         return new ConfigurationAsyncClient(buildEndpoint, pipeline, serviceVersion, syncTokenPolicy);
+    }
+
+    private HttpPipelinePolicy getRetryPolicy() {
+        if (retryPolicy != null && retryOptions != null) {
+            throw logger.logExceptionAsWarning(
+                new IllegalStateException("'retryPolicy' and 'retryOptions' cannot both be set"));
+        }
+        if (retryPolicy != null) {
+            return retryPolicy;
+        } else if (retryOptions != null) {
+            return new RetryPolicy(retryOptions);
+        } else {
+            return DEFAULT_RETRY_POLICY;
+        }
     }
 
     /**
@@ -447,7 +462,8 @@ public final class ConfigurationClientBuilder implements
     @Override
     public ConfigurationClientBuilder retryOptions(RetryOptions retryOptions) {
         Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        return retryPolicy(new RetryPolicy(retryOptions));
+        this.retryOptions = retryOptions;
+        return this;
     }
 
     /**

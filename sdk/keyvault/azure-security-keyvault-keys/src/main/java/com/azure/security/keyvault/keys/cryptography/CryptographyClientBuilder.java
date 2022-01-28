@@ -145,6 +145,7 @@ public final class CryptographyClientBuilder implements
     private HttpPipeline pipeline;
     private JsonWebKey jsonWebKey;
     private RetryPolicy retryPolicy;
+    private RetryOptions retryOptions;
     private String keyId;
     private TokenCredential credential;
 
@@ -156,7 +157,6 @@ public final class CryptographyClientBuilder implements
         perCallPolicies = new ArrayList<>();
         perRetryPolicies = new ArrayList<>();
         properties = CoreUtils.getProperties(AZURE_KEY_VAULT_KEYS);
-        retryPolicy = new RetryPolicy();
     }
 
     /**
@@ -256,7 +256,7 @@ public final class CryptographyClientBuilder implements
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
         // Add retry policy.
-        policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
+        policies.add(getRetryPolicy());
 
         policies.add(new KeyVaultCredentialPolicy(credential));
 
@@ -270,6 +270,20 @@ public final class CryptographyClientBuilder implements
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
+    }
+
+    private HttpPipelinePolicy getRetryPolicy() {
+        if (retryPolicy != null && retryOptions != null) {
+            throw logger.logExceptionAsWarning(
+                new IllegalStateException("'retryPolicy' and 'retryOptions' cannot both be set"));
+        }
+        if (retryPolicy != null) {
+            return retryPolicy;
+        } else if (retryOptions != null) {
+            return new RetryPolicy(retryOptions);
+        } else {
+            return new RetryPolicy();
+        }
     }
 
     TokenCredential getCredential() {
@@ -479,7 +493,8 @@ public final class CryptographyClientBuilder implements
     @Override
     public CryptographyClientBuilder retryOptions(RetryOptions retryOptions) {
         Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        return retryPolicy(new RetryPolicy(retryOptions));
+        this.retryOptions = retryOptions;
+        return this;
     }
 
     /**

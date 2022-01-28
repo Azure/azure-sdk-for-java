@@ -96,6 +96,7 @@ public final class TableServiceClientBuilder implements
     private TokenCredential tokenCredential;
     private String sasToken;
     private RetryPolicy retryPolicy;
+    private RetryOptions retryOptions;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link TableServiceClient} and
@@ -188,7 +189,7 @@ public final class TableServiceClientBuilder implements
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             namedKeyCredential != null ? namedKeyCredential : azureNamedKeyCredential, azureSasCredential,
-            tokenCredential, sasToken, endpoint, retryPolicy, httpLogOptions, clientOptions, httpClient,
+            tokenCredential, sasToken, endpoint, retryPolicy, retryOptions, httpLogOptions, clientOptions, httpClient,
             perCallPolicies, perRetryPolicies, configuration, logger);
 
         return new TableServiceAsyncClient(pipeline, endpoint, serviceVersion, serializerAdapter);
@@ -478,7 +479,8 @@ public final class TableServiceClientBuilder implements
     @Override
     public TableServiceClientBuilder retryOptions(RetryOptions retryOptions) {
         Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        return retryPolicy(new RetryPolicy(retryOptions));
+        this.retryOptions = retryOptions;
+        return this;
     }
 
     /**

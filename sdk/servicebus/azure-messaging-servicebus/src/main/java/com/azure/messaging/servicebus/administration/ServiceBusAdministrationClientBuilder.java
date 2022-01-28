@@ -114,6 +114,7 @@ public final class ServiceBusAdministrationClientBuilder implements
     private HttpLogOptions httpLogOptions = new HttpLogOptions();
     private HttpPipeline pipeline;
     private HttpPipelinePolicy retryPolicy;
+    private RetryOptions retryOptions;
     private TokenCredential tokenCredential;
     private ServiceBusServiceVersion serviceVersion;
     private ClientOptions clientOptions;
@@ -397,7 +398,8 @@ public final class ServiceBusAdministrationClientBuilder implements
     @Override
     public ServiceBusAdministrationClientBuilder retryOptions(RetryOptions retryOptions) {
         Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        return retryPolicy(new RetryPolicy(retryOptions));
+        this.retryOptions = retryOptions;
+        return this;
     }
 
     /**
@@ -442,7 +444,7 @@ public final class ServiceBusAdministrationClientBuilder implements
 
         HttpPolicyProviders.addBeforeRetryPolicies(httpPolicies);
 
-        httpPolicies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
+        httpPolicies.add(getRetryPolicy());
         httpPolicies.addAll(perRetryPolicies);
 
         if (clientOptions != null) {
@@ -463,5 +465,19 @@ public final class ServiceBusAdministrationClientBuilder implements
             .httpClient(httpClient)
             .clientOptions(clientOptions)
             .build();
+    }
+
+    private HttpPipelinePolicy getRetryPolicy() {
+        if (retryPolicy != null && retryOptions != null) {
+            throw logger.logExceptionAsWarning(
+                new IllegalStateException("'retryPolicy' and 'retryOptions' cannot both be set"));
+        }
+        if (retryPolicy != null) {
+            return retryPolicy;
+        } else if (retryOptions != null) {
+            return new RetryPolicy(retryOptions);
+        } else {
+            return new RetryPolicy();
+        }
     }
 }

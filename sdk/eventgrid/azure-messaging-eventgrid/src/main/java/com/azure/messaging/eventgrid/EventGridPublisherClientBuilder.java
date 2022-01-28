@@ -98,6 +98,8 @@ public final class EventGridPublisherClientBuilder implements
 
     private RetryPolicy retryPolicy;
 
+    private RetryOptions retryOptions;
+
     /**
      * Construct a new instance with default building settings. The endpoint and one credential method must be set
      * in order for the client to be built.
@@ -143,7 +145,7 @@ public final class EventGridPublisherClientBuilder implements
         httpPipelinePolicies.add(new RequestIdPolicy());
 
         HttpPolicyProviders.addBeforeRetryPolicies(httpPipelinePolicies);
-        httpPipelinePolicies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
+        httpPipelinePolicies.add(getRetryPolicy());
 
         httpPipelinePolicies.add(new AddDatePolicy());
 
@@ -198,6 +200,20 @@ public final class EventGridPublisherClientBuilder implements
         return new EventGridPublisherAsyncClient<T>(buildPipeline, endpoint, buildServiceVersion, eventClass);
     }
 
+    private HttpPipelinePolicy getRetryPolicy() {
+        if (retryPolicy != null && retryOptions != null) {
+            throw logger.logExceptionAsWarning(
+                new IllegalStateException("'retryPolicy' and 'retryOptions' cannot both be set"));
+        }
+        if (retryPolicy != null) {
+            return retryPolicy;
+        } else if (retryOptions != null) {
+            return new RetryPolicy(retryOptions);
+        } else {
+            return new RetryPolicy();
+        }
+    }
+
     /**
      * Build a publisher client with synchronous publishing methods and the current settings. Endpoint and a credential
      * must be set (either keyCredential or sharedAccessSignatureCredential), all other settings have defaults and/or are optional.
@@ -242,7 +258,8 @@ public final class EventGridPublisherClientBuilder implements
     @Override
     public EventGridPublisherClientBuilder retryOptions(RetryOptions retryOptions) {
         Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        return retryPolicy(new RetryPolicy(retryOptions));
+        this.retryOptions = retryOptions;
+        return this;
     }
 
     /**

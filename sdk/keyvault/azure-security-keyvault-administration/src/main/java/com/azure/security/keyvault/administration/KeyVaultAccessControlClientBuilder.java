@@ -90,6 +90,7 @@ public final class KeyVaultAccessControlClientBuilder implements
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
     private RetryPolicy retryPolicy;
+    private RetryOptions retryOptions;
     private Configuration configuration;
     private ClientOptions clientOptions;
     private KeyVaultAdministrationServiceVersion serviceVersion;
@@ -99,7 +100,6 @@ public final class KeyVaultAccessControlClientBuilder implements
      * instances of {@link KeyVaultAccessControlClient} and {@link KeyVaultAccessControlAsyncClient}.
      */
     public KeyVaultAccessControlClientBuilder() {
-        retryPolicy = new RetryPolicy();
         httpLogOptions = new HttpLogOptions();
         perCallPolicies = new ArrayList<>();
         perRetryPolicies = new ArrayList<>();
@@ -176,7 +176,7 @@ public final class KeyVaultAccessControlClientBuilder implements
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
         // Add retry policy.
-        policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
+        policies.add(getRetryPolicy());
 
         policies.add(new KeyVaultCredentialPolicy(credential));
 
@@ -192,6 +192,20 @@ public final class KeyVaultAccessControlClientBuilder implements
             .build();
 
         return new KeyVaultAccessControlAsyncClient(vaultUrl, buildPipeline, serviceVersion);
+    }
+
+    private HttpPipelinePolicy getRetryPolicy() {
+        if (retryPolicy != null && retryOptions != null) {
+            throw logger.logExceptionAsWarning(
+                new IllegalStateException("'retryPolicy' and 'retryOptions' cannot both be set"));
+        }
+        if (retryPolicy != null) {
+            return retryPolicy;
+        } else if (retryOptions != null) {
+            return new RetryPolicy(retryOptions);
+        } else {
+            return new RetryPolicy();
+        }
     }
 
     /**
@@ -354,7 +368,8 @@ public final class KeyVaultAccessControlClientBuilder implements
     @Override
     public KeyVaultAccessControlClientBuilder retryOptions(RetryOptions retryOptions) {
         Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        return retryPolicy(new RetryPolicy(retryOptions));
+        this.retryOptions = retryOptions;
+        return this;
     }
 
     /**
