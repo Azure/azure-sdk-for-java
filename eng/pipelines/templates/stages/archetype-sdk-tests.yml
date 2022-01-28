@@ -147,6 +147,7 @@ stages:
               AdditionalTestOptions: ${{ parameters.AdditionalTestOptions }}
               AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}
 
+            MatrixConfigs:
               # Enumerate platforms and additional platforms based on supported clouds (sparse platform<-->cloud matrix).
               - ${{ each config in parameters.MatrixConfigs }}:
                 -  ${{ config }}

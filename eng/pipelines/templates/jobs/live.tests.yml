@@ -54,6 +54,7 @@ jobs:
           AdditionalModules: ${{ parameters.AdditionalModules }}
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           SDKType: ${{ parameters.SDKType }}
+          TestFromSource: ${{ parameters.TestFromSource }}
 
       - template: ../steps/install-reporting-tools.yml
 
