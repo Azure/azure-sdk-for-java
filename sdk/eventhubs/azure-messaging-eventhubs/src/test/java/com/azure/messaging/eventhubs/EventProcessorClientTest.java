@@ -280,19 +280,12 @@ public class EventProcessorClientTest {
         when(eventData1.getSequenceNumber()).thenReturn(1L);
         when(eventData1.getOffset()).thenReturn(1L);
         when(eventData1.getEnqueuedTime()).thenReturn(Instant.ofEpochSecond(1560639208));
-        when(eventData2.getSequenceNumber()).thenReturn(2L);
-        when(eventData2.getOffset()).thenReturn(100L);
-        when(eventData2.getEnqueuedTime()).thenReturn(Instant.ofEpochSecond(1560639208));
-        when(eventData3.getSequenceNumber()).thenReturn(3L);
-        when(eventData3.getOffset()).thenReturn(150L);
-        when(eventData3.getEnqueuedTime()).thenReturn(Instant.ofEpochSecond(1560639208));
 
         Map<String, Object> properties = new HashMap<>();
 
         when(eventData1.getProperties()).thenReturn(properties);
-        when(eventData2.getProperties()).thenReturn(properties);
         when(consumer1.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
-            .thenReturn(Flux.just(getEvent(eventData1), getEvent(eventData2), getEvent(eventData3)));
+            .thenReturn(Flux.just(getEvent(eventData1)));
 
         when(tracer1.start(eq("EventHubs.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
             invocation -> {
@@ -321,8 +314,8 @@ public class EventProcessorClientTest {
         assertTrue(success);
 
         //Assert
-        verify(tracer1, times(3)).start(eq("EventHubs.process"), any(), eq(ProcessKind.PROCESS));
-        verify(tracer1, times(3)).end(eq("success"), isNull(), any());
+        verify(tracer1, times(1)).start(eq("EventHubs.process"), any(), eq(ProcessKind.PROCESS));
+        verify(tracer1, times(1)).end(eq("success"), isNull(), any());
     }
 
     /**
