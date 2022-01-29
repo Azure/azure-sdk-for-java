@@ -299,7 +299,7 @@ public class EventProcessorClientTest {
 
         final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
 
-        CountDownLatch countDownLatch = new CountDownLatch(3);
+        CountDownLatch countDownLatch = new CountDownLatch(1);
         TestPartitionProcessor testPartitionProcessor = new TestPartitionProcessor();
         testPartitionProcessor.countDownLatch = countDownLatch;
         //Act
