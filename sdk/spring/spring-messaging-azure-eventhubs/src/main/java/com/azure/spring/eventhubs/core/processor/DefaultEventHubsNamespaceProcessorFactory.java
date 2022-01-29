@@ -3,16 +3,19 @@
 
 package com.azure.spring.eventhubs.core.processor;
 
+import com.azure.identity.DefaultAzureCredential;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.spring.core.AzureSpringIdentifier;
+import com.azure.spring.core.credential.AzureCredentialResolver;
+import com.azure.spring.core.credential.provider.AzureTokenCredentialProvider;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.eventhubs.core.properties.ProcessorProperties;
 import com.azure.spring.eventhubs.core.properties.merger.ProcessorPropertiesParentMerger;
-import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.ConsumerIdentifier;
-import com.azure.spring.service.implementation.eventhubs.factory.EventProcessorClientBuilderFactory;
+import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
+import com.azure.spring.service.implementation.eventhubs.factory.EventProcessorClientBuilderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
@@ -49,6 +52,8 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
     private final PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> propertiesSupplier;
     private final Map<ConsumerIdentifier, EventProcessorClient> processorClientMap = new ConcurrentHashMap<>();
     private final ProcessorPropertiesParentMerger propertiesMerger = new ProcessorPropertiesParentMerger();
+    private AzureCredentialResolver<AzureTokenCredentialProvider> tokenCredentialResolver = null;
+    private DefaultAzureCredential defaultAzureCredential = null;
 
     /**
      * Construct a factory with the provided {@link CheckpointStore}.
@@ -123,6 +128,8 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
 
             EventProcessorClientBuilderFactory factory =
                 new EventProcessorClientBuilderFactory(processorProperties, this.checkpointStore, listener);
+            factory.setDefaultTokenCredential(this.defaultAzureCredential);
+            factory.setTokenCredentialResolver(this.tokenCredentialResolver);
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_EVENT_HUBS);
             EventProcessorClient client = factory.build().buildEventProcessorClient();
             LOGGER.info("EventProcessor created for event hub '{}' with consumer group '{}'", k.getDestination(), k.getGroup());
@@ -141,6 +148,22 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
     @Override
     public boolean removeListener(Listener listener) {
         return this.listeners.remove(listener);
+    }
+
+    /**
+     * Set the token credential resolver.
+     * @param tokenCredentialResolver The token credential resolver.
+     */
+    public void setTokenCredentialResolver(AzureCredentialResolver<AzureTokenCredentialProvider> tokenCredentialResolver) {
+        this.tokenCredentialResolver = tokenCredentialResolver;
+    }
+
+    /**
+     * Set the default Azure credential.
+     * @param defaultAzureCredential The default Azure Credential.
+     */
+    public void setDefaultAzureCredential(DefaultAzureCredential defaultAzureCredential) {
+        this.defaultAzureCredential = defaultAzureCredential;
     }
 
 }

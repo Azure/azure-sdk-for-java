@@ -3,8 +3,11 @@
 
 package com.azure.spring.eventhubs.core.producer;
 
+import com.azure.identity.DefaultAzureCredential;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.spring.core.AzureSpringIdentifier;
+import com.azure.spring.core.credential.AzureCredentialResolver;
+import com.azure.spring.core.credential.provider.AzureTokenCredentialProvider;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.eventhubs.core.properties.ProducerProperties;
 import com.azure.spring.eventhubs.core.properties.merger.ProducerPropertiesParentMerger;
@@ -38,6 +41,8 @@ public final class DefaultEventHubsNamespaceProducerFactory implements EventHubs
     private final PropertiesSupplier<String, ProducerProperties> propertiesSupplier;
     private final Map<String, EventHubProducerAsyncClient> clients = new ConcurrentHashMap<>();
     private final ProducerPropertiesParentMerger parentMerger = new ProducerPropertiesParentMerger();
+    private AzureCredentialResolver<AzureTokenCredentialProvider> tokenCredentialResolver = null;
+    private DefaultAzureCredential defaultAzureCredential = null;
 
     /**
      * Construct a factory with the provided namespace level configuration.
@@ -69,6 +74,9 @@ public final class DefaultEventHubsNamespaceProducerFactory implements EventHubs
             producerProperties.setEventHubName(entityName);
             EventHubClientBuilderFactory factory = new EventHubClientBuilderFactory(producerProperties);
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_EVENT_HUBS);
+            factory.setTokenCredentialResolver(this.tokenCredentialResolver);
+            factory.setDefaultTokenCredential(this.defaultAzureCredential);
+
             EventHubProducerAsyncClient producerClient = factory.build().buildAsyncProducerClient();
             this.listeners.forEach(l -> l.producerAdded(entityName, producerClient));
 
@@ -94,5 +102,21 @@ public final class DefaultEventHubsNamespaceProducerFactory implements EventHubs
         });
         this.clients.clear();
         this.listeners.clear();
+    }
+
+    /**
+     * Set the token credential resolver.
+     * @param tokenCredentialResolver The token credential resolver.
+     */
+    public void setTokenCredentialResolver(AzureCredentialResolver<AzureTokenCredentialProvider> tokenCredentialResolver) {
+        this.tokenCredentialResolver = tokenCredentialResolver;
+    }
+
+    /**
+     * Set the default Azure credential.
+     * @param defaultAzureCredential The default Azure Credential.
+     */
+    public void setDefaultAzureCredential(DefaultAzureCredential defaultAzureCredential) {
+        this.defaultAzureCredential = defaultAzureCredential;
     }
 }

@@ -3,10 +3,13 @@
 
 package com.azure.spring.servicebus.core.processor;
 
+import com.azure.identity.DefaultAzureCredential;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.core.AzureSpringIdentifier;
-import com.azure.spring.messaging.PropertiesSupplier;
+import com.azure.spring.core.credential.AzureCredentialResolver;
+import com.azure.spring.core.credential.provider.AzureTokenCredentialProvider;
 import com.azure.spring.messaging.ConsumerIdentifier;
+import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.service.implementation.servicebus.factory.ServiceBusProcessorClientBuilderFactory;
 import com.azure.spring.service.implementation.servicebus.factory.ServiceBusSessionProcessorClientBuilderFactory;
 import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
@@ -45,6 +48,8 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
     private final NamespaceProperties namespaceProperties;
     private final PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> propertiesSupplier;
     private final ProcessorPropertiesParentMerger propertiesMerger = new ProcessorPropertiesParentMerger();
+    private AzureCredentialResolver<AzureTokenCredentialProvider> tokenCredentialResolver = null;
+    private DefaultAzureCredential defaultAzureCredential = null;
 
     /**
      * Construct a factory with the provided namespace level properties.
@@ -118,11 +123,17 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
             if (Boolean.TRUE.equals(processorProperties.getSessionEnabled())) {
                 ServiceBusSessionProcessorClientBuilderFactory factory =
                     new ServiceBusSessionProcessorClientBuilderFactory(processorProperties, listener);
+
+                factory.setDefaultTokenCredential(this.defaultAzureCredential);
+                factory.setTokenCredentialResolver(this.tokenCredentialResolver);
                 factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
                 client = factory.build().buildProcessorClient();
             } else {
                 ServiceBusProcessorClientBuilderFactory factory =
                     new ServiceBusProcessorClientBuilderFactory(processorProperties, listener);
+
+                factory.setDefaultTokenCredential(this.defaultAzureCredential);
+                factory.setTokenCredentialResolver(this.tokenCredentialResolver);
                 factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
                 client = factory.build().buildProcessorClient();
             }
@@ -135,5 +146,21 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
     @Override
     public void addListener(Listener listener) {
         this.listeners.add(listener);
+    }
+
+    /**
+     * Set the token credential resolver.
+     * @param tokenCredentialResolver The token credential resolver.
+     */
+    public void setTokenCredentialResolver(AzureCredentialResolver<AzureTokenCredentialProvider> tokenCredentialResolver) {
+        this.tokenCredentialResolver = tokenCredentialResolver;
+    }
+
+    /**
+     * Set the default Azure credential.
+     * @param defaultAzureCredential The default Azure Credential.
+     */
+    public void setDefaultAzureCredential(DefaultAzureCredential defaultAzureCredential) {
+        this.defaultAzureCredential = defaultAzureCredential;
     }
 }

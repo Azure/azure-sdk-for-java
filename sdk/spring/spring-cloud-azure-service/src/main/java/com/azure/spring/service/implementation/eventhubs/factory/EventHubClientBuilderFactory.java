@@ -125,9 +125,9 @@ public class EventHubClientBuilderFactory extends AbstractAzureAmqpClientBuilder
             new SasAuthenticationDescriptor(provider -> builder.credential(eventHubsProperties.getFullyQualifiedNamespace(),
                                                                            eventHubsProperties.getEventHubName(),
                                                                            provider.getCredential())),
-            new TokenAuthenticationDescriptor(provider -> builder.credential(eventHubsProperties.getFullyQualifiedNamespace(),
-                                                                             eventHubsProperties.getEventHubName(),
-                                                                             provider.getCredential()))
+            new TokenAuthenticationDescriptor(this.tokenCredentialResolver,
+                provider -> builder.credential(eventHubsProperties.getFullyQualifiedNamespace(),
+                    eventHubsProperties.getEventHubName(), provider.getCredential()))
         );
     }
 

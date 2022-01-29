@@ -3,11 +3,9 @@
 
 package com.azure.spring.core.implementation.credential.resolver;
 
-import com.azure.identity.ClientCertificateCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.identity.ClientCertificateCredentialBuilder;
-import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.spring.core.aware.authentication.TokenCredentialAware;
 import com.azure.spring.core.credential.AzureCredentialResolver;
@@ -15,55 +13,74 @@ import com.azure.spring.core.credential.provider.AzureTokenCredentialProvider;
 import com.azure.spring.core.properties.AzureProperties;
 import org.springframework.util.StringUtils;
 
+import java.util.function.Function;
+
 /**
  * Resolve the token credential according to the azure properties.
  */
-public final class AzureTokenCredentialResolver implements AzureCredentialResolver<AzureTokenCredentialProvider> {
+public class AzureTokenCredentialResolver implements AzureCredentialResolver<AzureTokenCredentialProvider> {
+
+    private final Function<AzureProperties, TokenCredential> resolveFunction;
+
+    public AzureTokenCredentialResolver(Function<AzureProperties, TokenCredential> resolveFunction) {
+        this.resolveFunction = resolveFunction;
+    }
+
+    public AzureTokenCredentialResolver() {
+        this.resolveFunction = AzureTokenCredentialResolver::resolveTokenCredential;
+    }
 
     @Override
     public AzureTokenCredentialProvider resolve(AzureProperties properties) {
-        // TODO (xiada): the token credential logic
-        final TokenCredentialAware.TokenCredential credential = properties.getCredential();
-        final String tenantId = properties.getProfile().getTenantId();
-        if (credential == null) {
-            return null;
-        }
-        if (StringUtils.hasText(tenantId) && StringUtils.hasText(credential.getClientId())
-                && StringUtils.hasText(credential.getClientSecret())) {
-            final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
-                .clientId(credential.getClientId())
-                .clientSecret(credential.getClientSecret())
-                .tenantId(tenantId)
-                .build();
-            return new AzureTokenCredentialProvider(clientSecretCredential);
-        }
-
-        if (StringUtils.hasText(tenantId) && StringUtils.hasText(credential.getClientCertificatePath())) {
-            final ClientCertificateCredential clientCertificateCredential = new ClientCertificateCredentialBuilder()
-                .clientId(credential.getClientId())
-                .pemCertificate(credential.getClientCertificatePath())
-                .tenantId(tenantId)
-                .build();
-            return new AzureTokenCredentialProvider(clientCertificateCredential);
-        }
-
-        if (credential.getManagedIdentityClientId() != null) {
-            final ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder()
-                .clientId(credential.getManagedIdentityClientId())
-                .build();
-            return new AzureTokenCredentialProvider(managedIdentityCredential);
-        }
-        return null;
+        TokenCredential tokenCredential = this.resolveFunction.apply(properties);
+        return tokenCredential == null ? null : new AzureTokenCredentialProvider(tokenCredential);
     }
 
-    /**
-     * All SDKs will support this type.
-     *
-     * @param properties Azure properties
-     * @return Resolvable or not
-     */
+    private static TokenCredential resolveTokenCredential(AzureProperties properties) {
+        if (properties.getCredential() == null) {
+            return null;
+        }
+
+        TokenCredential result = null;
+
+        final TokenCredentialAware.TokenCredential credentialProperties = properties.getCredential();
+        final String tenantId = properties.getProfile().getTenantId();
+        if (StringUtils.hasText(tenantId)
+            && StringUtils.hasText(credentialProperties.getClientId())
+            && StringUtils.hasText(credentialProperties.getClientSecret())) {
+            result = new ClientSecretCredentialBuilder()
+                .clientId(credentialProperties.getClientId())
+                .clientSecret(credentialProperties.getClientSecret())
+                .tenantId(tenantId)
+                .build();
+        }
+
+        if (StringUtils.hasText(tenantId)
+            && StringUtils.hasText(credentialProperties.getClientCertificatePath())) {
+            ClientCertificateCredentialBuilder builder =
+                new ClientCertificateCredentialBuilder().tenantId(tenantId)
+                                                        .clientId(credentialProperties.getClientId());
+            if (StringUtils.hasText(credentialProperties.getClientCertificatePassword())) {
+                builder.pfxCertificate(credentialProperties.getClientCertificatePath(),
+                    credentialProperties.getClientCertificatePassword());
+            } else {
+                builder.pemCertificate(credentialProperties.getClientCertificatePath());
+            }
+
+            result = builder.build();
+        }
+
+        if (credentialProperties.getManagedIdentityClientId() != null) {
+            result = new ManagedIdentityCredentialBuilder()
+                .clientId(credentialProperties.getManagedIdentityClientId())
+                .build();
+        }
+        return result;
+    }
+
     @Override
     public boolean isResolvable(AzureProperties properties) {
         return true;
     }
+
 }

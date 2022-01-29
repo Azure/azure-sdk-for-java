@@ -20,7 +20,7 @@ import com.azure.spring.core.properties.PropertyMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
 
@@ -78,8 +78,9 @@ public class SecretClientBuilderFactory extends AbstractAzureHttpClientBuilderFa
 
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(SecretClientBuilder builder) {
-        return Collections.singletonList(
-            new TokenAuthenticationDescriptor(provider -> builder.credential(provider.getCredential())));
+        return Arrays.asList(
+            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, p -> builder.credential(p.getCredential()))
+        );
     }
 
     @Override

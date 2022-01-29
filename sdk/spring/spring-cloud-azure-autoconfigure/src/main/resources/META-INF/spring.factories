@@ -10,7 +10,7 @@ com.azure.spring.cloud.autoconfigure.aadb2c.AADB2CAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.aadb2c.AADB2CResourceServerAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.redis.AzureRedisAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.context.AzureDefaultTokenCredentialAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.appconfiguration.AzureAppConfigurationAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.cosmos.AzureCosmosAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.data.cosmos.CosmosDataAutoConfiguration,\

@@ -76,7 +76,7 @@ public class ServiceBusClientBuilderFactory extends AbstractAzureAmqpClientBuild
                 clientCommonProperties.getFullyQualifiedNamespace(), provider.getCredential())),
             new SasAuthenticationDescriptor(provider -> builder.credential(
                 clientCommonProperties.getFullyQualifiedNamespace(), provider.getCredential())),
-            new TokenAuthenticationDescriptor(provider -> builder.credential(
+            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, provider -> builder.credential(
                 clientCommonProperties.getFullyQualifiedNamespace(), provider.getCredential()))
         );
     }

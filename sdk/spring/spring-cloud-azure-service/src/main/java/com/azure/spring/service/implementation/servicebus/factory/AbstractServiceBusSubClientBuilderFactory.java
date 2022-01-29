@@ -120,7 +120,7 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
                         provider.getCredential());
                 }
             }),
-            new TokenAuthenticationDescriptor(provider -> {
+            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, provider -> {
                 if (!isShareServiceBusClientBuilder()) {
                     this.serviceBusClientBuilder.credential(properties.getFullyQualifiedNamespace(),
                         provider.getCredential());

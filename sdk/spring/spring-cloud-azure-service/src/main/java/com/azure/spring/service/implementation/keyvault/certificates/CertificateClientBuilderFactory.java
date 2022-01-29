@@ -79,7 +79,7 @@ public class CertificateClientBuilderFactory extends AbstractAzureHttpClientBuil
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(CertificateClientBuilder builder) {
         return Arrays.asList(
-            new TokenAuthenticationDescriptor(provider -> builder.credential(provider.getCredential()))
+            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, p -> builder.credential(p.getCredential()))
         );
     }
 

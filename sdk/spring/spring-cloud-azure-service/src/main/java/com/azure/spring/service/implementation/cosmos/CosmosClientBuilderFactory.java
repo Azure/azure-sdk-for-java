@@ -62,7 +62,8 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(CosmosClientBuilder builder) {
         return Arrays.asList(
             new KeyAuthenticationDescriptor(provider -> builder.credential(provider.getCredential())),
-            new TokenAuthenticationDescriptor(provider -> builder.credential(provider.getCredential()))
+            new TokenAuthenticationDescriptor(this.tokenCredentialResolver,
+                provider -> builder.credential(provider.getCredential()))
         );
     }
 

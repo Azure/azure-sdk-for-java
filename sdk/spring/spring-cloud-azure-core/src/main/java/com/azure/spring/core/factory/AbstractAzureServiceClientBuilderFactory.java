@@ -13,7 +13,9 @@ import com.azure.spring.core.credential.AzureCredentialResolver;
 import com.azure.spring.core.credential.AzureCredentialResolvers;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.credential.provider.AzureCredentialProvider;
+import com.azure.spring.core.credential.provider.AzureTokenCredentialProvider;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
+import com.azure.spring.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.core.properties.AzureProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +38,7 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAzureServiceClientBuilderFactory.class);
     private static final TokenCredential DEFAULT_TOKEN_CREDENTIAL = new DefaultAzureCredentialBuilder().build();
+    private static final AzureTokenCredentialResolver DEFAULT_TOKEN_CREDENTIAL_RESOLVER = new AzureTokenCredentialResolver();
 
     /**
      * Create an instance of Azure sdk client builder.
@@ -105,6 +108,7 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     private boolean credentialConfigured = false;
     private final List<AzureServiceClientBuilderCustomizer<T>> customizers = new ArrayList<>();
     protected final Configuration configuration = new Configuration();
+    protected AzureCredentialResolver<AzureTokenCredentialProvider> tokenCredentialResolver = DEFAULT_TOKEN_CREDENTIAL_RESOLVER;
     protected TokenCredential defaultTokenCredential = DEFAULT_TOKEN_CREDENTIAL;
 
     /**
@@ -315,11 +319,13 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     }
 
     /**
-     * Set the default token credential.
+     * Set the default token credential. A null default token credential will be ignored.
      * @param defaultTokenCredential The default token credential.
      */
     public void setDefaultTokenCredential(TokenCredential defaultTokenCredential) {
-        this.defaultTokenCredential = defaultTokenCredential;
+        if (defaultTokenCredential != null) {
+            this.defaultTokenCredential = defaultTokenCredential;
+        }
     }
 
     /**
@@ -328,5 +334,15 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
      */
     public void setConnectionStringProvider(ConnectionStringProvider<?> connectionStringProvider) {
         this.connectionStringProvider = connectionStringProvider;
+    }
+
+    /**
+     * Set the token credential resolve. A null resolver will be ignored.
+     * @param tokenCredentialResolver The token credential resolver.
+     */
+    public void setTokenCredentialResolver(AzureCredentialResolver<AzureTokenCredentialProvider> tokenCredentialResolver) {
+        if (tokenCredentialResolver != null) {
+            this.tokenCredentialResolver = tokenCredentialResolver;
+        }
     }
 }

@@ -129,9 +129,9 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
             new SasAuthenticationDescriptor(provider -> builder.credential(eventProcessorClientProperties.getFullyQualifiedNamespace(),
                 eventProcessorClientProperties.getEventHubName(),
                 provider.getCredential())),
-            new TokenAuthenticationDescriptor(provider -> builder.credential(eventProcessorClientProperties.getFullyQualifiedNamespace(),
-                eventProcessorClientProperties.getEventHubName(),
-                provider.getCredential()))
+            new TokenAuthenticationDescriptor(this.tokenCredentialResolver,
+                provider -> builder.credential(eventProcessorClientProperties.getFullyQualifiedNamespace(),
+                    eventProcessorClientProperties.getEventHubName(), provider.getCredential()))
         );
     }
 

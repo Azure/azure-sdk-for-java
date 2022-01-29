@@ -80,7 +80,8 @@ public class QueueServiceClientBuilderFactory extends AbstractAzureStorageClient
         return Arrays.asList(
             new StorageSharedKeyAuthenticationDescriptor(provider -> builder.credential(provider.getCredential())),
             new SasAuthenticationDescriptor(provider -> builder.credential(provider.getCredential())),
-            new TokenAuthenticationDescriptor(provider -> builder.credential(provider.getCredential())));
+            new TokenAuthenticationDescriptor(this.tokenCredentialResolver,
+                provider -> builder.credential(provider.getCredential())));
     }
 
     @Override
