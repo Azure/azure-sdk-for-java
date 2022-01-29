@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.compatibility;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import java.util.Collections;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -11,15 +11,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class SpringCloudAzureSpringBootVersionVerifierTest {
-
-    private List<String> acceptedVersions = Collections.singletonList("2.6.x");
-    private SpringCloudAzureSpringBootVersionVerifier versionVerifier = new SpringCloudAzureSpringBootVersionVerifier(acceptedVersions);
+class SpringCloudAzureSpringBootVersionVerifierTest {
 
     @Test
     public void shouldReadConcreteVersionFromManifest() {
-        acceptedVersions = Collections.singletonList("2.6.2");
-        versionVerifier = new SpringCloudAzureSpringBootVersionVerifier(acceptedVersions) {
+        List<String> acceptedVersions = Collections.singletonList("2.6.2");
+        SpringCloudAzureSpringBootVersionVerifier versionVerifier = new SpringCloudAzureSpringBootVersionVerifier(acceptedVersions) {
             String getVersionFromManifest() {
                 return "2.6.2";
             }
@@ -31,8 +28,8 @@ public class SpringCloudAzureSpringBootVersionVerifierTest {
 
     @Test
     public void shouldReadConcreteVersionFromManifestAndMatchItAgainstMinorVersion() {
-        acceptedVersions = Collections.singletonList("2.6");
-        versionVerifier = new SpringCloudAzureSpringBootVersionVerifier(acceptedVersions) {
+        List<String> acceptedVersions = Collections.singletonList("2.6");
+        SpringCloudAzureSpringBootVersionVerifier versionVerifier = new SpringCloudAzureSpringBootVersionVerifier(acceptedVersions) {
             String getVersionFromManifest() {
                 return "2.6.2";
             }
@@ -44,8 +41,8 @@ public class SpringCloudAzureSpringBootVersionVerifierTest {
 
     @Test
     public void shouldMatchAgainstPredicate() {
-        acceptedVersions = Collections.singletonList("2.6");
-        versionVerifier = new SpringCloudAzureSpringBootVersionVerifier(acceptedVersions) {
+        List<String> acceptedVersions = Collections.singletonList("2.6");
+        SpringCloudAzureSpringBootVersionVerifier versionVerifier = new SpringCloudAzureSpringBootVersionVerifier(acceptedVersions) {
             String getVersionFromManifest() {
                 return "";
             }
@@ -59,7 +56,8 @@ public class SpringCloudAzureSpringBootVersionVerifierTest {
 
     @Test
     public void shouldMatchAgainstCurrentPredicateWithVersionEndingWithX() {
-        versionVerifier = new SpringCloudAzureSpringBootVersionVerifier(acceptedVersions) {
+        List<String> acceptedVersions = Collections.singletonList("2.6.x");
+        SpringCloudAzureSpringBootVersionVerifier versionVerifier = new SpringCloudAzureSpringBootVersionVerifier(acceptedVersions) {
             String getVersionFromManifest() {
                 return "";
             }
@@ -73,8 +71,8 @@ public class SpringCloudAzureSpringBootVersionVerifierTest {
 
     @Test
     public void shouldReadConcreteVersionFromManifestWhenVersionIsNotMatched() {
-        acceptedVersions = Collections.singletonList("2.5.8");
-        versionVerifier = new SpringCloudAzureSpringBootVersionVerifier(acceptedVersions) {
+        List<String> acceptedVersions = Collections.singletonList("2.5.8");
+        SpringCloudAzureSpringBootVersionVerifier versionVerifier = new SpringCloudAzureSpringBootVersionVerifier(acceptedVersions) {
             String getVersionFromManifest() {
                 return "2.6.2";
             }
@@ -84,8 +82,8 @@ public class SpringCloudAzureSpringBootVersionVerifierTest {
 
     @Test
     public void shouldFailToMatchAgainstPredicateWhenNoneIsMatching() {
-        acceptedVersions = Collections.singletonList("2.6");
-        versionVerifier = new SpringCloudAzureSpringBootVersionVerifier(acceptedVersions) {
+        List<String> acceptedVersions = Collections.singletonList("2.6");
+        SpringCloudAzureSpringBootVersionVerifier versionVerifier = new SpringCloudAzureSpringBootVersionVerifier(acceptedVersions) {
             String getVersionFromManifest() {
                 return "";
             }
@@ -96,8 +94,8 @@ public class SpringCloudAzureSpringBootVersionVerifierTest {
 
     @Test
     public void shouldFailToMatchAgainstPredicateForNonCurrentVersions() {
-        acceptedVersions = Collections.singletonList("2.6");
-        versionVerifier = new SpringCloudAzureSpringBootVersionVerifier(acceptedVersions) {
+        List<String> acceptedVersions = Collections.singletonList("2.6");
+        SpringCloudAzureSpringBootVersionVerifier versionVerifier = new SpringCloudAzureSpringBootVersionVerifier(acceptedVersions) {
             String getVersionFromManifest() {
                 return "";
             }
@@ -108,6 +106,8 @@ public class SpringCloudAzureSpringBootVersionVerifierTest {
 
     @Test
     public void testIsVersion() {
+        List<String> acceptedVersions = Collections.singletonList("2.6.x");
+        SpringCloudAzureSpringBootVersionVerifier versionVerifier = new SpringCloudAzureSpringBootVersionVerifier(acceptedVersions);
         assertTrue(versionVerifier.is2_6().isCompatible());
         assertFalse(versionVerifier.is2_5().isCompatible());
     }
