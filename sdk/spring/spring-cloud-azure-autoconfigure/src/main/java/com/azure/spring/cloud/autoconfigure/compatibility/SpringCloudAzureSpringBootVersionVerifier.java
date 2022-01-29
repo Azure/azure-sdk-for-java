@@ -97,7 +97,7 @@ class SpringCloudAzureSpringBootVersionVerifier {
         return version.endsWith(".x") ? version.substring(0, version.indexOf(".x")) : version;
     }
 
-    CompatibilityPredicate is2_6() {
+    private CompatibilityPredicate is2_6() {
         return new CompatibilityPredicate() {
             public String toString() {
                 return "Predicate for Boot 2.6";
@@ -113,7 +113,7 @@ class SpringCloudAzureSpringBootVersionVerifier {
         };
     }
 
-    CompatibilityPredicate is2_5() {
+    private CompatibilityPredicate is2_5() {
         return new CompatibilityPredicate() {
             public String toString() {
                 return "Predicate for Boot 2.5";

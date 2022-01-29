@@ -103,12 +103,4 @@ class SpringCloudAzureSpringBootVersionVerifierTest {
         versionVerifier.supportedVersions.remove("2.6");
         assertThrows(SpringCloudAzureCompatibilityNotMetException.class, versionVerifier::verify);
     }
-
-    @Test
-    public void testIsVersion() {
-        List<String> acceptedVersions = Collections.singletonList("2.6.x");
-        SpringCloudAzureSpringBootVersionVerifier versionVerifier = new SpringCloudAzureSpringBootVersionVerifier(acceptedVersions);
-        assertTrue(versionVerifier.is2_6().isCompatible());
-        assertFalse(versionVerifier.is2_5().isCompatible());
-    }
 }
