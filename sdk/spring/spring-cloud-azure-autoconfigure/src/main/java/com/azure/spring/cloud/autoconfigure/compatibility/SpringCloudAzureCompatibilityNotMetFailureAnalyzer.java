@@ -8,12 +8,12 @@ import org.springframework.boot.diagnostics.FailureAnalysis;
 import java.util.List;
 
 /**
- * FailureAnalyzer of Compatibility
+ * FailureAnalyzer of SpringCloudAzureCompatibility
  */
 public class SpringCloudAzureCompatibilityNotMetFailureAnalyzer extends AbstractFailureAnalyzer<SpringCloudAzureCompatibilityNotMetException> {
 
     /**
-     * Constructor of CompatibilityNotMetFailureAnalyzer
+     * Constructor of {@link SpringCloudAzureCompatibilityNotMetFailureAnalyzer}
      */
     public SpringCloudAzureCompatibilityNotMetFailureAnalyzer() {
     }

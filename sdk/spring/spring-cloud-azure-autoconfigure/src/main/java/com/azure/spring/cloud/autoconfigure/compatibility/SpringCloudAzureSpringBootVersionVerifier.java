@@ -48,8 +48,12 @@ class SpringCloudAzureSpringBootVersionVerifier {
     }
 
     private String action() {
-        return String.format("Change Spring Boot version to one of the following versions %s .%nYou can find the latest Spring Boot versions here [%s]. %nIf you want to learn more about the Spring Cloud Azure Release train compatibility, you can visit this page [%s] and check the [Release Trains] section.%nIf you want to disable this check, "
-            + "just set the property [spring.cloud.azure.compatibility-verifier.enabled=false]", this.acceptedVersions, "https://spring.io/projects/spring-boot#learn", "https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Versions-Mapping");
+        return String.format("Change Spring Boot version to one of the following versions %s .%n"
+            + "You can find the latest Spring Boot versions here [%s]. %n"
+            + "If you want to learn more about the Spring Cloud Azure Release train compatibility, "
+            + "you can visit this page [%s] and check the [Release Trains] section.%nIf you want to disable this check, "
+            + "just set the property [spring.cloud.azure.compatibility-verifier.enabled=false]", this.acceptedVersions,
+            "https://spring.io/projects/spring-boot#learn", "https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Versions-Mapping");
     }
 
     String getVersionFromManifest() {

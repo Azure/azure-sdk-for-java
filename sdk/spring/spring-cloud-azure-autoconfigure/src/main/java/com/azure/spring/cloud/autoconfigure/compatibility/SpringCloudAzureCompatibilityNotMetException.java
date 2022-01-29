@@ -7,13 +7,13 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Create CompatibilityNotMetException for CompatibilityNotMetFailureAnalyzer
+ * Create SpringCloudAzureCompatibilityNotMetException for SpringCloudAzureCompatibilityNotMetFailureAnalyzer
  */
 public class SpringCloudAzureCompatibilityNotMetException extends RuntimeException {
     final List<VerificationResult> results;
 
     /**
-     * Constructor of CompatibilityNotMetException
+     * Constructor of {@link SpringCloudAzureCompatibilityNotMetException}
      * @param results VerificationResult List
      */
     public SpringCloudAzureCompatibilityNotMetException(List<VerificationResult> results) {
