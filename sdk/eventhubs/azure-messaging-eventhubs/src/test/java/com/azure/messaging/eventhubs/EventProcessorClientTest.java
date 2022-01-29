@@ -290,6 +290,7 @@ public class EventProcessorClientTest {
         Map<String, Object> properties = new HashMap<>();
 
         when(eventData1.getProperties()).thenReturn(properties);
+        when(eventData2.getProperties()).thenReturn(properties);
         when(consumer1.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.just(getEvent(eventData1), getEvent(eventData2), getEvent(eventData3)));
 
