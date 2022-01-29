@@ -280,12 +280,15 @@ public class EventProcessorClientTest {
         when(eventData1.getSequenceNumber()).thenReturn(1L);
         when(eventData1.getOffset()).thenReturn(1L);
         when(eventData1.getEnqueuedTime()).thenReturn(Instant.ofEpochSecond(1560639208));
+        when(eventData2.getSequenceNumber()).thenReturn(1L);
+        when(eventData2.getOffset()).thenReturn(1L);
+        when(eventData2.getEnqueuedTime()).thenReturn(Instant.ofEpochSecond(1560639208));
 
         Map<String, Object> properties = new HashMap<>();
 
         when(eventData1.getProperties()).thenReturn(properties);
         when(consumer1.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
-            .thenReturn(Flux.just(getEvent(eventData1)));
+            .thenReturn(Flux.just(getEvent(eventData1), getEvent(eventData2)));
 
         when(tracer1.start(eq("EventHubs.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
             invocation -> {
@@ -299,7 +302,7 @@ public class EventProcessorClientTest {
 
         final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
 
-        CountDownLatch countDownLatch = new CountDownLatch(1);
+        CountDownLatch countDownLatch = new CountDownLatch(2);
         TestPartitionProcessor testPartitionProcessor = new TestPartitionProcessor();
         testPartitionProcessor.countDownLatch = countDownLatch;
         //Act
@@ -314,8 +317,8 @@ public class EventProcessorClientTest {
         assertTrue(success);
 
         //Assert
-        verify(tracer1, times(1)).start(eq("EventHubs.process"), any(), eq(ProcessKind.PROCESS));
-        verify(tracer1, times(1)).end(eq("success"), isNull(), any());
+        verify(tracer1, times(2)).start(eq("EventHubs.process"), any(), eq(ProcessKind.PROCESS));
+        verify(tracer1, times(2)).end(eq("success"), isNull(), any());
     }
 
     /**
