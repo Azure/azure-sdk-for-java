@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Warren Zhu
  * @author Xiaolu Dai
  *
- * @deprecated {@link rx} API will be dropped in version 4.0.0, please migrate to reactor API in
+ * @deprecated {@link rx} API will be dropped in version 4.x, please migrate to reactor API in
  * {@link EventHubTemplate}. From version 4.0.0, the reactor API support will be moved to
  * com.azure.spring.eventhubs.core.EventHubTemplate.
  */

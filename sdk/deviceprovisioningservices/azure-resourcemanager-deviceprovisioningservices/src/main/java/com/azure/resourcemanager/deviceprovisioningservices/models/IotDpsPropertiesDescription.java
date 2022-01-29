@@ -86,6 +86,14 @@ public final class IotDpsPropertiesDescription {
     @JsonProperty(value = "authorizationPolicies")
     private List<SharedAccessSignatureAuthorizationRuleInner> authorizationPolicies;
 
+    /*
+     * Optional.
+     * Indicates if the DPS instance has Data Residency enabled, removing the
+     * cross geo-pair disaster recovery.
+     */
+    @JsonProperty(value = "enableDataResidency")
+    private Boolean enableDataResidency;
+
     /**
      * Get the state property: Current state of the provisioning service.
      *
@@ -272,6 +280,28 @@ public final class IotDpsPropertiesDescription {
     public IotDpsPropertiesDescription withAuthorizationPolicies(
         List<SharedAccessSignatureAuthorizationRuleInner> authorizationPolicies) {
         this.authorizationPolicies = authorizationPolicies;
+        return this;
+    }
+
+    /**
+     * Get the enableDataResidency property: Optional. Indicates if the DPS instance has Data Residency enabled,
+     * removing the cross geo-pair disaster recovery.
+     *
+     * @return the enableDataResidency value.
+     */
+    public Boolean enableDataResidency() {
+        return this.enableDataResidency;
+    }
+
+    /**
+     * Set the enableDataResidency property: Optional. Indicates if the DPS instance has Data Residency enabled,
+     * removing the cross geo-pair disaster recovery.
+     *
+     * @param enableDataResidency the enableDataResidency value to set.
+     * @return the IotDpsPropertiesDescription object itself.
+     */
+    public IotDpsPropertiesDescription withEnableDataResidency(Boolean enableDataResidency) {
+        this.enableDataResidency = enableDataResidency;
         return this;
     }
 
