@@ -22,7 +22,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class AzureStorageFileProtocolResolverTest extends AbstractAzureStorageProtocolResolverTest {
+class AzureStorageFileProtocolResolverTest extends AbstractAzureStorageProtocolResolverTests {
 
     private ShareServiceClient shareServiceClient;
     private ConfigurableListableBeanFactory beanFactory;

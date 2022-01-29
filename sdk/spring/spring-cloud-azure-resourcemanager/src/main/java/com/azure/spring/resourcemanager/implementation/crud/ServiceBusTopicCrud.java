@@ -5,8 +5,10 @@ package com.azure.spring.resourcemanager.implementation.crud;
 
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.resourcemanager.servicebus.models.Topic;
 import com.azure.spring.core.properties.resource.AzureResourceMetadata;
+import org.springframework.util.Assert;
 import reactor.util.function.Tuple2;
 
 /**
@@ -31,8 +33,11 @@ public class ServiceBusTopicCrud extends AbstractResourceCrud<Topic, Tuple2<Stri
     @Override
     public Topic internalGet(Tuple2<String, String> namespaceAndName) {
         try {
-            return new ServiceBusNamespaceCrud(this.resourceManager, this.resourceMetadata)
-                .get(namespaceAndName.getT1())
+            ServiceBusNamespace serviceBusNamespace = new ServiceBusNamespaceCrud(this.resourceManager,
+                this.resourceMetadata)
+                .get(namespaceAndName.getT1());
+            Assert.notNull(serviceBusNamespace, "The Service Bus namespace should exist first.");
+            return serviceBusNamespace
                 .topics()
                 .getByName(namespaceAndName.getT2());
         } catch (ManagementException e) {

@@ -4,8 +4,6 @@
 package com.azure.spring.cloud.autoconfigure.data.cosmos.domain;
 
 import com.azure.spring.data.cosmos.repository.CosmosRepository;
-import org.springframework.stereotype.Repository;
 
-@Repository
 public interface PersonRepository extends CosmosRepository<Person, String> {
 }

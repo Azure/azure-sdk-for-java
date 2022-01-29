@@ -3,7 +3,7 @@
 
 package com.azure.spring.storage.queue.core;
 
-import com.azure.spring.messaging.core.SendOperationTest;
+import com.azure.spring.messaging.core.SendOperationTests;
 import com.azure.spring.storage.queue.core.factory.StorageQueueClientFactory;
 import com.azure.storage.queue.QueueAsyncClient;
 import com.azure.storage.queue.models.SendMessageResult;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class StorageQueueTemplateSendTests extends SendOperationTest<StorageQueueTemplate> {
+public class StorageQueueTemplateSendTests extends SendOperationTests<StorageQueueTemplate> {
 
     @Mock
     private StorageQueueClientFactory mockClientFactory;
