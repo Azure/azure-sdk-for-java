@@ -1770,7 +1770,7 @@ public final class Utils {
             result = br.readLine();
             process.waitFor();
             error = ebr.readLine();
-            if (error != null && (!error.equals(""))) {
+            if (error != null && (!"".equals(error))) {
                 // To do - Log error message
 
                 if (!ignoreErrorStream) {

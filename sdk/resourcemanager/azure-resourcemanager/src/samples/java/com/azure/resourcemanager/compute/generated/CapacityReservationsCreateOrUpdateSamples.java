@@ -14,7 +14,7 @@ import java.util.Map;
 /** Samples for CapacityReservations CreateOrUpdate. */
 public final class CapacityReservationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/compute/CreateOrUpdateACapacityReservation.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/CreateOrUpdateACapacityReservation.json
      */
     /**
      * Sample code: Create or update a capacity reservation .

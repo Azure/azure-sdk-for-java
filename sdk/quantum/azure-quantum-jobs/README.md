@@ -62,9 +62,7 @@ Create an instance of the client of your choice by passing the following values 
 - [StorageContainerName][blob-storage] - your blob storage
 - [Credential][credentials] - used to authenticate
 
-
-<!-- embedme ./src/samples/java/com/azure/quantum/jobs/ReadmeSamples.java#L37-L51 -->
-```java
+```java readme-sample-getClients
 JobsClient jobsClient = new QuantumClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .host("{endpoint}")
@@ -86,8 +84,7 @@ StorageClient storageClient = new QuantumClientBuilder()
 
 Create a storage container to put your data in.
 
-<!-- embedme ./src/samples/java/com/azure/quantum/jobs/ReadmeSamples.java#L58-L73 -->
-```java
+```java readme-sample-getContainerSasUri
 // Get container URI with SAS key
 String containerName = "{storageContainerName}";
 
@@ -111,8 +108,7 @@ String containerUri = storageClient.sasUri(
 Using the SAS URI, upload the json input data to the blob client.
 This contains the parameters to be used with [Quantum Inspired Optimizations](https://docs.microsoft.com/azure/quantum/optimization-overview-introduction)
 
-<!-- embedme ./src/samples/java/com/azure/quantum/jobs/ReadmeSamples.java#L80-L92 -->
-```java
+```java readme-sample-uploadInputData
 // Get input data blob Uri with SAS key
 String blobName = "{blobName}";
 BlobDetails blobDetails = new BlobDetails()
@@ -131,8 +127,7 @@ blobClient.uploadFromFile(problemFilePath);
 
 Now that you've uploaded your problem definition to Azure Storage, you can use the `create()` method in `JobsClient` or `JobsAsyncClient`, or the `createWithResponse()` method in `JobsAsyncClient` to define an Azure Quantum job.
 
-<!-- embedme ./src/samples/java/com/azure/quantum/jobs/ReadmeSamples.java#L99-L108 -->
-```java
+```java readme-sample-createTheJob
 String jobId = String.format("job-%s", UUID.randomUUID());
 JobDetails createJobDetails = new JobDetails()
     .setContainerUri(containerUri)
@@ -149,8 +144,7 @@ JobDetails jobDetails = jobsClient.create(jobId, createJobDetails);
 
 To retrieve a specific job by its ID, you can use `get()` from `JobsClient` or `JobsAsyncClient`, or `getWithResponse()` in `JobsAsyncClient`.
 
-<!-- embedme ./src/samples/java/com/azure/quantum/jobs/ReadmeSamples.java#L115-L116 -->
-```java
+```java readme-sample-getJob
 // Get the job that we've just created based on its jobId
 JobDetails myJob = jobsClient.get(jobId);
 ```
@@ -159,12 +153,9 @@ JobDetails myJob = jobsClient.get(jobId);
 
 To enumerate all the jobs in the workspace, use the `list()` method from `JobClient` or `JobAsyncClient`, or from `JobAsyncClient` use `listSinglePage()` or `listNextPage()`.
 
-<!-- embedme ./src/samples/java/com/azure/quantum/jobs/ReadmeSamples.java#L123-L126 -->
-```java
+```java readme-sample-listJobs
 PagedIterable<JobDetails> jobs = jobsClient.list();
-jobs.forEach(job -> {
-    System.out.println(job.getName());
-});
+jobs.forEach(job -> System.out.println(job.getName()));
 ```
 
 ## Troubleshooting
@@ -198,7 +189,7 @@ additional questions or comments.
 [workspaces]: https://docs.microsoft.com/azure/quantum/how-to-create-quantum-workspaces-with-the-azure-portal
 [location]: https://azure.microsoft.com/global-infrastructure/services/?products=quantum
 [blob-storage]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-introduction
-[contributing]: https://github.com/Azure/azure-sdk-for-net/tree/main/CONTRIBUTING.md
+[contributing]: https://github.com/Azure/azure-sdk-for-java/tree/main/CONTRIBUTING.md
 [subscriptions]: https://ms.portal.azure.com/#blade/Microsoft_Azure_Billing/SubscriptionsBlade
 [credentials]: https://docs.microsoft.com/dotnet/api/overview/azure/identity-readme#credentials
 [style-guide-msft]: https://docs.microsoft.com/style-guide/capitalization

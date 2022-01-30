@@ -41,7 +41,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @see MessageListenerContainer
  * @see ListenerContainerFactory
  */
-class AzureListenerEndpointRegistry
+public class AzureListenerEndpointRegistry
     implements DisposableBean, SmartLifecycle, ApplicationContextAware, ApplicationListener<ContextRefreshedEvent> {
     private static final Logger LOG = LoggerFactory.getLogger(AzureListenerEndpointRegistry.class);
 
@@ -66,6 +66,7 @@ class AzureListenerEndpointRegistry
 
     /**
      * Return the managed {@link MessageListenerContainer} instance(s).
+     * @return the managed {@link MessageListenerContainer} instance(s).
      */
     public Collection<MessageListenerContainer> getListenerContainers() {
         return Collections.unmodifiableCollection(this.listenerContainers.values());
@@ -228,7 +229,7 @@ class AzureListenerEndpointRegistry
 
     /**
      * Return the ids of the managed {@link MessageListenerContainer} instance(s).
-     *
+     * @return the ids of the managed {@link MessageListenerContainer} instance(s).
      * @see #getListenerContainer(String)
      */
     public Set<String> getListenerContainerIds() {

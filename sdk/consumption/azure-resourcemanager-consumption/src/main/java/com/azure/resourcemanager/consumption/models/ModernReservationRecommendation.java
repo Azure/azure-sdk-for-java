@@ -4,9 +4,9 @@
 
 package com.azure.resourcemanager.consumption.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.consumption.fluent.models.ModernReservationRecommendationProperties;
 import com.azure.resourcemanager.consumption.fluent.models.ReservationRecommendationInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,141 +20,32 @@ import java.util.UUID;
 /** Modern reservation recommendation. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("modern")
-@JsonFlatten
-@Immutable
-public class ModernReservationRecommendation extends ReservationRecommendationInner {
+@Fluent
+public final class ModernReservationRecommendation extends ReservationRecommendationInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ModernReservationRecommendation.class);
 
     /*
-     * Resource eTag.
+     * Properties for modern reservation recommendation
      */
-    @JsonProperty(value = "eTag", access = JsonProperty.Access.WRITE_ONLY)
-    private String etag;
-
-    /*
-     * Resource Location.
-     */
-    @JsonProperty(value = "properties.location", access = JsonProperty.Access.WRITE_ONLY)
-    private String locationPropertiesLocation;
-
-    /*
-     * The number of days of usage to look back for recommendation.
-     */
-    @JsonProperty(value = "properties.lookBackPeriod", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer lookBackPeriod;
-
-    /*
-     * The instance Flexibility Ratio.
-     */
-    @JsonProperty(value = "properties.instanceFlexibilityRatio", access = JsonProperty.Access.WRITE_ONLY)
-    private Float instanceFlexibilityRatio;
-
-    /*
-     * The instance Flexibility Group.
-     */
-    @JsonProperty(value = "properties.instanceFlexibilityGroup", access = JsonProperty.Access.WRITE_ONLY)
-    private String instanceFlexibilityGroup;
-
-    /*
-     * The normalized Size.
-     */
-    @JsonProperty(value = "properties.normalizedSize", access = JsonProperty.Access.WRITE_ONLY)
-    private String normalizedSize;
-
-    /*
-     * The recommended Quantity Normalized.
-     */
-    @JsonProperty(value = "properties.recommendedQuantityNormalized", access = JsonProperty.Access.WRITE_ONLY)
-    private Float recommendedQuantityNormalized;
-
-    /*
-     * The meter id (GUID)
-     */
-    @JsonProperty(value = "properties.meterId", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID meterId;
-
-    /*
-     * RI recommendations in one or three year terms.
-     */
-    @JsonProperty(value = "properties.term", access = JsonProperty.Access.WRITE_ONLY)
-    private String term;
-
-    /*
-     * The total amount of cost without reserved instances.
-     */
-    @JsonProperty(value = "properties.costWithNoReservedInstances", access = JsonProperty.Access.WRITE_ONLY)
-    private Amount costWithNoReservedInstances;
-
-    /*
-     * Recommended quality for reserved instances.
-     */
-    @JsonProperty(value = "properties.recommendedQuantity", access = JsonProperty.Access.WRITE_ONLY)
-    private BigDecimal recommendedQuantity;
-
-    /*
-     * The total amount of cost with reserved instances.
-     */
-    @JsonProperty(value = "properties.totalCostWithReservedInstances", access = JsonProperty.Access.WRITE_ONLY)
-    private Amount totalCostWithReservedInstances;
-
-    /*
-     * Total estimated savings with reserved instances.
-     */
-    @JsonProperty(value = "properties.netSavings", access = JsonProperty.Access.WRITE_ONLY)
-    private Amount netSavings;
-
-    /*
-     * The usage date for looking back.
-     */
-    @JsonProperty(value = "properties.firstUsageDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime firstUsageDate;
-
-    /*
-     * Shared or single recommendation.
-     */
-    @JsonProperty(value = "properties.scope", access = JsonProperty.Access.WRITE_ONLY)
-    private String scope;
-
-    /*
-     * List of sku properties
-     */
-    @JsonProperty(value = "properties.skuProperties", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SkuProperty> skuProperties;
-
-    /*
-     * This is the ARM Sku name.
-     */
-    @JsonProperty(value = "properties.skuName", access = JsonProperty.Access.WRITE_ONLY)
-    private String skuName;
-
-    /*
-     * The Azure resource type.
-     */
-    @JsonProperty(value = "properties.resourceType", access = JsonProperty.Access.WRITE_ONLY)
-    private String resourceType;
-
-    /*
-     * The Azure subscription ID.
-     */
-    @JsonProperty(value = "properties.subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
-    private String subscriptionId;
+    @JsonProperty(value = "properties", required = true)
+    private ModernReservationRecommendationProperties innerProperties = new ModernReservationRecommendationProperties();
 
     /**
-     * Get the etag property: Resource eTag.
+     * Get the innerProperties property: Properties for modern reservation recommendation.
      *
-     * @return the etag value.
+     * @return the innerProperties value.
      */
-    public String etag() {
-        return this.etag;
+    private ModernReservationRecommendationProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Get the locationPropertiesLocation property: Resource Location.
+     * Get the location property: Resource Location.
      *
-     * @return the locationPropertiesLocation value.
+     * @return the location value.
      */
     public String locationPropertiesLocation() {
-        return this.locationPropertiesLocation;
+        return this.innerProperties() == null ? null : this.innerProperties().location();
     }
 
     /**
@@ -163,7 +54,7 @@ public class ModernReservationRecommendation extends ReservationRecommendationIn
      * @return the lookBackPeriod value.
      */
     public Integer lookBackPeriod() {
-        return this.lookBackPeriod;
+        return this.innerProperties() == null ? null : this.innerProperties().lookBackPeriod();
     }
 
     /**
@@ -172,7 +63,7 @@ public class ModernReservationRecommendation extends ReservationRecommendationIn
      * @return the instanceFlexibilityRatio value.
      */
     public Float instanceFlexibilityRatio() {
-        return this.instanceFlexibilityRatio;
+        return this.innerProperties() == null ? null : this.innerProperties().instanceFlexibilityRatio();
     }
 
     /**
@@ -181,7 +72,7 @@ public class ModernReservationRecommendation extends ReservationRecommendationIn
      * @return the instanceFlexibilityGroup value.
      */
     public String instanceFlexibilityGroup() {
-        return this.instanceFlexibilityGroup;
+        return this.innerProperties() == null ? null : this.innerProperties().instanceFlexibilityGroup();
     }
 
     /**
@@ -190,7 +81,7 @@ public class ModernReservationRecommendation extends ReservationRecommendationIn
      * @return the normalizedSize value.
      */
     public String normalizedSize() {
-        return this.normalizedSize;
+        return this.innerProperties() == null ? null : this.innerProperties().normalizedSize();
     }
 
     /**
@@ -199,7 +90,7 @@ public class ModernReservationRecommendation extends ReservationRecommendationIn
      * @return the recommendedQuantityNormalized value.
      */
     public Float recommendedQuantityNormalized() {
-        return this.recommendedQuantityNormalized;
+        return this.innerProperties() == null ? null : this.innerProperties().recommendedQuantityNormalized();
     }
 
     /**
@@ -208,7 +99,7 @@ public class ModernReservationRecommendation extends ReservationRecommendationIn
      * @return the meterId value.
      */
     public UUID meterId() {
-        return this.meterId;
+        return this.innerProperties() == null ? null : this.innerProperties().meterId();
     }
 
     /**
@@ -217,7 +108,7 @@ public class ModernReservationRecommendation extends ReservationRecommendationIn
      * @return the term value.
      */
     public String term() {
-        return this.term;
+        return this.innerProperties() == null ? null : this.innerProperties().term();
     }
 
     /**
@@ -226,7 +117,7 @@ public class ModernReservationRecommendation extends ReservationRecommendationIn
      * @return the costWithNoReservedInstances value.
      */
     public Amount costWithNoReservedInstances() {
-        return this.costWithNoReservedInstances;
+        return this.innerProperties() == null ? null : this.innerProperties().costWithNoReservedInstances();
     }
 
     /**
@@ -235,7 +126,7 @@ public class ModernReservationRecommendation extends ReservationRecommendationIn
      * @return the recommendedQuantity value.
      */
     public BigDecimal recommendedQuantity() {
-        return this.recommendedQuantity;
+        return this.innerProperties() == null ? null : this.innerProperties().recommendedQuantity();
     }
 
     /**
@@ -244,7 +135,7 @@ public class ModernReservationRecommendation extends ReservationRecommendationIn
      * @return the totalCostWithReservedInstances value.
      */
     public Amount totalCostWithReservedInstances() {
-        return this.totalCostWithReservedInstances;
+        return this.innerProperties() == null ? null : this.innerProperties().totalCostWithReservedInstances();
     }
 
     /**
@@ -253,7 +144,7 @@ public class ModernReservationRecommendation extends ReservationRecommendationIn
      * @return the netSavings value.
      */
     public Amount netSavings() {
-        return this.netSavings;
+        return this.innerProperties() == null ? null : this.innerProperties().netSavings();
     }
 
     /**
@@ -262,7 +153,7 @@ public class ModernReservationRecommendation extends ReservationRecommendationIn
      * @return the firstUsageDate value.
      */
     public OffsetDateTime firstUsageDate() {
-        return this.firstUsageDate;
+        return this.innerProperties() == null ? null : this.innerProperties().firstUsageDate();
     }
 
     /**
@@ -271,7 +162,7 @@ public class ModernReservationRecommendation extends ReservationRecommendationIn
      * @return the scope value.
      */
     public String scope() {
-        return this.scope;
+        return this.innerProperties() == null ? null : this.innerProperties().scope();
     }
 
     /**
@@ -280,7 +171,7 @@ public class ModernReservationRecommendation extends ReservationRecommendationIn
      * @return the skuProperties value.
      */
     public List<SkuProperty> skuProperties() {
-        return this.skuProperties;
+        return this.innerProperties() == null ? null : this.innerProperties().skuProperties();
     }
 
     /**
@@ -289,25 +180,7 @@ public class ModernReservationRecommendation extends ReservationRecommendationIn
      * @return the skuName value.
      */
     public String skuName() {
-        return this.skuName;
-    }
-
-    /**
-     * Get the resourceType property: The Azure resource type.
-     *
-     * @return the resourceType value.
-     */
-    public String resourceType() {
-        return this.resourceType;
-    }
-
-    /**
-     * Get the subscriptionId property: The Azure subscription ID.
-     *
-     * @return the subscriptionId value.
-     */
-    public String subscriptionId() {
-        return this.subscriptionId;
+        return this.innerProperties() == null ? null : this.innerProperties().skuName();
     }
 
     /**
@@ -318,17 +191,13 @@ public class ModernReservationRecommendation extends ReservationRecommendationIn
     @Override
     public void validate() {
         super.validate();
-        if (costWithNoReservedInstances() != null) {
-            costWithNoReservedInstances().validate();
-        }
-        if (totalCostWithReservedInstances() != null) {
-            totalCostWithReservedInstances().validate();
-        }
-        if (netSavings() != null) {
-            netSavings().validate();
-        }
-        if (skuProperties() != null) {
-            skuProperties().forEach(e -> e.validate());
+        if (innerProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model ModernReservationRecommendation"));
+        } else {
+            innerProperties().validate();
         }
     }
 }

@@ -61,7 +61,7 @@ public interface ManagedVirtualNetworks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed Virtual Network.
+     * @return a managed Virtual Network along with {@link Response}.
      */
     Response<ManagedVirtualNetworkResource> getWithResponse(
         String resourceGroupName,
@@ -77,7 +77,7 @@ public interface ManagedVirtualNetworks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed Virtual Network.
+     * @return a managed Virtual Network along with {@link Response}.
      */
     ManagedVirtualNetworkResource getById(String id);
 
@@ -91,7 +91,7 @@ public interface ManagedVirtualNetworks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed Virtual Network.
+     * @return a managed Virtual Network along with {@link Response}.
      */
     Response<ManagedVirtualNetworkResource> getByIdWithResponse(String id, String ifNoneMatch, Context context);
 

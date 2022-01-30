@@ -288,6 +288,11 @@ public class ImplementationBridgeHelpers {
 
             int getMaxMicroBatchConcurrency(CosmosBulkExecutionOptions options);
 
+            Integer getMaxConcurrentCosmosPartitions(CosmosBulkExecutionOptions options);
+
+            CosmosBulkExecutionOptions setMaxConcurrentCosmosPartitions(
+                CosmosBulkExecutionOptions options, int mxConcurrentCosmosPartitions);
+
             Duration getMaxMicroBatchInterval(CosmosBulkExecutionOptions options);
         }
     }

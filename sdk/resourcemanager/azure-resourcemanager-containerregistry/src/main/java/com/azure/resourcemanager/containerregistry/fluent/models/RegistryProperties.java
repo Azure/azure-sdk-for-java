@@ -13,6 +13,7 @@ import com.azure.resourcemanager.containerregistry.models.Policies;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import com.azure.resourcemanager.containerregistry.models.PublicNetworkAccess;
 import com.azure.resourcemanager.containerregistry.models.Status;
+import com.azure.resourcemanager.containerregistry.models.ZoneRedundancy;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -105,6 +106,12 @@ public final class RegistryProperties {
      */
     @JsonProperty(value = "networkRuleBypassOptions")
     private NetworkRuleBypassOptions networkRuleBypassOptions;
+
+    /*
+     * Whether or not zone redundancy is enabled for this container registry
+     */
+    @JsonProperty(value = "zoneRedundancy")
+    private ZoneRedundancy zoneRedundancy;
 
     /**
      * Get the loginServer property: The URL that can be used to log into the container registry.
@@ -300,6 +307,26 @@ public final class RegistryProperties {
      */
     public RegistryProperties withNetworkRuleBypassOptions(NetworkRuleBypassOptions networkRuleBypassOptions) {
         this.networkRuleBypassOptions = networkRuleBypassOptions;
+        return this;
+    }
+
+    /**
+     * Get the zoneRedundancy property: Whether or not zone redundancy is enabled for this container registry.
+     *
+     * @return the zoneRedundancy value.
+     */
+    public ZoneRedundancy zoneRedundancy() {
+        return this.zoneRedundancy;
+    }
+
+    /**
+     * Set the zoneRedundancy property: Whether or not zone redundancy is enabled for this container registry.
+     *
+     * @param zoneRedundancy the zoneRedundancy value to set.
+     * @return the RegistryProperties object itself.
+     */
+    public RegistryProperties withZoneRedundancy(ZoneRedundancy zoneRedundancy) {
+        this.zoneRedundancy = zoneRedundancy;
         return this;
     }
 

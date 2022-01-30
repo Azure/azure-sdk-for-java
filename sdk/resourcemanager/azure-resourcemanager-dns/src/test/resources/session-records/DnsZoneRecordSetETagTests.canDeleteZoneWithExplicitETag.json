@@ -25,7 +25,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/741c22df0df943e/providers/Microsoft.Network/dnsZones/www.contosoz5a470722.com?api-version=2018-03-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/741c22df0df943e/providers/Microsoft.Network/dnsZones/www.contosoz5a470722.com?api-version=2018-05-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.dns/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -50,7 +50,7 @@
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/741c22df0df943e/providers/Microsoft.Network/dnsZones/www.contosoz5a470722.com?api-version=2018-03-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/741c22df0df943e/providers/Microsoft.Network/dnsZones/www.contosoz5a470722.com?api-version=2018-05-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.dns/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -74,7 +74,7 @@
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/741c22df0df943e/providers/Microsoft.Network/dnsZones/www.contosoz5a470722.com?api-version=2018-03-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/741c22df0df943e/providers/Microsoft.Network/dnsZones/www.contosoz5a470722.com?api-version=2018-05-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.dns/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -91,7 +91,7 @@
       "x-ms-ratelimit-remaining-subscription-resource-requests" : "11999",
       "x-ms-routing-request-id" : "KOREASOUTH:20200807T065147Z:ce7ad989-0def-4d2d-8357-18d78e44f37f",
       "x-powered-by" : "ASP.NET",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/741c22df0df943e/providers/Microsoft.Network/dnsOperationResults/delzone63732379906967898966196ded?api-version=2018-03-01-preview",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/741c22df0df943e/providers/Microsoft.Network/dnsOperationResults/delzone63732379906967898966196ded?api-version=2018-05-01",
       "cache-control" : "private",
       "x-ms-request-id" : "b4964b1d-9306-4777-9a27-5c34dd97f43d",
       "Body" : "",
@@ -122,7 +122,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/741c22df0df943e/providers/Microsoft.Network/dnsOperationResults/delzone63732379906967898966196ded?api-version=2018-03-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/741c22df0df943e/providers/Microsoft.Network/dnsOperationResults/delzone63732379906967898966196ded?api-version=2018-05-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
     },

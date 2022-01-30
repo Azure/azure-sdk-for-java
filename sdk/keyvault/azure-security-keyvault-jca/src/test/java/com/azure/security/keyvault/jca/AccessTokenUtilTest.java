@@ -25,16 +25,54 @@ public class AccessTokenUtilTest {
      */
     @Test
     public void testGetAuthorizationToken() throws Exception {
-        String tenantId = System.getenv("AZURE_KEYVAULT_TENANT_ID");
-        String clientId = System.getenv("AZURE_KEYVAULT_CLIENT_ID");
-        String clientSecret = System.getenv("AZURE_KEYVAULT_CLIENT_SECRET");
+        String tenantId = PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_TENANT_ID");
+        String clientId = PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CLIENT_ID");
+        String clientSecret = PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CLIENT_SECRET");
+        String keyVaultEndPointSuffix = PropertyConvertorUtils.getPropertyValue("KEY_VAULT_ENDPOINT_SUFFIX", ".vault.azure.net");
+        CloudType cloudType = getCloudTypeByKeyVaultEndPoint(keyVaultEndPointSuffix);
+        String resourceUrl = getResourceUrl(cloudType);
+        String aadAuthenticationUrl = getAadAuthenticationUrl(cloudType);
         AccessToken result = AccessTokenUtil.getAccessToken(
-            "https://management.azure.com/",
-            null,
+            resourceUrl,
+            aadAuthenticationUrl,
             tenantId,
             clientId,
             URLEncoder.encode(clientSecret, "UTF-8")
         );
         assertNotNull(result);
+    }
+
+    private String getResourceUrl(CloudType cloudType) {
+        if (CloudType.UsGov.equals(cloudType)) {
+            return "https://management.usgovcloudapi.net/";
+        } else if (CloudType.China.equals(cloudType)) {
+            return "https://management.chinacloudapi.cn/";
+        }
+        return "https://management.azure.com/";
+    }
+
+    private String getAadAuthenticationUrl(CloudType cloudType) {
+        if (CloudType.UsGov.equals(cloudType)) {
+            return "https://login.microsoftonline.us/";
+        } else if (CloudType.China.equals(cloudType)) {
+            return "https://login.partner.microsoftonline.cn/";
+        }
+        return "https://login.microsoftonline.com/";
+    }
+
+    private CloudType getCloudTypeByKeyVaultEndPoint(String keyVaultEndPointSuffix) {
+        if (".vault.usgovcloudapi.net".equals(keyVaultEndPointSuffix)) {
+            return CloudType.UsGov;
+        } else if (".vault.azure.cn".equals(keyVaultEndPointSuffix)) {
+            return CloudType.China;
+        }
+        return CloudType.Public;
+    }
+
+    private enum CloudType {
+        Public,
+        UsGov,
+        China,
+        UNKNOWN
     }
 }

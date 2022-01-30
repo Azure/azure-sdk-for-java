@@ -65,7 +65,7 @@ public interface StreamingJob {
      *
      * @return the sku value.
      */
-    StreamingJobSku sku();
+    Sku sku();
 
     /**
      * Gets the jobId property: A GUID uniquely identifying the streaming job. This GUID is generated upon creation of
@@ -245,13 +245,6 @@ public interface StreamingJob {
     ContentStoragePolicy contentStoragePolicy();
 
     /**
-     * Gets the externals property: The storage account where the custom code artifacts are located.
-     *
-     * @return the externals value.
-     */
-    External externals();
-
-    /**
      * Gets the cluster property: The cluster which streaming jobs will run on.
      *
      * @return the cluster value.
@@ -342,7 +335,6 @@ public interface StreamingJob {
                 DefinitionStages.WithFunctions,
                 DefinitionStages.WithJobStorageAccount,
                 DefinitionStages.WithContentStoragePolicy,
-                DefinitionStages.WithExternals,
                 DefinitionStages.WithCluster,
                 DefinitionStages.WithIfMatch,
                 DefinitionStages.WithIfNoneMatch {
@@ -392,7 +384,7 @@ public interface StreamingJob {
              * @param sku Describes the SKU of the streaming job. Required on PUT (CreateOrReplace) requests.
              * @return the next definition stage.
              */
-            WithCreate withSku(StreamingJobSku sku);
+            WithCreate withSku(Sku sku);
         }
         /** The stage of the StreamingJob definition allowing to specify jobType. */
         interface WithJobType {
@@ -597,16 +589,6 @@ public interface StreamingJob {
              */
             WithCreate withContentStoragePolicy(ContentStoragePolicy contentStoragePolicy);
         }
-        /** The stage of the StreamingJob definition allowing to specify externals. */
-        interface WithExternals {
-            /**
-             * Specifies the externals property: The storage account where the custom code artifacts are located..
-             *
-             * @param externals The storage account where the custom code artifacts are located.
-             * @return the next definition stage.
-             */
-            WithCreate withExternals(External externals);
-        }
         /** The stage of the StreamingJob definition allowing to specify cluster. */
         interface WithCluster {
             /**
@@ -670,9 +652,8 @@ public interface StreamingJob {
             UpdateStages.WithFunctions,
             UpdateStages.WithJobStorageAccount,
             UpdateStages.WithContentStoragePolicy,
-            UpdateStages.WithExternals,
             UpdateStages.WithCluster,
-            UpdateStages.WithifMatch {
+            UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *
@@ -721,7 +702,7 @@ public interface StreamingJob {
              * @param sku Describes the SKU of the streaming job. Required on PUT (CreateOrReplace) requests.
              * @return the next definition stage.
              */
-            Update withSku(StreamingJobSku sku);
+            Update withSku(Sku sku);
         }
         /** The stage of the StreamingJob update allowing to specify jobType. */
         interface WithJobType {
@@ -926,16 +907,6 @@ public interface StreamingJob {
              */
             Update withContentStoragePolicy(ContentStoragePolicy contentStoragePolicy);
         }
-        /** The stage of the StreamingJob update allowing to specify externals. */
-        interface WithExternals {
-            /**
-             * Specifies the externals property: The storage account where the custom code artifacts are located..
-             *
-             * @param externals The storage account where the custom code artifacts are located.
-             * @return the next definition stage.
-             */
-            Update withExternals(External externals);
-        }
         /** The stage of the StreamingJob update allowing to specify cluster. */
         interface WithCluster {
             /**
@@ -947,7 +918,7 @@ public interface StreamingJob {
             Update withCluster(ClusterInfo cluster);
         }
         /** The stage of the StreamingJob update allowing to specify ifMatch. */
-        interface WithifMatch {
+        interface WithIfMatch {
             /**
              * Specifies the ifMatch property: The ETag of the streaming job. Omit this value to always overwrite the
              * current record set. Specify the last-seen ETag value to prevent accidentally overwriting concurrent
@@ -957,7 +928,7 @@ public interface StreamingJob {
              *     Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes.
              * @return the next definition stage.
              */
-            Update ifMatch(String ifMatch);
+            Update withIfMatch(String ifMatch);
         }
     }
     /**
@@ -974,4 +945,82 @@ public interface StreamingJob {
      * @return the refreshed resource.
      */
     StreamingJob refresh(Context context);
+
+    /**
+     * Starts a streaming job. Once a job is started it will start processing input events and produce output.
+     *
+     * @param startJobParameters Parameters applicable to a start streaming job operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void start(StartStreamingJobParameters startJobParameters);
+
+    /**
+     * Starts a streaming job. Once a job is started it will start processing input events and produce output.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void start();
+
+    /**
+     * Starts a streaming job. Once a job is started it will start processing input events and produce output.
+     *
+     * @param startJobParameters Parameters applicable to a start streaming job operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void start(StartStreamingJobParameters startJobParameters, Context context);
+
+    /**
+     * Stops a running streaming job. This will cause a running streaming job to stop processing input events and
+     * producing output.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void stop();
+
+    /**
+     * Stops a running streaming job. This will cause a running streaming job to stop processing input events and
+     * producing output.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void stop(Context context);
+
+    /**
+     * Scales a streaming job when the job is running.
+     *
+     * @param scaleJobParameters Parameters applicable to a scale streaming job operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void scale(ScaleStreamingJobParameters scaleJobParameters);
+
+    /**
+     * Scales a streaming job when the job is running.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void scale();
+
+    /**
+     * Scales a streaming job when the job is running.
+     *
+     * @param scaleJobParameters Parameters applicable to a scale streaming job operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void scale(ScaleStreamingJobParameters scaleJobParameters, Context context);
 }

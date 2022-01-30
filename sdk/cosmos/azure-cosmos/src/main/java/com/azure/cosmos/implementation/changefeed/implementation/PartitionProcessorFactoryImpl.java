@@ -113,6 +113,6 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory {
             .withMaxItemCount(this.changeFeedProcessorOptions.getMaxItemCount());
 
         PartitionCheckpointer checkpointer = new PartitionCheckpointerImpl(this.leaseCheckpointer, lease);
-        return new PartitionProcessorImpl(observer, this.documentClient, settings, checkpointer);
+        return new PartitionProcessorImpl(observer, this.documentClient, settings, checkpointer, lease);
     }
 }
