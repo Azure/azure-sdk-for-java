@@ -26,6 +26,7 @@ trigger:
       - sdk/cosmos/azure-cosmos-benchmark/pom.xml
       - sdk/cosmos/azure-cosmos-dotnet-benchmark/pom.xml
       - sdk/cosmos/azure-cosmos-encryption/pom.xml
+      - sdk/cosmos/azure-cosmos-spark_3_2-12/pom.xml
       - sdk/cosmos/azure-cosmos-spark_3-1_2-12/pom.xml
       - sdk/cosmos/azure-cosmos-spark_3-2_2-12/pom.xml
       - sdk/cosmos/azure-spring-data-cosmos/pom.xml
@@ -59,6 +60,7 @@ pr:
       - sdk/cosmos/azure-cosmos-benchmark/pom.xml
       - sdk/cosmos/azure-cosmos-dotnet-benchmark/pom.xml
       - sdk/cosmos/azure-cosmos-encryption/pom.xml
+      - sdk/cosmos/azure-cosmos-spark_3_2-12/pom.xml
       - sdk/cosmos/azure-cosmos-spark_3-1_2-12/pom.xml
       - sdk/cosmos/azure-cosmos-spark_3-2_2-12/pom.xml
       - sdk/cosmos/azure-spring-data-cosmos/pom.xml
@@ -81,7 +83,7 @@ extends:
         safeName: azurecosmosencryption
       - name: azure-cosmos-spark_3-1_2-12
         groupId: com.azure.cosmos.spark
-        safeName: azurecosmosspark3
+        safeName: azurecosmosspark31
       - name: azure-cosmos-spark_3-2_2-12
         groupId: com.azure.cosmos.spark
         safeName: azurecosmosspark32
@@ -90,3 +92,5 @@ extends:
         groupId: com.azure
       - name: azure-spring-data-cosmos-test
         groupId: com.azure
+      - name: azure-cosmos-spark_3_2-12
+        groupId: com.azure.cosmos.spark

@@ -57,6 +57,9 @@
 # PRLabel: %azure-spring
 /sdk/cosmos/azure-spring-data-cosmos-test/          @kushagraThapar @mbhaskar @backwind1233 @chenrujun @hui1110 @jialigit @moarychan @saragluna @stliu @yiliuTo @xinlian12
 
+# ServiceLabel: %Device Update for IoT Hub %Service Attention
+/sdk/deviceupdate/                                  @dpokluda
+
 # PRLabel: %Digital Twins
 /sdk/digitaltwins/                                  @johngallardo @efriesner @abhinav-ghai
 
@@ -83,6 +86,9 @@
 
 # PRLabel: %Cognitive - Metrics Advisor
 /sdk/metricsadvisor/                                @samvaity @anuchandy
+
+# PRLabel: %Cognitive - Anomaly Detector
+/sdk/anomalydetector/                               @conhua @mengaims @juaduan @moreOver0
 
 # PRLabel: %Azure.Identity
 /sdk/identity/                                      @g2vinay @schaabs @joshfree @billwert
