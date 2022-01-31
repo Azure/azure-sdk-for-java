@@ -3,7 +3,9 @@
 
 module com.azure.data.schemaregistry.apacheavro {
     requires transitive com.azure.data.schemaregistry;
-    requires transitive com.azure.core.serializer.avro.apache;
+    requires transitive com.azure.core.experimental;
+
+    requires transitive org.apache.avro;
 
     exports com.azure.data.schemaregistry.apacheavro;
 
