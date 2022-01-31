@@ -457,8 +457,9 @@ public final class EncryptedBlobClientBuilder {
 
             this.accountName = parts.getAccountName();
             this.endpoint = BuilderHelper.getEndpoint(parts);
-            this.containerName = parts.getBlobContainerName();
-            this.blobName = Utility.urlEncode(parts.getBlobName());
+            this.containerName = parts.getBlobContainerName() == null ? this.containerName
+                : parts.getBlobContainerName();
+            this.blobName = parts.getBlobName() == null ? this.blobName : Utility.urlEncode(parts.getBlobName());
             this.snapshot = parts.getSnapshot();
             this.versionId = parts.getVersionId();
 
