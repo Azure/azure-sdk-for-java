@@ -43,7 +43,7 @@ stages:
           - AZURE_TEST.*=.*/
         BuildParallelization: 1
         AdditionalBuildOptions: '-DsparkShading'
-        AdditionalTestOptions: '-Punit'
+        TestOptions: '-Punit'
 
   - stage: TestEmulator
     displayName: Test Emulator
@@ -71,8 +71,7 @@ stages:
           # Issue filed to improve download speed: https://github.com/Azure/azure-sdk-for-java/issues/12970
           TimeoutInMinutes: 90
           TestGoals: 'clean verify'
-          AdditionalTestOptions: '$(ProfileFlag) $(AdditionalArgs)'
-          mavenAuthenticateFeed: true
+          TestOptions: '$(ProfileFlag) $(AdditionalArgs)'
 
           PreSteps:
           - template: /eng/common/pipelines/templates/steps/cosmos-emulator.yml

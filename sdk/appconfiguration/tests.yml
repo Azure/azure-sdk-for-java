@@ -16,4 +16,4 @@ stages:
         AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
       TestGoals: 'verify'
-      AdditionalTestOptions: '-DskipSpringITs=false'
+      TestOptions: '-DskipSpringITs=false'

@@ -43,9 +43,9 @@ parameters:
   - name: TestGoals
     type: string
     default: $(TestGoals)
-  - name: AdditionalTestOptions
+  - name: TestOptions
     type: string
-    default: $(AdditionalTestOptions)
+    default: $(TestOptions)
   - name: AdditionalBuildOptions
     type: string
     default: $(AdditionalBuildOptions)
@@ -353,5 +353,5 @@ jobs:
         SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
         PreBuildSteps: ${{ parameters.PreBuildSteps }}
         TestGoals: ${{ parameters.TestGoals }}
-        AdditionalTestOptions: ${{ parameters.AdditionalTestOptions }}
+        TestOptions: ${{ parameters.TestOptions }}
         AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}

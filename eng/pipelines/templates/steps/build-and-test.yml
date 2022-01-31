@@ -11,7 +11,7 @@ parameters:
   - name: TestGoals
     type: string
     default: $(TestGoals)
-  - name: AdditionalTestOptions
+  - name: TestOptions
     type: string
     default: ''
   - name: AdditionalBuildOptions
@@ -54,7 +54,7 @@ steps:
     displayName: 'Run tests'
     inputs:
       mavenPomFile: pom.xml
-      options: '$(DefaultTestOptions) --quiet -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.AdditionalTestOptions }} -T ${{ parameters.TestParallelization }}'
+      options: '$(DefaultTestOptions) --quiet -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }}'
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: $(JavaTestVersion)
@@ -102,9 +102,9 @@ steps:
       # For the "From Source" runs we don't want the -am switch as we don't care about running tests for our
       # dependencies, but we do want the -amd switch because we want to run tests on things that depend on us.
       ${{ if eq(parameters.IsLiveTest, 'true') }}:
-        options: $(DefaultTestOptions) --quiet -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.AdditionalTestOptions }} -T ${{ parameters.TestParallelization }}
+        options: $(DefaultTestOptions) --quiet -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }}
       ${{ else }}:
-        options: $(DefaultTestOptions) --quiet -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.AdditionalTestOptions }} -amd -T ${{ parameters.TestParallelization }}
+        options: $(DefaultTestOptions) --quiet -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -amd -T ${{ parameters.TestParallelization }}
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: $(JavaTestVersion)
@@ -123,7 +123,7 @@ steps:
   - template: ../steps/retain-heap-dump-hprofs.yml
 
   - task: PublishTestResults@2
-    condition: and(always(), ne(variables['TestFromSource'], 'true'))
+    condition: always()
     inputs:
       mergeTestResults: true
       testRunTitle: $(Agent.JobName)

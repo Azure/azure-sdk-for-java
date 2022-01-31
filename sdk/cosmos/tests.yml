@@ -32,7 +32,7 @@ stages:
       PreSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
       TestGoals: 'verify'
-      AdditionalTestOptions: '$(ProfileFlag) $(AdditionalArgs)'
+      TestOptions: '$(ProfileFlag) $(AdditionalArgs)'
       TestResultsFiles: '**/junitreports/TEST-*.xml'
 
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
@@ -57,4 +57,4 @@ stages:
       PreSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
       TestGoals: 'clean verify'
-      AdditionalTestOptions: '$(ProfileFlag)'
+      TestOptions: '$(ProfileFlag)'

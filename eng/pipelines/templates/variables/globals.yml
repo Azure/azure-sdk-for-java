@@ -20,10 +20,12 @@ variables:
 
   # Exists if needed in coalesce situations.
   DefaultTestGoals: 'surefire:test'
-  # This will be overridden by the test matrix if configured.
+  # This will be overwritten by the test matrix, if configured.
   TestGoals: $(DefaultTestGoals)
 
-  AdditionalTestOptions: ''
+  # This will be overwritten by the test matrix, if configured.
+  TestOptions: ''
+
   AdditionalBuildOptions: ''
 
   skipComponentGovernanceDetection: true

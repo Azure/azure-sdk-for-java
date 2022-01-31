@@ -100,8 +100,8 @@ stages:
         Clouds: ${{ parameters.Clouds }}
         TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
         Artifacts: ${{ parameters.Artifacts }}
-        AdditionalTestOptions: '-DskipSpringITs=false'
         TestGoals: 'verify'
+        TestOptions: '-DskipSpringITs=false'
         PreSteps:
             - script: |
                   az cloud set --name AzureChinaCloud

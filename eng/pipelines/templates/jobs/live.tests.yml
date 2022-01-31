@@ -19,7 +19,7 @@ parameters:
   DisableAzureResourceCreation: false
   BuildParallelization: '2C'
   TestGoals: $(TestGoals)
-  AdditionalTestOptions: $(AdditionalTestOptions)
+  TestOptions: $(TestOptions)
   AdditionalBuildOptions: $(AdditionalBuildOptions)
 
 jobs:
@@ -90,7 +90,7 @@ jobs:
           BuildParallelization: ${{ parameters.BuildParallelization }}
           IsLiveTest: true
           TestGoals: ${{ parameters.TestGoals }}
-          AdditionalTestOptions: ${{ parameters.AdditionalTestOptions }}
+          TestOptions: ${{ parameters.TestOptions }}
           AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}
           TestEnvVars:
             AZURE_TEST_MODE: ${{ parameters.TestMode }}

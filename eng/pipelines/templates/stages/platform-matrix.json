@@ -28,8 +28,8 @@
       "JavaTestVersion": "1.11",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
       "TestFromSource": true,
-      "TestGoals": "surefire:test",
-      "TestOptions": ""
+      "TestGoals": "verify",
+      "TestOptions": "-Dmaven.main.skip=true -Dmaven.test.skip=true"
     },
     {
       "Agent": {
@@ -39,8 +39,7 @@
       "AZURE_TEST_HTTP_CLIENTS": "netty",
       "TestFromSource": false,
       "TestGoals": "verify",
-      "AdditionalTestOptions": "-Dmaven.main.skip=true",
-      "TestOptions": ""
+      "TestOptions": "-Dmaven.main.skip=true -Dmaven.test.skip=true"
     }
   ]
 }

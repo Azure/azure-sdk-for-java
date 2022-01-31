@@ -32,7 +32,7 @@
       "AZURE_TEST_HTTP_CLIENTS": "netty",
       "TestFromSource": false,
       "StorageRunStressScenarios" : "true",
-      "AdditionalTestOptions": "-DskipTests"
+      "TestOptions": "-DskipTests"
     }
   ]
 }
