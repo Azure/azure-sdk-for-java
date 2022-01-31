@@ -465,6 +465,7 @@ public final class TableClientBuilder implements
     /**
      * Sets the request {@link RetryPolicy} for all the requests made through the client. The default
      * {@link RetryPolicy} will be used in the pipeline, if not provided.
+     * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
      *
      * @param retryPolicy {@link RetryPolicy}.
      *
@@ -477,9 +478,10 @@ public final class TableClientBuilder implements
     }
 
     /**
-     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     * Sets the {@link RetryOptions} for all the requests made through the client.
+     * Setting this is mutually exclusive with using {@link #retryPolicy(RetryPolicy)}.
      *
-     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
      *
      * @return The updated {@link TableClientBuilder} object.
      */

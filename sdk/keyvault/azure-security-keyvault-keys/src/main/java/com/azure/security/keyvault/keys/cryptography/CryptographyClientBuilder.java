@@ -256,7 +256,7 @@ public final class CryptographyClientBuilder implements
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
         // Add retry policy.
-        policies.add(getRetryPolicy());
+        policies.add(getAndValidateRetryPolicy());
 
         policies.add(new KeyVaultCredentialPolicy(credential));
 
@@ -272,7 +272,7 @@ public final class CryptographyClientBuilder implements
             .build();
     }
 
-    private HttpPipelinePolicy getRetryPolicy() {
+    private HttpPipelinePolicy getAndValidateRetryPolicy() {
         if (retryPolicy != null && retryOptions != null) {
             throw logger.logExceptionAsWarning(
                 new IllegalStateException("'retryPolicy' and 'retryOptions' cannot both be set"));
@@ -472,6 +472,7 @@ public final class CryptographyClientBuilder implements
     /**
      * Sets the {@link RetryPolicy} that is used when each request is sent. The default retry policy will be used in
      * the pipeline, if not provided.
+     * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
      *
      * @param retryPolicy User's {@link RetryPolicy} applied to each request.
      *
@@ -484,9 +485,10 @@ public final class CryptographyClientBuilder implements
     }
 
     /**
-     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     * Sets the {@link RetryOptions} for all the requests made through the client.
+     * Setting this is mutually exclusive with using {@link #retryPolicy(RetryPolicy)}.
      *
-     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
      *
      * @return The updated {@link CryptographyClientBuilder} object.
      */

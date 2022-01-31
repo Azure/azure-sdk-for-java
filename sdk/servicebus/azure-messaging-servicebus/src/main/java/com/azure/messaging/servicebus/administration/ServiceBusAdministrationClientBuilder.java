@@ -379,6 +379,8 @@ public final class ServiceBusAdministrationClientBuilder implements
      * The default retry policy will be used if not provided {@link #buildAsyncClient()}
      * to build {@link ServiceBusAdministrationClient} or {@link ServiceBusAdministrationAsyncClient}.
      *
+     * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
+     *
      * @param retryPolicy The user's retry policy applied to each request.
      *
      * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
@@ -389,9 +391,10 @@ public final class ServiceBusAdministrationClientBuilder implements
     }
 
     /**
-     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     * Sets the {@link RetryOptions} for all the requests made through the client.
+     * Setting this is mutually exclusive with using {@link #retryPolicy(HttpPipelinePolicy)}.
      *
-     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
      *
      * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
      */
@@ -444,7 +447,7 @@ public final class ServiceBusAdministrationClientBuilder implements
 
         HttpPolicyProviders.addBeforeRetryPolicies(httpPolicies);
 
-        httpPolicies.add(getRetryPolicy());
+        httpPolicies.add(getAndValidateRetryPolicy());
         httpPolicies.addAll(perRetryPolicies);
 
         if (clientOptions != null) {
@@ -467,7 +470,7 @@ public final class ServiceBusAdministrationClientBuilder implements
             .build();
     }
 
-    private HttpPipelinePolicy getRetryPolicy() {
+    private HttpPipelinePolicy getAndValidateRetryPolicy() {
         if (retryPolicy != null && retryOptions != null) {
             throw logger.logExceptionAsWarning(
                 new IllegalStateException("'retryPolicy' and 'retryOptions' cannot both be set"));

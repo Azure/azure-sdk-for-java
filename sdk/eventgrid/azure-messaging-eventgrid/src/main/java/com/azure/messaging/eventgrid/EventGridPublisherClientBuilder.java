@@ -145,7 +145,7 @@ public final class EventGridPublisherClientBuilder implements
         httpPipelinePolicies.add(new RequestIdPolicy());
 
         HttpPolicyProviders.addBeforeRetryPolicies(httpPipelinePolicies);
-        httpPipelinePolicies.add(getRetryPolicy());
+        httpPipelinePolicies.add(getAndValidateRetryPolicy());
 
         httpPipelinePolicies.add(new AddDatePolicy());
 
@@ -200,7 +200,7 @@ public final class EventGridPublisherClientBuilder implements
         return new EventGridPublisherAsyncClient<T>(buildPipeline, endpoint, buildServiceVersion, eventClass);
     }
 
-    private HttpPipelinePolicy getRetryPolicy() {
+    private HttpPipelinePolicy getAndValidateRetryPolicy() {
         if (retryPolicy != null && retryOptions != null) {
             throw logger.logExceptionAsWarning(
                 new IllegalStateException("'retryPolicy' and 'retryOptions' cannot both be set"));
@@ -238,7 +238,8 @@ public final class EventGridPublisherClientBuilder implements
     }
 
     /**
-     * Add a custom retry policy to the pipeline. The default is {@link RetryPolicy#RetryPolicy()}
+     * Add a custom retry policy to the pipeline. The default is {@link RetryPolicy#RetryPolicy()}.
+     * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
      * @param retryPolicy the retry policy to add.
      *
      * @return the builder itself.
@@ -249,9 +250,10 @@ public final class EventGridPublisherClientBuilder implements
     }
 
     /**
-     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     * Sets the {@link RetryOptions} for all the requests made through the client.
+     * Setting this is mutually exclusive with using {@link #retryPolicy(RetryPolicy)}.
      *
-     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
      *
      * @return the builder itself.
      */

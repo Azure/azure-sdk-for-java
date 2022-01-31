@@ -5,6 +5,7 @@ package com.azure.core.client.traits;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryOptions;
@@ -15,9 +16,9 @@ import com.azure.core.http.policy.RetryOptions;
  */
 public interface HttpTrait<TBuilder extends HttpTrait<TBuilder>> {
     /**
-     * Sets the {@link HttpClient} to use for sending a receiving requests to and from the service.
+     * Sets the {@link HttpClient} to use for sending and receiving requests to and from the service.
      *
-     * @param httpClient HttpClient to use for requests.
+     * @param httpClient The {@link HttpClient} to use for requests.
      * @return the updated TBuilder object.
      */
     TBuilder httpClient(HttpClient httpClient);
@@ -25,30 +26,33 @@ public interface HttpTrait<TBuilder extends HttpTrait<TBuilder>> {
     /**
      * Sets the {@link HttpPipeline} to use for the service client.
      *
-     * @param httpPipeline HttpPipeline to use for sending service requests and receiving responses.
+     * @param pipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
      * @return the updated TBuilder object.
      */
-    TBuilder pipeline(HttpPipeline httpPipeline);
+    TBuilder pipeline(HttpPipeline pipeline);
 
     /**
-     * Adds a pipeline policy to apply on each request sent.
+     * Adds a {@link HttpPipelinePolicy pipeline policy} to apply on each request sent.
      *
-     * @param pipelinePolicy a pipeline policy
+     * @param pipelinePolicy A {@link HttpPipelinePolicy pipeline policy}.
      * @return the updated TBuilder object.
      */
     TBuilder addPolicy(HttpPipelinePolicy pipelinePolicy);
 
     /**
-     * Sets the configuration of retry policy.
-     * @param retryOptions the options of retry policy.
+     * Sets the {@link RetryOptions} for all the requests made through the client.
+     *
+     * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
      * @return the updated TBuilder object.
      */
     TBuilder retryOptions(RetryOptions retryOptions);
 
     /**
-     * Sets the {@link HttpLogOptions} for service requests.
+     * Sets the {@link HttpLogOptions logging configuration} to use when sending and receiving requests to and from
+     * the service. If a {@code logLevel} is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.
      *
-     * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
+     * @param logOptions The {@link HttpLogOptions logging configuration} to use when sending and receiving requests to
+     * and from the service.
      * @return the updated TBuilder object.
      */
     TBuilder httpLogOptions(HttpLogOptions logOptions);

@@ -366,7 +366,7 @@ public class EventHubClientBuilder implements
         return this;
     }
 
-    private String getFullyQualifiedNamespace() {
+    private String getAndValidateFullyQualifiedNamespace() {
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
@@ -945,11 +945,11 @@ public class EventHubClientBuilder implements
         final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
 
         if (customEndpointAddress == null) {
-            return new ConnectionOptions(getFullyQualifiedNamespace(), credentials, authorizationType,
+            return new ConnectionOptions(getAndValidateFullyQualifiedNamespace(), credentials, authorizationType,
                 ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
                 options, verificationMode, product, clientVersion);
         } else {
-            return new ConnectionOptions(getFullyQualifiedNamespace(), credentials, authorizationType,
+            return new ConnectionOptions(getAndValidateFullyQualifiedNamespace(), credentials, authorizationType,
                 ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
                 options, verificationMode, product, clientVersion, customEndpointAddress.getHost(),
                 customEndpointAddress.getPort());

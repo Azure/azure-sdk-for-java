@@ -12,10 +12,10 @@ import com.azure.core.credential.AzureKeyCredential;
  */
 public interface AzureKeyCredentialTrait<TBuilder extends AzureKeyCredentialTrait<TBuilder>> {
     /**
-     * Sets The Azure Key Credential used for authentication.
+     * Sets the Azure Key Credential used for authentication.
      *
-     * @param azureKeyCredential the azureKeyCredential value.
+     * @param credential the Azure Key Credential value.
      * @return the updated {@code TBuilder}.
      */
-    TBuilder credential(AzureKeyCredential azureKeyCredential);
+    TBuilder credential(AzureKeyCredential credential);
 }

@@ -12,10 +12,10 @@ import com.azure.core.credential.AzureNamedKeyCredential;
  */
 public interface AzureNamedKeyCredentialTrait<TBuilder extends AzureNamedKeyCredentialTrait<TBuilder>> {
     /**
-     * Sets The Azure Named Key Credential used for authentication.
+     * Sets the Azure Named Key Credential used for authentication.
      *
-     * @param azureNamedKeyCredential the azureNamedKeyCredential value.
+     * @param credential the Azure Named Key Credential value.
      * @return the updated {@code TBuilder}.
      */
-    TBuilder credential(AzureNamedKeyCredential azureNamedKeyCredential);
+    TBuilder credential(AzureNamedKeyCredential credential);
 }

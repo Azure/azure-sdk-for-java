@@ -301,6 +301,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
     /**
      * Sets the {@link RetryPolicy} that is used when each request is sent. The default retry policy will be used in
      * the pipeline, if not provided.
+     * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
      *
      * @param retryPolicy User's retry policy applied to each request.
      *
@@ -313,9 +314,10 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
     }
 
     /**
-     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     * Sets the {@link RetryOptions} for all the requests made through the client.
+     * Setting this is mutually exclusive with using {@link #retryPolicy(RetryPolicy)}.
      *
-     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
      *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
      */

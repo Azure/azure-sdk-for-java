@@ -22,7 +22,7 @@ public interface AmqpTrait<TBuilder extends AmqpTrait<TBuilder>> {
     TBuilder retryOptions(AmqpRetryOptions retryOptions);
 
     /**
-     * Sets the transport type by which all the communication with Azure Event Hubs occurs. Default value is {@link
+     * Sets the transport type by which all the communication with Azure service occurs. Default value is {@link
      * AmqpTransportType#AMQP}.
      *
      * @param transport The transport type to use.

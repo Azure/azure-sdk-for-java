@@ -263,7 +263,7 @@ public final class ServiceBusClientBuilder implements
         return this;
     }
 
-    private String getFullyQualifiedNamespace() {
+    private String getAndValidateFullyQualifiedNamespace() {
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
@@ -701,7 +701,7 @@ public final class ServiceBusClientBuilder implements
         final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
         final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
 
-        return new ConnectionOptions(getFullyQualifiedNamespace(), credentials, authorizationType,
+        return new ConnectionOptions(getAndValidateFullyQualifiedNamespace(), credentials, authorizationType,
             ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
             options, verificationMode, product, clientVersion);
     }

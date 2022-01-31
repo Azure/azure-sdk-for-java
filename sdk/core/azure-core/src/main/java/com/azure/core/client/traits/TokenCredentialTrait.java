@@ -13,11 +13,10 @@ import com.azure.core.credential.TokenCredential;
 public interface TokenCredentialTrait<TBuilder extends TokenCredentialTrait<TBuilder>> {
 
     /**
-     * Sets the {@link TokenCredential} used to authenticate HTTP requests.
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service.
      *
-     * @param tokenCredential {@link TokenCredential} used to authenticate HTTP requests.
+     * @param credential {@link TokenCredential} used to authorize requests sent to the service.
      * @return The updated {@code TBuilder} object.
-     * @throws NullPointerException Might be thrown if {@code tokenCredential} is null.
      */
-    TBuilder credential(TokenCredential tokenCredential);
+    TBuilder credential(TokenCredential credential);
 }

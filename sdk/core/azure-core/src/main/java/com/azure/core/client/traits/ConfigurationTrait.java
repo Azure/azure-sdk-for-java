@@ -12,7 +12,7 @@ import com.azure.core.util.Configuration;
  */
 public interface ConfigurationTrait<TBuilder extends ConfigurationTrait<TBuilder>> {
     /**
-     * Sets the configuration object used to retrieve environment configuration values during building of the client.
+     * Sets the configuration used to retrieve environment configuration values when building a client.
      *
      * @param configuration Configuration store used to retrieve environment configurations.
      * @return the updated TBuilder object

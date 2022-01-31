@@ -216,7 +216,7 @@ public final class ConfigurationClientBuilder implements
         policies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
-        policies.add(getRetryPolicy());
+        policies.add(getAndValidateRetryPolicy());
 
         policies.add(new AddDatePolicy());
 
@@ -254,7 +254,7 @@ public final class ConfigurationClientBuilder implements
         return new ConfigurationAsyncClient(buildEndpoint, pipeline, serviceVersion, syncTokenPolicy);
     }
 
-    private HttpPipelinePolicy getRetryPolicy() {
+    private HttpPipelinePolicy getAndValidateRetryPolicy() {
         if (retryPolicy != null && retryOptions != null) {
             throw logger.logExceptionAsWarning(
                 new IllegalStateException("'retryPolicy' and 'retryOptions' cannot both be set"));
@@ -441,6 +441,8 @@ public final class ConfigurationClientBuilder implements
      * <p>
      * The default retry policy will be used if not provided {@link ConfigurationClientBuilder#buildAsyncClient()} to
      * build {@link ConfigurationAsyncClient} or {@link ConfigurationClient}.
+     * <p>
+     * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
      *
      * @param retryPolicy The {@link HttpPipelinePolicy} that will be used to retry requests. For example,
      * {@link RetryPolicy} can be used to retry requests.
@@ -453,10 +455,12 @@ public final class ConfigurationClientBuilder implements
     }
 
     /**
-     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     * Sets the {@link RetryOptions} for all the requests made through the client.
+     * <p>
+     * Setting this is mutually exclusive with using {@link #retryPolicy(HttpPipelinePolicy)}.
      *
-     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
-     *
+     * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
+     * @throws NullPointerException If {@code retryOptions} is null.
      * @return The updated {@link ConfigurationClientBuilder} object.
      */
     @Override

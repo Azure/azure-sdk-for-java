@@ -216,7 +216,7 @@ public final class KeyClientBuilder implements
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
         // Add retry policy.
-        policies.add(getRetryPolicy());
+        policies.add(getAndValidateRetryPolicy());
 
         policies.add(new KeyVaultCredentialPolicy(credential));
         // Add per retry additional policies.
@@ -233,7 +233,7 @@ public final class KeyClientBuilder implements
         return new KeyAsyncClient(vaultUrl, pipeline, serviceVersion);
     }
 
-    private HttpPipelinePolicy getRetryPolicy() {
+    private HttpPipelinePolicy getAndValidateRetryPolicy() {
         if (retryPolicy != null && retryOptions != null) {
             throw logger.logExceptionAsWarning(
                 new IllegalStateException("'retryPolicy' and 'retryOptions' cannot both be set"));
@@ -404,6 +404,8 @@ public final class KeyClientBuilder implements
      *
      * The default retry policy will be used in the pipeline, if not provided.
      *
+     * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
+     *
      * @param retryPolicy user's retry policy applied to each request.
      *
      * @return The updated {@link KeyClientBuilder} object.
@@ -415,9 +417,10 @@ public final class KeyClientBuilder implements
     }
 
     /**
-     * Sets the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     * Sets the {@link RetryOptions} for all the requests made through the client.
+     * Setting this is mutually exclusive with using {@link #retryPolicy(RetryPolicy)}.
      *
-     * @param retryOptions the {@link RetryOptions} for the {@link RetryPolicy} that is used when each request is sent.
+     * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
      *
      * @return The updated {@link KeyClientBuilder} object.
      */

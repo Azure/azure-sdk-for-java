@@ -12,9 +12,9 @@ import com.azure.core.credential.AzureSasCredential;
  */
 public interface AzureSasCredentialTrait<TBuilder extends AzureSasCredentialTrait<TBuilder>> {
     /**
-     * Sets the {@link AzureSasCredential} used to authorize requests sent to the service.
+     * Sets the Azure Sas Credential used for authentication.
      *
-     * @param credential {@link AzureSasCredential} used to authorize requests sent to the service.
+     * @param credential the Azure Sas Credential value.
      * @return the updated {@code TBuilder}.
      */
     TBuilder credential(AzureSasCredential credential);
