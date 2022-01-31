@@ -64,7 +64,7 @@ public final class BlobServiceClientBuilder implements
     ConnectionStringTrait<BlobServiceClientBuilder>,
     AzureNamedKeyCredentialTrait<BlobServiceClientBuilder>,
     AzureSasCredentialTrait<BlobServiceClientBuilder>,
-        HttpTrait<BlobServiceClientBuilder>,
+    HttpTrait<BlobServiceClientBuilder>,
     ConfigurationTrait<BlobServiceClientBuilder> {
     private final ClientLogger logger = new ClientLogger(BlobServiceClientBuilder.class);
 

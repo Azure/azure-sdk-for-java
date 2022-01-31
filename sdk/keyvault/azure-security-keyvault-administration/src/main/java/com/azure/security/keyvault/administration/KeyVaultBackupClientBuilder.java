@@ -71,7 +71,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {KeyVaultBackupClient.class, KeyVaultBackupAsyncClient.class})
 public final class KeyVaultBackupClientBuilder implements
     TokenCredentialTrait<KeyVaultBackupClientBuilder>,
-        HttpTrait<KeyVaultBackupClientBuilder>,
+    HttpTrait<KeyVaultBackupClientBuilder>,
     ConfigurationTrait<KeyVaultBackupClientBuilder> {
     // This is the properties file name.
     private static final String AZURE_KEY_VAULT_RBAC = "azure-key-vault-administration.properties";

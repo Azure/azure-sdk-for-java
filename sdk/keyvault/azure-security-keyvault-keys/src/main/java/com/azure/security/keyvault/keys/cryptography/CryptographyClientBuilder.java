@@ -124,7 +124,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = CryptographyClient.class)
 public final class CryptographyClientBuilder implements
     TokenCredentialTrait<CryptographyClientBuilder>,
-        HttpTrait<CryptographyClientBuilder>,
+    HttpTrait<CryptographyClientBuilder>,
     ConfigurationTrait<CryptographyClientBuilder> {
     private final ClientLogger logger = new ClientLogger(CryptographyClientBuilder.class);
 

@@ -99,7 +99,7 @@ public final class EncryptedBlobClientBuilder implements
     ConnectionStringTrait<EncryptedBlobClientBuilder>,
     AzureNamedKeyCredentialTrait<EncryptedBlobClientBuilder>,
     AzureSasCredentialTrait<EncryptedBlobClientBuilder>,
-        HttpTrait<EncryptedBlobClientBuilder>,
+    HttpTrait<EncryptedBlobClientBuilder>,
     ConfigurationTrait<EncryptedBlobClientBuilder> {
     private final ClientLogger logger = new ClientLogger(EncryptedBlobClientBuilder.class);
     private static final Map<String, String> PROPERTIES =

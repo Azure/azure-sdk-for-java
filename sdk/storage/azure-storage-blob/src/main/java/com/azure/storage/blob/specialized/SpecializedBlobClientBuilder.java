@@ -70,7 +70,7 @@ public final class SpecializedBlobClientBuilder implements
     ConnectionStringTrait<SpecializedBlobClientBuilder>,
     AzureNamedKeyCredentialTrait<SpecializedBlobClientBuilder>,
     AzureSasCredentialTrait<SpecializedBlobClientBuilder>,
-        HttpTrait<SpecializedBlobClientBuilder>,
+    HttpTrait<SpecializedBlobClientBuilder>,
     ConfigurationTrait<SpecializedBlobClientBuilder> {
     private final ClientLogger logger = new ClientLogger(SpecializedBlobClientBuilder.class);
 

@@ -130,7 +130,7 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = {ShareClient.class, ShareAsyncClient.class})
 public class ShareClientBuilder implements
-        HttpTrait<ShareClientBuilder>,
+    HttpTrait<ShareClientBuilder>,
     ConnectionStringTrait<ShareClientBuilder>,
     AzureNamedKeyCredentialTrait<ShareClientBuilder>,
     AzureSasCredentialTrait<ShareClientBuilder>,

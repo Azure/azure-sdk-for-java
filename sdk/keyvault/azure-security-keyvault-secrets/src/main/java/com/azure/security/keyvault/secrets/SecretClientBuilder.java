@@ -104,7 +104,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = SecretClient.class)
 public final class SecretClientBuilder implements
     TokenCredentialTrait<SecretClientBuilder>,
-        HttpTrait<SecretClientBuilder>,
+    HttpTrait<SecretClientBuilder>,
     ConfigurationTrait<SecretClientBuilder> {
     private final ClientLogger logger = new ClientLogger(SecretClientBuilder.class);
     // This is properties file's name.

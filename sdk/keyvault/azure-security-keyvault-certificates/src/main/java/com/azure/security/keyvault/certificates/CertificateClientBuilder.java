@@ -109,7 +109,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {CertificateClient.class, CertificateAsyncClient.class})
 public final class CertificateClientBuilder implements
     TokenCredentialTrait<CertificateClientBuilder>,
-        HttpTrait<CertificateClientBuilder>,
+    HttpTrait<CertificateClientBuilder>,
     ConfigurationTrait<CertificateClientBuilder> {
     private final ClientLogger logger = new ClientLogger(CertificateClientBuilder.class);
     // This is properties file's name.

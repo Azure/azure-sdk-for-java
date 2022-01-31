@@ -57,7 +57,7 @@ public class DataLakeFileSystemClientBuilder implements
     TokenCredentialTrait<DataLakeFileSystemClientBuilder>,
     AzureNamedKeyCredentialTrait<DataLakeFileSystemClientBuilder>,
     AzureSasCredentialTrait<DataLakeFileSystemClientBuilder>,
-        HttpTrait<DataLakeFileSystemClientBuilder>,
+    HttpTrait<DataLakeFileSystemClientBuilder>,
     ConfigurationTrait<DataLakeFileSystemClientBuilder> {
     private final ClientLogger logger = new ClientLogger(DataLakeFileSystemClientBuilder.class);
 

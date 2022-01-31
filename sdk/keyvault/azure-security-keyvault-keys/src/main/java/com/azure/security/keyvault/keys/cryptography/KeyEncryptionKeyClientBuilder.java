@@ -58,7 +58,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {KeyEncryptionKeyClient.class, KeyEncryptionKeyAsyncClient.class})
 public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyResolver, AsyncKeyEncryptionKeyResolver,
     TokenCredentialTrait<KeyEncryptionKeyClientBuilder>,
-        HttpTrait<KeyEncryptionKeyClientBuilder>,
+    HttpTrait<KeyEncryptionKeyClientBuilder>,
     ConfigurationTrait<KeyEncryptionKeyClientBuilder> {
     private final ClientLogger logger = new ClientLogger(KeyEncryptionKeyClientBuilder.class);
     private final CryptographyClientBuilder builder;

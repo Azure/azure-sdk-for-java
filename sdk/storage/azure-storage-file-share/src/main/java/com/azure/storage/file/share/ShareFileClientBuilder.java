@@ -146,7 +146,7 @@ import java.util.Objects;
     ShareDirectoryClient.class, ShareDirectoryAsyncClient.class
 })
 public class ShareFileClientBuilder implements
-        HttpTrait<ShareFileClientBuilder>,
+    HttpTrait<ShareFileClientBuilder>,
     ConnectionStringTrait<ShareFileClientBuilder>,
     AzureNamedKeyCredentialTrait<ShareFileClientBuilder>,
     AzureSasCredentialTrait<ShareFileClientBuilder>,

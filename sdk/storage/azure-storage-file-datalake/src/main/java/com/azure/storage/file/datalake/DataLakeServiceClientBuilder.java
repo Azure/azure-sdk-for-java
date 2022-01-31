@@ -55,7 +55,7 @@ public class DataLakeServiceClientBuilder implements
     TokenCredentialTrait<DataLakeServiceClientBuilder>,
     AzureNamedKeyCredentialTrait<DataLakeServiceClientBuilder>,
     AzureSasCredentialTrait<DataLakeServiceClientBuilder>,
-        HttpTrait<DataLakeServiceClientBuilder>,
+    HttpTrait<DataLakeServiceClientBuilder>,
     ConfigurationTrait<DataLakeServiceClientBuilder> {
     private final ClientLogger logger = new ClientLogger(DataLakeServiceClientBuilder.class);
 

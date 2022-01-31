@@ -133,7 +133,7 @@ public final class QueueClientBuilder implements
     ConnectionStringTrait<QueueClientBuilder>,
     AzureNamedKeyCredentialTrait<QueueClientBuilder>,
     AzureSasCredentialTrait<QueueClientBuilder>,
-        HttpTrait<QueueClientBuilder>,
+    HttpTrait<QueueClientBuilder>,
     ConfigurationTrait<QueueClientBuilder> {
     private final ClientLogger logger = new ClientLogger(QueueClientBuilder.class);
 

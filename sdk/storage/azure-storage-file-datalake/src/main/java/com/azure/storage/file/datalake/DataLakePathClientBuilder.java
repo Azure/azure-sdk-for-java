@@ -60,7 +60,7 @@ public final class DataLakePathClientBuilder implements
     TokenCredentialTrait<DataLakePathClientBuilder>,
     AzureNamedKeyCredentialTrait<DataLakePathClientBuilder>,
     AzureSasCredentialTrait<DataLakePathClientBuilder>,
-        HttpTrait<DataLakePathClientBuilder>,
+    HttpTrait<DataLakePathClientBuilder>,
     ConfigurationTrait<DataLakePathClientBuilder> {
 
     private final ClientLogger logger = new ClientLogger(DataLakePathClientBuilder.class);
