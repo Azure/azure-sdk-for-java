@@ -3,7 +3,6 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.implementation.MessageUtils;
 import reactor.core.Disposable;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
@@ -17,6 +16,8 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
+
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MAX_RENEWAL_BUFFER_DURATION;
 
 /**
  * Represents a renewal session or message lock renewal operation that.
@@ -180,26 +181,10 @@ class LockRenewalOperation implements AutoCloseable {
             return Flux.empty();
         }
 
-        final OffsetDateTime now = OffsetDateTime.now();
-        Duration initialInterval = Duration.between(now, initialLockedUntil);
-
-        if (initialInterval.isNegative()) {
-            logger.info("Duration was negative. now[{}] lockedUntil[{}]", now, initialLockedUntil);
-            initialInterval = Duration.ZERO;
-        } else {
-            // Adjust the interval, so we can buffer time for the time it'll take to refresh.
-            final Duration adjusted = MessageUtils.adjustServerTimeout(initialInterval);
-            if (adjusted.isNegative()) {
-                logger.info("Adjusted duration is negative. Adjusted: {}ms", initialInterval.toMillis());
-            } else {
-                initialInterval = adjusted;
-            }
-        }
-
         final EmitterProcessor<Duration> emitterProcessor = EmitterProcessor.create();
         final FluxSink<Duration> sink = emitterProcessor.sink();
 
-        sink.next(initialInterval);
+        sink.next(calculateRenewalDelay(initialLockedUntil));
 
         final Flux<Object> cancellationSignals = Flux.first(cancellationProcessor, Mono.delay(maxLockRenewalDuration));
         return Flux.switchOnNext(emitterProcessor.map(interval -> Mono.delay(interval)
@@ -214,8 +199,32 @@ class LockRenewalOperation implements AutoCloseable {
                 logger.info("token[{}]. nextExpiration[{}]. next: [{}]. isSession[{}]", lockToken, offsetDateTime, next,
                     isSession);
 
-                sink.next(MessageUtils.adjustServerTimeout(next));
+                sink.next(calculateRenewalDelay(offsetDateTime));
                 return offsetDateTime;
             });
+    }
+
+    private Duration calculateRenewalDelay(OffsetDateTime initialLockedUntil) {
+        final OffsetDateTime now = OffsetDateTime.now();
+        final Duration remainingTime = Duration.between(now, initialLockedUntil);
+
+        // If remaining time to renew is less than 400ms, renew immediately
+        // Lock renewal to follow the same behavior as C# SDK
+        // C# class : github.com/azure-sdk-for-net/.../Azure.Messaging.ServiceBus/src/Processor/ReceiverManager.cs#L367
+
+        if (remainingTime.toMillis() < 400) {
+            logger.info("Duration was less than 400ms. now[{}] lockedUntil[{}]", now, initialLockedUntil);
+            return Duration.ZERO;
+        } else {
+            // Adjust the interval, so we can buffer time for the time it'll take to refresh.
+            final long bufferInMilliSec = Math.min(remainingTime.toMillis() / 2,
+                MAX_RENEWAL_BUFFER_DURATION.toMillis());
+            final Duration renewAfter = Duration.ofMillis(remainingTime.toMillis() - bufferInMilliSec);
+            if (renewAfter.isNegative()) {
+                logger.info("Adjusted duration is negative. renewAfter: {}ms. Buffer: {}ms.",
+                    remainingTime.toMillis(), bufferInMilliSec);
+            }
+            return renewAfter;
+        }
     }
 }

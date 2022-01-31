@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.streamanalytics.fluent.models.JavaScriptFunctionBindingProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -15,17 +15,24 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** The binding to a JavaScript function. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Microsoft.StreamAnalytics/JavascriptUdf")
-@JsonFlatten
 @Fluent
-public class JavaScriptFunctionBinding extends FunctionBinding {
+public final class JavaScriptFunctionBinding extends FunctionBinding {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(JavaScriptFunctionBinding.class);
 
     /*
-     * The JavaScript code containing a single function definition. For
-     * example: 'function (x, y) { return x + y; }'
+     * The binding properties associated with a JavaScript function.
      */
-    @JsonProperty(value = "properties.script")
-    private String script;
+    @JsonProperty(value = "properties")
+    private JavaScriptFunctionBindingProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: The binding properties associated with a JavaScript function.
+     *
+     * @return the innerProperties value.
+     */
+    private JavaScriptFunctionBindingProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the script property: The JavaScript code containing a single function definition. For example: 'function (x,
@@ -34,7 +41,7 @@ public class JavaScriptFunctionBinding extends FunctionBinding {
      * @return the script value.
      */
     public String script() {
-        return this.script;
+        return this.innerProperties() == null ? null : this.innerProperties().script();
     }
 
     /**
@@ -45,7 +52,10 @@ public class JavaScriptFunctionBinding extends FunctionBinding {
      * @return the JavaScriptFunctionBinding object itself.
      */
     public JavaScriptFunctionBinding withScript(String script) {
-        this.script = script;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JavaScriptFunctionBindingProperties();
+        }
+        this.innerProperties().withScript(script);
         return this;
     }
 
@@ -57,5 +67,8 @@ public class JavaScriptFunctionBinding extends FunctionBinding {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.CosmosSchedulers;
+import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -45,6 +46,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
     private final ChangeFeedObserver observer;
     private volatile CosmosChangeFeedRequestOptions options;
     private final ChangeFeedContextClient documentClient;
+    private final Lease lease;
     private volatile RuntimeException resultException;
 
     private volatile String lastServerContinuationToken;
@@ -53,11 +55,13 @@ class PartitionProcessorImpl implements PartitionProcessor {
     public PartitionProcessorImpl(ChangeFeedObserver observer,
                                   ChangeFeedContextClient documentClient,
                                   ProcessorSettings settings,
-                                  PartitionCheckpointer checkpointer) {
+                                  PartitionCheckpointer checkpointer,
+                                  Lease lease) {
         this.observer = observer;
         this.documentClient = documentClient;
         this.settings = settings;
         this.checkpointer = checkpointer;
+        this.lease = lease;
 
         ChangeFeedState state = settings.getStartState();
         this.options = ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(state);
@@ -66,7 +70,9 @@ class PartitionProcessorImpl implements PartitionProcessor {
 
     @Override
     public Mono<Void> run(CancellationToken cancellationToken) {
+        logger.info("Partition {}: processing task started with owner {}.", this.lease.getLeaseToken(), this.lease.getOwner());
         this.isFirstQueryForChangeFeeds = true;
+        this.checkpointer.setCancellationToken(cancellationToken);
 
         return Flux.just(this)
             .flatMap( value -> {
@@ -109,6 +115,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                     .getToken();
 
                 if (documentFeedResponse.getResults() != null && documentFeedResponse.getResults().size() > 0) {
+                    logger.info("Partition {}: processing {} feeds with owner {}.", this.lease.getLeaseToken(), documentFeedResponse.getResults().size(), this.lease.getOwner());
                     return this.dispatchChanges(documentFeedResponse, continuationState)
                         .doOnError(throwable -> logger.debug(
                             "Exception was thrown from thread {}",
@@ -145,8 +152,8 @@ class PartitionProcessorImpl implements PartitionProcessor {
                     // we know it is a terminal event.
 
                     CosmosException clientException = (CosmosException) throwable;
-                    logger.warn("CosmosException: FeedRange {} from thread {}",
-                        this.settings.getStartState().getFeedRange().toString(), Thread.currentThread().getId(), clientException);
+                    logger.warn("CosmosException: Partition {} from thread {} with owner {}",
+                        this.lease.getLeaseToken(), Thread.currentThread().getId(), this.lease.getOwner(), clientException);
                     StatusCodeErrorType docDbError = ExceptionClassifier.classifyClientException(clientException);
 
                     switch (docDbError) {
@@ -199,15 +206,16 @@ class PartitionProcessorImpl implements PartitionProcessor {
                         }
                     }
                 } else if (throwable instanceof LeaseLostException) {
-                        logger.info("LeaseLoseException with FeedRange {} from thread {}",
-                            this.settings.getStartState().getFeedRange().toString(), Thread.currentThread().getId());
-                        this.resultException = (LeaseLostException) throwable;
+                    logger.info("LeaseLoseException with Partition {} from thread {} with owner {}",
+                        this.lease.getLeaseToken(), Thread.currentThread().getId(), this.lease.getOwner());
+                    this.resultException = (LeaseLostException) throwable;
                 } else if (throwable instanceof TaskCancelledException) {
-                    logger.debug("Task cancelled exception: FeedRange {} from {}",
-                        this.settings.getStartState().getFeedRange().toString(), Thread.currentThread().getId(), throwable);
+                    logger.debug("Task cancelled exception: Partition {} from thread {} with owner {}",
+                        this.lease.getLeaseToken(), Thread.currentThread().getId(), this.lease.getOwner(), throwable);
                     this.resultException = (TaskCancelledException) throwable;
                 } else {
-                    logger.warn("Unexpected exception from thread {}", Thread.currentThread().getId(), throwable);
+                    logger.warn("Unexpected exception: Partition {} from thread {} with owner {}",
+                        this.lease.getLeaseToken(), Thread.currentThread().getId(), this.lease.getOwner(), throwable);
                     this.resultException = new RuntimeException(throwable);
                 }
                 return Flux.error(throwable);
@@ -226,7 +234,11 @@ class PartitionProcessorImpl implements PartitionProcessor {
                 }
 
                 return Flux.empty();
-            }).then();
+            })
+            .then()
+            .doFinally( any -> {
+                logger.info("Partition {}: processing task exited with owner {}.", this.lease.getLeaseToken(), this.lease.getOwner());
+            });
     }
 
     private FeedRangePartitionKeyRangeImpl getPkRangeFeedRangeFromStartState() {

@@ -174,7 +174,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return specifies information about the gallery Application Definition that you want to create or update along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -245,7 +246,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return specifies information about the gallery Application Definition that you want to create or update along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -313,7 +315,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return the {@link PollerFlux} for polling of specifies information about the gallery Application Definition that
+     *     you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<GalleryApplicationInner>, GalleryApplicationInner> beginCreateOrUpdateAsync(
@@ -347,7 +350,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return the {@link PollerFlux} for polling of specifies information about the gallery Application Definition that
+     *     you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<GalleryApplicationInner>, GalleryApplicationInner> beginCreateOrUpdateAsync(
@@ -383,7 +387,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return the {@link SyncPoller} for polling of specifies information about the gallery Application Definition that
+     *     you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryApplicationInner>, GalleryApplicationInner> beginCreateOrUpdate(
@@ -409,7 +414,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return the {@link SyncPoller} for polling of specifies information about the gallery Application Definition that
+     *     you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryApplicationInner>, GalleryApplicationInner> beginCreateOrUpdate(
@@ -436,7 +442,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return specifies information about the gallery Application Definition that you want to create or update on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GalleryApplicationInner> createOrUpdateAsync(
@@ -463,7 +470,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return specifies information about the gallery Application Definition that you want to create or update on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GalleryApplicationInner> createOrUpdateAsync(
@@ -542,7 +550,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return specifies information about the gallery Application Definition that you want to create or update along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -613,7 +622,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return specifies information about the gallery Application Definition that you want to create or update along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -681,7 +691,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return the {@link PollerFlux} for polling of specifies information about the gallery Application Definition that
+     *     you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<GalleryApplicationInner>, GalleryApplicationInner> beginUpdateAsync(
@@ -715,7 +726,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return the {@link PollerFlux} for polling of specifies information about the gallery Application Definition that
+     *     you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<GalleryApplicationInner>, GalleryApplicationInner> beginUpdateAsync(
@@ -751,7 +763,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return the {@link SyncPoller} for polling of specifies information about the gallery Application Definition that
+     *     you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryApplicationInner>, GalleryApplicationInner> beginUpdate(
@@ -777,7 +790,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return the {@link SyncPoller} for polling of specifies information about the gallery Application Definition that
+     *     you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GalleryApplicationInner>, GalleryApplicationInner> beginUpdate(
@@ -803,7 +817,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return specifies information about the gallery Application Definition that you want to create or update on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GalleryApplicationInner> updateAsync(
@@ -830,7 +845,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return specifies information about the gallery Application Definition that you want to create or update on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GalleryApplicationInner> updateAsync(
@@ -904,7 +920,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return specifies information about the gallery Application Definition that you want to create or update along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GalleryApplicationInner>> getWithResponseAsync(
@@ -962,7 +979,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return specifies information about the gallery Application Definition that you want to create or update along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GalleryApplicationInner>> getWithResponseAsync(
@@ -1016,7 +1034,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return specifies information about the gallery Application Definition that you want to create or update on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GalleryApplicationInner> getAsync(
@@ -1060,7 +1079,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return specifies information about the gallery Application Definition that you want to create or update along
+     *     with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GalleryApplicationInner> getWithResponse(
@@ -1078,7 +1098,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1136,7 +1156,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1190,7 +1210,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1214,7 +1234,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1237,7 +1257,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -1256,7 +1276,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -1274,7 +1294,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String galleryName, String galleryApplicationName) {
@@ -1294,7 +1314,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1346,7 +1366,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Gallery Applications operation response.
+     * @return the List Gallery Applications operation response along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GalleryApplicationInner>> listByGallerySinglePageAsync(
@@ -1406,7 +1427,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Gallery Applications operation response.
+     * @return the List Gallery Applications operation response along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GalleryApplicationInner>> listByGallerySinglePageAsync(
@@ -1462,7 +1484,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Gallery Applications operation response.
+     * @return the List Gallery Applications operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<GalleryApplicationInner> listByGalleryAsync(String resourceGroupName, String galleryName) {
@@ -1481,7 +1503,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Gallery Applications operation response.
+     * @return the List Gallery Applications operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<GalleryApplicationInner> listByGalleryAsync(
@@ -1500,7 +1522,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Gallery Applications operation response.
+     * @return the List Gallery Applications operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GalleryApplicationInner> listByGallery(String resourceGroupName, String galleryName) {
@@ -1517,7 +1539,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Gallery Applications operation response.
+     * @return the List Gallery Applications operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GalleryApplicationInner> listByGallery(
@@ -1532,7 +1554,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Gallery Applications operation response.
+     * @return the List Gallery Applications operation response along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GalleryApplicationInner>> listByGalleryNextSinglePageAsync(String nextLink) {
@@ -1568,7 +1591,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Gallery Applications operation response.
+     * @return the List Gallery Applications operation response along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GalleryApplicationInner>> listByGalleryNextSinglePageAsync(

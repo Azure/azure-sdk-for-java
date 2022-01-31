@@ -6,15 +6,18 @@ import logging
 import argparse
 import re
 import glob
+import subprocess
+import yaml
 from typing import List
 
 from parameters import *
-from utils import set_or_increase_version
+from utils import set_or_default_version
 from utils import update_service_ci_and_pom
 from utils import update_root_pom
-from utils import update_version
+from utils import ListIndentDumper
 
 
+GROUP_ID = 'com.azure'
 LLC_ARGUMENTS = '--java --low-level-client --sdk-integration --generate-samples'
 
 
@@ -42,14 +45,13 @@ def sdk_automation(config: dict) -> List[dict]:
             credential_scopes = 'https://{0}.azure.com/.default'.format(service)
 
             succeeded = generate(sdk_root, input_file,
-                                 service, module, credential_types, credential_scopes,
+                                 service, module, credential_types, credential_scopes, '',
                                  AUTOREST_CORE_VERSION, AUTOREST_JAVA, '')
 
             generated_folder = 'sdk/{0}/{1}'.format(service, module)
 
             if succeeded:
-                install_build_tools(sdk_root)
-                compile_package(os.path.join(sdk_root, generated_folder))
+                compile_package(sdk_root, GROUP_ID, module)
 
             artifacts = [
                 '{0}/pom.xml'.format(generated_folder)
@@ -84,7 +86,7 @@ def generate(
     use: str,
     autorest_options: str = '',
     **kwargs,
-):
+) -> bool:
     namespace = 'com.{0}'.format(module.replace('-', '.'))
     output_dir = os.path.join(
         sdk_root,
@@ -94,54 +96,117 @@ def generate(
     shutil.rmtree(os.path.join(output_dir, 'src/samples/java', namespace.replace('.', '/'), 'generated'),
                   ignore_errors=True)
 
-    credential_arguments = '--java.credential-types={0}'.format(credential_types)
-    if credential_scopes:
-        credential_arguments += ' --java.credential-scopes={0}'.format(credential_scopes)
+    readme_relative_path = update_readme(output_dir, input_file, credential_types, credential_scopes, title)
+    if readme_relative_path:
+        logging.info('[GENERATE] Autorest from README {}'.format(readme_relative_path))
 
-    input_arguments = '--input-file={0}'.format(input_file)
+        command = 'autorest --version={0} --use={1} {2}'.format(
+            autorest,
+            use,
+            readme_relative_path
+        )
+        logging.info(command)
+        try:
+            subprocess.run(command, shell=True, cwd=output_dir, check=True)
+        except subprocess.CalledProcessError:
+            logging.error('[GENERATE] Autorest fail')
+            return False
+    else:
+        logging.info('[GENERATE] Autorest from JSON {}'.format(input_file))
 
-    artifact_arguments = '--artifact-id={0}'.format(module)
-    if title:
-        artifact_arguments += ' --title={0}'.format(title)
+        credential_arguments = '--java.credential-types={0}'.format(credential_types)
+        if credential_scopes:
+            credential_arguments += ' --java.credential-scopes={0}'.format(credential_scopes)
 
-    command = 'autorest --version={0} --use={1} --java.azure-libraries-for-java-folder={2} --java.output-folder={3} --java.namespace={4} {5}'.format(
-        autorest,
-        use,
-        os.path.abspath(sdk_root),
-        os.path.abspath(output_dir),
-        namespace,
-        ' '.join((LLC_ARGUMENTS, input_arguments, credential_arguments, artifact_arguments, autorest_options)),
-    )
-    logging.info(command)
-    if os.system(command) != 0:
-        logging.error('[GENERATE] Autorest fail')
-        return False
+        input_arguments = '--input-file={0}'.format(input_file)
 
-    group = "com.azure"
-    set_or_increase_version(sdk_root, group, module)
-    update_service_ci_and_pom(sdk_root, service, group, module)
-    update_root_pom(sdk_root, service)
-    update_version(sdk_root, output_dir)
+        artifact_arguments = '--artifact-id={0}'.format(module)
+        if title:
+            artifact_arguments += ' --title={0}'.format(title)
+
+        command = 'autorest --version={0} --use={1} ' \
+                  '--java.azure-libraries-for-java-folder={2} --java.output-folder={3} ' \
+                  '--java.namespace={4} {5}'\
+            .format(
+                autorest,
+                use,
+                os.path.abspath(sdk_root),
+                os.path.abspath(output_dir),
+                namespace,
+                ' '.join((LLC_ARGUMENTS, input_arguments, credential_arguments, artifact_arguments, autorest_options))
+            )
+        logging.info(command)
+        if os.system(command) != 0:
+            logging.error('[GENERATE] Autorest fail')
+            return False
+
+        set_or_default_version(sdk_root, GROUP_ID, module)
+        update_service_ci_and_pom(sdk_root, service, GROUP_ID, module)
+        update_root_pom(sdk_root, service)
+        # skip version update script, as current automation does not support automatic version increment
+        # update_version(sdk_root, output_dir)
 
     return True
 
 
-def install_build_tools(sdk_root: str):
-    command = 'mvn --no-transfer-progress clean install -f {0} -pl com.azure:sdk-build-tools'.format(os.path.join(sdk_root, 'pom.xml'))
-    logging.info(command)
-    if os.system(command) != 0:
-        logging.error('[COMPILE] Maven build fail for sdk-build-tools')
-        return False
-    return True
-
-
-def compile_package(output_dir: str):
-    command = 'mvn --no-transfer-progress clean verify package -f {0}'.format(os.path.join(output_dir, 'pom.xml'))
+def compile_package(sdk_root: str, group_id: str, module: str) -> bool:
+    command = 'mvn --no-transfer-progress clean verify package -f {0}/pom.xml -Dmaven.javadoc.skip -Dgpg.skip -Drevapi.skip -pl {1}:{2} -am'.format(
+        sdk_root, group_id, module)
     logging.info(command)
     if os.system(command) != 0:
         logging.error('[COMPILE] Maven build fail')
         return False
     return True
+
+
+def update_readme(output_dir: str, input_file: str, credential_types: str, credential_scopes: str, title: str) -> str:
+    readme_relative_path = ''
+
+    swagger_dir = os.path.join(output_dir, 'swagger')
+    if os.path.isdir(swagger_dir):
+        for filename in os.listdir(swagger_dir):
+            if filename.lower().startswith('readme') and filename.lower().endswith('.md'):
+                readme_yaml_found = False
+                readme_path = os.path.join(swagger_dir, filename)
+                with open(readme_path, 'r', encoding='utf-8') as f_in:
+                    content = f_in.read()
+                if content:
+                    yaml_blocks = re.findall(r'```\s?(?:yaml|YAML)\n(.*?)```', content, re.DOTALL)
+                    for yaml_str in yaml_blocks:
+                        yaml_json = yaml.safe_load(yaml_str)
+                        if 'low-level-client' in yaml_json and yaml_json['low-level-client']:
+                            # yaml block found, update
+                            yaml_json['input-file'] = [input_file]
+                            if title:
+                                yaml_json['title'] = title
+                            if credential_types:
+                                yaml_json['credential-types'] = credential_types
+                            if credential_scopes:
+                                yaml_json['credential-scopes'] = credential_scopes
+
+                            # write updated yaml
+                            updated_yaml_str = yaml.dump(yaml_json,
+                                                         sort_keys=False,
+                                                         Dumper=ListIndentDumper)
+
+                            if not yaml_str == updated_yaml_str:
+                                # update readme
+                                updated_content = content.replace(yaml_str, updated_yaml_str, 1)
+                                with open(readme_path, 'w', encoding='utf-8') as f_out:
+                                    f_out.write(updated_content)
+
+                                logging.info('[GENERATE] YAML block in README updated from\n{0}\nto\n{1}'.format(
+                                    yaml_str, updated_yaml_str
+                                ))
+
+                            readme_yaml_found = True
+                            break
+
+                if readme_yaml_found:
+                    readme_relative_path = 'swagger/{}'.format(filename)
+                    break
+
+    return readme_relative_path
 
 
 def parse_args() -> argparse.Namespace:
@@ -206,14 +271,12 @@ def main():
     base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
     sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
 
-    generate(sdk_root, **args)
+    succeeded = generate(sdk_root, **args)
+    if succeeded:
+        succeeded = compile_package(sdk_root, GROUP_ID, args['module'])
 
-    output_dir = os.path.join(
-        sdk_root,
-        'sdk', args['service'], args['module']
-    )
-    install_build_tools(sdk_root)
-    compile_package(output_dir)
+    if not succeeded:
+        raise RuntimeError('Failed to generate code or compile the package')
 
 
 if __name__ == '__main__':

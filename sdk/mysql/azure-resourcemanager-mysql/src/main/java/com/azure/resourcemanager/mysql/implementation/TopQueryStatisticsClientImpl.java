@@ -113,7 +113,7 @@ public final class TopQueryStatisticsClientImpl implements TopQueryStatisticsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Query Statistic.
+     * @return represents a Query Statistic along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<QueryStatisticInner>> getWithResponseAsync(
@@ -169,7 +169,7 @@ public final class TopQueryStatisticsClientImpl implements TopQueryStatisticsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Query Statistic.
+     * @return represents a Query Statistic along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<QueryStatisticInner>> getWithResponseAsync(
@@ -221,7 +221,7 @@ public final class TopQueryStatisticsClientImpl implements TopQueryStatisticsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Query Statistic.
+     * @return represents a Query Statistic on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<QueryStatisticInner> getAsync(String resourceGroupName, String serverName, String queryStatisticId) {
@@ -262,7 +262,7 @@ public final class TopQueryStatisticsClientImpl implements TopQueryStatisticsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Query Statistic.
+     * @return represents a Query Statistic along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueryStatisticInner> getWithResponse(
@@ -279,7 +279,7 @@ public final class TopQueryStatisticsClientImpl implements TopQueryStatisticsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of query statistics.
+     * @return a list of query statistics along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QueryStatisticInner>> listByServerSinglePageAsync(
@@ -345,7 +345,7 @@ public final class TopQueryStatisticsClientImpl implements TopQueryStatisticsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of query statistics.
+     * @return a list of query statistics along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QueryStatisticInner>> listByServerSinglePageAsync(
@@ -479,7 +479,7 @@ public final class TopQueryStatisticsClientImpl implements TopQueryStatisticsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of query statistics.
+     * @return a list of query statistics along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QueryStatisticInner>> listByServerNextSinglePageAsync(String nextLink) {
@@ -515,7 +515,7 @@ public final class TopQueryStatisticsClientImpl implements TopQueryStatisticsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of query statistics.
+     * @return a list of query statistics along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<QueryStatisticInner>> listByServerNextSinglePageAsync(String nextLink, Context context) {

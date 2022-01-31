@@ -19,6 +19,7 @@ import com.azure.resourcemanager.datafactory.models.CreateDataFlowDebugSessionRe
 import com.azure.resourcemanager.datafactory.models.DataFlowDebugCommandRequest;
 import com.azure.resourcemanager.datafactory.models.DataFlowDebugPackage;
 import com.azure.resourcemanager.datafactory.models.DeleteDataFlowDebugSessionRequest;
+import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DataFlowDebugSessionsClient. */
 public interface DataFlowDebugSessionsClient {
@@ -31,7 +32,8 @@ public interface DataFlowDebugSessionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure for creating data flow debug session.
+     * @return response body structure for creating data flow debug session along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CreateDataFlowDebugSessionResponseInner>, CreateDataFlowDebugSessionResponseInner>
@@ -47,7 +49,8 @@ public interface DataFlowDebugSessionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure for creating data flow debug session.
+     * @return response body structure for creating data flow debug session along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CreateDataFlowDebugSessionResponseInner>, CreateDataFlowDebugSessionResponseInner>
@@ -138,7 +141,7 @@ public interface DataFlowDebugSessionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure for starting data flow debug session.
+     * @return response body structure for starting data flow debug session along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AddDataFlowToDebugSessionResponseInner> addDataFlowWithResponse(
@@ -167,7 +170,7 @@ public interface DataFlowDebugSessionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
@@ -182,7 +185,8 @@ public interface DataFlowDebugSessionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure of data flow result for data preview, statistics or expression preview.
+     * @return response body structure of data flow result for data preview, statistics or expression preview along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DataFlowDebugCommandResponseInner>, DataFlowDebugCommandResponseInner> beginExecuteCommand(
@@ -198,7 +202,8 @@ public interface DataFlowDebugSessionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure of data flow result for data preview, statistics or expression preview.
+     * @return response body structure of data flow result for data preview, statistics or expression preview along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DataFlowDebugCommandResponseInner>, DataFlowDebugCommandResponseInner> beginExecuteCommand(

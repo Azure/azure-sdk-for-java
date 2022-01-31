@@ -50,6 +50,10 @@ public class RepeatingInputStream extends InputStream {
         }
 
         int readCount = Math.min(len, RANDOM_BYTES_LENGTH);
+        long remaining = this.size - this.pos;
+        if (remaining < readCount) {
+            readCount = (int) remaining;
+        }
         System.arraycopy(RANDOM_BYTES, 0, b, off, readCount);
         pos += readCount;
 

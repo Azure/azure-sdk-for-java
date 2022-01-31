@@ -98,6 +98,8 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
     @JsonProperty
     private final RntbdToken indexUtilization;
     @JsonProperty
+    private final RntbdToken queryExecutionInfo;
+    @JsonProperty
     private final RntbdToken quorumAckedLSN;
     @JsonProperty
     private final RntbdToken quorumAckedLocalLSN;
@@ -174,6 +176,7 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         this.queriesPerformed = this.get(RntbdResponseHeader.QueriesPerformed);
         this.queryMetrics = this.get(RntbdResponseHeader.QueryMetrics);
         this.indexUtilization = this.get(RntbdResponseHeader.IndexUtilization);
+        this.queryExecutionInfo = this.get(RntbdResponseHeader.QueryExecutionInfo);
         this.quorumAckedLSN = this.get(RntbdResponseHeader.QuorumAckedLSN);
         this.quorumAckedLocalLSN = this.get(RntbdResponseHeader.QuorumAckedLocalLSN);
         this.readsPerformed = this.get(RntbdResponseHeader.ReadsPerformed);
@@ -276,6 +279,7 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         this.mapValue(this.partitionKeyRangeId, BackendHeaders.PARTITION_KEY_RANGE_ID, String::toString, headers);
         this.mapValue(this.queryMetrics, BackendHeaders.QUERY_METRICS, String::toString, headers);
         this.mapValue(this.indexUtilization, BackendHeaders.INDEX_UTILIZATION, String::toString, headers);
+        this.mapValue(this.queryExecutionInfo, BackendHeaders.QUERY_EXECUTION_INFO, String::toString, headers);
         this.mapValue(this.quorumAckedLSN, BackendHeaders.QUORUM_ACKED_LSN, Long::parseLong, headers);
         this.mapValue(this.quorumAckedLocalLSN, BackendHeaders.QUORUM_ACKED_LOCAL_LSN, Long::parseLong, headers);
         this.mapValue(this.requestCharge, HttpHeaders.REQUEST_CHARGE, Double::parseDouble, headers);
@@ -421,6 +425,9 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         collector.accept(this.indexUtilization, token ->
             toStringEntry(BackendHeaders.INDEX_UTILIZATION, token)
         );
+
+        collector.accept(this.queryExecutionInfo, tokens ->
+            toStringEntry(BackendHeaders.QUERY_EXECUTION_INFO, tokens));
 
         collector.accept(this.quorumAckedLSN, token ->
             toLongEntry(BackendHeaders.QUORUM_ACKED_LSN, token)

@@ -57,6 +57,7 @@
 
         <!-- Event Grid -->
         <module>sdk/eventgrid/azure-messaging-eventgrid</module>
+        <module>sdk/eventgrid/azure-messaging-eventgrid-cloudnative-cloudevents</module>
 
         <!-- Event Hubs -->
         <module>sdk/eventhubs/azure-messaging-eventhubs</module>
@@ -674,7 +675,7 @@
           <plugin>
             <groupId>org.revapi</groupId>
             <artifactId>revapi-maven-plugin</artifactId>
-            <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+            <version>0.14.6</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
             <configuration>
               <analysisConfigurationFiles>
                 <configurationFile>
@@ -720,6 +721,7 @@
         <module>sdk/appconfiguration</module>
         <module>sdk/applicationinsights</module>
         <module>sdk/attestation</module>
+        <module>sdk/automanage</module>
         <module>sdk/automation</module>
         <module>sdk/avs</module>
         <module>sdk/azurearcdata</module>
@@ -760,6 +762,7 @@
         <module>sdk/devspaces</module>
         <module>sdk/devtestlabs</module>
         <module>sdk/digitaltwins</module>
+        <module>sdk/edgeorder</module>
         <module>sdk/elastic</module>
         <module>sdk/eventgrid</module>
         <module>sdk/eventhubs</module>
@@ -800,7 +803,9 @@
         <module>sdk/mysqlflexibleserver</module>
         <module>sdk/netapp</module>
         <module>sdk/notificationhubs</module>
+        <module>sdk/oep</module>
         <module>sdk/operationsmanagement</module>
+        <module>sdk/parents</module>
         <module>sdk/peering</module>
         <module>sdk/policyinsights</module>
         <module>sdk/postgresql</module>
@@ -821,6 +826,7 @@
         <module>sdk/schemaregistry</module>
         <module>sdk/search</module>
         <module>sdk/security</module>
+        <module>sdk/securityinsights</module>
         <module>sdk/servicebus</module>
         <module>sdk/servicefabric</module>
         <module>sdk/signalr</module>

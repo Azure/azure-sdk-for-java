@@ -150,7 +150,7 @@ public final class RelationshipsImpl {
      * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return atlasRelationship.
+     * @return atlasRelationship along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createWithResponseAsync(BinaryData relationship, RequestOptions requestOptions) {
@@ -225,7 +225,7 @@ public final class RelationshipsImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return atlasRelationship.
+     * @return atlasRelationship along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createWithResponseAsync(
@@ -299,7 +299,7 @@ public final class RelationshipsImpl {
      * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return atlasRelationship.
+     * @return atlasRelationship along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createWithResponse(BinaryData relationship, RequestOptions requestOptions) {
@@ -372,7 +372,7 @@ public final class RelationshipsImpl {
      * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return atlasRelationship.
+     * @return atlasRelationship along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateWithResponseAsync(BinaryData relationship, RequestOptions requestOptions) {
@@ -447,7 +447,7 @@ public final class RelationshipsImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return atlasRelationship.
+     * @return atlasRelationship along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateWithResponseAsync(
@@ -521,7 +521,7 @@ public final class RelationshipsImpl {
      * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return atlasRelationship.
+     * @return atlasRelationship along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateWithResponse(BinaryData relationship, RequestOptions requestOptions) {
@@ -629,7 +629,8 @@ public final class RelationshipsImpl {
      * @param guid The globally unique identifier of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return relationship information between entities by its GUID.
+     * @return relationship information between entities by its GUID along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(String guid, RequestOptions requestOptions) {
@@ -738,7 +739,8 @@ public final class RelationshipsImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return relationship information between entities by its GUID.
+     * @return relationship information between entities by its GUID along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(
@@ -847,7 +849,7 @@ public final class RelationshipsImpl {
      * @param guid The globally unique identifier of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return relationship information between entities by its GUID.
+     * @return relationship information between entities by its GUID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWithResponse(String guid, RequestOptions requestOptions) {
@@ -860,7 +862,7 @@ public final class RelationshipsImpl {
      * @param guid The globally unique identifier of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String guid, RequestOptions requestOptions) {
@@ -875,7 +877,7 @@ public final class RelationshipsImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String guid, RequestOptions requestOptions, Context context) {
@@ -888,7 +890,7 @@ public final class RelationshipsImpl {
      * @param guid The globally unique identifier of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String guid, RequestOptions requestOptions) {

@@ -3,15 +3,38 @@
 
 package com.azure.ai.anomalydetector;
 
-import com.azure.ai.anomalydetector.models.*;
+import com.azure.ai.anomalydetector.models.AlignMode;
+import com.azure.ai.anomalydetector.models.AlignPolicy;
+import com.azure.ai.anomalydetector.models.DetectAnomalyResponse;
+import com.azure.ai.anomalydetector.models.DetectionRequest;
+import com.azure.ai.anomalydetector.models.DetectionResult;
+import com.azure.ai.anomalydetector.models.DetectionStatus;
+import com.azure.ai.anomalydetector.models.FillNaMethod;
+import com.azure.ai.anomalydetector.models.Model;
+import com.azure.ai.anomalydetector.models.ModelInfo;
+import com.azure.ai.anomalydetector.models.ModelSnapshot;
+import com.azure.ai.anomalydetector.models.ModelStatus;
+import com.azure.ai.anomalydetector.models.TrainMultivariateModelResponse;
+import com.azure.ai.anomalydetector.models.LastDetectionRequest;
+import com.azure.ai.anomalydetector.models.LastDetectionResult;
+import com.azure.ai.anomalydetector.models.AnomalyState;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.*;
-import com.azure.core.http.policy.*;
+import com.azure.core.http.ContentType;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.AzureKeyCredentialPolicy;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.Context;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Flux;
 
 import java.io.FileNotFoundException;
@@ -19,16 +42,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.*;
-import java.time.format.DateTimeFormatter;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Iterator;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 
 public class MultivariateSample {
@@ -79,11 +97,10 @@ public class MultivariateSample {
         return model_id;
     }
 
-    private static ModelStatus getModelStatus(AnomalyDetectorClient client, UUID model_id) {
+    private static ModelInfo getModelInfo(AnomalyDetectorClient client, UUID model_id) {
         Response<Model> response = client.getMultivariateModelWithResponse(model_id, Context.NONE);
         UUID model = response.getValue().getModelId();
-        System.out.println("training");
-        return response.getValue().getModelInfo().getStatus();
+        return response.getValue().getModelInfo();
     }
 
     private static UUID getResultId(AnomalyDetectorClient client, UUID modelId, DetectionRequest detectionRequest) {
@@ -123,8 +140,11 @@ public class MultivariateSample {
         }
     }
 
+    private static Response<LastDetectionResult> GetLastDetectResult(AnomalyDetectorClient client, LastDetectionRequest body, UUID modelId){
+        return client.lastDetectAnomalyWithResponse(modelId, body, Context.NONE);
+    }
 
-    public static void main(final String[] args) throws IOException, InterruptedException {
+    public static void main(final String[] args) throws Exception {
         String endpoint = "<anomaly-detector-resource-endpoint>";
         String key = "<anomaly-detector-resource-key>";
         //Get multivariate client
@@ -134,14 +154,13 @@ public class MultivariateSample {
         //Start training and get Model ID
         Integer window = 28;
         AlignMode alignMode = AlignMode.OUTER;
-        FillNAMethod fillNAMethod = FillNAMethod.LINEAR;
-        Integer paddingValue = 0;
-        AlignPolicy alignPolicy = new AlignPolicy().setAlignMode(alignMode).setFillNAMethod(fillNAMethod).setPaddingValue(paddingValue);
+        FillNaMethod fillNaMethod = FillNaMethod.LINEAR;
+        Float paddingValue = 0.0f;
+        AlignPolicy alignPolicy =
+                new AlignPolicy().setAlignMode(alignMode).setFillNaMethod(fillNaMethod).setPaddingValue(paddingValue);
         String source = "<Your own data source>";
         OffsetDateTime startTime = OffsetDateTime.of(2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
-        ;
         OffsetDateTime endTime = OffsetDateTime.of(2021, 1, 2, 12, 0, 0, 0, ZoneOffset.UTC);
-        ;
         String displayName = "<placeholder>";
         ModelInfo request = new ModelInfo().setSlidingWindow(window).setAlignPolicy(alignPolicy).setSource(source).setStartTime(startTime).setEndTime(endTime).setDisplayName(displayName);
         UUID modelId = getMetricId(client, request);
@@ -149,12 +168,16 @@ public class MultivariateSample {
 
         //Check model status util the model get ready
         while (true) {
-            ModelStatus modelStatus = getModelStatus(client, modelId);
+            ModelInfo modelInfo = getModelInfo(client, modelId);
+            ModelStatus modelStatus = modelInfo.getStatus();
             TimeUnit.SECONDS.sleep(5);
-            assert modelStatus != ModelStatus.FAILED;
             if (modelStatus == ModelStatus.READY) {
+                System.out.println("READY");
                 break;
+            }else if(modelStatus == ModelStatus.FAILED){
+                throw new Exception(modelInfo.getErrors().get(0).getMessage());
             }
+            System.out.println("TRAINING");
         }
 
         //Start inference and get the Result ID
@@ -169,6 +192,31 @@ public class MultivariateSample {
             assert detectionStatus != DetectionStatus.FAILED;
             if (detectionStatus == DetectionStatus.READY) {
                 break;
+            }
+        }
+
+
+        // Synchronized anomaly detection
+        ObjectMapper m = new ObjectMapper();
+        // modify the variables according to your source data as the format below
+        String variables = "{\"variables\": " +
+            "[{\"name\": \"variables_name1\", \"timestamps\": [\"2021-01-01 00:00:00\", \"2021-01-01 01:00:00\", \"...\"], \"values\": [0, 0, ...]}, " +
+            "{\"name\": \"variables_name2\", \"timestamps\": [\"2021-01-01 00:00:00\", \"2021-01-01 01:00:00\", \"...\"], \"values\": [0, 0, ...]}]," +
+            " \"detectingPoints\": 2}";
+        LastDetectionRequest lastDetectBody = m.readValue(variables, LastDetectionRequest.class);
+        Response<LastDetectionResult> lastDetectResult = GetLastDetectResult(client, lastDetectBody, modelId);
+        if (lastDetectResult.getStatusCode()==200) {
+            for (AnomalyState anomalyState: lastDetectResult.getValue().getResults()) {
+                System.out.print(
+                        "\ntimestamp: " + anomalyState.getTimestamp().toString() +
+                        ",  isAnomaly: " + anomalyState.getValue().isAnomaly() +
+                        ",  Score: " + anomalyState.getValue().getScore());
+            }
+        }else{
+            for (AnomalyState anomalyState: lastDetectResult.getValue().getResults()) {
+                System.out.print(
+                        "\ntimestamp: " + anomalyState.getTimestamp().toString() +
+                        ",  errors: " + anomalyState.getErrors().get(0).getMessage());
             }
         }
 

@@ -3,23 +3,40 @@
 
 package com.azure.data.schemaregistry.apacheavro;
 
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.test.InterceptorManager;
+import com.azure.core.test.TestContextManager;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
+import com.azure.data.schemaregistry.SchemaRegistryClientBuilder;
+import com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person;
+import com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person2;
 import com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCard;
 import com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCardSuit;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.apache.avro.Schema;
+import org.apache.avro.SchemaBuilder;
 import org.apache.avro.generic.GenericData;
+import org.apache.avro.generic.GenericRecordBuilder;
 import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.io.EncoderFactory;
 import org.apache.avro.message.RawMessageEncoder;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
@@ -28,19 +45,26 @@ import reactor.test.StepVerifier;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 
 import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializer.RECORD_FORMAT_INDICATOR;
 import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializer.RECORD_FORMAT_INDICATOR_SIZE;
 import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializer.SCHEMA_ID_SIZE;
+import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializerIntegrationTest.PLAYBACK_ENDPOINT;
+import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializerIntegrationTest.PLAYBACK_TEST_GROUP;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
@@ -53,8 +77,10 @@ public class SchemaRegistryApacheAvroSerializerTest {
     private static final DecoderFactory DECODER_FACTORY = DecoderFactory.get();
     private static final EncoderFactory ENCODER_FACTORY = EncoderFactory.get();
 
+    private InterceptorManager interceptorManager;
     private Schema.Parser parser;
     private AutoCloseable mocksCloseable;
+    private TestInfo testInfo;
 
     @Mock
     private SchemaRegistryAsyncClient client;
@@ -70,13 +96,23 @@ public class SchemaRegistryApacheAvroSerializerTest {
     }
 
     @BeforeEach
-    public void beforeEach() {
-        mocksCloseable = MockitoAnnotations.openMocks(this);
-        parser = new Schema.Parser();
+    public void beforeEach(TestInfo testInfo) {
+        if (!testInfo.getTestMethod().isPresent()) {
+            throw new IllegalStateException(
+                "Expected testInfo.getTestMethod() not be empty since we need a method for TestContextManager.");
+        }
+
+        this.testInfo = testInfo;
+        this.mocksCloseable = MockitoAnnotations.openMocks(this);
+        this.parser = new Schema.Parser();
     }
 
     @AfterEach
     public void afterEach() throws Exception {
+        if (interceptorManager != null) {
+            interceptorManager.close();
+        }
+
         if (mocksCloseable != null) {
             mocksCloseable.close();
         }
@@ -229,10 +265,102 @@ public class SchemaRegistryApacheAvroSerializerTest {
 
             try (ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray())) {
                 StepVerifier.create(deserializer.deserializeAsync(inputStream,
-                    TypeReference.createInstance(String.class)))
+                        TypeReference.createInstance(String.class)))
                     .verifyError(BufferUnderflowException.class);
             }
         }
+    }
+
+    /**
+     * Tests that a schema registered in the portal can be deserialized here.
+     */
+    @Test
+    public void serializeFromPortal() throws IOException {
+        // Arrange
+        final Schema schema = SchemaBuilder.record("Person").namespace("com.example")
+            .fields()
+            .name("name").type().stringType().noDefault()
+            .name("favourite_number").type().nullable().intType().noDefault()
+            .name("favourite_colour").type().nullable().stringType().noDefault()
+            .endRecord();
+
+        final String expectedName = "Pearson";
+        final int expectedNumber = 10;
+        final String expectedColour = "blue";
+        final GenericData.Record record = new GenericRecordBuilder(schema)
+            .set("name", expectedName)
+            .set("favourite_number", expectedNumber)
+            .set("favourite_colour", expectedColour)
+            .build();
+
+        final SchemaRegistryAsyncClient client = getSchemaRegistryClient(testInfo, TestMode.PLAYBACK);
+        final SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
+            .schemaGroup(PLAYBACK_TEST_GROUP)
+            .schemaRegistryAsyncClient(client)
+            .avroSpecificReader(true)
+            .buildSerializer();
+
+        // Act
+        byte[] outputArray;
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream(4096)) {
+            StepVerifier.create(serializer.serializeAsync(outputStream, record))
+                .expectComplete()
+                .verify(Duration.ofSeconds(30));
+
+            outputArray = outputStream.toByteArray();
+        }
+
+        assertTrue(outputArray.length > 0, "There should have been contents in array.");
+    }
+
+    /**
+     * Verifies that we can deserialize and serialize when the writer schema is newer than the reader schema. Writer
+     * schema is using a forward compatible schema.
+     */
+    @Test
+    public void serializeForwardCompatibility() throws IOException {
+        // Arrange
+        final SchemaRegistryAsyncClient client = getSchemaRegistryClient(testInfo, TestMode.PLAYBACK);
+        final SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
+            .schemaGroup(PLAYBACK_TEST_GROUP)
+            .schemaRegistryAsyncClient(client)
+            .avroSpecificReader(true)
+            .buildSerializer();
+        final String name = "Jackson";
+        final String colour = "green";
+        final String pet = "Gophers";
+        final int number = 19;
+
+        // The writer has a newer schema.
+        final Person2 writerPerson = Person2.newBuilder()
+            .setName(name)
+            .setFavouriteNumber(number)
+            .setFavouriteColour(colour)
+            .setFavouritePet(pet)
+            .build();
+
+        // Act: Serialize the new Person2.
+        byte[] outputArray;
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream(4096)) {
+            StepVerifier.create(serializer.serializeAsync(outputStream, writerPerson))
+                .expectComplete()
+                .verify(Duration.ofSeconds(30));
+
+            outputArray = outputStream.toByteArray();
+        }
+
+        assertTrue(outputArray.length > 0, "There should have been contents in array.");
+
+        // Act: Deserialize Person (the older schema)
+        final Person readerPerson;
+        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(outputArray)) {
+            readerPerson = serializer.deserialize(inputStream, TypeReference.createInstance(Person.class));
+        }
+
+        assertNotNull(readerPerson);
+        assertEquals(name, readerPerson.getName());
+        assertEquals(number, readerPerson.getFavouriteNumber());
+        assertEquals(colour, readerPerson.getFavouriteColour());
     }
 
     private static byte[] getPayload(PlayingCard card) throws IOException {
@@ -247,5 +375,57 @@ public class SchemaRegistryApacheAvroSerializerTest {
 
             return outputStream.toByteArray();
         }
+    }
+
+    /**
+     * Creates the schema registry client based on the test mode.
+     *
+     * @param testInfo Information about current test.
+     * @param testMode Test mode
+     *
+     * @return Corresponding SchemaRegistryAsyncClient.
+     */
+    private SchemaRegistryAsyncClient getSchemaRegistryClient(TestInfo testInfo, TestMode testMode) {
+        final TestContextManager testContextManager = new TestContextManager(testInfo.getTestMethod().get(), testMode);
+        try {
+            interceptorManager = new InterceptorManager(testContextManager);
+        } catch (UncheckedIOException e) {
+            Assertions.fail(e);
+            throw e;
+        }
+
+        TokenCredential tokenCredential;
+        String endpoint;
+        if (testMode == TestMode.PLAYBACK) {
+            tokenCredential = mock(TokenCredential.class);
+
+            // Sometimes it throws an "NotAMockException", so we had to change from thenReturn to thenAnswer.
+            when(tokenCredential.getToken(any(TokenRequestContext.class))).thenAnswer(invocationOnMock -> {
+                return Mono.fromCallable(() -> {
+                    return new AccessToken("foo", OffsetDateTime.now().plusMinutes(20));
+                });
+            });
+
+            endpoint = PLAYBACK_ENDPOINT;
+        } else {
+            tokenCredential = new DefaultAzureCredentialBuilder().build();
+            endpoint = System.getenv(SchemaRegistryApacheAvroSerializerIntegrationTest.SCHEMA_REGISTRY_ENDPOINT);
+
+            assertNotNull(endpoint, "'endpoint' cannot be null in LIVE/RECORD mode.");
+        }
+
+        final SchemaRegistryClientBuilder builder = new SchemaRegistryClientBuilder()
+            .credential(tokenCredential)
+            .fullyQualifiedNamespace(endpoint);
+
+        if (testMode == TestMode.PLAYBACK) {
+            builder.httpClient(interceptorManager.getPlaybackClient());
+        } else {
+            builder.addPolicy(new RetryPolicy())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        return builder.buildAsyncClient();
     }
 }

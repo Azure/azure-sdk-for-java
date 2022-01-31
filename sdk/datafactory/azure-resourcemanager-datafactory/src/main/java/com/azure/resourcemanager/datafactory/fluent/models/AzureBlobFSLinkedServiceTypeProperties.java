@@ -75,6 +75,26 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     @JsonProperty(value = "credential")
     private CredentialReference credential;
 
+    /*
+     * The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret,
+     * 'ServicePrincipalCert' for certificate. Type: string (or Expression with
+     * resultType string).
+     */
+    @JsonProperty(value = "servicePrincipalCredentialType")
+    private Object servicePrincipalCredentialType;
+
+    /*
+     * The credential of the service principal object in Azure Active
+     * Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey',
+     * servicePrincipalCredential can be SecureString or
+     * AzureKeyVaultSecretReference. If servicePrincipalCredentialType is
+     * 'ServicePrincipalCert', servicePrincipalCredential can only be
+     * AzureKeyVaultSecretReference.
+     */
+    @JsonProperty(value = "servicePrincipalCredential")
+    private SecretBase servicePrincipalCredential;
+
     /**
      * Get the url property: Endpoint for the Azure Data Lake Storage Gen2 service. Type: string (or Expression with
      * resultType string).
@@ -252,6 +272,58 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
     }
 
     /**
+     * Get the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
+     * Expression with resultType string).
+     *
+     * @return the servicePrincipalCredentialType value.
+     */
+    public Object servicePrincipalCredentialType() {
+        return this.servicePrincipalCredentialType;
+    }
+
+    /**
+     * Set the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
+     * Expression with resultType string).
+     *
+     * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
+     * @return the AzureBlobFSLinkedServiceTypeProperties object itself.
+     */
+    public AzureBlobFSLinkedServiceTypeProperties withServicePrincipalCredentialType(
+        Object servicePrincipalCredentialType) {
+        this.servicePrincipalCredentialType = servicePrincipalCredentialType;
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalCredential property: The credential of the service principal object in Azure Active
+     * Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey', servicePrincipalCredential can be
+     * SecureString or AzureKeyVaultSecretReference. If servicePrincipalCredentialType is 'ServicePrincipalCert',
+     * servicePrincipalCredential can only be AzureKeyVaultSecretReference.
+     *
+     * @return the servicePrincipalCredential value.
+     */
+    public SecretBase servicePrincipalCredential() {
+        return this.servicePrincipalCredential;
+    }
+
+    /**
+     * Set the servicePrincipalCredential property: The credential of the service principal object in Azure Active
+     * Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey', servicePrincipalCredential can be
+     * SecureString or AzureKeyVaultSecretReference. If servicePrincipalCredentialType is 'ServicePrincipalCert',
+     * servicePrincipalCredential can only be AzureKeyVaultSecretReference.
+     *
+     * @param servicePrincipalCredential the servicePrincipalCredential value to set.
+     * @return the AzureBlobFSLinkedServiceTypeProperties object itself.
+     */
+    public AzureBlobFSLinkedServiceTypeProperties withServicePrincipalCredential(
+        SecretBase servicePrincipalCredential) {
+        this.servicePrincipalCredential = servicePrincipalCredential;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -268,6 +340,9 @@ public final class AzureBlobFSLinkedServiceTypeProperties {
         }
         if (credential() != null) {
             credential().validate();
+        }
+        if (servicePrincipalCredential() != null) {
+            servicePrincipalCredential().validate();
         }
     }
 }

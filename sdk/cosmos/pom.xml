@@ -20,7 +20,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-cosmos</artifactId>
-          <version>4.24.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+          <version>4.26.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
         </dependency>
       </dependencies>
 
@@ -63,7 +63,9 @@
         <module>azure-cosmos-encryption</module>
         <module>azure-spring-data-cosmos</module>
         <module>azure-spring-data-cosmos-test</module>
+        <module>azure-cosmos-spark_3_2-12</module>
         <module>azure-cosmos-spark_3-1_2-12</module>
+        <module>azure-cosmos-spark_3-2_2-12</module>
       </modules>
     </profile>
   </profiles>
