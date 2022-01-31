@@ -624,7 +624,7 @@
             <linksource>false</linksource>
             <includeDependencySources>true</includeDependencySources>
             <dependencySourceIncludes>
-              com.azure.*
+              com.azure:*
             </dependencySourceIncludes>
             <excludePackageNames>
               *.impl*:
