@@ -16,6 +16,10 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.OWNER_ID_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.SEQUENCE_NUMBER_KEY;
+
 /**
  * A simple in-memory implementation of a {@link CheckpointStore}. This implementation keeps track of partition
  * ownership details including checkpointing information in-memory. Using this implementation will only facilitate
@@ -81,9 +85,11 @@ public class SampleCheckpointStore implements CheckpointStore {
                     || partitionOwnershipMap.get(partitionOwnership.getPartitionId()).getETag()
                     .equals(partitionOwnership.getETag());
             })
-            .doOnNext(partitionOwnership -> logger
-                .info("Ownership of partition {} claimed by {}", partitionOwnership.getPartitionId(),
-                    partitionOwnership.getOwnerId()))
+            .doOnNext(partitionOwnership ->
+                logger.atInfo()
+                    .addKeyValue(PARTITION_ID_KEY, partitionOwnership.getPartitionId())
+                    .addKeyValue(OWNER_ID_KEY, partitionOwnership.getOwnerId())
+                    .log("Ownership claimed."))
             .map(partitionOwnership -> {
                 partitionOwnership.setETag(UUID.randomUUID().toString())
                     .setLastModifiedTime(System.currentTimeMillis());
@@ -119,8 +125,10 @@ public class SampleCheckpointStore implements CheckpointStore {
         String prefix = prefixBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(),
             checkpoint.getConsumerGroup(), CHECKPOINT);
         checkpointsMap.put(prefix + SEPARATOR + checkpoint.getPartitionId(), checkpoint);
-        logger.info("Updated checkpoint for partition {} with sequence number {}", checkpoint.getPartitionId(),
-            checkpoint.getSequenceNumber());
+        logger.atInfo()
+            .addKeyValue(PARTITION_ID_KEY, checkpoint.getPartitionId())
+            .addKeyValue(SEQUENCE_NUMBER_KEY, checkpoint.getSequenceNumber())
+            .log("Updated checkpoint.");
         return Mono.empty();
     }
 }
