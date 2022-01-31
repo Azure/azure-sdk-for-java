@@ -623,6 +623,9 @@
             </bottom>
             <linksource>false</linksource>
             <includeDependencySources>true</includeDependencySources>
+            <dependencySourceIncludes>
+              com.azure.*
+            </dependencySourceIncludes>
             <excludePackageNames>
               *.impl*:
               *.implementation*:
