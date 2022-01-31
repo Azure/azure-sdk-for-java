@@ -73,6 +73,8 @@ jobs:
           SDKType: ${{ parameters.SDKType }}
 
       - template: ../steps/install-reporting-tools.yml
+        parameters:
+          JdkVersion: $(JavaTestVersion)
 
       - ${{ parameters.PreBuildSteps }}
 
