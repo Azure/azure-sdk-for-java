@@ -21,6 +21,7 @@ parameters:
   TestGoals: $(TestGoals)
   TestOptions: $(TestOptions)
   AdditionalBuildOptions: $(AdditionalBuildOptions)
+  TestParallelization: '1'
 
 jobs:
   - job:
@@ -94,6 +95,7 @@ jobs:
           TestGoals: ${{ parameters.TestGoals }}
           TestOptions: ${{ parameters.TestOptions }}
           AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}
+          TestParallelization: ${{ parameters.TestParallelization }}
           TestEnvVars:
             AZURE_TEST_MODE: ${{ parameters.TestMode }}
             ${{ each var in parameters.EnvVars }}:
