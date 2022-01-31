@@ -17,9 +17,6 @@ parameters:
   - name: PreTestSteps
     type: object
     default: []
-  - name: TestOptions
-    type: string
-    default: ''
   - name: Matrix
     type: object
   - name: CloudConfig
