@@ -85,7 +85,6 @@ public class CosmosEncryptionAsyncContainer {
     ImplementationBridgeHelpers.CosmosPatchOperationsHelper.CosmosPatchOperationsAccessor cosmosPatchOperationsAccessor;
     ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.CosmosBulkExecutionOptionsAccessor cosmosBulkExecutionOptionsAccessor;
     ImplementationBridgeHelpers.CosmosBulkItemResponseHelper.CosmosBulkItemResponseAccessor cosmosBulkItemResponseAccessor;
-    ImplementationBridgeHelpers.CosmosBulkOperationResponseHelper.CosmosBulkOperationResponseAccessor cosmosBulkOperationResponseAccessor;
 
     CosmosEncryptionAsyncContainer(CosmosAsyncContainer container,
                                    CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient) {
@@ -110,7 +109,6 @@ public class CosmosEncryptionAsyncContainer {
         this.cosmosPatchOperationsAccessor = ImplementationBridgeHelpers.CosmosPatchOperationsHelper.getCosmosPatchOperationsAccessor();
         this.cosmosBulkExecutionOptionsAccessor = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.getCosmosBulkExecutionOptionsAccessor();
         this.cosmosBulkItemResponseAccessor = ImplementationBridgeHelpers.CosmosBulkItemResponseHelper.getCosmosBulkItemResponseAccessor();
-        this.cosmosBulkOperationResponseAccessor = ImplementationBridgeHelpers.CosmosBulkOperationResponseHelper.getCosmosBulkOperationResponseAccessor();
     }
 
     EncryptionProcessor getEncryptionProcessor() {
@@ -1211,8 +1209,9 @@ public class CosmosEncryptionAsyncContainer {
                 Mono<JsonNode> jsonNodeMono = encryptionProcessor.decryptJsonNode(objectNode).flatMap(jsonNode -> {
                     this.cosmosBulkItemResponseAccessor.setResourceObject(cosmosBulkItemResponse,
                         (ObjectNode) jsonNode);
-                    this.cosmosBulkOperationResponseAccessor.setResponse(cosmosBulkOperationResponse,
-                        cosmosBulkItemResponse);
+                    int  x =1;
+//                    this.cosmosBulkOperationResponseAccessor.setResponse(cosmosBulkOperationResponse,
+//                        cosmosBulkItemResponse);
                     return Mono.just(jsonNode);
                 });
                 return jsonNodeMono.flux().flatMap(jsonNode -> Flux.just((CosmosBulkOperationResponse<TContext>) cosmosBulkOperationResponse));

@@ -711,31 +711,6 @@ public class ImplementationBridgeHelpers {
         }
     }
 
-    public static final class CosmosBulkOperationResponseHelper {
-        private static CosmosBulkOperationResponseAccessor accessor;
-
-        private CosmosBulkOperationResponseHelper() {
-
-        }
-
-        static {
-            ensureClassLoaded(CosmosBulkOperationResponse.class);
-        }
-
-        public static CosmosBulkOperationResponseAccessor getCosmosBulkOperationResponseAccessor() { return accessor; }
-
-        public static void setCosmosBulkOperationResponseAccessor(CosmosBulkOperationResponseAccessor accessor) {
-            CosmosBulkOperationResponseHelper.accessor = accessor;
-        }
-
-        public interface CosmosBulkOperationResponseAccessor {
-
-            void setResponse(CosmosBulkOperationResponse cosmosBulkOperationResponse,
-                             CosmosBulkItemResponse cosmosBulkItemResponse);
-        }
-
-    }
-
     public static final class CosmosBulkItemResponseHelper {
         private static CosmosBulkItemResponseAccessor accessor;
 

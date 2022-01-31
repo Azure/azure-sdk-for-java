@@ -84,19 +84,4 @@ public final class CosmosBulkOperationResponse<TContext> {
     public TContext getBatchContext() {
         return batchContext;
     }
-
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    // the following helper/accessor only helps to access this class outside of this package.//
-    ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
-        ImplementationBridgeHelpers.CosmosBulkOperationResponseHelper.setCosmosBulkOperationResponseAccessor(
-            new ImplementationBridgeHelpers.CosmosBulkOperationResponseHelper.CosmosBulkOperationResponseAccessor() {
-
-                @Override
-                public void setResponse(CosmosBulkOperationResponse cosmosBulkOperationResponse, CosmosBulkItemResponse cosmosBulkItemResponse) {
-                    cosmosBulkOperationResponse.response = cosmosBulkItemResponse;
-                }
-            });
-    }
 }
