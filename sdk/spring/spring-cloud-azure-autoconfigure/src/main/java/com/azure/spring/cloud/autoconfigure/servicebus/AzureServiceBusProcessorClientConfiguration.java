@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
+import com.azure.core.util.ConfigurationBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
@@ -41,6 +42,11 @@ class AzureServiceBusProcessorClientConfiguration {
     @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "entity-type", "processor.entity-type" })
     static class NoneSessionProcessorClientConfiguration {
 
+        private final ConfigurationBuilder configurationBuilder;
+        public NoneSessionProcessorClientConfiguration(ConfigurationBuilder configurationBuilder) {
+            this.configurationBuilder = configurationBuilder.section("servicebus");
+        }
+
         @Bean
         @ConditionalOnMissingBean
         ServiceBusProcessorClientBuilderFactory serviceBusProcessorClientBuilderFactory(
@@ -67,7 +73,7 @@ class AzureServiceBusProcessorClientConfiguration {
         @ConditionalOnMissingBean
         ServiceBusClientBuilder.ServiceBusProcessorClientBuilder serviceBusProcessorClientBuilder(
             ServiceBusProcessorClientBuilderFactory builderFactory) {
-            return builderFactory.build();
+            return builderFactory.build(configurationBuilder.build());
         }
 
         @Bean
@@ -83,6 +89,11 @@ class AzureServiceBusProcessorClientConfiguration {
     @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.processor.session-enabled", havingValue = "true")
     @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "entity-type", "processor.entity-type" })
     static class SessionProcessorClientConfiguration {
+
+        private final ConfigurationBuilder configurationBuilder;
+        public SessionProcessorClientConfiguration(ConfigurationBuilder configurationBuilder) {
+            this.configurationBuilder = configurationBuilder.section("servicebus");
+        }
 
         @Bean
         @ConditionalOnMissingBean
@@ -111,7 +122,7 @@ class AzureServiceBusProcessorClientConfiguration {
         @ConditionalOnMissingBean
         ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder serviceBusSessionProcessorClientBuilder(
             ServiceBusSessionProcessorClientBuilderFactory builderFactory) {
-            return builderFactory.build();
+            return builderFactory.build(configurationBuilder.build());
         }
 
         @Bean

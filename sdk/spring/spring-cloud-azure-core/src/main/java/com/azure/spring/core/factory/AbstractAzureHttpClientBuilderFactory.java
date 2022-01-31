@@ -12,6 +12,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Header;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.spring.core.aware.ClientAware;
@@ -52,8 +53,8 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
     protected abstract BiConsumer<T, ClientOptions> consumeClientOptions();
 
     @Override
-    protected void configureCore(T builder) {
-        super.configureCore(builder);
+    protected void configureCore(T builder, Configuration configuration) {
+        super.configureCore(builder, configuration);
         configureHttpClient(builder);
         configureHttpLogOptions(builder);
     }

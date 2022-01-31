@@ -40,56 +40,56 @@ public class ProxyOptions {
      * Java environment variables related to proxies. The protocol is removed since these are the same for 'https' and
      * 'http', the exception is 'http.nonProxyHosts' as it is used for both.
      */
-    private static final ConfigurationProperty<String> PROPERTY_NO_PROXY = ConfigurationProperty.stringPropertyBuilder("http-client.proxy.non-proxy-hosts")
+    private static final ConfigurationProperty<String> PROPERTY_NO_PROXY = ConfigurationProperty.stringPropertyBuilder("http.proxy.non-proxy-hosts")
         .environmentVariables("http.nonProxyHosts", Configuration.PROPERTY_NO_PROXY)
         .canLogValue(true)
         .global(true)
         .build();
 
-    private static final ConfigurationProperty<Boolean> PROPERTY_CREATE_UNRESOLVED = ConfigurationProperty.booleanPropertyBuilder("http-client.proxy.create-unresolved")
+    private static final ConfigurationProperty<Boolean> PROPERTY_CREATE_UNRESOLVED = ConfigurationProperty.booleanPropertyBuilder("http.proxy.create-unresolved")
         .defaultValue(false)
         .global(true)
         .build();
 
     // staying consistent with Java proxy configuration way
-    private static final ConfigurationProperty<String> PROPERTY_HTTP_PROXY_HOST = ConfigurationProperty.stringPropertyBuilder("http-client.proxy.http.host")
+    private static final ConfigurationProperty<String> PROPERTY_HTTP_PROXY_HOST = ConfigurationProperty.stringPropertyBuilder("http.proxy.host")
         .environmentVariables( "http.proxyHost")
         .canLogValue(true)
         .global(true)
         .build();
 
-    private static final ConfigurationProperty<String> PROPERTY_HTTPS_PROXY_HOST = ConfigurationProperty.stringPropertyBuilder("http-client.proxy.https.host")
+    private static final ConfigurationProperty<String> PROPERTY_HTTPS_PROXY_HOST = ConfigurationProperty.stringPropertyBuilder("http.proxy.host")
         .environmentVariables("https.proxyHost")
         .canLogValue(true)
         .global(true)
         .build();
 
-    private static final ConfigurationProperty<Integer> PROPERTY_HTTP_PROXY_PORT = ConfigurationProperty.integerPropertyBuilder("http-client.proxy.http.port")
+    private static final ConfigurationProperty<Integer> PROPERTY_HTTP_PROXY_PORT = ConfigurationProperty.integerPropertyBuilder("http.proxy.port")
         .environmentVariables("http.proxyPort")
         .global(true)
         .build();
 
-    private static final ConfigurationProperty<Integer> PROPERTY_HTTPS_PROXY_PORT = ConfigurationProperty.integerPropertyBuilder("http-client.proxy.https.port")
+    private static final ConfigurationProperty<Integer> PROPERTY_HTTPS_PROXY_PORT = ConfigurationProperty.integerPropertyBuilder("http.proxy.port")
         .environmentVariables("https.proxyPort")
         .global(true)
         .build();
 
-    private static final ConfigurationProperty<String> PROPERTY_HTTP_PROXY_USER = ConfigurationProperty.stringPropertyBuilder("http-client.proxy.http.user")
+    private static final ConfigurationProperty<String> PROPERTY_HTTP_PROXY_USER = ConfigurationProperty.stringPropertyBuilder("http.proxy.username")
         .environmentVariables("http.proxyUser")
         .global(true)
         .build();
 
-    private static final ConfigurationProperty<String> PROPERTY_HTTPS_PROXY_USER = ConfigurationProperty.stringPropertyBuilder("http-client.proxy.https.user")
+    private static final ConfigurationProperty<String> PROPERTY_HTTPS_PROXY_USER = ConfigurationProperty.stringPropertyBuilder("http.proxy.username")
         .environmentVariables("https.proxyUser")
         .global(true)
         .build();
 
-    private static final ConfigurationProperty<String> PROPERTY_HTTP_PROXY_PASSWORD = ConfigurationProperty.stringPropertyBuilder("http-client.proxy.http.password")
+    private static final ConfigurationProperty<String> PROPERTY_HTTP_PROXY_PASSWORD = ConfigurationProperty.stringPropertyBuilder("http.proxy.password")
         .environmentVariables("http.proxyPassword")
         .global(true)
         .build();
 
-    private static final ConfigurationProperty<String> PROPERTY_HTTPS_PROXY_PASSWORD = ConfigurationProperty.stringPropertyBuilder("http-client.proxy.https.password")
+    private static final ConfigurationProperty<String> PROPERTY_HTTPS_PROXY_PASSWORD = ConfigurationProperty.stringPropertyBuilder("http.proxy.password")
         .environmentVariables("https.proxyPassword")
         .global(true)
         .build();

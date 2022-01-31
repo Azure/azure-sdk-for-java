@@ -3,14 +3,25 @@
 
 package com.azure.spring.cloud.autoconfigure.context;
 
+import com.azure.core.util.ConfigurationBuilder;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.EnvironmentAware;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
+import org.springframework.core.env.AbstractEnvironment;
+import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.type.AnnotationMetadata;
+
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.AZURE_GLOBAL_PROPERTY_BEAN_NAME;
 import static org.springframework.beans.factory.support.BeanDefinitionBuilder.genericBeanDefinition;
@@ -33,6 +44,8 @@ public class AzureGlobalPropertiesAutoConfiguration {
         @Override
         public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata,
                                             BeanDefinitionRegistry registry) {
+            ConfigurationBuilder configurationBuilder = new ConfigurationBuilder(new SdkPropertySource(environment)).root(AzureGlobalProperties.PREFIX);
+
             if (!registry.containsBeanDefinition(AZURE_GLOBAL_PROPERTY_BEAN_NAME)) {
                 registry.registerBeanDefinition(AZURE_GLOBAL_PROPERTY_BEAN_NAME,
                                                 genericBeanDefinition(AzureGlobalProperties.class,
@@ -40,8 +53,34 @@ public class AzureGlobalPropertiesAutoConfiguration {
                                                                                   .bindOrCreate(AzureGlobalProperties.PREFIX,
                                                                                                 AzureGlobalProperties.class))
                                                     .getBeanDefinition());
+                registry.registerBeanDefinition("ConfigurationBuilder", genericBeanDefinition(ConfigurationBuilder.class,  () -> configurationBuilder).getBeanDefinition());
             }
         }
 
+    }
+
+    public static class SdkPropertySource implements com.azure.core.util.ConfigurationSource {
+
+        private final Environment env;
+        public SdkPropertySource(Environment env) {
+            this.env = env;
+        }
+
+        @Override
+        public Set<String> getChildKeys(String path) {
+            MutablePropertySources propSrcs = ((AbstractEnvironment) env).getPropertySources();
+            return StreamSupport.stream(propSrcs.spliterator(), false)
+                .filter(ps -> ps instanceof EnumerablePropertySource)
+                .map(ps -> ((EnumerablePropertySource) ps).getPropertyNames())
+                .flatMap(Arrays::<String>stream)
+                .filter(propName -> propName.startsWith(path) && propName.length() > path.length() && propName.charAt(path.length()) == '.')
+                .collect(Collectors.toSet());
+            // todo convention for arrays
+        }
+
+        @Override
+        public String getValue(String propertyName) {
+            return env.getProperty(propertyName);
+        }
     }
 }

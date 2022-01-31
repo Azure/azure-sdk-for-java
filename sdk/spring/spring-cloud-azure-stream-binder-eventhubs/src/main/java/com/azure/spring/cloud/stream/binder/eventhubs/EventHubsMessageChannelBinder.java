@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.stream.binder.eventhubs;
 
+import com.azure.core.util.Configuration;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsConsumerProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsExtendedBindingProperties;
@@ -77,15 +78,16 @@ public class EventHubsMessageChannelBinder extends
         extendedProducerPropertiesMap = new ConcurrentHashMap<>();
     private final Map<ConsumerIdentifier, ExtendedConsumerProperties<EventHubsConsumerProperties>>
         extendedConsumerPropertiesMap = new ConcurrentHashMap<>();
-
+    private final Configuration configuration;
     /**
      * Construct a {@link EventHubsMessageChannelBinder} with the specified headers to embed and {@link EventHubsChannelProvisioner}.
      *
      * @param headersToEmbed the headers to embed
      * @param provisioningProvider the provisioning provider
      */
-    public EventHubsMessageChannelBinder(String[] headersToEmbed, EventHubsChannelProvisioner provisioningProvider) {
+    public EventHubsMessageChannelBinder(String[] headersToEmbed, EventHubsChannelProvisioner provisioningProvider, Configuration configuration) {
         super(headersToEmbed, provisioningProvider);
+        this.configuration = configuration;
     }
 
     @Override
@@ -164,6 +166,7 @@ public class EventHubsMessageChannelBinder extends
         return this.bindingProperties.getExtendedPropertiesEntryClass();
     }
 
+
     /**
      * Set binding properties.
      *
@@ -205,7 +208,7 @@ public class EventHubsMessageChannelBinder extends
     private EventHubsTemplate getEventHubTemplate() {
         if (this.eventHubsTemplate == null) {
             DefaultEventHubsNamespaceProducerFactory factory = new DefaultEventHubsNamespaceProducerFactory(
-                this.namespaceProperties, getProducerPropertiesSupplier());
+                this.namespaceProperties, getProducerPropertiesSupplier(), configuration);
             factory.addListener((name, producerAsyncClient) -> {
                 DefaultInstrumentation instrumentation = new DefaultInstrumentation(name, PRODUCER);
                 instrumentation.markUp();
@@ -219,7 +222,7 @@ public class EventHubsMessageChannelBinder extends
     private EventHubsProcessorContainer getProcessorContainer() {
         if (this.processorContainer == null) {
             DefaultEventHubsNamespaceProcessorFactory factory = new DefaultEventHubsNamespaceProcessorFactory(
-                this.checkpointStore, this.namespaceProperties, getProcessorPropertiesSupplier());
+                this.checkpointStore, this.namespaceProperties, getProcessorPropertiesSupplier(), configuration);
             factory.addListener((name, consumerGroup, processorClient) -> {
                 String instrumentationName = name + "/" + consumerGroup;
                 Instrumentation instrumentation = new EventHubsProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));

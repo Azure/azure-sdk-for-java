@@ -3,6 +3,7 @@
 
 package com.azure.spring.eventhubs.core.processor;
 
+import com.azure.core.util.Configuration;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.spring.core.AzureSpringIdentifier;
@@ -49,13 +50,13 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
     private final PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> propertiesSupplier;
     private final Map<ConsumerIdentifier, EventProcessorClient> processorClientMap = new ConcurrentHashMap<>();
     private final ProcessorPropertiesParentMerger propertiesMerger = new ProcessorPropertiesParentMerger();
-
+    private final Configuration configuration;
     /**
      * Construct a factory with the provided {@link CheckpointStore}.
      * @param checkpointStore the checkpoint store.
      */
-    public DefaultEventHubsNamespaceProcessorFactory(CheckpointStore checkpointStore) {
-        this(checkpointStore, null, null);
+    public DefaultEventHubsNamespaceProcessorFactory(CheckpointStore checkpointStore, Configuration configuration) {
+        this(checkpointStore, null, null, configuration);
     }
 
     /**
@@ -64,8 +65,9 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
      * @param namespaceProperties the namespace properties.
      */
     public DefaultEventHubsNamespaceProcessorFactory(CheckpointStore checkpointStore,
-                                                     NamespaceProperties namespaceProperties) {
-        this(checkpointStore, namespaceProperties, key -> null);
+                                                     NamespaceProperties namespaceProperties,
+                                                     Configuration configuration) {
+        this(checkpointStore, namespaceProperties, key -> null, configuration);
     }
 
     /**
@@ -74,8 +76,10 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
      * @param supplier the {@link PropertiesSupplier} to supply {@link ProcessorProperties} for each event hub.
      */
     public DefaultEventHubsNamespaceProcessorFactory(CheckpointStore checkpointStore,
-                                                     PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> supplier) {
-        this(checkpointStore, null, supplier);
+                                                     PropertiesSupplier<ConsumerIdentifier,
+                                                         ProcessorProperties> supplier,
+                                                         Configuration configuration) {
+        this(checkpointStore, null, supplier, configuration);
     }
 
     /**
@@ -87,11 +91,13 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
     public DefaultEventHubsNamespaceProcessorFactory(CheckpointStore checkpointStore,
                                                      NamespaceProperties namespaceProperties,
                                                      PropertiesSupplier<ConsumerIdentifier,
-                                                        ProcessorProperties> supplier) {
+                                                     ProcessorProperties> supplier,
+                                                     Configuration configuration) {
         Assert.notNull(checkpointStore, "CheckpointStore must be provided.");
         this.checkpointStore = checkpointStore;
         this.namespaceProperties = namespaceProperties;
         this.propertiesSupplier = supplier == null ? key -> null : supplier;
+        this.configuration = configuration;
     }
 
     @Override
@@ -124,7 +130,7 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
             EventProcessorClientBuilderFactory factory =
                 new EventProcessorClientBuilderFactory(processorProperties, this.checkpointStore, listener);
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_EVENT_HUBS);
-            EventProcessorClient client = factory.build().buildEventProcessorClient();
+            EventProcessorClient client = factory.build(configuration).buildEventProcessorClient();
             LOGGER.info("EventProcessor created for event hub '{}' with consumer group '{}'", k.getDestination(), k.getGroup());
 
             this.listeners.forEach(l -> l.processorAdded(k.getDestination(), k.getGroup(), client));

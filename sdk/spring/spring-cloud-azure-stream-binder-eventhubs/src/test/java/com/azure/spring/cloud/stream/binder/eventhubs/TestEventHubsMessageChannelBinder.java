@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.stream.binder.eventhubs;
 
+import com.azure.core.util.Configuration;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsConsumerProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsProducerProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelProvisioner;
@@ -28,7 +29,7 @@ public class TestEventHubsMessageChannelBinder extends EventHubsMessageChannelBi
                                              EventHubsChannelProvisioner provisioningProvider,
                                              DefaultMessageHandler messageHandler,
                                              MessageProducer messageProducer) {
-        super(headersToEmbed, provisioningProvider);
+        super(headersToEmbed, provisioningProvider, new Configuration());
         this.messageHandler = messageHandler;
         this.messageProducer = messageProducer;
     }

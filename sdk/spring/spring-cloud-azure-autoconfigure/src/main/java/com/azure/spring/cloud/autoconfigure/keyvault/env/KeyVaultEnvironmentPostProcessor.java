@@ -3,13 +3,17 @@
 
 package com.azure.spring.cloud.autoconfigure.keyvault.env;
 
+import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationBuilder;
 import com.azure.security.keyvault.secrets.SecretClient;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultPropertySourceProperties;
 import com.azure.spring.cloud.autoconfigure.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.core.util.AzurePropertiesUtils;
 import com.azure.spring.service.implementation.keyvault.secrets.SecretClientBuilderFactory;
 import org.apache.commons.logging.Log;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.config.ConfigDataEnvironmentPostProcessor;
 import org.springframework.boot.context.properties.PropertyMapper;
@@ -77,12 +81,16 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
                 propertySources.add(new AzureKeyVaultPropertySourceProperties());
             }
 
+            int i = 0;
+            ConfigurationBuilder configurationBuilder = new ConfigurationBuilder(new AzureGlobalPropertiesAutoConfiguration.SdkPropertySource(environment)).root("spring.cloud.azure");
             for (AzureKeyVaultPropertySourceProperties propertySource : propertySources) {
                 final AzureKeyVaultPropertySourceProperties properties = getMergeProperties(keyVaultSecretProperties,
                                                                                             propertySource);
                 if (properties.isEnabled()) {
-                    addKeyVaultPropertySource(environment, properties);
+                    addKeyVaultPropertySource(environment, properties, configurationBuilder.section("keyvault.secret.property-sources[" + i + "]").build());
                 }
+
+                i ++;
             }
         } else {
             logger.debug("Key Vault 'propertySourceEnabled' or 'enabled' is not enabled");
@@ -125,7 +133,8 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
      * @throws IllegalStateException If KeyVaultOperations fails to initialize.
      */
     private void addKeyVaultPropertySource(ConfigurableEnvironment environment,
-                                          AzureKeyVaultPropertySourceProperties propertySource) {
+                                          AzureKeyVaultPropertySourceProperties propertySource,
+                                           Configuration configuration) {
         Assert.notNull(propertySource.getEndpoint(), "endpoint must not be null!");
 
         AzureKeyVaultSecretProperties secretProperties = new AzureKeyVaultSecretProperties();
@@ -135,7 +144,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
         try {
             final MutablePropertySources sources = environment.getPropertySources();
             final boolean caseSensitive = Boolean.TRUE.equals(propertySource.getCaseSensitive());
-            final SecretClient secretClient = buildSecretClient(secretProperties);
+            final SecretClient secretClient = buildSecretClient(secretProperties, configuration);
             final KeyVaultOperation keyVaultOperation = new KeyVaultOperation(secretClient,
                                                                               propertySource.getRefreshInterval(),
                                                                               propertySource.getSecretKeys(),
@@ -159,8 +168,8 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
      * @param secretProperties secret properties
      * @return secret client
      */
-    protected SecretClient buildSecretClient(AzureKeyVaultSecretProperties secretProperties) {
-        return new SecretClientBuilderFactory(secretProperties).build().buildClient();
+    protected SecretClient buildSecretClient(AzureKeyVaultSecretProperties secretProperties, Configuration configuration) {
+        return new SecretClientBuilderFactory(secretProperties).build(configuration).buildClient();
     }
 
     private AzureKeyVaultSecretProperties loadProperties(Binder binder) {

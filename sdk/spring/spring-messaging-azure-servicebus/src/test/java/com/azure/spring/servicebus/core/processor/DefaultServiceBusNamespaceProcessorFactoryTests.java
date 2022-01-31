@@ -3,6 +3,7 @@
 
 package com.azure.spring.servicebus.core.processor;
 
+import com.azure.core.util.Configuration;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.service.servicebus.processor.RecordMessageProcessingListener;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
@@ -20,12 +21,12 @@ public class DefaultServiceBusNamespaceProcessorFactoryTests {
     private final RecordMessageProcessingListener listener = messageContext -> { };
     private int queueProcessorAddedTimes = 0;
     private int topicProcessorAddedTimes = 0;
-
+    private static final Configuration NOOP = new Configuration();
     @BeforeEach
     void setUp() {
         NamespaceProperties namespaceProperties = new NamespaceProperties();
         namespaceProperties.setNamespace("test-namespace");
-        this.processorFactory = new DefaultServiceBusNamespaceProcessorFactory(namespaceProperties);
+        this.processorFactory = new DefaultServiceBusNamespaceProcessorFactory(namespaceProperties, NOOP);
         queueProcessorAddedTimes = 0;
         topicProcessorAddedTimes = 0;
         this.processorFactory.addListener((name, subscription, client) -> {

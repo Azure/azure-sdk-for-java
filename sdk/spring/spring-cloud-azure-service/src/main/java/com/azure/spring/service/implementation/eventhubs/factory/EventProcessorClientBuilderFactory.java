@@ -76,8 +76,8 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
         map.from(eventProcessorClientProperties.getLoadBalancing().getPartitionOwnershipExpirationInterval()).to(builder::partitionOwnershipExpirationInterval);
         map.from(eventProcessorClientProperties.getLoadBalancing().getStrategy()).to(builder::loadBalancingStrategy);
         map.from(eventProcessorClientProperties.getLoadBalancing().getUpdateInterval()).to(builder::loadBalancingUpdateInterval);
-        map.from(eventProcessorClientProperties.getFullyQualifiedNamespace()).to(builder::fullyQualifiedNamespace);
-        map.from(eventProcessorClientProperties.getEventHubName()).to(builder::eventHubName);
+        /*map.from(eventProcessorClientProperties.getFullyQualifiedNamespace()).to(builder::fullyQualifiedNamespace);
+        map.from(eventProcessorClientProperties.getEventHubName()).to(builder::eventHubName);*/
 
         map.from(eventProcessorClientProperties.getInitialPartitionEventPosition()).when(c -> !CollectionUtils.isEmpty(c))
                 .to(m -> {

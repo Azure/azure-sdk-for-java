@@ -48,33 +48,32 @@ public final class HttpClientOptions extends ClientOptions {
             Duration.ofSeconds(60), LOGGER);
     }
 
-    private static final ConfigurationProperty<String> APPLICATION_ID_PROP = ConfigurationProperty.stringPropertyBuilder("http-client.application-id")
-        .aliases("client.application-id")
+    private static final ConfigurationProperty<String> APPLICATION_ID_PROP = ConfigurationProperty.stringPropertyBuilder("client.application-id")
         .global(true)
         .canLogValue(true)
         .build();
 
-    private static final ConfigurationProperty<Duration> CONNECT_TIMEOUT_PROP = ConfigurationProperty.durationPropertyBuilder("http-client.connect-timeout")
+    private static final ConfigurationProperty<Duration> CONNECT_TIMEOUT_PROP = ConfigurationProperty.durationPropertyBuilder("client.connect-timeout")
         .defaultValue(DEFAULT_CONNECT_TIMEOUT)
         .global(true)
         .build();
-    private static final ConfigurationProperty<Duration> WRITE_TIMEOUT_PROP = ConfigurationProperty.durationPropertyBuilder("http-client.write-timeout")
+    private static final ConfigurationProperty<Duration> WRITE_TIMEOUT_PROP = ConfigurationProperty.durationPropertyBuilder("client.write-timeout")
         .defaultValue(DEFAULT_WRITE_TIMEOUT)
         .global(true)
         .build();
-    private static final ConfigurationProperty<Duration> RESPONSE_TIMEOUT_PROP = ConfigurationProperty.durationPropertyBuilder("http-client.response-timeout")
+    private static final ConfigurationProperty<Duration> RESPONSE_TIMEOUT_PROP = ConfigurationProperty.durationPropertyBuilder("client.response-timeout")
         .defaultValue(DEFAULT_RESPONSE_TIMEOUT)
         .global(true)
         .build();
-    private static final ConfigurationProperty<Duration> READ_TIMEOUT_PROP = ConfigurationProperty.durationPropertyBuilder("http-client.read-timeout")
+    private static final ConfigurationProperty<Duration> READ_TIMEOUT_PROP = ConfigurationProperty.durationPropertyBuilder("client.read-timeout")
         .defaultValue(DEFAULT_READ_TIMEOUT)
         .global(true)
         .build();
-    private static final ConfigurationProperty<Duration> CONNECTION_IDLE_TIMEOUT_PROP = ConfigurationProperty.durationPropertyBuilder("http-client.connection-idle-timeout")
+    private static final ConfigurationProperty<Duration> CONNECTION_IDLE_TIMEOUT_PROP = ConfigurationProperty.durationPropertyBuilder("client.connection-idle-timeout")
         .defaultValue(DEFAULT_CONNECTION_IDLE_TIMEOUT)
         .global(true)
         .build();
-    private static final ConfigurationProperty<Integer> CONNECTION_POOL_SIZE_PROP = ConfigurationProperty.integerPropertyBuilder("http-client.maximum-connection-pool-size")
+    private static final ConfigurationProperty<Integer> CONNECTION_POOL_SIZE_PROP = ConfigurationProperty.integerPropertyBuilder("client.maximum-connection-pool-size")
         .global(true)
         .build();
 

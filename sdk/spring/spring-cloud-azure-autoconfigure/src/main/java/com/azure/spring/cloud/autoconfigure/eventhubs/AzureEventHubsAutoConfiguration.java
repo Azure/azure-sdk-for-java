@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhubs;
 
+import com.azure.core.util.ConfigurationBuilder;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
@@ -32,8 +33,9 @@ import org.springframework.context.annotation.Import;
 })
 public class AzureEventHubsAutoConfiguration extends AzureServiceConfigurationBase {
 
-    public AzureEventHubsAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
-        super(azureGlobalProperties);
+    private ConfigurationBuilder configurationBuilder;
+    public AzureEventHubsAutoConfiguration(AzureGlobalProperties azureGlobalProperties, ConfigurationBuilder configurationBuilder) {
+        super(azureGlobalProperties, configurationBuilder.section("eventhubs").build());
     }
 
     @Bean

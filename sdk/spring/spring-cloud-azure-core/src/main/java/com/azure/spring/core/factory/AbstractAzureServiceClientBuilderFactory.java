@@ -114,9 +114,7 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
 
     private String springIdentifier;
     private ConnectionStringProvider<?> connectionStringProvider;
-    private boolean credentialConfigured = false;
     private final List<AzureServiceClientBuilderCustomizer<T>> customizers = new ArrayList<>();
-    protected final Configuration configuration = new Configuration();
     protected TokenCredential defaultTokenCredential = DEFAULT_TOKEN_CREDENTIAL;
 
     /**
@@ -130,9 +128,9 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
      *
      * @return the service client builder.
      */
-    public T build() {
+    public T build(Configuration configuration) {
         T builder = createBuilderInstance();
-        configureCore(builder);
+        configureCore(builder, configuration);
         configureService(builder);
         customizeBuilder(builder);
         return builder;
@@ -152,15 +150,15 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
      * </ol>
      * @param builder The service client builder.
      */
-    protected void configureCore(T builder) {
+    protected void configureCore(T builder, Configuration configuration) {
         configureApplicationId(builder);
-        configureAzureEnvironment(builder);
-        configureConfiguration(builder);
+        configureAzureEnvironment(builder, configuration);
+        configureConfiguration(builder, configuration);
         configureRetry(builder);
         configureProxy(builder);
-        configureCredential(builder);
-        configureConnectionString(builder);
-        configureDefaultCredential(builder);
+        if (!configureCredential(builder) || !configureConnectionString(builder)) {
+            configureDefaultCredential(builder);
+        }
     }
 
     /**
@@ -178,7 +176,8 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
      * Configure Azure environment, such as Azure Global or Azure China, to the builder.
      * @param builder The service client builder.
      */
-    protected void configureAzureEnvironment(T builder) {
+    protected void configureAzureEnvironment(T builder, Configuration configuration) {
+        // TODO support in configuration in core
         configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST,
             getAzureProperties().getProfile().getEnvironment().getActiveDirectoryEndpoint());
     }
@@ -189,7 +188,7 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
      *
      * @param builder The service client builder.
      */
-    protected void configureConfiguration(T builder) {
+    protected void configureConfiguration(T builder, Configuration configuration) {
         if (builder instanceof ConfigurationTrait) {
             ((ConfigurationTrait<?>) builder).configuration(configuration);
         }
@@ -197,18 +196,18 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
 
     /**
      * Configure credential to the builder. It will try to resolve the credential first. The authentication types a
-     * service client supports is defined in {@link #getAuthenticationDescriptors(Object)}. If a credential is resolved
-     * successfully, the {@link #credentialConfigured} flag will be set to {@code true}.
+     * service client supports is defined in {@link #getAuthenticationDescriptors(Object)}.
+     * Returns {@code true} if a credential is resolved successfully
      *
      * @param builder The service client builder.
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    protected void configureCredential(T builder) {
+    protected boolean configureCredential(T builder) {
         List<AuthenticationDescriptor<?>> descriptors = getAuthenticationDescriptors(builder);
         AzureCredentialProvider<?> azureCredentialProvider = resolveAzureCredential(getAzureProperties(), descriptors);
         if (azureCredentialProvider == null) {
             LOGGER.debug("No authentication credential configured for class {}.", builder.getClass().getSimpleName());
-            return;
+            return false;
         }
 
         final Consumer consumer = descriptors.stream()
@@ -220,19 +219,18 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
 
 
         consumer.accept(azureCredentialProvider);
-        credentialConfigured = true;
+        return true;
     }
 
     /**
      * Configure the connection string to the builder. It will try to resolve a connection string from the
      * {@link AzureProperties}, if it is a {@link ConnectionStringAware} instance. If no connection string found from
      * the {@link AzureProperties}, it will check if any {@link ConnectionStringProvider} is provided and get the
-     * connection string from the provider if set. If a connection string is resolved successfully, the
-     * {@link #credentialConfigured} flag will be set to {@code true}.
+     * connection string from the provider if set. Returns {@code true} if a credential is resolved successfully
      *
      * @param builder The service client builder.
      */
-    protected void configureConnectionString(T builder) {
+    protected boolean configureConnectionString(T builder) {
         AzureProperties azureProperties = getAzureProperties();
 
         // connection string set to properties will advantage the one from connection string provider
@@ -242,9 +240,8 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
             if (StringUtils.hasText(connectionString)) {
                 if (builder instanceof ConnectionStringTrait) {
                     ((ConnectionStringTrait<?>) builder).connectionString(connectionString);
-                    credentialConfigured = true;
                     LOGGER.debug("Connection string configured for class {}.", builder.getClass().getSimpleName());
-                    return;
+                    return true;
                 } else {
                     throw new IllegalArgumentException("builder can't accept connection string");
                 }
@@ -255,22 +252,23 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
                 && StringUtils.hasText(this.connectionStringProvider.getConnectionString())) {
             if (builder instanceof ConnectionStringTrait) {
                 ((ConnectionStringTrait<?>) builder).connectionString(this.connectionStringProvider.getConnectionString());
-                credentialConfigured = true;
                 LOGGER.debug("Connection string configured for class {}.", builder.getClass().getSimpleName());
+                return true;
             } else {
                 throw new IllegalArgumentException("builder can't accept connection string");
             }
         }
+
+        return false;
     }
 
     /**
-     * Configure the default token credential to the builder. The default credential will be set if and only if the
-     * {@link #credentialConfigured} is false.
+     * Configure the default token credential to the builder. Only call it if other ways to resolve credentials have failed.
      *
      * @param builder The service client builder.
      */
     protected void configureDefaultCredential(T builder) {
-        if (!credentialConfigured && builder instanceof TokenCredentialTrait) {
+        if (builder instanceof TokenCredentialTrait) {
             LOGGER.info("Will configure the default credential for {}.", builder.getClass());
             // TODO kasobol-msft how do we keep track if default credential has been set?
             // Should builder or configuration do it implicitly if nothing was configured?

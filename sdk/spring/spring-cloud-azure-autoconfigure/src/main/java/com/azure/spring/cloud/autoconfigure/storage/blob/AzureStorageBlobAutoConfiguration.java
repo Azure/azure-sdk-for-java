@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.storage.blob;
 
+import com.azure.core.util.ConfigurationBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
@@ -39,8 +40,8 @@ import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.STO
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.storage.blob", name = { "account-name", "endpoint", "connection-string" })
 public class AzureStorageBlobAutoConfiguration extends AzureServiceConfigurationBase {
 
-    public AzureStorageBlobAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
-        super(azureGlobalProperties);
+    public AzureStorageBlobAutoConfiguration(AzureGlobalProperties azureGlobalProperties, ConfigurationBuilder configurationBuilder) {
+        super(azureGlobalProperties, configurationBuilder.section("storage.blob").build());
     }
 
     @Bean
@@ -113,7 +114,7 @@ public class AzureStorageBlobAutoConfiguration extends AzureServiceConfiguration
     @ConditionalOnMissingBean(name = STORAGE_BLOB_CLIENT_BUILDER_BEAN_NAME)
     BlobServiceClientBuilder blobServiceClientBuilder(@Qualifier(STORAGE_BLOB_CLIENT_BUILDER_FACTORY_BEAN_NAME)
                                                           BlobServiceClientBuilderFactory factory) {
-        return factory.build();
+        return factory.build(configuration);
     }
 
     @Bean

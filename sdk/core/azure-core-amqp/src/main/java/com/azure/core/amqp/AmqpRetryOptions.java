@@ -4,10 +4,15 @@
 package com.azure.core.amqp;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationProperty;
+import com.azure.core.util.ConfigurationPropertyBuilder;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
 import java.util.Objects;
+
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RETRY_COUNT;
 
 /**
  * A set of options that can be specified to influence how retry attempts are made.
@@ -15,6 +20,32 @@ import java.util.Objects;
 @Fluent
 public class AmqpRetryOptions {
     private final ClientLogger logger = new ClientLogger(AmqpRetryOptions.class);
+    private final static ConfigurationProperty<Integer> MAX_RETRIES_PROPERTY = ConfigurationProperty.integerPropertyBuilder("amqp.retry.max-retries")
+        .defaultValue(3)
+        .environmentVariables(PROPERTY_AZURE_REQUEST_RETRY_COUNT)
+        .global(true)
+        .build();
+
+    private final static ConfigurationProperty<Duration> BASE_DELAY_PROPERTY = ConfigurationProperty.durationPropertyBuilder("amqp.retry.base-delay")
+        .defaultValue(Duration.ofMillis(800))
+        .global(true)
+        .build();
+
+    private final static ConfigurationProperty<Duration> MAX_DELAY_PROPERTY = ConfigurationProperty.durationPropertyBuilder("amqp.retry.max-delay")
+        .defaultValue(Duration.ofMinutes(1))
+        .global(true)
+        .build();
+
+    private final static ConfigurationProperty<Duration> TRY_TIMEOUT_PROPERTY = ConfigurationProperty.durationPropertyBuilder("amqp.retry.try-timeout")
+        .defaultValue(Duration.ofMinutes(1))
+        .global(true)
+        .build();
+
+    private final static ConfigurationProperty<AmqpRetryMode> RETRY_MODE_PROPERTY = new ConfigurationPropertyBuilder<>("amqp.retry.mode", mode -> AmqpRetryMode.valueOf(mode))
+        .global(true)
+        .canLogValue(true)
+        .defaultValue(AmqpRetryMode.EXPONENTIAL)
+        .build();
 
     private int maxRetries;
     private Duration delay;
@@ -31,6 +62,17 @@ public class AmqpRetryOptions {
         this.maxDelay = Duration.ofMinutes(1);
         this.tryTimeout = Duration.ofMinutes(1);
         this.retryMode = AmqpRetryMode.EXPONENTIAL;
+    }
+
+    public static AmqpRetryOptions fromConfiguration(Configuration configuration) {
+        Objects.requireNonNull(configuration, "'configuration' cannot be null.");
+
+        return new AmqpRetryOptions()
+            .setMaxDelay(configuration.get(MAX_DELAY_PROPERTY))
+            .setDelay(configuration.get(BASE_DELAY_PROPERTY))
+            .setMaxRetries(configuration.get(MAX_RETRIES_PROPERTY))
+            .setMode(configuration.get(RETRY_MODE_PROPERTY))
+            .setTryTimeout(configuration.get(TRY_TIMEOUT_PROPERTY));
     }
 
     /**

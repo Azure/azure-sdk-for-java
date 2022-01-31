@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhubs;
 
+import com.azure.core.util.ConfigurationBuilder;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProducerClient;
@@ -15,6 +16,7 @@ import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.service.implementation.eventhubs.factory.EventHubClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -56,9 +58,11 @@ class AzureEventHubsProducerClientConfiguration {
     static class DedicatedProducerConnectionConfiguration {
 
         private final AzureEventHubsProperties.Producer producerProperties;
+        private final ConfigurationBuilder configurationBuilder;
 
-        DedicatedProducerConnectionConfiguration(AzureEventHubsProperties eventHubsProperties) {
+        DedicatedProducerConnectionConfiguration(AzureEventHubsProperties eventHubsProperties, ConfigurationBuilder configurationBuilder) {
             this.producerProperties = eventHubsProperties.buildProducerProperties();
+            this.configurationBuilder = configurationBuilder;
         }
 
         @Bean(EVENT_HUB_PRODUCER_CLIENT_BUILDER_FACTORY_BEAN_NAME)
@@ -81,7 +85,7 @@ class AzureEventHubsProducerClientConfiguration {
         EventHubClientBuilder eventHubClientBuilderForProducer(
             @Qualifier(EVENT_HUB_PRODUCER_CLIENT_BUILDER_FACTORY_BEAN_NAME) EventHubClientBuilderFactory clientBuilderFactory) {
 
-            return clientBuilderFactory.build();
+            return clientBuilderFactory.build(configurationBuilder.section("eventhubs.producer").build());
         }
 
         @Bean

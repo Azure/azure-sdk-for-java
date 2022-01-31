@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.context;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.ConfigurationBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
@@ -33,8 +34,8 @@ public class AzureDefaultTokenCredentialAutoConfiguration extends AzureServiceCo
 
     private final IdentityClientProperties identityClientProperties;
 
-    public AzureDefaultTokenCredentialAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
-        super(azureGlobalProperties);
+    public AzureDefaultTokenCredentialAutoConfiguration(AzureGlobalProperties azureGlobalProperties, ConfigurationBuilder configurationBuilder) {
+        super(azureGlobalProperties, configurationBuilder.build());
         this.identityClientProperties = loadProperties(azureGlobalProperties, new IdentityClientProperties());
     }
 
@@ -42,7 +43,7 @@ public class AzureDefaultTokenCredentialAutoConfiguration extends AzureServiceCo
     @Bean(name = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)
     @Order
     public TokenCredential tokenCredential(AbstractAzureCredentialBuilderFactory<DefaultAzureCredentialBuilder> factory) {
-        return factory.build().build();
+        return factory.build(configuration).build();
     }
 
     @Bean

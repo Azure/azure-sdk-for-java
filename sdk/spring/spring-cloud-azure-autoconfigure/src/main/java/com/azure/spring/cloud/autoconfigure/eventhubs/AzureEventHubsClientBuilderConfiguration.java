@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhubs;
 
+import com.azure.core.util.ConfigurationBuilder;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
@@ -26,10 +27,15 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnProperty(prefix = "spring.cloud.azure.eventhubs", name = "event-hub-name")
 class AzureEventHubsClientBuilderConfiguration {
 
+    private final ConfigurationBuilder configurationBuilder;
+    public AzureEventHubsClientBuilderConfiguration(ConfigurationBuilder configurationBuilder) {
+        this.configurationBuilder = configurationBuilder.section("eventhubs");
+    }
+
     @Bean
     @ConditionalOnMissingBean
     EventHubClientBuilder eventHubClientBuilder(EventHubClientBuilderFactory factory) {
-        return factory.build();
+        return factory.build(configurationBuilder.build());
     }
 
     @Bean

@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhubs;
 
+import com.azure.core.util.ConfigurationBuilder;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubConsumerClient;
@@ -73,10 +74,12 @@ class AzureEventHubsConsumerClientConfiguration {
     @Configuration(proxyBeanMethods = false)
     static class DedicatedConsumerConnectionConfiguration {
 
+        private final com.azure.core.util.Configuration configuration;
         private final AzureEventHubsProperties.Consumer consumerProperties;
 
-        DedicatedConsumerConnectionConfiguration(AzureEventHubsProperties eventHubsProperties) {
+        DedicatedConsumerConnectionConfiguration(AzureEventHubsProperties eventHubsProperties, ConfigurationBuilder configurationBuilder) {
             this.consumerProperties = eventHubsProperties.buildConsumerProperties();
+            this.configuration = configurationBuilder.section("eventhubs.consumer").build();
         }
 
         @Bean(EVENT_HUB_CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME)
@@ -99,7 +102,7 @@ class AzureEventHubsConsumerClientConfiguration {
         EventHubClientBuilder eventHubClientBuilderForConsumer(
             @Qualifier(EVENT_HUB_CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME) EventHubClientBuilderFactory clientBuilderFactory) {
 
-            return clientBuilderFactory.build();
+            return clientBuilderFactory.build(configuration);
         }
 
         @Bean

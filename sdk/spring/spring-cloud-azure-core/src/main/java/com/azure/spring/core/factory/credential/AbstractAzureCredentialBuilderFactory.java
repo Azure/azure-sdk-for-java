@@ -4,6 +4,7 @@
 package com.azure.spring.core.factory.credential;
 
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Configuration;
 import com.azure.identity.CredentialBuilderBase;
 import com.azure.spring.core.aware.RetryAware;
 import com.azure.spring.core.aware.authentication.TokenCredentialAware;
@@ -75,7 +76,7 @@ public abstract class AbstractAzureCredentialBuilderFactory<T extends Credential
     }
 
     @Override
-    protected void configureConfiguration(T builder) {
+    protected void configureConfiguration(T builder, Configuration configuration) {
         PropertyMapper mapper = new PropertyMapper();
         TokenCredentialAware.TokenCredential credential = this.azureProperties.getCredential();
         mapper.from(credential.getClientId()).to(v -> configuration.put(PROPERTY_AZURE_CLIENT_ID, v));
@@ -86,7 +87,7 @@ public abstract class AbstractAzureCredentialBuilderFactory<T extends Credential
         mapper.from(credential.getClientCertificatePath()).to(v -> configuration.put(PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH, v));
         mapper.from(azureProperties.getProfile().getTenantId()).to(v -> configuration.put(PROPERTY_AZURE_TENANT_ID, v));
 
-        super.configureConfiguration(builder);
+        super.configureConfiguration(builder, configuration);
     }
 
     @Override

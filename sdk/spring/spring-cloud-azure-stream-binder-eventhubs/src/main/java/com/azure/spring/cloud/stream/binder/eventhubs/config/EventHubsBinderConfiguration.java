@@ -84,8 +84,9 @@ public class EventHubsBinderConfiguration {
     public EventHubsMessageChannelBinder eventHubBinder(EventHubsChannelProvisioner channelProvisioner,
                                                         EventHubsExtendedBindingProperties bindingProperties,
                                                         ObjectProvider<NamespaceProperties> namespaceProperties,
-                                                        ObjectProvider<CheckpointStore> checkpointStores) {
-        EventHubsMessageChannelBinder binder = new EventHubsMessageChannelBinder(null, channelProvisioner);
+                                                        ObjectProvider<CheckpointStore> checkpointStores,
+                                                        com.azure.core.util.Configuration configuration) {
+        EventHubsMessageChannelBinder binder = new EventHubsMessageChannelBinder(null, channelProvisioner, configuration);
         binder.setBindingProperties(bindingProperties);
         binder.setNamespaceProperties(namespaceProperties.getIfAvailable());
         checkpointStores.ifAvailable(binder::setCheckpointStore);

@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhubs;
 
+import com.azure.core.util.ConfigurationBuilder;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
@@ -15,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -35,6 +37,9 @@ import static com.azure.spring.core.util.AzurePropertiesUtils.mergeAzureCommonPr
 @ConditionalOnClass({ BlobCheckpointStore.class, EventHubClientBuilder.class})
 @ConditionalOnProperty(prefix = "spring.cloud.azure.eventhubs.processor.checkpoint-store", name = { "container-name", "account-name" })
 public class AzureBlobCheckpointStoreConfiguration {
+
+    @Autowired
+    private ConfigurationBuilder sdkConfigurationBuilder;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureBlobCheckpointStoreConfiguration.class);
 
@@ -70,7 +75,7 @@ public class AzureBlobCheckpointStoreConfiguration {
     BlobServiceClientBuilder eventHubProcessorBlobServiceClientBuilder(
         @Qualifier(EVENT_HUB_PROCESSOR_CHECKPOINT_STORE_STORAGE_CLIENT_BUILDER_FACTORY_BEAN_NAME)
             BlobServiceClientBuilderFactory factory) {
-        return factory.build();
+        return factory.build(sdkConfigurationBuilder.section("eventhubs.processor.checkpoint-store").build());
     }
 
     @Bean(EVENT_HUB_PROCESSOR_CHECKPOINT_STORE_STORAGE_CLIENT_BUILDER_FACTORY_BEAN_NAME)

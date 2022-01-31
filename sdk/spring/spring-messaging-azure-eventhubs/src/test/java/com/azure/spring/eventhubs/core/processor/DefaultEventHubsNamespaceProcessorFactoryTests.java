@@ -3,6 +3,7 @@
 
 package com.azure.spring.eventhubs.core.processor;
 
+import com.azure.core.util.Configuration;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
@@ -14,8 +15,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.powermock.api.mockito.PowerMockito.mock;
 
+@SuppressWarnings("deprecation")
 class DefaultEventHubsNamespaceProcessorFactoryTests {
 
+    private static final Configuration NOOP = new Configuration();
     private EventHubsProcessorFactory processorFactory;
     private final String eventHubName = "eventHub";
     private final String consumerGroup = "group";
@@ -28,7 +31,7 @@ class DefaultEventHubsNamespaceProcessorFactoryTests {
         NamespaceProperties namespaceProperties = new NamespaceProperties();
         namespaceProperties.setNamespace("test-namespace");
         this.processorFactory = new DefaultEventHubsNamespaceProcessorFactory(mock(CheckpointStore.class),
-            namespaceProperties);
+            namespaceProperties, NOOP);
         processorAddedTimes = 0;
         this.processorFactory.addListener(new EventHubsProcessorFactory.Listener() {
             @Override

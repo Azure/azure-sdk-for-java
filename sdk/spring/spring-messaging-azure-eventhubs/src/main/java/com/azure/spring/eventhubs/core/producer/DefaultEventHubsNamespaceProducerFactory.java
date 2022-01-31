@@ -3,6 +3,7 @@
 
 package com.azure.spring.eventhubs.core.producer;
 
+import com.azure.core.util.Configuration;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
@@ -38,13 +39,14 @@ public final class DefaultEventHubsNamespaceProducerFactory implements EventHubs
     private final PropertiesSupplier<String, ProducerProperties> propertiesSupplier;
     private final Map<String, EventHubProducerAsyncClient> clients = new ConcurrentHashMap<>();
     private final ProducerPropertiesParentMerger parentMerger = new ProducerPropertiesParentMerger();
+    private final Configuration configuration;
 
     /**
      * Construct a factory with the provided namespace level configuration.
      * @param namespaceProperties the namespace properties
      */
-    public DefaultEventHubsNamespaceProducerFactory(NamespaceProperties namespaceProperties) {
-        this(namespaceProperties, key -> null);
+    public DefaultEventHubsNamespaceProducerFactory(NamespaceProperties namespaceProperties, Configuration configuration) {
+        this(namespaceProperties, key -> null, configuration);
     }
 
     /**
@@ -53,9 +55,10 @@ public final class DefaultEventHubsNamespaceProducerFactory implements EventHubs
      * @param supplier the {@link PropertiesSupplier} to supply {@link ProducerProperties} for each event hub.
      */
     public DefaultEventHubsNamespaceProducerFactory(NamespaceProperties namespaceProperties,
-                                                    PropertiesSupplier<String, ProducerProperties> supplier) {
+                                                    PropertiesSupplier<String, ProducerProperties> supplier, Configuration configuration) {
         this.namespaceProperties = namespaceProperties;
         this.propertiesSupplier = supplier == null ? key -> null : supplier;
+        this.configuration = configuration;
     }
 
     @Override
@@ -69,7 +72,7 @@ public final class DefaultEventHubsNamespaceProducerFactory implements EventHubs
             producerProperties.setEventHubName(entityName);
             EventHubClientBuilderFactory factory = new EventHubClientBuilderFactory(producerProperties);
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_EVENT_HUBS);
-            EventHubProducerAsyncClient producerClient = factory.build().buildAsyncProducerClient();
+            EventHubProducerAsyncClient producerClient = factory.build(configuration).buildAsyncProducerClient();
             this.listeners.forEach(l -> l.producerAdded(entityName, producerClient));
 
             return producerClient;

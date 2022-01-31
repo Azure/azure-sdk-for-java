@@ -8,6 +8,7 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.Configuration;
 import com.azure.spring.service.implementation.servicebus.properties.ServiceBusClientCommonProperties;
 import org.junit.jupiter.api.Test;
 
@@ -20,6 +21,8 @@ abstract class AbstractServiceBusSubClientBuilderFactoryTests<Builder,
     Properties extends ServiceBusClientCommonProperties,
     Factory extends AbstractServiceBusSubClientBuilderFactory<?, ?>> {
 
+    private static final Configuration NOOP = new Configuration();
+
     protected abstract Properties createMinimalServiceProperties();
     protected abstract Factory getMinimalClientBuilderFactory();
     protected abstract Factory getSasCredentialConfiguredClientBuilderFactory();
@@ -29,35 +32,35 @@ abstract class AbstractServiceBusSubClientBuilderFactoryTests<Builder,
     @Test
     void retryOptionsConfigured() {
         final Factory builderFactory = getMinimalClientBuilderFactory();
-        builderFactory.build();
+        builderFactory.build(NOOP);
         verify(builderFactory.getServiceBusClientBuilder(), times(1)).retryOptions(any(AmqpRetryOptions.class));
     }
 
     @Test
     void transportTypeConfigured() {
         final Factory factory = getMinimalClientBuilderFactory();
-        factory.build();
+        factory.build(NOOP);
         verify(factory.getServiceBusClientBuilder(), times(1)).transportType(any(AmqpTransportType.class));
     }
 
     @Test
     void azureSasCredentialConfigured() {
         final Factory factory = getSasCredentialConfiguredClientBuilderFactory();
-        factory.build();
+        factory.build(NOOP);
         verify(factory.getServiceBusClientBuilder(), times(1)).credential(anyString(), any(AzureSasCredential.class));
     }
 
     @Test
     void tokenCredentialConfigured() {
         final Factory factory = getTokenCredentialConfiguredClientBuilderFactory();
-        factory.build();
+        factory.build(NOOP);
         verify(factory.getServiceBusClientBuilder(), times(1)).credential(anyString(), any(TokenCredential.class));
     }
 
     @Test
     void azureNamedKeyCredentialConfigured() {
         final Factory factory = getNamedKeyCredentialConfiguredClientBuilderFactory();
-        factory.build();
+        factory.build(NOOP);
         verify(factory.getServiceBusClientBuilder(), times(1)).credential(anyString(), any(AzureNamedKeyCredential.class));
     }
 }

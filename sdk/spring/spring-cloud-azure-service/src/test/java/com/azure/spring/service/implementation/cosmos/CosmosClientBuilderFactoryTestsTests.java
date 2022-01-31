@@ -4,6 +4,7 @@
 package com.azure.spring.service.implementation.cosmos;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.Configuration;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
@@ -26,13 +27,14 @@ import static org.mockito.Mockito.verify;
 public class CosmosClientBuilderFactoryTestsTests extends AzureServiceClientBuilderFactoryBaseTests<CosmosClientBuilder,
     TestAzureCosmosHttpProperties, CosmosClientBuilderFactory> {
 
+    private static final Configuration NOOP = new Configuration();
     private static final String ENDPOINT = "https://test.documents.azure.com:443/";
 
     @Test
     void azureKeyCredentialConfigured() {
         TestAzureCosmosHttpProperties properties = createMinimalServiceProperties();
         properties.setKey("key");
-        final CosmosClientBuilder builder = new CosmosClientBuilderFactoryExt(properties).build();
+        final CosmosClientBuilder builder = new CosmosClientBuilderFactoryExt(properties).build(NOOP);
         CosmosClient cosmosClient = builder.buildClient();
         verify(builder, times(1)).credential(any(AzureKeyCredential.class));
     }
@@ -45,7 +47,7 @@ public class CosmosClientBuilderFactoryTestsTests extends AzureServiceClientBuil
         properties.getCredential().setClientSecret("test-secret");
         properties.getProfile().setTenantId("test-tenant");
 
-        final CosmosClientBuilder builder = new CosmosClientBuilderFactoryExt(properties).build();
+        final CosmosClientBuilder builder = new CosmosClientBuilderFactoryExt(properties).build(NOOP);
         final CosmosClient cosmosClient = builder.buildClient();
 
         verify(builder, times(1)).credential(any(ClientSecretCredential.class));
@@ -60,7 +62,7 @@ public class CosmosClientBuilderFactoryTestsTests extends AzureServiceClientBuil
         properties.getCredential().setClientCertificatePassword("test-cert-password");
         properties.getProfile().setTenantId("test-tenant");
 
-        final CosmosClientBuilder builder = new CosmosClientBuilderFactoryExt(properties).build();
+        final CosmosClientBuilder builder = new CosmosClientBuilderFactoryExt(properties).build(NOOP);
         final CosmosClient cosmosClient = builder.buildClient();
         verify(builder, times(1)).credential(any(ClientCertificateCredential.class));
     }
@@ -70,7 +72,7 @@ public class CosmosClientBuilderFactoryTestsTests extends AzureServiceClientBuil
         TestAzureCosmosHttpProperties properties = createMinimalServiceProperties();
         properties.setConnectionMode(ConnectionMode.GATEWAY);
         final CosmosClientBuilderFactoryExt factoryExt = new CosmosClientBuilderFactoryExt(properties);
-        final CosmosClientBuilder builder = factoryExt.build();
+        final CosmosClientBuilder builder = factoryExt.build(NOOP);
         verify(builder, times(1)).gatewayMode(any(GatewayConnectionConfig.class));
         verify(builder, times(0)).directMode(any(DirectConnectionConfig.class));
     }
@@ -80,7 +82,7 @@ public class CosmosClientBuilderFactoryTestsTests extends AzureServiceClientBuil
         TestAzureCosmosHttpProperties properties = createMinimalServiceProperties();
         properties.setConnectionMode(ConnectionMode.DIRECT);
         final CosmosClientBuilderFactoryExt factoryExt = new CosmosClientBuilderFactoryExt(properties);
-        final CosmosClientBuilder builder = factoryExt.build();
+        final CosmosClientBuilder builder = factoryExt.build(NOOP);
         verify(builder, times(0)).gatewayMode(any(GatewayConnectionConfig.class));
         verify(builder, times(1)).directMode(any(DirectConnectionConfig.class), any(GatewayConnectionConfig.class));
     }
@@ -91,7 +93,7 @@ public class CosmosClientBuilderFactoryTestsTests extends AzureServiceClientBuil
         RetryProperties retryProperties = properties.getRetry();
         retryProperties.setTimeout(Duration.ofMillis(1000));
         final CosmosClientBuilderFactoryExt factoryExt = new CosmosClientBuilderFactoryExt(properties);
-        final CosmosClientBuilder builder = factoryExt.build();
+        final CosmosClientBuilder builder = factoryExt.build(NOOP);
         verify(builder, times(1)).throttlingRetryOptions(any(ThrottlingRetryOptions.class));
     }
 

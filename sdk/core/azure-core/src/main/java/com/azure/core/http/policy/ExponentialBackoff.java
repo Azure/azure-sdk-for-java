@@ -49,18 +49,18 @@ public class ExponentialBackoff implements RetryStrategy {
         DEFAULT_MAX_RETRIES = defaultMaxRetries;
     }
 
-    private final static ConfigurationProperty<Integer> MAX_RETRIES_PROPERTY = ConfigurationProperty.integerPropertyBuilder("http-retry.exponential.max-retries")
+    private final static ConfigurationProperty<Integer> MAX_RETRIES_PROPERTY = ConfigurationProperty.integerPropertyBuilder("http.retry.exponential.max-retries")
         .defaultValue(DEFAULT_MAX_RETRIES)
         .environmentVariables(PROPERTY_AZURE_REQUEST_RETRY_COUNT)
         .global(true)
         .build();
 
-    private final static ConfigurationProperty<Duration> BASE_DELAY_PROPERTY = ConfigurationProperty.durationPropertyBuilder("http-retry.exponential.base-delay")
+    private final static ConfigurationProperty<Duration> BASE_DELAY_PROPERTY = ConfigurationProperty.durationPropertyBuilder("http.retry.exponential.base-delay")
         .defaultValue(DEFAULT_BASE_DELAY)
         .global(true)
         .build();
 
-    private final static ConfigurationProperty<Duration> MAX_DELAY_PROPERTY = ConfigurationProperty.durationPropertyBuilder("http-retry.exponential.max-delay")
+    private final static ConfigurationProperty<Duration> MAX_DELAY_PROPERTY = ConfigurationProperty.durationPropertyBuilder("http.retry.exponential.max-delay")
         .defaultValue(DEFAULT_MAX_DELAY)
         .global(true)
         .build();

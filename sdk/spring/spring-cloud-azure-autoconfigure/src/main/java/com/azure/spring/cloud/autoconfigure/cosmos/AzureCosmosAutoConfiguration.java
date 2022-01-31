@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.cosmos;
 
+import com.azure.core.util.ConfigurationBuilder;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
@@ -28,8 +29,8 @@ import org.springframework.context.annotation.Bean;
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.cosmos", name = "endpoint")
 public class AzureCosmosAutoConfiguration extends AzureServiceConfigurationBase {
 
-    public AzureCosmosAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
-        super(azureGlobalProperties);
+    public AzureCosmosAutoConfiguration(AzureGlobalProperties azureGlobalProperties, ConfigurationBuilder configurationBuilder) {
+        super(azureGlobalProperties, configurationBuilder.section("cosmos").build());
     }
 
     @Bean
@@ -54,7 +55,7 @@ public class AzureCosmosAutoConfiguration extends AzureServiceConfigurationBase 
     @Bean
     @ConditionalOnMissingBean
     CosmosClientBuilder cosmosClientBuilder(CosmosClientBuilderFactory factory) {
-        return factory.build();
+        return factory.build(configuration);
     }
 
     @Bean

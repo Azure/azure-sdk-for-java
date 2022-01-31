@@ -3,6 +3,7 @@
 
 package com.azure.spring.servicebus.core.processor;
 
+import com.azure.core.util.Configuration;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
@@ -45,13 +46,13 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
     private final NamespaceProperties namespaceProperties;
     private final PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> propertiesSupplier;
     private final ProcessorPropertiesParentMerger propertiesMerger = new ProcessorPropertiesParentMerger();
-
+    private final Configuration configuration;
     /**
      * Construct a factory with the provided namespace level properties.
      * @param namespaceProperties the namespace properties.
      */
-    public DefaultServiceBusNamespaceProcessorFactory(NamespaceProperties namespaceProperties) {
-        this(namespaceProperties, key -> null);
+    public DefaultServiceBusNamespaceProcessorFactory(NamespaceProperties namespaceProperties, Configuration configuration) {
+        this(namespaceProperties, key -> null, configuration);
     }
 
     /**
@@ -60,9 +61,10 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
      * @param supplier the {@link PropertiesSupplier} to supply {@link ProcessorProperties} for each queue/topic entity.
      */
     public DefaultServiceBusNamespaceProcessorFactory(NamespaceProperties namespaceProperties,
-                                                      PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> supplier) {
+                                                      PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> supplier, Configuration configuration) {
         this.namespaceProperties = namespaceProperties;
         this.propertiesSupplier = supplier == null ? key -> null : supplier;
+        this.configuration = configuration;
     }
 
     private void close(Map<ConsumerIdentifier, ServiceBusProcessorClient> map, Consumer<ServiceBusProcessorClient> close) {
@@ -119,12 +121,12 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
                 ServiceBusSessionProcessorClientBuilderFactory factory =
                     new ServiceBusSessionProcessorClientBuilderFactory(processorProperties, listener);
                 factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
-                client = factory.build().buildProcessorClient();
+                client = factory.build(configuration).buildProcessorClient();
             } else {
                 ServiceBusProcessorClientBuilderFactory factory =
                     new ServiceBusProcessorClientBuilderFactory(processorProperties, listener);
                 factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
-                client = factory.build().buildProcessorClient();
+                client = factory.build(configuration).buildProcessorClient();
             }
 
             this.listeners.forEach(l -> l.processorAdded(k.getDestination(), k.getGroup(), client));

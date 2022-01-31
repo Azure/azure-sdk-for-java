@@ -38,18 +38,18 @@ public class RetryPolicy implements HttpPipelinePolicy {
     private final String retryAfterHeader;
     private final ChronoUnit retryAfterTimeUnit;
 
-    private static final ConfigurationProperty<String> RETRY_MODE_PROPERTY = ConfigurationProperty.stringPropertyBuilder("http-retry.mode")
+    private static final ConfigurationProperty<String> RETRY_MODE_PROPERTY = ConfigurationProperty.stringPropertyBuilder("http.retry.mode")
         .defaultValue(EXPONENTIAL_RETRY_MODE)
         .global(true)
         .canLogValue(true)
         .build();
 
-    private static final ConfigurationProperty<String> RETRY_AFTER_HEADER_PROPERTY = ConfigurationProperty.stringPropertyBuilder("http-retry.retry-after-header")
+    private static final ConfigurationProperty<String> RETRY_AFTER_HEADER_PROPERTY = ConfigurationProperty.stringPropertyBuilder("http.retry.retry-after-header")
         .global(true)
         .canLogValue(true)
         .build();
 
-    private static final ConfigurationProperty<ChronoUnit> RETRY_AFTER_TIME_UNIT_PROPERTY= new ConfigurationPropertyBuilder<>("http-retry.retry-after-time-unit", (value) -> ChronoUnit.valueOf(value))
+    private static final ConfigurationProperty<ChronoUnit> RETRY_AFTER_TIME_UNIT_PROPERTY= new ConfigurationPropertyBuilder<>("http.retry.retry-after-time-unit", (value) -> ChronoUnit.valueOf(value))
         .global(true)
         .build();
 

@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.keyvault.env;
 
+import com.azure.core.util.Configuration;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.spring.cloud.autoconfigure.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
 import org.junit.jupiter.api.BeforeEach;
@@ -84,7 +85,7 @@ class KeyVaultEnvironmentPostProcessorTests {
         environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].endpoint",
             "https://test.vault.azure.net/");
         SecretClient secretClient = mock(SecretClient.class);
-        doReturn(secretClient).when(processor).buildSecretClient(any(AzureKeyVaultSecretProperties.class));
+        doReturn(secretClient).when(processor).buildSecretClient(any(AzureKeyVaultSecretProperties.class), any(Configuration.class));
         processor.postProcessEnvironment(this.environment, this.application);
         final MutablePropertySources sources = this.environment.getPropertySources();
         assertTrue(sources.contains(DEFAULT_AZURE_KEYVAULT_PROPERTYSOURCE_NAME));
@@ -102,7 +103,7 @@ class KeyVaultEnvironmentPostProcessorTests {
         environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[1].endpoint",
             "https://test2.vault.azure.net/");
         SecretClient secretClient = mock(SecretClient.class);
-        doReturn(secretClient).when(processor).buildSecretClient(any(AzureKeyVaultSecretProperties.class));
+        doReturn(secretClient).when(processor).buildSecretClient(any(AzureKeyVaultSecretProperties.class), any(Configuration.class));
         processor.postProcessEnvironment(this.environment, this.application);
         final MutablePropertySources sources = this.environment.getPropertySources();
         assertTrue(sources.contains(propertySourcesOne));
@@ -116,7 +117,7 @@ class KeyVaultEnvironmentPostProcessorTests {
         environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].endpoint",
             "https://test.vault.azure.net/");
         SecretClient secretClient = mock(SecretClient.class);
-        doReturn(secretClient).when(processor).buildSecretClient(any(AzureKeyVaultSecretProperties.class));
+        doReturn(secretClient).when(processor).buildSecretClient(any(AzureKeyVaultSecretProperties.class), any(Configuration.class));
         processor.postProcessEnvironment(this.environment, this.application);
         final MutablePropertySources sources = this.environment.getPropertySources();
         Iterator<PropertySource<?>> iterator = sources.iterator();
@@ -128,7 +129,7 @@ class KeyVaultEnvironmentPostProcessorTests {
         environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].endpoint",
             "https://test.vault.azure.net/");
         SecretClient secretClient = mock(SecretClient.class);
-        doReturn(secretClient).when(processor).buildSecretClient(any(AzureKeyVaultSecretProperties.class));
+        doReturn(secretClient).when(processor).buildSecretClient(any(AzureKeyVaultSecretProperties.class), any(Configuration.class));
         propertySources.addLast(new SystemEnvironmentPropertySource(SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, Collections.emptyMap()));
         processor.postProcessEnvironment(this.environment, this.application);
         final MutablePropertySources sources = this.environment.getPropertySources();

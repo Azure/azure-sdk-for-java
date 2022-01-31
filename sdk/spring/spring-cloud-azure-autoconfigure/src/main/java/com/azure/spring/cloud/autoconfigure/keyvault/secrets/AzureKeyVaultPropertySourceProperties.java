@@ -16,6 +16,8 @@ import static com.azure.spring.cloud.autoconfigure.keyvault.env.KeyVaultProperty
  *
  * @since 4.0.0
  */
+
+// TODO key vault source support?
 public class AzureKeyVaultPropertySourceProperties extends AbstractAzureHttpConfigurationProperties {
 
     public static final Duration DEFAULT_REFRESH_INTERVAL = Duration.ofMinutes(30);

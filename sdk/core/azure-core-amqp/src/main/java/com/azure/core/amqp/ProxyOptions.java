@@ -4,8 +4,12 @@
 package com.azure.core.amqp;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationProperty;
+import com.azure.core.util.ConfigurationPropertyBuilder;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
 import java.net.Proxy;
 import java.util.Arrays;
@@ -30,6 +34,35 @@ public class ProxyOptions implements AutoCloseable {
     private final Proxy proxyAddress;
     private final ProxyAuthenticationType authentication;
 
+    private final static ConfigurationProperty<ProxyAuthenticationType> AUTHENTICATION_PROPERTY = new ConfigurationPropertyBuilder<>("amqp.proxy.authentication", type -> ProxyAuthenticationType.valueOf(type))
+        .global(true)
+        .canLogValue(true)
+        .build();
+
+    private final static ConfigurationProperty<Proxy.Type> TYPE_PROPERTY = new ConfigurationPropertyBuilder<>("amqp.proxy.type", type -> Proxy.Type.valueOf(type))
+        .global(true)
+        .defaultValue(Proxy.Type.DIRECT)
+        .canLogValue(true)
+        .build();
+
+    private final static ConfigurationProperty<String> HOSTNAME_PROPERTY = ConfigurationProperty.stringPropertyBuilder("amqp.proxy.host")
+        .global(true)
+        .required(true)
+        .build();
+
+    private final static ConfigurationProperty<Integer> PORT_PROPERTY = ConfigurationProperty.integerPropertyBuilder("amqp.proxy.port")
+        .global(true)
+        .required(true)
+        .build();
+
+    private final static ConfigurationProperty<String> USERNAME_PROPERTY = ConfigurationProperty.stringPropertyBuilder("amqp.proxy.username")
+        .global(true)
+        .build();
+
+    private final static ConfigurationProperty<String> PASSWORD_PROPERTY = ConfigurationProperty.stringPropertyBuilder("amqp.proxy.password")
+        .global(true)
+        .build();
+
     /**
      * Gets the system defaults for proxy configuration and authentication.
      */
@@ -39,6 +72,21 @@ public class ProxyOptions implements AutoCloseable {
         this.credentials = null;
         this.proxyAddress = null;
         this.authentication = null;
+    }
+
+    public static ProxyOptions fromConfiguration(Configuration configuration) {
+        Objects.requireNonNull(configuration, "'configuration' cannot be null.");
+        ProxyAuthenticationType authType = configuration.get(AUTHENTICATION_PROPERTY);
+        if (authType == null) {
+            return SYSTEM_DEFAULTS;
+        }
+
+        Proxy.Type type = configuration.get(TYPE_PROPERTY);
+        String host = configuration.get(HOSTNAME_PROPERTY);
+        Integer port = configuration.get(PORT_PROPERTY);
+        Proxy proxy = new Proxy(type, new InetSocketAddress(host, port));
+
+        return new ProxyOptions(authType, proxy, configuration.get(USERNAME_PROPERTY), configuration.get(PASSWORD_PROPERTY));
     }
 
     /**

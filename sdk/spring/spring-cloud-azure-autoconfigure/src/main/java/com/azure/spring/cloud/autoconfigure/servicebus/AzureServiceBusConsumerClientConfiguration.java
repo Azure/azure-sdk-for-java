@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
+import com.azure.core.util.ConfigurationBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusReceiverClient;
@@ -42,6 +43,11 @@ class AzureServiceBusConsumerClientConfiguration {
     @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "entity-type", "consumer.entity-type" })
     static class NoneSessionConsumerClientConfiguration {
 
+        private final com.azure.core.util.Configuration configuration;
+        public NoneSessionConsumerClientConfiguration(ConfigurationBuilder configurationBuilder) {
+            configuration = configurationBuilder.section("servicebus").build();
+        }
+
         @Bean
         @ConditionalOnMissingBean
         ServiceBusReceiverClientBuilderFactory serviceBusReceiverClientBuilderFactory(
@@ -67,7 +73,7 @@ class AzureServiceBusConsumerClientConfiguration {
         @ConditionalOnMissingBean
         ServiceBusClientBuilder.ServiceBusReceiverClientBuilder serviceBusReceiverClientBuilder(
             ServiceBusReceiverClientBuilderFactory builderFactory) {
-            return builderFactory.build();
+            return builderFactory.build(configuration);
         }
 
         @Bean
@@ -90,6 +96,11 @@ class AzureServiceBusConsumerClientConfiguration {
     @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.consumer.session-enabled", havingValue = "true")
     @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "entity-type", "consumer.entity-type" })
     static class SessionConsumerClientConfiguration {
+
+        private final com.azure.core.util.Configuration configuration;
+        public SessionConsumerClientConfiguration(ConfigurationBuilder configurationBuilder) {
+            configuration = configurationBuilder.section("servicebus").build();
+        }
 
         @Bean
         @ConditionalOnMissingBean
@@ -116,7 +127,7 @@ class AzureServiceBusConsumerClientConfiguration {
         @ConditionalOnMissingBean
         ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder serviceBusSessionReceiverClientBuilder(
             ServiceBusSessionReceiverClientBuilderFactory builderFactory) {
-            return builderFactory.build();
+            return builderFactory.build(configuration);
         }
 
         @Bean

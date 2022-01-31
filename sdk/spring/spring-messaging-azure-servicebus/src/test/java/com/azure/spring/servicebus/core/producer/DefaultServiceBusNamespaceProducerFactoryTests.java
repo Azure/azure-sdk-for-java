@@ -3,6 +3,7 @@
 
 package com.azure.spring.servicebus.core.producer;
 
+import com.azure.core.util.Configuration;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
@@ -16,14 +17,14 @@ public class DefaultServiceBusNamespaceProducerFactoryTests {
     private ServiceBusProducerFactory producerFactory;
     private final String entityName = "serviceBus";
     private int producerAddedTimes = 0;
-
+    private static final Configuration NOOP = new Configuration();
     @BeforeEach
     void setUp() {
         NamespaceProperties namespaceProperties = new NamespaceProperties();
         namespaceProperties.setNamespace("test-namespace");
         namespaceProperties.setEntityName(entityName);
         namespaceProperties.setEntityType(ServiceBusEntityType.QUEUE);
-        this.producerFactory = new DefaultServiceBusNamespaceProducerFactory(namespaceProperties);
+        this.producerFactory = new DefaultServiceBusNamespaceProducerFactory(namespaceProperties, NOOP);
         producerAddedTimes = 0;
         this.producerFactory.addListener((name, client) -> producerAddedTimes++);
     }
@@ -39,7 +40,7 @@ public class DefaultServiceBusNamespaceProducerFactoryTests {
     void testCreateServiceBusSenderClientWithEntityType() {
         NamespaceProperties namespaceProperties = new NamespaceProperties();
         namespaceProperties.setNamespace("test-namespace");
-        this.producerFactory = new DefaultServiceBusNamespaceProducerFactory(namespaceProperties);
+        this.producerFactory = new DefaultServiceBusNamespaceProducerFactory(namespaceProperties, NOOP);
         producerAddedTimes = 0;
         this.producerFactory.addListener((name, client) -> producerAddedTimes++);
 

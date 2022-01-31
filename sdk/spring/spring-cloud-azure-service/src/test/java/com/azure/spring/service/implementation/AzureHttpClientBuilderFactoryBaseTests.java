@@ -4,6 +4,7 @@
 package com.azure.spring.service.implementation;
 
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.Configuration;
 import com.azure.spring.core.factory.AbstractAzureHttpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.service.implementation.core.http.TestHttpClientProvider;
@@ -18,6 +19,7 @@ public abstract class AzureHttpClientBuilderFactoryBaseTests<B, P extends AzureP
                                                                   T extends AbstractAzureHttpClientBuilderFactory<B>>
     extends AzureServiceClientBuilderFactoryBaseTests<B, P, T> {
 
+    private static final Configuration NOOP = new Configuration();
     @Test
     void testHttpClientConfigured() {
         P properties = createMinimalServiceProperties();
@@ -26,7 +28,7 @@ public abstract class AzureHttpClientBuilderFactoryBaseTests<B, P extends AzureP
 
         builderFactory.setHttpClientProvider(new TestHttpClientProvider());
 
-        final B builder = builderFactory.build();
+        final B builder = builderFactory.build(NOOP);
 
 
         verifyHttpClientCalled(builder, times(1));
@@ -44,7 +46,7 @@ public abstract class AzureHttpClientBuilderFactoryBaseTests<B, P extends AzureP
         builderFactory.addHttpPipelinePolicy(perRetryHttpPipelinePolicy);
 
 
-        final B builder = builderFactory.build();
+        final B builder = builderFactory.build(NOOP);
 
         verifyHttpPipelinePolicyAdded(builder, perCallHttpPipelinePolicy, times(1));
         verifyHttpPipelinePolicyAdded(builder, perRetryHttpPipelinePolicy, times(1));

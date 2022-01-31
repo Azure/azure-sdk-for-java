@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhubs;
 
+import com.azure.core.util.ConfigurationBuilder;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
@@ -15,6 +16,7 @@ import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
 import com.azure.spring.service.implementation.eventhubs.factory.EventProcessorClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.AllNestedConditions;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -33,11 +35,12 @@ import org.springframework.context.annotation.Configuration;
 @Conditional(AzureEventHubsProcessorClientConfiguration.ProcessorAvailableCondition.class)
 class AzureEventHubsProcessorClientConfiguration {
 
-
+    private final ConfigurationBuilder configurationBuilder;
     private final AzureEventHubsProperties.Processor processorProperties;
 
-    AzureEventHubsProcessorClientConfiguration(AzureEventHubsProperties eventHubsProperties) {
+    AzureEventHubsProcessorClientConfiguration(AzureEventHubsProperties eventHubsProperties,  ConfigurationBuilder configurationBuilder) {
         this.processorProperties = eventHubsProperties.buildProcessorProperties();
+        this.configurationBuilder = configurationBuilder;
     }
 
     @Bean
@@ -64,7 +67,7 @@ class AzureEventHubsProcessorClientConfiguration {
     @Bean
     @ConditionalOnMissingBean
     EventProcessorClientBuilder eventProcessorClientBuilder(EventProcessorClientBuilderFactory factory) {
-        return factory.build();
+        return factory.build(configurationBuilder.section("eventhubs").build());
     }
 
     static class ProcessorAvailableCondition extends AllNestedConditions {

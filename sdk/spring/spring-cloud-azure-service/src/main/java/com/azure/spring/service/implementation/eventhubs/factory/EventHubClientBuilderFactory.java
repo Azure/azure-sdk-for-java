@@ -53,8 +53,8 @@ public class EventHubClientBuilderFactory extends AbstractAzureAmqpClientBuilder
         PropertyMapper mapper = new PropertyMapper();
 
         mapper.from(eventHubsProperties.getCustomEndpointAddress()).to(builder::customEndpointAddress);
-        mapper.from(eventHubsProperties.getFullyQualifiedNamespace()).to(builder::fullyQualifiedNamespace);
-        mapper.from(eventHubsProperties.getEventHubName()).to(builder::eventHubName);
+        /*mapper.from(eventHubsProperties.getFullyQualifiedNamespace()).to(builder::fullyQualifiedNamespace);
+        mapper.from(eventHubsProperties.getEventHubName()).to(builder::eventHubName);*/
         mapper.from(eventHubsProperties.getCustomEndpointAddress()).to(builder::customEndpointAddress);
 
         if (this.eventHubsProperties instanceof EventHubsNamespaceProperties) {

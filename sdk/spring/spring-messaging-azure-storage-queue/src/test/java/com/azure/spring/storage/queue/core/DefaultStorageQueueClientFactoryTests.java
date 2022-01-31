@@ -3,6 +3,7 @@
 
 package com.azure.spring.storage.queue.core;
 
+import com.azure.core.util.Configuration;
 import com.azure.spring.storage.queue.core.factory.DefaultStorageQueueClientFactory;
 import com.azure.spring.storage.queue.core.factory.StorageQueueClientFactory;
 import com.azure.spring.storage.queue.core.properties.StorageQueueProperties;
@@ -18,13 +19,13 @@ public class DefaultStorageQueueClientFactoryTests {
     private StorageQueueClientFactory storageQueueClientFactory;
     private final String queueName = "queue";
     private int clientAddedTimes;
-
+    private static final Configuration NOOP = new Configuration();
     @BeforeEach
     void setUp() {
         StorageQueueProperties storageQueueProperties = new StorageQueueProperties();
         storageQueueProperties.setAccountKey("test-key");
         storageQueueProperties.setAccountName("test-account");
-        this.storageQueueClientFactory = new DefaultStorageQueueClientFactory(storageQueueProperties);
+        this.storageQueueClientFactory = new DefaultStorageQueueClientFactory(storageQueueProperties, NOOP);
         clientAddedTimes = 0;
         this.storageQueueClientFactory.addListener(new StorageQueueClientFactory.Listener() {
             @Override

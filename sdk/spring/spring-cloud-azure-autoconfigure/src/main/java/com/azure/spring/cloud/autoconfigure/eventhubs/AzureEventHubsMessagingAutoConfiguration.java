@@ -3,6 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhubs;
 
+import com.azure.core.util.ConfigurationBuilder;
+import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
@@ -70,9 +72,11 @@ public class AzureEventHubsMessagingAutoConfiguration {
         @ConditionalOnMissingBean
         public EventHubsProcessorFactory defaultEventHubsNamespaceProcessorFactory(
             NamespaceProperties properties, CheckpointStore checkpointStore,
-            ObjectProvider<PropertiesSupplier<ConsumerIdentifier, ProcessorProperties>> suppliers) {
+            ObjectProvider<PropertiesSupplier<ConsumerIdentifier, ProcessorProperties>> suppliers,
+            ConfigurationBuilder configurationBuilder) {
             return new DefaultEventHubsNamespaceProcessorFactory(checkpointStore, properties,
-                suppliers.getIfAvailable());
+                suppliers.getIfAvailable(),
+                configurationBuilder.section("eventhubs").build());
         }
 
         @Bean
@@ -93,8 +97,8 @@ public class AzureEventHubsMessagingAutoConfiguration {
         @ConditionalOnMissingBean
         public EventHubsProducerFactory defaultEventHubsNamespaceProducerFactory(
             NamespaceProperties properties,
-            ObjectProvider<PropertiesSupplier<String, ProducerProperties>> suppliers) {
-            return new DefaultEventHubsNamespaceProducerFactory(properties, suppliers.getIfAvailable());
+            ObjectProvider<PropertiesSupplier<String, ProducerProperties>> suppliers, ConfigurationBuilder configurationBuilder) {
+            return new DefaultEventHubsNamespaceProducerFactory(properties, suppliers.getIfAvailable(), configurationBuilder.section("eventhubs").build());
         }
 
         @Bean

@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.stream.binder.servicebus;
 
+import com.azure.core.util.Configuration;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusConsumerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusProducerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelProvisioner;
@@ -27,7 +28,7 @@ public class TestServiceBusMessageChannelBinder extends ServiceBusMessageChannel
      */
     public TestServiceBusMessageChannelBinder(String[] headersToEmbed,
                                               ServiceBusChannelProvisioner provisioningProvider) {
-        super(headersToEmbed, provisioningProvider);
+        super(headersToEmbed, provisioningProvider, new Configuration());
     }
 
     public MessageHandler createProducerMessageHandler(ProducerDestination destination, ExtendedProducerProperties<ServiceBusProducerProperties> producerProperties, MessageChannel errorChannel) {

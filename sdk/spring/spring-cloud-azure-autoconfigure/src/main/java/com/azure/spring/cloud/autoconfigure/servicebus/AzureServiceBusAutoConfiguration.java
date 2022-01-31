@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
+import com.azure.core.util.ConfigurationBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
@@ -27,8 +28,8 @@ import org.springframework.context.annotation.Import;
 public class AzureServiceBusAutoConfiguration extends AzureServiceConfigurationBase {
 
 
-    public AzureServiceBusAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
-        super(azureGlobalProperties);
+    public AzureServiceBusAutoConfiguration(AzureGlobalProperties azureGlobalProperties, ConfigurationBuilder configurationBuilder) {
+        super(azureGlobalProperties, configurationBuilder.section("servicebus").build());
     }
 
     @Bean

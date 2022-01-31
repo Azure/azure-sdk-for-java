@@ -3,6 +3,7 @@
 
 package com.azure.spring.servicebus.core.producer;
 
+import com.azure.core.util.Configuration;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
@@ -36,13 +37,13 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
     private final PropertiesSupplier<String, ProducerProperties> propertiesSupplier;
     private final Map<String, ServiceBusSenderAsyncClient> clients = new ConcurrentHashMap<>();
     private final SenderPropertiesParentMerger parentMerger = new SenderPropertiesParentMerger();
-
+    private final Configuration configuration;
     /**
      * Construct a factory with the provided namespace level configuration.
      * @param namespaceProperties the namespace properties
      */
-    public DefaultServiceBusNamespaceProducerFactory(NamespaceProperties namespaceProperties) {
-        this(namespaceProperties, key -> null);
+    public DefaultServiceBusNamespaceProducerFactory(NamespaceProperties namespaceProperties, Configuration configuration) {
+        this(namespaceProperties, key -> null, configuration);
     }
 
     /**
@@ -51,9 +52,10 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
      * @param supplier the {@link PropertiesSupplier} to supply {@link ProducerProperties} for each queue/topic entity.
      */
     public DefaultServiceBusNamespaceProducerFactory(NamespaceProperties namespaceProperties,
-                                                     PropertiesSupplier<String, ProducerProperties> supplier) {
+                                                     PropertiesSupplier<String, ProducerProperties> supplier, Configuration configuration) {
         this.namespaceProperties = namespaceProperties;
         this.propertiesSupplier = supplier == null ? key -> null : supplier;
+        this.configuration = configuration;
     }
 
     @Override
@@ -99,7 +101,7 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
             //TODO(yiliu6): whether to make the producer client share the same service bus client builder
             ServiceBusSenderClientBuilderFactory factory = new ServiceBusSenderClientBuilderFactory(producerProperties);
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
-            ServiceBusSenderAsyncClient producerClient = factory.build().buildAsyncClient();
+            ServiceBusSenderAsyncClient producerClient = factory.build(configuration).buildAsyncClient();
 
             this.listeners.forEach(l -> l.producerAdded(entityName, producerClient));
             return producerClient;

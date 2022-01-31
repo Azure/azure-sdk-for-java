@@ -4,6 +4,7 @@
 package com.azure.spring.service.implementation.keyvault.certificates;
 
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.Configuration;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
 import com.azure.security.keyvault.certificates.CertificateServiceVersion;
 import com.azure.spring.service.implementation.AzureHttpClientBuilderFactoryBaseTests;
@@ -22,6 +23,7 @@ import static org.mockito.Mockito.verify;
 class CertificateClientBuilderFactoryTestsTests extends AzureHttpClientBuilderFactoryBaseTests<CertificateClientBuilder,
     TestAzureKeyVaultCertificateProperties, CertificateClientBuilderFactory> {
 
+    private static final Configuration NOOP = new Configuration();
     private static final String ENDPOINT = "https://abc.vault.azure.net/";
 
 
@@ -36,7 +38,7 @@ class CertificateClientBuilderFactoryTestsTests extends AzureHttpClientBuilderFa
         properties.setServiceVersion(CertificateServiceVersion.V7_0);
 
         final CertificateClientBuilderFactoryExt factoryExt = new CertificateClientBuilderFactoryExt(properties);
-        final CertificateClientBuilder builder = factoryExt.build();
+        final CertificateClientBuilder builder = factoryExt.build(NOOP);
         verify(builder, times(1)).serviceVersion(CertificateServiceVersion.V7_0);
     }
 
@@ -46,7 +48,7 @@ class CertificateClientBuilderFactoryTestsTests extends AzureHttpClientBuilderFa
         properties.setEndpoint(ENDPOINT);
 
         final CertificateClientBuilderFactoryExt factoryExt = new CertificateClientBuilderFactoryExt(properties);
-        final CertificateClientBuilder builder = factoryExt.build();
+        final CertificateClientBuilder builder = factoryExt.build(NOOP);
         verify(builder, times(1)).vaultUrl(ENDPOINT);
     }
 

@@ -3,6 +3,7 @@
 
 package com.azure.spring.storage.queue.core.factory;
 
+import com.azure.core.util.Configuration;
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.service.implementation.storage.queue.QueueServiceClientBuilderFactory;
 import com.azure.spring.storage.queue.core.properties.StorageQueueProperties;
@@ -31,12 +32,12 @@ public final class DefaultStorageQueueClientFactory implements StorageQueueClien
      * Construct a factory with the provided {@link StorageQueueProperties}.
      * @param storageQueueProperties the storage queue properties
      */
-    public DefaultStorageQueueClientFactory(@NonNull StorageQueueProperties storageQueueProperties) {
+    public DefaultStorageQueueClientFactory(@NonNull StorageQueueProperties storageQueueProperties, Configuration configuration) {
         this.storageQueueProperties = storageQueueProperties;
         QueueServiceClientBuilderFactory queueServiceClientBuilderFactory =
             new QueueServiceClientBuilderFactory(this.storageQueueProperties);
         queueServiceClientBuilderFactory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_STORAGE_QUEUE);
-        this.queueServiceAsyncClient = queueServiceClientBuilderFactory.build().buildAsyncClient();
+        this.queueServiceAsyncClient = queueServiceClientBuilderFactory.build(configuration).buildAsyncClient();
     }
 
     @Override

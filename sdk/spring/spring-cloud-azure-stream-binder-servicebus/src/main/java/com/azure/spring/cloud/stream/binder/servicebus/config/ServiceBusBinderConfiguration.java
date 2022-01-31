@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.stream.binder.servicebus.config;
 
+import com.azure.core.util.ConfigurationBuilder;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration;
@@ -85,9 +86,10 @@ public class ServiceBusBinderConfiguration {
     public ServiceBusMessageChannelBinder serviceBusBinder(ServiceBusChannelProvisioner channelProvisioner,
                                                            ServiceBusExtendedBindingProperties bindingProperties,
                                                            ObjectProvider<NamespaceProperties> namespaceProperties,
-                                                           @Nullable ServiceBusMessageConverter messageConverter) {
+                                                           @Nullable ServiceBusMessageConverter messageConverter,
+                                                           ConfigurationBuilder configurationBuilder) {
 
-        ServiceBusMessageChannelBinder binder = new ServiceBusMessageChannelBinder(null, channelProvisioner);
+        ServiceBusMessageChannelBinder binder = new ServiceBusMessageChannelBinder(null, channelProvisioner, configurationBuilder.section("servicebus").build());
         binder.setBindingProperties(bindingProperties);
         binder.setNamespaceProperties(namespaceProperties.getIfAvailable());
         binder.setMessageConverter(messageConverter);

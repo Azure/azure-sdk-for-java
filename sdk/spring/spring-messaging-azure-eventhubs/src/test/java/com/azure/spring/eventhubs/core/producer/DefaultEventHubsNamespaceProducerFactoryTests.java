@@ -3,6 +3,7 @@
 
 package com.azure.spring.eventhubs.core.producer;
 
+import com.azure.core.util.Configuration;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class DefaultEventHubsNamespaceProducerFactoryTests {
 
+    private static final Configuration NOOP = new Configuration();
     private EventHubsProducerFactory producerFactory;
     private final String eventHubName = "eventHub";
     private int producerAddedTimes = 0;
@@ -21,7 +23,7 @@ class DefaultEventHubsNamespaceProducerFactoryTests {
     void setUp() {
         NamespaceProperties namespaceProperties = new NamespaceProperties();
         namespaceProperties.setNamespace("test-namespace");
-        this.producerFactory = new DefaultEventHubsNamespaceProducerFactory(namespaceProperties);
+        this.producerFactory = new DefaultEventHubsNamespaceProducerFactory(namespaceProperties, NOOP);
         producerAddedTimes = 0;
         this.producerFactory.addListener(new EventHubsProducerFactory.Listener() {
             @Override

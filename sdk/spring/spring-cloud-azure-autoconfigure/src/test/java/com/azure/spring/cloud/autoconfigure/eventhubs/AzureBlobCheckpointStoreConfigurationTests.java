@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhubs;
 
+import com.azure.core.util.Configuration;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
 import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
@@ -200,7 +201,7 @@ class AzureBlobCheckpointStoreConfigurationTests {
         BlobServiceAsyncClient mockClient = mock(BlobServiceAsyncClient.class);
         BlobContainerAsyncClient mockContainer = mock(BlobContainerAsyncClient.class);
 
-        when(mockFactory.build()).thenReturn(mockBuilder);
+        when(mockFactory.build(new Configuration())).thenReturn(mockBuilder);
         when(mockBuilder.buildAsyncClient()).thenReturn(mockClient);
         when(mockClient.getBlobContainerAsyncClient(anyString())).thenReturn(mockContainer);
         when(mockContainer.exists()).thenReturn(Mono.just(true));

@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.storage.queue;
 
+import com.azure.core.util.ConfigurationBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
@@ -19,6 +20,7 @@ import com.azure.storage.queue.QueueServiceAsyncClient;
 import com.azure.storage.queue.QueueServiceClient;
 import com.azure.storage.queue.QueueServiceClientBuilder;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -33,8 +35,8 @@ import org.springframework.context.annotation.Bean;
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.storage.queue", name = { "account-name", "endpoint", "connection-string" })
 public class AzureStorageQueueAutoConfiguration extends AzureServiceConfigurationBase {
 
-    public AzureStorageQueueAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
-        super(azureGlobalProperties);
+    public AzureStorageQueueAutoConfiguration(AzureGlobalProperties azureGlobalProperties, ConfigurationBuilder configurationBuilder) {
+        super(azureGlobalProperties, configurationBuilder.section("storage.queue").build());
     }
 
     @Bean
@@ -88,7 +90,7 @@ public class AzureStorageQueueAutoConfiguration extends AzureServiceConfiguratio
     @Bean
     @ConditionalOnMissingBean
     QueueServiceClientBuilder queueServiceClientBuilder(QueueServiceClientBuilderFactory factory) {
-        return factory.build();
+        return factory.build(configuration);
     }
 
     @Bean

@@ -19,10 +19,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AbstractAzureServiceClientBuilderFactoryTests {
 
+    private static final com.azure.core.util.Configuration NOOP = new com.azure.core.util.Configuration();
     @Test
     void emptyPropertiesShouldWork() {
         TestClientBuilderFactory factory = new TestClientBuilderFactory(new TestAzureProperties());
-        factory.build();
+        factory.build(NOOP);
     }
 
     @Test
@@ -32,7 +33,7 @@ class AbstractAzureServiceClientBuilderFactoryTests {
 
         TestClientBuilderFactory factory = new TestClientBuilderFactory(testAzureProperties);
         factory.setConnectionStringProvider(new StaticConnectionStringProvider<>("Test Service", "provider"));
-        TestClientBuilder builder = factory.build();
+        TestClientBuilder builder = factory.build(NOOP);
         assertEquals("connection-string", builder.getConnectionString());
     }
 
@@ -42,7 +43,7 @@ class AbstractAzureServiceClientBuilderFactoryTests {
         testAzureProperties.setConnectionString("connection-string");
 
         TestClientBuilderFactory factory = new TestClientBuilderFactory(testAzureProperties);
-        TestClientBuilder builder = factory.build();
+        TestClientBuilder builder = factory.build(NOOP);
         assertEquals("connection-string", builder.getConnectionString());
     }
 
@@ -50,7 +51,7 @@ class AbstractAzureServiceClientBuilderFactoryTests {
     void connectionStringFromProviderShouldBeConfigured() {
         TestClientBuilderFactory factory = new TestClientBuilderFactory(new TestAzureProperties());
         factory.setConnectionStringProvider(new StaticConnectionStringProvider<>("Test Service", "provider"));
-        TestClientBuilder builder = factory.build();
+        TestClientBuilder builder = factory.build(NOOP);
         assertEquals("provider", builder.getConnectionString());
     }
 
@@ -58,7 +59,7 @@ class AbstractAzureServiceClientBuilderFactoryTests {
     void springIdentifierShouldBeConfigured() {
         TestClientBuilderFactory factory = new TestClientBuilderFactory(new TestAzureProperties());
         factory.setSpringIdentifier("identifier");
-        TestClientBuilder builder = factory.build();
+        TestClientBuilder builder = factory.build(NOOP);
         assertEquals("identifier", builder.getApplicationId());
     }
 
@@ -68,7 +69,7 @@ class AbstractAzureServiceClientBuilderFactoryTests {
         testAzureProperties.getClient().setApplicationId("application-id");
 
         TestClientBuilderFactory factory = new TestClientBuilderFactory(testAzureProperties);
-        TestClientBuilder builder = factory.build();
+        TestClientBuilder builder = factory.build(NOOP);
         assertEquals("application-id", builder.getApplicationId());
     }
 
@@ -78,7 +79,7 @@ class AbstractAzureServiceClientBuilderFactoryTests {
         testAzureProperties.getClient().setApplicationId("application-id");
         TestClientBuilderFactory factory = new TestClientBuilderFactory(testAzureProperties);
         factory.setSpringIdentifier("identifier");
-        TestClientBuilder builder = factory.build();
+        TestClientBuilder builder = factory.build(NOOP);
         assertEquals("application-ididentifier", builder.getApplicationId());
     }
 
@@ -88,13 +89,13 @@ class AbstractAzureServiceClientBuilderFactoryTests {
 
         TestClientBuilderFactory factory = new TestClientBuilderFactory(new TestAzureProperties());
         factory.addBuilderCustomizer(customizer);
-        TestClientBuilder builder = factory.build();
+        TestClientBuilder builder = factory.build(NOOP);
         assertEquals(1, builder.getCustomizedTimes());
 
         TestClientBuilderFactory anotherFactory = new TestClientBuilderFactory(new TestAzureProperties());
         anotherFactory.addBuilderCustomizer(customizer);
         anotherFactory.addBuilderCustomizer(customizer);
-        TestClientBuilder anotherBuilder = factory.build();
+        TestClientBuilder anotherBuilder = factory.build(NOOP);
         assertEquals(2, anotherBuilder.getCustomizedTimes());
     }
 

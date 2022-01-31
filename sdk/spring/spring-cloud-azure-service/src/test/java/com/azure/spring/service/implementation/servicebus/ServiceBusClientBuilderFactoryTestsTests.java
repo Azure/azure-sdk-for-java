@@ -8,6 +8,7 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.Configuration;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.core.properties.authentication.NamedKeyProperties;
 import com.azure.spring.service.implementation.AzureServiceClientBuilderFactoryBaseTests;
@@ -22,7 +23,7 @@ import static org.mockito.Mockito.verify;
 
 public class ServiceBusClientBuilderFactoryTestsTests extends AzureServiceClientBuilderFactoryBaseTests<ServiceBusClientBuilder,
     TestServiceBusClientCommonProperties, ServiceBusClientBuilderFactory> {
-
+    private static final Configuration NOOP = new Configuration();
     @Override
     protected TestServiceBusClientCommonProperties createMinimalServiceProperties() {
         return new TestServiceBusClientCommonProperties();
@@ -32,7 +33,7 @@ public class ServiceBusClientBuilderFactoryTestsTests extends AzureServiceClient
     void retryOptionsConfigured() {
         TestServiceBusClientCommonProperties properties = createMinimalServiceProperties();
         final ServiceBusClientBuilderFactoryExt builderFactory = new ServiceBusClientBuilderFactoryExt(properties);
-        final ServiceBusClientBuilder builder = builderFactory.build();
+        final ServiceBusClientBuilder builder = builderFactory.build(NOOP);
         verify(builder, times(1)).retryOptions(any(AmqpRetryOptions.class));
     }
 
@@ -40,7 +41,7 @@ public class ServiceBusClientBuilderFactoryTestsTests extends AzureServiceClient
     void transportTypeConfigured() {
         TestServiceBusClientCommonProperties properties = createMinimalServiceProperties();
         final ServiceBusClientBuilderFactoryExt builderFactory = new ServiceBusClientBuilderFactoryExt(properties);
-        final ServiceBusClientBuilder builder = builderFactory.build();
+        final ServiceBusClientBuilder builder = builderFactory.build(NOOP);
         verify(builder, times(1)).transportType(any(AmqpTransportType.class));
     }
 
@@ -49,7 +50,7 @@ public class ServiceBusClientBuilderFactoryTestsTests extends AzureServiceClient
         TestServiceBusClientCommonProperties properties = createMinimalServiceProperties();
         properties.setNamespace("test-namespace");
         properties.setSasToken("test-token");
-        final ServiceBusClientBuilder builder = new ServiceBusClientBuilderFactoryExt(properties).build();
+        final ServiceBusClientBuilder builder = new ServiceBusClientBuilderFactoryExt(properties).build(NOOP);
         verify(builder, times(1)).credential(anyString(), any(AzureSasCredential.class));
     }
 
@@ -60,7 +61,7 @@ public class ServiceBusClientBuilderFactoryTestsTests extends AzureServiceClient
         properties.getCredential().setClientId("test-client");
         properties.getCredential().setClientSecret("test-secret");
         properties.getProfile().setTenantId("test-tenant");
-        final ServiceBusClientBuilder builder = new ServiceBusClientBuilderFactoryExt(properties).build();
+        final ServiceBusClientBuilder builder = new ServiceBusClientBuilderFactoryExt(properties).build(NOOP);
         verify(builder, times(1)).credential(anyString(), any(TokenCredential.class));
     }
 
@@ -73,7 +74,7 @@ public class ServiceBusClientBuilderFactoryTestsTests extends AzureServiceClient
         namedKey.setKey("test-key");
         namedKey.setName("test-name");
         properties.setNamedKey(namedKey);
-        final ServiceBusClientBuilder builder = new ServiceBusClientBuilderFactoryExt(properties).build();
+        final ServiceBusClientBuilder builder = new ServiceBusClientBuilderFactoryExt(properties).build(NOOP);
         verify(builder, times(1)).credential(anyString(), any(AzureNamedKeyCredential.class));
     }
 

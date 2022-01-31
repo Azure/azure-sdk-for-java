@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.client.traits.AmqpTrait;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Configuration;
 import com.azure.spring.core.aware.ClientAware;
 import com.azure.spring.core.aware.ProxyAware;
 import com.azure.spring.core.aware.RetryAware;
@@ -35,8 +36,8 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
     protected abstract BiConsumer<T, ClientOptions> consumeClientOptions();
 
     @Override
-    protected void configureCore(T builder) {
-        super.configureCore(builder);
+    protected void configureCore(T builder, Configuration configuration) {
+        super.configureCore(builder, configuration);
         configureAmqpClient(builder);
     }
 

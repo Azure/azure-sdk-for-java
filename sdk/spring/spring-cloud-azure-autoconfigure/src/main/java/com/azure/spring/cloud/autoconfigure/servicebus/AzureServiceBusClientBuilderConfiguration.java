@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
+import com.azure.core.util.ConfigurationBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
@@ -24,10 +25,12 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "connection-string", "namespace" })
 class AzureServiceBusClientBuilderConfiguration {
 
+    private final com.azure.core.util.Configuration configuration;
     private final AzureServiceBusProperties serviceBusProperties;
 
-    AzureServiceBusClientBuilderConfiguration(AzureServiceBusProperties serviceBusProperties) {
+    AzureServiceBusClientBuilderConfiguration(AzureServiceBusProperties serviceBusProperties, ConfigurationBuilder configurationBuilder) {
         this.serviceBusProperties = serviceBusProperties;
+        configuration = configurationBuilder.section("servicebus").build();
     }
 
     @Bean
@@ -47,7 +50,7 @@ class AzureServiceBusClientBuilderConfiguration {
     @Bean
     @ConditionalOnMissingBean
     ServiceBusClientBuilder serviceBusClientBuilder(ServiceBusClientBuilderFactory factory) {
-        return factory.build();
+        return factory.build(configuration);
     }
 
     @Bean

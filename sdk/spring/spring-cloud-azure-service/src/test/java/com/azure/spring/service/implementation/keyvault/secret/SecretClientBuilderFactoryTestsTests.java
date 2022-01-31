@@ -4,6 +4,7 @@
 package com.azure.spring.service.implementation.keyvault.secret;
 
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.Configuration;
 import com.azure.identity.ClientCertificateCredential;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
@@ -25,6 +26,7 @@ import static org.mockito.Mockito.verify;
 class SecretClientBuilderFactoryTestsTests extends AzureHttpClientBuilderFactoryBaseTests<SecretClientBuilder,
     TestAzureKeyVaultSecretProperties, SecretClientBuilderFactory> {
 
+    private static final Configuration NOOP = new Configuration();
     private static final String ENDPOINT = "https://abc.vault.azure.net/";
 
 
@@ -39,7 +41,7 @@ class SecretClientBuilderFactoryTestsTests extends AzureHttpClientBuilderFactory
         properties.setServiceVersion(SecretServiceVersion.V7_0);
 
         final SecretClientBuilderFactoryExt factoryExt = new SecretClientBuilderFactoryExt(properties);
-        final SecretClientBuilder builder = factoryExt.build();
+        final SecretClientBuilder builder = factoryExt.build(NOOP);
         verify(builder, times(1)).serviceVersion(SecretServiceVersion.V7_0);
     }
 
@@ -49,7 +51,7 @@ class SecretClientBuilderFactoryTestsTests extends AzureHttpClientBuilderFactory
         properties.setEndpoint(ENDPOINT);
 
         final SecretClientBuilderFactoryExt factoryExt = new SecretClientBuilderFactoryExt(properties);
-        final SecretClientBuilder builder = factoryExt.build();
+        final SecretClientBuilder builder = factoryExt.build(NOOP);
         verify(builder, times(1)).vaultUrl(ENDPOINT);
     }
 
@@ -63,7 +65,7 @@ class SecretClientBuilderFactoryTestsTests extends AzureHttpClientBuilderFactory
         properties.getProfile().setTenantId("test-tenant");
 
         final SecretClientBuilderFactoryExt factoryExt = new SecretClientBuilderFactoryExt(properties);
-        final SecretClientBuilder builder = factoryExt.build();
+        final SecretClientBuilder builder = factoryExt.build(NOOP);
 
         verify(builder, times(1)).credential(any(ClientSecretCredential.class));
     }
@@ -78,7 +80,7 @@ class SecretClientBuilderFactoryTestsTests extends AzureHttpClientBuilderFactory
         properties.getProfile().setTenantId("test-tenant");
 
         final SecretClientBuilderFactoryExt factoryExt = new SecretClientBuilderFactoryExt(properties);
-        final SecretClientBuilder builder = factoryExt.build();
+        final SecretClientBuilder builder = factoryExt.build(NOOP);
 
         verify(builder, times(1)).credential(any(ClientCertificateCredential.class));
     }

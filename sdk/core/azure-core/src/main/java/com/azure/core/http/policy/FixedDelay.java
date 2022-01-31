@@ -16,11 +16,11 @@ import java.util.Objects;
  */
 public class FixedDelay implements RetryStrategy {
     private static final ClientLogger LOGGER = new ClientLogger(FixedDelay.class);;
-    private final static ConfigurationProperty<Integer> MAX_RETRIES_CONFIG = ConfigurationProperty.integerPropertyBuilder("http-retry.fixed.max-retries")
+    private final static ConfigurationProperty<Integer> MAX_RETRIES_PROPERTY = ConfigurationProperty.integerPropertyBuilder("http.retry.fixed.max-retries")
         .global(true)
         .required(true)
         .build();
-    private final static ConfigurationProperty<Duration> RETRY_DELAY_CONFIG = ConfigurationProperty.durationPropertyBuilder("http-retry.fixed.delay")
+    private final static ConfigurationProperty<Duration> RETRY_DELAY_PROPERTY = ConfigurationProperty.durationPropertyBuilder("http.retry.fixed.delay")
         .global(true)
         .required(true)
         .build();
@@ -67,6 +67,6 @@ public class FixedDelay implements RetryStrategy {
     }
 
     static RetryStrategy fromConfiguration(Configuration configuration ) {
-        return new FixedDelay(configuration.get(MAX_RETRIES_CONFIG), configuration.get(RETRY_DELAY_CONFIG));
+        return new FixedDelay(configuration.get(MAX_RETRIES_PROPERTY), configuration.get(RETRY_DELAY_PROPERTY));
     }
 }

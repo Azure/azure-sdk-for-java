@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.stream.binder.servicebus;
 
+import com.azure.core.util.Configuration;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusConsumerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusExtendedBindingProperties;
@@ -75,6 +76,8 @@ public class ServiceBusMessageChannelBinder extends
         extendedProducerPropertiesMap = new ConcurrentHashMap<>();
     private final Map<ConsumerIdentifier, ExtendedConsumerProperties<ServiceBusConsumerProperties>>
         extendedConsumerPropertiesMap = new ConcurrentHashMap<>();
+    private final Configuration configuration;
+
     private static final DefaultErrorMessageStrategy DEFAULT_ERROR_MESSAGE_STRATEGY = new DefaultErrorMessageStrategy();
 
     private static final String EXCEPTION_MESSAGE = "exception-message";
@@ -86,8 +89,9 @@ public class ServiceBusMessageChannelBinder extends
      * @param headersToEmbed the headers to embed
      * @param provisioningProvider the provisioning provider
      */
-    public ServiceBusMessageChannelBinder(String[] headersToEmbed, ServiceBusChannelProvisioner provisioningProvider) {
+    public ServiceBusMessageChannelBinder(String[] headersToEmbed, ServiceBusChannelProvisioner provisioningProvider, Configuration configuration) {
         super(headersToEmbed, provisioningProvider);
+        this.configuration = configuration;
     }
 
     @Override
@@ -243,7 +247,7 @@ public class ServiceBusMessageChannelBinder extends
     private ServiceBusTemplate getServiceBusTemplate() {
         if (this.serviceBusTemplate == null) {
             DefaultServiceBusNamespaceProducerFactory factory = new DefaultServiceBusNamespaceProducerFactory(
-                this.namespaceProperties, getProducerPropertiesSupplier());
+                this.namespaceProperties, getProducerPropertiesSupplier(), configuration);
 
             factory.addListener((name, client) -> {
                 DefaultInstrumentation instrumentation = new DefaultInstrumentation(name, PRODUCER);
@@ -258,7 +262,7 @@ public class ServiceBusMessageChannelBinder extends
     private ServiceBusProcessorContainer getProcessorContainer() {
         if (this.processorContainer == null) {
             DefaultServiceBusNamespaceProcessorFactory factory = new DefaultServiceBusNamespaceProcessorFactory(
-                this.namespaceProperties, getProcessorPropertiesSupplier());
+                this.namespaceProperties, getProcessorPropertiesSupplier(), configuration);
 
             factory.addListener((name, subscription, client) -> {
                 String instrumentationName = name + "/" + getGroup(subscription);

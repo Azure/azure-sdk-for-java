@@ -3,6 +3,8 @@
 
 package com.azure.spring.core.factory;
 
+import com.azure.core.util.Configuration;
+
 /**
  * Azure SDK service client builder factory of all modules.
  *
@@ -14,7 +16,7 @@ public interface AzureServiceClientBuilderFactory<T> {
      * Build an Azure SDK service client builder.
      * @return the service client builder.
      */
-    T build();
+    T build(Configuration configuration);
 }
 
 
