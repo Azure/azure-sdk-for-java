@@ -38,7 +38,7 @@ stages:
             NonSparseParameters: Agent
             GenerateVMJobs: true
         MatrixFilters:
-          - TestFromSource=^$
+          - TestFromSource=^$|false
         MatrixReplace:
           - AZURE_TEST.*=.*/
         BuildParallelization: 1
