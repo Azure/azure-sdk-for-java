@@ -81,7 +81,7 @@ import java.util.function.Supplier;
  * {@link FileSystemProvider}.
  * <p>
  * The scheme for this provider is {@code "azb"}, and the format of the URI to identify an {@code AzureFileSystem} is
- * {@code "azb://?endpoint=<endpoing>"}. The endpoint of the Storage account is used to uniquely identify the
+ * {@code "azb://?endpoint=<endpoint>"}. The endpoint of the Storage account is used to uniquely identify the
  * filesystem.
  * <p>
  * An {@link AzureFileSystem} is backed by an account. An {@link AzureFileStore} is backed by a container. Any number of
@@ -111,6 +111,7 @@ import java.util.function.Supplier;
  *     <li>{@code AzureStorageMaxConcurrencyPerRequest:}{@link Integer}</li>
  *     <li>{@code AzureStorageDownloadResumeRetries:}{@link Integer}</li>
  *     <li>{@code AzureStorageFileStores:}{@link String}</li>
+ *     <li>{@code AzureStorageSkipInitialContainerCheck:}{@link Boolean}</li>
  * </ul>
  * <p>
  * Either an account key or a sas token must be specified. If both are provided, the account key will be preferred. If
@@ -226,7 +227,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     /**
      * Returns an existing FileSystem created by this provider.
      * <p>
-     * The format of a {@code URI} identifying an file system is {@code "azb://?endpoint=&lt;endpoint&gt;"}.
+     * The format of a {@code URI} identifying a file system is {@code "azb://?endpoint=&lt;endpoint&gt;"}.
      * <p>
      * Trying to retrieve a closed file system will throw a {@link FileSystemNotFoundException}. Once closed, a
      * file system with the same identifier may be reopened.

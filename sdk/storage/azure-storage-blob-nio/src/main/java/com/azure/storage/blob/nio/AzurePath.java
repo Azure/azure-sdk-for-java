@@ -6,6 +6,7 @@ package com.azure.storage.blob.nio;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobUrlParts;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,8 +34,11 @@ import java.util.stream.Stream;
  * An object that may be used to locate a file in a file system.
  * <p>
  * The root component, if it is present, is the first element of the path and is denoted by a {@code ':'} as the last
- * character. Hence, only one instance of {@code ':'} may appear in a path string and it may only be the last character
- * of the first element in the path. The root component is used to identify which container a path belongs to.
+ * character. Hence, only one instance of {@code ':'} may appear in a path string, and it may only be the last character
+ * of the first element in the path. The root component is used to identify which container a path belongs to. All other
+ * path elements, including separators, are considered as the blob name. {@link AzurePath#fromBlobUrl} may
+ * be used to convert a typical http url pointing to a blob into an {@code AzurePath} object pointing to the same
+ * resource.
  * <p>
  * Constructing a syntactically valid path does not ensure a resource exists at the given path. An error will
  * not be thrown until trying to access an invalid resource, e.g. trying to access a resource that does not exist.
@@ -742,6 +746,14 @@ public final class AzurePath implements Path {
         return containerClient.getBlobClient(blobName);
     }
 
+    public AzurePath fromBlobUrl(AzureFileSystemProvider provider, String url) throws URISyntaxException {
+        BlobUrlParts parts = BlobUrlParts.parse(url);
+        URI fileSystemUri = hostToFileSystemUri(provider, parts.getHost());
+        FileSystem parentFileSystem = provider.getFileSystem(fileSystemUri);
+        return new AzurePath((AzureFileSystem) parentFileSystem, parts.getBlobContainerName() + ROOT_DIR_SUFFIX,
+            parts.getBlobName());
+    }
+
     /**
      * @return Whether this path consists of only a root component.
      */
@@ -780,6 +792,14 @@ public final class AzurePath implements Path {
 
     private String rootToFileStore(String root) {
         return root.substring(0, root.length() - 1); // Remove the ROOT_DIR_SUFFIX
+    }
+
+    private String fileStoreToRoot(String fileStore) {
+        return fileStore + ':';
+    }
+
+    private URI hostToFileSystemUri(AzureFileSystemProvider provider, String host) throws URISyntaxException {
+        return new URI(provider.getScheme() + "://?endpoint=" + host);
     }
 
     static void ensureFileSystemOpen(Path p) {

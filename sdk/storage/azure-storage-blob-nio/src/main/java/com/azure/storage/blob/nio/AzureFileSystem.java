@@ -130,6 +130,11 @@ public final class AzureFileSystem extends FileSystem {
      */
     public static final String AZURE_STORAGE_FILE_STORES = "AzureStorageFileStores";
 
+    /**
+     * Expected type: Boolean
+     */
+    public static final String AZURE_STORAGE_SKIP_INITIAL_CONTAINER_CHECK = "AzureStorageSkipInitialContainerCheck";
+
     static final String PATH_SEPARATOR = "/";
 
     private static final Map<String, String> PROPERTIES =
