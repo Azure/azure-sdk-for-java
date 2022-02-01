@@ -94,7 +94,8 @@ import java.util.function.Supplier;
  * <p>
  * {@link #newFileSystem(URI, Map)} will check for the following keys in the configuration map and expect the named
  * types. Any entries not listed here will be ignored. Note that {@link AzureFileSystem} has public constants defined
- * for each of the keys for convenience.
+ * for each of the keys for convenience. Most values are documented in the blob package. Any values which are unique to
+ * nio will be documented here.
  * <ul>
  *     <li>{@code AzureStorageSharedKeyCredential:}{@link com.azure.storage.common.StorageSharedKeyCredential}</li>
  *     <li>{@code AzureStorageSasTokenCredential:}{@link com.azure.core.credential.AzureSasCredential}</li>
@@ -111,7 +112,9 @@ import java.util.function.Supplier;
  *     <li>{@code AzureStorageMaxConcurrencyPerRequest:}{@link Integer}</li>
  *     <li>{@code AzureStorageDownloadResumeRetries:}{@link Integer}</li>
  *     <li>{@code AzureStorageFileStores:}{@link String}</li>
- *     <li>{@code AzureStorageSkipInitialContainerCheck:}{@link Boolean}</li>
+ *     <li>{@code AzureStorageSkipInitialContainerCheck:}{@link Boolean}. Indicates that the initial check which
+ *     confirms the existence of the containers meant to act as file stores should be skipped. This can be usesful in
+ *     cases where a sas token that is scoped to only one file is used to authenticate.</li>
  * </ul>
  * <p>
  * Either an account key or a sas token must be specified. If both are provided, the account key will be preferred. If
