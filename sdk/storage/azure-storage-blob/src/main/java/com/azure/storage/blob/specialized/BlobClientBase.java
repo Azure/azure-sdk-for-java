@@ -12,6 +12,7 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
@@ -871,7 +872,7 @@ public class BlobClientBase {
             .downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5, context)
             .flatMap(response -> response.getValue().reduce(stream, (outputStream, buffer) -> {
                 try {
-                    outputStream.write(FluxUtil.byteBufferToArray(buffer));
+                    CoreUtils.writeByteBufferToStream(buffer, outputStream);
                     return outputStream;
                 } catch (IOException ex) {
                     throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
@@ -1976,7 +1977,7 @@ public class BlobClientBase {
             .queryWithResponse(queryOptions, context)
             .flatMap(response -> response.getValue().reduce(queryOptions.getOutputStream(), (outputStream, buffer) -> {
                 try {
-                    outputStream.write(FluxUtil.byteBufferToArray(buffer));
+                    CoreUtils.writeByteBufferToStream(buffer, outputStream);
                     return outputStream;
                 } catch (IOException ex) {
                     throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));

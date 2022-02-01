@@ -10,6 +10,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
@@ -795,7 +796,7 @@ public class ShareFileClient {
         Mono<ShareFileDownloadResponse> download = shareFileAsyncClient.downloadWithResponse(options, context)
             .flatMap(response -> response.getValue().reduce(stream, (outputStream, buffer) -> {
                 try {
-                    outputStream.write(FluxUtil.byteBufferToArray(buffer));
+                    CoreUtils.writeByteBufferToStream(buffer, outputStream);
                     return outputStream;
                 } catch (IOException ex) {
                     throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));

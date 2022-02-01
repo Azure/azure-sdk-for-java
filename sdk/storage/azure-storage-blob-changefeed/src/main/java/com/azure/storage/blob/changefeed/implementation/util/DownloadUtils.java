@@ -24,15 +24,8 @@ public class DownloadUtils {
      */
     public static Mono<byte[]> downloadToByteArray(BlobContainerAsyncClient client, String blobPath) {
         return client.getBlobAsyncClient(blobPath)
-            .download()
-            .reduce(new ByteArrayOutputStream(), (os, buffer) -> {
-                try {
-                    os.write(FluxUtil.byteBufferToArray(buffer));
-                } catch (IOException e) {
-                    throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
-                }
-                return os;
-            }).map(ByteArrayOutputStream::toByteArray);
+            .downloadWithResponse(null, null, null, false)
+            .flatMap(response -> FluxUtil.collectBytesFromNetworkResponse(response.getValue(), response.getHeaders()));
     }
 
     public static Mono<JsonNode> parseJson(byte[] json) {

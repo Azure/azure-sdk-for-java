@@ -205,6 +205,10 @@ public final class FluxUtil {
             return Flux.empty();
         }
 
+        // If the InputStream is an instance of FileInputStream we should be able to leverage the FileChannel backing
+        // the FileInputStream to generated MappedByteBuffers which aren't loaded into memory until the content is
+        // consumed. This at least defers the memory usage until later and may also provide downstream calls ways to
+        // optimize if they have special cases for MappedByteBuffer.
         if (inputStream instanceof FileInputStream) {
             FileChannel fileChannel = ((FileInputStream) inputStream).getChannel();
 
@@ -214,10 +218,16 @@ public final class FluxUtil {
                     long channelSize = channel.size();
 
                     if (channelPosition == channelSize) {
+                        // End of File has been reached, signal completion.
                         sink.complete();
                     } else {
+                        // Determine the size of the next MappedByteBuffer, either the remaining File contents or the
+                        // expected chunk size.
                         int nextByteBufferSize = (int) Math.min(chunkSize, channelSize - channelPosition);
                         sink.next(channel.map(FileChannel.MapMode.READ_ONLY, channelPosition, nextByteBufferSize));
+
+                        // FileChannel.map doesn't update the FileChannel's position as reading would, so the position
+                        // needs to be updated based on the number of bytes mapped.
                         channel.position(channelPosition + nextByteBufferSize);
                     }
                 } catch (IOException ex) {

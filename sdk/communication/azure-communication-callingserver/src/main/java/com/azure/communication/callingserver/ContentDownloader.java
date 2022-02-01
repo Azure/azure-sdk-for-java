@@ -13,6 +13,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Exceptions;
@@ -56,7 +57,7 @@ class ContentDownloader {
         return downloadStreamWithResponse(sourceEndpoint, httpRange, context)
             .flatMap(response -> response.getValue().reduce(destinationStream, (outputStream, buffer) -> {
                 try {
-                    outputStream.write(FluxUtil.byteBufferToArray(buffer));
+                    CoreUtils.writeByteBufferToStream(buffer, outputStream);
                     return outputStream;
                 } catch (IOException ex) {
                     throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));

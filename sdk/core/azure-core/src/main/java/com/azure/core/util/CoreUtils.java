@@ -11,14 +11,11 @@ import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.StandardCharsets;
@@ -412,12 +409,15 @@ public final class CoreUtils {
         if (stream instanceof FileOutputStream) {
             FileOutputStream fileOutputStream = (FileOutputStream) stream;
 
-            // Writing to the FileChannel will move both the OutputStream's and ByteBuffer's position.
+            // Writing to the FileChannel directly may provide native optimizations for moving the OS managed memory
+            // into the file.
+            // Write will move both the OutputStream's and ByteBuffer's position so there is no need to perform
+            // additional updates that are required when using the backing array.
             fileOutputStream.getChannel().write(buffer);
             return;
         }
 
-        // All optimizations have been exhausted, fallback to the buffering write.
+        // All optimizations have been exhausted, fallback to buffering write.
         stream.write(FluxUtil.byteBufferToArray(buffer));
     }
 }
