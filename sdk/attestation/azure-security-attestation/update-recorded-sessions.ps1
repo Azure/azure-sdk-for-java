@@ -12,4 +12,4 @@ if (-not (Test-Path -Path $sourceSessionRecordPath))
 Write-Host("Removing items from $targetSessionRecordsPattern");
 Remove-Item -path $targetSessionRecordsPattern -Recurse -Force
 Write-Host("Copying items from $sourceSessionRecordPath to $targetSessionRecordPath")
-Copy-Item -Path $sourceSessionRecordPath -Filter "*.json" -Destination $targetSessionRecordPath -Force -Recurse -Container
+Copy-Item -Path $sourceSessionRecordPath\*.json  -Destination $targetSessionRecordPath\session-records -Force -Recurse -Container

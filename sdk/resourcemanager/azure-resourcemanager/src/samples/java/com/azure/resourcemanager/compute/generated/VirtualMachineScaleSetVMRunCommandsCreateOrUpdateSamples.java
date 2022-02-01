@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for VirtualMachineScaleSetVMRunCommands CreateOrUpdate. */
 public final class VirtualMachineScaleSetVMRunCommandsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-07-01/examples/runCommands/CreateOrUpdateVirtualMachineScaleSetVMRunCommands.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/runCommands/CreateOrUpdateVirtualMachineScaleSetVMRunCommands.json
      */
     /**
      * Sample code: Create VirtualMachineScaleSet VM run command.

@@ -425,10 +425,18 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
             files="com.azure.search.documents.(SearchIndexingBufferedAsyncSender|SearchIndexingBufferedSender)"/>
 
+  <!-- Allow Attestation Service use of OpenTelemetry -->
+  <suppress checks="IllegalImport" files=".*[/\\]src[/\\]test[/\\]java[/\\]com[/\\]azure[/\\]security[/\\]attestation[/\\]AttestationClientTestBase.java"/>
+  <suppress checks="IllegalImport" files=".*[/\\]src[/\\]test[/\\]java[/\\]com[/\\]azure[/\\]security[/\\]attestation[/\\]AttestationTest.java"/>
+
+  <!-- Attestation Client returns AttestationResponse_T_ instead of Response_T_ -->
+  <suppress checks="ServiceClient" files=".*[/\\]src[/\\]main[/\\]java[/\\]com[/\\]azure[/\\]security[/\\]attestation[/\\]AttestationClient.java"/>
+  <suppress checks="ServiceClient" files=".*[/\\]src[/\\]main[/\\]java[/\\]com[/\\]azure[/\\]security[/\\]attestation[/\\]AttestationAsyncClient.java"/>
+  <suppress checks="ServiceClient" files=".*[/\\]src[/\\]main[/\\]java[/\\]com[/\\]azure[/\\]security[/\\]attestation[/\\]AttestationAdministrationClient.java"/>
+  <suppress checks="ServiceClient" files=".*[/\\]src[/\\]main[/\\]java[/\\]com[/\\]azure[/\\]security[/\\]attestation[/\\]AttestationAdministrationAsyncClient.java"/>
+
   <!-- Suppress checks on AutoRest generated Attestation service code -->
-  <suppress checks="ThrowFromClientLogger"
-            files="com.azure.security.attestation.models.JsonWebKey.java"/>
-  <suppress checks="WhitespaceAround|ThrowFromClientLogger"
+ <suppress checks="WhitespaceAround|ThrowFromClientLogger"
             files="com.azure.security.attestation.implementation.models.*\.java"/>
 
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"

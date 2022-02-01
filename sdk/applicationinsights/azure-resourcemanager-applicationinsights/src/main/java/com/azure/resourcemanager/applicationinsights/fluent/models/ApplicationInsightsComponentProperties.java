@@ -36,6 +36,12 @@ public final class ApplicationInsightsComponentProperties {
     private String appId;
 
     /*
+     * Application name.
+     */
+    @JsonProperty(value = "Name", access = JsonProperty.Access.WRITE_ONLY)
+    private String name;
+
+    /*
      * Type of application being monitored.
      */
     @JsonProperty(value = "Application_Type", required = true)
@@ -133,6 +139,21 @@ public final class ApplicationInsightsComponentProperties {
     private Boolean immediatePurgeDataOn30Days;
 
     /*
+     * Resource Id of the log analytics workspace which the data will be
+     * ingested to. This property is required to create an application with
+     * this API version. Applications from older versions will not have this
+     * property.
+     */
+    @JsonProperty(value = "WorkspaceResourceId")
+    private String workspaceResourceId;
+
+    /*
+     * The date which the component got migrated to LA, in ISO 8601 format.
+     */
+    @JsonProperty(value = "LaMigrationDate", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime laMigrationDate;
+
+    /*
      * List of linked private link scope resources.
      */
     @JsonProperty(value = "PrivateLinkScopedResources", access = JsonProperty.Access.WRITE_ONLY)
@@ -156,6 +177,19 @@ public final class ApplicationInsightsComponentProperties {
     @JsonProperty(value = "IngestionMode")
     private IngestionMode ingestionMode;
 
+    /*
+     * Disable Non-AAD based Auth.
+     */
+    @JsonProperty(value = "DisableLocalAuth")
+    private Boolean disableLocalAuth;
+
+    /*
+     * Force users to create their own storage account for profiler and
+     * debugger.
+     */
+    @JsonProperty(value = "ForceCustomerStorageForProfiler")
+    private Boolean forceCustomerStorageForProfiler;
+
     /**
      * Get the applicationId property: The unique ID of your application. This field mirrors the 'Name' field and cannot
      * be changed.
@@ -173,6 +207,15 @@ public final class ApplicationInsightsComponentProperties {
      */
     public String appId() {
         return this.appId;
+    }
+
+    /**
+     * Get the name property: Application name.
+     *
+     * @return the name value.
+     */
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -403,6 +446,39 @@ public final class ApplicationInsightsComponentProperties {
     }
 
     /**
+     * Get the workspaceResourceId property: Resource Id of the log analytics workspace which the data will be ingested
+     * to. This property is required to create an application with this API version. Applications from older versions
+     * will not have this property.
+     *
+     * @return the workspaceResourceId value.
+     */
+    public String workspaceResourceId() {
+        return this.workspaceResourceId;
+    }
+
+    /**
+     * Set the workspaceResourceId property: Resource Id of the log analytics workspace which the data will be ingested
+     * to. This property is required to create an application with this API version. Applications from older versions
+     * will not have this property.
+     *
+     * @param workspaceResourceId the workspaceResourceId value to set.
+     * @return the ApplicationInsightsComponentProperties object itself.
+     */
+    public ApplicationInsightsComponentProperties withWorkspaceResourceId(String workspaceResourceId) {
+        this.workspaceResourceId = workspaceResourceId;
+        return this;
+    }
+
+    /**
+     * Get the laMigrationDate property: The date which the component got migrated to LA, in ISO 8601 format.
+     *
+     * @return the laMigrationDate value.
+     */
+    public OffsetDateTime laMigrationDate() {
+        return this.laMigrationDate;
+    }
+
+    /**
      * Get the privateLinkScopedResources property: List of linked private link scope resources.
      *
      * @return the privateLinkScopedResources value.
@@ -472,6 +548,49 @@ public final class ApplicationInsightsComponentProperties {
      */
     public ApplicationInsightsComponentProperties withIngestionMode(IngestionMode ingestionMode) {
         this.ingestionMode = ingestionMode;
+        return this;
+    }
+
+    /**
+     * Get the disableLocalAuth property: Disable Non-AAD based Auth.
+     *
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.disableLocalAuth;
+    }
+
+    /**
+     * Set the disableLocalAuth property: Disable Non-AAD based Auth.
+     *
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the ApplicationInsightsComponentProperties object itself.
+     */
+    public ApplicationInsightsComponentProperties withDisableLocalAuth(Boolean disableLocalAuth) {
+        this.disableLocalAuth = disableLocalAuth;
+        return this;
+    }
+
+    /**
+     * Get the forceCustomerStorageForProfiler property: Force users to create their own storage account for profiler
+     * and debugger.
+     *
+     * @return the forceCustomerStorageForProfiler value.
+     */
+    public Boolean forceCustomerStorageForProfiler() {
+        return this.forceCustomerStorageForProfiler;
+    }
+
+    /**
+     * Set the forceCustomerStorageForProfiler property: Force users to create their own storage account for profiler
+     * and debugger.
+     *
+     * @param forceCustomerStorageForProfiler the forceCustomerStorageForProfiler value to set.
+     * @return the ApplicationInsightsComponentProperties object itself.
+     */
+    public ApplicationInsightsComponentProperties withForceCustomerStorageForProfiler(
+        Boolean forceCustomerStorageForProfiler) {
+        this.forceCustomerStorageForProfiler = forceCustomerStorageForProfiler;
         return this;
     }
 

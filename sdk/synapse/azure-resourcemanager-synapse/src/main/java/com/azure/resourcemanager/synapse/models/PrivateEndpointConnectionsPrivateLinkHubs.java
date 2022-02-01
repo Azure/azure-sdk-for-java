@@ -60,7 +60,7 @@ public interface PrivateEndpointConnectionsPrivateLinkHubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all PrivateEndpointConnection in the PrivateLinkHub by name.
+     * @return all PrivateEndpointConnection in the PrivateLinkHub by name along with {@link Response}.
      */
     Response<PrivateEndpointConnectionForPrivateLinkHub> getWithResponse(
         String resourceGroupName, String privateLinkHubName, String privateEndpointConnectionName, Context context);
