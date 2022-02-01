@@ -44,15 +44,16 @@ public final class CommunicationTokenCredential implements AutoCloseable {
      * Create with tokenRefreshOptions, which includes a token supplier and optional serialized JWT token.
      * If refresh proactively is true, callback function tokenRefresher will be called
      * ahead of the token expiry by the number of minutes specified by
-     * CallbackOffsetMinutes defaulted to ten minutes. To modify this default, call
-     * setCallbackOffsetMinutes after construction
+     * CallbackOffsetMinutes defaulted to ten minutes.
      *
      * @param tokenRefreshOptions implementation to supply fresh token when reqested
      */
     public CommunicationTokenCredential(CommunicationTokenRefreshOptions tokenRefreshOptions) {
-        Supplier<Mono<String>> tokenRefresher = tokenRefreshOptions.getTokenRefresher();
-        Objects.requireNonNull(tokenRefresher, "'tokenRefresher' cannot be null.");
-        refresher = tokenRefresher;
+        Supplier<String> tokenRefresher = tokenRefreshOptions.getTokenRefresherSync();
+        refresher = tokenRefresher != null
+                ? () -> Mono.fromSupplier(tokenRefresher)
+                : tokenRefreshOptions.getTokenRefresher();
+        Objects.requireNonNull(refresher, "'tokenRefresher' cannot be null.");
         if (tokenRefreshOptions.getInitialToken() != null) {
             setToken(tokenRefreshOptions.getInitialToken());
         }
@@ -62,6 +63,15 @@ public final class CommunicationTokenCredential implements AutoCloseable {
                     : accessToken.getExpiresAt().minusMinutes(DEFAULT_EXPIRING_OFFSET_MINUTES);
             fetchingTask = new FetchingTask(this, nextFetchTime);
         }
+    }
+
+    /**
+     * Get Azure core access token from credential
+     *
+     * @return Synchronous call to fetch actual token
+     */
+    public AccessToken getTokenSync() {
+        return getToken().block();
     }
 
     /**

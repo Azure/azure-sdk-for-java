@@ -11,14 +11,15 @@ import java.util.function.Supplier;
  */
 public final class CommunicationTokenRefreshOptions {
 
-    private final Supplier<Mono<String>> tokenRefresher;
+    private final Supplier<String> tokenRefresher;
+    private final Supplier<Mono<String>> asyncTokenRefresher;
     private boolean refreshProactively;
     private String initialToken;
 
     /**
      * Creates a CommunicationTokenRefreshOptions object
      *
-     * @param tokenRefresher     The callback function that acquires a fresh token
+     * @param tokenRefresher     The asynchronous callback function that acquires a fresh token
      *                           from the Communication Identity API, e.g. by
      *                           calling the CommunicationIdentityClient
      * @param refreshProactively Determines whether the token should be proactively
@@ -34,7 +35,7 @@ public final class CommunicationTokenRefreshOptions {
     /**
      * Creates a CommunicationTokenRefreshOptions object
      *
-     * @param tokenRefresher     The callback function that acquires a fresh token
+     * @param tokenRefresher     The asynchronous callback function that acquires a fresh token
      *                           from the Communication Identity API, e.g. by
      *                           calling the CommunicationIdentityClient
      * @param refreshProactively Determines whether the token should be proactively
@@ -45,9 +46,9 @@ public final class CommunicationTokenRefreshOptions {
      *             {@link #setInitialToken(String)}
      */
     @Deprecated
-    public CommunicationTokenRefreshOptions(Supplier<Mono<String>> tokenRefresher, boolean refreshProactively,
-            String initialToken) {
-        this.tokenRefresher = tokenRefresher;
+    public CommunicationTokenRefreshOptions(Supplier<Mono<String>> tokenRefresher, boolean refreshProactively, String initialToken) {
+        this.asyncTokenRefresher = tokenRefresher;
+        this.tokenRefresher = null;
         this.refreshProactively = refreshProactively;
         this.initialToken = initialToken;
     }
@@ -55,22 +56,31 @@ public final class CommunicationTokenRefreshOptions {
     /**
      * Creates a CommunicationTokenRefreshOptions object
      *
-     * @param tokenRefresher The callback function that acquires a fresh token from
+     * @param tokenRefresher The synchronous callback function that acquires a fresh token from
      *                       the Communication Identity API, e.g. by calling the
      *                       CommunicationIdentityClient
      *                       The returned token must be valid (its expiration date
      *                       must be set in the future).
      */
-    public CommunicationTokenRefreshOptions(Supplier<Mono<String>> tokenRefresher) {
+    public CommunicationTokenRefreshOptions(Supplier<String> tokenRefresher) {
         this.tokenRefresher = tokenRefresher;
+        this.asyncTokenRefresher = null;
         this.refreshProactively = false;
         this.initialToken = null;
     }
 
     /**
-     * @return The token refresher to provide capacity to fetch fresh token
+     * @return The asynchronous token refresher to provide capacity to fetch fresh token
      */
+    @Deprecated
     public Supplier<Mono<String>> getTokenRefresher() {
+        return asyncTokenRefresher;
+    }
+
+    /**
+     * @return The synchronous token refresher to provide capacity to fetch fresh token
+     */
+    public Supplier<String> getTokenRefresherSync() {
         return tokenRefresher;
     }
 
