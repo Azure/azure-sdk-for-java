@@ -46,6 +46,9 @@ parameters:
   - name: TestParallelization
     type: string
     default: '1C'
+  - name: BuildParallelization
+    type: string
+    default: '2C'
 
 jobs:
   - job: 'Test'
@@ -93,3 +96,4 @@ jobs:
           TestOptions: ${{ parameters.TestOptions }}
           AdditionalBuildOptions: ${{ parameters.AdditionalBuildOptions }}
           TestParallelization: ${{ parameters.TestParallelization }}
+          BuildParallelization: ${{ parameters.BuildParallelization }}
