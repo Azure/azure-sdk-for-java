@@ -372,11 +372,14 @@ public final class DocumentAnalysisClientBuilder {
 
     /**
      * Sets the audience for the Azure Form Recognizer service.
+     * The default audience is {@link FormRecognizerAudience#AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD} when unset.
      *
      * @param audience ARM management audience associated with the given form recognizer resource.
+     * @throws NullPointerException If {@code audience} is null.
      * @return The updated {@link DocumentAnalysisClientBuilder} object.
      */
     public DocumentAnalysisClientBuilder audience(FormRecognizerAudience audience) {
+        Objects.requireNonNull(audience, "'audience' is required and can not be null");
         this.audience = audience;
         return this;
     }

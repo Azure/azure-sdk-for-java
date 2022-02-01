@@ -107,9 +107,11 @@ public final class Utility {
 
         // Authentications
         if (tokenCredential != null) {
-            Objects.requireNonNull(audience, "'audience' is required and can not be null");
+            if (audience == null) {
+                audience = FormRecognizerAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
+            }
             httpPipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential,
-                audience.toString(), DEFAULT_SCOPE));
+                audience + DEFAULT_SCOPE));
         } else if (azureKeyCredential != null) {
             httpPipelinePolicies.add(new AzureKeyCredentialPolicy(Constants.OCP_APIM_SUBSCRIPTION_KEY,
                 azureKeyCredential));

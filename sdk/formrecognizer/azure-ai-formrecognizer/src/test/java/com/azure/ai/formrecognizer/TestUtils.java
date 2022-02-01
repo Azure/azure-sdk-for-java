@@ -274,7 +274,7 @@ public final class TestUtils {
                 return FormRecognizerAudience.AZURE_RESOURCE_MANAGER_CHINA;
 
             case AzureAuthorityHosts.AZURE_GOVERNMENT:
-                return FormRecognizerAudience.AZURE_RESOURCE_MANAGER_GOVERNMENT;
+                return FormRecognizerAudience.AZURE_RESOURCE_MANAGER_US_GOVERNMENT;
 
             default:
                 return null;
