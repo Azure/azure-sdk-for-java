@@ -60,7 +60,7 @@ public final class ChangeFeedPolicy {
 
     /**
      * Creates a ChangeFeedPolicy with retention duration for full fidelity processing
-     * <p>
+     *
      * @param retentionDuration  - the retention duration (max granularity in minutes) in which it
      *                             will be possible to process change feed events with full fidelity
      *                             mode (meaning intermediary changes and deletes

@@ -1481,11 +1481,15 @@ class AzureFileSystemProviderTest extends APISpec {
 
     def "CheckAccess IOException"() {
         setup:
-        config = initializeConfigMap(new CheckAccessIoExceptionPolicy())
         def fs = createFS(config)
         def path = fs.getPath(generateBlobName())
         def os = fs.provider().newOutputStream(path)
         os.close()
+        fs.close()
+
+        config = initializeConfigMap(new CheckAccessIoExceptionPolicy())
+        fs = createFS(config)
+        path = fs.getPath(path.toString())
 
         when:
         fs.provider().checkAccess(path)

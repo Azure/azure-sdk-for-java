@@ -35,6 +35,19 @@ public final class PriceSheetResultImpl implements PriceSheetResult {
         return this.innerModel().type();
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
+
     public List<PriceSheetProperties> pricesheets() {
         List<PriceSheetProperties> inner = this.innerModel().pricesheets();
         if (inner != null) {
@@ -50,19 +63,6 @@ public final class PriceSheetResultImpl implements PriceSheetResult {
 
     public MeterDetails download() {
         return this.innerModel().download();
-    }
-
-    public String etag() {
-        return this.innerModel().etag();
-    }
-
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
     }
 
     public PriceSheetResultInner innerModel() {

@@ -23,6 +23,12 @@ import org.springframework.context.annotation.Configuration;
 @AutoConfigureAfter(StorageAutoConfiguration.class)
 public class StorageHealthConfiguration {
 
+    /**
+     * Declare BlobStorageHealthIndicator bean.
+     *
+     * @param blobServiceClientBuilder the BlobServiceClientBuilder
+     * @return BlobStorageHealthIndicator bean
+     */
     @Bean
     @ConditionalOnEnabledHealthIndicator("azure-storage")
     @ConditionalOnBean(BlobServiceClientBuilder.class)
@@ -30,6 +36,11 @@ public class StorageHealthConfiguration {
         return new BlobStorageHealthIndicator(blobServiceClientBuilder);
     }
 
+    /**
+     * Declare FileStorageHealthIndicator bean.
+     * @param shareServiceClientBuilder the ShareServiceClientBuilder
+     * @return FileStorageHealthIndicator bean
+     */
     @Bean
     @ConditionalOnEnabledHealthIndicator("azure-storage")
     @ConditionalOnBean(ShareServiceClientBuilder.class)

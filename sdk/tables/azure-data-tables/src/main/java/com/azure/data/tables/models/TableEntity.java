@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.azure.core.util.CoreUtils.isNullOrEmpty;
+
 /**
  * An entity within a table.
  *
@@ -41,14 +43,14 @@ public final class TableEntity {
      * @param rowKey The row key of the entity.
      */
     public TableEntity(String partitionKey, String rowKey) {
-        if (partitionKey == null || partitionKey.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                "'%s' is an empty value.", TablesConstants.PARTITION_KEY)));
+        if (isNullOrEmpty(partitionKey)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException(String.format("'%s' is an empty value.", TablesConstants.PARTITION_KEY)));
         }
 
-        if (rowKey == null || rowKey.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                "'%s' is an empty value.", TablesConstants.ROW_KEY)));
+        if (isNullOrEmpty(rowKey)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException(String.format("'%s' is an empty value.", TablesConstants.ROW_KEY)));
         }
 
         this.properties = new HashMap<>();

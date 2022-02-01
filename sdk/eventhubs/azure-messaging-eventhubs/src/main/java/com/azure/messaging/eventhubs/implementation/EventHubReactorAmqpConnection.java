@@ -27,6 +27,12 @@ import org.apache.qpid.proton.engine.Session;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.CONNECTION_ID_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.ENTITY_PATH_KEY;
+
 /**
  * A proton-j AMQP connection to an Azure Event Hub instance. Adds additional support for management operations.
  */
@@ -35,7 +41,7 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
     private static final String MANAGEMENT_LINK_NAME = "mgmt";
     private static final String MANAGEMENT_ADDRESS = "$management";
 
-    private final ClientLogger logger = new ClientLogger(EventHubReactorAmqpConnection.class);
+    private final ClientLogger logger;
     private final TokenCredential tokenCredential;
     private final String connectionId;
     private final ReactorProvider reactorProvider;
@@ -72,6 +78,10 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
         this.retryOptions = connectionOptions.getRetry();
         this.tokenCredential = connectionOptions.getTokenCredential();
         this.scheduler = connectionOptions.getScheduler();
+
+        Map<String, Object> loggingContext = new HashMap<>(1);
+        loggingContext.put(CONNECTION_ID_KEY, connectionId);
+        this.logger = new ClientLogger(EventHubReactorAmqpConnection.class, loggingContext);
     }
 
     @Override
@@ -96,7 +106,9 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
     @Override
     public Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, AmqpRetryOptions retryOptions) {
         return createSession(entityPath).flatMap(session -> {
-            logger.verbose("Get or create producer for path: '{}'", entityPath);
+            logger.atVerbose()
+                .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                .log("Get or create producer.");
             final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
             return session.createProducer(linkName, entityPath, retryOptions.getTryTimeout(), retryPolicy)
@@ -119,7 +131,9 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
         ReceiveOptions options) {
         return createSession(entityPath).cast(EventHubSession.class)
             .flatMap(session -> {
-                logger.verbose("Get or create consumer for path: '{}'", entityPath);
+                logger.atVerbose()
+                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                    .log("Get or create consumer.");
                 final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
                 return session.createConsumer(linkName, entityPath, retryOptions.getTryTimeout(), retryPolicy,

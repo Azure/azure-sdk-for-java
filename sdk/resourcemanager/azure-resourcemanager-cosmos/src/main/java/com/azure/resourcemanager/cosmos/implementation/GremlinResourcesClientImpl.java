@@ -837,7 +837,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
                 this.client.getHttpPipeline(),
                 GremlinDatabaseGetResultsInner.class,
                 GremlinDatabaseGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1141,7 +1141,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
             deleteGremlinDatabaseWithResponseAsync(resourceGroupName, accountName, databaseName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1610,7 +1611,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1930,7 +1931,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2202,7 +2203,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -2884,7 +2885,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
                 this.client.getHttpPipeline(),
                 GremlinGraphGetResultsInner.class,
                 GremlinGraphGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -3213,7 +3214,8 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
             deleteGremlinGraphWithResponseAsync(resourceGroupName, accountName, databaseName, graphName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -3707,7 +3709,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -4046,7 +4048,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -4342,7 +4344,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
                 this.client.getHttpPipeline(),
                 ThroughputSettingsGetResultsInner.class,
                 ThroughputSettingsGetResultsInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

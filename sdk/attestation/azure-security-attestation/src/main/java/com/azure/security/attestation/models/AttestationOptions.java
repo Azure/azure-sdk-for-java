@@ -124,7 +124,7 @@ public final class AttestationOptions {
      * @return this {@link AttestationOptions} object itself.
      */
     public AttestationOptions setRunTimeData(AttestationData attestationData) {
-        this.runTimeData = attestationData.clone();
+        this.runTimeData = attestationData;
         return this;
     }
 
@@ -133,16 +133,13 @@ public final class AttestationOptions {
      * <p><strong>Retrieve the RunTimeData value.</strong></p>
      * <!-- src_embed com.azure.security.attestation.models.AttestationOptions.getRunTimeData -->
      * <pre>
-     * AttestationOptions attestationOptions = new AttestationOptions&#40;openEnclaveReport&#41;
-     *     .setRunTimeData&#40;new AttestationData&#40;runtimeData, AttestationDataInterpretation.JSON&#41;&#41;;
-     *
      * AttestationData existingRuntimeData = attestationOptions.getRunTimeData&#40;&#41;;
      * </pre>
      * <!-- end com.azure.security.attestation.models.AttestationOptions.getRunTimeData -->
      * @return The RunTimeData value set by {@link AttestationOptions#setRunTimeData}
      */
     public AttestationData getRunTimeData() {
-        return runTimeData != null ? runTimeData.clone() : null;
+        return runTimeData != null ? new AttestationData(runTimeData) : null;
     }
 
     /**
@@ -166,7 +163,7 @@ public final class AttestationOptions {
      * @return this {@link AttestationOptions} object itself.
      */
     public AttestationOptions setInitTimeData(AttestationData attestationData) {
-        this.initTimeData = attestationData.clone();
+        this.initTimeData = attestationData;
         return this;
     }
 
@@ -184,7 +181,7 @@ public final class AttestationOptions {
      * @return The InitTimeData value set by {@link AttestationOptions#setInitTimeData}
      */
     public AttestationData getInitTimeData() {
-        return initTimeData != null ? initTimeData.clone() : null;
+        return initTimeData != null ? new AttestationData(initTimeData) : null;
     }
 
     /**

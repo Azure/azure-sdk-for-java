@@ -49,10 +49,19 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
 public final class BlobContainerClient {
     private final BlobContainerAsyncClient client;
 
+    /**
+     * Special container name for the root container in the Storage account.
+     */
     public static final String ROOT_CONTAINER_NAME = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
 
+    /**
+     * Special container name for the static website container in the Storage account.
+     */
     public static final String STATIC_WEBSITE_CONTAINER_NAME = BlobContainerAsyncClient.STATIC_WEBSITE_CONTAINER_NAME;
 
+    /**
+     * Special container name for the logs container in the Storage account.
+     */
     public static final String LOG_CONTAINER_NAME = BlobContainerAsyncClient.LOG_CONTAINER_NAME;
 
     /**

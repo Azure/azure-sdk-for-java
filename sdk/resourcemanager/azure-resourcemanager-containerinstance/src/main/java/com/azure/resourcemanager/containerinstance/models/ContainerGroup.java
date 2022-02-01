@@ -746,7 +746,19 @@ public interface ContainerGroup
                 WithContainerInstanceAttach<ParentT> withCpuCoreCount(double cpuCoreCount);
             }
 
+            /**
+             * The stage of the container instance definition allowing to specify the GPU resource.
+             *
+             * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+             */
             interface WithGpuResource<ParentT> {
+                /**
+                 * Specifies the GPU core count and SKU.
+                 *
+                 * @param gpuCoreCount the GPU core count
+                 * @param gpuSku the GPU SKU
+                 * @return the next stage of the definition
+                 */
                 WithContainerInstanceAttach<ParentT> withGpuResource(int gpuCoreCount, GpuSku gpuSku);
             }
 
@@ -1086,6 +1098,9 @@ public interface ContainerGroup
             DnsConfigFork withNewVirtualNetwork(String addressSpace);
         }
 
+        /**
+         * The stage of the container group definition allowing to specify the DNS configuration of the container group.
+         */
         interface DnsConfigFork extends WithDnsConfig, WithCreate {
         }
 

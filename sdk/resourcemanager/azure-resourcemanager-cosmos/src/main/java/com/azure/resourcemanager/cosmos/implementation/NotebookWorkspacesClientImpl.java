@@ -677,7 +677,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                 this.client.getHttpPipeline(),
                 NotebookWorkspaceInner.class,
                 NotebookWorkspaceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -984,7 +984,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             deleteWithResponseAsync(resourceGroupName, accountName, notebookWorkspaceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1407,7 +1408,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             regenerateAuthTokenWithResponseAsync(resourceGroupName, accountName, notebookWorkspaceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1665,7 +1667,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             startWithResponseAsync(resourceGroupName, accountName, notebookWorkspaceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

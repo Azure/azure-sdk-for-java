@@ -39,6 +39,8 @@ The following sections provide several code snippets covering some of the most c
 - [Analyze sentiment with opinion mining in a document with asynchronous client][async_sample_sentiment_opinion_mining]
 - [Rotate key credential][sample_rotate_key]
 - [Rotate key credential with asynchronous client][async_sample_rotate_key]
+- [Model Version][sample_model_version]
+- [Model Version with asynchronous client][async_sample_model_version]
 
 Batch Samples:
 - [Detect language for a batch of documents][sample_detect_language_batch]
@@ -125,6 +127,7 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [async_sample_execute_custom_entities_action]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/RecognizeCustomEntitiesAsync.java
 [async_sample_execute_single_classification_action]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/ClassifyDocumentSingleCategoryAsync.java
 [async_sample_execute_multi_classification_action]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/ClassifyDocumentMultiCategoryAsync.java
+[async_sample_model_version]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/ModelVersionAsync.java
 
 [sample_detect_language]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/DetectLanguage.java
 [sample_detect_language_batch]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/DetectLanguageBatchDocuments.java
@@ -153,5 +156,6 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [sample_execute_custom_entities_action]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/RecognizeCustomEntities.java
 [sample_execute_single_classification_action]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/ClassifyDocumentSingleCategory.java
 [sample_execute_multi_classification_action]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/ClassifyDocumentMultiCategory.java
+[sample_model_version]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/ModelVersion.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftextanalytics%2Fazure-ai-textanalytics%2FREADME.png)

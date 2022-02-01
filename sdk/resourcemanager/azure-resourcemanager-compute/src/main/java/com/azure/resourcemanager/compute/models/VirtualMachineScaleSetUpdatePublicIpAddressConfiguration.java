@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -105,6 +106,29 @@ public final class VirtualMachineScaleSetUpdatePublicIpAddressConfiguration {
             this.innerProperties = new VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties();
         }
         this.innerProperties().withDnsSettings(dnsSettings);
+        return this;
+    }
+
+    /**
+     * Get the publicIpPrefix property: The PublicIPPrefix from which to allocate publicIP addresses.
+     *
+     * @return the publicIpPrefix value.
+     */
+    public SubResource publicIpPrefix() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicIpPrefix();
+    }
+
+    /**
+     * Set the publicIpPrefix property: The PublicIPPrefix from which to allocate publicIP addresses.
+     *
+     * @param publicIpPrefix the publicIpPrefix value to set.
+     * @return the VirtualMachineScaleSetUpdatePublicIpAddressConfiguration object itself.
+     */
+    public VirtualMachineScaleSetUpdatePublicIpAddressConfiguration withPublicIpPrefix(SubResource publicIpPrefix) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties();
+        }
+        this.innerProperties().withPublicIpPrefix(publicIpPrefix);
         return this;
     }
 

@@ -27,6 +27,7 @@ public class LvaInvokeModuleSample {
      * Build a pipeLine topology including its parameters, sources, and sinks
      * @return PipelineTopology
      */
+    // BEGIN: readme-sample-buildPipelineTopology
     private static PipelineTopology buildPipeLineTopology() {
         IotHubMessageSource msgSource = new IotHubMessageSource("iotMsgSource")
             .setHubInputName("${hubSourceInput}");
@@ -72,16 +73,16 @@ public class LvaInvokeModuleSample {
             .setSinks(Arrays.asList(msgSink))
             .setProcessors(Arrays.asList(httpExtension));
 
-        PipelineTopology pipelineTopology = new PipelineTopology(TOPOLOGY_NAME)
+        return new PipelineTopology(TOPOLOGY_NAME)
             .setProperties(pipeProps);
-
-        return pipelineTopology;
     }
+    // END: readme-sample-buildPipelineTopology
 
     /***
      * Build a live pipeline using a pipeline topology
      * @return LivePipeline
      */
+    // BEGIN: readme-sample-buildLivePipeline
     private static LivePipeline buildLivePipeline() {
         ParameterDefinition hubParam = new ParameterDefinition("hubSinkOutputName")
             .setValue("testHubOutput");
@@ -96,11 +97,10 @@ public class LvaInvokeModuleSample {
             .setParameters(Arrays.asList(urlParam, userParam, passParam, hubParam))
             .setTopologyName(TOPOLOGY_NAME);
 
-        LivePipeline livePipeline = new LivePipeline(LIVE_PIPELINE_NAME)
+        return new LivePipeline(LIVE_PIPELINE_NAME)
             .setProperties(livePipelineProps);
-
-        return livePipeline;
     }
+    // END: readme-sample-buildLivePipeline
 
     private static RemoteDeviceAdapter createRemoteDeviceAdapter(String remoteDeviceName, String iotDeviceName) throws IOException, IotHubException {
         RegistryManager registryManager = new RegistryManager(iothubConnectionstring);
@@ -115,10 +115,9 @@ public class LvaInvokeModuleSample {
             .setCredentials(new SymmetricKeyCredentials(iotDevice.getPrimaryKey()));
 
         RemoteDeviceAdapterProperties remoteDeviceAdapterProperties = new RemoteDeviceAdapterProperties(new RemoteDeviceAdapterTarget("camerasimulator"), iotHubDeviceConnection);
-        RemoteDeviceAdapter remoteDeviceAdapter = new RemoteDeviceAdapter(remoteDeviceName)
-            .setProperties(remoteDeviceAdapterProperties);
 
-        return remoteDeviceAdapter;
+        return new RemoteDeviceAdapter(remoteDeviceName)
+            .setProperties(remoteDeviceAdapterProperties);
     }
     /***
      * Helper method to invoke module method on iot hub device
@@ -129,6 +128,7 @@ public class LvaInvokeModuleSample {
      * @throws IOException IOException
      * @throws IotHubException IotHubException
      */
+    // BEGIN: readme-sample-invokeDirectMethodHelper
     private static MethodResult invokeDirectMethodHelper(DeviceMethod client, String methodName, String payload) throws IOException, IotHubException {
         MethodResult result = null;
         try {
@@ -140,6 +140,7 @@ public class LvaInvokeModuleSample {
 
         return result;
     }
+    // END: readme-sample-invokeDirectMethodHelper
 
     private static void initializeIotHubCredentials() {
         iothubConnectionstring = System.getenv("iothub_connectionstring");
@@ -157,9 +158,11 @@ public class LvaInvokeModuleSample {
         LivePipeline livePipeline = buildLivePipeline();
         DeviceMethod dClient = new DeviceMethod(iothubConnectionstring);
 
+        // BEGIN: readme-sample-setPipelineTopologyRequest
         PipelineTopologySetRequest setPipelineTopologyRequest = new PipelineTopologySetRequest(pipelineTopology);
         MethodResult setPipelineResult = invokeDirectMethodHelper(dClient, setPipelineTopologyRequest.getMethodName(), setPipelineTopologyRequest.getPayloadAsJson());
         System.out.println(setPipelineResult.getPayload());
+        // END: readme-sample-setPipelineTopologyRequest
 
         PipelineTopologyGetRequest getTopologyRequest = new PipelineTopologyGetRequest(pipelineTopology.getName());
         MethodResult getTopologyResult = invokeDirectMethodHelper(dClient, getTopologyRequest.getMethodName(), getTopologyRequest.getPayloadAsJson());

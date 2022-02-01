@@ -1946,7 +1946,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                                     this.getHttpPipeline(),
                                     BastionShareableLinkListResult.class,
                                     BastionShareableLinkListResult.class,
-                                    Context.NONE)
+                                    this.getContext())
                                 .last()
                                 .flatMap(this::getLroFinalResultOrError));
                 })
@@ -2234,7 +2234,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteBastionShareableLinkWithResponseAsync(resourceGroupName, bastionHostname, bslRequest);
-        return this.<Void, Void>getLroResult(mono, this.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+        return this.<Void, Void>getLroResult(mono, this.getHttpPipeline(), Void.class, Void.class, this.getContext());
     }
 
     /**
@@ -2620,7 +2620,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                                     this.getHttpPipeline(),
                                     BastionActiveSessionListResult.class,
                                     BastionActiveSessionListResult.class,
-                                    Context.NONE)
+                                    this.getContext())
                                 .last()
                                 .flatMap(this::getLroFinalResultOrError));
                 })
@@ -3400,7 +3400,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
                 this.getHttpPipeline(),
                 VpnProfileResponseInner.class,
                 VpnProfileResponseInner.class,
-                Context.NONE);
+                this.getContext());
     }
 
     /**

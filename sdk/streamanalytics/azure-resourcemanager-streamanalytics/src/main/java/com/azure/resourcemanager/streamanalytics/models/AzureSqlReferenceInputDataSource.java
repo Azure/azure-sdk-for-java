@@ -6,6 +6,7 @@ package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.streamanalytics.fluent.models.AzureSqlReferenceInputDataSourceProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -19,28 +20,244 @@ public final class AzureSqlReferenceInputDataSource extends ReferenceInputDataSo
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureSqlReferenceInputDataSource.class);
 
     /*
-     * The properties property.
+     * The properties that are associated with SQL DB input containing
+     * reference data. Required on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "properties")
-    private AzureSqlReferenceInputDataSourceProperties properties;
+    private AzureSqlReferenceInputDataSourceProperties innerProperties;
 
     /**
-     * Get the properties property: The properties property.
+     * Get the innerProperties property: The properties that are associated with SQL DB input containing reference data.
+     * Required on PUT (CreateOrReplace) requests.
      *
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    public AzureSqlReferenceInputDataSourceProperties properties() {
-        return this.properties;
+    private AzureSqlReferenceInputDataSourceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Set the properties property: The properties property.
+     * Get the server property: This element is associated with the datasource element. This is the name of the server
+     * that contains the database that will be written to.
      *
-     * @param properties the properties value to set.
+     * @return the server value.
+     */
+    public String server() {
+        return this.innerProperties() == null ? null : this.innerProperties().server();
+    }
+
+    /**
+     * Set the server property: This element is associated with the datasource element. This is the name of the server
+     * that contains the database that will be written to.
+     *
+     * @param server the server value to set.
      * @return the AzureSqlReferenceInputDataSource object itself.
      */
-    public AzureSqlReferenceInputDataSource withProperties(AzureSqlReferenceInputDataSourceProperties properties) {
-        this.properties = properties;
+    public AzureSqlReferenceInputDataSource withServer(String server) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureSqlReferenceInputDataSourceProperties();
+        }
+        this.innerProperties().withServer(server);
+        return this;
+    }
+
+    /**
+     * Get the database property: This element is associated with the datasource element. This is the name of the
+     * database that output will be written to.
+     *
+     * @return the database value.
+     */
+    public String database() {
+        return this.innerProperties() == null ? null : this.innerProperties().database();
+    }
+
+    /**
+     * Set the database property: This element is associated with the datasource element. This is the name of the
+     * database that output will be written to.
+     *
+     * @param database the database value to set.
+     * @return the AzureSqlReferenceInputDataSource object itself.
+     */
+    public AzureSqlReferenceInputDataSource withDatabase(String database) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureSqlReferenceInputDataSourceProperties();
+        }
+        this.innerProperties().withDatabase(database);
+        return this;
+    }
+
+    /**
+     * Get the user property: This element is associated with the datasource element. This is the user name that will be
+     * used to connect to the SQL Database instance.
+     *
+     * @return the user value.
+     */
+    public String user() {
+        return this.innerProperties() == null ? null : this.innerProperties().user();
+    }
+
+    /**
+     * Set the user property: This element is associated with the datasource element. This is the user name that will be
+     * used to connect to the SQL Database instance.
+     *
+     * @param user the user value to set.
+     * @return the AzureSqlReferenceInputDataSource object itself.
+     */
+    public AzureSqlReferenceInputDataSource withUser(String user) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureSqlReferenceInputDataSourceProperties();
+        }
+        this.innerProperties().withUser(user);
+        return this;
+    }
+
+    /**
+     * Get the password property: This element is associated with the datasource element. This is the password that will
+     * be used to connect to the SQL Database instance.
+     *
+     * @return the password value.
+     */
+    public String password() {
+        return this.innerProperties() == null ? null : this.innerProperties().password();
+    }
+
+    /**
+     * Set the password property: This element is associated with the datasource element. This is the password that will
+     * be used to connect to the SQL Database instance.
+     *
+     * @param password the password value to set.
+     * @return the AzureSqlReferenceInputDataSource object itself.
+     */
+    public AzureSqlReferenceInputDataSource withPassword(String password) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureSqlReferenceInputDataSourceProperties();
+        }
+        this.innerProperties().withPassword(password);
+        return this;
+    }
+
+    /**
+     * Get the table property: This element is associated with the datasource element. The name of the table in the
+     * Azure SQL database..
+     *
+     * @return the table value.
+     */
+    public String table() {
+        return this.innerProperties() == null ? null : this.innerProperties().table();
+    }
+
+    /**
+     * Set the table property: This element is associated with the datasource element. The name of the table in the
+     * Azure SQL database..
+     *
+     * @param table the table value to set.
+     * @return the AzureSqlReferenceInputDataSource object itself.
+     */
+    public AzureSqlReferenceInputDataSource withTable(String table) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureSqlReferenceInputDataSourceProperties();
+        }
+        this.innerProperties().withTable(table);
+        return this;
+    }
+
+    /**
+     * Get the refreshType property: Indicates the type of data refresh option.
+     *
+     * @return the refreshType value.
+     */
+    public RefreshType refreshType() {
+        return this.innerProperties() == null ? null : this.innerProperties().refreshType();
+    }
+
+    /**
+     * Set the refreshType property: Indicates the type of data refresh option.
+     *
+     * @param refreshType the refreshType value to set.
+     * @return the AzureSqlReferenceInputDataSource object itself.
+     */
+    public AzureSqlReferenceInputDataSource withRefreshType(RefreshType refreshType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureSqlReferenceInputDataSourceProperties();
+        }
+        this.innerProperties().withRefreshType(refreshType);
+        return this;
+    }
+
+    /**
+     * Get the refreshRate property: This element is associated with the datasource element. This indicates how
+     * frequently the data will be fetched from the database. It is of DateTime format.
+     *
+     * @return the refreshRate value.
+     */
+    public String refreshRate() {
+        return this.innerProperties() == null ? null : this.innerProperties().refreshRate();
+    }
+
+    /**
+     * Set the refreshRate property: This element is associated with the datasource element. This indicates how
+     * frequently the data will be fetched from the database. It is of DateTime format.
+     *
+     * @param refreshRate the refreshRate value to set.
+     * @return the AzureSqlReferenceInputDataSource object itself.
+     */
+    public AzureSqlReferenceInputDataSource withRefreshRate(String refreshRate) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureSqlReferenceInputDataSourceProperties();
+        }
+        this.innerProperties().withRefreshRate(refreshRate);
+        return this;
+    }
+
+    /**
+     * Get the fullSnapshotQuery property: This element is associated with the datasource element. This query is used to
+     * fetch data from the sql database.
+     *
+     * @return the fullSnapshotQuery value.
+     */
+    public String fullSnapshotQuery() {
+        return this.innerProperties() == null ? null : this.innerProperties().fullSnapshotQuery();
+    }
+
+    /**
+     * Set the fullSnapshotQuery property: This element is associated with the datasource element. This query is used to
+     * fetch data from the sql database.
+     *
+     * @param fullSnapshotQuery the fullSnapshotQuery value to set.
+     * @return the AzureSqlReferenceInputDataSource object itself.
+     */
+    public AzureSqlReferenceInputDataSource withFullSnapshotQuery(String fullSnapshotQuery) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureSqlReferenceInputDataSourceProperties();
+        }
+        this.innerProperties().withFullSnapshotQuery(fullSnapshotQuery);
+        return this;
+    }
+
+    /**
+     * Get the deltaSnapshotQuery property: This element is associated with the datasource element. This query is used
+     * to fetch incremental changes from the SQL database. To use this option, we recommend using temporal tables in
+     * Azure SQL Database.
+     *
+     * @return the deltaSnapshotQuery value.
+     */
+    public String deltaSnapshotQuery() {
+        return this.innerProperties() == null ? null : this.innerProperties().deltaSnapshotQuery();
+    }
+
+    /**
+     * Set the deltaSnapshotQuery property: This element is associated with the datasource element. This query is used
+     * to fetch incremental changes from the SQL database. To use this option, we recommend using temporal tables in
+     * Azure SQL Database.
+     *
+     * @param deltaSnapshotQuery the deltaSnapshotQuery value to set.
+     * @return the AzureSqlReferenceInputDataSource object itself.
+     */
+    public AzureSqlReferenceInputDataSource withDeltaSnapshotQuery(String deltaSnapshotQuery) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureSqlReferenceInputDataSourceProperties();
+        }
+        this.innerProperties().withDeltaSnapshotQuery(deltaSnapshotQuery);
         return this;
     }
 
@@ -52,8 +269,8 @@ public final class AzureSqlReferenceInputDataSource extends ReferenceInputDataSo
     @Override
     public void validate() {
         super.validate();
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

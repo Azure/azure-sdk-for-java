@@ -145,7 +145,7 @@ public final class CertificateInner extends Resource {
      * @return the pfxBlob value.
      */
     public byte[] pfxBlob() {
-        return this.innerProperties() == null ? null : this.innerProperties().pfxBlob();
+        return this.innerProperties() == null ? new byte[0] : this.innerProperties().pfxBlob();
     }
 
     /**
@@ -231,7 +231,7 @@ public final class CertificateInner extends Resource {
      * @return the cerBlob value.
      */
     public byte[] cerBlob() {
-        return this.innerProperties() == null ? null : this.innerProperties().cerBlob();
+        return this.innerProperties() == null ? new byte[0] : this.innerProperties().cerBlob();
     }
 
     /**

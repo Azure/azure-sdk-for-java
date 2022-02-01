@@ -1,5 +1,21 @@
 # Release History
 
+## 1.2.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.1.3 (2022-01-25)
+
+#### Dependency updates
+- Updated azure-core to 1.24.1.
+- Updated azure-identity to 1.4.3.
+
 ## 1.1.2 (2021-11-17)
 
 ### Other Changes

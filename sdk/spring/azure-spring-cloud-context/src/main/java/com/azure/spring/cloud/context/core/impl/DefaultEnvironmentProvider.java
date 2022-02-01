@@ -22,6 +22,11 @@ public class DefaultEnvironmentProvider implements EnvironmentProvider {
         return environment;
     }
 
+    /**
+     * Sets the Azure environment.
+     *
+     * @param environment The Azure environment.
+     */
     public void setEnvironment(AzureEnvironment environment) {
         this.environment = environment;
     }

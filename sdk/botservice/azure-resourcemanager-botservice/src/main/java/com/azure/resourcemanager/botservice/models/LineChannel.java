@@ -44,6 +44,20 @@ public final class LineChannel extends Channel {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public LineChannel withEtag(String etag) {
+        super.withEtag(etag);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LineChannel withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

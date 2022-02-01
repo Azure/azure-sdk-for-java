@@ -34,7 +34,7 @@ param()
 
 # Since we're skipping Management for the moment, only look for files with certain parents. These
 # limitations will vanish once Management track is updated.
-$ValidParents = ("azure-sdk-parent", "azure-client-sdk-parent", "azure-data-sdk-parent", "azure-cosmos-parent")
+$ValidParents = ("azure-sdk-parent", "azure-client-sdk-parent", "azure-data-sdk-parent", "azure-perf-test-parent", "azure-cosmos-parent")
 
 # SpringSampleParents is necessary for the spring samples which have to build using the spring-boot-starter-parent BOM.
 # The problem with this is, it's a BOM file and the spring dependencies are pulled in through that which means any
@@ -401,9 +401,15 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         return
     }
 
-    # azure-core-jackson-tests verifies compatibility with different 
+    # azure-core-jackson-tests verifies compatibility with different
     # Jackson versions, it should be excluded from version checks
-    if ($_.FullName -like "*azure-core-jackson-tests*")		
+    if ($_.FullName -like "*azure-core-jackson-tests*")
+    {
+        return
+    }
+
+    # Packages under sdk/resourcemanagerhybrid has duplicate artifactId with that under sdk/resourcemanager
+    if ($_.FullName -like "*resourcemanagerhybrid*")
     {
         return
     }

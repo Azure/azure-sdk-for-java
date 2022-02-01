@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Registries Delete. */
 public final class RegistriesDeleteSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-12-01-preview/examples/RegistryDelete.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/RegistryDelete.json
      */
     /**
      * Sample code: RegistryDelete.

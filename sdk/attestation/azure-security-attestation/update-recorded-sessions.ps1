@@ -1,8 +1,8 @@
 
 
-$sourceSessionRecordPath = ".\target\test-classes\session-records\"
-$targetSessionRecordPath = ".\src\test\resources\"
-$targetSessionRecordsPattern = $targetSessionRecordPath + "\session-records"
+$sourceSessionRecordPath = ".\target\test-classes\session-records"
+$targetSessionRecordPath = ".\src\test\resources"
+$targetSessionRecordsPattern = $targetSessionRecordPath + "\*.json"
 
 if (-not (Test-Path -Path $sourceSessionRecordPath))
 {
@@ -11,5 +11,5 @@ if (-not (Test-Path -Path $sourceSessionRecordPath))
 
 Write-Host("Removing items from $targetSessionRecordsPattern");
 Remove-Item -path $targetSessionRecordsPattern -Recurse -Force
-Write-Host("Copying items from $sourceSessionRecordPath to $targetSessionRecordsPattern")
-Copy-Item -Path $sourceSessionRecordPath -Destination $targetSessionRecordsPattern -Force -Recurse -Container
+Write-Host("Copying items from $sourceSessionRecordPath to $targetSessionRecordPath")
+Copy-Item -Path $sourceSessionRecordPath\*.json  -Destination $targetSessionRecordPath\session-records -Force -Recurse -Container

@@ -278,7 +278,8 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
             deleteWithResponseAsync(resourceGroupName, firewallPolicyName, ruleCollectionGroupName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -743,7 +744,7 @@ public final class FirewallPolicyRuleCollectionGroupsClientImpl implements Firew
                 this.client.getHttpPipeline(),
                 FirewallPolicyRuleCollectionGroupInner.class,
                 FirewallPolicyRuleCollectionGroupInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

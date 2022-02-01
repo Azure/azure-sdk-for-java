@@ -161,6 +161,24 @@ public interface FeedResponseListValidator<T> {
             return this;
         }
 
+        public Builder<T> exactlyTopIdsInAnyOrder(List<String> expectedTopIds) {
+            validators.add(new FeedResponseListValidator<T>() {
+                @Override
+                public void validate(List<FeedResponse<T>> feedList) {
+                    List<String> actualIds = feedList
+                        .stream()
+                        .flatMap(f -> f.getResults().stream())
+                        .limit(expectedTopIds.size())
+                        .map(r -> getResource(r).getId())
+                        .collect(Collectors.toList());
+                    assertThat(actualIds)
+                        .describedAs("Top IDs of results")
+                        .containsOnlyElementsOf(expectedTopIds);
+                }
+            });
+            return this;
+        }
+
         public Builder<T> numberOfPages(int expectedNumberOfPages) {
             validators.add(new FeedResponseListValidator<T>() {
                 @Override
@@ -327,7 +345,7 @@ public interface FeedResponseListValidator<T> {
                             assertThat(queryMetrics.getDocumentLoadTime().compareTo(Duration.ZERO)).isGreaterThanOrEqualTo(0);
                             assertThat(queryMetrics.getDocumentWriteTime().compareTo(Duration.ZERO)).isGreaterThanOrEqualTo(0);
                             assertThat(queryMetrics.getVMExecutionTime().compareTo(Duration.ZERO)).isGreaterThan(0);
-                            assertThat(queryMetrics.getQueryPreparationTimes().getLogicalPlanBuildTime().compareTo(Duration.ZERO)).isGreaterThan(0);
+                            assertThat(queryMetrics.getQueryPreparationTimes().getLogicalPlanBuildTime().compareTo(Duration.ZERO)).isGreaterThanOrEqualTo(0);
                             assertThat(queryMetrics.getQueryPreparationTimes().getPhysicalPlanBuildTime().compareTo(Duration.ZERO)).isGreaterThanOrEqualTo(0);
                             assertThat(queryMetrics.getQueryPreparationTimes().getQueryCompilationTime().compareTo(Duration.ZERO)).isGreaterThan(0);
                             assertThat(queryMetrics.getRuntimeExecutionTimes().getQueryEngineExecutionTime().compareTo(Duration.ZERO)).isGreaterThanOrEqualTo(0);
