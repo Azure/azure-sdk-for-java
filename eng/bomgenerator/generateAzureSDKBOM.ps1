@@ -20,5 +20,5 @@ if(! (Test-Path $defaultPomFilePath)) {
  Copy-Item $bomPomFilePath -Destination $inputDir
 }
 
-$mvnResults = mvn install
-$mvnResults = "mvn exec:java -Dexec.args=`"-inputDir=$inputDir -outputDir=$outputDir -mode=generate`""
+echo "Run the following to generate the Pom file and dependency closure report. Both files will be generated in the outputDir."
+echo "mvn exec:java -Dexec.args=`"-inputDir=$inputDir -outputDir=$outputDir -mode=generate`""

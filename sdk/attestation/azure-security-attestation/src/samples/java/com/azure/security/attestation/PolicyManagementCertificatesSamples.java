@@ -5,13 +5,13 @@ package com.azure.security.attestation;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.attestation.models.AttestationSigner;
+import com.azure.security.attestation.models.AttestationSignerCollection;
 import com.azure.security.attestation.models.AttestationSigningKey;
 import com.azure.security.attestation.models.PolicyCertificatesModificationResult;
 import com.azure.security.attestation.models.PolicyManagementCertificateOptions;
 
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
-import java.util.List;
 
 public class PolicyManagementCertificatesSamples {
 
@@ -28,9 +28,9 @@ public class PolicyManagementCertificatesSamples {
             .buildClient();
 
         // BEGIN: readme-sample-listPolicyCertificates
-        List<AttestationSigner> signers = client.listPolicyManagementCertificates();
-        System.out.printf("Instance %s contains %d signers.\n", endpoint, signers.size());
-        for (AttestationSigner signer : signers) {
+        AttestationSignerCollection signers = client.listPolicyManagementCertificates();
+        System.out.printf("Instance %s contains %d signers.\n", endpoint, signers.getAttestationSigners().size());
+        for (AttestationSigner signer : signers.getAttestationSigners()) {
             System.out.printf("Certificate Subject: %s", signer.getCertificates().get(0).getSubjectDN().toString());
         }
         // END: readme-sample-listPolicyCertificates
@@ -49,8 +49,8 @@ public class PolicyManagementCertificatesSamples {
 
         client.listPolicyManagementCertificates()
                 .subscribe(signers -> {
-                    System.out.printf("Instance %s contains %d signers.\n", endpoint, signers.size());
-                    for (AttestationSigner signer : signers) {
+                    System.out.printf("Instance %s contains %d signers.\n", endpoint, signers.getAttestationSigners().size());
+                    for (AttestationSigner signer : signers.getAttestationSigners()) {
                         System.out.printf("Certificate Subject: %s\n", signer.getCertificates().get(0).getSubjectDN());
                     }
                 });
@@ -131,7 +131,7 @@ public class PolicyManagementCertificatesSamples {
 
         // BEGIN: readme-sample-removePolicyManagementCertificate
         System.out.printf("Removing existing certificate %s\n", certificateToRemove.getSubjectDN().toString());
-        PolicyCertificatesModificationResult modificationResult = client.removePolicyManagementCertificate(
+        PolicyCertificatesModificationResult modificationResult = client.deletePolicyManagementCertificate(
             new PolicyManagementCertificateOptions(certificateToRemove,
                 new AttestationSigningKey(isolatedCertificate, isolatedKey)));
         System.out.printf("Updated policy certificate, certificate remove result: %s\n",
@@ -158,7 +158,7 @@ public class PolicyManagementCertificatesSamples {
 
         // Note: It is not an error to remove a non-existent certificate. The second removal is ignored.
         System.out.printf("Removing an existing certificate %s\n", certificateToRemove.getSubjectDN().toString());
-        client.removePolicyManagementCertificate(new PolicyManagementCertificateOptions(certificateToRemove,
+        client.deletePolicyManagementCertificate(new PolicyManagementCertificateOptions(certificateToRemove,
                 new AttestationSigningKey(isolatedCertificate, isolatedKey)))
             .subscribe(modificationResult -> {
                 System.out.printf("Updated policy certificate, certificate removal result: %s\n",

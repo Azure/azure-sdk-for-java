@@ -2,18 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos;
 
-/**
- * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
- * ARE USED TO EXTRACT APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING
- * LINE NUMBERS OF EXISTING CODE SAMPLES.
- */
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
+// BEGIN: readme-sample-SampleApplication
 @SpringBootApplication
 public class SampleApplication implements CommandLineRunner {
 
@@ -47,3 +42,4 @@ public class SampleApplication implements CommandLineRunner {
 
     }
 }
+// END: readme-sample-SampleApplication

@@ -28,6 +28,7 @@ public class ConvertSimpleAsset extends SampleBase
      * Sample method demonstrating how to convert a simple asset.
      */
     public void convertSimpleAsset() {
+        // BEGIN: readme-sample-convertSimpleAsset
         AssetConversionOptions conversionOptions = new AssetConversionOptions()
             .setInputStorageContainerUrl(getStorageURL())
             .setInputRelativeAssetPath("box.fbx")
@@ -37,6 +38,7 @@ public class ConvertSimpleAsset extends SampleBase
         String conversionId = UUID.randomUUID().toString();
 
         SyncPoller<AssetConversion, AssetConversion> conversionOperation = client.beginConversion(conversionId, conversionOptions);
+        // END: readme-sample-convertSimpleAsset
 
         AssetConversion conversion = conversionOperation.getFinalResult();
         if (conversion.getStatus() == AssetConversionStatus.SUCCEEDED) {

@@ -221,6 +221,7 @@ class EventHubConsumerAsyncClientTest {
     void receivesNumberOfEvents() {
         // Arrange
         final int numberOfEvents = 10;
+        when(amqpReceiveLink.getCredits()).thenReturn(numberOfEvents);
 
         // Act & Assert
         StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).take(numberOfEvents))

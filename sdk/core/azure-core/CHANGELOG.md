@@ -3,6 +3,7 @@
 ## 1.25.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added a static method `toRfc1123String` that allows to convert the `OffsetDateTime` datetime to datetime string in RFC1123 format.
 
 ### Breaking Changes
 

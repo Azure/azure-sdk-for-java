@@ -87,7 +87,7 @@ public interface CloudServiceOperatingSystemsClient {
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all guest operating system versions available to be specified in the XML service configuration
-     *     (.cscfg) for a cloud service.
+     *     (.cscfg) for a cloud service as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<OSVersionInner> listOSVersionsAsync(String location);
@@ -102,7 +102,7 @@ public interface CloudServiceOperatingSystemsClient {
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all guest operating system versions available to be specified in the XML service configuration
-     *     (.cscfg) for a cloud service.
+     *     (.cscfg) for a cloud service as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OSVersionInner> listOSVersions(String location);
@@ -118,7 +118,7 @@ public interface CloudServiceOperatingSystemsClient {
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all guest operating system versions available to be specified in the XML service configuration
-     *     (.cscfg) for a cloud service.
+     *     (.cscfg) for a cloud service as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OSVersionInner> listOSVersions(String location, Context context);
@@ -194,7 +194,7 @@ public interface CloudServiceOperatingSystemsClient {
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all guest operating system families available to be specified in the XML service configuration
-     *     (.cscfg) for a cloud service.
+     *     (.cscfg) for a cloud service as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<OSFamilyInner> listOSFamiliesAsync(String location);
@@ -209,7 +209,7 @@ public interface CloudServiceOperatingSystemsClient {
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all guest operating system families available to be specified in the XML service configuration
-     *     (.cscfg) for a cloud service.
+     *     (.cscfg) for a cloud service as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OSFamilyInner> listOSFamilies(String location);
@@ -225,7 +225,7 @@ public interface CloudServiceOperatingSystemsClient {
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all guest operating system families available to be specified in the XML service configuration
-     *     (.cscfg) for a cloud service.
+     *     (.cscfg) for a cloud service as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OSFamilyInner> listOSFamilies(String location, Context context);

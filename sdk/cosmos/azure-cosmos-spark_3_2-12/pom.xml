@@ -61,7 +61,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.26.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.26.0-beta.2</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>org.scala-lang.modules</groupId>
@@ -183,6 +183,8 @@
                 <include>org.scalatest:scalatest_2.12:[3.2.2]</include> <!-- {x-include-update;cosmos_org.scalatest:scalatest_2.12;external_dependency} -->
                 <include>net.alchim31.maven:scala-maven-plugin:[4.5.4]</include> <!-- {x-include-update;cosmos_net.alchim31.maven:scala-maven-plugin;external_dependency} -->
                 <include>org.scalastyle:scalastyle-maven-plugin:[1.0.0]</include> <!-- {x-include-update;cosmos_org.scalastyle:scalastyle-maven-plugin;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-databind:[2.13.1]</include>  <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                <include>com.fasterxml.jackson.module:jackson-module-scala_2.12:[2.13.1]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -292,50 +294,6 @@
               </execution>
             </executions>
           </plugin>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>flatten-maven-plugin</artifactId>
-            <version>1.2.7</version> <!-- {x-version-update;cosmos_org.codehaus.mojo:flatten-maven-plugin;external_dependency} -->
-            <configuration>
-              <updatePomFile>true</updatePomFile>
-              <flattenMode>ossrh</flattenMode>
-              <flattenedPomFilename>flatter.pom</flattenedPomFilename>
-            </configuration>
-            <executions>
-              <execution>
-                <id>flattenOnVerify</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>flatten</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>flatten.cleanOnVerify</id>
-                <phase>clean</phase>
-                <goals>
-                  <goal>clean</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>com.coderplus.maven.plugins</groupId>
-            <artifactId>copy-rename-maven-plugin</artifactId>
-            <version>1.0.1</version> <!-- {x-version-update;cosmos_com.coderplus.maven.plugins:copy-rename-maven-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>copy-file</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>copy</goal>
-                </goals>
-                <configuration>
-                  <sourceFile>flatter.pom</sourceFile>
-                  <destinationFile>dependency-reduced-pom.xml</destinationFile>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
         </plugins>
       </build>
     </profile>
@@ -395,13 +353,13 @@
     </profile>
     <profile>
       <!-- integration tests, requires Cosmos DB Emulator Endpoint -->
-      <id>sparkE2E</id>
+      <id>sparkE2E_3-1</id>
       <activation>
         <file>
           <exists>${basedir}/scalastyle_config.xml</exists>
         </file>
         <property>
-          <name>spark-e2e</name>
+          <name>spark-e2e_3-1</name>
         </property>
       </activation>
       <build>
@@ -448,7 +406,61 @@
         </plugins>
       </build>
     </profile>
-
+    <profile>
+      <!-- integration tests, requires Cosmos DB Emulator Endpoint -->
+      <id>sparkE2E_3-2</id>
+      <activation>
+        <file>
+          <exists>${basedir}/scalastyle_config.xml</exists>
+        </file>
+        <property>
+          <name>spark-e2e_3-2</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <includes>
+                <include>**/*.*</include>
+                <include>**/*Test.*</include>
+                <include>**/*Suite.*</include>
+                <include>**/*Spec.*</include>
+              </includes>
+              <skipTests>true</skipTests>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.scalatest</groupId>
+            <artifactId>scalatest-maven-plugin</artifactId>
+            <version>2.0.2</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-maven-plugin;external_dependency} -->
+            <configuration>
+              <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+              <junitxml>.</junitxml>
+              <filereports>SparkTestSuite.txt</filereports>
+              <suffixes>(ITest|Test|Spec|Suite)</suffixes> <!-- every test -->
+            </configuration>
+            <executions>
+              <execution>
+                <id>test</id>
+                <goals>
+                  <goal>test</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>scala-test</id>
+                <goals>
+                  <goal>test</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
     <profile>
       <id>cosmos-spark-shading</id>
       <activation>
@@ -482,6 +494,8 @@
                       <shadedPattern>${shadingPrefix}.com.azure</shadedPattern>
                       <excludes>
                         <exclude>com.azure.cosmos.spark.*</exclude>
+                        <exclude>com.azure.cosmos.spark.diagnostics.*</exclude>
+                        <exclude>com.azure.cosmos.spark.udf.*</exclude>
                         <exclude>com.azure.cosmos.implementation.SparkBridgeInternal</exclude>
                         <exclude>com.azure.cosmos.models.CosmosParameterizedQuery</exclude>
                       </excludes>
@@ -616,6 +630,32 @@
                 </configuration>
               </execution>
             </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>xml-maven-plugin</artifactId>
+            <version>1.0.2</version> <!-- {x-version-update;org.codehaus.mojo:xml-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>stripDependencyReducedPom</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>transform</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <transformationSets>
+                <transformationSet>
+                  <dir>${project.basedir}</dir>
+                  <includes>dependency-reduced-pom.xml</includes>
+                  <stylesheet>${project.basedir}/../azure-cosmos-spark_3_2-12/stripDependencyReducedPom.xsl</stylesheet>
+                  <outputDir>${project.basedir}</outputDir>
+                  <skipDefaultExcludes>true</skipDefaultExcludes>
+                  <addedToClasspath>false</addedToClasspath>
+                </transformationSet>
+              </transformationSets>
+            </configuration>
           </plugin>
         </plugins>
       </build>

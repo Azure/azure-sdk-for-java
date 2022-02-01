@@ -125,7 +125,6 @@ This scenario uses the [The OAuth 2.0 authorization code grant] flow to login in
 1. Write your Java code.
     
     Controller code can refer to the following:
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc/src/main/java/com/azure/spring/sample/aad/b2c/controller/WebController.java#L12-L30 -->
     ```java
     @Controller
     public class WebController {
@@ -149,7 +148,6 @@ This scenario uses the [The OAuth 2.0 authorization code grant] flow to login in
     ```
     
     Security configuration code can refer to the following:
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc/src/main/java/com/azure/spring/sample/aad/b2c/security/WebSecurityConfiguration.java#L11-L29 -->
     ```java
     @EnableWebSecurity
     public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -250,8 +248,7 @@ This scenario is based on **Accessing a web application** scenario to allow appl
 1. Write your `Webapp` Java code.
 
    Controller code can refer to the following:
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/autoconfigure/b2c/WebappAccessResourceController.java#L25-L43 -->
-    ```java
+    ```java readme-sample-callWebApiA
     /**
      * Access to protected data from Webapp to WebApiA through client credential flow. The access token is obtained by webclient, or
      * <p>@RegisteredOAuth2AuthorizedClient("webApiA")</p>. In the end, these two approaches will be executed to
@@ -274,8 +271,7 @@ This scenario is based on **Accessing a web application** scenario to allow appl
     ```
 
    Security configuration code is the same with **Accessing a web application** scenario, another bean `webClient`is added as follows:
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/autoconfigure/b2c/WebappAccessResourceConfiguration.java#33-L40 -->
-    ```java
+    ```java readme-sample-webClient
     @Bean
     public WebClient webClient(OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager) {
         ServletOAuth2AuthorizedClientExchangeFilterFunction function =
@@ -330,8 +326,7 @@ This scenario not support login. Just protect the server by validating the acces
 1. Write your Java code.
 
    Controller code can refer to the following:
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/autoconfigure/b2c/ResourceServerController.java#L25-L34 -->
-    ```java
+    ```java readme-sample-webApiASample
     /**
      * webApiA resource api for web app
      * @return test content
@@ -345,12 +340,11 @@ This scenario not support login. Just protect the server by validating the acces
     ```
 
    Security configuration code can refer to the following:
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/autoconfigure/b2c/ResourceServerConfiguration.java#L11-L22 -->
-    ```java
+    ```java readme-sample-ResourceServerConfiguration
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
     public class ResourceServerConfiguration extends WebSecurityConfigurerAdapter {
-    
+
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.authorizeRequests((requests) -> requests.anyRequest().authenticated())
@@ -418,8 +412,7 @@ This scenario is an upgrade of **Accessing a resource server**, supports access 
 1. Write your Java code.
 
    WebApiA controller code can refer to the following:
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/autoconfigure/b2c/ResourceServerController.java#L47-L66 -->
-    ```java
+    ```java readme-sample-callWebApiB
     /**
      * Access to protected data from WebApiA to WebApiB through client credential flow. The access token is obtained by webclient, or
      * <p>@RegisteredOAuth2AuthorizedClient("webApiA")</p>. In the end, these two approaches will be executed to
@@ -443,8 +436,7 @@ This scenario is an upgrade of **Accessing a resource server**, supports access 
     ```
    
    WebApiB controller code can refer to the following:
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/autoconfigure/b2c/ResourceServerController.java#L36-L45 -->
-    ```java
+    ```java readme-sample-webApiBSample
     /**
      * webApiB resource api for other web application
      * @return test content

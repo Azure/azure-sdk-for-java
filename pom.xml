@@ -57,6 +57,7 @@
 
         <!-- Event Grid -->
         <module>sdk/eventgrid/azure-messaging-eventgrid</module>
+        <module>sdk/eventgrid/azure-messaging-eventgrid-cloudnative-cloudevents</module>
 
         <!-- Event Hubs -->
         <module>sdk/eventhubs/azure-messaging-eventhubs</module>
@@ -802,6 +803,7 @@
         <module>sdk/mysqlflexibleserver</module>
         <module>sdk/netapp</module>
         <module>sdk/notificationhubs</module>
+        <module>sdk/oep</module>
         <module>sdk/operationsmanagement</module>
         <module>sdk/parents</module>
         <module>sdk/peering</module>

@@ -37,6 +37,7 @@ public class ClientController {
         return "index";
     }
 
+    // BEGIN: readme-sample-graph
     @GetMapping("/graph")
     @ResponseBody
     public String graph(
@@ -46,5 +47,6 @@ public class ClientController {
         // oAuth2AuthorizedClient contains access_token. We can use this access_token to access resource server.
         return toJsonString(graphClient);
     }
+    // END: readme-sample-graph
 
 }
