@@ -1,4 +1,6 @@
 ## Release History
+### 4.7.0-beta.1 (Unreleased)
+
 ### 4.6.0 (2022-01-25)
 #### Key Bug Fixes
 * Fixed an issue in schema inference logic resulting in only using the first element of an array to derive the schema. - See [PR 26568](https://github.com/Azure/azure-sdk-for-java/pull/26568)
