@@ -159,11 +159,11 @@ stages:
 
 #        # Run link verification at the end as it will run no matter the pipeline passing or failing.
 #        # If this task fails with an error it shouldn't prevent aggregate reports from being generated.
-#        - template: /eng/common/pipelines/templates/steps/verify-links.yml
-#          parameters:
-#            Directory: ""
-#            CheckLinkGuidance: $true
-#            Condition: succeededOrFailed()
+        - template: /eng/common/pipelines/templates/steps/verify-links.yml
+          parameters:
+            Directory: ""
+            CheckLinkGuidance: $true
+            Condition: succeededOrFailed()
 
   - stage: ComplianceTools
     displayName: Compliance Tools
