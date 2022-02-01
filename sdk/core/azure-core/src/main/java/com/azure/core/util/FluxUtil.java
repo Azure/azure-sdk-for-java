@@ -21,12 +21,14 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
 import reactor.util.context.ContextView;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.CompletionHandler;
+import java.nio.channels.FileChannel;
 import java.nio.file.StandardOpenOption;
 import java.util.Collections;
 import java.util.Map;
@@ -201,6 +203,29 @@ public final class FluxUtil {
 
         if (inputStream == null) {
             return Flux.empty();
+        }
+
+        if (inputStream instanceof FileInputStream) {
+            FileChannel fileChannel = ((FileInputStream) inputStream).getChannel();
+
+            return Flux.<ByteBuffer, FileChannel>generate(() -> fileChannel, (channel, sink) -> {
+                try {
+                    long channelPosition = channel.position();
+                    long channelSize = channel.size();
+
+                    if (channelPosition == channelSize) {
+                        sink.complete();
+                    } else {
+                        int nextByteBufferSize = (int) Math.min(chunkSize, channelSize - channelPosition);
+                        sink.next(channel.map(FileChannel.MapMode.READ_ONLY, channelPosition, nextByteBufferSize));
+                        channel.position(channelPosition + nextByteBufferSize);
+                    }
+                } catch (IOException ex) {
+                    sink.error(ex);
+                }
+
+                return channel;
+            });
         }
 
         return Flux.<ByteBuffer, InputStream>generate(() -> inputStream, (stream, sink) -> {
