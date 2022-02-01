@@ -12,7 +12,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Ensures caught exceptions are included as exception cause in subsequently thrown exception.
+ * This check ensures that an exception thrown includes the current caught exception cause.
+ * New exception should use the original/cause exception object to provide the full stack trace for the problem.
+ *
+ * // DO
+ * try {
+ *     url = new URL(urlString);
+ * } catch (MalformedURLException ex) {
+ *     throw new RuntimeException(ex);
+ * }
+ *
+ * // DON'T
+ * try {
+ *     url = new URL(urlString);
+ * } catch (MalformedURLException ex) {
+ *     throw new RuntimeException("Invalid URL string was given."); // "ex" is ignored.
+ * }
  */
 public class UseCaughtExceptionCauseCheck extends AbstractCheck {
     static final String UNUSED_CAUGHT_EXCEPTION_ERROR = "Should use the current exception cause \"%s\".";
@@ -58,7 +73,7 @@ public class UseCaughtExceptionCauseCheck extends AbstractCheck {
     }
 
     /**
-     * Returns the wrapped exception tokens
+     * Returns the list of exceptions that wrapped the current exception tokens
      *
      * @param detailAST catch block throw parent token
      * @param caughtExceptionVariableName list containing the exception tokens
@@ -70,8 +85,8 @@ public class UseCaughtExceptionCauseCheck extends AbstractCheck {
         final List<String> wrappedExceptionNames = new LinkedList<>();
 
         for (DetailAST currentNode : getChildrenNodes(detailAST)) {
-            if (currentNode.getType() == TokenTypes.IDENT &&
-                currentNode.getText().equals(caughtExceptionVariableName)) {
+            if (currentNode.getType() == TokenTypes.IDENT
+                && currentNode.getText().equals(caughtExceptionVariableName)) {
                 getWrappedExceptionVariable(currentCatchAST, wrappedExceptionNames, currentNode);
             }
 
