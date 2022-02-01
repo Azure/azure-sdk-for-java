@@ -688,7 +688,7 @@ public final class BulkExecutor<TContext> {
         Map<String, String> customOptions = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
             .getCosmosBulkExecutionOptionsAccessor()
             .getCustomOptions(cosmosBulkExecutionOptions);
-        if (!customOptions.isEmpty()) {
+        if (customOptions != null && !customOptions.isEmpty()) {
             for(Map.Entry<String, String> entry : customOptions.entrySet()) {
                 options.setHeader(entry.getKey(), entry.getValue());
             }

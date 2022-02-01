@@ -683,10 +683,12 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void bulkExecution_createItem() {
         int totalRequest = getTotalRequest();
+        Map<String, EncryptionPojo> idToItemMap = new HashMap<>();
         Flux<CosmosItemOperation> cosmosItemOperationsFlux = Flux.range(0, totalRequest).map(i -> {
             String itemId = UUID.randomUUID().toString();
             EncryptionPojo createPojo = getItem(itemId);
 
+            idToItemMap.put(itemId, createPojo);
             return CosmosBulkOperations.getCreateItemOperation(createPojo, new PartitionKey(createPojo.getMypk()));
         });
 
@@ -713,6 +715,9 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
                 assertThat(cosmosBulkItemResponse.getActivityId()).isNotNull();
                 assertThat(cosmosBulkItemResponse.getRequestCharge()).isNotNull();
 
+                EncryptionPojo item = cosmosBulkItemResponse.getItem(EncryptionPojo.class);
+                validateResponse(item, idToItemMap.get(item.getId()));
+
                 return Mono.just(cosmosBulkItemResponse);
             }).blockLast();
 
@@ -723,10 +728,12 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
     public void bulkExecution_upsertItem() {
         int totalRequest = getTotalRequest();
 
+        Map<String, EncryptionPojo> idToItemMap = new HashMap<>();
         Flux<CosmosItemOperation> cosmosItemOperationsFlux = Flux.range(0, totalRequest).map(i -> {
             String itemId = UUID.randomUUID().toString();
             EncryptionPojo createPojo = getItem(itemId);
 
+            idToItemMap.put(itemId, createPojo);
             return CosmosBulkOperations.getUpsertItemOperation(createPojo, new PartitionKey(createPojo.getMypk()));
         });
 
@@ -754,6 +761,9 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
                 assertThat(cosmosBulkItemResponse.getActivityId()).isNotNull();
                 assertThat(cosmosBulkItemResponse.getRequestCharge()).isNotNull();
 
+                EncryptionPojo item = cosmosBulkItemResponse.getItem(EncryptionPojo.class);
+                validateResponse(item, idToItemMap.get(item.getId()));
+
                 return Mono.just(cosmosBulkItemResponse);
             }).blockLast();
 
@@ -767,12 +777,9 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
         for (int i = 0; i < totalRequest; i++) {
             String itemId = UUID.randomUUID().toString();
-
-            // use i as a identifier for re check.
             EncryptionPojo createPojo = getItem(itemId);
 
             cosmosItemOperations.add(CosmosBulkOperations.getCreateItemOperation(createPojo, new PartitionKey(createPojo.getMypk())));
-//            indexCosmosItemOperationMap.put(createPojo.getId(), cosmosItemOperation);
         }
 
         createItemsAndVerify(cosmosItemOperations);
@@ -817,11 +824,13 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         int totalRequest = getTotalRequest();
 
         List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+        Map<String, EncryptionPojo> idToItemMap = new HashMap<>();
 
         for (int i = 0; i < totalRequest; i++) {
             String itemId = UUID.randomUUID().toString();
             EncryptionPojo createPojo = getItem(itemId);
 
+            idToItemMap.put(itemId, createPojo);
             cosmosItemOperations.add(CosmosBulkOperations.getCreateItemOperation(createPojo, new PartitionKey(createPojo.getMypk())));
         }
 
@@ -856,6 +865,8 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
                 assertThat(cosmosBulkItemResponse.getActivityId()).isNotNull();
                 assertThat(cosmosBulkItemResponse.getRequestCharge()).isNotNull();
 
+                EncryptionPojo item = cosmosBulkItemResponse.getItem(EncryptionPojo.class);
+                validateResponse(item, idToItemMap.get(item.getId()));
 
                 return Mono.just(cosmosBulkItemResponse);
             }).blockLast();

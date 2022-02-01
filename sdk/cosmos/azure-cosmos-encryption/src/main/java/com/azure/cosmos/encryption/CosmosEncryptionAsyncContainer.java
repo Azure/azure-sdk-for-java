@@ -1187,14 +1187,9 @@ public class CosmosEncryptionAsyncContainer {
         });
 
         final CosmosBulkExecutionOptions cosmosBulkExecutionOptions = bulkOptions;
-        Mono<Flux<CosmosItemOperation>> then = operationFlux.then(Mono.defer(() -> {
-            setRequestHeaders(cosmosBulkExecutionOptions);
-            return Mono.just(operationFlux);
-        }));
+        setRequestHeaders(cosmosBulkExecutionOptions);
 
-        return then.flatMapMany(cosmosItemOperationFlux -> {
-            return executeBulkOperationsHelper(operationFlux, cosmosBulkExecutionOptions, false);
-        });
+        return executeBulkOperationsHelper(operationFlux, cosmosBulkExecutionOptions, false);
     }
 
     private <TContext> Flux<CosmosBulkOperationResponse<TContext>> executeBulkOperationsHelper(Flux<CosmosItemOperation> operations,
@@ -1216,7 +1211,7 @@ public class CosmosEncryptionAsyncContainer {
                 });
                 return jsonNodeMono.flux().flatMap(jsonNode -> Flux.just((CosmosBulkOperationResponse<TContext>) cosmosBulkOperationResponse));
             }
-            return Flux.just((CosmosBulkOperationResponse<TContext>) cosmosBulkOperationResponse);
+            return Mono.just((CosmosBulkOperationResponse<TContext>) cosmosBulkOperationResponse);
         });
     }
 
