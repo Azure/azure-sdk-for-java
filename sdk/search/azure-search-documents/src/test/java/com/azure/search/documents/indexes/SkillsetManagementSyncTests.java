@@ -5,6 +5,7 @@ package com.azure.search.documents.indexes;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.search.documents.SearchTestBase;
@@ -36,6 +37,7 @@ import com.azure.search.documents.indexes.models.VisualFeature;
 import com.azure.search.documents.indexes.models.WebApiSkill;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIf;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
@@ -309,6 +311,8 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
     }
 
     @Test
+    @DisabledIf(value = "com.azure.search.documents.indexes.SkillsetManagementSyncTests#isLiveTest",
+        disabledReason = "Service has a bug which is causing this to fail.")
     public void createCustomSkillsetReturnsCorrectDefinition() {
         SearchIndexerSkillset expected = createSkillsetWithCustomSkills();
         SearchIndexerSkillset actual = client.createSkillset(expected);
@@ -344,6 +348,8 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
     }
 
     @Test
+    @DisabledIf(value = "com.azure.search.documents.indexes.SkillsetManagementSyncTests#isLiveTest",
+        disabledReason = "Service has a bug which is causing this to fail.")
     public void canListSkillsetsWithSelectedField() {
         SearchIndexerSkillset skillset1 = createSkillsetWithCognitiveServicesKey();
         SearchIndexerSkillset skillset2 = createSkillsetWithEntityRecognitionDefaultSettings();
@@ -1070,7 +1076,6 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
         return Collections.singletonList(createOutputFieldMappingEntry("output", "myOutput"));
     }
 
-
     protected List<SearchIndexerSkill> getCreateOrUpdateSkills() {
         return Collections.singletonList(new KeyPhraseExtractionSkill(
             Collections.singletonList(simpleInputFieldMappingEntry("text", "/document/mytext")),
@@ -1079,5 +1084,9 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
             .setName("mykeyphrases")
             .setDescription("Tested Key Phrase skill")
             .setContext(CONTEXT_VALUE));
+    }
+
+    public static boolean isLiveTest() {
+        return TEST_MODE == TestMode.LIVE || TEST_MODE == TestMode.RECORD;
     }
 }
