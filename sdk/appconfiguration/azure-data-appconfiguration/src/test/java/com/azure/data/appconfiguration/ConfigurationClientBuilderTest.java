@@ -7,8 +7,8 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.FixedDelay;
-import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
@@ -135,7 +135,7 @@ public class ConfigurationClientBuilderTest extends TestBase {
     public void throwIfBothRetryOptionsAndRetryPolicyIsConfigured() {
         final ConfigurationClientBuilder clientBuilder = new ConfigurationClientBuilder()
             .connectionString(connectionString)
-            .retryOptions(new RetryOptions(new FixedDelayOptions()))
+            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
             .retryPolicy(new RetryPolicy())
             .addPolicy(new TimeoutPolicy(Duration.ofMillis(1)));
 

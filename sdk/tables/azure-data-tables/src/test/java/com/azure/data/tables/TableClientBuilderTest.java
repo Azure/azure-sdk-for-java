@@ -7,7 +7,7 @@ import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.policy.FixedDelayOptions;
+import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
@@ -269,7 +269,7 @@ public class TableClientBuilderTest {
             .connectionString(connectionString)
             .tableName(tableName)
             .serviceVersion(serviceVersion)
-            .retryOptions(new RetryOptions(new FixedDelayOptions()))
+            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
             .retryPolicy(new RetryPolicy())
             .buildAsyncClient());
     }

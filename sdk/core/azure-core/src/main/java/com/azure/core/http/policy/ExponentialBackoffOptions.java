@@ -6,7 +6,9 @@ package com.azure.core.http.policy;
 import java.time.Duration;
 
 /**
- * The configuration for exponential backoff.
+ * The configuration for exponential backoff that has a delay duration that exponentially
+ * increases with each retry attempt until an upper bound is reached after which every retry attempt is delayed by the
+ * provided max delay duration.
  */
 public class ExponentialBackoffOptions {
     private Integer maxRetries;

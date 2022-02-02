@@ -263,9 +263,7 @@ public final class RequestRetryOptions {
         ExponentialBackoffOptions exponentialBackoffOptions = retryOptions.getExponentialBackoffOptions();
         if (fixedDelayOptions != null) {
             policyType = RetryPolicyType.FIXED;
-            if (fixedDelayOptions.getMaxRetries() != null) {
-                maxTries = fixedDelayOptions.getMaxRetries() + 1; // maxTries in original + retries
-            }
+            maxTries = fixedDelayOptions.getMaxRetries() + 1; // maxTries in original + retries
             retryDelay = fixedDelayOptions.getDelay();
         } else if (exponentialBackoffOptions != null) {
             policyType = RetryPolicyType.EXPONENTIAL;

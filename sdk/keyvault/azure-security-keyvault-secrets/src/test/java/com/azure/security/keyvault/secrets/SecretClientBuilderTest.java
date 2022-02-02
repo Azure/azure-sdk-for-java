@@ -5,7 +5,7 @@ package com.azure.security.keyvault.secrets;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.policy.FixedDelayOptions;
+import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
@@ -144,7 +144,7 @@ public class SecretClientBuilderTest {
             .vaultUrl(vaultUrl)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
-            .retryOptions(new RetryOptions(new FixedDelayOptions()))
+            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
             .retryPolicy(new RetryPolicy())
             .buildClient());
     }
