@@ -1735,6 +1735,10 @@ public interface VirtualMachine
             /**
              * Begins creating the virtual machine resource.
              *
+             * Virtual machine extensions can only be created after the completion of virtual machine.
+             * Therefore, the configuration of virtual machine extensions is not compatible with this operation.
+             * Please use {@link WithCreate#create()} if virtual machine extensions is configured.
+             *
              * @return the accepted create operation
              */
             Accepted<VirtualMachine> beginCreate();

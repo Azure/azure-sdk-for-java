@@ -50,6 +50,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.CONNECTION_ID_KEY;
+
 /**
  * This class provides a fluent builder API to aid the instantiation of {@link EventHubProducerAsyncClient}, {@link
  * EventHubProducerClient}, {@link EventHubConsumerAsyncClient}, and {@link EventHubConsumerClient}. Calling any of the
@@ -748,7 +750,9 @@ public class EventHubClientBuilder {
                 }
 
                 final String connectionId = StringUtil.getRandomString("MF");
-                logger.info("connectionId[{}]: Emitting a single connection.", connectionId);
+                logger.atInfo()
+                    .addKeyValue(CONNECTION_ID_KEY, connectionId)
+                    .log("Emitting a single connection.");
 
                 final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
                     connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
