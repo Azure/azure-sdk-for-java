@@ -8,7 +8,6 @@ import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
-import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.microsoft.data.encryption.cryptography.AeadAes256CbcHmac256EncryptionAlgorithm;
@@ -28,6 +27,7 @@ import java.security.InvalidKeyException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public final class EncryptionSettings {
     private final static Logger LOGGER = LoggerFactory.getLogger(EncryptionSettings.class);
@@ -79,23 +79,24 @@ public final class EncryptionSettings {
                             propertyToEncrypt.getClientEncryptionKeyId(),
                             this.databaseRid,
                             encryptionProcessor.getCosmosAsyncContainer(),
+                            null,
                             forceRefreshClientEncryptionKey.get())
                             .publishOn(Schedulers.boundedElastic())
                             .flatMap(keyProperties -> {
-                                ProtectedDataEncryptionKey protectedDataEncryptionKey;
+                                AtomicReference<ProtectedDataEncryptionKey> protectedDataEncryptionKey = null;
                                 try {
-                                    protectedDataEncryptionKey = buildProtectedDataEncryptionKey(keyProperties,
+                                    protectedDataEncryptionKey.set(buildProtectedDataEncryptionKey(keyProperties,
                                         encryptionProcessor.getEncryptionKeyStoreProvider(),
-                                        propertyToEncrypt.getClientEncryptionKeyId());
-                                } catch (Exception ex) {
-                                    return Mono.error(ex);
+                                        propertyToEncrypt.getClientEncryptionKeyId()));
+                                } catch (Exception ex)  {
+                                    forceRefreshGatewayCacheAndBuildProtectedDataEncryptionKeyAsync(keyProperties.getETag(), encryptionProcessor, propertyToEncrypt).flatMap(key -> protectedDataEncryptionKey.set(key));
                                 }
                                 EncryptionSettings encryptionSettings = new EncryptionSettings();
                                 encryptionSettings.setDatabaseRid(databaseRid);
                                 encryptionSettings.encryptionSettingTimeToLive =
                                     Instant.now().plus(Duration.ofMinutes(Constants.CACHED_ENCRYPTION_SETTING_DEFAULT_DEFAULT_TTL_IN_MINUTES));
                                 encryptionSettings.clientEncryptionKeyId = propertyToEncrypt.getClientEncryptionKeyId();
-                                encryptionSettings.dataEncryptionKey = protectedDataEncryptionKey;
+                                encryptionSettings.dataEncryptionKey = protectedDataEncryptionKey.get();
                                 EncryptionType encryptionType = EncryptionType.Plaintext;
                                 switch (propertyToEncrypt.getEncryptionType()) {
                                     case CosmosEncryptionType.DETERMINISTIC:
@@ -138,6 +139,33 @@ public final class EncryptionSettings {
             return Mono.empty();
         });
     }
+
+//    private void populateProtectedDataEncryptionKey(Mono<ProtectedDataEncryptionKey> protectedDataEncryptionKeyMono, ProtectedDataEncryptionKey protectedDataEncryptionKey) {
+//        protectedDataEncryptionKeyMono.map(key -> protectedDataEncryptionKey = key);
+//    }
+
+    Mono<ProtectedDataEncryptionKey> forceRefreshGatewayCacheAndBuildProtectedDataEncryptionKeyAsync(String existingCekEtag, EncryptionProcessor encryptionProcessor, ClientEncryptionIncludedPath propertyToEncrypt) {
+
+        return EncryptionBridgeInternal.getClientEncryptionPropertiesAsync(encryptionProcessor.getEncryptionCosmosClient(),
+            propertyToEncrypt.getClientEncryptionKeyId(),
+            this.databaseRid,
+            encryptionProcessor.getCosmosAsyncContainer(),
+            existingCekEtag,
+            false)
+            .publishOn(Schedulers.boundedElastic())
+            .flatMap(keyProperties -> {
+                ProtectedDataEncryptionKey protectedDataEncryptionKey;
+                try {
+                    protectedDataEncryptionKey = buildProtectedDataEncryptionKey(keyProperties,
+                        encryptionProcessor.getEncryptionKeyStoreProvider(),
+                        propertyToEncrypt.getClientEncryptionKeyId());
+                } catch (Exception ex) {
+                    return Mono.error(ex);
+                }
+                return Mono.just(protectedDataEncryptionKey);
+            });
+    }
+
 
     ProtectedDataEncryptionKey buildProtectedDataEncryptionKey(CosmosClientEncryptionKeyProperties keyProperties,
                                                                EncryptionKeyStoreProvider encryptionKeyStoreProvider,

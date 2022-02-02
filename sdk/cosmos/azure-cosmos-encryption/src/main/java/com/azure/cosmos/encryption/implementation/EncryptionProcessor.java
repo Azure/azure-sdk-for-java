@@ -110,7 +110,7 @@ public class EncryptionProcessor {
                 AtomicBoolean forceRefreshClientEncryptionKey = new AtomicBoolean(false);
                 Mono<Object> clientEncryptionPropertiesMono =
                     EncryptionBridgeInternal.getClientEncryptionPropertiesAsync(this.encryptionCosmosClient,
-                        clientEncryptionKeyId, this.databaseRid, this.cosmosAsyncContainer, forceRefreshClientEncryptionKey.get())
+                        clientEncryptionKeyId, this.databaseRid, this.cosmosAsyncContainer, null, forceRefreshClientEncryptionKey.get())
                         .publishOn(Schedulers.boundedElastic())
                         .flatMap(keyProperties -> {
                             ProtectedDataEncryptionKey protectedDataEncryptionKey;

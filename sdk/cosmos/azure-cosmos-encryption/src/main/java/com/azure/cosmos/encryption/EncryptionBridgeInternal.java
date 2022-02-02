@@ -30,9 +30,10 @@ public class EncryptionBridgeInternal {
                                                                                                String clientEncryptionKeyId,
                                                                                                String databaseRid,
                                                                                                CosmosAsyncContainer cosmosAsyncContainer,
+                                                                                               String ifNonematchEtag,
                                                                                                boolean shouldForceRefresh) {
         return cosmosEncryptionAsyncClient.getClientEncryptionPropertiesAsync(clientEncryptionKeyId, databaseRid,
-            cosmosAsyncContainer, shouldForceRefresh);
+            cosmosAsyncContainer, ifNonematchEtag, shouldForceRefresh);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
