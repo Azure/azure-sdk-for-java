@@ -67,8 +67,11 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         AttributeKey.stringKey("message_bus.destination");
     private static final AttributeKey<Long> AZURE_SDK_ENQUEUED_TIME =
         AttributeKey.longKey("x-opt-enqueued-time");
+    // this is redundant, add this so that this class is not dependent on AiDependencyOperationNameSpanProcessor
+    private static final AttributeKey<String> AI_OPERATION_NAME_KEY = AttributeKey.stringKey("applicationinsights.internal.operation_name");
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorTraceExporter.class);
+
 
     static {
         Set<String> dbSystems = new HashSet<>();
@@ -278,6 +281,14 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
 
     private static void setOperationTags(TelemetryItem telemetry, SpanData span) {
         setOperationTags(telemetry, span.getTraceId(), span.getParentSpanContext().getSpanId());
+        setOperationName(telemetry, span.getAttributes());
+    }
+
+    private static void setOperationName(TelemetryItem telemetry, Attributes attributes) {
+        String operationName = attributes.get(AI_OPERATION_NAME_KEY);
+        if (operationName != null) {
+            telemetry.getTags().put(ContextTagKeys.AI_OPERATION_NAME.toString(), operationName);
+        }
     }
 
     private static void setOperationTags(TelemetryItem telemetry, String traceId, String parentSpanId) {
