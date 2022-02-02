@@ -1,0 +1,13 @@
+trigger: none
+
+pr: none
+
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: deviceprovisioningservices
+      Artifacts:
+        - name: azure-resourcemanager-deviceprovisioningservices
+          groupId: com.azure.resourcemanager
+          safeName: azureresourcemanagerdeviceprovisioningservices
+      Clouds: 'Public'

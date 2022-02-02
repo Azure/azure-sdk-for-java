@@ -14,11 +14,11 @@ import com.azure.core.util.Context;
 import com.azure.security.attestation.models.AttestationData;
 import com.azure.security.attestation.models.AttestationOpenIdMetadata;
 import com.azure.security.attestation.models.AttestationOptions;
+import com.azure.security.attestation.models.AttestationResponse;
 import com.azure.security.attestation.models.AttestationResult;
 import com.azure.security.attestation.models.AttestationSigner;
+import com.azure.security.attestation.models.AttestationSignerCollection;
 import com.azure.security.attestation.models.AttestationToken;
-
-import java.util.List;
 
 /**
  * The AttestationClient implements the functionality required by the "Attest" family of APIs.
@@ -214,8 +214,8 @@ public final class AttestationClient {
      * <p><strong>Retrieve Attestation Signers for this async client.</strong></p>
      * <!-- src_embed com.azure.security.attestation.AttestationClient.getAttestationSigners -->
      * <pre>
-     * List&lt;AttestationSigner&gt; signers = client.listAttestationSigners&#40;&#41;;
-     * signers.forEach&#40;cert -&gt; &#123;
+     * AttestationSignerCollection signers = client.listAttestationSigners&#40;&#41;;
+     * signers.getAttestationSigners&#40;&#41;.forEach&#40;cert -&gt; &#123;
      *     System.out.println&#40;&quot;Found certificate.&quot;&#41;;
      *     if &#40;cert.getKeyId&#40;&#41; != null&#41; &#123;
      *         System.out.println&#40;&quot;    Certificate Key ID: &quot; + cert.getKeyId&#40;&#41;&#41;;
@@ -230,10 +230,10 @@ public final class AttestationClient {
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationClient.getAttestationSigners -->
      *
-     * @return Returns an array of {@link AttestationSigner} objects which will be used to sign tokens returned from the attestation service.
+     * @return Returns a collection of {@link AttestationSigner} objects which will be used to sign tokens returned from the attestation service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AttestationSigner> listAttestationSigners() {
+    public AttestationSignerCollection listAttestationSigners() {
         return asyncClient.listAttestationSignersWithResponse()
             .map(Response::getValue).block();
     }
@@ -245,7 +245,7 @@ public final class AttestationClient {
      *
      * <!-- src_embed com.azure.security.attestation.AttestationClient.getAttestationSignersWithResponse -->
      * <pre>
-     * Response&lt;List&lt;AttestationSigner&gt;&gt; responseOfSigners = client.listAttestationSignersWithResponse&#40;Context.NONE&#41;;
+     * Response&lt;AttestationSignerCollection&gt; responseOfSigners = client.listAttestationSignersWithResponse&#40;Context.NONE&#41;;
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationClient.getAttestationSignersWithResponse -->
      *
@@ -254,7 +254,7 @@ public final class AttestationClient {
      * @return Returns an array of {@link AttestationSigner} objects.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<AttestationSigner>> listAttestationSignersWithResponse(Context context) {
+    public Response<AttestationSignerCollection> listAttestationSignersWithResponse(Context context) {
         return asyncClient.listAttestationSignersWithResponse(context).block();
     }
 
@@ -345,7 +345,7 @@ public final class AttestationClient {
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AttestationResult> attestOpenEnclaveWithResponse(
+    public AttestationResponse<AttestationResult> attestOpenEnclaveWithResponse(
         AttestationOptions options, Context context) {
         return asyncClient.attestOpenEnclaveWithResponse(options, context).block();
     }
@@ -433,7 +433,7 @@ public final class AttestationClient {
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AttestationResult> attestSgxEnclaveWithResponse(
+    public AttestationResponse<AttestationResult> attestSgxEnclaveWithResponse(
         AttestationOptions request, Context context) {
         return asyncClient.attestSgxEnclaveWithResponse(request, context).block();
     }

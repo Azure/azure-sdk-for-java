@@ -315,8 +315,9 @@ public final class DataLakePathClientBuilder {
 
             this.accountName = parts.getAccountName();
             this.endpoint = BuilderHelper.getEndpoint(parts);
-            this.fileSystemName = parts.getBlobContainerName();
-            this.pathName = Utility.urlEncode(parts.getBlobName());
+            this.fileSystemName = parts.getBlobContainerName() == null ? this.fileSystemName
+                : parts.getBlobContainerName();
+            this.pathName = parts.getBlobName() == null ? this.pathName : Utility.urlEncode(parts.getBlobName());
 
             String sasToken = parts.getCommonSasQueryParameters().encode();
             if (!CoreUtils.isNullOrEmpty(sasToken)) {
