@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AiDependencyOperationNameSpanProcessorTest {
+public class AiOperationNameSpanProcessorTest {
 
 
     private static Tracer configureAzureMonitorExporter(HttpPipelinePolicy validator) {
@@ -36,7 +36,7 @@ public class AiDependencyOperationNameSpanProcessorTest {
             .buildTraceExporter();
 
         SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
-            .addSpanProcessor(new AiDependencyOperationNameSpanProcessor())
+            .addSpanProcessor(new AiOperationNameSpanProcessor())
             .addSpanProcessor(SimpleSpanProcessor.create(exporter))
             .build();
 
@@ -53,7 +53,7 @@ public class AiDependencyOperationNameSpanProcessorTest {
         final Tracer TRACER = configureAzureMonitorExporter(new ValidationPolicy(exporterCountDown,
             Arrays.asList("child-span","myop")));
 
-        Span parentSpan = TRACER.spanBuilder("parent-span").setAttribute(AiDependencyOperationNameSpanProcessor.AI_OPERATION_NAME_KEY, "myop").startSpan();
+        Span parentSpan = TRACER.spanBuilder("parent-span").setAttribute(AiOperationNameSpanProcessor.AI_OPERATION_NAME_KEY, "myop").startSpan();
         parentSpan.updateName("parent-span-changed");
         parentSpan.setAttribute(SemanticAttributes.HTTP_METHOD, "POST");
         final Scope parentScope = parentSpan.makeCurrent();

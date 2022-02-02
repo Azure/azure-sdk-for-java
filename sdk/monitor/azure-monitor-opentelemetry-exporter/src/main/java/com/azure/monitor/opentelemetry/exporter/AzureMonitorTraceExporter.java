@@ -67,7 +67,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         AttributeKey.stringKey("message_bus.destination");
     private static final AttributeKey<Long> AZURE_SDK_ENQUEUED_TIME =
         AttributeKey.longKey("x-opt-enqueued-time");
-    // this is redundant, add this so that this class is not dependent on AiDependencyOperationNameSpanProcessor
+    // this is redundant, add this so that this class is not dependent on AiOperationNameSpanProcessor
     private static final AttributeKey<String> AI_OPERATION_NAME_KEY = AttributeKey.stringKey("applicationinsights.internal.operation_name");
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorTraceExporter.class);
