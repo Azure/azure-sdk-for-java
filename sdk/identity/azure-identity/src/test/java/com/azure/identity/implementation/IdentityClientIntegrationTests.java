@@ -23,7 +23,7 @@ public class IdentityClientIntegrationTests {
 
     @Ignore("Integration tests")
     public void clientSecretCanGetToken() {
-        IdentityClient client = new IdentityClient(System.getenv(AZURE_TENANT_ID), System.getenv(AZURE_CLIENT_ID), System.getenv(AZURE_CLIENT_SECRET), null, null, null,  null, null, false, null, new IdentityClientOptions());
+        IdentityClient client = new IdentityClient(System.getenv(AZURE_TENANT_ID), System.getenv(AZURE_CLIENT_ID), System.getenv(AZURE_CLIENT_SECRET), null, null, null, null,  null, null, false, null, new IdentityClientOptions());
         StepVerifier.create(client.authenticateWithConfidentialClient(request))
             .expectNextMatches(token -> token.getToken() != null
                 && token.getExpiresAt() != null

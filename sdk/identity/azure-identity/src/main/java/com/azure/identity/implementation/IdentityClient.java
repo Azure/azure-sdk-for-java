@@ -122,6 +122,7 @@ public class IdentityClient {
     private final IdentityClientOptions options;
     private final String tenantId;
     private final String clientId;
+    private final String resourceId;
     private final String clientSecret;
     private final String clientAssertionFilePath;
     private final InputStream certificate;
@@ -140,6 +141,7 @@ public class IdentityClient {
      * @param tenantId the tenant ID of the application.
      * @param clientId the client ID of the application.
      * @param clientSecret the client secret of the application.
+     * @param resourceId the resource ID of the application
      * @param certificatePath the path to the PKCS12 or PEM certificate of the application.
      * @param certificate the PKCS12 or PEM certificate of the application.
      * @param certificatePassword the password protecting the PFX certificate.
@@ -149,7 +151,7 @@ public class IdentityClient {
      * @param options the options configuring the client.
      */
     IdentityClient(String tenantId, String clientId, String clientSecret, String certificatePath,
-                   String clientAssertionFilePath, Supplier<String> clientAssertionSupplier, InputStream certificate,
+                   String clientAssertionFilePath, String resourceId, Supplier<String> clientAssertionSupplier, InputStream certificate,
                    String certificatePassword, boolean isSharedTokenCacheCredential, Duration clientAssertionTimeout,
                    IdentityClientOptions options) {
         if (tenantId == null) {
@@ -160,6 +162,7 @@ public class IdentityClient {
         }
         this.tenantId = tenantId;
         this.clientId = clientId;
+        this.resourceId = resourceId;
         this.clientSecret = clientSecret;
         this.clientAssertionFilePath = clientAssertionFilePath;
         this.certificatePath = certificatePath;
@@ -1171,6 +1174,11 @@ public class IdentityClient {
                 payload.append(URLEncoder.encode(clientId, "UTF-8"));
             }
 
+            if (resourceId != null) {
+                payload.append("&mi_res_id=");
+                payload.append(URLEncoder.encode(resourceId, "UTF-8"));
+            }
+
             try {
 
                 URL url = new URL(String.format("%s?%s", endpoint, payload));
@@ -1244,6 +1252,14 @@ public class IdentityClient {
                 }
                 payload.append(URLEncoder.encode(clientId, "UTF-8"));
             }
+            if (resourceId != null) {
+                if (!endpointVersion.equals(IDENTITY_ENDPOINT_VERSION)) {
+                    throw logger.logExceptionAsError(new IllegalStateException(
+                        String.format("Managed Identity Resource ID is not supported with endpoint version %s", endpointVersion)));
+                }
+                payload.append("&mi_res_id=");
+                payload.append(URLEncoder.encode(resourceId, "UTF-8"));
+            }
             try {
                 URL url = new URL(String.format("%s?%s", endpoint, payload));
                 connection = (HttpURLConnection) url.openConnection();
@@ -1292,6 +1308,10 @@ public class IdentityClient {
             if (clientId != null) {
                 payload.append("&client_id=");
                 payload.append(URLEncoder.encode(clientId, "UTF-8"));
+            }
+            if (resourceId != null) {
+                payload.append("&mi_res_id=");
+                payload.append(URLEncoder.encode(resourceId, "UTF-8"));
             }
         } catch (IOException exception) {
             return Mono.error(exception);
