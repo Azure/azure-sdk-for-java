@@ -794,14 +794,8 @@ public class ShareFileClient {
         Objects.requireNonNull(stream, "'stream' cannot be null.");
 
         Mono<ShareFileDownloadResponse> download = shareFileAsyncClient.downloadWithResponse(options, context)
-            .flatMap(response -> response.getValue().reduce(stream, (outputStream, buffer) -> {
-                try {
-                    CoreUtils.writeByteBufferToStream(buffer, outputStream);
-                    return outputStream;
-                } catch (IOException ex) {
-                    throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
-                }
-            }).thenReturn(new ShareFileDownloadResponse(response)));
+            .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), stream)
+                .thenReturn(new ShareFileDownloadResponse(response)));
 
         return StorageImplUtils.blockWithOptionalTimeout(download, timeout);
     }

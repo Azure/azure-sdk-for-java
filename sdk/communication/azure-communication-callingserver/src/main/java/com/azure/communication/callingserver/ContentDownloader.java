@@ -55,15 +55,9 @@ class ContentDownloader {
         HttpRange httpRange,
         Context context) {
         return downloadStreamWithResponse(sourceEndpoint, httpRange, context)
-            .flatMap(response -> response.getValue().reduce(destinationStream, (outputStream, buffer) -> {
-                try {
-                    CoreUtils.writeByteBufferToStream(buffer, outputStream);
-                    return outputStream;
-                } catch (IOException ex) {
-                    throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
-                }
-            }).thenReturn(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), null)));
+            .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), destinationStream)
+                .thenReturn(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), null)));
     }
 
     Mono<Response<Flux<ByteBuffer>>> downloadStreamWithResponse(

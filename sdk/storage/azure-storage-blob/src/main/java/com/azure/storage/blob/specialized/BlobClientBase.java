@@ -870,14 +870,8 @@ public class BlobClientBase {
         StorageImplUtils.assertNotNull("stream", stream);
         Mono<BlobDownloadResponse> download = client
             .downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5, context)
-            .flatMap(response -> response.getValue().reduce(stream, (outputStream, buffer) -> {
-                try {
-                    CoreUtils.writeByteBufferToStream(buffer, outputStream);
-                    return outputStream;
-                } catch (IOException ex) {
-                    throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
-                }
-            }).thenReturn(new BlobDownloadResponse(response)));
+            .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), stream)
+                .thenReturn(new BlobDownloadResponse(response)));
 
         return blockWithOptionalTimeout(download, timeout);
     }
@@ -1975,14 +1969,8 @@ public class BlobClientBase {
         StorageImplUtils.assertNotNull("outputStream", queryOptions.getOutputStream());
         Mono<BlobQueryResponse> download = client
             .queryWithResponse(queryOptions, context)
-            .flatMap(response -> response.getValue().reduce(queryOptions.getOutputStream(), (outputStream, buffer) -> {
-                try {
-                    CoreUtils.writeByteBufferToStream(buffer, outputStream);
-                    return outputStream;
-                } catch (IOException ex) {
-                    throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
-                }
-            }).thenReturn(new BlobQueryResponse(response)));
+            .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), queryOptions.getOutputStream())
+                .thenReturn(new BlobQueryResponse(response)));
 
         return blockWithOptionalTimeout(download, timeout);
     }

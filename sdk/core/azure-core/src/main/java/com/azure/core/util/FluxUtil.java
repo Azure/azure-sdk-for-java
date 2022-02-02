@@ -8,6 +8,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.ByteBufferCollector;
 import com.azure.core.implementation.FileWriteSubscriber;
+import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.RetriableDownloadFlux;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -24,6 +25,7 @@ import reactor.util.context.ContextView;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
@@ -457,6 +459,39 @@ public final class FluxUtil {
 
     /**
      * Writes the {@link ByteBuffer ByteBuffers} emitted by a {@link Flux} of {@link ByteBuffer} to an {@link
+     * OutputStream}.
+     * <p>
+     * The {@code stream} is not closed by this call, closing of the {@code stream} is managed by the caller.
+     * <p>
+     * The response {@link Mono} will emit an error if {@code content} or {@code stream} are null. Additionally, an
+     * error will be emitted if an exception occurs while writing the {@code content} to the {@code stream}.
+     *
+     * @param content The {@link Flux} of {@link ByteBuffer} content.
+     * @param stream The {@link OutputStream} being written into.
+     * @return A {@link Mono} which emits a completion status once the {@link Flux} has been written to the {@link
+     * OutputStream}, or an error status if writing fails.
+     */
+    public static Mono<Void> writeToOutputStream(Flux<ByteBuffer> content, OutputStream stream) {
+        if (content == null && stream == null) {
+            return Mono.error(new NullPointerException("'content' and 'stream' cannot be null."));
+        } else if (content == null) {
+            return Mono.error(new NullPointerException("'content' cannot be null."));
+        } else if (stream == null) {
+            return Mono.error(new NullPointerException("'stream' cannot be null."));
+        }
+
+        return content.reduce(stream, (outputStream, buffer) -> {
+            try {
+                ImplUtils.writeByteBufferToStream(buffer, outputStream);
+                return outputStream;
+            } catch (IOException ex) {
+                throw Exceptions.propagate(ex);
+            }
+        }).then();
+    }
+
+    /**
+     * Writes the {@link ByteBuffer ByteBuffers} emitted by a {@link Flux} of {@link ByteBuffer} to an {@link
      * AsynchronousFileChannel}.
      * <p>
      * The {@code outFile} is not closed by this call, closing of the {@code outFile} is managed by the caller.
@@ -492,12 +527,13 @@ public final class FluxUtil {
      */
     public static Mono<Void> writeFile(Flux<ByteBuffer> content, AsynchronousFileChannel outFile, long position) {
         return Mono.create(emitter -> {
-            if (content == null) {
+            if (content == null && outFile == null) {
+                emitter.error(new NullPointerException("'content' and 'outFile' cannot be null."));
+                return;
+            } else if (content == null) {
                 emitter.error(new NullPointerException("'content' cannot be null."));
                 return;
-            }
-
-            if (outFile == null) {
+            } else if (outFile == null) {
                 emitter.error(new NullPointerException("'outFile' cannot be null."));
                 return;
             }
