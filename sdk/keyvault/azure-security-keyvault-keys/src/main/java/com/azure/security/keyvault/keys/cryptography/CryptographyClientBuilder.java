@@ -481,7 +481,6 @@ public final class CryptographyClientBuilder implements
      */
     @Override
     public CryptographyClientBuilder retryOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.retryOptions = retryOptions;
         return this;
     }

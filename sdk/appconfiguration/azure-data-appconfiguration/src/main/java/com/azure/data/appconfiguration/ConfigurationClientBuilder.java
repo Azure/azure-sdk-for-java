@@ -451,12 +451,10 @@ public final class ConfigurationClientBuilder implements
      * Setting this is mutually exclusive with using {@link #retryPolicy(HttpPipelinePolicy)}.
      *
      * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
-     * @throws NullPointerException If {@code retryOptions} is null.
      * @return The updated {@link ConfigurationClientBuilder} object.
      */
     @Override
     public ConfigurationClientBuilder retryOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.retryOptions = retryOptions;
         return this;
     }

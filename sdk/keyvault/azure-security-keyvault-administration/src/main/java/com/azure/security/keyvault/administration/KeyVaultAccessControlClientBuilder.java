@@ -358,7 +358,6 @@ public final class KeyVaultAccessControlClientBuilder implements
      */
     @Override
     public KeyVaultAccessControlClientBuilder retryOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.retryOptions = retryOptions;
         return this;
     }

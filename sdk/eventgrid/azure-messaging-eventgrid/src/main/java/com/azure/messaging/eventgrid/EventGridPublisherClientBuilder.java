@@ -248,7 +248,6 @@ public final class EventGridPublisherClientBuilder implements
      */
     @Override
     public EventGridPublisherClientBuilder retryOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.retryOptions = retryOptions;
         return this;
     }

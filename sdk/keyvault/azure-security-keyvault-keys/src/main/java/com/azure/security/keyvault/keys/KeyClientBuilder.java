@@ -413,7 +413,6 @@ public final class KeyClientBuilder implements
      */
     @Override
     public KeyClientBuilder retryOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.retryOptions = retryOptions;
         return this;
     }

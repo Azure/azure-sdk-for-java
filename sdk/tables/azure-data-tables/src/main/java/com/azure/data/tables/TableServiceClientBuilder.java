@@ -483,7 +483,6 @@ public final class TableServiceClientBuilder implements
      */
     @Override
     public TableServiceClientBuilder retryOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.retryOptions = retryOptions;
         return this;
     }

@@ -422,7 +422,6 @@ public final class CertificateClientBuilder implements
      */
     @Override
     public CertificateClientBuilder retryOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.retryOptions = retryOptions;
         return this;
     }

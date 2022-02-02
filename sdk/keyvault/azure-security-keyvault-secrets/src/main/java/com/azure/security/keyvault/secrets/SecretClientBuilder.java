@@ -415,7 +415,6 @@ public final class SecretClientBuilder implements
      */
     @Override
     public SecretClientBuilder retryOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.retryOptions = retryOptions;
         return this;
     }

@@ -405,7 +405,6 @@ public final class ServiceBusAdministrationClientBuilder implements
      */
     @Override
     public ServiceBusAdministrationClientBuilder retryOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.retryOptions = retryOptions;
         return this;
     }
