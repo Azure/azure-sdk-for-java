@@ -103,7 +103,7 @@ class EventHubMessageSerializer implements MessageSerializer {
 
         if (!(object instanceof EventData)) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                "Cannot serialize object that is not EventData. Clazz: " + object.getClass()));
+                "Cannot serialize object that is not EventData. Class: " + object.getClass()));
         }
 
         final EventData eventData = (EventData) object;

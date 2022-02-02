@@ -259,8 +259,8 @@ public class AttestationTest extends AttestationClientTestBase {
                     logger.info("In validation callback, checking token...");
                     logger.info(String.format("     Token issuer: %s", token.getIssuer()));
                     if (!interceptorManager.isPlaybackMode()) {
-                        logger.info(String.format("     Token was issued at: %tc", token.getIssuedAt().getEpochSecond()));
-                        logger.info(String.format("     Token expires at: %tc", token.getExpiresOn().getEpochSecond()));
+                        logger.info(String.format("     Token was issued at: %tc", token.getIssuedAt()));
+                        logger.info(String.format("     Token expires at: %tc", token.getExpiresOn()));
                         if (!token.getIssuer().equals(clientUri)) {
                             logger.error(String.format("Token issuer %s does not match expected issuer %s",
                                 token.getIssuer(), clientUri
@@ -351,8 +351,6 @@ public class AttestationTest extends AttestationClientTestBase {
         try {
             StepVerifier.create(client.attestSgxEnclaveWithResponse(request, contextWithSpan))
                 .assertNext(response -> {
-                    assertTrue(response instanceof AttestationResponse);
-                    AttestationResponse<AttestationResult> attestResponse = (AttestationResponse<AttestationResult>) response;
                     // Make sure that the request included a traceparent header and that the response contains a
                     // traceresponse header.
                     // Note: The recording infrastructure doesn't record traceparent or traceresponse, so we can
@@ -680,8 +678,6 @@ public class AttestationTest extends AttestationClientTestBase {
 
         StepVerifier.create(client.attestOpenEnclaveWithResponse(options))
             .assertNext(response -> {
-                assertTrue(response instanceof AttestationResponse);
-                AttestationResponse<AttestationResult> attestResponse = (AttestationResponse<AttestationResult>) response;
                 verifyAttestationResult(clientUri, response.getValue(), decodedRuntimeData, true);
             })
             .expectComplete()

@@ -130,7 +130,8 @@
               <testSourceDirectory>src/samples/resources/avro/</testSourceDirectory>
               <testOutputDirectory>${project.basedir}/src/samples/java/</testOutputDirectory>
               <testIncludes>
-                <testInclude>**/*.avro</testInclude>
+                <testInclude>Person.avro</testInclude>
+                <testInclude>HandOfCards.avro</testInclude>
               </testIncludes>
               <stringType>String</stringType>
             </configuration>

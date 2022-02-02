@@ -1,8 +1,6 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
-### Features Added
-
+## 1.0.0 (2022-02-08)
 ### Breaking Changes
  * Removed `buildSigningCertificatesClient` and `buildSigningCertificatesAsyncClient` replaced
    with `getAttestationSigners` and `getAttestationSignersWithResponse` on `AttestationClient` 
@@ -26,7 +24,7 @@
 factory method:
 ```java
 AttestSgxEnclaveOptions options = AttestSgxEnclaveOptions
-    .fromQuote(decodedOpenEnclaveReport)
+    .fromQuote(decodedSgxEnclaveReport)
     .setRunTimeData(new byte[] { 1, 2, 3, 4, 5});
 ```
 or
@@ -49,11 +47,10 @@ with the  `listPolicyManagementCertificates`, `addPolicyManagementCertificate` a
  * Removed `JsonWebKey`, `JsonWebKeySet`, `PolicyCertificatesModificationResult`, `PolicyCertificatesModifyResponse`, and `CertificatesResponse` objects 
 because they are no longer a part of the public API surface.
  * Refactored `AttestationSigningKey` class to require certificate and signing key parameters in constructor.
+ * listAttestationSigners now returns an `AttestationSignersCollection` object instead of a raw `List<AttestationSigner>`
 
 ### Bugs Fixed
 * Attestation tests now all pass when run in Live mode.
-
-### Other Changes
 
 ## 1.0.0-beta.1 (2021-01-28)
 
