@@ -119,7 +119,7 @@ public final class AnnotationUtils {
                     // further from this method.
                     results.add(new AnnotatedMethodCallerResult(annotation, method, member));
                 } else {
-                    if (recursive) {
+                    if (recursive && !methodMember.equals(method)) {
                         // we are looking at code that we know calls an annotated service method, but it is not
                         // within one of the packages we are interested in. We recurse here, finding all methods
                         // that call this method, until such time that we run out of methods to check.
@@ -132,7 +132,8 @@ public final class AnnotationUtils {
 
     private static URL pathToUrl(Path path) {
         try {
-            return path.toUri().toURL();
+            URL url = path.toUri().toURL();
+            return url;
         } catch (MalformedURLException e) {
             LOGGER.info("Path " + path + " cannot be converted to URL. " + e.getMessage());
             return null;

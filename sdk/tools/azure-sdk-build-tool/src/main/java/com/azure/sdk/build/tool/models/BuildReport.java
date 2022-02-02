@@ -1,11 +1,16 @@
 package com.azure.sdk.build.tool.models;
 
+import com.azure.opentelemetry.exporter.azuremonitor.AzureMonitorExporter;
+import com.azure.opentelemetry.exporter.azuremonitor.AzureMonitorExporterBuilder;
 import com.azure.sdk.build.tool.mojo.AzureSdkMojo;
 import com.azure.sdk.build.tool.util.AnnotatedMethodCallerResult;
 import com.azure.sdk.build.tool.util.MavenUtils;
 import com.azure.sdk.build.tool.util.logging.Logger;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
+import edu.emory.mathcs.backport.java.util.Collections;
+import io.opentelemetry.sdk.common.CompletableResultCode;
+import io.opentelemetry.sdk.trace.data.SpanData;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.DependencyManagement;
 
@@ -18,6 +23,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static com.azure.sdk.build.tool.util.MojoUtils.getAllDependencies;
@@ -111,6 +117,14 @@ public class BuildReport {
                         .map(AnnotatedMethodCallerResult::toString)
                         .collect(Collectors.toList()), generator);
             }
+
+            if (this.betaMethodCalls != null && !this.betaMethodCalls.isEmpty()) {
+                writeArray("betaMethodCalls", betaMethodCalls
+                        .stream()
+                        .map(AnnotatedMethodCallerResult::toString)
+                        .collect(Collectors.toList()), generator);
+            }
+
 
             if (!this.errorMessages.isEmpty()) {
                 writeArray("errorMessages", errorMessages, generator);

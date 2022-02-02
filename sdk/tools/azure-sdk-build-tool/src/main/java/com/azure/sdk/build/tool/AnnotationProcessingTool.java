@@ -1,12 +1,17 @@
 package com.azure.sdk.build.tool;
 
 import com.azure.sdk.build.tool.mojo.AzureSdkMojo;
+import com.azure.sdk.build.tool.util.AnnotatedMethodCallerResult;
 import com.azure.sdk.build.tool.util.logging.Logger;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Stream;
@@ -14,8 +19,10 @@ import java.util.stream.Stream;
 import static com.azure.sdk.build.tool.util.AnnotationUtils.findCallsToAnnotatedMethod;
 import static com.azure.sdk.build.tool.util.AnnotationUtils.getAnnotation;
 import static com.azure.sdk.build.tool.util.AnnotationUtils.getCompleteClassLoader;
+import static com.azure.sdk.build.tool.util.MojoUtils.failOrError;
 import static com.azure.sdk.build.tool.util.MojoUtils.getAllDependencies;
 import static com.azure.sdk.build.tool.util.MojoUtils.getCompileSourceRoots;
+import static com.azure.sdk.build.tool.util.MojoUtils.getString;
 
 /**
  * Performs the following tasks:
@@ -43,14 +50,22 @@ public class AnnotationProcessingTool implements Runnable {
 
         // Collect all calls to methods annotated with the Azure SDK @ServiceMethod annotation
         getAnnotation("com.azure.core.annotation.ServiceMethod", classLoader)
-            .map(a -> findCallsToAnnotatedMethod(a, getAllPaths(), interestedPackages, true))
-            .ifPresent(AzureSdkMojo.MOJO.getReport()::setServiceMethodCalls);
+                .map(a -> findCallsToAnnotatedMethod(a, getAllPaths(), interestedPackages, true))
+                .ifPresent(AzureSdkMojo.MOJO.getReport()::setServiceMethodCalls);
 
         // Collect all calls to methods annotated with the Azure SDK @Beta annotation
-        getAnnotation("com.azure.cosmos.util.Beta", classLoader)
-                .map(a -> findCallsToAnnotatedMethod(a, getAllPaths(), interestedPackages, true))
-                .ifPresent(AzureSdkMojo.MOJO.getReport()::setBetaMethodCalls);
-
+        Optional<Set<AnnotatedMethodCallerResult>> annotatedMethodCallerResults = getAnnotation("com.azure.cosmos.util.Beta", classLoader)
+                .map(a -> findCallsToAnnotatedMethod(a, getAllPaths(), interestedPackages, true));
+        if (annotatedMethodCallerResults.isPresent()) {
+            Set<AnnotatedMethodCallerResult> betaMethodCallers = annotatedMethodCallerResults.get();
+            AzureSdkMojo.MOJO.getReport().setBetaMethodCalls(betaMethodCallers);
+            if (!betaMethodCallers.isEmpty()) {
+                StringBuilder message = new StringBuilder();
+                message.append(getString("betaApiUsed")).append(System.lineSeparator());
+                betaMethodCallers.forEach(method -> message.append("   - ").append(method.toString()).append(System.lineSeparator()));
+                failOrError(() -> AzureSdkMojo.MOJO.isValidateNoBetaApiUsed(), message.toString());
+            }
+        }
     }
 
     private static Stream<Path> getAllPaths() {

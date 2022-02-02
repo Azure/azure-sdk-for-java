@@ -6,6 +6,7 @@ import com.azure.sdk.build.tool.util.MavenUtils;
 import com.azure.sdk.build.tool.util.logging.Logger;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.DependencyManagement;
+import org.apache.maven.model.InputLocation;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +14,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static com.azure.sdk.build.tool.util.MojoUtils.failOrError;
 import static com.azure.sdk.build.tool.util.MojoUtils.getAllDependencies;
 import static com.azure.sdk.build.tool.util.MojoUtils.getDirectDependencies;
 import static com.azure.sdk.build.tool.util.MojoUtils.getString;
@@ -39,19 +41,30 @@ public class DependencyCheckerTool implements Runnable {
         LOGGER.info("Running Dependency Checker Tool");
 
         checkForBom();
-        checkForAzureSdkDependencyVersions();
         checkForAzureSdkTrackOneDependencies();
     }
 
     private void checkForBom() {
         // we are looking for the azure-sdk-bom artifact ID listed as a dependency in the dependency management section
         DependencyManagement depMgmt = AzureSdkMojo.MOJO.getProject().getDependencyManagement();
+        DependencyManagement originalDepMgmt =
+                AzureSdkMojo.MOJO.getProject().getOriginalModel().getDependencyManagement();
+
         Optional<Dependency> bomDependency = Optional.empty();
+        Optional<Dependency> originalBomDependency = Optional.empty();
         if (depMgmt != null) {
             bomDependency = depMgmt.getDependencies().stream()
                     .filter(d -> d.getArtifactId().equals(AZURE_SDK_BOM_ARTIFACT_ID))
                     .findAny();
         }
+
+        if (originalDepMgmt != null) {
+            originalBomDependency = originalDepMgmt.getDependencies().stream()
+                    .filter(d -> d.getArtifactId().equals(AZURE_SDK_BOM_ARTIFACT_ID))
+                    .findAny();
+        }
+
+        bomDependency = bomDependency.isPresent() ? bomDependency : originalBomDependency;
 
         if (bomDependency.isPresent()) {
             String latestAvailableBomVersion = MavenUtils.getLatestArtifactVersion("com.azure", "azure-sdk-bom");
@@ -59,6 +72,7 @@ public class DependencyCheckerTool implements Runnable {
             if (!isLatestBomVersion) {
                 failOrError(AzureSdkMojo.MOJO::isValidateAzureSdkBomUsed, getString("outdatedBomDependency"));
             }
+            checkForAzureSdkDependencyVersions();
         } else {
             failOrError(AzureSdkMojo.MOJO::isValidateAzureSdkBomUsed, getString("missingBomDependency"));
         }
@@ -69,8 +83,9 @@ public class DependencyCheckerTool implements Runnable {
         List<Dependency> dependenciesWithOverriddenVersions = dependencies.stream()
                 .filter(dependency -> dependency.getGroupId().equals("com.azure"))
                 .filter(dependency -> {
-                    String version = dependency.getVersion();
-                    return version != null && !version.isEmpty();
+                    InputLocation location = dependency.getLocation("version");
+                    // if the version is not coming from Azure SDK BOM, filter those dependencies
+                    return !location.getSource().getModelId().startsWith("com.azure:azure-sdk-bom");
                 }).collect(Collectors.toList());
 
         dependenciesWithOverriddenVersions.forEach(dependency -> failOrError(AzureSdkMojo.MOJO::isValidateBomVersionsAreUsed,
@@ -115,15 +130,6 @@ public class DependencyCheckerTool implements Runnable {
                 message += "\n    - " + outdatedDependency.getGav();
             }
             failOrError(AzureSdkMojo.MOJO::isValidateNoDeprecatedMicrosoftLibraryUsed, message);
-        }
-    }
-
-    private void failOrError(Supplier<Boolean> condition, String message) {
-        // warn about lack of BOM dependency
-        if (condition.get()) {
-            AzureSdkMojo.MOJO.getReport().addFailureMessage(message);
-        } else {
-            AzureSdkMojo.MOJO.getReport().addErrorMessage(message);
         }
     }
 }

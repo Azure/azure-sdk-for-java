@@ -1,9 +1,12 @@
-package com.test.appconfig;
+package com.test.annotation;
 
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 
+/**
+ * Test @ServiceMethod annotation usage.
+ */
 public class AppConfigTestApp {
     public static void main(String[] args) {
         final ConfigurationClient configurationClient = new ConfigurationClientBuilder()

@@ -120,6 +120,15 @@ public class AzureSdkMojo extends AbstractMojo {
     }
 
     /**
+     * If this validation is enabled, build will fail if any method annotated with @Beta is called. By
+     * default, this is set to {@code true}.
+     * @return {@code true} if this validation is enabled.
+     */
+    public boolean isValidateNoBetaApiUsed() {
+        return validateNoBetaApiUsed;
+    }
+
+    /**
      * The report file to which the build report is written to.
      * @return The report file.
      */

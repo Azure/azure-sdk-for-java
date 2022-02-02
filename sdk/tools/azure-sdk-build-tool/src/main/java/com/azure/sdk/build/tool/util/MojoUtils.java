@@ -7,6 +7,7 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.function.Supplier;
 
 /**
  * Utility class to perform an miscellaneous Mojo-related operations.
@@ -41,5 +42,14 @@ public final class MojoUtils {
 
     public static String getString(String key, String... parameters) {
         return MessageFormat.format(getString(key), parameters);
+    }
+
+    public static void failOrError(Supplier<Boolean> condition, String message) {
+        // warn about lack of BOM dependency
+        if (condition.get()) {
+            AzureSdkMojo.MOJO.getReport().addFailureMessage(message);
+        } else {
+            AzureSdkMojo.MOJO.getReport().addErrorMessage(message);
+        }
     }
 }

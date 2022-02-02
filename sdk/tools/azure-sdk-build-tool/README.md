@@ -35,6 +35,7 @@ Within the configuration section, it is possible to configure the settings in th
 | validateNoBetaAPIUsed                    | true          | Azure SDK for Java client libraries sometimes do GA releases with methods annotated with @Beta. This check looks to see if any such methods are being used.                                                                                      |
 | validateLatestBomVersionUsed             | true          | Ensures that dependencies are kept up to date by reporting back (or failing the build) if a newer azure-sdk-for-java BOM exists.                                                                                                                 |
 | reportFile                               | ""            | (Optional) Specifies the location to write the build report out to, in JSON format. If not specified, no report will be written (and a summary of the build, or the appropriate build failures), will be shown in the terminal.                  |
-After adding the build tool into a Maven project, the tool can be run by calling mvn azure:run. Depending on the configuration provided, you can expect to see build failures or report files generated that can inform you about potential issues before they become more serious.
+After adding the build tool into a Maven project, the tool can be run by calling `mvn compile azure:run`. Depending on 
+the configuration provided, you can expect to see build failures or report files generated that can inform you about potential issues before they become more serious.
 
 As the build tool evolves, new releases will be published, and it is recommended that developers frequently check for new releases and update as appropriate.
