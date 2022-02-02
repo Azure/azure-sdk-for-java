@@ -3,6 +3,8 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.util.logging.ClientLogger;
+
 import java.time.Duration;
 
 /**
@@ -11,6 +13,8 @@ import java.time.Duration;
  * provided max delay duration.
  */
 public class ExponentialBackoffOptions {
+    private static final ClientLogger LOGGER = new ClientLogger(ExponentialBackoffOptions.class);
+
     private Integer maxRetries;
     private Duration baseDelay;
     private Duration maxDelay;
@@ -28,10 +32,13 @@ public class ExponentialBackoffOptions {
      * Sets the max retry attempts that can be made.
      *
      * @param maxRetries the max retry attempts that can be made.
-     *
+     * @throws IllegalArgumentException if {@code maxRetries} is less than 0.
      * @return The updated {@link ExponentialBackoffOptions}
      */
     public ExponentialBackoffOptions setMaxRetries(Integer maxRetries) {
+        if (maxRetries != null && maxRetries < 0) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Max retries cannot be less than 0."));
+        }
         this.maxRetries = maxRetries;
         return this;
     }
@@ -49,10 +56,12 @@ public class ExponentialBackoffOptions {
      * Sets the base delay duration for retry.
      *
      * @param baseDelay the base delay duration for retry.
-     *
+     * @throws IllegalArgumentException if {@code baseDelay} is less than or equal
+     * to 0 or {@code maxDelay} has been set and is less than {@code baseDelay}.
      * @return The updated {@link ExponentialBackoffOptions}
      */
     public ExponentialBackoffOptions setBaseDelay(Duration baseDelay) {
+        validateDelays(baseDelay, maxDelay);
         this.baseDelay = baseDelay;
         return this;
     }
@@ -70,11 +79,27 @@ public class ExponentialBackoffOptions {
      * Sets the max delay duration for retry.
      *
      * @param maxDelay the max delay duration for retry.
-     *
+     * @throws IllegalArgumentException if {@code maxDelay} is less than or equal
+     * to 0 or {@code baseDelay} has been set and is more than {@code maxDelay}.
      * @return The updated {@link ExponentialBackoffOptions}
      */
     public ExponentialBackoffOptions setMaxDelay(Duration maxDelay) {
+        validateDelays(baseDelay, maxDelay);
         this.maxDelay = maxDelay;
         return this;
+    }
+
+    private void validateDelays(Duration baseDelay, Duration maxDelay) {
+        if (baseDelay != null && (baseDelay.isZero() || baseDelay.isNegative())) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'baseDelay' cannot be negative or 0."));
+        }
+        if (maxDelay != null && (maxDelay.isZero() || maxDelay.isNegative())) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'maxDelay' cannot be negative or 0."));
+        }
+
+        if (baseDelay !=null && maxDelay != null && baseDelay.compareTo(maxDelay) > 0) {
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("'baseDelay' cannot be greater than 'maxDelay'."));
+        }
     }
 }
