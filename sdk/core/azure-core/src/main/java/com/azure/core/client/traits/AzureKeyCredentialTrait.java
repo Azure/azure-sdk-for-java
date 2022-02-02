@@ -6,16 +6,25 @@ package com.azure.core.client.traits;
 import com.azure.core.credential.AzureKeyCredential;
 
 /**
- * The interface for client builders that support a {@link AzureKeyCredential}.
+ * An {@link com.azure.core.client.traits Azure SDK for Java trait} providing a consistent interface for setting
+ * {@link AzureKeyCredential}. Refer to the Azure SDK for Java
+ * <a href="https://docs.microsoft.com/azure/developer/java/sdk/identity">identity and authentication</a>
+ * documentation for more details on proper usage of the {@link AzureKeyCredential} type.
  *
- * @param <TBuilder> the type of client builder.
+ * @param <T> The concrete type that implements the trait. This is required so that fluent operations can continue
+ *           to return the concrete type, rather than the trait type.
+ * @see com.azure.core.client.traits
+ * @see AzureKeyCredential
  */
-public interface AzureKeyCredentialTrait<TBuilder extends AzureKeyCredentialTrait<TBuilder>> {
+public interface AzureKeyCredentialTrait<T extends AzureKeyCredentialTrait<T>> {
     /**
-     * Sets the Azure Key Credential used for authentication.
+     * Sets the {@link AzureKeyCredential} used for authentication. Refer to the Azure SDK for Java
+     * <a href="https://docs.microsoft.com/azure/developer/java/sdk/identity">identity and authentication</a>
+     * documentation for more details on proper usage of the {@link AzureKeyCredential} type.
      *
-     * @param credential the Azure Key Credential value.
-     * @return the updated {@code TBuilder}.
+     * @param credential the {@link AzureKeyCredential} to be used for authentication.
+     * @return Returns the same concrete type with the appropriate properties updated, to allow for fluent chaining of
+     *      operations.
      */
-    TBuilder credential(AzureKeyCredential credential);
+    T credential(AzureKeyCredential credential);
 }

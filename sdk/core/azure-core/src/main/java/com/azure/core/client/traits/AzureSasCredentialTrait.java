@@ -6,16 +6,25 @@ package com.azure.core.client.traits;
 import com.azure.core.credential.AzureSasCredential;
 
 /**
- * The interface for client builders that support a {@link AzureSasCredential}.
+ * An {@link com.azure.core.client.traits Azure SDK for Java trait} providing a consistent interface for setting
+ * {@link AzureSasCredential}. Refer to the Azure SDK for Java
+ * <a href="https://docs.microsoft.com/azure/developer/java/sdk/identity">identity and authentication</a>
+ * documentation for more details on proper usage of the {@link AzureSasCredential} type.
  *
- * @param <TBuilder> the type of client builder.
+ * @param <T> The concrete type that implements the trait. This is required so that fluent operations can continue
+ *           to return the concrete type, rather than the trait type.
+ * @see com.azure.core.client.traits
+ * @see AzureSasCredential
  */
-public interface AzureSasCredentialTrait<TBuilder extends AzureSasCredentialTrait<TBuilder>> {
+public interface AzureSasCredentialTrait<T extends AzureSasCredentialTrait<T>> {
     /**
-     * Sets the Azure Sas Credential used for authentication.
+     * Sets the {@link AzureSasCredential} used for authentication. Refer to the Azure SDK for Java
+     * <a href="https://docs.microsoft.com/azure/developer/java/sdk/identity">identity and authentication</a>
+     * documentation for more details on proper usage of the {@link AzureSasCredential} type.
      *
-     * @param credential the Azure Sas Credential value.
-     * @return the updated {@code TBuilder}.
+     * @param credential the {@link AzureSasCredential} to be used for authentication.
+     * @return Returns the same concrete type with the appropriate properties updated, to allow for fluent chaining of
+     *      operations.
      */
-    TBuilder credential(AzureSasCredential credential);
+    T credential(AzureSasCredential credential);
 }

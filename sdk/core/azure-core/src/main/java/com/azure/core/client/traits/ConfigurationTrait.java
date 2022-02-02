@@ -6,16 +6,21 @@ package com.azure.core.client.traits;
 import com.azure.core.util.Configuration;
 
 /**
- * The interface for client builders that support a {@link Configuration}.
+ * An {@link com.azure.core.client.traits Azure SDK for Java trait} providing a consistent interface for setting
+ * {@link Configuration}.
  *
- * @param <TBuilder> the type of client builder.
+ * @param <T> The concrete type that implements the trait. This is required so that fluent operations can continue
+ *           to return the concrete type, rather than the trait type.
+ * @see com.azure.core.client.traits
+ * @see Configuration
  */
-public interface ConfigurationTrait<TBuilder extends ConfigurationTrait<TBuilder>> {
+public interface ConfigurationTrait<T extends ConfigurationTrait<T>> {
     /**
      * Sets the configuration used to retrieve environment configuration values when building a client.
      *
      * @param configuration Configuration store used to retrieve environment configurations.
-     * @return the updated TBuilder object
+     * @return Returns the same concrete type with the appropriate properties updated, to allow for fluent chaining of
+     *      operations.
      */
-    TBuilder configuration(Configuration configuration);
+    T configuration(Configuration configuration);
 }

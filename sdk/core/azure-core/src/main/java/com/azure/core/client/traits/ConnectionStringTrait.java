@@ -4,16 +4,20 @@
 package com.azure.core.client.traits;
 
 /**
- * The interface for client builders that support a connection string.
+ * An {@link com.azure.core.client.traits Azure SDK for Java trait} providing a consistent interface for
+ * setting connection strings.
  *
- * @param <TBuilder> the type of client builder.
+ * @param <T> The concrete type that implements the trait. This is required so that fluent operations can continue
+ *           to return the concrete type, rather than the trait type.
+ * @see com.azure.core.client.traits
  */
-public interface ConnectionStringTrait<TBuilder extends ConnectionStringTrait<TBuilder>> {
+public interface ConnectionStringTrait<T extends ConnectionStringTrait<T>> {
     /**
      * Sets the connection string to connect to the service.
      *
      * @param connectionString Connection string of the service.
-     * @return the updated {@code TBuilder}.
+     * @return Returns the same concrete type with the appropriate properties updated, to allow for fluent chaining of
+     *      operations.
      */
-    TBuilder connectionString(String connectionString);
+    T connectionString(String connectionString);
 }
