@@ -10,7 +10,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 
@@ -23,9 +22,7 @@ public class DownloadUtils {
      * Reduces a Flux of ByteBuffer into a Mono of String
      */
     public static Mono<byte[]> downloadToByteArray(BlobContainerAsyncClient client, String blobPath) {
-        return client.getBlobAsyncClient(blobPath)
-            .downloadWithResponse(null, null, null, false)
-            .flatMap(response -> FluxUtil.collectBytesFromNetworkResponse(response.getValue(), response.getHeaders()));
+        return FluxUtil.collectBytesInByteBufferStream(client.getBlobAsyncClient(blobPath).download());
     }
 
     public static Mono<JsonNode> parseJson(byte[] json) {
