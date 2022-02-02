@@ -9,7 +9,6 @@
       "matchOverloads": true
     }
   },
-
   {
     "extension": "revapi.versions",
     "configuration": {
