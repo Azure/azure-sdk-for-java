@@ -1187,9 +1187,6 @@ public class CosmosEncryptionAsyncContainer {
             return cosmosItemOperationMono;
         }).doOnComplete(() -> setRequestHeaders(cosmosBulkExecutionOptions));
 
-//        final CosmosBulkExecutionOptions cosmosBulkExecutionOptions = bulkOptions;
-//        setRequestHeaders(cosmosBulkExecutionOptions);
-
         return executeBulkOperationsHelper(operationFlux, cosmosBulkExecutionOptions, false);
     }
 
