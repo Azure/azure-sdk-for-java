@@ -111,11 +111,9 @@ private class CosmosRowConverter(
       }
 
       if (rawBodyFieldName.isDefined){
-
-        val rawBodyFieldIndex = row.schema.fieldIndex(rawBodyFieldName.get)
         // Special case when the reader read the rawJson
         val rawJson = row.getAs[String](rawBodyFieldName.get)
-        jsonToObjectNode(rawJson, rawBodyFieldName.get == CosmosTableSchemaInferrer.OriginRawJsonBodyAttributeName)
+        convertRawBodyJsonToObjectNode(rawJson, rawBodyFieldName.get)
       } else {
         val objectNode: ObjectNode = objectMapper.createObjectNode()
         row.schema.fields.zipWithIndex.foreach({
@@ -135,10 +133,10 @@ private class CosmosRowConverter(
       }
     }
 
-    private def jsonToObjectNode(json: String, keepOriginProperties: Boolean): ObjectNode = {
+    private def convertRawBodyJsonToObjectNode(json: String, rawBodyFieldName: String): ObjectNode = {
       val doc = objectMapper.readTree(json).asInstanceOf[ObjectNode]
 
-      if (keepOriginProperties) {
+      if (rawBodyFieldName == CosmosTableSchemaInferrer.OriginRawJsonBodyAttributeName) {
         doc.set(
           CosmosTableSchemaInferrer.OriginETagAttributeName,
           doc.get(CosmosTableSchemaInferrer.ETagAttributeName))
@@ -163,11 +161,10 @@ private class CosmosRowConverter(
       }
 
       if (rawBodyFieldName.isDefined){
-
         val rawBodyFieldIndex = schema.fieldIndex(rawBodyFieldName.get)
         // Special case when the reader read the rawJson
         val rawJson = convertRowDataToString(row.get(rawBodyFieldIndex, StringType))
-        jsonToObjectNode(rawJson, rawBodyFieldName.get == CosmosTableSchemaInferrer.OriginRawJsonBodyAttributeName)
+        convertRawBodyJsonToObjectNode(rawJson, rawBodyFieldName.get)
       } else {
         val objectNode: ObjectNode = objectMapper.createObjectNode()
         schema.fields.zipWithIndex.foreach({
