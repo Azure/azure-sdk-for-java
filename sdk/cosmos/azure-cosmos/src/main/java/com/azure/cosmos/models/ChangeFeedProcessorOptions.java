@@ -361,6 +361,9 @@ public final class ChangeFeedProcessorOptions {
      */
     @Beta(value = Beta.SinceVersion.V4_26_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ChangeFeedProcessorOptions setScheduler(Scheduler scheduler) {
+        if (scheduler == null) {
+            throw new IllegalArgumentException("scheduler");
+        }
         this.scheduler = scheduler;
         return this;
     }

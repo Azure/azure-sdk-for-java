@@ -3,9 +3,7 @@
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
@@ -24,7 +22,6 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
-import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -43,7 +40,7 @@ import static com.azure.cosmos.CosmosBridgeInternal.getContextClient;
 public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     private final AsyncDocumentClient documentClient;
     private final CosmosAsyncContainer cosmosContainer;
-    private Scheduler rxScheduler;
+    private Scheduler scheduler;
 
     /**
      * Initializes a new instance of the {@link ChangeFeedContextClient} interface.
@@ -56,39 +53,39 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
 
         this.cosmosContainer = cosmosContainer;
         this.documentClient = getContextClient(cosmosContainer);
-        this.rxScheduler = Schedulers.boundedElastic();
+        this.scheduler = Schedulers.boundedElastic();
     }
 
     /**
      * Initializes a new instance of the {@link ChangeFeedContextClient} interface.
      * @param cosmosContainer existing client.
-     * @param rxScheduler the RX Java scheduler to observe on.
+     * @param scheduler the RX Java scheduler to observe on.
      */
-    public ChangeFeedContextClientImpl(CosmosAsyncContainer cosmosContainer, Scheduler rxScheduler) {
+    public ChangeFeedContextClientImpl(CosmosAsyncContainer cosmosContainer, Scheduler scheduler) {
         if (cosmosContainer == null) {
             throw new IllegalArgumentException("cosmosContainer");
         }
 
         this.cosmosContainer = cosmosContainer;
         this.documentClient = getContextClient(cosmosContainer);
-        this.rxScheduler = rxScheduler;
+        this.scheduler = scheduler;
 
     }
 
     @Override
     public Scheduler getScheduler() {
-        return this.rxScheduler;
+        return this.scheduler;
     }
 
     @Override
     public void setScheduler(Scheduler scheduler) {
-        this.rxScheduler = scheduler;
+        this.scheduler = scheduler;
     }
 
     @Override
     public Flux<FeedResponse<PartitionKeyRange>> readPartitionKeyRangeFeed(String partitionKeyRangesOrCollectionLink, CosmosQueryRequestOptions cosmosQueryRequestOptions) {
         return this.documentClient.readPartitionKeyRanges(partitionKeyRangesOrCollectionLink, cosmosQueryRequestOptions)
-            .publishOn(this.rxScheduler);
+            .publishOn(this.scheduler);
     }
 
     @Override
@@ -132,19 +129,19 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
                                 false);
                         });
                 });
-        return feedResponseFlux.publishOn(this.rxScheduler);
+        return feedResponseFlux.publishOn(this.scheduler);
     }
 
     @Override
     public Mono<CosmosDatabaseResponse> readDatabase(CosmosAsyncDatabase database, CosmosDatabaseRequestOptions options) {
         return database.read()
-            .publishOn(this.rxScheduler);
+            .publishOn(this.scheduler);
     }
 
     @Override
     public Mono<CosmosContainerResponse> readContainer(CosmosAsyncContainer containerLink, CosmosContainerRequestOptions options) {
         return containerLink.read(options)
-            .publishOn(this.rxScheduler);
+            .publishOn(this.scheduler);
     }
 
     @Override
@@ -152,10 +149,10 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
                                                       CosmosItemRequestOptions options, boolean disableAutomaticIdGeneration) {
         if (options != null) {
             return containerLink.createItem(document, options)
-                .publishOn(this.rxScheduler);
+                .publishOn(this.scheduler);
         } else {
             return containerLink.createItem(document)
-                .publishOn(this.rxScheduler);
+                .publishOn(this.scheduler);
         }
     }
 
@@ -163,21 +160,21 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     public Mono<CosmosItemResponse<Object>> deleteItem(String itemId, PartitionKey partitionKey,
                                                        CosmosItemRequestOptions options) {
         return cosmosContainer.deleteItem(itemId, partitionKey, options)
-            .publishOn(this.rxScheduler);
+            .publishOn(this.scheduler);
     }
 
     @Override
     public <T> Mono<CosmosItemResponse<T>> replaceItem(String itemId, PartitionKey partitionKey, T document,
                                                        CosmosItemRequestOptions options) {
         return cosmosContainer.replaceItem(document, itemId, partitionKey, options)
-            .publishOn(this.rxScheduler);
+            .publishOn(this.scheduler);
     }
 
     @Override
     public <T> Mono<CosmosItemResponse<T>> readItem(String itemId, PartitionKey partitionKey,
                                                     CosmosItemRequestOptions options, Class<T> itemType) {
         return cosmosContainer.readItem(itemId, partitionKey, options, itemType)
-            .publishOn(this.rxScheduler);
+            .publishOn(this.scheduler);
     }
 
     @Override
@@ -185,7 +182,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
                                                 CosmosQueryRequestOptions options, Class<T> klass) {
         return containerLink.queryItems(querySpec, options, klass)
                             .byPage()
-                            .publishOn(this.rxScheduler);
+                            .publishOn(this.scheduler);
     }
 
     @Override
