@@ -445,6 +445,7 @@ public final class SecretClientBuilder implements
      *
      * @return The updated {@link SecretClientBuilder} object.
      */
+    @Override
     public SecretClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
 

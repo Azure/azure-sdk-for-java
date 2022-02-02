@@ -421,6 +421,7 @@ public class EventProcessorClientBuilder implements
      * @param clientOptions The client options.
      * @return The updated {@link EventProcessorClientBuilder} object.
      */
+    @Override
     public EventProcessorClientBuilder clientOptions(ClientOptions clientOptions) {
         eventHubClientBuilder.clientOptions(clientOptions);
         return this;

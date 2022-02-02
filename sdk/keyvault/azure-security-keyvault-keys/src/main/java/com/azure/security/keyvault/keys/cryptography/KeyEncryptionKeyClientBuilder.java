@@ -340,6 +340,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
      */
+    @Override
     public KeyEncryptionKeyClientBuilder clientOptions(ClientOptions clientOptions) {
         builder.clientOptions(clientOptions);
 

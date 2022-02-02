@@ -7,6 +7,7 @@ import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
+import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
@@ -89,7 +90,8 @@ public final class ServiceBusAdministrationClientBuilder implements
     TokenCredentialTrait<ServiceBusAdministrationClientBuilder>,
     ConnectionStringTrait<ServiceBusAdministrationClientBuilder>,
     HttpTrait<ServiceBusAdministrationClientBuilder>,
-    ConfigurationTrait<ServiceBusAdministrationClientBuilder> {
+    ConfigurationTrait<ServiceBusAdministrationClientBuilder>,
+    EndpointTrait<ServiceBusAdministrationClientBuilder> {
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
 
@@ -207,6 +209,7 @@ public final class ServiceBusAdministrationClientBuilder implements
      * @throws NullPointerException if {@code endpoint} is null.
      * @throws IllegalArgumentException if {@code endpoint} cannot be parsed into a valid URL.
      */
+    @Override
     public ServiceBusAdministrationClientBuilder endpoint(String endpoint) {
         final URL url;
         try {
@@ -347,6 +350,7 @@ public final class ServiceBusAdministrationClientBuilder implements
      * @see <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry
      *      policy</a>
      */
+    @Override
     public ServiceBusAdministrationClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;

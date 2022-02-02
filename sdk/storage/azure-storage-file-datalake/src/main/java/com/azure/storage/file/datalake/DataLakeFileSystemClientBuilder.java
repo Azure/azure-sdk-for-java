@@ -7,6 +7,7 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
@@ -58,7 +59,8 @@ public class DataLakeFileSystemClientBuilder implements
     AzureNamedKeyCredentialTrait<DataLakeFileSystemClientBuilder>,
     AzureSasCredentialTrait<DataLakeFileSystemClientBuilder>,
     HttpTrait<DataLakeFileSystemClientBuilder>,
-    ConfigurationTrait<DataLakeFileSystemClientBuilder> {
+    ConfigurationTrait<DataLakeFileSystemClientBuilder>,
+    EndpointTrait<DataLakeFileSystemClientBuilder> {
     private final ClientLogger logger = new ClientLogger(DataLakeFileSystemClientBuilder.class);
 
     private final BlobContainerClientBuilder blobContainerClientBuilder;
@@ -156,6 +158,7 @@ public class DataLakeFileSystemClientBuilder implements
      * @return the updated DataLakeFileSystemClientBuilder object
      * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is a malformed URL.
      */
+    @Override
     public DataLakeFileSystemClientBuilder endpoint(String endpoint) {
         // Ensure endpoint provided is dfs endpoint
         endpoint = DataLakeImplUtils.endpointToDesiredEndpoint(endpoint, "dfs", "blob");
@@ -412,6 +415,7 @@ public class DataLakeFileSystemClientBuilder implements
      * @return the updated DataLakeFileSystemClientBuilder object
      * @throws NullPointerException If {@code clientOptions} is {@code null}.
      */
+    @Override
     public DataLakeFileSystemClientBuilder clientOptions(ClientOptions clientOptions) {
         blobContainerClientBuilder.clientOptions(clientOptions);
         this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");

@@ -8,6 +8,7 @@ import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
+import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
@@ -100,7 +101,8 @@ public final class EncryptedBlobClientBuilder implements
     AzureNamedKeyCredentialTrait<EncryptedBlobClientBuilder>,
     AzureSasCredentialTrait<EncryptedBlobClientBuilder>,
     HttpTrait<EncryptedBlobClientBuilder>,
-    ConfigurationTrait<EncryptedBlobClientBuilder> {
+    ConfigurationTrait<EncryptedBlobClientBuilder>,
+    EndpointTrait<EncryptedBlobClientBuilder> {
     private final ClientLogger logger = new ClientLogger(EncryptedBlobClientBuilder.class);
     private static final Map<String, String> PROPERTIES =
         CoreUtils.getProperties("azure-storage-blob-cryptography.properties");
@@ -480,6 +482,7 @@ public final class EncryptedBlobClientBuilder implements
      * @return the updated EncryptedBlobClientBuilder object
      * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is a malformed URL.
      */
+    @Override
     public EncryptedBlobClientBuilder endpoint(String endpoint) {
         try {
             URL url = new URL(endpoint);
@@ -674,6 +677,7 @@ public final class EncryptedBlobClientBuilder implements
      * @return the updated EncryptedBlobClientBuilder object
      * @throws NullPointerException If {@code clientOptions} is {@code null}.
      */
+    @Override
     public EncryptedBlobClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
         return this;

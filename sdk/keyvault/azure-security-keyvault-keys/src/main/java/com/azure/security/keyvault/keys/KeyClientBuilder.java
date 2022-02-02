@@ -443,6 +443,7 @@ public final class KeyClientBuilder implements
      *
      * @return The updated {@link KeyClientBuilder} object.
      */
+    @Override
     public KeyClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
 

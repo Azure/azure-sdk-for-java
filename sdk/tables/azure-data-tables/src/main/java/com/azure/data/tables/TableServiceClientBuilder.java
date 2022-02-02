@@ -7,6 +7,7 @@ import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
+import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
@@ -78,7 +79,8 @@ public final class TableServiceClientBuilder implements
     ConnectionStringTrait<TableServiceClientBuilder>,
     AzureSasCredentialTrait<TableServiceClientBuilder>,
     HttpTrait<TableServiceClientBuilder>,
-    ConfigurationTrait<TableServiceClientBuilder> {
+    ConfigurationTrait<TableServiceClientBuilder>,
+    EndpointTrait<TableServiceClientBuilder> {
     private final ClientLogger logger = new ClientLogger(TableServiceClientBuilder.class);
     private final SerializerAdapter serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -227,6 +229,7 @@ public final class TableServiceClientBuilder implements
      *
      * @throws IllegalArgumentException If {@code endpoint} isn't a valid URL.
      */
+    @Override
     public TableServiceClientBuilder endpoint(String endpoint) {
         if (endpoint == null) {
             throw logger.logExceptionAsError(new NullPointerException("'endpoint' cannot be null."));
@@ -492,6 +495,7 @@ public final class TableServiceClientBuilder implements
      *
      * @return The updated {@link TableServiceClientBuilder}.
      */
+    @Override
     public TableServiceClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
 

@@ -6,6 +6,7 @@ package com.azure.core.amqp.client.traits;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.util.ClientOptions;
 
 /**
  * The interface for client builders that support an AMQP protocol.
@@ -40,4 +41,13 @@ public interface AmqpTrait<TBuilder extends AmqpTrait<TBuilder>> {
      * @return The updated {@code TBuilder} object.
      */
     TBuilder proxyOptions(ProxyOptions proxyOptions);
+
+    /**
+     * Allows for setting common properties such as application ID, headers, etc.
+     *
+     * @param clientOptions A configured instance of {@link ClientOptions}.
+     * @return Returns the same concrete type with the appropriate properties updated, to allow for fluent chaining of
+     *      operations.
+     */
+    TBuilder clientOptions(ClientOptions clientOptions);
 }

@@ -256,6 +256,7 @@ public class EventHubClientBuilder implements
      * @param clientOptions The client options.
      * @return The updated {@link EventHubClientBuilder} object.
      */
+    @Override
     public EventHubClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;

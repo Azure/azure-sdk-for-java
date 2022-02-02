@@ -511,6 +511,7 @@ public final class CryptographyClientBuilder implements
      *
      * @return The updated {@link CryptographyClientBuilder} object.
      */
+    @Override
     public CryptographyClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
 

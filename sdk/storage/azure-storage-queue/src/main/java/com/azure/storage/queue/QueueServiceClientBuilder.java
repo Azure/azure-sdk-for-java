@@ -7,6 +7,7 @@ import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
+import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
@@ -129,7 +130,8 @@ public final class QueueServiceClientBuilder implements
     AzureNamedKeyCredentialTrait<QueueServiceClientBuilder>,
     AzureSasCredentialTrait<QueueServiceClientBuilder>,
     HttpTrait<QueueServiceClientBuilder>,
-    ConfigurationTrait<QueueServiceClientBuilder> {
+    ConfigurationTrait<QueueServiceClientBuilder>,
+    EndpointTrait<QueueServiceClientBuilder> {
     private final ClientLogger logger = new ClientLogger(QueueServiceClientBuilder.class);
 
     private String endpoint;
@@ -236,6 +238,7 @@ public final class QueueServiceClientBuilder implements
      * @throws NullPointerException If {@code endpoint} is {@code null}.
      * @throws IllegalArgumentException If {@code endpoint} is a malformed URL.
      */
+    @Override
     public QueueServiceClientBuilder endpoint(String endpoint) {
         BuilderHelper.QueueUrlParts parts = BuilderHelper.parseEndpoint(endpoint, logger);
         this.endpoint = parts.getEndpoint();
@@ -470,6 +473,7 @@ public final class QueueServiceClientBuilder implements
      * @return the updated QueueServiceClientBuilder object
      * @throws NullPointerException If {@code clientOptions} is {@code null}.
      */
+    @Override
     public QueueServiceClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
         return this;

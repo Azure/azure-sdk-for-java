@@ -7,6 +7,7 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
@@ -57,7 +58,8 @@ public final class EventGridPublisherClientBuilder implements
     AzureKeyCredentialTrait<EventGridPublisherClientBuilder>,
     AzureSasCredentialTrait<EventGridPublisherClientBuilder>,
     HttpTrait<EventGridPublisherClientBuilder>,
-    ConfigurationTrait<EventGridPublisherClientBuilder> {
+    ConfigurationTrait<EventGridPublisherClientBuilder>,
+    EndpointTrait<EventGridPublisherClientBuilder> {
 
     private static final String AEG_SAS_KEY = "aeg-sas-key";
 
@@ -274,6 +276,7 @@ public final class EventGridPublisherClientBuilder implements
      * @param clientOptions the {@link ClientOptions} to be set on the client.
      * @return The updated EventGridPublisherClientBuilder object.
      */
+    @Override
     public EventGridPublisherClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
@@ -338,6 +341,7 @@ public final class EventGridPublisherClientBuilder implements
      * @throws NullPointerException if {@code endpoint} is null.
      * @throws IllegalArgumentException if {@code endpoint} cannot be parsed into a valid URL.
      */
+    @Override
     public EventGridPublisherClientBuilder endpoint(String endpoint) {
         try {
             new URL(Objects.requireNonNull(endpoint, "'endpoint' cannot be null."));

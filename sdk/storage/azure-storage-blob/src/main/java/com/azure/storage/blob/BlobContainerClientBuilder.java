@@ -8,6 +8,7 @@ import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
+import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
@@ -63,7 +64,8 @@ public final class BlobContainerClientBuilder implements
     AzureSasCredentialTrait<BlobContainerClientBuilder>,
     AzureNamedKeyCredentialTrait<BlobContainerClientBuilder>,
     HttpTrait<BlobContainerClientBuilder>,
-    ConfigurationTrait<BlobContainerClientBuilder> {
+    ConfigurationTrait<BlobContainerClientBuilder>,
+    EndpointTrait<BlobContainerClientBuilder> {
     private final ClientLogger logger = new ClientLogger(BlobContainerClientBuilder.class);
 
     private String endpoint;
@@ -167,6 +169,7 @@ public final class BlobContainerClientBuilder implements
      * @return the updated BlobContainerClientBuilder object
      * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is a malformed URL.
      */
+    @Override
     public BlobContainerClientBuilder endpoint(String endpoint) {
         try {
             URL url = new URL(endpoint);
@@ -469,6 +472,7 @@ public final class BlobContainerClientBuilder implements
      * @return the updated BlobContainerClientBuilder object
      * @throws NullPointerException If {@code clientOptions} is {@code null}.
      */
+    @Override
     public BlobContainerClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
         return this;

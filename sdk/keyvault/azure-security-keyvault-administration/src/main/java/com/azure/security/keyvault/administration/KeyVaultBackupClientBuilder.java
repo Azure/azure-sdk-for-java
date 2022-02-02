@@ -387,6 +387,7 @@ public final class KeyVaultBackupClientBuilder implements
      *
      * @return The updated {@link KeyVaultBackupClientBuilder} object.
      */
+    @Override
     public KeyVaultBackupClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
 

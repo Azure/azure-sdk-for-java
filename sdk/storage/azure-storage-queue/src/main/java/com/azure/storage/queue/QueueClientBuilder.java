@@ -7,6 +7,7 @@ import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
+import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
@@ -134,7 +135,8 @@ public final class QueueClientBuilder implements
     AzureNamedKeyCredentialTrait<QueueClientBuilder>,
     AzureSasCredentialTrait<QueueClientBuilder>,
     HttpTrait<QueueClientBuilder>,
-    ConfigurationTrait<QueueClientBuilder> {
+    ConfigurationTrait<QueueClientBuilder>,
+    EndpointTrait<QueueClientBuilder> {
     private final ClientLogger logger = new ClientLogger(QueueClientBuilder.class);
 
     private String endpoint;
@@ -245,6 +247,7 @@ public final class QueueClientBuilder implements
      * @return the updated QueueClientBuilder object
      * @throws IllegalArgumentException If {@code endpoint} isn't a proper URL
      */
+    @Override
     public QueueClientBuilder endpoint(String endpoint) {
         BuilderHelper.QueueUrlParts parts = BuilderHelper.parseEndpoint(endpoint, logger);
         this.endpoint = parts.getEndpoint();
@@ -494,6 +497,7 @@ public final class QueueClientBuilder implements
      * @return the updated QueueClientBuilder object
      * @throws NullPointerException If {@code clientOptions} is {@code null}.
      */
+    @Override
     public QueueClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
         return this;

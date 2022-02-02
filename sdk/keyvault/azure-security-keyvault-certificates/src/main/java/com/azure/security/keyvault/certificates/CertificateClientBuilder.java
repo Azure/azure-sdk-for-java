@@ -452,6 +452,7 @@ public final class CertificateClientBuilder implements
      *
      * @return The updated {@link CertificateClientBuilder} object.
      */
+    @Override
     public CertificateClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
 

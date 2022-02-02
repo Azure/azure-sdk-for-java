@@ -7,6 +7,7 @@ import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
+import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
@@ -80,7 +81,8 @@ public final class TableClientBuilder implements
     ConnectionStringTrait<TableClientBuilder>,
     AzureSasCredentialTrait<TableClientBuilder>,
     HttpTrait<TableClientBuilder>,
-    ConfigurationTrait<TableClientBuilder> {
+    ConfigurationTrait<TableClientBuilder>,
+    EndpointTrait<TableClientBuilder> {
     private static final SerializerAdapter TABLES_SERIALIZER = new TablesJacksonSerializer();
     private static final TablesMultipartSerializer TRANSACTIONAL_BATCH_SERIALIZER = new TablesMultipartSerializer();
 
@@ -234,6 +236,7 @@ public final class TableClientBuilder implements
      * @throws NullPointerException If {@code endpoint} is {@code null}.
      * @throws IllegalArgumentException If {@code endpoint} isn't a valid URL.
      */
+    @Override
     public TableClientBuilder endpoint(String endpoint) {
         if (endpoint == null) {
             throw logger.logExceptionAsError(new NullPointerException("'endpoint' cannot be null."));
@@ -499,6 +502,7 @@ public final class TableClientBuilder implements
      *
      * @return The updated {@link TableClientBuilder}.
      */
+    @Override
     public TableClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
 

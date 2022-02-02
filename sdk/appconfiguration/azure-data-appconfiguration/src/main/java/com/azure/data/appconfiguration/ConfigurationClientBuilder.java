@@ -6,6 +6,7 @@ package com.azure.data.appconfiguration;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
+import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
@@ -106,7 +107,8 @@ public final class ConfigurationClientBuilder implements
     TokenCredentialTrait<ConfigurationClientBuilder>,
     ConnectionStringTrait<ConfigurationClientBuilder>,
     HttpTrait<ConfigurationClientBuilder>,
-    ConfigurationTrait<ConfigurationClientBuilder> {
+    ConfigurationTrait<ConfigurationClientBuilder>,
+    EndpointTrait<ConfigurationClientBuilder> {
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
 
     private static final String CLIENT_NAME;
@@ -275,6 +277,7 @@ public final class ConfigurationClientBuilder implements
      * @return The updated ConfigurationClientBuilder object.
      * @throws IllegalArgumentException If {@code endpoint} is null or it cannot be parsed into a valid URL.
      */
+    @Override
     public ConfigurationClientBuilder endpoint(String endpoint) {
         try {
             new URL(endpoint);
@@ -296,6 +299,7 @@ public final class ConfigurationClientBuilder implements
      *
      * @return the updated ConfigurationClientBuilder object
      */
+    @Override
     public ConfigurationClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;

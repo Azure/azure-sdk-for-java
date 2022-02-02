@@ -388,6 +388,7 @@ public final class KeyVaultAccessControlClientBuilder implements
      *
      * @return The updated {@link KeyVaultAccessControlClientBuilder} object.
      */
+    @Override
     public KeyVaultAccessControlClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
 

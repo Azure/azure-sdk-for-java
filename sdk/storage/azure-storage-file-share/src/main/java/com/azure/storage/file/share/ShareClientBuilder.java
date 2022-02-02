@@ -8,6 +8,7 @@ import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
 import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
+import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
@@ -134,7 +135,8 @@ public class ShareClientBuilder implements
     ConnectionStringTrait<ShareClientBuilder>,
     AzureNamedKeyCredentialTrait<ShareClientBuilder>,
     AzureSasCredentialTrait<ShareClientBuilder>,
-    ConfigurationTrait<ShareClientBuilder> {
+    ConfigurationTrait<ShareClientBuilder>,
+    EndpointTrait<ShareClientBuilder> {
     private final ClientLogger logger = new ClientLogger(ShareClientBuilder.class);
 
     private String endpoint;
@@ -243,6 +245,7 @@ public class ShareClientBuilder implements
      * @return the updated ShareClientBuilder object
      * @throws IllegalArgumentException If {@code endpoint} is {@code null} or is an invalid URL
      */
+    @Override
     public ShareClientBuilder endpoint(String endpoint) {
         try {
             URL fullUrl = new URL(endpoint);
@@ -514,6 +517,7 @@ public class ShareClientBuilder implements
      * @return the updated ShareClientBuilder object
      * @throws NullPointerException If {@code clientOptions} is {@code null}.
      */
+    @Override
     public ShareClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
         return this;
