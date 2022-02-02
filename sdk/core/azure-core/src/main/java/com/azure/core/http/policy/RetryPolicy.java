@@ -98,8 +98,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
         this(
             getRetryStrategyFromOptions(
                 Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.")),
-            Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.").getRetryAfterHeader(),
-            Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.").getRetryAfterTimeUnit());
+            null, null);
     }
 
     private static RetryStrategy getRetryStrategyFromOptions(RetryOptions retryOptions) {
