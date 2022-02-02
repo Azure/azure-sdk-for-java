@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ReportPayload;
 import org.HdrHistogram.ConcurrentDoubleHistogram;
@@ -59,19 +61,21 @@ public class RntbdChannelAcquisitionTimeline {
     private void addNewEvent(RntbdChannelAcquisitionEvent event, ClientTelemetry clientTelemetry) {
         if (this.currentEvent != null) {
             this.currentEvent.complete(event.getCreatedTime());
-            if (event.getEventType().equals(RntbdChannelAcquisitionEventType.ATTEMPT_TO_CREATE_NEW_CHANNEL_COMPLETE)) {
-                ReportPayload reportPayload = new ReportPayload(ClientTelemetry.TCP_NEW_CHANNEL_LATENCY_NAME,
-                    ClientTelemetry.TCP_NEW_CHANNEL_LATENCY_UNIT);
-                ConcurrentDoubleHistogram newChannelLatencyHistogram =
-                    clientTelemetry.getClientTelemetryInfo().getSystemInfoMap().get(reportPayload);
-                if (newChannelLatencyHistogram == null) {
-                    newChannelLatencyHistogram =
-                        new ConcurrentDoubleHistogram(ClientTelemetry.TCP_NEW_CHANNEL_LATENCY_MAX_MILLI_SEC,
-                            ClientTelemetry.TCP_NEW_CHANNEL_LATENCY_PRECISION);
-                    clientTelemetry.getClientTelemetryInfo().getSystemInfoMap().put(reportPayload, newChannelLatencyHistogram);
+            if(Configs.isClientTelemetryEnabled(clientTelemetry.isClientTelemetryEnabled())) {
+                if (event.getEventType().equals(RntbdChannelAcquisitionEventType.ATTEMPT_TO_CREATE_NEW_CHANNEL_COMPLETE)) {
+                    ReportPayload reportPayload = new ReportPayload(ClientTelemetry.TCP_NEW_CHANNEL_LATENCY_NAME,
+                        ClientTelemetry.TCP_NEW_CHANNEL_LATENCY_UNIT);
+                    ConcurrentDoubleHistogram newChannelLatencyHistogram =
+                        clientTelemetry.getClientTelemetryInfo().getSystemInfoMap().get(reportPayload);
+                    if (newChannelLatencyHistogram == null) {
+                        newChannelLatencyHistogram =
+                            new ConcurrentDoubleHistogram(ClientTelemetry.TCP_NEW_CHANNEL_LATENCY_MAX_MILLI_SEC,
+                                ClientTelemetry.TCP_NEW_CHANNEL_LATENCY_PRECISION);
+                        clientTelemetry.getClientTelemetryInfo().getSystemInfoMap().put(reportPayload, newChannelLatencyHistogram);
+                    }
+                    ClientTelemetry.recordValue(newChannelLatencyHistogram,
+                        Duration.between(this.currentEvent.getCreatedTime(), this.currentEvent.getCompleteTime()).toMillis());
                 }
-                ClientTelemetry.recordValue(newChannelLatencyHistogram,
-                    Duration.between(this.currentEvent.getCreatedTime(), this.currentEvent.getCompleteTime()).toMillis());
             }
         }
         this.events.add(event);

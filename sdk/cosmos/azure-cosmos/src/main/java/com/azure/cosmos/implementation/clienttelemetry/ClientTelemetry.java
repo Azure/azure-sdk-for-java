@@ -141,6 +141,10 @@ public class ClientTelemetry {
         }
     }
 
+    public boolean isClientTelemetryEnabled() {
+        return isClientTelemetryEnabled;
+    }
+
     public void init() {
         loadAzureVmMetaData();
         sendClientTelemetry().subscribe();
