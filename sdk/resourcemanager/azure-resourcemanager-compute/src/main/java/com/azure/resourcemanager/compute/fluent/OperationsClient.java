@@ -18,7 +18,7 @@ public interface OperationsClient {
      *
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of compute operations.
+     * @return a list of compute operations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ComputeOperationValueInner> listAsync();
@@ -28,7 +28,7 @@ public interface OperationsClient {
      *
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of compute operations.
+     * @return a list of compute operations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ComputeOperationValueInner> list();
@@ -40,7 +40,7 @@ public interface OperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of compute operations.
+     * @return a list of compute operations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ComputeOperationValueInner> list(Context context);

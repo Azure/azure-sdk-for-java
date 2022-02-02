@@ -257,7 +257,7 @@ public final class QueueClientBuilder implements
         BuilderHelper.QueueUrlParts parts = BuilderHelper.parseEndpoint(endpoint, logger);
         this.endpoint = parts.getEndpoint();
         this.accountName = parts.getAccountName();
-        this.queueName = parts.getQueueName();
+        this.queueName = parts.getQueueName() == null ? this.queueName : parts.getQueueName();
 
         if (!CoreUtils.isNullOrEmpty(parts.getSasToken())) {
             sasToken(parts.getSasToken());

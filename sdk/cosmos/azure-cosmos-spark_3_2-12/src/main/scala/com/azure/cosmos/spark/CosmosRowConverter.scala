@@ -100,39 +100,72 @@ private class CosmosRowConverter(
 
     def fromRowToObjectNode(row: Row): ObjectNode = {
 
-        if (row.schema.contains(StructField(CosmosTableSchemaInferrer.RawJsonBodyAttributeName, StringType))){
-            // Special case when the reader read the rawJson
-            val rawJson = row.getAs[String](CosmosTableSchemaInferrer.RawJsonBodyAttributeName)
-            objectMapper.readTree(rawJson).asInstanceOf[ObjectNode]
-        }
-        else {
-            val objectNode: ObjectNode = objectMapper.createObjectNode()
-            row.schema.fields.zipWithIndex.foreach({
-              case (field, i) =>
-                field.dataType match {
-                  case _: NullType => putNullConditionally(objectNode, field.name)
-                  case _ if row.isNullAt(i) => putNullConditionally(objectNode, field.name)
-                  case _ =>
-                    val nodeOpt = convertSparkDataTypeToJsonNode(field.dataType, row.get(i))
-                    if (nodeOpt.isDefined) {
-                      objectNode.set(field.name, nodeOpt.get)
-                    }
-                }
-            })
+      val rawBodyFieldName = if (row.schema.names.contains(CosmosTableSchemaInferrer.RawJsonBodyAttributeName) &&
+        row.schema.apply(CosmosTableSchemaInferrer.RawJsonBodyAttributeName).dataType.isInstanceOf[StringType]) {
+        Some(CosmosTableSchemaInferrer.RawJsonBodyAttributeName)
+      } else if (row.schema.names.contains(CosmosTableSchemaInferrer.OriginRawJsonBodyAttributeName) &&
+        row.schema.apply(CosmosTableSchemaInferrer.OriginRawJsonBodyAttributeName).dataType.isInstanceOf[StringType]) {
+        Some(CosmosTableSchemaInferrer.OriginRawJsonBodyAttributeName)
+      } else {
+        None
+      }
 
-            objectNode
-        }
+      if (rawBodyFieldName.isDefined){
+        // Special case when the reader read the rawJson
+        val rawJson = row.getAs[String](rawBodyFieldName.get)
+        convertRawBodyJsonToObjectNode(rawJson, rawBodyFieldName.get)
+      } else {
+        val objectNode: ObjectNode = objectMapper.createObjectNode()
+        row.schema.fields.zipWithIndex.foreach({
+          case (field, i) =>
+            field.dataType match {
+              case _: NullType => putNullConditionally(objectNode, field.name)
+              case _ if row.isNullAt(i) => putNullConditionally(objectNode, field.name)
+              case _ =>
+                val nodeOpt = convertSparkDataTypeToJsonNode(field.dataType, row.get(i))
+                if (nodeOpt.isDefined) {
+                  objectNode.set(field.name, nodeOpt.get)
+                }
+            }
+        })
+
+        objectNode
+      }
+    }
+
+    private def convertRawBodyJsonToObjectNode(json: String, rawBodyFieldName: String): ObjectNode = {
+      val doc = objectMapper.readTree(json).asInstanceOf[ObjectNode]
+
+      if (rawBodyFieldName == CosmosTableSchemaInferrer.OriginRawJsonBodyAttributeName) {
+        doc.set(
+          CosmosTableSchemaInferrer.OriginETagAttributeName,
+          doc.get(CosmosTableSchemaInferrer.ETagAttributeName))
+        doc.set(
+          CosmosTableSchemaInferrer.OriginTimestampAttributeName,
+          doc.get(CosmosTableSchemaInferrer.TimestampAttributeName))
+      }
+
+      doc
     }
 
     def fromInternalRowToObjectNode(row: InternalRow, schema: StructType): ObjectNode = {
-      if (schema.contains(StructField(CosmosTableSchemaInferrer.RawJsonBodyAttributeName, StringType))){
-        val rawBodyFieldIndex = schema.fieldIndex(CosmosTableSchemaInferrer.RawJsonBodyAttributeName)
+
+      val rawBodyFieldName = if (schema.names.contains(CosmosTableSchemaInferrer.RawJsonBodyAttributeName) &&
+        schema.apply(CosmosTableSchemaInferrer.RawJsonBodyAttributeName).dataType.isInstanceOf[StringType]) {
+        Some(CosmosTableSchemaInferrer.RawJsonBodyAttributeName)
+      } else if (schema.names.contains(CosmosTableSchemaInferrer.OriginRawJsonBodyAttributeName) &&
+        schema.apply(CosmosTableSchemaInferrer.OriginRawJsonBodyAttributeName).dataType.isInstanceOf[StringType]) {
+        Some(CosmosTableSchemaInferrer.OriginRawJsonBodyAttributeName)
+      } else {
+        None
+      }
+
+      if (rawBodyFieldName.isDefined){
+        val rawBodyFieldIndex = schema.fieldIndex(rawBodyFieldName.get)
         // Special case when the reader read the rawJson
         val rawJson = convertRowDataToString(row.get(rawBodyFieldIndex, StringType))
-        objectMapper.readTree(rawJson).asInstanceOf[ObjectNode]
-      }
-      else
-      {
+        convertRawBodyJsonToObjectNode(rawJson, rawBodyFieldName.get)
+      } else {
         val objectNode: ObjectNode = objectMapper.createObjectNode()
         schema.fields.zipWithIndex.foreach({
           case (field, i) =>

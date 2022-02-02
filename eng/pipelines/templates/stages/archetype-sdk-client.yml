@@ -47,7 +47,7 @@ parameters:
 - name: PreBuildSteps
   type: object
   default: []
-- name: MavenVerifyAdditionalOptions
+- name: AdditionalLintingOptions
   type: string
   default: ''
 
@@ -77,12 +77,13 @@ stages:
         MatrixReplace:
           - ${{ each replacement in parameters.MatrixReplace }}:
             - ${{ replacement }}
-          - ${{ if eq(parameters.SDKType, 'data') }}:
-            - TestGoals=.*/verify
-            - TestOptions=.*/-am
+
           - AZURE_TEST.*=.*/
         PreBuildSteps: ${{ parameters.PreBuildSteps }}
-        MavenVerifyAdditionalOptions: ${{ parameters.MavenVerifyAdditionalOptions }}
+        AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
+        ${{ if eq(parameters.SDKType, 'data') }}:
+          TestGoals: 'verify'
+          TestOptions: '-am'
 
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
