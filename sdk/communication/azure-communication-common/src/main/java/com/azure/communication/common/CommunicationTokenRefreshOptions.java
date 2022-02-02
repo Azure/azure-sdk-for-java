@@ -19,9 +19,9 @@ public final class CommunicationTokenRefreshOptions {
     /**
      * Creates a CommunicationTokenRefreshOptions object
      *
-     * @param tokenRefresher     The asynchronous callback function that acquires a fresh token
-     *                           from the Communication Identity API, e.g. by
-     *                           calling the CommunicationIdentityClient
+     * @param tokenRefresher The asynchronous callback function that acquires a fresh token
+     *                       from the Communication Identity API, e.g. by
+     *                       calling the CommunicationIdentityClient
      * @param refreshProactively Determines whether the token should be proactively
      *                           renewed prior to its expiry or on demand.
      * @deprecated Use {@link #CommunicationTokenRefreshOptions(Supplier)} instead
@@ -35,12 +35,12 @@ public final class CommunicationTokenRefreshOptions {
     /**
      * Creates a CommunicationTokenRefreshOptions object
      *
-     * @param tokenRefresher     The asynchronous callback function that acquires a fresh token
-     *                           from the Communication Identity API, e.g. by
-     *                           calling the CommunicationIdentityClient
+     * @param tokenRefresher The asynchronous callback function that acquires a fresh token
+     *                       from the Communication Identity API, e.g. by
+     *                       calling the CommunicationIdentityClient
      * @param refreshProactively Determines whether the token should be proactively
      *                           renewed prior to its expiry or on demand.
-     * @param initialToken       The optional serialized JWT token
+     * @param initialToken The optional serialized JWT token
      * @deprecated Use {@link #CommunicationTokenRefreshOptions(Supplier)} instead
      *             and chain fluent setters {@link #setRefreshProactively(boolean)},
      *             {@link #setInitialToken(String)}
@@ -71,6 +71,7 @@ public final class CommunicationTokenRefreshOptions {
 
     /**
      * @return The asynchronous token refresher to provide capacity to fetch fresh token
+     * @deprecated Use synchronous token refresher instead.
      */
     @Deprecated
     public Supplier<Mono<String>> getTokenRefresher() {
