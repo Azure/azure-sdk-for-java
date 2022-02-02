@@ -16,6 +16,14 @@ public class FixedDelayOptions {
     private final int maxRetries;
     private final Duration delay;
 
+    /**
+     * Creates an instance of {@link maxRetries}.
+     *
+     * @param maxRetries The max number of retry attempts that can be made.
+     * @param delay The fixed delay duration between retry attempts.
+     * @throws IllegalArgumentException If {@code maxRetries} is negative.
+     * @throws NullPointerException If {@code delay} is {@code null}.
+     */
     public FixedDelayOptions(int maxRetries, Duration delay) {
         if (maxRetries < 0) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Max retries cannot be less than 0."));

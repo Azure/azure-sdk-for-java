@@ -3,7 +3,6 @@
 
 package com.azure.core.http.policy;
 
-import com.azure.core.implementation.util.ObjectsUtil;
 import com.azure.core.util.logging.ClientLogger;
 import java.time.Duration;
 import java.util.Objects;
@@ -20,6 +19,8 @@ public class FixedDelay implements RetryStrategy {
      *
      * @param maxRetries The max number of retry attempts that can be made.
      * @param delay The fixed delay duration between retry attempts.
+     * @throws IllegalArgumentException If {@code maxRetries} is negative.
+     * @throws NullPointerException If {@code delay} is {@code null}.
      */
     public FixedDelay(int maxRetries, Duration delay) {
         if (maxRetries < 0) {

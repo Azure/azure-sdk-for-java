@@ -97,7 +97,7 @@ public class ExponentialBackoffOptions {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'maxDelay' cannot be negative or 0."));
         }
 
-        if (baseDelay !=null && maxDelay != null && baseDelay.compareTo(maxDelay) > 0) {
+        if (baseDelay != null && maxDelay != null && baseDelay.compareTo(maxDelay) > 0) {
             throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("'baseDelay' cannot be greater than 'maxDelay'."));
         }
