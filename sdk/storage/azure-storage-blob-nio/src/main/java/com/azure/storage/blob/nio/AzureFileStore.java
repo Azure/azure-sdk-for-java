@@ -34,7 +34,7 @@ public final class AzureFileStore extends FileStore {
         this.parentFileSystem = parentFileSystem;
         this.containerClient = this.parentFileSystem.getBlobServiceClient().getBlobContainerClient(containerName);
 
-        if (!skipConnectionCheck) {
+        if (skipConnectionCheck == null || !skipConnectionCheck) {
             try {
                 // This also serves as our connection check.
                 if (!this.containerClient.exists()) {

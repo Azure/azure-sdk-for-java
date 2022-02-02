@@ -746,12 +746,12 @@ public final class AzurePath implements Path {
         return containerClient.getBlobClient(blobName);
     }
 
-    public AzurePath fromBlobUrl(AzureFileSystemProvider provider, String url) throws URISyntaxException {
+    public static AzurePath fromBlobUrl(AzureFileSystemProvider provider, String url) throws URISyntaxException {
         BlobUrlParts parts = BlobUrlParts.parse(url);
-        URI fileSystemUri = hostToFileSystemUri(provider, parts.getHost());
+        URI fileSystemUri = hostToFileSystemUri(provider, parts.getScheme(), parts.getHost());
         FileSystem parentFileSystem = provider.getFileSystem(fileSystemUri);
-        return new AzurePath((AzureFileSystem) parentFileSystem, parts.getBlobContainerName() + ROOT_DIR_SUFFIX,
-            parts.getBlobName());
+        return new AzurePath((AzureFileSystem) parentFileSystem, fileStoreToRoot(parts.getBlobContainerName()),
+            parts.getBlobName() == null ? "" : parts.getBlobName());
     }
 
     /**
@@ -794,12 +794,16 @@ public final class AzurePath implements Path {
         return root.substring(0, root.length() - 1); // Remove the ROOT_DIR_SUFFIX
     }
 
-    private String fileStoreToRoot(String fileStore) {
-        return fileStore + ':';
+    private static String fileStoreToRoot(String fileStore) {
+        if (fileStore == null || fileStore.equals("")) {
+            return "";
+        }
+        return fileStore + ROOT_DIR_SUFFIX;
     }
 
-    private URI hostToFileSystemUri(AzureFileSystemProvider provider, String host) throws URISyntaxException {
-        return new URI(provider.getScheme() + "://?endpoint=" + host);
+    private static URI hostToFileSystemUri(AzureFileSystemProvider provider, String scheme, String host)
+        throws URISyntaxException {
+        return new URI(provider.getScheme() + "://?endpoint=" + scheme + "://" + host);
     }
 
     static void ensureFileSystemOpen(Path p) {
