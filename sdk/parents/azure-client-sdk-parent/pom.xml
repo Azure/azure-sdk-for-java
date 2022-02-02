@@ -764,7 +764,7 @@
             <analysisConfiguration>
               <revapi.reporter.json id="file-report">
                 <minSeverity>NON_BREAKING</minSeverity>
-                <minCriticality>documented</minCriticality>
+                <minCriticality>error</minCriticality>
                 <indent>true</indent>
                 <output>${project.build.directory}/revapi.json</output>
                 <keepEmptyFile>false</keepEmptyFile>
