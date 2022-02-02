@@ -85,7 +85,8 @@ public final class BlobServiceClientBuilder implements
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
     private HttpLogOptions logOptions;
-    private RequestRetryOptions retryOptions = new RequestRetryOptions();
+    private RequestRetryOptions retryOptions;
+    private RetryOptions coreRetryOptions;
     private HttpPipeline httpPipeline;
 
     private ClientOptions clientOptions = new ClientOptions();
@@ -127,7 +128,7 @@ public final class BlobServiceClientBuilder implements
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
-            endpoint, retryOptions, logOptions,
+            endpoint, retryOptions, coreRetryOptions, logOptions,
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
         boolean foundCredential = false;
@@ -402,28 +403,30 @@ public final class BlobServiceClientBuilder implements
     /**
      * Sets the request retry options for all the requests made through the client.
      *
+     * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
+     *
      * @param retryOptions {@link RequestRetryOptions}.
      * @return the updated BlobServiceClientBuilder object
-     * @throws NullPointerException If {@code retryOptions} is {@code null}.
      */
     public BlobServiceClientBuilder retryOptions(RequestRetryOptions retryOptions) {
-        this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+        this.retryOptions = retryOptions;
         return this;
     }
 
     /**
      * Sets the request retry options for all the requests made through the client.
      *
+     * Setting this is mutually exclusive with using {@link #retryOptions(RequestRetryOptions)}.
+     *
      * Consider using {@link #retryOptions(RequestRetryOptions)} to also set storage specific options.
      *
      * @param retryOptions {@link RetryOptions}.
      * @return the updated BlobServiceClientBuilder object
-     * @throws NullPointerException If {@code retryOptions} is {@code null}.
      */
     @Override
     public BlobServiceClientBuilder retryOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        return this.retryOptions(RequestRetryOptions.fromRetryOptions(retryOptions, null, null));
+        this.coreRetryOptions = retryOptions;
+        return this;
     }
 
     /**

@@ -146,7 +146,8 @@ public final class QueueServiceClientBuilder implements
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
     private HttpLogOptions logOptions;
-    private RequestRetryOptions retryOptions = new RequestRetryOptions();
+    private RequestRetryOptions retryOptions;
+    private RetryOptions coreRetryOptions;
     private HttpPipeline httpPipeline;
 
     private ClientOptions clientOptions = new ClientOptions();
@@ -192,7 +193,7 @@ public final class QueueServiceClientBuilder implements
         QueueServiceVersion serviceVersion = version != null ? version : QueueServiceVersion.getLatest();
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
-            endpoint, retryOptions, logOptions,
+            endpoint, retryOptions, coreRetryOptions, logOptions,
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
         AzureQueueStorageImpl azureQueueStorage = new AzureQueueStorageImplBuilder()
@@ -424,28 +425,30 @@ public final class QueueServiceClientBuilder implements
     /**
      * Sets the request retry options for all the requests made through the client.
      *
+     * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
+     *
      * @param retryOptions {@link RequestRetryOptions}.
-     * @return the updated QueueServiceClientBuilder object
-     * @throws NullPointerException If {@code retryOptions} is {@code null}.
+     * @return the updated QueueServiceClientBuilder object.
      */
     public QueueServiceClientBuilder retryOptions(RequestRetryOptions retryOptions) {
-        this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+        this.retryOptions = retryOptions;
         return this;
     }
 
     /**
      * Sets the request retry options for all the requests made through the client.
      *
+     * Setting this is mutually exclusive with using {@link #retryOptions(RequestRetryOptions)}.
+     *
      * Consider using {@link #retryOptions(RequestRetryOptions)} to also set storage specific options.
      *
      * @param retryOptions {@link RetryOptions}.
      * @return the updated QueueServiceClientBuilder object
-     * @throws NullPointerException If {@code retryOptions} is {@code null}.
      */
     @Override
     public QueueServiceClientBuilder retryOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        return this.retryOptions(RequestRetryOptions.fromRetryOptions(retryOptions, null, null));
+        this.coreRetryOptions = retryOptions;
+        return this;
     }
 
     /**

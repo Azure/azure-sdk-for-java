@@ -82,7 +82,8 @@ public final class DataLakePathClientBuilder implements
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
     private HttpLogOptions logOptions = new HttpLogOptions();
-    private RequestRetryOptions retryOptions = new RequestRetryOptions();
+    private RequestRetryOptions retryOptions;
+    private RetryOptions coreRetryOptions;
     private HttpPipeline httpPipeline;
 
     private ClientOptions clientOptions = new ClientOptions();
@@ -157,7 +158,7 @@ public final class DataLakePathClientBuilder implements
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
-            endpoint, retryOptions, logOptions,
+            endpoint, retryOptions, coreRetryOptions, logOptions,
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
         return new DataLakeFileAsyncClient(pipeline, endpoint, serviceVersion, accountName, dataLakeFileSystemName,
@@ -219,7 +220,7 @@ public final class DataLakePathClientBuilder implements
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken, endpoint,
-            retryOptions, logOptions,
+            retryOptions, coreRetryOptions, logOptions,
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
         return new DataLakeDirectoryAsyncClient(pipeline, endpoint, serviceVersion, accountName, dataLakeFileSystemName,
@@ -463,29 +464,32 @@ public final class DataLakePathClientBuilder implements
     /**
      * Sets the request retry options for all the requests made through the client.
      *
+     * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
+     *
      * @param retryOptions {@link RequestRetryOptions}.
-     * @return the updated DataLakePathClientBuilder object
-     * @throws NullPointerException If {@code retryOptions} is {@code null}.
+     * @return the updated DataLakePathClientBuilder object.
      */
     public DataLakePathClientBuilder retryOptions(RequestRetryOptions retryOptions) {
         blobClientBuilder.retryOptions(retryOptions);
-        this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+        this.retryOptions = retryOptions;
         return this;
     }
 
     /**
      * Sets the request retry options for all the requests made through the client.
      *
+     * Setting this is mutually exclusive with using {@link #retryOptions(RequestRetryOptions)}.
+     *
      * Consider using {@link #retryOptions(RequestRetryOptions)} to also set storage specific options.
      *
      * @param retryOptions {@link RetryOptions}.
      * @return the updated DataLakePathClientBuilder object
-     * @throws NullPointerException If {@code retryOptions} is {@code null}.
      */
     @Override
     public DataLakePathClientBuilder retryOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        return this.retryOptions(RequestRetryOptions.fromRetryOptions(retryOptions, null, null));
+        blobClientBuilder.retryOptions(retryOptions);
+        this.coreRetryOptions = retryOptions;
+        return this;
     }
 
     /**

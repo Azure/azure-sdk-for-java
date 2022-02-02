@@ -144,7 +144,8 @@ public final class ShareServiceClientBuilder implements
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
     private HttpLogOptions logOptions;
-    private RequestRetryOptions retryOptions = new RequestRetryOptions();
+    private RequestRetryOptions retryOptions;
+    private RetryOptions coreRetryOptions;
     private HttpPipeline httpPipeline;
 
     private ClientOptions clientOptions = new ClientOptions();
@@ -190,7 +191,8 @@ public final class ShareServiceClientBuilder implements
                 throw logger.logExceptionAsError(
                     new IllegalArgumentException("Credentials are required for authorization"));
             }
-        }, retryOptions, logOptions, clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration);
+        }, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
+            perRetryPolicies, configuration, logger);
 
         AzureFileStorageImpl azureFileStorage = new AzureFileStorageImplBuilder()
             .url(endpoint)
@@ -412,28 +414,30 @@ public final class ShareServiceClientBuilder implements
     /**
      * Sets the request retry options for all the requests made through the client.
      *
+     * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
+     *
      * @param retryOptions {@link RequestRetryOptions}.
      * @return the updated ShareServiceClientBuilder object
-     * @throws NullPointerException If {@code retryOptions} is {@code null}.
      */
     public ShareServiceClientBuilder retryOptions(RequestRetryOptions retryOptions) {
-        this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+        this.retryOptions = retryOptions;
         return this;
     }
 
     /**
      * Sets the request retry options for all the requests made through the client.
      *
+     * Setting this is mutually exclusive with using {@link #retryOptions(RequestRetryOptions)}.
+     *
      * Consider using {@link #retryOptions(RequestRetryOptions)} to also set storage specific options.
      *
      * @param retryOptions {@link RetryOptions}.
      * @return the updated ShareServiceClientBuilder object
-     * @throws NullPointerException If {@code retryOptions} is {@code null}.
      */
     @Override
     public ShareServiceClientBuilder retryOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        return this.retryOptions(RequestRetryOptions.fromRetryOptions(retryOptions, null, null));
+        this.coreRetryOptions = retryOptions;
+        return this;
     }
 
     /**
