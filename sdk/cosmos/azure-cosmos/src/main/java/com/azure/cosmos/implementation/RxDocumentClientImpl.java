@@ -467,7 +467,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 connectionPolicy.getConnectionMode(), globalEndpointManager.getLatestDatabaseAccount().getId(),
                 null, null, this.reactorHttpClient, connectionPolicy.isClientTelemetryEnabled(), this, this.connectionPolicy.getPreferredRegions());
             clientTelemetry.init();
-            this.queryPlanCache = new ConcurrentHashMap<>();
+            this.queryPlanCache = Collections.synchronizedMap(new SizeLimitingLRUCache(Constants.QUERYPLAN_CACHE_SIZE));
             this.retryPolicy.setRxCollectionCache(this.collectionCache);
         } catch (Exception e) {
             logger.error("unexpected failure in initializing client.", e);
