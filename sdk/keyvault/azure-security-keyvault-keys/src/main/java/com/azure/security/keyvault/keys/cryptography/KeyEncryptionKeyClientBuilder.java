@@ -27,8 +27,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import reactor.core.publisher.Mono;
 
-import java.util.Objects;
-
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the
  * {@link AsyncKeyEncryptionKey KeyEncryptionKey async client} and
