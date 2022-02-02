@@ -127,6 +127,15 @@ public final class FileContent extends BinaryDataContent {
         });
     }
 
+    /**
+     * Gets the file that this content represents.
+     *
+     * @return The file that this content represents.
+     */
+    public Path getFile() {
+        return file;
+    }
+
     private byte[] getBytes() {
         try {
             return Files.readAllBytes(file);

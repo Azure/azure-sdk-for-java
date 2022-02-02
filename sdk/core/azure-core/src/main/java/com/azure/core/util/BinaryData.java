@@ -4,6 +4,7 @@
 package com.azure.core.util;
 
 import com.azure.core.implementation.util.BinaryDataContent;
+import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.ByteArrayContent;
 import com.azure.core.implementation.util.FileContent;
 import com.azure.core.implementation.util.InputStreamContent;
@@ -31,7 +32,6 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.implementation.util.BinaryDataContent.STREAM_READ_SIZE;
 
 /**
- *
  * BinaryData is a convenient data interchange class for use throughout the Azure SDK for Java. Put simply, BinaryData
  * enables developers to bring data in from external sources, and read it back from Azure services, in formats that
  * appeal to them. This leaves BinaryData, and the Azure SDK for Java, the task of converting this data into appropriate
@@ -174,6 +174,26 @@ public final class BinaryData {
 
     BinaryData(BinaryDataContent content) {
         this.content = Objects.requireNonNull(content, "'content' cannot be null.");
+    }
+
+    static {
+        BinaryDataHelper.setAccessor(new BinaryDataHelper.BinaryDataAccessor() {
+            @Override
+            public BinaryData createBinaryData(BinaryDataContent content) {
+                return BinaryData.createBinaryData(content);
+            }
+
+            @Override
+            public BinaryDataContent getContent(BinaryData binaryData) {
+                return binaryData.content;
+            }
+        });
+    }
+
+    // This is used instead of the constructor as there is a case where BinaryDataHelper could be used before the class
+    // is initialized and the BinaryDataAccessor in BinaryDataHelper would be null.
+    static BinaryData createBinaryData(BinaryDataContent content) {
+        return new BinaryData(content);
     }
 
     /**

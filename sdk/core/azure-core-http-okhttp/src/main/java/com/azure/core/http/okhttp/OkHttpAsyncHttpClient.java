@@ -11,6 +11,12 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.okhttp.implementation.OkHttpAsyncBufferedResponse;
 import com.azure.core.http.okhttp.implementation.OkHttpAsyncResponse;
+import com.azure.core.implementation.util.BinaryDataContent;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.ByteArrayContent;
+import com.azure.core.implementation.util.FileContent;
+import com.azure.core.implementation.util.StringContent;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -18,7 +24,13 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
+import okio.Buffer;
+import okio.BufferedSink;
 import okio.ByteString;
+import okio.Source;
+import okio.Timeout;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -98,7 +110,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
             return Mono.just(requestBuilder.head().build());
         }
 
-        return toOkHttpRequestBody(request.getBody(), request.getHeaders())
+        return toOkHttpRequestBody(request.getContent(), request.getHeaders())
             .map(okhttpRequestBody -> requestBuilder.method(request.getHttpMethod().toString(), okhttpRequestBody)
                 .build());
     }
@@ -106,21 +118,32 @@ class OkHttpAsyncHttpClient implements HttpClient {
     /**
      * Create a Mono of okhttp3.RequestBody from the given java.nio.ByteBuffer Flux.
      *
-     * @param bbFlux stream of java.nio.ByteBuffer representing request content
+     * @param bodyContent The BinaryData request body
      * @param headers the headers associated with the original request
      * @return the Mono emitting okhttp3.RequestBody
      */
-    private static Mono<RequestBody> toOkHttpRequestBody(Flux<ByteBuffer> bbFlux, HttpHeaders headers) {
-        Mono<okio.ByteString> bsMono = bbFlux == null
-            ? EMPTY_BYTE_STRING_MONO
-            : toByteString(bbFlux);
+    private static Mono<RequestBody> toOkHttpRequestBody(BinaryData bodyContent, HttpHeaders headers) {
+        String contentType = headers.getValue("Content-Type");
+        MediaType mediaType = (contentType == null) ? null : MediaType.parse(contentType);
 
-        return bsMono.map(bs -> {
-            String contentType = headers.getValue("Content-Type");
-            MediaType mediaType = (contentType == null) ? null : MediaType.parse(contentType);
 
-            return RequestBody.create(bs, mediaType);
-        });
+        if (bodyContent == null) {
+            return Mono.defer(() -> Mono.just(RequestBody.create(ByteString.EMPTY, mediaType)));
+        }
+
+        BinaryDataContent content = BinaryDataHelper.getContent(bodyContent);
+        if (content instanceof ByteArrayContent) {
+            return Mono.defer(() -> Mono.just(RequestBody.create(content.toBytes(), mediaType)));
+        } else if (content instanceof FileContent) {
+            FileContent fileContent = (FileContent) content;
+            // This won't be right all the time as we may be sending only a partial view of the file.
+            // TODO (alzimmer): support ranges in FileContent
+            return Mono.defer(() -> Mono.just(RequestBody.create(fileContent.getFile().toFile(), mediaType)));
+        } else if (content instanceof StringContent) {
+            return Mono.defer(() -> Mono.just(RequestBody.create(bodyContent.toString(), mediaType)));
+        } else {
+            return toByteString(bodyContent.toFluxByteBuffer()).map(bs -> RequestBody.create(bs, mediaType));
+        }
     }
 
     /**
@@ -128,7 +151,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
      *
      * Pooled okio.Buffer type is used to buffer emitted ByteBuffer instances. Content of each ByteBuffer will be
      * written (i.e copied) to the internal okio.Buffer slots. Once the stream terminates, the contents of all slots get
-     * copied to one single byte array and okio.ByteString will be created referring this byte array. Finally the
+     * copied to one single byte array and okio.ByteString will be created referring this byte array. Finally, the
      * initial okio.Buffer will be returned to the pool.
      *
      * @param bbFlux the Flux of ByteBuffer to aggregate
