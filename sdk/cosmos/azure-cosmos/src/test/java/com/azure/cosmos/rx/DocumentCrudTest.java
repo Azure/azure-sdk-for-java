@@ -458,16 +458,16 @@ public class DocumentCrudTest extends TestSuiteBase {
 
         // item 1
         TestObject properties1 = TestObject.create(pkValue1);
-        container.createItem(properties1);
+        container.createItem(properties1).block();
 
         // item 2
         TestObject properties2 = TestObject.create(pkValue1);
-        container.createItem(properties2);
+        container.createItem(properties2).block();
 
 
         // item 3
         TestObject properties3 = TestObject.create(pkValue2);
-        container.createItem(properties3);
+        container.createItem(properties3).block();
 
         // delete the items with partition key pk1
         CosmosItemResponse<?> deleteResponse = container.deleteAllItemsByPartitionKey(
