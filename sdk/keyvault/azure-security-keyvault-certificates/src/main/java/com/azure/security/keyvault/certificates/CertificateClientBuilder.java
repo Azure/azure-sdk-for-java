@@ -158,6 +158,8 @@ public final class CertificateClientBuilder implements
      *
      * @throws IllegalStateException If {@link CertificateClientBuilder#credential(TokenCredential)} or
      * {@link CertificateClientBuilder#vaultUrl(String)} have not been set.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public CertificateClient buildClient() {
         return new CertificateClient(buildAsyncClient());
@@ -178,6 +180,8 @@ public final class CertificateClientBuilder implements
      *
      * @throws IllegalStateException If {@link CertificateClientBuilder#credential(TokenCredential)} or {@link
      * CertificateClientBuilder#vaultUrl(String)} have not been set.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public CertificateAsyncClient buildAsyncClient() {
         Configuration buildConfiguration = (configuration != null) ? configuration

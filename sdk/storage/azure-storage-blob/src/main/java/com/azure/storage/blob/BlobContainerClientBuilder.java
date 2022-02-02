@@ -135,6 +135,8 @@ public final class BlobContainerClientBuilder implements
      *
      * @return a {@link BlobContainerAsyncClient} created from the configurations in this builder.
      * @throws IllegalStateException If multiple credentials have been specified.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public BlobContainerAsyncClient buildAsyncClient() {
         BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, logger);

@@ -118,6 +118,8 @@ public final class DataLakePathClientBuilder implements
      * @return a {@link DataLakeFileClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint} or {@code pathName} is {@code null}.
      * @throws IllegalStateException If multiple credentials have been specified.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public DataLakeFileClient buildFileClient() {
         return new DataLakeFileClient(buildFileAsyncClient(),
@@ -141,6 +143,8 @@ public final class DataLakePathClientBuilder implements
      * @return a {@link DataLakeFileAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint} or {@code pathName} is {@code null}.
      * @throws IllegalStateException If multiple credentials have been specified.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public DataLakeFileAsyncClient buildFileAsyncClient() {
         Objects.requireNonNull(pathName, "'pathName' cannot be null.");
@@ -181,6 +185,8 @@ public final class DataLakePathClientBuilder implements
      *
      * @return a {@link DataLakeDirectoryClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint} or {@code pathName} is {@code null}.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public DataLakeDirectoryClient buildDirectoryClient() {
         return new DataLakeDirectoryClient(buildDirectoryAsyncClient(),
@@ -203,6 +209,8 @@ public final class DataLakePathClientBuilder implements
      *
      * @return a {@link DataLakeDirectoryAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint} or {@code pathName} is {@code null}.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public DataLakeDirectoryAsyncClient buildDirectoryAsyncClient() {
         Objects.requireNonNull(pathName, "'pathName' cannot be null.");

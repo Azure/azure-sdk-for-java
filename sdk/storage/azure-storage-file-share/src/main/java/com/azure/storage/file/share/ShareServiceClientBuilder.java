@@ -174,6 +174,8 @@ public final class ShareServiceClientBuilder implements
      * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential} or
      * {@link #sasToken(String) SAS token} has been set.
      * @throws IllegalStateException If multiple credentials have been specified.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public ShareServiceAsyncClient buildAsyncClient() {
         CredentialValidator.validateSingleCredentialIsPresent(
@@ -218,6 +220,8 @@ public final class ShareServiceClientBuilder implements
      * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential}
      * or {@link #sasToken(String) SAS token} has been set.
      * @throws IllegalStateException If multiple credentials have been specified.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public ShareServiceClient buildClient() {
         return new ShareServiceClient(buildAsyncClient());

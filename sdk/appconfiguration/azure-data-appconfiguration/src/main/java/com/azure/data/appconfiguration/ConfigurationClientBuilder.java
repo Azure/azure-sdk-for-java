@@ -163,6 +163,8 @@ public final class ConfigurationClientBuilder implements
      * #connectionString(String) connectionString} is called. Or can be set explicitly by calling {@link
      * #endpoint(String)}.
      * @throws IllegalStateException If {@link #connectionString(String) connectionString} has not been set.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryPolicy(HttpPipelinePolicy)} have been set.
      */
     public ConfigurationClient buildClient() {
         return new ConfigurationClient(buildAsyncClient());
@@ -181,6 +183,8 @@ public final class ConfigurationClientBuilder implements
      * #connectionString(String) connectionString} is called. Or can be set explicitly by calling {@link
      * #endpoint(String)}.
      * @throws IllegalStateException If {@link #connectionString(String) connectionString} has not been set.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryPolicy(HttpPipelinePolicy)} have been set.
      */
     public ConfigurationAsyncClient buildAsyncClient() {
         // Global Env configuration store

@@ -105,6 +105,8 @@ public final class BlobServiceClientBuilder implements
      * @return a {@link BlobServiceClient} created from the configurations in this builder.
      * @throws IllegalArgumentException If no credentials are provided.
      * @throws IllegalStateException If multiple credentials have been specified.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public BlobServiceClient buildClient() {
         return new BlobServiceClient(buildAsyncClient());
@@ -114,6 +116,8 @@ public final class BlobServiceClientBuilder implements
      * @return a {@link BlobServiceAsyncClient} created from the configurations in this builder.
      * @throws IllegalArgumentException If no credentials are provided.
      * @throws IllegalStateException If multiple credentials have been specified.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public BlobServiceAsyncClient buildAsyncClient() {
         BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, logger);

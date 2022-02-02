@@ -111,6 +111,8 @@ public class DataLakeFileSystemClientBuilder implements
      *
      * @return a {@link DataLakeFileSystemClient} created from the configurations in this builder.
      * @throws IllegalStateException If multiple credentials have been specified.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public DataLakeFileSystemClient buildClient() {
         return new DataLakeFileSystemClient(buildAsyncClient(),
@@ -131,6 +133,8 @@ public class DataLakeFileSystemClientBuilder implements
      *
      * @return a {@link DataLakeFileSystemAsyncClient} created from the configurations in this builder.
      * @throws IllegalStateException If multiple credentials have been specified.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public DataLakeFileSystemAsyncClient buildAsyncClient() {
         /*

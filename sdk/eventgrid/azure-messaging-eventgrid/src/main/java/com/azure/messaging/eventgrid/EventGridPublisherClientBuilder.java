@@ -122,6 +122,8 @@ public final class EventGridPublisherClientBuilder implements
      * All other settings have defaults and are optional.
      * @return a publisher client with asynchronous publishing methods.
      * @throws NullPointerException if {@code endpoint} is null.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     private <T> EventGridPublisherAsyncClient<T> buildAsyncClient(Class<T> eventClass) {
         Objects.requireNonNull(endpoint, "'endpoint' is required and can not be null.");

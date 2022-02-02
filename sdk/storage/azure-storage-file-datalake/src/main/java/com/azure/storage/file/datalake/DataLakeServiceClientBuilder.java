@@ -96,6 +96,8 @@ public class DataLakeServiceClientBuilder implements
     /**
      * @return a {@link DataLakeServiceClient} created from the configurations in this builder.
      * @throws IllegalStateException If multiple credentials have been specified.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public DataLakeServiceClient buildClient() {
         return new DataLakeServiceClient(buildAsyncClient(), blobServiceClientBuilder.buildClient());
@@ -104,6 +106,8 @@ public class DataLakeServiceClientBuilder implements
     /**
      * @return a {@link DataLakeServiceAsyncClient} created from the configurations in this builder.
      * @throws IllegalStateException If multiple credentials have been specified.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public DataLakeServiceAsyncClient buildAsyncClient() {
         if (Objects.isNull(storageSharedKeyCredential) && Objects.isNull(tokenCredential)

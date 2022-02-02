@@ -118,6 +118,8 @@ public final class KeyVaultAccessControlClientBuilder implements
      * @return An {@link KeyVaultAccessControlClient} with the options set from the builder.
      *
      * @throws NullPointerException If {@code vaultUrl} is {@code null}.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public KeyVaultAccessControlClient buildClient() {
         return new KeyVaultAccessControlClient(buildAsyncClient());
@@ -134,6 +136,8 @@ public final class KeyVaultAccessControlClientBuilder implements
      * @return An {@link KeyVaultAccessControlAsyncClient} with the options set from the builder.
      *
      * @throws NullPointerException If {@code vaultUrl} is {@code null}.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public KeyVaultAccessControlAsyncClient buildAsyncClient() {
         Configuration buildConfiguration = (configuration == null)

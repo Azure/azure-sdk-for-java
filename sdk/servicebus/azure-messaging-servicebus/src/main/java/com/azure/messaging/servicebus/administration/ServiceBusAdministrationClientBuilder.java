@@ -26,7 +26,6 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryOptions;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
@@ -142,6 +141,8 @@ public final class ServiceBusAdministrationClientBuilder implements
      *     {@link #credential(String, TokenCredential)}.
      * @throws IllegalStateException If applicationId if set in both {@code httpLogOptions} and {@code clientOptions}
      *     and not same.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryPolicy(HttpPipelinePolicy)} have been set.
      */
     public ServiceBusAdministrationAsyncClient buildAsyncClient() {
         if (endpoint == null) {
@@ -176,6 +177,8 @@ public final class ServiceBusAdministrationClientBuilder implements
      *     {@link #credential(String, TokenCredential)}.
      * @throws IllegalStateException If applicationId if set in both {@code httpLogOptions} and {@code clientOptions}
      *     and not same.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryPolicy(HttpPipelinePolicy)} have been set.
      */
     public ServiceBusAdministrationClient buildClient() {
         return new ServiceBusAdministrationClient(buildAsyncClient());

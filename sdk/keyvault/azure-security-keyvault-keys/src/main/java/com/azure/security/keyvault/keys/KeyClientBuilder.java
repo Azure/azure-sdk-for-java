@@ -151,6 +151,8 @@ public final class KeyClientBuilder implements
      *
      * @throws IllegalStateException If {@link KeyClientBuilder#credential(TokenCredential)} or
      * {@link KeyClientBuilder#vaultUrl(String)} have not been set.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public KeyClient buildClient() {
         return new KeyClient(buildAsyncClient());
@@ -170,6 +172,8 @@ public final class KeyClientBuilder implements
      *
      * @throws IllegalStateException If {@link KeyClientBuilder#credential(TokenCredential)} or
      * {@link KeyClientBuilder#vaultUrl(String)} have not been set.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public KeyAsyncClient buildAsyncClient() {
         Configuration buildConfiguration =

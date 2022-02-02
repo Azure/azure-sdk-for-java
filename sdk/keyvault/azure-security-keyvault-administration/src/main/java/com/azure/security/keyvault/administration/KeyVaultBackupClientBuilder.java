@@ -117,6 +117,8 @@ public final class KeyVaultBackupClientBuilder implements
      * @return A {@link KeyVaultBackupClient} with the options set from the builder.
      *
      * @throws NullPointerException If {@code vaultUrl} is {@code null}.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public KeyVaultBackupClient buildClient() {
         return new KeyVaultBackupClient(buildAsyncClient());
@@ -133,6 +135,8 @@ public final class KeyVaultBackupClientBuilder implements
      * @return A {@link KeyVaultBackupAsyncClient} with the options set from the builder.
      *
      * @throws NullPointerException If {@code vaultUrl} is {@code null}.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public KeyVaultBackupAsyncClient buildAsyncClient() {
         Configuration buildConfiguration = (configuration == null)

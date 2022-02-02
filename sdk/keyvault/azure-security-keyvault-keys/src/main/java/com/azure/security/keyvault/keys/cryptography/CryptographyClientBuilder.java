@@ -178,6 +178,8 @@ public final class CryptographyClientBuilder implements
      *
      * @throws IllegalStateException If {@link CryptographyClientBuilder#credential(TokenCredential)} is {@code null} or
      * {@link CryptographyClientBuilder#keyIdentifier(String)} is empty or {@code null}.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public CryptographyClient buildClient() {
         return new CryptographyClient(buildAsyncClient());
@@ -201,6 +203,8 @@ public final class CryptographyClientBuilder implements
      *
      * @throws IllegalStateException If {@link CryptographyClientBuilder#credential(TokenCredential)} is {@code null} or
      * {@link CryptographyClientBuilder#keyIdentifier(String)} is empty or {@code null}.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public CryptographyAsyncClient buildAsyncClient() {
         if (jsonWebKey == null) {

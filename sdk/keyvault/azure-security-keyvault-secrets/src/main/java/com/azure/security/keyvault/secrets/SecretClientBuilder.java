@@ -151,6 +151,8 @@ public final class SecretClientBuilder implements
      *
      * @throws IllegalStateException If {@link SecretClientBuilder#credential(TokenCredential)} or
      * {@link SecretClientBuilder#vaultUrl(String)} have not been set.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public SecretClient buildClient() {
         return new SecretClient(buildAsyncClient());
@@ -171,6 +173,8 @@ public final class SecretClientBuilder implements
      *
      * @throws IllegalStateException If {@link SecretClientBuilder#credential(TokenCredential)} or
      * {@link SecretClientBuilder#vaultUrl(String)} have not been set.
+     * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
+     * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public SecretAsyncClient buildAsyncClient() {
         Configuration buildConfiguration =
