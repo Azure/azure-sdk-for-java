@@ -105,6 +105,7 @@ stages:
               - pwsh: |
                   $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 ${{artifact.groupId}} ${{artifact.name}} $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
                 displayName: "Verify no unreleased dependencies"
+                condition: and(succeeded(), ne('${{ artifact.uberJar }}', 'true'))
 
               - ${{if ne(parameters.SDKType, 'data')}}:
                 - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
@@ -303,7 +304,7 @@ stages:
                   deploy:
                     steps:
                       - download: none
-                      
+
                       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                         parameters:
                           Paths:
