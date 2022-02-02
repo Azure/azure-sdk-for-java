@@ -362,7 +362,8 @@ public class EventHubClientBuilder implements
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'host' cannot be an empty string."));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
         }
         return this;
     }

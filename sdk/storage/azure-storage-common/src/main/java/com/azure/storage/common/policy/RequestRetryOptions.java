@@ -254,7 +254,7 @@ public final class RequestRetryOptions {
         Duration tryTimeout,
         String secondaryHost
     ) {
-        Objects.requireNonNull(retryOptions, "'fixedDelayOptions' cannot be null.");
+        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         RetryPolicyType policyType;
         Integer maxTries = null;
         Duration retryDelay;

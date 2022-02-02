@@ -25,7 +25,6 @@ public final class ObjectsUtil {
      *        otherwise the second argument if it is non-{@code null}
      * @throws NullPointerException if both {@code obj} is null and
      *        {@code defaultObj} is {@code null}
-     * @since 9
      */
     public static <T> T requireNonNullElse(T obj, T defaultObj) {
         return (obj != null) ? obj : Objects.requireNonNull(defaultObj, "defaultObj");
