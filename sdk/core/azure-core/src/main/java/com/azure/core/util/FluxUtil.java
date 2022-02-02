@@ -26,6 +26,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
@@ -472,22 +473,54 @@ public final class FluxUtil {
      * OutputStream}, or an error status if writing fails.
      */
     public static Mono<Void> writeToOutputStream(Flux<ByteBuffer> content, OutputStream stream) {
-        if (content == null && stream == null) {
-            return Mono.error(new NullPointerException("'content' and 'stream' cannot be null."));
-        } else if (content == null) {
-            return Mono.error(new NullPointerException("'content' cannot be null."));
-        } else if (stream == null) {
-            return Mono.error(new NullPointerException("'stream' cannot be null."));
-        }
-
-        return content.reduce(stream, (outputStream, buffer) -> {
-            try {
-                ImplUtils.writeByteBufferToStream(buffer, outputStream);
-                return outputStream;
-            } catch (IOException ex) {
-                throw Exceptions.propagate(ex);
+        return Mono.create(emitter -> {
+            if (content == null && stream == null) {
+                emitter.error(new NullPointerException("'content' and 'stream' cannot be null."));
+                return;
+            } else if (content == null) {
+                emitter.error(new NullPointerException("'content' cannot be null."));
+                return;
+            } else if (stream == null) {
+                emitter.error(new NullPointerException("'stream' cannot be null."));
+                return;
             }
-        }).then();
+
+            content.subscribe(new Subscriber<ByteBuffer>() {
+                private Subscription subscription;
+
+                @Override
+                public void onSubscribe(Subscription s) {
+                    // Only set the Subscription if one has not been previously set.
+                    // Any additional Subscriptions will be cancelled.
+                    if (Operators.validate(this.subscription, s)) {
+                        subscription = s;
+
+                        s.request(1);
+                    }
+                }
+
+                @Override
+                public void onNext(ByteBuffer byteBuffer) {
+                    try {
+                        ImplUtils.writeByteBufferToStream(byteBuffer, stream);
+                        subscription.request(1);
+                    } catch (IOException ex) {
+                        // Emit IOExceptions as UncheckIOExceptions as that is the pattern used in SDKs.
+                        onError(new UncheckedIOException(ex));
+                    }
+                }
+
+                @Override
+                public void onError(Throwable t) {
+                    emitter.error(t);
+                }
+
+                @Override
+                public void onComplete() {
+                    emitter.success();
+                }
+            });
+        });
     }
 
     /**
