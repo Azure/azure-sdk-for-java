@@ -32,6 +32,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.builder.BuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy;
@@ -218,7 +219,7 @@ public final class ConfigurationClientBuilder implements
         policies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
-        policies.add(getAndValidateRetryPolicy());
+        policies.add(BuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, DEFAULT_RETRY_POLICY));
 
         policies.add(new AddDatePolicy());
 
@@ -254,20 +255,6 @@ public final class ConfigurationClientBuilder implements
                                     .build();
 
         return new ConfigurationAsyncClient(buildEndpoint, pipeline, serviceVersion, syncTokenPolicy);
-    }
-
-    private HttpPipelinePolicy getAndValidateRetryPolicy() {
-        if (retryPolicy != null && retryOptions != null) {
-            throw logger.logExceptionAsWarning(
-                new IllegalStateException("'retryPolicy' and 'retryOptions' cannot both be set"));
-        }
-        if (retryPolicy != null) {
-            return retryPolicy;
-        } else if (retryOptions != null) {
-            return new RetryPolicy(retryOptions);
-        } else {
-            return DEFAULT_RETRY_POLICY;
-        }
     }
 
     /**

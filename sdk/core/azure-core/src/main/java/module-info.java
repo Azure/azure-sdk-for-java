@@ -24,6 +24,7 @@ module com.azure.core {
     exports com.azure.core.http.rest;
     exports com.azure.core.models;
     exports com.azure.core.util;
+    exports com.azure.core.util.builder;
     exports com.azure.core.util.logging;
     exports com.azure.core.util.paging;
     exports com.azure.core.util.polling;

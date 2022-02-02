@@ -35,6 +35,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.builder.BuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.TracerProxy;
 import com.azure.messaging.eventgrid.implementation.CloudEventTracingPipelinePolicy;
@@ -147,7 +148,7 @@ public final class EventGridPublisherClientBuilder implements
         httpPipelinePolicies.add(new RequestIdPolicy());
 
         HttpPolicyProviders.addBeforeRetryPolicies(httpPipelinePolicies);
-        httpPipelinePolicies.add(getAndValidateRetryPolicy());
+        httpPipelinePolicies.add(BuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
 
         httpPipelinePolicies.add(new AddDatePolicy());
 
@@ -200,20 +201,6 @@ public final class EventGridPublisherClientBuilder implements
 
 
         return new EventGridPublisherAsyncClient<T>(buildPipeline, endpoint, buildServiceVersion, eventClass);
-    }
-
-    private HttpPipelinePolicy getAndValidateRetryPolicy() {
-        if (retryPolicy != null && retryOptions != null) {
-            throw logger.logExceptionAsWarning(
-                new IllegalStateException("'retryPolicy' and 'retryOptions' cannot both be set"));
-        }
-        if (retryPolicy != null) {
-            return retryPolicy;
-        } else if (retryOptions != null) {
-            return new RetryPolicy(retryOptions);
-        } else {
-            return new RetryPolicy();
-        }
     }
 
     /**
