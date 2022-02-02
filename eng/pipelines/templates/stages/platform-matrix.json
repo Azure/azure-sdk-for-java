@@ -29,7 +29,7 @@
       "AZURE_TEST_HTTP_CLIENTS": "netty",
       "TestFromSource": true,
       "TestGoals": "verify",
-      "TestOptions": "-Dmaven.main.skip=true -Dmaven.test.skip=true -DcreateSourcesJar=false"
+      "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false"
     },
     {
       "Agent": {
@@ -39,7 +39,7 @@
       "AZURE_TEST_HTTP_CLIENTS": "netty",
       "TestFromSource": false,
       "TestGoals": "verify",
-      "TestOptions": "-Dmaven.main.skip=true -Dmaven.test.skip=true -DcreateSourcesJar=false"
+      "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false"
     }
   ]
 }
