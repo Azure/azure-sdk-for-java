@@ -14,6 +14,7 @@ import java.util.List;
 public final class CommunicationRelayConfiguration {
     /*
      * The date for which the username and credentials are not longer valid.
+     * Will be 48 hours from request time.
      */
     @JsonProperty(value = "expiresOn", required = true)
     private OffsetDateTime expiresOn;
@@ -26,7 +27,8 @@ public final class CommunicationRelayConfiguration {
     private List<CommunicationIceServer> iceServers;
 
     /**
-     * Get the expiresOn property: The date for which the username and credentials are not longer valid.
+     * Get the expiresOn property: The date for which the username and credentials are not longer valid. Will be 48
+     * hours from request time.
      *
      * @return the expiresOn value.
      */
@@ -35,7 +37,8 @@ public final class CommunicationRelayConfiguration {
     }
 
     /**
-     * Set the expiresOn property: The date for which the username and credentials are not longer valid.
+     * Set the expiresOn property: The date for which the username and credentials are not longer valid. Will be 48
+     * hours from request time.
      *
      * @param expiresOn the expiresOn value to set.
      * @return the CommunicationRelayConfiguration object itself.

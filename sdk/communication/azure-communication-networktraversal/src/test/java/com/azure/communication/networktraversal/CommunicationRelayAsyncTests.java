@@ -42,7 +42,9 @@ public class CommunicationRelayAsyncTests extends CommunicationRelayClientTestBa
         assertNotNull(user.getId());
 
         if (user != null) {
-            Mono<CommunicationRelayConfiguration> relayResponse = asyncClient.getRelayConfiguration(user);
+            GetRelayConfigurationOptions options = new GetRelayConfigurationOptions();
+            options.setCommunicationUserIdentifier(user);
+            Mono<CommunicationRelayConfiguration> relayResponse = asyncClient.getRelayConfiguration(options);
 
             StepVerifier.create(relayResponse)
             .assertNext(relayConfig -> {
@@ -93,7 +95,11 @@ public class CommunicationRelayAsyncTests extends CommunicationRelayClientTestBa
         assertNotNull(user.getId());
 
         if (user != null) {
-            Mono<CommunicationRelayConfiguration> relayResponse = asyncClient.getRelayConfiguration(user, RouteType.ANY);
+            GetRelayConfigurationOptions options = new GetRelayConfigurationOptions();
+            options.setCommunicationUserIdentifier(user);
+            options.setRouteType(RouteType.ANY);
+
+            Mono<CommunicationRelayConfiguration> relayResponse = asyncClient.getRelayConfiguration(options);
 
             StepVerifier.create(relayResponse)
             .assertNext(relayConfig -> {
@@ -119,7 +125,10 @@ public class CommunicationRelayAsyncTests extends CommunicationRelayClientTestBa
         assertNotNull(asyncClient);
         assertNotNull(user.getId());
         if (user != null) {
-            Mono<CommunicationRelayConfiguration> relayResponse = asyncClient.getRelayConfiguration(user);
+            GetRelayConfigurationOptions options = new GetRelayConfigurationOptions();
+            options.setCommunicationUserIdentifier(user);
+
+            Mono<CommunicationRelayConfiguration> relayResponse = asyncClient.getRelayConfiguration(options);
 
             StepVerifier.create(relayResponse)
             .assertNext(relayConfig -> {
@@ -198,7 +207,11 @@ public class CommunicationRelayAsyncTests extends CommunicationRelayClientTestBa
         assertNotNull(user.getId());
 
         if (user != null) {
-            Mono<Response<CommunicationRelayConfiguration>> relayConfig = asyncClient.getRelayConfigurationWithResponse(user, RouteType.NEAREST, null);
+            GetRelayConfigurationOptions options = new GetRelayConfigurationOptions();
+            options.setCommunicationUserIdentifier(user);
+            options.setRouteType(RouteType.NEAREST);
+
+            Mono<Response<CommunicationRelayConfiguration>> relayConfig = asyncClient.getRelayConfigurationWithResponse(options, null);
 
             StepVerifier.create(relayConfig)
             .assertNext(response -> {
