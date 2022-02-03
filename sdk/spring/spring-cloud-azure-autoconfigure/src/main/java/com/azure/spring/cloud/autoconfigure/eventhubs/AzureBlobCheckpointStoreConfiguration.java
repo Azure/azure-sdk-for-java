@@ -9,7 +9,7 @@ import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
-import com.azure.spring.core.factory.Helpers;
+import com.azure.spring.core.factory.Utils;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import org.slf4j.Logger;
@@ -72,7 +72,7 @@ public class AzureBlobCheckpointStoreConfiguration {
     BlobContainerClientBuilder eventHubProcessorBlobServiceClientBuilder(BlobContainerClientBuilder builder,
                                                                        @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultTokenCredential,
                                                                        Optional<AzureServiceClientBuilderCustomizer<BlobContainerClientBuilder>> builderCustomizer) {
-        return Helpers.configureBuilder(
+        return Utils.configureBuilder(
             new BlobContainerClientBuilder(),
             sdkConfigurationBuilder.section("eventhubs.processor.checkpoint-store").build(),
             defaultTokenCredential,

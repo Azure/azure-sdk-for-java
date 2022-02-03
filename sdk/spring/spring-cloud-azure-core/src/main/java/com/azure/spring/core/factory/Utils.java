@@ -16,7 +16,7 @@ import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 
 import java.util.Optional;
 
-public class Helpers {
+public class Utils {
     public static <TBuilder> TBuilder configureBuilder(TBuilder builder,
                                                         Configuration configuration,
                                                         TokenCredential defaultTokenCredential,
