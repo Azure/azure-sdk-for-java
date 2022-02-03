@@ -42,6 +42,7 @@ import java.util.List;
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Text.TranslationSkill", value = TextTranslationSkill.class),
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Util.DocumentExtractionSkill", value = DocumentExtractionSkill.class),
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Custom.WebApiSkill", value = WebApiSkill.class),
+    @JsonSubTypes.Type(name = "#Microsoft.Skills.Custom.AmlSkill", value = AzureMachineLearningSkill.class),
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Text.PIIDetectionSkill", value = PiiDetectionSkill.class)
 })
 @Fluent
