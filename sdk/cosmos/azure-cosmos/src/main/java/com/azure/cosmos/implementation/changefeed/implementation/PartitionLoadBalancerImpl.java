@@ -114,6 +114,7 @@ class PartitionLoadBalancerImpl implements PartitionLoadBalancer {
 
                 if (cancellationToken.isCancellationRequested()) return Mono.empty();
                 return Flux.fromIterable(leasesToTake)
+                    .limitRate(1)
                     .flatMap(lease -> {
                         if (cancellationToken.isCancellationRequested()) return Mono.empty();
                         return this.partitionController.addOrUpdateLease(lease);

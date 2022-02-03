@@ -9,11 +9,12 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Implementation for {@link PartitionLoadBalancingStrategy}.
@@ -58,13 +59,23 @@ class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingStrategy
         if (expiredLeases.size() > 0) {
             // We should try to pick at least one expired lease even if already overbooked when maximum partition count is not set.
             // If other CFP instances are running, limit the number of expired leases to acquire to maximum 1 (non-greedy acquiring).
-            if (this.maxPartitionCount == 0 && (partitionsNeededForMe <= 0 || (partitionsNeededForMe > 1 && workerToPartitionCount.size() > 1))) {
+            if ((this.maxPartitionCount == 0 && partitionsNeededForMe <= 0) || (partitionsNeededForMe > 1 && workerToPartitionCount.size() > 1)) {
                 partitionsNeededForMe = 1;
             }
 
-            for (Lease lease : expiredLeases) {
-                this.logger.info("Found unused or expired lease {}; previous lease count for instance owner {} is {}, count of leases to target is {} and maxScaleCount {} ",
-                    lease.getLeaseToken(), this.hostName, myCount, partitionsNeededForMe, this.maxPartitionCount);
+            if (partitionsNeededForMe == 1) {
+                // Try to minimize potential collisions between different CFP instances trying to pick the same lease.
+                Random random = new Random();
+                Lease expiredLease = expiredLeases.get(random.nextInt(expiredLeases.size()));
+                this.logger.info("Found unused or expired lease {} (owner was {}); previous lease count for instance owner {} is {}, count of leases to target is {} and maxScaleCount {} ",
+                    expiredLease.getLeaseToken(), expiredLease.getOwner(), this.hostName, myCount, partitionsNeededForMe, this.maxPartitionCount);
+
+                return Collections.singletonList(expiredLease);
+            } else {
+                for (Lease lease : expiredLeases) {
+                    this.logger.info("Found unused or expired lease {} (owner was {}); previous lease count for instance owner {} is {} and maxScaleCount {} ",
+                        lease.getLeaseToken(), lease.getOwner(), this.hostName, myCount, this.maxPartitionCount);
+                }
             }
 
             return expiredLeases.subList(0, Math.min(partitionsNeededForMe, expiredLeases.size()));
