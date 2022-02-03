@@ -5,7 +5,7 @@ $packagePattern = "*.pom"
 $MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/main/_data/releases/latest/java-packages.csv"
 $BlobStorageUrl = "https://azuresdkdocs.blob.core.windows.net/%24web?restype=container&comp=list&prefix=java%2F&delimiter=%2F"
 $CampaignTag = Resolve-Path (Join-Path -Path $PSScriptRoot -ChildPath "../repo-docs/ga_tag.html")
-
+. "$PSScriptRoot/docs/Docs-ToC.ps1"
 function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory)
 {
   $projectPath = Join-Path $pkgPath "pom.xml"

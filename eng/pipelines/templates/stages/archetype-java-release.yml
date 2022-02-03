@@ -437,3 +437,7 @@ stages:
                 - docs-ref-services/
                 - metadata/
               DocValidationImageId: "$(DocValidationImageId)"
+              JavadocJarLocations:
+                - ${{ each artifact in parameters.Artifacts }}:
+                  - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
+                    - $(Pipeline.Workspace)/com.azure/${{artifact.name}}/${{artifact.name}}-.*-javadoc.jar

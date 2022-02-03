@@ -38,6 +38,16 @@ jobs:
         displayName: Update Docs Onboarding
         condition: and(succeeded(), or(eq(variables['Build.Reason'], 'Schedule'), eq(variables['Force.MainUpdate'], 'true')))
 
+      - task: Powershell@2
+        inputs:
+          pwsh: true
+          filePath: eng/common/scripts/Update-DocsMsToc.ps1
+          arguments: >-
+            -DocRepoLocation $(DocRepoLocation)
+            -OutputLocation $(DocRepoLocation)/docs-ref-mapping/reference-unified.yml
+        displayName: Generate ToC
+        condition: and(succeeded(), or(eq(variables['Build.Reason'], 'Schedule'), eq(variables['Force.MainUpdate'], 'true')))
+
       # Push changes to docs repo
       - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
         parameters:
@@ -86,6 +96,14 @@ jobs:
           filePath: eng/common/scripts/Update-DocsMsPackages.ps1
           arguments: -DocRepoLocation $(DailyDocRepoLocation)
         displayName: Update Docs Onboarding for Daily branch
+      - task: Powershell@2
+        inputs:
+          pwsh: true
+          filePath: eng/common/scripts/Update-DocsMsToc.ps1
+          arguments: >-
+            -DocRepoLocation $(DocRepoLocation)
+            -OutputLocation $(DocRepoLocation)/docs-ref-mapping/reference-unified.yml
+        displayName: Generate ToC
       - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
         parameters:
           BaseRepoBranch: $(DailyDocsBranchName)

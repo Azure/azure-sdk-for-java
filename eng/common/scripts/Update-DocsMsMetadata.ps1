@@ -102,8 +102,12 @@ function GetAdjustedReadmeContent($ReadmeContent, $PackageInfo, $PackageMetadata
   if ($codeOwnerArray) {
     Write-Host "Code Owners are $($codeOwnerArray -join ",")"
     $author = $codeOwnerArray[0]
-    $msauthor = $author # This is a placeholder for now. Will change to the right ms alias.
   }
+  $msAlias = "$PSScriptRoot/Get-AADIdentityFromGithubUser.ps1" -TenantId -ClientId -ClientSecret
+  
+  
+  Write-Host "The script Get-AADIdentityFromGithubUser.ps1 file disappeared."
+  $msauthor = $author # This is a placeholder for now. Will change to the right ms alias.
   Write-Host "The author of package: $author"
   Write-Host "The ms author of package: $msauthor"
   $header = @"
@@ -192,6 +196,32 @@ function UpdateDocsMsMetadataForPackage($packageInfoJsonLocation, $packageInfo) 
   Set-Content `
     -Path $packageInfoLocation/$packageMetadataName `
     -Value $packageInfoJson
+
+  Get-PackageNamespaces `
+    -packageMetadata $packageInfo `
+    -artifactLoc $PipelineArtifacts `
+    -outputDirectory $packageInfoLocation
+}
+
+function Get-PackageNamespaces($packageMetadata, $artifactLoc, $outputDirectory) {
+  # Download from artifact
+  $groupId = $packageMetadata.GroupId
+  $artifactId = $packageMetadata.Name
+  $version = $packageMetadata.Version
+  $artifactJavaDoc = "$artifactId-$version-javadoc.jar"
+  Copy-Item "$artifactLoc/$groupId/$artifactId/$artifactJavaDoc" -Destination $tempDirectory
+
+  # Extracting javadoc
+  Push-Location $outputDirectory
+  jar -xvf "$tempDirectory/$artifactJavaDoc"
+  if (Test-path "$tempDirectory/element-list") {
+    Copy-Item "$tempDirectory/element-list" -Destination "$outputDirectory/$artifactLoc-$groupId-$artifactId-packages.txt"
+  }
+  elseif ((Test-path "$tempDirectory/overview-frame.html")) {
+    
+  }
+  # Return string array of packages
+  Pop-Loction
 }
 
 foreach ($packageInfoLocation in $PackageInfoJsonLocations) {
