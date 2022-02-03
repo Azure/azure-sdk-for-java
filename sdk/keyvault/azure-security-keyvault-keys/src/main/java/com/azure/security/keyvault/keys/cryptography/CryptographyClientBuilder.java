@@ -314,9 +314,11 @@ public final class CryptographyClientBuilder implements
     }
 
     /**
-     * Sets the credential to use when authenticating HTTP requests.
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
+     * documentation for more details on proper usage of the {@link TokenCredential} type.
      *
-     * @param credential The credential to use for authenticating HTTP requests.
+     * @param credential {@link TokenCredential} used to authorize requests sent to the service.
      *
      * @return The updated {@link CryptographyClientBuilder} object.
      *

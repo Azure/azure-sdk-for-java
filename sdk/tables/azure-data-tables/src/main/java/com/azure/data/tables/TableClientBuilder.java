@@ -368,10 +368,12 @@ public final class TableClientBuilder implements
     }
 
     /**
-     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Setting this is mutually
-     * exclusive with using {@link TableClientBuilder#credential(AzureNamedKeyCredential)},
-     * {@link TableClientBuilder#credential(AzureSasCredential)} or
-     * {@link TableClientBuilder#sasToken(String)}.
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
+     * documentation for more details on proper usage of the {@link TokenCredential} type.
+     *
+     * Setting this is mutually exclusive with using {@link #credential(AzureNamedKeyCredential)},
+     * {@link #credential(AzureSasCredential)} or {@link #sasToken(String)}.
      *
      * @param credential {@link TokenCredential} used to authorize requests sent to the service.
      *

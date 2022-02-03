@@ -331,10 +331,11 @@ public final class EventGridPublisherClientBuilder implements
     }
 
     /**
-     * Set the domain or topic authentication using Azure Activity Directory authentication.
-     * Refer to <a href="https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity">azure-identity</a>
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
+     * documentation for more details on proper usage of the {@link TokenCredential} type.
      *
-     * @param credential the token credential to use.
+     * @param credential {@link TokenCredential} used to authorize requests sent to the service.
      *
      * @return the builder itself.
      */

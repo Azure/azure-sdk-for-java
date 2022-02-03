@@ -220,9 +220,11 @@ public class DataLakeFileSystemClientBuilder implements
     }
 
     /**
-     * Sets the {@link TokenCredential} used to authorize requests sent to the service.
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
+     * documentation for more details on proper usage of the {@link TokenCredential} type.
      *
-     * @param credential {@link TokenCredential}.
+     * @param credential {@link TokenCredential} used to authorize requests sent to the service.
      * @return the updated DataLakeFileSystemClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */

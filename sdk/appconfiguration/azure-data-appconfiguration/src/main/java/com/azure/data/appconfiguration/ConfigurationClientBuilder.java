@@ -340,9 +340,11 @@ public final class ConfigurationClientBuilder implements
     }
 
     /**
-     * Sets the {@link TokenCredential} used to authenticate HTTP requests.
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
+     * documentation for more details on proper usage of the {@link TokenCredential} type.
      *
-     * @param tokenCredential TokenCredential used to authenticate HTTP requests.
+     * @param tokenCredential {@link TokenCredential} used to authorize requests sent to the service.
      * @return The updated ConfigurationClientBuilder object.
      * @throws NullPointerException If {@code credential} is null.
      */

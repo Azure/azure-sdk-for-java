@@ -385,10 +385,9 @@ public final class ServiceBusClientBuilder implements
     }
 
     /**
-     * Sets the credential by using a {@link TokenCredential} for the Service Bus resource.
-     * <a href="https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity">
-     *     azure-identity</a> has multiple {@link TokenCredential} implementations that can be used to authenticate
-     *     the access to the Service Bus resource.
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
+     * documentation for more details on proper usage of the {@link TokenCredential} type.
      *
      * @param credential The token credential to use for authentication. Access controls may be specified by the
      * ServiceBus namespace or the requested Service Bus entity, depending on Azure configuration.

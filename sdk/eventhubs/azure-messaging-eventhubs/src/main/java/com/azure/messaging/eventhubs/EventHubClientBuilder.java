@@ -446,7 +446,9 @@ public class EventHubClientBuilder implements
     }
 
     /**
-     * Sets the credential information for which Event Hub instance to connect to, and how to authorize against it.
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
+     * documentation for more details on proper usage of the {@link TokenCredential} type.
      *
      * @param credential The token credential to use for authorization. Access controls may be specified by the
      *     Event Hubs namespace or the requested Event Hub, depending on Azure configuration.
