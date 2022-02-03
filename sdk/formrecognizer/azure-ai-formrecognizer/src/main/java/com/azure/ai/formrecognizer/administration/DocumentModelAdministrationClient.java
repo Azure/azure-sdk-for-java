@@ -54,10 +54,10 @@ public final class DocumentModelAdministrationClient {
      * Create a {@link DocumentModelAdministrationClient} that sends requests to the Form Recognizer service's endpoint.
      * Each service call goes through the {@link DocumentModelAdministrationClientBuilder#pipeline http pipeline}.
      *
-     * @param documentAnalysisTrainingAsyncClient The {@link DocumentModelAdministrationAsyncClient} that the client routes its request through.
+     * @param documentModelAdministrationAsyncClient The {@link DocumentModelAdministrationAsyncClient} that the client routes its request through.
      */
-    DocumentModelAdministrationClient(DocumentModelAdministrationAsyncClient documentAnalysisTrainingAsyncClient) {
-        this.client = documentAnalysisTrainingAsyncClient;
+    DocumentModelAdministrationClient(DocumentModelAdministrationAsyncClient documentModelAdministrationAsyncClient) {
+        this.client = documentModelAdministrationAsyncClient;
     }
 
     /**
@@ -68,6 +68,7 @@ public final class DocumentModelAdministrationClient {
      */
     public DocumentAnalysisClient getDocumentAnalysisClient() {
         return new DocumentAnalysisClientBuilder().endpoint(client.getEndpoint()).pipeline(client.getHttpPipeline())
+            .audience(client.getAudience())
             .buildClient();
     }
 
