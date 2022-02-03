@@ -8,7 +8,7 @@ import com.azure.core.credential.TokenCredential;
 /**
  * An {@link com.azure.core.client.traits Azure SDK for Java trait} providing a consistent interface for setting
  * {@link TokenCredential}. Refer to the Azure SDK for Java
- * <a href="https://docs.microsoft.com/azure/developer/java/sdk/identity">identity and authentication</a>
+ * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
  * documentation for more details on proper usage of the {@link TokenCredential} type.
  *
  * @param <T> The concrete type that implements the trait. This is required so that fluent operations can continue
@@ -20,7 +20,7 @@ public interface TokenCredentialTrait<T extends TokenCredentialTrait<T>> {
 
     /**
      * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
-     * <a href="https://docs.microsoft.com/azure/developer/java/sdk/identity">identity and authentication</a>
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
      * documentation for more details on proper usage of the {@link TokenCredential} type.
      *
      * @param credential {@link TokenCredential} used to authorize requests sent to the service.

@@ -8,7 +8,7 @@ import com.azure.core.credential.AzureSasCredential;
 /**
  * An {@link com.azure.core.client.traits Azure SDK for Java trait} providing a consistent interface for setting
  * {@link AzureSasCredential}. Refer to the Azure SDK for Java
- * <a href="https://docs.microsoft.com/azure/developer/java/sdk/identity">identity and authentication</a>
+ * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
  * documentation for more details on proper usage of the {@link AzureSasCredential} type.
  *
  * @param <T> The concrete type that implements the trait. This is required so that fluent operations can continue
@@ -19,7 +19,7 @@ import com.azure.core.credential.AzureSasCredential;
 public interface AzureSasCredentialTrait<T extends AzureSasCredentialTrait<T>> {
     /**
      * Sets the {@link AzureSasCredential} used for authentication. Refer to the Azure SDK for Java
-     * <a href="https://docs.microsoft.com/azure/developer/java/sdk/identity">identity and authentication</a>
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
      * documentation for more details on proper usage of the {@link AzureSasCredential} type.
      *
      * @param credential the {@link AzureSasCredential} to be used for authentication.
