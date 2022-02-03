@@ -81,6 +81,7 @@ public interface HttpTrait<T extends HttpTrait<T>> {
      * @param pipelinePolicy A {@link HttpPipelinePolicy pipeline policy}.
      * @return Returns the same concrete type with the appropriate properties updated, to allow for fluent chaining of
      *      operations.
+     * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
     T addPolicy(HttpPipelinePolicy pipelinePolicy);
 

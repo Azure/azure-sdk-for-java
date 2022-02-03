@@ -308,11 +308,16 @@ public final class CertificateClientBuilder implements
     }
 
     /**
-     * Adds a policy to the set of existing policies that are executed after {@link CertificateAsyncClient} and {@link
-     * CertificateClient} required policies.
+     * Adds a {@link HttpPipelinePolicy pipeline policy} to apply on each request sent.
      *
-     * @param policy The {@link HttpPipelinePolicy policy} to be added.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
      *
+     * @param policy A {@link HttpPipelinePolicy pipeline policy}.
      * @return The updated {@link CertificateClientBuilder} object.
      *
      * @throws NullPointerException If {@code policy} is {@code null}.
