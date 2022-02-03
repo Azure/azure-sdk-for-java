@@ -341,9 +341,16 @@ public final class EventGridPublisherClientBuilder implements
     }
 
     /**
-     * Set the HTTP Client that sends requests. Will use default if not set.
-     * @param httpClient the HTTP Client to use.
+     * Sets the {@link HttpClient} to use for sending and receiving requests to and from the service.
      *
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param httpClient The {@link HttpClient} to use for requests.
      * @return the builder itself.
      */
     @Override
