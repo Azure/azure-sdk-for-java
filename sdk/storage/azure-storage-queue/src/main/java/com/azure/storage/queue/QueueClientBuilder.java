@@ -23,6 +23,7 @@ import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -534,9 +535,21 @@ public final class QueueClientBuilder implements
     }
 
     /**
-     * Sets the client options for all the requests made through the client.
+     * Allows for setting common properties such as application ID, headers, proxy configuration, etc. Note that it is
+     * recommended that this method be called with an instance of the {@link HttpClientOptions}
+     * class (a subclass of the {@link ClientOptions} base class). The HttpClientOptions subclass provides more
+     * configuration options suitable for HTTP clients, which is applicable for any class that implements this HttpTrait
+     * interface.
      *
-     * @param clientOptions {@link ClientOptions}.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param clientOptions A configured instance of {@link HttpClientOptions}.
+     * @see HttpClientOptions
      * @return the updated QueueClientBuilder object
      * @throws NullPointerException If {@code clientOptions} is {@code null}.
      */
