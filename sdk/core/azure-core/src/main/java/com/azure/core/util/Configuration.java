@@ -184,6 +184,7 @@ public class Configuration implements Cloneable {
      */
     @SuppressWarnings("StaticInitializerReferencesSubClass")
     public static final Configuration NONE = new NoopConfiguration();
+    private static final String[] EMPTY_ARRAY = new String[0];
 
     private final EnvironmentConfiguration environmentConfiguration;
     private final Map<String, String> configurations;
@@ -233,15 +234,10 @@ public class Configuration implements Cloneable {
      */
     public String get(String name) {
 
-        // TODO:
-        // With this we'd allow env vars to be set in props file
-        // should we deprecate all existing (String) methods?
-
-        /*String value = getLocalProperty(name, EMPTY_ARRAY, false);
+        String value = getLocalProperty(name, EMPTY_ARRAY, false);
         if (value != null) {
-
             return value;
-        }*/
+        }
 
         return environmentConfiguration.get(name);
     }
@@ -260,7 +256,12 @@ public class Configuration implements Cloneable {
      * @return The converted configuration if found, otherwise the default value is returned.
      */
     public <T> T get(String name, T defaultValue) {
-        return environmentConfiguration.get(name, defaultValue);
+        String value = getLocalProperty(name, EMPTY_ARRAY, false);
+        if (value == null) {
+            return environmentConfiguration.get(name, defaultValue);
+        }
+
+        return EnvironmentConfiguration.convertOrDefault(value, defaultValue);
     }
 
     /**
@@ -277,7 +278,12 @@ public class Configuration implements Cloneable {
      * @return The converted configuration if found, otherwise null.
      */
     public <T> T get(String name, Function<String, T> converter) {
-        return environmentConfiguration.get(name, converter);
+        String value = getLocalProperty(name, EMPTY_ARRAY, false);
+        if (value == null) {
+            return environmentConfiguration.get(name, converter);
+        }
+
+        return converter.apply(value);
     }
 
     /**

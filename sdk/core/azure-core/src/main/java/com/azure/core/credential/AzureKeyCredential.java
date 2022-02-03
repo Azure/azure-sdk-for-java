@@ -3,6 +3,9 @@
 
 package com.azure.core.credential;
 
+import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationDoc;
+import com.azure.core.util.ConfigurationProperty;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Objects;
@@ -55,5 +58,18 @@ public final class AzureKeyCredential {
 
         this.key = key;
         return this;
+    }
+
+    @ConfigurationDoc(description = "key credential.")
+    private final static ConfigurationProperty<String> KEY_PROPERTY = ConfigurationProperty.stringPropertyBuilder("credential.key")
+        .build();
+
+    public static AzureKeyCredential fromConfiguration(Configuration configuration, AzureKeyCredential defaultValue) {
+        String key = configuration.get(KEY_PROPERTY);
+        if (key == null) {
+            return defaultValue;
+        }
+
+        return new AzureKeyCredential(key);
     }
 }

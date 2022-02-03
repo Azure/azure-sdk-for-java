@@ -173,7 +173,8 @@ public class EnvironmentConfiguration  {
      * @return The converted configuration, if null or empty the default value.
      */
     @SuppressWarnings("unchecked")
-    private static <T> T convertOrDefault(String value, T defaultValue) {
+    public static <T> T convertOrDefault(String value, T defaultValue) {
+        // TODO to helper
         // Value is null or empty, return the default.
         if (CoreUtils.isNullOrEmpty(value)) {
             return defaultValue;

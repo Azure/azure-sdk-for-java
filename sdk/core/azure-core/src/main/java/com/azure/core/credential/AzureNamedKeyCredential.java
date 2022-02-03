@@ -3,6 +3,7 @@
 
 package com.azure.core.credential;
 
+import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Objects;
@@ -38,8 +39,12 @@ public final class AzureNamedKeyCredential {
      * @throws IllegalArgumentException If {@code key} or {@code name} is an empty string.
      */
     public AzureNamedKeyCredential(String name, String key) {
-        validateInputParameters(name, key);
-        this.credentials = new AzureNamedKey(name, key);
+        this(new AzureNamedKey(name, key));
+    }
+
+    private AzureNamedKeyCredential(AzureNamedKey credentials) {
+        validateInputParameters(credentials.getName(), credentials.getKey());
+        this.credentials = credentials;
     }
 
     /**
@@ -64,6 +69,15 @@ public final class AzureNamedKeyCredential {
         validateInputParameters(name, key);
         this.credentials = new AzureNamedKey(name, key);
         return this;
+    }
+
+    public static AzureNamedKeyCredential fromConfiguration(Configuration configuration, AzureNamedKeyCredential defaultValue) {
+        AzureNamedKey credentials = AzureNamedKey.fromConfiguration(configuration, null);
+        if (credentials == null) {
+            return defaultValue;
+        }
+
+        return new AzureNamedKeyCredential(credentials);
     }
 
     private void validateInputParameters(String name, String key) {

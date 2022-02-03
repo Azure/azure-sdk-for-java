@@ -3,6 +3,9 @@
 
 package com.azure.core.credential;
 
+import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationDoc;
+import com.azure.core.util.ConfigurationProperty;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Objects;
@@ -78,5 +81,17 @@ public final class AzureSasCredential {
 
         this.signature = (signatureEncoder == null) ? signature : signatureEncoder.apply(signature);
         return this;
+    }
+
+    @ConfigurationDoc(description = "sas token.")
+    private final static ConfigurationProperty<String> SAS_TOKEN_PROPERTY = ConfigurationProperty.stringPropertyBuilder("credential.sas-token").build();
+
+    public static AzureSasCredential fromConfiguration(Configuration configuration, AzureSasCredential defaultValue) {
+        String sasToken = configuration.get(SAS_TOKEN_PROPERTY);
+        if (sasToken == null) {
+            return defaultValue;
+        }
+
+        return new AzureSasCredential(sasToken);
     }
 }
