@@ -7,7 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
-import com.azure.spring.core.factory.Utils;
+import com.azure.spring.cloud.autoconfigure.implementation.Utils;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;

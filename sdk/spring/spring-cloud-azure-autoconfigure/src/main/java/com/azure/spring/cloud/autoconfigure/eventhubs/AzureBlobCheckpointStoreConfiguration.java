@@ -9,7 +9,7 @@ import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
-import com.azure.spring.core.factory.Utils;
+import com.azure.spring.cloud.autoconfigure.implementation.Utils;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import org.slf4j.Logger;

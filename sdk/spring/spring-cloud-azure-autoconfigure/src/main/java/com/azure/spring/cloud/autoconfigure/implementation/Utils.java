@@ -1,4 +1,4 @@
-package com.azure.spring.core.factory;
+package com.azure.spring.cloud.autoconfigure.implementation;
 
 import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;

@@ -9,7 +9,7 @@ import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
-import com.azure.spring.core.factory.Utils;
+import com.azure.spring.cloud.autoconfigure.implementation.Utils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
