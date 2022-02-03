@@ -67,10 +67,10 @@ import com.azure.storage.file.share.models.ShareFileMetadataInfo;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareFileRangeList;
-import com.azure.storage.file.share.models.ShareFileUploadOptions;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
-import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
+import com.azure.storage.file.share.models.ShareFileUploadOptions;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
+import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
@@ -80,6 +80,7 @@ import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
 import reactor.core.scheduler.Schedulers;
 import reactor.util.function.Tuples;
 import reactor.util.retry.Retry;
@@ -89,8 +90,10 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -881,51 +884,60 @@ public class ShareFileAsyncClient {
 
     Mono<Response<ShareFileProperties>> downloadToFileWithResponse(String downloadFilePath, ShareFileRange range,
         ShareRequestConditions requestConditions, Context context) {
-        return Mono.using(() -> channelSetup(downloadFilePath, StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW),
-            channel -> getPropertiesWithResponse(requestConditions, context).flatMap(response ->
-                downloadResponseInChunk(response, channel, range, requestConditions, context)), this::channelCleanUp);
+        Context finalContext = (context == null)
+            ? new Context("azure-disable-buffer-copy", true)
+            : context.addData("azure-disable-buffer-copy", true);
+
+        FileChannel channel = downloadChannelSetup(downloadFilePath, StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW);
+        return Mono.just(channel)
+            .flatMap(file -> getPropertiesWithResponse(requestConditions, context).flatMap(response ->
+                downloadResponseInChunk(response, channel, range, requestConditions, finalContext)))
+            .doFinally(signalType -> downloadChannelCleanUp(channel, downloadFilePath, signalType));
     }
 
     private Mono<Response<ShareFileProperties>> downloadResponseInChunk(Response<ShareFileProperties> response,
-        AsynchronousFileChannel channel, ShareFileRange range, ShareRequestConditions requestConditions,
+        FileChannel channel, ShareFileRange range, ShareRequestConditions requestConditions,
         Context context) {
-        return Mono.justOrEmpty(range).switchIfEmpty(Mono.defer(() -> Mono.just(new ShareFileRange(0, response.getValue()
-            .getContentLength()))))
-            .map(currentRange -> {
-                List<ShareFileRange> chunks = new ArrayList<>();
-                for (long pos = currentRange.getStart(); pos < currentRange.getEnd(); pos += FILE_DEFAULT_BLOCK_SIZE) {
-                    long count = FILE_DEFAULT_BLOCK_SIZE;
-                    if (pos + count > currentRange.getEnd()) {
-                        count = currentRange.getEnd() - pos;
-                    }
-                    chunks.add(new ShareFileRange(pos, pos + count - 1));
-                }
-                return chunks;
-            }).flatMapMany(Flux::fromIterable).flatMap(chunk ->
-                downloadWithResponse(new ShareFileDownloadOptions().setRange(chunk).setRangeContentMd5Requested(false)
-                    .setRequestConditions(requestConditions), context)
+        ShareFileRange effectiveRange = (range == null)
+            ? new ShareFileRange(0, response.getValue().getContentLength())
+            : range;
+        List<ShareFileRange> chunks = new ArrayList<>();
+
+        for (long pos = effectiveRange.getStart(); pos < effectiveRange.getEnd(); pos += FILE_DEFAULT_BLOCK_SIZE) {
+            long count = FILE_DEFAULT_BLOCK_SIZE;
+            if (pos + count > effectiveRange.getEnd()) {
+                count = effectiveRange.getEnd() - pos;
+            }
+            chunks.add(new ShareFileRange(pos, pos + count - 1));
+        }
+
+        return Flux.fromIterable(chunks).subscribeOn(Schedulers.boundedElastic())
+            .flatMap(chunk -> downloadWithResponse(new ShareFileDownloadOptions()
+                .setRange(chunk)
+                .setRangeContentMd5Requested(false)
+                .setRequestConditions(requestConditions), context)
                 .map(ShareFileDownloadAsyncResponse::getValue)
-                .subscribeOn(Schedulers.elastic())
-                .flatMap(fbb -> FluxUtil
-                    .writeFile(fbb, channel, chunk.getStart() - (range == null ? 0 : range.getStart()))
-                    .subscribeOn(Schedulers.elastic())
-                    .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
-                    .retryWhen(Retry.max(3).filter(throwable -> throwable instanceof IOException
-                        || throwable instanceof TimeoutException))))
-            .then(Mono.just(response));
+                .flatMap(fbb -> FluxUtil.writeFile(fbb, channel, chunk.getStart() - effectiveRange.getStart())))
+            .retryWhen(Retry.max(3).filter(throwable -> throwable instanceof IOException
+                || throwable instanceof TimeoutException))
+            .then(Mono.defer(() -> Mono.just(response)));
     }
 
-    private AsynchronousFileChannel channelSetup(String filePath, OpenOption... options) {
+    private FileChannel downloadChannelSetup(String filePath, OpenOption... options) {
         try {
-            return AsynchronousFileChannel.open(Paths.get(filePath), options);
+            return FileChannel.open(Paths.get(filePath), options);
         } catch (IOException e) {
             throw logger.logExceptionAsError(new UncheckedIOException(e));
         }
     }
 
-    private void channelCleanUp(AsynchronousFileChannel channel) {
+    private void downloadChannelCleanUp(FileChannel channel, String filePath, SignalType signalType) {
         try {
             channel.close();
+            if (!signalType.equals(SignalType.ON_COMPLETE)) {
+                Files.deleteIfExists(Paths.get(filePath));
+                logger.verbose("Downloading to file failed. Cleaning up resources.");
+            }
         } catch (IOException e) {
             throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(e)));
         }
@@ -2430,7 +2442,7 @@ public class ShareFileAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadFromFile(String uploadFilePath, ShareRequestConditions requestConditions) {
         try {
-            return Mono.using(() -> channelSetup(uploadFilePath, StandardOpenOption.READ),
+            return Mono.using(() -> uploadChannelSetup(uploadFilePath),
                 channel -> Flux.fromIterable(sliceFile(uploadFilePath))
                     .flatMap(chunk -> uploadWithResponse(FluxUtil.readFile(channel, chunk.getStart(),
                         chunk.getEnd() - chunk.getStart() + 1), chunk.getEnd() - chunk.getStart() + 1,
@@ -2438,9 +2450,17 @@ public class ShareFileAsyncClient {
                         .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
                         .retryWhen(Retry.max(3).filter(throwable -> throwable instanceof IOException
                             || throwable instanceof TimeoutException)))
-                    .then(), this::channelCleanUp);
+                    .then(), this::uploadChannelCleanUp);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
+        }
+    }
+
+    private AsynchronousFileChannel uploadChannelSetup(String filePath) {
+        try {
+            return AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ);
+        } catch (IOException e) {
+            throw logger.logExceptionAsError(new UncheckedIOException(e));
         }
     }
 
@@ -2456,6 +2476,14 @@ public class ShareFileAsyncClient {
             ranges.add(new ShareFileRange(pos, pos + count - 1));
         }
         return ranges;
+    }
+
+    private void uploadChannelCleanUp(AsynchronousFileChannel channel) {
+        try {
+            channel.close();
+        } catch (IOException e) {
+            throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(e)));
+        }
     }
 
     /**

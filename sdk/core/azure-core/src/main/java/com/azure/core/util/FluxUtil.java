@@ -7,6 +7,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.ByteBufferCollector;
+import com.azure.core.implementation.FileChannelWriteSubscriber;
 import com.azure.core.implementation.FileWriteSubscriber;
 import com.azure.core.implementation.RetriableDownloadFlux;
 import com.azure.core.implementation.TypeUtil;
@@ -27,6 +28,7 @@ import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.CompletionHandler;
+import java.nio.channels.FileChannel;
 import java.nio.file.StandardOpenOption;
 import java.util.Collections;
 import java.util.Map;
@@ -473,6 +475,62 @@ public final class FluxUtil {
             }
 
             content.subscribe(new FileWriteSubscriber(outFile, position, emitter));
+        });
+    }
+
+    /**
+     * Writes the {@link ByteBuffer ByteBuffers} emitted by a {@link Flux} of {@link ByteBuffer} to a {@link
+     * FileChannel}.
+     * <p>
+     * The {@code outFile} is not closed by this call, closing of the {@code outFile} is managed by the caller.
+     * <p>
+     * The response {@link Mono} will emit an error if {@code content} or {@code outFile} are null. Additionally, an
+     * error will be emitted if the {@code outFile} wasn't opened with the proper open options, such as {@link
+     * StandardOpenOption#WRITE}.
+     *
+     * @param content The {@link Flux} of {@link ByteBuffer} content.
+     * @param outFile The {@link FileChannel}.
+     * @return A {@link Mono} which emits a completion status once the {@link Flux} has been written to the {@link
+     * FileChannel}.
+     */
+    public static Mono<Void> writeFile(Flux<ByteBuffer> content, FileChannel outFile) {
+        return writeFile(content, outFile, 0);
+    }
+
+    /**
+     * Writes the {@link ByteBuffer ByteBuffers} emitted by a {@link Flux} of {@link ByteBuffer} to a {@link
+     * FileChannel} starting at the given {@code position} in the file.
+     * <p>
+     * The {@code outFile} is not closed by this call, closing of the {@code outFile} is managed by the caller.
+     * <p>
+     * The response {@link Mono} will emit an error if {@code content} or {@code outFile} are null or {@code position}
+     * is less than 0. Additionally, an error will be emitted if the {@code outFile} wasn't opened with the proper open
+     * options, such as {@link StandardOpenOption#WRITE}.
+     *
+     * @param content The {@link Flux} of {@link ByteBuffer} content.
+     * @param outFile The {@link FileChannel}.
+     * @param position The position in the file to begin writing the {@code content}.
+     * @return A {@link Mono} which emits a completion status once the {@link Flux} has been written to the {@link
+     * FileChannel}.
+     */
+    public static Mono<Void> writeFile(Flux<ByteBuffer> content, FileChannel outFile, long position) {
+        return Mono.create(emitter -> {
+            if (content == null) {
+                emitter.error(new NullPointerException("'content' cannot be null."));
+                return;
+            }
+
+            if (outFile == null) {
+                emitter.error(new NullPointerException("'outFile' cannot be null."));
+                return;
+            }
+
+            if (position < 0) {
+                emitter.error(new IllegalArgumentException("'position' cannot be less than 0."));
+                return;
+            }
+
+            content.subscribe(new FileChannelWriteSubscriber(outFile, position, emitter));
         });
     }
 

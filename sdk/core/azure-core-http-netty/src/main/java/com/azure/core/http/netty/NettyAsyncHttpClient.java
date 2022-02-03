@@ -50,6 +50,7 @@ import static com.azure.core.http.netty.implementation.Utility.closeConnection;
 class NettyAsyncHttpClient implements HttpClient {
     private static final String AZURE_EAGERLY_READ_RESPONSE = "azure-eagerly-read-response";
     private static final String AZURE_RESPONSE_TIMEOUT = "azure-response-timeout";
+    private static final String AZURE_DISABLE_BUFFER_COPY = "azure-disable-buffer-copy";
 
     final boolean disableBufferCopy;
     final long readTimeout;
@@ -92,6 +93,8 @@ class NettyAsyncHttpClient implements HttpClient {
             .filter(timeoutDuration -> timeoutDuration instanceof Duration)
             .map(timeoutDuration -> ((Duration) timeoutDuration).toMillis())
             .orElse(this.responseTimeout);
+        boolean effectiveDisableBufferCopy = (boolean) context.getData(AZURE_DISABLE_BUFFER_COPY)
+            .orElse(disableBufferCopy);
 
         return nettyClient
             .doOnRequest((r, connection) -> addWriteTimeoutHandler(connection, writeTimeout))
@@ -101,7 +104,7 @@ class NettyAsyncHttpClient implements HttpClient {
             .request(HttpMethod.valueOf(request.getHttpMethod().toString()))
             .uri(request.getUrl().toString())
             .send(bodySendDelegate(request))
-            .responseConnection(responseDelegate(request, disableBufferCopy, effectiveEagerlyReadResponse))
+            .responseConnection(responseDelegate(request, effectiveDisableBufferCopy, effectiveEagerlyReadResponse))
             .single()
             .onErrorMap(throwable -> {
                 // The exception was an SSLException that was caused by a failure to connect to a proxy.
