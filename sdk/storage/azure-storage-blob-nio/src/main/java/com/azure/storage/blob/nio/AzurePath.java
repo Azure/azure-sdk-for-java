@@ -746,6 +746,28 @@ public final class AzurePath implements Path {
         return containerClient.getBlobClient(blobName);
     }
 
+    /**
+     * A utility method to conveniently convert from a url to a storage resource to an {@code AzurePath} pointing to the
+     * same resource.
+     *
+     * The url must be well formatted. There must be an open filesystem corresponding to the account which contains the
+     * blob. Otherwise, a {@link java.nio.file.FileSystemNotFoundException} will be thrown.
+     *
+     * The url may point to either an account, container, or blob. If it points to an account, the path will be empty,
+     * but it will have an internal reference to the file system containing it, meaning instance methods may be
+     * performed on the path to construct a reference to another object. If it points to a container, there will be one
+     * element, which is the root element. Everything after the container, that is the blob name, will then be appended
+     * after the root element.
+     *
+     * IP style urls are not currently supported.
+     *
+     * The {@link AzureFileSystemProvider} can typically be obtained via {@link AzureFileSystem#provider()}.
+     *
+     * @param provider The installed {@link AzureFileSystemProvider} that manages open file systems for this jvm.
+     * @param url The url to the desired resource.
+     * @return An {@link AzurePath} which points to the resrouce identified by the url.
+     * @throws URISyntaxException If the url contains elements which are not well formatted.
+     */
     public static AzurePath fromBlobUrl(AzureFileSystemProvider provider, String url) throws URISyntaxException {
         BlobUrlParts parts = BlobUrlParts.parse(url);
         URI fileSystemUri = hostToFileSystemUri(provider, parts.getScheme(), parts.getHost());
@@ -795,7 +817,7 @@ public final class AzurePath implements Path {
     }
 
     private static String fileStoreToRoot(String fileStore) {
-        if (fileStore == null || fileStore.equals("")) {
+        if (fileStore == null || "".equals(fileStore)) {
             return "";
         }
         return fileStore + ROOT_DIR_SUFFIX;
