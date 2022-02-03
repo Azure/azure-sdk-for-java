@@ -19,6 +19,9 @@ private[spark] case class CreateOperation(sparkTaskContext: SparkTaskContext, it
 private[spark] case class DeleteOperation(sparkTaskContext: SparkTaskContext, itemIdentifier: CosmosItemIdentifier)
   extends WriteOperation
 
+private[spark] case class ReplaceOperation(sparkTaskContext: SparkTaskContext, itemIdentifier: CosmosItemIdentifier)
+  extends WriteOperation
+
 private[spark] case class SparkTaskContext(correlationActivityId: String,
                                            stageId: Int,
                                            partitionId: Long,
