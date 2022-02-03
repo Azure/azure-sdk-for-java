@@ -16,9 +16,10 @@ import com.azure.core.util.Configuration;
  */
 public interface ConfigurationTrait<T extends ConfigurationTrait<T>> {
     /**
-     * Sets the configuration used to retrieve environment configuration values when building a client.
+     * Sets the client-specific configuration used to retrieve client or global configuration properties
+     * when building a client.
      *
-     * @param configuration Configuration store used to retrieve environment configurations.
+     * @param configuration Configuration store used to retrieve client configurations.
      * @return Returns the same concrete type with the appropriate properties updated, to allow for fluent chaining of
      *      operations.
      */
