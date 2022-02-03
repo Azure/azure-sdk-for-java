@@ -1185,9 +1185,16 @@ public class CosmosEncryptionAsyncContainer {
                 );
             }
             return cosmosItemOperationMono;
-        }).doOnComplete(() -> setRequestHeaders(cosmosBulkExecutionOptions));
+        });
 
-        return executeBulkOperationsHelper(operationFlux, cosmosBulkExecutionOptions, false);
+        Mono<Flux<CosmosItemOperation>> then = operationFlux.then(Mono.defer(() -> {
+            setRequestHeaders(cosmosBulkExecutionOptions);
+            return Mono.just(operationFlux);
+        }));
+
+        return then.flatMapMany(cosmosItemOperationFlux -> {
+            return executeBulkOperationsHelper(operationFlux, cosmosBulkExecutionOptions, false);
+        });
     }
 
     private <TContext> Flux<CosmosBulkOperationResponse<TContext>> executeBulkOperationsHelper(Flux<CosmosItemOperation> operations,
