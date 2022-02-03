@@ -139,6 +139,23 @@ public final class AzureFileSystem extends FileSystem {
     private static final String CLIENT_NAME = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
     private static final String CLIENT_VERSION = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
 
+    private static final String[] configConstantsArray = {
+        AZURE_STORAGE_SHARED_KEY_CREDENTIAL,
+        AZURE_STORAGE_SAS_TOKEN_CREDENTIAL,
+        AZURE_STORAGE_HTTP_LOG_DETAIL_LEVEL,
+        AZURE_STORAGE_MAX_TRIES,
+        AZURE_STORAGE_TRY_TIMEOUT,
+        AZURE_STORAGE_RETRY_DELAY_IN_MS,
+        AZURE_STORAGE_MAX_RETRY_DELAY_IN_MS,
+        AZURE_STORAGE_RETRY_POLICY_TYPE,
+        AZURE_STORAGE_SECONDARY_HOST,
+        AZURE_STORAGE_UPLOAD_BLOCK_SIZE,
+        AZURE_STORAGE_PUT_BLOB_THRESHOLD,
+        AZURE_STORAGE_MAX_CONCURRENCY_PER_REQUEST,
+        AZURE_STORAGE_DOWNLOAD_RESUME_RETRIES,
+        AZURE_STORAGE_FILE_STORES
+    }
+
     static final Map<Class<? extends FileAttributeView>, String> SUPPORTED_ATTRIBUTE_VIEWS;
     static {
         Map<Class<? extends FileAttributeView>, String> map = new HashMap<>();

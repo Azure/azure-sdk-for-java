@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.nio;
 
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
@@ -106,7 +107,7 @@ import java.util.function.Supplier;
  *     <li>{@code AzureStorageRetryPolicyType:}{@link com.azure.storage.common.policy.RetryPolicyType}</li>
  *     <li>{@code AzureStorageSecondaryHost:}{@link String}</li>
  *     <li>{@code AzureStorageSecondaryHost:}{@link Integer}</li>
- *     <li>{@code AzureStorageBlockSize:}{@link Long}</li>
+ *     <li>{@code AzureStorageUploadBlockSize:}{@link Long}</li>
  *     <li>{@code AzureStoragePutBlobThreshold:}{@link Long}</li>
  *     <li>{@code AzureStorageMaxConcurrencyPerRequest:}{@link Integer}</li>
  *     <li>{@code AzureStorageDownloadResumeRetries:}{@link Integer}</li>
@@ -181,6 +182,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      */
     public AzureFileSystemProvider() {
         this.openFileSystems = new ConcurrentHashMap<>();
+        Configuration config = Configuration.getGlobalConfiguration();
+
     }
 
     /**
@@ -1154,5 +1157,12 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         }
 
         return endpoint;
+    }
+
+    private Map<String, String> readDefaultConfigMap() {
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        Map<String, ?> configMap = new HashMap<>();
+        configMap.put(AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL,
+            configuration.get(AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL))
     }
 }
