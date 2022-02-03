@@ -7,7 +7,6 @@ import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.storage.blob.properties.AzureStorageBlobProperties;
-import com.azure.spring.service.implementation.storage.blob.BlobServiceClientBuilderFactory;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceAsyncClient;
@@ -21,7 +20,6 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AzureStorageBlobAutoConfigurationTests {
-
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureStorageBlobAutoConfiguration.class));
 
@@ -54,7 +52,6 @@ class AzureStorageBlobAutoConfigurationTests {
                 assertThat(context).hasSingleBean(BlobServiceClient.class);
                 assertThat(context).hasSingleBean(BlobServiceAsyncClient.class);
                 assertThat(context).hasSingleBean(BlobServiceClientBuilder.class);
-                assertThat(context).hasSingleBean(BlobServiceClientBuilderFactory.class);
             });
     }
 

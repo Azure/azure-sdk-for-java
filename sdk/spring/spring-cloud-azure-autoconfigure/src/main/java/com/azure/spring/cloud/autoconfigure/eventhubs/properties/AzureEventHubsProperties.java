@@ -105,7 +105,7 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties imp
         propertyMapper.from(this.processor.loadBalancing.getStrategy()).to(properties.loadBalancing::setStrategy);
         propertyMapper.from(this.processor.loadBalancing.getUpdateInterval()).to(properties.loadBalancing::setUpdateInterval);
 
-        AzurePropertiesUtils.copyAzureCommonProperties(this.processor.checkpointStore, properties.checkpointStore);
+        //AzurePropertiesUtils.copyAzureCommonProperties(this.processor.checkpointStore, properties.checkpointStore);
         BeanUtils.copyProperties(this.processor.checkpointStore, properties.checkpointStore);
 
         return properties;

@@ -9,7 +9,6 @@ import com.azure.spring.service.implementation.eventhubs.properties.EventHubProd
 import com.azure.spring.service.implementation.eventhubs.properties.EventHubsNamespaceProperties;
 import com.azure.spring.service.implementation.eventhubs.properties.EventProcessorClientProperties;
 import com.azure.spring.service.eventhubs.properties.LoadBalancingProperties;
-import com.azure.spring.service.implementation.storage.blob.TestAzureStorageBlobProperties;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -69,7 +68,7 @@ class TestAzureEventHubsProperties extends TestAzureEventHubsCommonProperties im
         private Duration partitionOwnershipExpirationInterval;
         private final EventBatchProperties batch = new EventBatchProperties();
         private final LoadBalancingProperties loadBalancing = new LoadBalancingProperties();
-        private final BlobCheckpointStore checkpointStore = new BlobCheckpointStore();
+        //private final BlobCheckpointStore checkpointStore = new BlobCheckpointStore();
 
         public Boolean getTrackLastEnqueuedEventProperties() {
             return trackLastEnqueuedEventProperties;
@@ -103,17 +102,6 @@ class TestAzureEventHubsProperties extends TestAzureEventHubsCommonProperties im
             return loadBalancing;
         }
 
-        public BlobCheckpointStore getCheckpointStore() {
-            return checkpointStore;
-        }
-
-        /**
-         * Blob checkpoint store.
-         */
-        public static class BlobCheckpointStore extends TestAzureStorageBlobProperties {
-
-
-        }
     }
 
 

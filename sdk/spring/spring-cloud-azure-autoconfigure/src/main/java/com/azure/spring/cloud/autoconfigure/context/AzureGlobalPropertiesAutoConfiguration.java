@@ -72,22 +72,22 @@ public class AzureGlobalPropertiesAutoConfiguration {
             this.env = env;
         }
 
-        private final static Properties APPLICATITON_IDS = new Properties() {{
+        private final static Properties APPLICATION_IDS = new Properties() {{
             put("spring.cloud.azure.appconfiguration.http.client.application-id", AzureSpringIdentifier.AZURE_SPRING_APP_CONFIG);
+            put("spring.cloud.azure.storage.blob.http.client.application-id", AzureSpringIdentifier.AZURE_SPRING_STORAGE_BLOB);
+            put("spring.cloud.azure.eventhubs.processor.checkpoint-store.http.client.application-id", AzureSpringIdentifier.AZURE_SPRING_STORAGE_BLOB);
         }};
 
         @Override
         public Set<String> getChildKeys(String path) {
             MutablePropertySources propSrcs = ((AbstractEnvironment) env).getPropertySources();
-            propSrcs.addFirst(new PropertiesPropertySource("application-id-source", APPLICATITON_IDS));
+            propSrcs.addFirst(new PropertiesPropertySource("application-id-source", APPLICATION_IDS));
             return StreamSupport.stream(propSrcs.spliterator(), false)
                 .filter(ps -> ps instanceof EnumerablePropertySource)
                 .map(ps -> ((EnumerablePropertySource) ps).getPropertyNames())
                 .flatMap(Arrays::<String>stream)
                 .filter(propName -> propName.startsWith(path) && propName.length() > path.length() && propName.charAt(path.length()) == '.')
                 .collect(Collectors.toSet());
-
-            // todo convention for arrays
         }
 
         @Override

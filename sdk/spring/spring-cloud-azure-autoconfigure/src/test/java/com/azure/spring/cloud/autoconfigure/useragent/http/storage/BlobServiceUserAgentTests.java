@@ -8,7 +8,6 @@ import com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobAutoCon
 import com.azure.spring.cloud.autoconfigure.storage.blob.properties.AzureStorageBlobProperties;
 import com.azure.spring.cloud.autoconfigure.useragent.util.UserAgentTestUtil;
 import com.azure.spring.core.AzureSpringIdentifier;
-import com.azure.spring.service.implementation.storage.blob.BlobServiceClientBuilderFactory;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
@@ -32,7 +31,6 @@ public class BlobServiceUserAgentTests {
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureStorageBlobAutoConfiguration.class);
                 assertThat(context).hasSingleBean(AzureStorageBlobProperties.class);
-                assertThat(context).hasSingleBean(BlobServiceClientBuilderFactory.class);
                 assertThat(context).hasSingleBean(BlobServiceClientBuilder.class);
                 assertThat(context).hasSingleBean(BlobServiceAsyncClient.class);
                 assertThat(context).hasSingleBean(BlobServiceClient.class);
