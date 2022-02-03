@@ -418,7 +418,7 @@ public final class EventGridPublisherClientBuilder implements
      * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
-     * @param pipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
+     * @param httpPipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
      * @return the builder itself.
      */
     @Override
