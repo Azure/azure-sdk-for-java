@@ -169,7 +169,8 @@ public final class WorkItemConfigurationsClientImpl implements WorkItemConfigura
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws WorkItemConfigurationErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list work item configurations that exist for the application.
+     * @return the list work item configurations that exist for the application along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkItemConfigurationInner>> listSinglePageAsync(
@@ -223,7 +224,8 @@ public final class WorkItemConfigurationsClientImpl implements WorkItemConfigura
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws WorkItemConfigurationErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list work item configurations that exist for the application.
+     * @return the list work item configurations that exist for the application along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkItemConfigurationInner>> listSinglePageAsync(
@@ -339,7 +341,8 @@ public final class WorkItemConfigurationsClientImpl implements WorkItemConfigura
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return work item configuration associated with an application insights resource.
+     * @return work item configuration associated with an application insights resource along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkItemConfigurationInner>> createWithResponseAsync(
@@ -400,7 +403,8 @@ public final class WorkItemConfigurationsClientImpl implements WorkItemConfigura
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return work item configuration associated with an application insights resource.
+     * @return work item configuration associated with an application insights resource along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkItemConfigurationInner>> createWithResponseAsync(
@@ -460,7 +464,8 @@ public final class WorkItemConfigurationsClientImpl implements WorkItemConfigura
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return work item configuration associated with an application insights resource.
+     * @return work item configuration associated with an application insights resource on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkItemConfigurationInner> createAsync(
@@ -505,7 +510,7 @@ public final class WorkItemConfigurationsClientImpl implements WorkItemConfigura
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return work item configuration associated with an application insights resource.
+     * @return work item configuration associated with an application insights resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkItemConfigurationInner> createWithResponse(
@@ -525,7 +530,8 @@ public final class WorkItemConfigurationsClientImpl implements WorkItemConfigura
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return default work item configurations that exist for the application.
+     * @return default work item configurations that exist for the application along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkItemConfigurationInner>> getDefaultWithResponseAsync(
@@ -575,7 +581,8 @@ public final class WorkItemConfigurationsClientImpl implements WorkItemConfigura
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return default work item configurations that exist for the application.
+     * @return default work item configurations that exist for the application along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkItemConfigurationInner>> getDefaultWithResponseAsync(
@@ -621,7 +628,7 @@ public final class WorkItemConfigurationsClientImpl implements WorkItemConfigura
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return default work item configurations that exist for the application.
+     * @return default work item configurations that exist for the application on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkItemConfigurationInner> getDefaultAsync(String resourceGroupName, String resourceName) {
@@ -660,7 +667,7 @@ public final class WorkItemConfigurationsClientImpl implements WorkItemConfigura
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return default work item configurations that exist for the application.
+     * @return default work item configurations that exist for the application along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkItemConfigurationInner> getDefaultWithResponse(
@@ -678,7 +685,7 @@ public final class WorkItemConfigurationsClientImpl implements WorkItemConfigura
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -733,7 +740,7 @@ public final class WorkItemConfigurationsClientImpl implements WorkItemConfigura
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -784,7 +791,7 @@ public final class WorkItemConfigurationsClientImpl implements WorkItemConfigura
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String workItemConfigId) {
@@ -819,7 +826,7 @@ public final class WorkItemConfigurationsClientImpl implements WorkItemConfigura
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -837,7 +844,8 @@ public final class WorkItemConfigurationsClientImpl implements WorkItemConfigura
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specified work item configuration for an Application Insights component.
+     * @return specified work item configuration for an Application Insights component along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkItemConfigurationInner>> getItemWithResponseAsync(
@@ -894,7 +902,8 @@ public final class WorkItemConfigurationsClientImpl implements WorkItemConfigura
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specified work item configuration for an Application Insights component.
+     * @return specified work item configuration for an Application Insights component along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkItemConfigurationInner>> getItemWithResponseAsync(
@@ -947,7 +956,8 @@ public final class WorkItemConfigurationsClientImpl implements WorkItemConfigura
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specified work item configuration for an Application Insights component.
+     * @return specified work item configuration for an Application Insights component on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkItemConfigurationInner> getItemAsync(
@@ -991,7 +1001,7 @@ public final class WorkItemConfigurationsClientImpl implements WorkItemConfigura
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specified work item configuration for an Application Insights component.
+     * @return specified work item configuration for an Application Insights component along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkItemConfigurationInner> getItemWithResponse(
@@ -1011,7 +1021,8 @@ public final class WorkItemConfigurationsClientImpl implements WorkItemConfigura
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return work item configuration associated with an application insights resource.
+     * @return work item configuration associated with an application insights resource along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkItemConfigurationInner>> updateItemWithResponseAsync(
@@ -1082,7 +1093,8 @@ public final class WorkItemConfigurationsClientImpl implements WorkItemConfigura
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return work item configuration associated with an application insights resource.
+     * @return work item configuration associated with an application insights resource along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkItemConfigurationInner>> updateItemWithResponseAsync(
@@ -1150,7 +1162,8 @@ public final class WorkItemConfigurationsClientImpl implements WorkItemConfigura
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return work item configuration associated with an application insights resource.
+     * @return work item configuration associated with an application insights resource on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkItemConfigurationInner> updateItemAsync(
@@ -1207,7 +1220,7 @@ public final class WorkItemConfigurationsClientImpl implements WorkItemConfigura
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return work item configuration associated with an application insights resource.
+     * @return work item configuration associated with an application insights resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkItemConfigurationInner> updateItemWithResponse(

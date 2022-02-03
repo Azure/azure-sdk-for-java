@@ -80,7 +80,8 @@ public final class ComponentFeatureCapabilitiesClientImpl implements ComponentFe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component feature capabilities.
+     * @return an Application Insights component feature capabilities along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentFeatureCapabilitiesInner>> getWithResponseAsync(
@@ -130,7 +131,8 @@ public final class ComponentFeatureCapabilitiesClientImpl implements ComponentFe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component feature capabilities.
+     * @return an Application Insights component feature capabilities along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentFeatureCapabilitiesInner>> getWithResponseAsync(
@@ -176,7 +178,7 @@ public final class ComponentFeatureCapabilitiesClientImpl implements ComponentFe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component feature capabilities.
+     * @return an Application Insights component feature capabilities on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationInsightsComponentFeatureCapabilitiesInner> getAsync(
@@ -216,7 +218,7 @@ public final class ComponentFeatureCapabilitiesClientImpl implements ComponentFe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component feature capabilities.
+     * @return an Application Insights component feature capabilities along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInsightsComponentFeatureCapabilitiesInner> getWithResponse(

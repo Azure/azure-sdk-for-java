@@ -47,6 +47,8 @@ import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_TRACING_SERVICE_NAME;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.SEQUENCE_NUMBER_KEY;
 
 /**
  * The partition pump manager that keeps track of all the partition pumps started by this {@link EventProcessorClient}.
@@ -124,7 +126,9 @@ class PartitionPumpManager {
             try {
                 eventHubConsumer.close();
             } catch (Exception ex) {
-                logger.warning(Messages.FAILED_CLOSE_CONSUMER_PARTITION, partitionId, ex);
+                logger.atWarning()
+                    .addKeyValue(PARTITION_ID_KEY, partitionId)
+                    .log(Messages.FAILED_CLOSE_CONSUMER_PARTITION, ex);
             } finally {
                 partitionPumps.remove(partitionId);
             }
@@ -142,19 +146,27 @@ class PartitionPumpManager {
         final PartitionPump partitionPump = partitionPumps.get(partitionId);
 
         if (partitionPump == null) {
-            logger.info("eventHubName[{}] partitionId[{}] No partition pump found for ownership record.",
-                ownership.getEventHubName(), partitionId);
+
+            logger.atInfo()
+                .addKeyValue(PARTITION_ID_KEY, partitionId)
+                .addKeyValue(ENTITY_PATH_KEY, ownership.getEventHubName())
+                .log("No partition pump found for ownership record.");
             return;
         }
 
         final EventHubConsumerAsyncClient consumerClient = partitionPump.getClient();
         if (consumerClient.isConnectionClosed()) {
-            logger.info("eventHubName[{}] partitionId[{}] Connection closed for partition. Removing the consumer.",
-                ownership.getEventHubName(), partitionId);
+            logger.atInfo()
+                .addKeyValue(PARTITION_ID_KEY, partitionId)
+                .addKeyValue(ENTITY_PATH_KEY, ownership.getEventHubName())
+                .log("Connection closed for partition. Removing the consumer.");
+
             try {
                 partitionPump.close();
             } catch (Exception ex) {
-                logger.warning(Messages.FAILED_CLOSE_CONSUMER_PARTITION, partitionId, ex);
+                logger.atWarning()
+                    .addKeyValue(PARTITION_ID_KEY, partitionId)
+                    .log(Messages.FAILED_CLOSE_CONSUMER_PARTITION, ex);
             } finally {
                 partitionPumps.remove(partitionId);
             }
@@ -169,7 +181,10 @@ class PartitionPumpManager {
      */
     void startPartitionPump(PartitionOwnership claimedOwnership, Checkpoint checkpoint) {
         if (partitionPumps.containsKey(claimedOwnership.getPartitionId())) {
-            logger.verbose("Consumer is already running for this partition {}", claimedOwnership.getPartitionId());
+            logger.atVerbose()
+                .addKeyValue(PARTITION_ID_KEY, claimedOwnership.getPartitionId())
+                .log("Consumer is already running.");
+
             return;
         }
 
@@ -197,8 +212,12 @@ class PartitionPumpManager {
             } else {
                 startFromEventPosition = EventPosition.latest();
             }
-            logger.info("Starting event processing from {} for partition {}", startFromEventPosition,
-                claimedOwnership.getPartitionId());
+
+            logger.atInfo()
+                .addKeyValue(PARTITION_ID_KEY, claimedOwnership.getPartitionId())
+                .addKeyValue("eventPosition", startFromEventPosition)
+                .log("Starting event processing.");
+
             ReceiveOptions receiveOptions = new ReceiveOptions().setOwnerLevel(0L)
                 .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties);
 
@@ -216,9 +235,11 @@ class PartitionPumpManager {
                 .receiveFromPartition(claimedOwnership.getPartitionId(), startFromEventPosition, receiveOptions)
                 .doOnNext(partitionEvent -> {
                     if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
-                        logger.verbose("On next {}, {}, {}",
-                            partitionContext.getEventHubName(), partitionContext.getPartitionId(),
-                            partitionEvent.getData().getSequenceNumber());
+                        logger.atVerbose()
+                            .addKeyValue(PARTITION_ID_KEY, partitionContext.getPartitionId())
+                            .addKeyValue(ENTITY_PATH_KEY, partitionContext.getEventHubName())
+                            .addKeyValue(SEQUENCE_NUMBER_KEY, partitionEvent.getData().getSequenceNumber())
+                            .log("On next.");
                     }
                 });
 
@@ -248,8 +269,10 @@ class PartitionPumpManager {
             if (partitionPumps.containsKey(claimedOwnership.getPartitionId())) {
                 cleanup(claimedOwnership, partitionPumps.get(claimedOwnership.getPartitionId()));
             }
-            throw logger.logExceptionAsError(
-                new PartitionProcessorException(
+
+            throw logger.atError()
+                .addKeyValue(PARTITION_ID_KEY, claimedOwnership.getPartitionId())
+                .log(new PartitionProcessorException(
                     "Error occurred while starting partition pump for partition " + claimedOwnership.getPartitionId(),
                     ex));
         }
@@ -269,14 +292,19 @@ class PartitionPumpManager {
         }
         try {
             if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
-                logger.verbose("Processing event {}, {}", partitionContext.getEventHubName(),
-                    partitionContext.getPartitionId());
+
+                logger.atVerbose()
+                    .addKeyValue(PARTITION_ID_KEY, partitionContext.getPartitionId())
+                    .addKeyValue(ENTITY_PATH_KEY, partitionContext.getEventHubName())
+                    .log("Processing event.");
             }
             partitionProcessor.processEvent(new EventContext(partitionContext, eventData, checkpointStore,
                 eventContext.getLastEnqueuedEventProperties()));
             if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
-                logger.verbose("Completed processing event {}, {}", partitionContext.getEventHubName(),
-                    partitionContext.getPartitionId());
+                logger.atVerbose()
+                    .addKeyValue(PARTITION_ID_KEY, partitionContext.getPartitionId())
+                    .addKeyValue(ENTITY_PATH_KEY, partitionContext.getEventHubName())
+                    .log("Completed processing event.");
             }
             endProcessTracingSpan(processSpanContext, Signal.complete());
         } catch (Throwable throwable) {
@@ -301,13 +329,17 @@ class PartitionPumpManager {
                 EventBatchContext eventBatchContext = new EventBatchContext(partitionContext, eventDataList,
                     checkpointStore, lastEnqueuedEventProperties[0]);
                 if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
-                    logger.verbose("Processing event batch {}, {}", partitionContext.getEventHubName(),
-                        partitionContext.getPartitionId());
+                    logger.atVerbose()
+                        .addKeyValue(PARTITION_ID_KEY, partitionContext.getPartitionId())
+                        .addKeyValue(ENTITY_PATH_KEY, partitionContext.getEventHubName())
+                        .log("Processing event batch.");
                 }
                 partitionProcessor.processEventBatch(eventBatchContext);
                 if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
-                    logger.verbose("Completed processing event batch{}, {}", partitionContext.getEventHubName(),
-                        partitionContext.getPartitionId());
+                    logger.atVerbose()
+                        .addKeyValue(PARTITION_ID_KEY, partitionContext.getPartitionId())
+                        .addKeyValue(ENTITY_PATH_KEY, partitionContext.getEventHubName())
+                        .log("Completed processing event batch.");
                 }
             } else {
                 EventData eventData = (partitionEventBatch.size() == 1
@@ -335,7 +367,11 @@ class PartitionPumpManager {
         if (!(throwable instanceof PartitionProcessorException)) {
             shouldRethrow = false;
             // If user code threw an exception in processEvent callback, bubble up the exception
-            logger.warning("Error receiving events from partition {}", partitionContext.getPartitionId(), throwable);
+
+            logger.atWarning()
+                .addKeyValue(PARTITION_ID_KEY, partitionContext.getPartitionId())
+                .log("Error receiving events from partition.", throwable);
+
             partitionProcessor.processError(new ErrorContext(partitionContext, throwable));
         }
         // If there was an error on receive, it also marks the end of the event data stream
@@ -352,12 +388,14 @@ class PartitionPumpManager {
     private void cleanup(PartitionOwnership claimedOwnership, PartitionPump partitionPump) {
         try {
             // close the consumer
-            logger.info("Closing consumer for partition id {}", claimedOwnership.getPartitionId());
+            logger.atInfo().addKeyValue(PARTITION_ID_KEY, claimedOwnership.getPartitionId())
+                .log("Closing consumer.");
+
             partitionPump.close();
         } finally {
             // finally, remove the partition from partitionPumps map
-            logger.info("Removing partition id {} from list of processing partitions",
-                claimedOwnership.getPartitionId());
+            logger.atInfo().addKeyValue(PARTITION_ID_KEY, claimedOwnership.getPartitionId())
+                .log("Removing partition from list of processing partitions.");
             partitionPumps.remove(claimedOwnership.getPartitionId());
         }
     }

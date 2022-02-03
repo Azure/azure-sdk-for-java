@@ -73,7 +73,7 @@ public interface Components {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, Context context);
 
@@ -98,7 +98,7 @@ public interface Components {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component definition.
+     * @return an Application Insights component definition along with {@link Response}.
      */
     Response<ApplicationInsightsComponent> getByResourceGroupWithResponse(
         String resourceGroupName, String resourceName, Context context);
@@ -136,7 +136,7 @@ public interface Components {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing operationId for a specific purge action.
+     * @return response containing operationId for a specific purge action along with {@link Response}.
      */
     Response<ComponentPurgeResponse> purgeWithResponse(
         String resourceGroupName, String resourceName, ComponentPurgeBody body, Context context);
@@ -164,7 +164,7 @@ public interface Components {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status for an ongoing purge operation.
+     * @return status for an ongoing purge operation along with {@link Response}.
      */
     Response<ComponentPurgeStatusResponse> getPurgeStatusWithResponse(
         String resourceGroupName, String resourceName, String purgeId, Context context);
@@ -176,7 +176,7 @@ public interface Components {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component definition.
+     * @return an Application Insights component definition along with {@link Response}.
      */
     ApplicationInsightsComponent getById(String id);
 
@@ -188,7 +188,7 @@ public interface Components {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component definition.
+     * @return an Application Insights component definition along with {@link Response}.
      */
     Response<ApplicationInsightsComponent> getByIdWithResponse(String id, Context context);
 
@@ -210,7 +210,7 @@ public interface Components {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

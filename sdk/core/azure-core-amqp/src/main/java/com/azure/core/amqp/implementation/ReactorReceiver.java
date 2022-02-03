@@ -50,7 +50,9 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
     private final TokenManager tokenManager;
     private final ReactorDispatcher dispatcher;
     private final Disposable subscriptions;
+    // Indicates if this ReactorReceiver is disposed or disposal is in progress.
     private final AtomicBoolean isDisposed = new AtomicBoolean();
+    // A Mono that signals completion when the disposal/closing of ReactorReceiver is completed.
     private final Sinks.Empty<Void> isClosedMono = Sinks.empty();
     private final Flux<Message> messagesProcessor;
     private final AmqpRetryOptions retryOptions;
@@ -268,13 +270,19 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
 
     /**
      * Disposes of the receiver when an exception is encountered.
+     * <p>
+     * While {@link ReactorReceiver#closeAsync()} exposes disposal API through {@link AsyncCloseable}
+     * contract, this API performs the same disposal with additional
+     * contextual information. For example, the context may indicate if the resource needs to be disposed of
+     * internally when there is an error in the link, session or connection.
+     * </p>
      *
      * @param message Message to log.
      * @param errorCondition Error condition associated with close operation.
      */
-    Mono<Void> closeAsync(String message, ErrorCondition errorCondition) {
+    protected Mono<Void> closeAsync(String message, ErrorCondition errorCondition) {
         if (isDisposed.getAndSet(true)) {
-            return isClosedMono.asMono().publishOn(Schedulers.boundedElastic());
+            return getIsClosedMono();
         }
 
         addErrorCondition(logger.atVerbose(), errorCondition)
@@ -307,6 +315,15 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                 completeClose();
             }
         }).then(isClosedMono.asMono()).publishOn(Schedulers.boundedElastic());
+    }
+
+    /**
+     * Gets the Mono that signals completion when the disposal/closing of ReactorReceiver is completed.
+     *
+     * @return the disposal/closing completion Mono.
+     */
+    protected Mono<Void> getIsClosedMono() {
+        return isClosedMono.asMono().publishOn(Schedulers.boundedElastic());
     }
 
     /**
