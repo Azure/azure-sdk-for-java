@@ -37,15 +37,15 @@ public final class BuilderUtil {
      * This method validates that customized {@link HttpPipelinePolicy retry policy} and customized {@link RetryOptions}
      * are mutually exclusive.
      * If no customization was made then it falls back to the default.
-     * @param retryPolicy a customized {@link RetryPolicy}.
+     * @param retryPolicy a customized {@link HttpPipelinePolicy}.
      * @param retryOptions a customized {@link RetryOptions}.
-     * @param defaultPolicy a default {@link RetryPolicy}.
+     * @param defaultPolicy a default {@link HttpPipelinePolicy}.
      * @return final {@link RetryPolicy} to be used by the builder.
      * @throws NullPointerException if {@code defaultPolicy} is {@code null}.
      * @throws IllegalStateException if both {@code retryPolicy} and {@code retryOptions} are not {@code null}.
      */
     public static HttpPipelinePolicy validateAndGetRetryPolicy(
-        HttpPipelinePolicy retryPolicy, RetryOptions retryOptions, RetryPolicy defaultPolicy) {
+        HttpPipelinePolicy retryPolicy, RetryOptions retryOptions, HttpPipelinePolicy defaultPolicy) {
         Objects.requireNonNull(defaultPolicy, "'defaultPolicy' cannot be null.");
         if (retryPolicy != null && retryOptions != null) {
             throw LOGGER.logExceptionAsWarning(

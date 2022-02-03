@@ -406,7 +406,7 @@ public class EventProcessorClientBuilder implements
     /**
      * Sets the retry policy for {@link EventHubAsyncClient}. If not specified, the default retry options are used.
      *
-     * @param retryOptions The retry policy to use.
+     * @param retryOptions The retry options to use.
      * @return The updated {@link EventProcessorClientBuilder} object.
      */
     @Override
