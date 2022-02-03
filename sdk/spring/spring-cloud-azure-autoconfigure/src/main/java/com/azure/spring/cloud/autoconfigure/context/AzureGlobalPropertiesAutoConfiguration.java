@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.context;
 
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
+import com.azure.spring.core.AzureSpringIdentifier;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.bind.Binder;
@@ -12,13 +13,18 @@ import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.AbstractEnvironment;
 import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.MutablePropertySources;
+import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.core.type.AnnotationMetadata;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -66,15 +72,21 @@ public class AzureGlobalPropertiesAutoConfiguration {
             this.env = env;
         }
 
+        private final static Properties APPLICATITON_IDS = new Properties() {{
+            put("spring.cloud.azure.appconfiguration.http.client.application-id", AzureSpringIdentifier.AZURE_SPRING_APP_CONFIG);
+        }};
+
         @Override
         public Set<String> getChildKeys(String path) {
             MutablePropertySources propSrcs = ((AbstractEnvironment) env).getPropertySources();
+            propSrcs.addFirst(new PropertiesPropertySource("application-id-source", APPLICATITON_IDS));
             return StreamSupport.stream(propSrcs.spliterator(), false)
                 .filter(ps -> ps instanceof EnumerablePropertySource)
                 .map(ps -> ((EnumerablePropertySource) ps).getPropertyNames())
                 .flatMap(Arrays::<String>stream)
                 .filter(propName -> propName.startsWith(path) && propName.length() > path.length() && propName.charAt(path.length()) == '.')
                 .collect(Collectors.toSet());
+
             // todo convention for arrays
         }
 

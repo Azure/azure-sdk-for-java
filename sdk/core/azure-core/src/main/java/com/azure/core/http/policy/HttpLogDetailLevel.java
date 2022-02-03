@@ -4,6 +4,7 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationDoc;
 import com.azure.core.util.ConfigurationProperty;
 import com.azure.core.util.ConfigurationPropertyBuilder;
 
@@ -64,6 +65,7 @@ public enum HttpLogDetailLevel {
             return logDetailLevel;
         };
 
+    @ConfigurationDoc(description = "http log level detail.")
     static final ConfigurationProperty<HttpLogDetailLevel> LOG_LEVEL_PROPERTY = new ConfigurationPropertyBuilder<>("http.logging.level", LOG_LEVEL_CONVERTER)
         .defaultValue(NONE)
         .canLogValue(true)

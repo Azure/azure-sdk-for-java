@@ -23,6 +23,7 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  * {@link HttpClient} implementations may not support all configuration options in this class.
  */
 @Fluent
+@ConfigurationPropertiesDoc()
 public final class HttpClientOptions extends ClientOptions {
     private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
     private static final Duration DEFAULT_CONNECT_TIMEOUT;
@@ -48,32 +49,43 @@ public final class HttpClientOptions extends ClientOptions {
             Duration.ofSeconds(60), LOGGER);
     }
 
-    private static final ConfigurationProperty<String> APPLICATION_ID_PROP = ConfigurationProperty.stringPropertyBuilder("client.application-id")
+    private static final ConfigurationProperty<String> APPLICATION_ID_PROPERTY = ConfigurationProperty.stringPropertyBuilder("http.client.application-id")
         .global(true)
         .canLogValue(true)
         .build();
 
-    private static final ConfigurationProperty<Duration> CONNECT_TIMEOUT_PROP = ConfigurationProperty.durationPropertyBuilder("client.connect-timeout")
+    @ConfigurationDoc(description = "The connection timeout begins once the request attempts to connect to the remote host and finishes when the connection is resolved.", defaultValue = "10 sec")
+    private static final ConfigurationProperty<Duration> CONNECT_TIMEOUT_PROPERTY = ConfigurationProperty.durationPropertyBuilder("http.client.connect-timeout")
         .defaultValue(DEFAULT_CONNECT_TIMEOUT)
         .global(true)
         .build();
-    private static final ConfigurationProperty<Duration> WRITE_TIMEOUT_PROP = ConfigurationProperty.durationPropertyBuilder("client.write-timeout")
+
+    @ConfigurationDoc(description = "The writing timeout does not applies to each emission being sent over the wire.", defaultValue = "60 sec")
+    private static final ConfigurationProperty<Duration> WRITE_TIMEOUT_PROPERTY = ConfigurationProperty.durationPropertyBuilder("http.client.write-timeout")
         .defaultValue(DEFAULT_WRITE_TIMEOUT)
         .global(true)
         .build();
-    private static final ConfigurationProperty<Duration> RESPONSE_TIMEOUT_PROP = ConfigurationProperty.durationPropertyBuilder("client.response-timeout")
+
+    @ConfigurationDoc(description = "The response timeout begins once the request write completes and finishes once the first response read is triggered when the server response is received.", defaultValue = "60 sec")
+    private static final ConfigurationProperty<Duration> RESPONSE_TIMEOUT_PROPERTY = ConfigurationProperty.durationPropertyBuilder("http.client.response-timeout")
         .defaultValue(DEFAULT_RESPONSE_TIMEOUT)
         .global(true)
         .build();
-    private static final ConfigurationProperty<Duration> READ_TIMEOUT_PROP = ConfigurationProperty.durationPropertyBuilder("client.read-timeout")
+
+    @ConfigurationDoc(description = "read timeout.", defaultValue = "60 sec")
+    private static final ConfigurationProperty<Duration> READ_TIMEOUT_PROPERTY = ConfigurationProperty.durationPropertyBuilder("http.client.read-timeout")
         .defaultValue(DEFAULT_READ_TIMEOUT)
         .global(true)
         .build();
-    private static final ConfigurationProperty<Duration> CONNECTION_IDLE_TIMEOUT_PROP = ConfigurationProperty.durationPropertyBuilder("client.connection-idle-timeout")
+
+    @ConfigurationDoc(description = "connection idle timeout.", defaultValue = "60 sec")
+    private static final ConfigurationProperty<Duration> CONNECTION_IDLE_TIMEOUT_PROPERTY = ConfigurationProperty.durationPropertyBuilder("http.client.connection-idle-timeout")
         .defaultValue(DEFAULT_CONNECTION_IDLE_TIMEOUT)
         .global(true)
         .build();
-    private static final ConfigurationProperty<Integer> CONNECTION_POOL_SIZE_PROP = ConfigurationProperty.integerPropertyBuilder("client.maximum-connection-pool-size")
+
+    @ConfigurationDoc(description = "connection pool timeout.", defaultValue = "60 sec")
+    private static final ConfigurationProperty<Integer> CONNECTION_POOL_SIZE_PROPERTY = ConfigurationProperty.integerPropertyBuilder("http.client.maximum-connection-pool-size")
         .global(true)
         .build();
 
@@ -126,12 +138,12 @@ public final class HttpClientOptions extends ClientOptions {
             throw LOGGER.logThrowableAsError(new IllegalArgumentException("'configuration' cannot be 'Configuration.NONE'."));
         }
 
-        if (configuration.contains(APPLICATION_ID_PROP) ||
-            configuration.contains(CONNECT_TIMEOUT_PROP) ||
-            configuration.contains(WRITE_TIMEOUT_PROP) ||
-            configuration.contains(RESPONSE_TIMEOUT_PROP) ||
-            configuration.contains(CONNECTION_IDLE_TIMEOUT_PROP) ||
-            configuration.contains(CONNECTION_POOL_SIZE_PROP)) {
+        if (configuration.contains(APPLICATION_ID_PROPERTY) ||
+            configuration.contains(CONNECT_TIMEOUT_PROPERTY) ||
+            configuration.contains(WRITE_TIMEOUT_PROPERTY) ||
+            configuration.contains(RESPONSE_TIMEOUT_PROPERTY) ||
+            configuration.contains(CONNECTION_IDLE_TIMEOUT_PROPERTY) ||
+            configuration.contains(CONNECTION_POOL_SIZE_PROPERTY)) {
             return new HttpClientOptions().setConfiguration(configuration);
         }
 
@@ -436,49 +448,49 @@ public final class HttpClientOptions extends ClientOptions {
     private void loadConfiguration(Configuration configuration) {
 
         if (this.getApplicationId() == null) {
-            String applicationId = configuration.get(APPLICATION_ID_PROP);
+            String applicationId = configuration.get(APPLICATION_ID_PROPERTY);
             if (applicationId != null) {
                 setApplicationId(applicationId);
             }
         }
 
         if (connectTimeout == null) {
-            Duration connectTimeout = configuration.get(CONNECT_TIMEOUT_PROP);
+            Duration connectTimeout = configuration.get(CONNECT_TIMEOUT_PROPERTY);
             if (connectTimeout != null) {
                 setConnectTimeout(connectTimeout);
             }
         }
 
         if (writeTimeout == null) {
-            Duration writeTimeout = configuration.get(WRITE_TIMEOUT_PROP);
+            Duration writeTimeout = configuration.get(WRITE_TIMEOUT_PROPERTY);
             if (writeTimeout != null) {
                 setWriteTimeout(writeTimeout);
             }
         }
 
         if (responseTimeout == null) {
-            Duration responseTimeout = configuration.get(RESPONSE_TIMEOUT_PROP);
+            Duration responseTimeout = configuration.get(RESPONSE_TIMEOUT_PROPERTY);
             if (responseTimeout != null) {
                 setResponseTimeout(responseTimeout);
             }
         }
 
         if (readTimeout == null) {
-            Duration readTimeout = configuration.get(READ_TIMEOUT_PROP);
+            Duration readTimeout = configuration.get(READ_TIMEOUT_PROPERTY);
             if (readTimeout != null) {
                 setReadTimeout(readTimeout);
             }
         }
 
         if (connectTimeout == null) {
-            Duration connectIdleTimeout = configuration.get(CONNECTION_IDLE_TIMEOUT_PROP);
+            Duration connectIdleTimeout = configuration.get(CONNECTION_IDLE_TIMEOUT_PROPERTY);
             if (connectIdleTimeout != null) {
                 setConnectTimeout(connectIdleTimeout);
             }
         }
 
         if (maximumConnectionPoolSize == null) {
-            Integer poolSize = configuration.get(CONNECTION_POOL_SIZE_PROP);
+            Integer poolSize = configuration.get(CONNECTION_POOL_SIZE_PROPERTY);
             if (poolSize != null) {
                 setMaximumConnectionPoolSize(poolSize);
             }

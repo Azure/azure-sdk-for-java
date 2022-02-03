@@ -317,7 +317,11 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     }
 
     private String getApplicationId() {
-        final ClientAware.Client client = getAzureProperties().getClient();
+        AzureProperties azureProperties = getAzureProperties();
+        if (azureProperties == null) {
+            return "";
+        }
+        final ClientAware.Client client = azureProperties.getClient();
         return Optional.ofNullable(client)
                        .map(ClientAware.Client::getApplicationId)
                        .orElse("");

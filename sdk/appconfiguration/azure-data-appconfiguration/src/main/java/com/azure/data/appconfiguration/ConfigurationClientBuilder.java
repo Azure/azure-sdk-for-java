@@ -30,6 +30,8 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationDoc;
+import com.azure.core.util.ConfigurationPropertiesDoc;
 import com.azure.core.util.ConfigurationProperty;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
@@ -411,7 +413,10 @@ public final class ConfigurationClientBuilder implements
         return this;
     }
 
+    @ConfigurationDoc(description = "endpoint.")
     private static final ConfigurationProperty<String> ENDPOINT_PROPERTY = ConfigurationProperty.stringPropertyBuilder("endpoint").build();
+
+    @ConfigurationDoc(description = "connection string.")
     private static final ConfigurationProperty<String> CONNECTION_STRING_PROPERTY = ConfigurationProperty.stringPropertyBuilder("connection-string").build();
 
     /**

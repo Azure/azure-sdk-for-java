@@ -72,7 +72,7 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
             if (builder instanceof HttpTrait) {
                 ((HttpTrait<?>) builder).pipeline(this.httpPipeline);
             } else {
-                throw new IllegalArgumentException("builder isn't http");
+                //throw new IllegalArgumentException("builder isn't http");
             }
         } else {
             configureHttpHeaders(builder);
@@ -82,7 +82,7 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
             if (builder instanceof HttpTrait) {
                 ((HttpTrait<?>) builder).httpClient(httpClient);
             } else {
-                throw new IllegalArgumentException("builder isn't http");
+                //throw new IllegalArgumentException("builder isn't http");
             }
         }
     }
@@ -188,7 +188,7 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
                 ((HttpTrait<?>) builder).addPolicy(policy);
             }
         } else {
-            throw new IllegalArgumentException("builder isn't http");
+            //throw new IllegalArgumentException("builder isn't http");
         }
     }
 

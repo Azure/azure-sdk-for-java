@@ -20,7 +20,7 @@ import static org.mockito.Mockito.verify;
 /**
  *
  */
-class CertificateClientBuilderFactoryTestsTests extends AzureHttpClientBuilderFactoryBaseTests<CertificateClientBuilder,
+/*class CertificateClientBuilderFactoryTestsTests extends AzureHttpClientBuilderFactoryBaseTests<CertificateClientBuilder,
     TestAzureKeyVaultCertificateProperties, CertificateClientBuilderFactory> {
 
     private static final Configuration NOOP = new Configuration();
@@ -80,3 +80,4 @@ class CertificateClientBuilderFactoryTestsTests extends AzureHttpClientBuilderFa
     }
 }
 
+*/

@@ -10,6 +10,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.ImplUtils;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationDoc;
 import com.azure.core.util.ConfigurationProperty;
 import com.azure.core.util.ConfigurationPropertyBuilder;
 import com.azure.core.util.logging.ClientLogger;
@@ -38,17 +39,20 @@ public class RetryPolicy implements HttpPipelinePolicy {
     private final String retryAfterHeader;
     private final ChronoUnit retryAfterTimeUnit;
 
+    @ConfigurationDoc(description = "retry mode.")
     private static final ConfigurationProperty<String> RETRY_MODE_PROPERTY = ConfigurationProperty.stringPropertyBuilder("http.retry.mode")
         .defaultValue(EXPONENTIAL_RETRY_MODE)
         .global(true)
         .canLogValue(true)
         .build();
 
+    @ConfigurationDoc(description = "retry after header.")
     private static final ConfigurationProperty<String> RETRY_AFTER_HEADER_PROPERTY = ConfigurationProperty.stringPropertyBuilder("http.retry.retry-after-header")
         .global(true)
         .canLogValue(true)
         .build();
 
+    @ConfigurationDoc(description = "retry after time unit.")
     private static final ConfigurationProperty<ChronoUnit> RETRY_AFTER_TIME_UNIT_PROPERTY= new ConfigurationPropertyBuilder<>("http.retry.retry-after-time-unit", (value) -> ChronoUnit.valueOf(value))
         .global(true)
         .build();

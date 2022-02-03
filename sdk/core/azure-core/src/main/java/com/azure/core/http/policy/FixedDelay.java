@@ -3,9 +3,10 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.implementation.util.ObjectsUtil;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationProperty;
-import com.azure.core.implementation.util.ObjectsUtil;
+import com.azure.core.util.ConfigurationDoc;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
@@ -15,11 +16,15 @@ import java.util.Objects;
  * A fixed-delay implementation of {@link RetryStrategy} that has a fixed delay duration between each retry attempt.
  */
 public class FixedDelay implements RetryStrategy {
-    private static final ClientLogger LOGGER = new ClientLogger(FixedDelay.class);;
+    private static final ClientLogger LOGGER = new ClientLogger(FixedDelay.class);
+
+    @ConfigurationDoc(description = "Max retry count.")
     private final static ConfigurationProperty<Integer> MAX_RETRIES_PROPERTY = ConfigurationProperty.integerPropertyBuilder("http.retry.fixed.max-retries")
         .global(true)
         .required(true)
         .build();
+
+    @ConfigurationDoc(description = "retry delay.")
     private final static ConfigurationProperty<Duration> RETRY_DELAY_PROPERTY = ConfigurationProperty.durationPropertyBuilder("http.retry.fixed.delay")
         .global(true)
         .required(true)

@@ -5,6 +5,7 @@ package com.azure.core.http.policy;
 
 import com.azure.core.implementation.util.ObjectsUtil;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationDoc;
 import com.azure.core.util.ConfigurationProperty;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -49,17 +50,20 @@ public class ExponentialBackoff implements RetryStrategy {
         DEFAULT_MAX_RETRIES = defaultMaxRetries;
     }
 
+    @ConfigurationDoc(description = "max retries.")
     private final static ConfigurationProperty<Integer> MAX_RETRIES_PROPERTY = ConfigurationProperty.integerPropertyBuilder("http.retry.exponential.max-retries")
         .defaultValue(DEFAULT_MAX_RETRIES)
         .environmentVariables(PROPERTY_AZURE_REQUEST_RETRY_COUNT)
         .global(true)
         .build();
 
+    @ConfigurationDoc(description = "base delay.")
     private final static ConfigurationProperty<Duration> BASE_DELAY_PROPERTY = ConfigurationProperty.durationPropertyBuilder("http.retry.exponential.base-delay")
         .defaultValue(DEFAULT_BASE_DELAY)
         .global(true)
         .build();
 
+    @ConfigurationDoc(description = "max delay.")
     private final static ConfigurationProperty<Duration> MAX_DELAY_PROPERTY = ConfigurationProperty.durationPropertyBuilder("http.retry.exponential.max-delay")
         .defaultValue(DEFAULT_MAX_DELAY)
         .global(true)

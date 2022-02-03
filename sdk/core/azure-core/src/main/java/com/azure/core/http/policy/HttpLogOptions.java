@@ -5,6 +5,7 @@ package com.azure.core.http.policy;
 
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationDoc;
 import com.azure.core.util.ConfigurationProperty;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -61,7 +62,10 @@ public class HttpLogOptions {
     );
 
     // skip headers and query params as they need should be rather configured in code, application id is deprecated
+    @ConfigurationDoc(description = "allowed headers.")
     private static final ConfigurationProperty<String> ALLOWED_HEADERS_PROPERTY = ConfigurationProperty.stringPropertyBuilder("http.logging.headers").canLogValue(true).global(true).build();
+
+    @ConfigurationDoc(description = "pretty pring body.")
     private static final ConfigurationProperty<Boolean> PRETTY_PRINT_BODY_PROPERTY = ConfigurationProperty.booleanPropertyBuilder("http.logging.pretty-print-body").global(true).build();
 
     public static HttpLogOptions fromConfiguration(Configuration configuration) {

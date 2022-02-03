@@ -170,7 +170,7 @@
     {
       "name": "azure.activedirectory.b2c.logout-success-url",
       "type": "java.lang.String",
-      "defaultValue": "http:\/\/localhost:8080\/login",
+      "defaultValue": "http://localhost:8080/login",
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
@@ -180,7 +180,7 @@
     {
       "name": "azure.activedirectory.b2c.reply-url",
       "type": "java.lang.String",
-      "defaultValue": "{baseUrl}\/login\/oauth2\/code\/",
+      "defaultValue": "{baseUrl}/login/oauth2/code/",
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud Azure libraries.",
@@ -535,7 +535,7 @@
     {
       "name": "azure.keyvault.case-sensitive-keys",
       "type": "java.lang.String",
-      "description": "Defines the constant for the property that enables\/disables case sensitive keys.",
+      "description": "Defines the constant for the property that enables/disables case sensitive keys.",
       "deprecation": {
         "level": "error",
         "reason": "Deprecate to move all Key Vault Property Source related under 'spring.cloud.azure.cosmos' prefix. Use spring.cloud.azure.keyvault.secret.property-sources' instead."
@@ -979,6 +979,370 @@
     {
       "name": "spring.cloud.azure.cosmos.throttling-retry-options.max-retry-wait-time",
       "description": "Maximum retry time in seconds. When a request fails due to a throttle error, the service sends back a response that contains a value indicating the client should not retry before the time period has elapsed (Retry-After). The MaxRetryWaitTime flag allows the application to set a maximum wait time for all retry attempts. If the cumulative wait time exceeds the MaxRetryWaitTime, the SDK will stop retrying and return the error to the application."
+    },
+    {
+      "name": "spring.cloud.azure.http.client.connect-timeout",
+      "type": "java.time.Duration",
+      "description": "The connection timeout begins once the request attempts to connect to the remote host and finishes when the connection is resolved.",
+      "sourceType": "com.azure.core.util.HttpClientOptions",
+      "defaultValue": "10 sec"
+    },
+    {
+      "name": "spring.cloud.azure.http.client.write-timeout",
+      "type": "java.time.Duration",
+      "description": "The writing timeout does not applies to each emission being sent over the wire.",
+      "sourceType": "com.azure.core.util.HttpClientOptions",
+      "defaultValue": "60 sec"
+    },
+    {
+      "name": "spring.cloud.azure.http.client.response-timeout",
+      "type": "java.time.Duration",
+      "description": "The response timeout begins once the request write completes and finishes once the first response read is triggered when the server response is received.",
+      "sourceType": "com.azure.core.util.HttpClientOptions",
+      "defaultValue": "60 sec"
+    },
+    {
+      "name": "spring.cloud.azure.http.client.read-timeout",
+      "type": "java.time.Duration",
+      "description": "read timeout.",
+      "sourceType": "com.azure.core.util.HttpClientOptions",
+      "defaultValue": "60 sec"
+    },
+    {
+      "name": "spring.cloud.azure.http.client.connection-idle-timeout",
+      "type": "java.time.Duration",
+      "description": "connection idle timeout.",
+      "sourceType": "com.azure.core.util.HttpClientOptions",
+      "defaultValue": "60 sec"
+    },
+    {
+      "name": "spring.cloud.azure.http.client.maximum-connection-pool-size",
+      "type": "java.lang.Integer",
+      "description": "connection pool timeout.",
+      "sourceType": "com.azure.core.util.HttpClientOptions",
+      "defaultValue": "60 sec"
+    },
+    {
+      "name": "spring.cloud.azure.http.retry.exponential.max-retries",
+      "type": "java.lang.Integer",
+      "description": "max retries.",
+      "sourceType": "com.azure.core.http.policy.ExponentialBackoff",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.http.retry.exponential.base-delay",
+      "type": "java.time.Duration",
+      "description": "base delay.",
+      "sourceType": "com.azure.core.http.policy.ExponentialBackoff",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.http.retry.exponential.max-delay",
+      "type": "java.time.Duration",
+      "description": "max delay.",
+      "sourceType": "com.azure.core.http.policy.ExponentialBackoff",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.http.retry.mode",
+      "type": "java.lang.String",
+      "description": "retry mode.",
+      "sourceType": "com.azure.core.http.policy.RetryPolicy",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.http.retry.retry-after-header",
+      "type": "java.lang.String",
+      "description": "retry after header.",
+      "sourceType": "com.azure.core.http.policy.RetryPolicy",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.http.retry.retry-after-time-unit",
+      "type": "java.time.temporal.ChronoUnit",
+      "description": "retry after time unit.",
+      "sourceType": "com.azure.core.http.policy.RetryPolicy",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.http.logging.headers",
+      "type": "java.lang.String",
+      "description": "allowed headers.",
+      "sourceType": "com.azure.core.http.policy.HttpLogOptions",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.http.logging.pretty-print-body",
+      "type": "java.lang.Boolean",
+      "description": "pretty pring body.",
+      "sourceType": "com.azure.core.http.policy.HttpLogOptions",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.http.retry.fixed.max-retries",
+      "type": "java.lang.Integer",
+      "description": "Max retry count.",
+      "sourceType": "com.azure.core.http.policy.FixedDelay",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.http.retry.fixed.delay",
+      "type": "java.time.Duration",
+      "description": "retry delay.",
+      "sourceType": "com.azure.core.http.policy.FixedDelay",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.http.logging.level",
+      "type": "com.azure.core.http.policy.HttpLogDetailLevel",
+      "description": "http log level detail.",
+      "sourceType": "com.azure.core.http.policy.HttpLogDetailLevel",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.http.client.connect-timeout",
+      "type": "java.time.Duration",
+      "description": "The connection timeout begins once the request attempts to connect to the remote host and finishes when the connection is resolved.",
+      "sourceType": "com.azure.core.util.HttpClientOptions",
+      "defaultValue": "10 sec"
+    },
+    {
+      "name": "spring.cloud.azure.http.client.write-timeout",
+      "type": "java.time.Duration",
+      "description": "The writing timeout does not applies to each emission being sent over the wire.",
+      "sourceType": "com.azure.core.util.HttpClientOptions",
+      "defaultValue": "60 sec"
+    },
+    {
+      "name": "spring.cloud.azure.http.client.response-timeout",
+      "type": "java.time.Duration",
+      "description": "The response timeout begins once the request write completes and finishes once the first response read is triggered when the server response is received.",
+      "sourceType": "com.azure.core.util.HttpClientOptions",
+      "defaultValue": "60 sec"
+    },
+    {
+      "name": "spring.cloud.azure.http.client.read-timeout",
+      "type": "java.time.Duration",
+      "description": "read timeout.",
+      "sourceType": "com.azure.core.util.HttpClientOptions",
+      "defaultValue": "60 sec"
+    },
+    {
+      "name": "spring.cloud.azure.http.client.connection-idle-timeout",
+      "type": "java.time.Duration",
+      "description": "connection idle timeout.",
+      "sourceType": "com.azure.core.util.HttpClientOptions",
+      "defaultValue": "60 sec"
+    },
+    {
+      "name": "spring.cloud.azure.http.client.maximum-connection-pool-size",
+      "type": "java.lang.Integer",
+      "description": "connection pool timeout.",
+      "sourceType": "com.azure.core.util.HttpClientOptions",
+      "defaultValue": "60 sec"
+    },
+    {
+      "name": "spring.cloud.azure.http.retry.exponential.max-retries",
+      "type": "java.lang.Integer",
+      "description": "max retries.",
+      "sourceType": "com.azure.core.http.policy.ExponentialBackoff",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.http.retry.exponential.base-delay",
+      "type": "java.time.Duration",
+      "description": "base delay.",
+      "sourceType": "com.azure.core.http.policy.ExponentialBackoff",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.http.retry.exponential.max-delay",
+      "type": "java.time.Duration",
+      "description": "max delay.",
+      "sourceType": "com.azure.core.http.policy.ExponentialBackoff",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.http.retry.mode",
+      "type": "java.lang.String",
+      "description": "retry mode.",
+      "sourceType": "com.azure.core.http.policy.RetryPolicy",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.http.retry.retry-after-header",
+      "type": "java.lang.String",
+      "description": "retry after header.",
+      "sourceType": "com.azure.core.http.policy.RetryPolicy",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.http.retry.retry-after-time-unit",
+      "type": "java.time.temporal.ChronoUnit",
+      "description": "retry after time unit.",
+      "sourceType": "com.azure.core.http.policy.RetryPolicy",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.http.logging.headers",
+      "type": "java.lang.String",
+      "description": "allowed headers.",
+      "sourceType": "com.azure.core.http.policy.HttpLogOptions",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.http.logging.pretty-print-body",
+      "type": "java.lang.Boolean",
+      "description": "pretty pring body.",
+      "sourceType": "com.azure.core.http.policy.HttpLogOptions",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.http.retry.fixed.max-retries",
+      "type": "java.lang.Integer",
+      "description": "Max retry count.",
+      "sourceType": "com.azure.core.http.policy.FixedDelay",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.http.retry.fixed.delay",
+      "type": "java.time.Duration",
+      "description": "retry delay.",
+      "sourceType": "com.azure.core.http.policy.FixedDelay",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.http.logging.level",
+      "type": "com.azure.core.http.policy.HttpLogDetailLevel",
+      "description": "http log level detail.",
+      "sourceType": "com.azure.core.http.policy.HttpLogDetailLevel",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.appconfiguration.http.client.connect-timeout",
+      "type": "java.time.Duration",
+      "description": "The connection timeout begins once the request attempts to connect to the remote host and finishes when the connection is resolved.",
+      "sourceType": "com.azure.core.util.HttpClientOptions",
+      "defaultValue": "10 sec"
+    },
+    {
+      "name": "spring.cloud.azure.appconfiguration.http.client.write-timeout",
+      "type": "java.time.Duration",
+      "description": "The writing timeout does not applies to each emission being sent over the wire.",
+      "sourceType": "com.azure.core.util.HttpClientOptions",
+      "defaultValue": "60 sec"
+    },
+    {
+      "name": "spring.cloud.azure.appconfiguration.http.client.response-timeout",
+      "type": "java.time.Duration",
+      "description": "The response timeout begins once the request write completes and finishes once the first response read is triggered when the server response is received.",
+      "sourceType": "com.azure.core.util.HttpClientOptions",
+      "defaultValue": "60 sec"
+    },
+    {
+      "name": "spring.cloud.azure.appconfiguration.http.client.read-timeout",
+      "type": "java.time.Duration",
+      "description": "read timeout.",
+      "sourceType": "com.azure.core.util.HttpClientOptions",
+      "defaultValue": "60 sec"
+    },
+    {
+      "name": "spring.cloud.azure.appconfiguration.http.client.connection-idle-timeout",
+      "type": "java.time.Duration",
+      "description": "connection idle timeout.",
+      "sourceType": "com.azure.core.util.HttpClientOptions",
+      "defaultValue": "60 sec"
+    },
+    {
+      "name": "spring.cloud.azure.appconfiguration.http.client.maximum-connection-pool-size",
+      "type": "java.lang.Integer",
+      "description": "connection pool timeout.",
+      "sourceType": "com.azure.core.util.HttpClientOptions",
+      "defaultValue": "60 sec"
+    },
+    {
+      "name": "spring.cloud.azure.appconfiguration.http.retry.exponential.max-retries",
+      "type": "java.lang.Integer",
+      "description": "max retries.",
+      "sourceType": "com.azure.core.http.policy.ExponentialBackoff",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.appconfiguration.http.retry.exponential.base-delay",
+      "type": "java.time.Duration",
+      "description": "base delay.",
+      "sourceType": "com.azure.core.http.policy.ExponentialBackoff",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.appconfiguration.http.retry.exponential.max-delay",
+      "type": "java.time.Duration",
+      "description": "max delay.",
+      "sourceType": "com.azure.core.http.policy.ExponentialBackoff",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.appconfiguration.http.retry.mode",
+      "type": "java.lang.String",
+      "description": "retry mode.",
+      "sourceType": "com.azure.core.http.policy.RetryPolicy",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.appconfiguration.http.retry.retry-after-header",
+      "type": "java.lang.String",
+      "description": "retry after header.",
+      "sourceType": "com.azure.core.http.policy.RetryPolicy",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.appconfiguration.http.retry.retry-after-time-unit",
+      "type": "java.time.temporal.ChronoUnit",
+      "description": "retry after time unit.",
+      "sourceType": "com.azure.core.http.policy.RetryPolicy",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.appconfiguration.http.logging.headers",
+      "type": "java.lang.String",
+      "description": "allowed headers.",
+      "sourceType": "com.azure.core.http.policy.HttpLogOptions",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.appconfiguration.http.logging.pretty-print-body",
+      "type": "java.lang.Boolean",
+      "description": "pretty pring body.",
+      "sourceType": "com.azure.core.http.policy.HttpLogOptions",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.appconfiguration.http.retry.fixed.max-retries",
+      "type": "java.lang.Integer",
+      "description": "Max retry count.",
+      "sourceType": "com.azure.core.http.policy.FixedDelay",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.appconfiguration.http.retry.fixed.delay",
+      "type": "java.time.Duration",
+      "description": "retry delay.",
+      "sourceType": "com.azure.core.http.policy.FixedDelay",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.appconfiguration.endpoint",
+      "type": "java.lang.String",
+      "description": "endpoint.",
+      "sourceType": "com.azure.data.appconfiguration.ConfigurationClientBuilder",
+      "defaultValue": null
+    },
+    {
+      "name": "spring.cloud.azure.appconfiguration.connection-string",
+      "type": "java.lang.String",
+      "description": "connection string.",
+      "sourceType": "com.azure.data.appconfiguration.ConfigurationClientBuilder",
+      "defaultValue": null
     }
   ]
 }
