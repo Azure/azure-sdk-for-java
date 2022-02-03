@@ -310,6 +310,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
         assertObjectEquals(expectedSkillset, actualSkillset, true, "etag");
     }
 
+    // Tracked by https://github.com/Azure/azure-sdk-for-java/issues/26844 to re-enable for live testing in the future.
     @Test
     @DisabledIf(value = "com.azure.search.documents.indexes.SkillsetManagementSyncTests#isLiveTest",
         disabledReason = "Service has a bug which is causing this to fail.")
@@ -347,6 +348,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
         assertFalse(actual.hasNext());
     }
 
+    // Tracked by https://github.com/Azure/azure-sdk-for-java/issues/26844 to re-enable for live testing in the future.
     @Test
     @DisabledIf(value = "com.azure.search.documents.indexes.SkillsetManagementSyncTests#isLiveTest",
         disabledReason = "Service has a bug which is causing this to fail.")
