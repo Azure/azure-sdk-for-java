@@ -100,6 +100,24 @@ class AzureFileSystemTest extends APISpec {
         thrown(IOException)
     }
 
+    def "Create skip container check"() {
+        setup:
+        config[AzureFileSystem.AZURE_STORAGE_SAS_TOKEN_CREDENTIAL] = new AzureSasCredential(
+            primaryBlobServiceClient.generateAccountSas(
+                new AccountSasSignatureValues(OffsetDateTime.now().plusDays(2),
+                    AccountSasPermission.parse("d"), new AccountSasService().setBlobAccess(true),
+                    new AccountSasResourceType().setContainer(true))))
+        config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
+        config[AzureFileSystem.AZURE_STORAGE_SKIP_INITIAL_CONTAINER_CHECK] = true
+
+        when:
+        // This would fail, but we skipped the check
+        new AzureFileSystem(new AzureFileSystemProvider(), environment.primaryAccount.blobEndpoint, config)
+
+        then:
+        notThrown(IOException)
+    }
+
     def "Close"() {
         setup:
         def provider = new AzureFileSystemProvider()
