@@ -404,13 +404,18 @@ public final class ConfigurationClientBuilder implements
     }
 
     /**
-     * Sets the HTTP pipeline to use for the service client.
-     * <p>
-     * If {@code pipeline} is set, all other settings are ignored, aside from {@link
-     * ConfigurationClientBuilder#endpoint(String) endpoint} to build {@link ConfigurationAsyncClient} or {@link
-     * ConfigurationClient}.
+     * Sets the {@link HttpPipeline} to use for the service client.
      *
-     * @param pipeline The HTTP pipeline to use for sending service requests and receiving responses.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     * <p>
+     * The {@link #endpoint(String) endpoint} is not ignored when {@code pipeline} is set.
+     *
+     * @param pipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
      * @return The updated ConfigurationClientBuilder object.
      */
     @Override
