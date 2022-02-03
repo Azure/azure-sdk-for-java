@@ -5,7 +5,10 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.time.OffsetDateTime;
 
 /**
  * Ingest heartbeat event data. Schema of the data property of an EventGridEvent for a
@@ -13,6 +16,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Immutable
 public final class MediaLiveEventIngestHeartbeatEventData {
+    static final ClientLogger LOGGER = new ClientLogger(MediaLiveEventIngestHeartbeatEventData.class);
+
     /*
      * Gets the type of the track (Audio / Video).
      */
@@ -168,8 +173,17 @@ public final class MediaLiveEventIngestHeartbeatEventData {
      *
      * @return the ingestDriftValue value.
      */
-    public String getIngestDriftValue() {
-        return this.ingestDriftValue;
+    public Integer getIngestDriftValue() {
+        if ("n/a".equals(this.ingestDriftValue)) {
+            return null;
+        }
+
+        try {
+            return Integer.parseInt(this.ingestDriftValue);
+        } catch (NumberFormatException ex) {
+            LOGGER.logExceptionAsError(ex);
+            return null;
+        }
     }
 
     /**
@@ -177,8 +191,8 @@ public final class MediaLiveEventIngestHeartbeatEventData {
      *
      * @return the lastFragmentArrivalTime value.
      */
-    public String getLastFragmentArrivalTime() {
-        return this.lastFragmentArrivalTime;
+    public OffsetDateTime getLastFragmentArrivalTime() {
+        return OffsetDateTime.parse(this.lastFragmentArrivalTime);
     }
 
     /**
