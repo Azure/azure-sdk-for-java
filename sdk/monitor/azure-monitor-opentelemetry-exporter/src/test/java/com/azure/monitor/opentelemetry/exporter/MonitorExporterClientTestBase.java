@@ -60,7 +60,7 @@ public class MonitorExporterClientTestBase extends TestBase {
                                                    Duration duration, OffsetDateTime time) {
         MonitorDomain requestData = new RequestData()
             .setId(UUID.randomUUID().toString())
-            .setDuration(FormattedDuration.getFormattedDuration(duration.toNanos()))
+            .setDuration(FormattedDuration.fromNanos(duration.toNanos()))
             .setResponseCode(responseCode)
             .setSuccess(success)
             .setUrl("http://localhost:8080/")
