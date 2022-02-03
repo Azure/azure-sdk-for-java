@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.Resources.ResourceWriteFailure event. This is raised
@@ -59,13 +60,13 @@ public final class ResourceWriteFailureEventData {
      * The requested authorization for the operation.
      */
     @JsonProperty(value = "authorization")
-    private String authorization;
+    private ResourceAuthorization authorization;
 
     /*
      * The properties of the claims.
      */
     @JsonProperty(value = "claims")
-    private String claims;
+    private Map<String, String> claims;
 
     /*
      * An operation ID used for troubleshooting.
@@ -77,7 +78,7 @@ public final class ResourceWriteFailureEventData {
      * The details of the operation.
      */
     @JsonProperty(value = "httpRequest")
-    private String httpRequest;
+    private ResourceHttpRequest httpRequest;
 
     /**
      * Get the tenantId property: The tenant ID of the resource.
@@ -224,7 +225,7 @@ public final class ResourceWriteFailureEventData {
      *
      * @return the authorization value.
      */
-    public String getAuthorization() {
+    public ResourceAuthorization getAuthorization() {
         return this.authorization;
     }
 
@@ -234,7 +235,7 @@ public final class ResourceWriteFailureEventData {
      * @param authorization the authorization value to set.
      * @return the ResourceWriteFailureEventData object itself.
      */
-    public ResourceWriteFailureEventData setAuthorization(String authorization) {
+    public ResourceWriteFailureEventData setAuthorization(ResourceAuthorization authorization) {
         this.authorization = authorization;
         return this;
     }
@@ -244,7 +245,7 @@ public final class ResourceWriteFailureEventData {
      *
      * @return the claims value.
      */
-    public String getClaims() {
+    public Map<String, String> getClaims() {
         return this.claims;
     }
 
@@ -254,7 +255,7 @@ public final class ResourceWriteFailureEventData {
      * @param claims the claims value to set.
      * @return the ResourceWriteFailureEventData object itself.
      */
-    public ResourceWriteFailureEventData setClaims(String claims) {
+    public ResourceWriteFailureEventData setClaims(Map<String, String> claims) {
         this.claims = claims;
         return this;
     }
@@ -284,7 +285,7 @@ public final class ResourceWriteFailureEventData {
      *
      * @return the httpRequest value.
      */
-    public String getHttpRequest() {
+    public ResourceHttpRequest getHttpRequest() {
         return this.httpRequest;
     }
 
@@ -294,7 +295,7 @@ public final class ResourceWriteFailureEventData {
      * @param httpRequest the httpRequest value to set.
      * @return the ResourceWriteFailureEventData object itself.
      */
-    public ResourceWriteFailureEventData setHttpRequest(String httpRequest) {
+    public ResourceWriteFailureEventData setHttpRequest(ResourceHttpRequest httpRequest) {
         this.httpRequest = httpRequest;
         return this;
     }
