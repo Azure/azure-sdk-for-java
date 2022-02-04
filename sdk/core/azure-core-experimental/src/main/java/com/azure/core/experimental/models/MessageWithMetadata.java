@@ -15,12 +15,6 @@ public class MessageWithMetadata {
     private String contentType;
 
     /**
-     * Instantiates a new instance.
-     */
-    public MessageWithMetadata() {
-    }
-
-    /**
      * Gets the message body.
      *
      * @return The message body.
@@ -51,7 +45,7 @@ public class MessageWithMetadata {
     }
 
     /**
-     * The content type.
+     * Sets the content type.
      *
      * @param contentType The content type.
      *
