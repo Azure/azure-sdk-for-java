@@ -13,7 +13,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorBas
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorDomain;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.RequestData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
-import com.azure.monitor.opentelemetry.exporter.implementation.FormattedDuration;
+import com.azure.monitor.opentelemetry.exporter.implementation.utils.FormattedDuration;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
