@@ -3,7 +3,19 @@
 ## 4.9.0-beta.1 (Unreleased)
 
 ### Features Added
-
+- Updated ARM events, `ResourceActionCancelEventData`, `ResourceActionFailureEventData`, 
+`ResourceActionSuccessEventData`, `ResourceDeleteCancelEventData`, `ResourceDeleteFailureEventData`, 
+`ResourceDeleteSuccessEventData`, `ResourceWriteCancelEventData`, `ResourceWriteFailureEventData`,
+`ResourceWriteSuccessEventData`. 
+    - Added new type `ResourceAuthorization` and `ResourceHttpRequest`.
+    - Deprecated APIs: 
+      `getHttpRequest()`, `setHttpRequest(String httpRequest)`
+      `getClaims()`, `setClaims(String claims)`
+      `getAuthorization()`, `setAuthorization(String authorization)`
+    - Added new APIs to replace the deprecated APIs:
+      `getResourceAuthorization()`, `setResourceAuthorization(ResourceAuthorization authorization)`
+      `getResourceClaims()`, `setResourceClaims(Map<String, String> claims)`
+      `getResourceHttpRequest()`, `setResourceHttpRequest(ResourceHttpRequest httpRequest)`
 ### Breaking Changes
 
 ### Bugs Fixed
