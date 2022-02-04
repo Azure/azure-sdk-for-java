@@ -99,7 +99,7 @@ public class Configs {
     private static final String OPEN_CONNECTIONS_RETRIES_COUNT_NAME = "COSMOS.OPEN_CONNECTIONS_RETRIES_COUNT";
     private static final int DEFAULT_OPEN_CONNECTIONS_RETRIES_COUNT = 1;
 
-    // whether to allow empty page diagnostics
+    // whether to allow query empty page diagnostics logging
     private static final String QUERY_EMPTY_PAGE_DIAGNOSTICS_ENABLED = "COSMOS.QUERY_EMPTY_PAGE_DIAGNOSTICS_ENABLED";
     private static final boolean DEFAULT_QUERY_EMPTY_PAGE_DIAGNOSTICS_ENABLED = false;
 

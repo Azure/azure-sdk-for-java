@@ -295,19 +295,11 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                     QueryMetrics.mergeQueryMetricsMap(emptyPageQueryMetricsMap, currentQueryMetrics);
                     cosmosDiagnostics = documentProducerFeedResponse.pageResult.getCosmosDiagnostics();
 
-                    if (ImplementationBridgeHelpers
-                        .CosmosQueryRequestOptionsHelper
-                        .getCosmosQueryRequestOptionsAccessor()
-                        .isEmptyPageDiagnosticsEnabled(cosmosQueryRequestOptions))
-                    {
-                        List<ClientSideRequestStatistics> requestStatistics =
-                            BridgeInternal.getClientSideRequestStatisticsList(cosmosDiagnostics);
-                        logger.info(
-                            "Empty page request diagnostics for correlatedActivityId [{}] - activityId [{}] - [{}]",
-                            this.correlatedActivityId,
-                            documentProducerFeedResponse.pageResult.getActivityId(),
-                            Utils.toJsonString(requestStatistics));
-                    }
+                    logEmptyPageDiagnostics(
+                        cosmosDiagnostics,
+                        this.cosmosQueryRequestOptions,
+                        this.correlatedActivityId,
+                        documentProducerFeedResponse.pageResult.getActivityId());
 
                     return false;
                 }
@@ -386,6 +378,26 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                     false,
                     cosmosDiagnostics));
             }));
+        }
+    }
+
+    static void logEmptyPageDiagnostics(
+        CosmosDiagnostics cosmosDiagnostics,
+        CosmosQueryRequestOptions queryRequestOptions,
+        UUID correlatedActivityId,
+        String activityId) {
+        if (ImplementationBridgeHelpers
+            .CosmosQueryRequestOptionsHelper
+            .getCosmosQueryRequestOptionsAccessor()
+            .isEmptyPageDiagnosticsEnabled(queryRequestOptions))
+        {
+            List<ClientSideRequestStatistics> requestStatistics =
+                BridgeInternal.getClientSideRequestStatisticsList(cosmosDiagnostics);
+            logger.info(
+                "Empty page request diagnostics for correlatedActivityId [{}] - activityId [{}] - [{}]",
+                correlatedActivityId,
+                activityId,
+                Utils.toJsonString(requestStatistics));
         }
     }
 
