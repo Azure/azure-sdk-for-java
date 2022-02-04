@@ -1187,14 +1187,10 @@ public class CosmosEncryptionAsyncContainer {
             return cosmosItemOperationMono;
         });
 
-        Mono<Flux<CosmosItemOperation>> then = operationFlux.then(Mono.defer(() -> {
-            setRequestHeaders(cosmosBulkExecutionOptions);
-            return Mono.just(operationFlux);
-        }));
-
-        return then.flatMapMany(cosmosItemOperationFlux -> {
-            return executeBulkOperationsHelper(operationFlux, cosmosBulkExecutionOptions, false);
-        });
+        Mono<List<CosmosItemOperation>> listMono = operationFlux.collectList();
+        setRequestHeaders(cosmosBulkExecutionOptions);
+        operationFlux = listMono.flatMapMany(Flux::fromIterable);
+        return executeBulkOperationsHelper(operationFlux, cosmosBulkExecutionOptions, false);
     }
 
     private <TContext> Flux<CosmosBulkOperationResponse<TContext>> executeBulkOperationsHelper(Flux<CosmosItemOperation> operations,
