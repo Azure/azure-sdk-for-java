@@ -1,15 +1,12 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.1.12 (2022-02-04)
 
 ### Other Changes
 
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to `1.25.0`.
 ## 1.1.11 (2022-01-11)
 
 ### Other Changes

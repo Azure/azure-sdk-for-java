@@ -1,15 +1,13 @@
 # Release History
 
-## 1.25.0-beta.1 (Unreleased)
+## 1.25.0 (2022-02-04)
 
 ### Features Added
-- Added a static method `toRfc1123String` that allows to convert the `OffsetDateTime` datetime to datetime string in RFC1123 format.
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added `AzureKeyCredentialTrait`, `AzureNamedKeyCredentialTrait`, `AzureSasCredentialTrait`, `ConfigurationTrait`,
+  `ConnectionStringTrait`, `EndpointTrait`, `HttpTrait`, and `TokenCredentialTrait` interfaces that represent common 
+  cross-cutting aspects of functionality offered by libraries in the Azure SDK for Java.
+- Added a static method `toRfc1123String` which converts an `OffsetDateTime` to an RFC1123 datetime string.
 
 ## 1.24.1 (2022-01-11)
 

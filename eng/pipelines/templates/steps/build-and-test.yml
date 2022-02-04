@@ -90,7 +90,7 @@ steps:
       options: $(DefaultOptions) --quiet -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true -T ${{ parameters.BuildParallelization }} ${{ parameters.AdditionalBuildOptions }}
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
-      jdkVersionOption: $(JavaBuildVersion)
+      jdkVersionOption: $(JavaTestVersion)
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))

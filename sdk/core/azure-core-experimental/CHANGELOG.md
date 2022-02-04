@@ -1,14 +1,18 @@
 # Release History
 
-## 1.0.0-beta.24 (Unreleased)
+## 1.0.0-beta.24 (2022-02-04)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Added `com.azure.core.experimental.models.MessageWithMetadata`.
 
 ### Other Changes
+
+### Breaking Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to `1.25.0`.
 
 ## 1.0.0-beta.23 (2022-01-11)
 
@@ -64,7 +68,7 @@
 
 ### Breaking Changes
 
-- Moved `HttpAuthorization` into `azure-core`. 
+- Moved `HttpAuthorization` into `azure-core`.
 
 ### Other Changes
 
@@ -176,7 +180,7 @@
 
 - Added API `fromObject()` in `BinaryData` which uses `JsonSerializer` present in the classpath.
 - Added APIs to `JsonPatchDocument` which accept pre-serialized JSON.
-- Updated `azure-core` dependency to released version. 
+- Updated `azure-core` dependency to released version.
 
 ## 1.0.0-beta.6 (2020-10-06)
 

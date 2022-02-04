@@ -3,9 +3,11 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.models.FormRecognizerAudience;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.identity.AzureAuthorityHosts;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.io.ByteArrayInputStream;
@@ -79,6 +81,12 @@ public final class TestUtils {
             .get("FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL");
     public static final String FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL_CONFIGURATION =
         Configuration.getGlobalConfiguration().get("FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL");
+    public static final String AZURE_CLIENT_ID
+        = Configuration.getGlobalConfiguration().get("AZURE_CLIENT_ID");
+    public static final String AZURE_TENANT_ID
+        = Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID");
+    public static final String AZURE_FORM_RECOGNIZER_CLIENT_SECRET
+        = Configuration.getGlobalConfiguration().get("AZURE_CLIENT_SECRET");
 
     private TestUtils() {
     }
@@ -256,5 +264,43 @@ public final class TestUtils {
         return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
             serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
     }
+    public static FormRecognizerAudience getAudience(String endpoint) {
+        String authority = getAuthority(endpoint);
+        switch (authority) {
+            case AzureAuthorityHosts.AZURE_PUBLIC_CLOUD:
+                return FormRecognizerAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
+
+            case AzureAuthorityHosts.AZURE_CHINA:
+                return FormRecognizerAudience.AZURE_RESOURCE_MANAGER_CHINA;
+
+            case AzureAuthorityHosts.AZURE_GOVERNMENT:
+                return FormRecognizerAudience.AZURE_RESOURCE_MANAGER_US_GOVERNMENT;
+
+            default:
+                return null;
+        }
+    }
+
+    public static String getAuthority(String endpoint) {
+        if (endpoint == null) {
+            return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
+        }
+
+        if (endpoint.contains(".io")) {
+            return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
+        }
+
+        if (endpoint.contains(".cn")) {
+            return AzureAuthorityHosts.AZURE_CHINA;
+        }
+
+        if (endpoint.contains(".us")) {
+            return AzureAuthorityHosts.AZURE_GOVERNMENT;
+        }
+
+        // By default, we will assume that the authority is public
+        return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
+    }
+
 }
 
