@@ -35,7 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ExceptionsTest {
 
     @Test
-    void testMinimalParse() {
+    public void testMinimalParse() {
         // given
         String str = toString(new IllegalStateException("test"));
 
@@ -51,7 +51,7 @@ public class ExceptionsTest {
     }
 
     @Test
-    void testMinimalParseWithNoMessage() {
+    public void testMinimalParseWithNoMessage() {
         // given
         String str = toString(new IllegalStateException());
 
@@ -67,7 +67,7 @@ public class ExceptionsTest {
     }
 
     @Test
-    void testMinimalParseWithProblematicMessage() {
+    public void testMinimalParseWithProblematicMessage() {
         // given
         String str = toString(new ProblematicException());
 
