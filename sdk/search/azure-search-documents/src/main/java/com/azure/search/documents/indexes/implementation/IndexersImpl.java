@@ -178,7 +178,7 @@ public final class IndexersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetWithResponseAsync(
@@ -210,7 +210,7 @@ public final class IndexersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetDocsWithResponseAsync(
@@ -245,7 +245,7 @@ public final class IndexersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> runWithResponseAsync(
@@ -281,7 +281,7 @@ public final class IndexersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an indexer.
+     * @return represents an indexer along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexer>> createOrUpdateWithResponseAsync(
@@ -328,7 +328,7 @@ public final class IndexersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
@@ -359,7 +359,7 @@ public final class IndexersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an indexer.
+     * @return represents an indexer along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexer>> getWithResponseAsync(
@@ -389,7 +389,8 @@ public final class IndexersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Indexers request.
+     * @return response from a List Indexers request along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ListIndexersResult>> listWithResponseAsync(
@@ -413,7 +414,7 @@ public final class IndexersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an indexer.
+     * @return represents an indexer along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexer>> createWithResponseAsync(
@@ -437,7 +438,8 @@ public final class IndexersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the current status and execution history of an indexer.
+     * @return represents the current status and execution history of an indexer along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerStatus>> getStatusWithResponseAsync(

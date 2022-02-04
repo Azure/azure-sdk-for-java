@@ -3,6 +3,8 @@
 ## 12.0.0-beta.15 (Unreleased)
 
 ### Features Added
+- Added `AzurePath.fromBlobUrl` to help convert from a blob url to an AzurePath
+- Added a configuration option `AZURE_STORAGE_SKIP_INITIAL_CONTAINER_CHECK` to skip the initial container check in cases where the authentication method used will not have necessary permissions.
 
 ### Breaking Changes
 

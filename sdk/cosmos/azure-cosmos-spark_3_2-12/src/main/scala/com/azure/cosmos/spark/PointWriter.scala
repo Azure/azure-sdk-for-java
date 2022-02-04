@@ -8,10 +8,7 @@ import com.azure.cosmos.implementation.guava25.base.Preconditions.checkState
 import com.azure.cosmos.implementation.spark.{OperationContextAndListenerTuple, OperationListener}
 import com.azure.cosmos.models.{CosmosItemRequestOptions, PartitionKey}
 import com.azure.cosmos.spark.PointWriter.MaxNumberOfThreadsPerCPUCore
-import com.azure.cosmos.spark.diagnostics.{
-  CosmosItemIdentifier,
-  CreateOperation, DeleteOperation, DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext, UpsertOperation
-}
+import com.azure.cosmos.spark.diagnostics.{CosmosItemIdentifier, CreateOperation, DeleteOperation, DiagnosticsContext, DiagnosticsLoader, LoggerHelper, ReplaceOperation, SparkTaskContext, UpsertOperation}
 import com.azure.cosmos.{CosmosAsyncContainer, CosmosException}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.TaskContext
@@ -67,8 +64,15 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
   override def scheduleWrite(partitionKeyValue: PartitionKey, objectNode: ObjectNode): Unit = {
     checkState(!closed.get())
 
+    val etag = getETag(objectNode)
+
     cosmosWriteConfig.itemWriteStrategy match {
       case ItemWriteStrategy.ItemOverwrite => upsertWithRetryAsync(partitionKeyValue, objectNode)
+      case ItemWriteStrategy.ItemOverwriteIfNotModified =>
+        etag match {
+          case Some(e) => replaceIfNotModifiedWithRetryAsync(partitionKeyValue, objectNode, e)
+          case None => createWithRetryAsync(partitionKeyValue, objectNode)
+        }
       case ItemWriteStrategy.ItemAppend => createWithRetryAsync(partitionKeyValue, objectNode)
       case ItemWriteStrategy.ItemDelete =>
         deleteWithRetryAsync(partitionKeyValue, objectNode, onlyIfNotModified=false)
@@ -160,6 +164,33 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
           captureIfFirstFailure(e)
           pendingPointWrites.remove(promise.future)
           log.logItemWriteFailure(deleteOperation, e)
+      }
+  }
+
+  private def replaceIfNotModifiedWithRetryAsync
+  (
+    partitionKeyValue: PartitionKey,
+    objectNode: ObjectNode,
+    etag: String
+  ): Unit = {
+
+    val promise = Promise[Unit]()
+    pendingPointWrites.put(promise.future, true)
+
+    val replaceOperation = ReplaceOperation(taskDiagnosticsContext,
+      CosmosItemIdentifier(objectNode.get(CosmosConstants.Properties.Id).asText(), partitionKeyValue))
+
+    executeAsync(() => replaceIfNotModifiedWithRetry(partitionKeyValue, objectNode, etag, replaceOperation))
+      .onComplete {
+        case Success(_) =>
+          promise.success(Unit)
+          pendingPointWrites.remove(promise.future)
+          log.logItemWriteCompletion(replaceOperation)
+        case Failure(e) =>
+          promise.failure(e)
+          captureIfFirstFailure(e)
+          pendingPointWrites.remove(promise.future)
+          log.logItemWriteFailure(replaceOperation, e)
       }
   }
 
@@ -259,6 +290,53 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
         case e: CosmosException if Exceptions.canBeTransientFailure(e.getStatusCode, e.getSubStatusCode) =>
           log.logWarning(
             s"delete item attempt #$attempt max remaining retries"
+              + s"${cosmosWriteConfig.maxRetryCount + 1 - attempt}, encountered ${e.getMessage}")
+          exceptionOpt = Option.apply(e)
+      }
+    }
+
+    assert(exceptionOpt.isDefined)
+    throw exceptionOpt.get
+  }
+  // scalastyle:on return
+
+  // scalastyle:off return
+  private def replaceIfNotModifiedWithRetry
+  (
+    partitionKeyValue: PartitionKey,
+    objectNode: ObjectNode,
+    etag: String,
+    replaceOperation: ReplaceOperation
+  ): Unit = {
+
+    var exceptionOpt = Option.empty[Exception]
+    for (attempt <- 1 to cosmosWriteConfig.maxRetryCount + 1) {
+      try {
+        // TODO: moderakh, there is room for further improvement by making this code nonblocking
+        // using reactive stream retry pattern
+        val itemId = objectNode.get(CosmosConstants.Properties.Id).asText()
+
+        val options = getOptions
+          .setIfMatchETag(etag)
+          .setContentResponseOnWriteEnabled(false)
+
+        container.replaceItem(
+          objectNode,
+          itemId,
+          partitionKeyValue,
+          options)
+          .block()
+        return
+      } catch {
+        case e: CosmosException if Exceptions.isNotFoundExceptionCore(e.getStatusCode, e.getSubStatusCode) =>
+          log.logItemWriteSkipped(replaceOperation, "notFound")
+          return
+        case e: CosmosException if Exceptions.isPreconditionFailedException(e.getStatusCode) =>
+          log.logItemWriteSkipped(replaceOperation, "preConditionNotMet")
+          return
+        case e: CosmosException if Exceptions.canBeTransientFailure(e.getStatusCode, e.getSubStatusCode) =>
+          log.logWarning(
+            s"replace item if not modified attempt #$attempt max remaining retries"
               + s"${cosmosWriteConfig.maxRetryCount + 1 - attempt}, encountered ${e.getMessage}")
           exceptionOpt = Option.apply(e)
       }
