@@ -33,7 +33,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
-import com.azure.core.util.builder.BuilderUtil;
+import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy;
@@ -224,7 +224,7 @@ public final class ConfigurationClientBuilder implements
         policies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
-        policies.add(BuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, DEFAULT_RETRY_POLICY));
+        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, DEFAULT_RETRY_POLICY));
 
         policies.add(new AddDatePolicy());
 

@@ -37,7 +37,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
-import com.azure.core.util.builder.BuilderUtil;
+import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.TracerProxy;
 import com.azure.messaging.eventgrid.implementation.CloudEventTracingPipelinePolicy;
@@ -152,7 +152,7 @@ public final class EventGridPublisherClientBuilder implements
         httpPipelinePolicies.add(new RequestIdPolicy());
 
         HttpPolicyProviders.addBeforeRetryPolicies(httpPipelinePolicies);
-        httpPipelinePolicies.add(BuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
+        httpPipelinePolicies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
 
         httpPipelinePolicies.add(new AddDatePolicy());
 

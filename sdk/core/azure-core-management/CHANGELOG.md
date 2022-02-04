@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.2 (2022-02-03)
+## 1.5.2 (2022-02-04)
 
 ### Other Changes
 
