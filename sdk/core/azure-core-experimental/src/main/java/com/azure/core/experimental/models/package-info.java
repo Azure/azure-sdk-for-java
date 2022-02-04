@@ -4,4 +4,4 @@
 /**
  * Package containing experimental messaging classes.
  */
-package com.azure.core.experimental.messaging;
+package com.azure.core.experimental.models;
