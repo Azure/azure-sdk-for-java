@@ -8,8 +8,6 @@
 
 ### Other Changes
 
-### Breaking Changes
-
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.24.1` to `1.25.0`.
