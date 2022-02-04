@@ -56,11 +56,15 @@ public final class ResourceWriteFailureEventData {
     @JsonProperty(value = "status")
     private String status;
 
+    private String authorizationString;
+
     /*
      * The requested authorization for the operation.
      */
     @JsonProperty(value = "authorization")
     private ResourceAuthorization authorization;
+
+    private String claimsString;
 
     /*
      * The properties of the claims.
@@ -73,6 +77,8 @@ public final class ResourceWriteFailureEventData {
      */
     @JsonProperty(value = "correlationId")
     private String correlationId;
+
+    private String httpRequestString;
 
     /*
      * The details of the operation.
@@ -224,8 +230,34 @@ public final class ResourceWriteFailureEventData {
      * Get the authorization property: The requested authorization for the operation.
      *
      * @return the authorization value.
+     * @deprecated This method is no longer supported since v4.9.0.
+     * <p> Use {@link ResourceWriteFailureEventData#getResourceAuthorization()} instead.
      */
-    public ResourceAuthorization getAuthorization() {
+    @Deprecated
+    public String getAuthorization() {
+        return this.authorizationString;
+    }
+
+    /**
+     * Set the authorization property: The requested authorization for the operation.
+     *
+     * @param authorization the authorization value to set.
+     * @return the ResourceWriteFailureEventData object itself.
+     * @deprecated This method is no longer supported since v4.9.0.
+     * <p> Use {@link ResourceWriteFailureEventData#setResourceAuthorization(ResourceAuthorization)} instead.
+     */
+    @Deprecated
+    public ResourceWriteFailureEventData setAuthorization(String authorization) {
+        this.authorizationString = authorization;
+        return this;
+    }
+
+    /**
+     * Get the authorization property: The requested authorization for the operation.
+     *
+     * @return the authorization value.
+     */
+    public ResourceAuthorization getResourceAuthorization() {
         return this.authorization;
     }
 
@@ -235,7 +267,7 @@ public final class ResourceWriteFailureEventData {
      * @param authorization the authorization value to set.
      * @return the ResourceWriteFailureEventData object itself.
      */
-    public ResourceWriteFailureEventData setAuthorization(ResourceAuthorization authorization) {
+    public ResourceWriteFailureEventData setResourceAuthorization(ResourceAuthorization authorization) {
         this.authorization = authorization;
         return this;
     }
@@ -244,8 +276,34 @@ public final class ResourceWriteFailureEventData {
      * Get the claims property: The properties of the claims.
      *
      * @return the claims value.
+     * @deprecated This method is no longer supported since v4.9.0.
+     * <p> Use {@link ResourceWriteFailureEventData#getResourceClaims()} instead.
      */
-    public Map<String, String> getClaims() {
+    @Deprecated
+    public String getClaims() {
+        return this.claimsString;
+    }
+
+    /**
+     * Set the claims property: The properties of the claims.
+     *
+     * @param claims the claims value to set.
+     * @return the ResourceWriteFailureEventData object itself.
+     * @deprecated This method is no longer supported since v4.9.0.
+     * <p> Use {@link ResourceWriteFailureEventData#setResourceClaims(Map)} instead.
+     */
+    @Deprecated
+    public ResourceWriteFailureEventData setClaims(String claims) {
+        this.claimsString = claims;
+        return this;
+    }
+
+    /**
+     * Get the claims property: The properties of the claims.
+     *
+     * @return the claims value.
+     */
+    public Map<String, String> getResourceClaims() {
         return this.claims;
     }
 
@@ -255,7 +313,7 @@ public final class ResourceWriteFailureEventData {
      * @param claims the claims value to set.
      * @return the ResourceWriteFailureEventData object itself.
      */
-    public ResourceWriteFailureEventData setClaims(Map<String, String> claims) {
+    public ResourceWriteFailureEventData setResourceClaims(Map<String, String> claims) {
         this.claims = claims;
         return this;
     }
@@ -284,8 +342,34 @@ public final class ResourceWriteFailureEventData {
      * Get the httpRequest property: The details of the operation.
      *
      * @return the httpRequest value.
+     * @deprecated This method is no longer supported since v4.9.0.
+     * <p> Use {@link ResourceWriteFailureEventData#getResourceHttpRequest()} instead.
      */
-    public ResourceHttpRequest getHttpRequest() {
+    @Deprecated
+    public String getHttpRequest() {
+        return this.httpRequestString;
+    }
+
+    /**
+     * Set the httpRequest property: The details of the operation.
+     *
+     * @param httpRequest the httpRequest value to set.
+     * @return the ResourceWriteFailureEventData object itself.
+     * @deprecated This method is no longer supported since v4.9.0.
+     * <p> Use {@link ResourceWriteFailureEventData#setResourceHttpRequest(ResourceHttpRequest)} instead.
+     */
+    @Deprecated
+    public ResourceWriteFailureEventData setHttpRequest(String httpRequest) {
+        this.httpRequestString = httpRequest;
+        return this;
+    }
+
+    /**
+     * Get the httpRequest property: The details of the operation.
+     *
+     * @return the httpRequest value.
+     */
+    public ResourceHttpRequest getResourceHttpRequest() {
         return this.httpRequest;
     }
 
@@ -295,7 +379,7 @@ public final class ResourceWriteFailureEventData {
      * @param httpRequest the httpRequest value to set.
      * @return the ResourceWriteFailureEventData object itself.
      */
-    public ResourceWriteFailureEventData setHttpRequest(ResourceHttpRequest httpRequest) {
+    public ResourceWriteFailureEventData setResourceHttpRequest(ResourceHttpRequest httpRequest) {
         this.httpRequest = httpRequest;
         return this;
     }

@@ -153,8 +153,8 @@ public final class StorageDirectoryDeletedEventData {
      *
      * @return the recursive value.
      */
-    public String getRecursive() {
-        return this.recursive;
+    public Boolean isRecursive() {
+        return Boolean.getBoolean(this.recursive);
     }
 
     /**
@@ -163,8 +163,8 @@ public final class StorageDirectoryDeletedEventData {
      * @param recursive the recursive value to set.
      * @return the StorageDirectoryDeletedEventData object itself.
      */
-    public StorageDirectoryDeletedEventData setRecursive(String recursive) {
-        this.recursive = recursive;
+    public StorageDirectoryDeletedEventData setRecursive(Boolean recursive) {
+        this.recursive = String.valueOf(recursive);
         return this;
     }
 
