@@ -6,7 +6,6 @@ package com.azure.messaging.eventgrid.implementation;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Post;
@@ -27,7 +26,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.messaging.eventgrid.implementation.models.CloudEvent;
+import com.azure.core.models.CloudEvent;
 import com.azure.messaging.eventgrid.implementation.models.EventGridEvent;
 import java.util.List;
 import reactor.core.publisher.Mono;
@@ -134,7 +133,6 @@ public final class EventGridPublisherClientImpl {
         Mono<Response<Void>> publishCloudEventEvents(
                 @HostParam("topicHostname") String topicHostname,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("aeg-channel-name") String aegChannelName,
                 @BodyParam("application/cloudevents-batch+json; charset=utf-8") List<CloudEvent> events,
                 Context context);
 
@@ -218,8 +216,6 @@ public final class EventGridPublisherClientImpl {
      *
      * @param topicHostname The host name of the topic, e.g. topic1.westus2-1.eventgrid.azure.net.
      * @param events An array of events to be published to Event Grid.
-     * @param aegChannelName Required only when publishing to partner namespaces with partner topic routing mode
-     *     ChannelNameHeader.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -227,11 +223,9 @@ public final class EventGridPublisherClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> publishCloudEventEventsWithResponseAsync(
-            String topicHostname, List<CloudEvent> events, String aegChannelName) {
+            String topicHostname, List<CloudEvent> events) {
         return FluxUtil.withContext(
-                context ->
-                        service.publishCloudEventEvents(
-                                topicHostname, this.getApiVersion(), aegChannelName, events, context));
+                context -> service.publishCloudEventEvents(topicHostname, this.getApiVersion(), events, context));
     }
 
     /**
@@ -239,8 +233,6 @@ public final class EventGridPublisherClientImpl {
      *
      * @param topicHostname The host name of the topic, e.g. topic1.westus2-1.eventgrid.azure.net.
      * @param events An array of events to be published to Event Grid.
-     * @param aegChannelName Required only when publishing to partner namespaces with partner topic routing mode
-     *     ChannelNameHeader.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -249,8 +241,8 @@ public final class EventGridPublisherClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> publishCloudEventEventsWithResponseAsync(
-            String topicHostname, List<CloudEvent> events, String aegChannelName, Context context) {
-        return service.publishCloudEventEvents(topicHostname, this.getApiVersion(), aegChannelName, events, context);
+            String topicHostname, List<CloudEvent> events, Context context) {
+        return service.publishCloudEventEvents(topicHostname, this.getApiVersion(), events, context);
     }
 
     /**
@@ -258,17 +250,14 @@ public final class EventGridPublisherClientImpl {
      *
      * @param topicHostname The host name of the topic, e.g. topic1.westus2-1.eventgrid.azure.net.
      * @param events An array of events to be published to Event Grid.
-     * @param aegChannelName Required only when publishing to partner namespaces with partner topic routing mode
-     *     ChannelNameHeader.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> publishCloudEventEventsAsync(
-            String topicHostname, List<CloudEvent> events, String aegChannelName) {
-        return publishCloudEventEventsWithResponseAsync(topicHostname, events, aegChannelName)
+    public Mono<Void> publishCloudEventEventsAsync(String topicHostname, List<CloudEvent> events) {
+        return publishCloudEventEventsWithResponseAsync(topicHostname, events)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -277,8 +266,6 @@ public final class EventGridPublisherClientImpl {
      *
      * @param topicHostname The host name of the topic, e.g. topic1.westus2-1.eventgrid.azure.net.
      * @param events An array of events to be published to Event Grid.
-     * @param aegChannelName Required only when publishing to partner namespaces with partner topic routing mode
-     *     ChannelNameHeader.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -286,9 +273,8 @@ public final class EventGridPublisherClientImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> publishCloudEventEventsAsync(
-            String topicHostname, List<CloudEvent> events, String aegChannelName, Context context) {
-        return publishCloudEventEventsWithResponseAsync(topicHostname, events, aegChannelName, context)
+    public Mono<Void> publishCloudEventEventsAsync(String topicHostname, List<CloudEvent> events, Context context) {
+        return publishCloudEventEventsWithResponseAsync(topicHostname, events, context)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
