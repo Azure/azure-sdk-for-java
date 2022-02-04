@@ -7,6 +7,8 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
 import com.azure.cosmos.encryption.EncryptionBridgeInternal;
+import com.azure.cosmos.encryption.mdesupport.EncryptionKeyWrapProvider;
+import com.azure.cosmos.encryption.mdesupport.MdeSupportBridgeHelpers;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Utils;
@@ -22,7 +24,6 @@ import com.fasterxml.jackson.databind.node.DoubleNode;
 import com.fasterxml.jackson.databind.node.LongNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
-import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
 import com.microsoft.data.encryption.cryptography.EncryptionType;
 import com.microsoft.data.encryption.cryptography.MicrosoftDataEncryptionException;
 import com.microsoft.data.encryption.cryptography.ProtectedDataEncryptionKey;
@@ -53,13 +54,15 @@ public class EncryptionProcessor {
     private final static Logger LOGGER = LoggerFactory.getLogger(EncryptionProcessor.class);
     private CosmosEncryptionAsyncClient encryptionCosmosClient;
     private CosmosAsyncContainer cosmosAsyncContainer;
-    private EncryptionKeyStoreProvider encryptionKeyStoreProvider;
+    private EncryptionKeyWrapProvider encryptionKeyWrapProvider;
     private EncryptionSettings encryptionSettings;
     private AtomicBoolean isEncryptionSettingsInitDone;
     private ClientEncryptionPolicy clientEncryptionPolicy;
     private String containerRid;
     private String databaseRid;
     private ImplementationBridgeHelpers.CosmosContainerPropertiesHelper.CosmosContainerPropertiesAccessor cosmosContainerPropertiesAccessor;
+    private final static MdeSupportBridgeHelpers.EncryptionKeyWrapProviderHelper.EncryptionKeyWrapProviderAccessor encryptionKeyWrapProviderAccessor =
+        MdeSupportBridgeHelpers.EncryptionKeyWrapProviderHelper.getEncryptionKeyWrapProviderAccessor();
 
     public EncryptionProcessor(CosmosAsyncContainer cosmosAsyncContainer,
                                CosmosEncryptionAsyncClient encryptionCosmosClient) {
@@ -73,7 +76,7 @@ public class EncryptionProcessor {
         this.cosmosAsyncContainer = cosmosAsyncContainer;
         this.encryptionCosmosClient = encryptionCosmosClient;
         this.isEncryptionSettingsInitDone = new AtomicBoolean(false);
-        this.encryptionKeyStoreProvider = this.encryptionCosmosClient.getEncryptionKeyStoreProvider();
+        this.encryptionKeyWrapProvider = this.encryptionCosmosClient.getEncryptionKeyWrapProvider();
         this.cosmosContainerPropertiesAccessor = ImplementationBridgeHelpers.CosmosContainerPropertiesHelper.getCosmosContainerPropertiesAccessor();
         this.encryptionSettings = new EncryptionSettings();
     }
@@ -121,7 +124,7 @@ public class EncryptionProcessor {
                                 // Encryption Key.
                                 protectedDataEncryptionKey =
                                     this.encryptionSettings.buildProtectedDataEncryptionKey(keyProperties,
-                                        this.encryptionKeyStoreProvider,
+                                        encryptionKeyWrapProviderAccessor.getEncryptionKeyStoreProviderImpl(encryptionKeyWrapProvider),
                                         clientEncryptionKeyId);
                             } catch (Exception ex) {
                                 return Mono.error(ex);
@@ -222,10 +225,10 @@ public class EncryptionProcessor {
     /**
      * Gets the provider that allows interaction with the master keys.
      *
-     * @return encryptionKeyStoreProvider
+     * @return encryptionKeyWrapProvider
      */
-    public EncryptionKeyStoreProvider getEncryptionKeyStoreProvider() {
-        return encryptionKeyStoreProvider;
+    public EncryptionKeyWrapProvider getEncryptionKeyWrapProvider() {
+        return encryptionKeyWrapProvider;
     }
 
     public EncryptionSettings getEncryptionSettings() {

@@ -7,7 +7,8 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncContainer;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncDatabase;
-import com.azure.cosmos.encryption.CosmosEncryptionContainer;
+import com.azure.cosmos.encryption.mdesupport.AzureKeyVaultKeyWrapProvider;
+import com.azure.cosmos.encryption.mdesupport.EncryptionKeyWrapProvider;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
@@ -16,8 +17,6 @@ import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.EncryptionKeyWrapMetadata;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.identity.EnvironmentCredentialBuilder;
-import com.microsoft.data.encryption.AzureKeyVaultKeyStoreProvider.AzureKeyVaultKeyStoreProvider;
-import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
 import com.microsoft.data.encryption.cryptography.MicrosoftDataEncryptionException;
 import reactor.core.publisher.Mono;
 
@@ -33,8 +32,8 @@ public class ReadmeSamples {
         .buildAsyncClient();
     private final CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient =
         CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(cosmosAsyncClient,
-            new AzureKeyVaultKeyStoreProvider(tokenCredentials));
-    private final EncryptionKeyStoreProvider encryptionKeyStoreProvider = new AzureKeyVaultKeyStoreProvider(tokenCredentials);
+            new AzureKeyVaultKeyWrapProvider(tokenCredentials));
+    private final EncryptionKeyWrapProvider encryptionKeyWrapProvider = new AzureKeyVaultKeyWrapProvider(tokenCredentials);
     private final CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase = cosmosEncryptionAsyncClient
         .getCosmosEncryptionAsyncDatabase("<YOUR DATABASE NAME>");
     private final CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer = cosmosEncryptionAsyncDatabase
@@ -52,7 +51,7 @@ public class ReadmeSamples {
             .buildAsyncClient();
         CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient =
             CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(cosmosAsyncClient,
-                new AzureKeyVaultKeyStoreProvider(tokenCredentials));
+                new AzureKeyVaultKeyWrapProvider(tokenCredentials));
         // END: readme-sample-createCosmosEncryptionClient
     }
 
@@ -73,7 +72,7 @@ public class ReadmeSamples {
     public void createCosmosEncryptionContainer() {
         // BEGIN: readme-sample-createCosmosEncryptionContainer
         //Create Client Encryption Key
-        EncryptionKeyWrapMetadata metadata = new EncryptionKeyWrapMetadata(encryptionKeyStoreProvider.getProviderName(), "key", "tempmetadata");
+        EncryptionKeyWrapMetadata metadata = new EncryptionKeyWrapMetadata(encryptionKeyWrapProvider.getProviderName(), "key", "tempmetadata");
         CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer = cosmosEncryptionAsyncDatabase
             .createClientEncryptionKey("key", CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256, metadata)
             // TIP: Our APIs are Reactor Core based, so try to chain your calls

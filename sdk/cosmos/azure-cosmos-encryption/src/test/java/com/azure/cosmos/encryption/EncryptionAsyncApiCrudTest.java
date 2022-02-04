@@ -6,6 +6,7 @@ package com.azure.cosmos.encryption;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.encryption.implementation.ReflectionUtils;
+import com.azure.cosmos.encryption.mdesupport.EncryptionKeyWrapProvider;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
@@ -26,14 +27,12 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.util.CosmosPagedFlux;
-import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Mono;
 
 import java.time.Instant;
 import java.util.*;
@@ -345,9 +344,9 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         try {
             createNewDatabaseWithClientEncryptionKey(databaseId);
             CosmosAsyncClient asyncClient = getClientBuilder().buildAsyncClient();
-            EncryptionKeyStoreProvider encryptionKeyStoreProvider = new TestEncryptionKeyStoreProvider();
+            EncryptionKeyWrapProvider encryptionKeyWrapProvider = new TestEncryptionKeyStoreProvider();
             CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(asyncClient,
-                encryptionKeyStoreProvider);
+                encryptionKeyWrapProvider);
             CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase =
                 cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(asyncClient.getDatabase(databaseId));
 
@@ -816,7 +815,7 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
 
     private CosmosEncryptionAsyncContainer getNewEncryptionContainerProxyObject(String databaseId, String containerId) {
         CosmosAsyncClient client = getClientBuilder().buildAsyncClient();
-        EncryptionKeyStoreProvider encryptionKeyStoreProvider = new TestEncryptionKeyStoreProvider();
+        EncryptionKeyWrapProvider encryptionKeyStoreProvider = new TestEncryptionKeyStoreProvider();
         CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(client,
             encryptionKeyStoreProvider);
         CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase =

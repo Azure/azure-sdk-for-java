@@ -19,6 +19,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
+import com.azure.cosmos.encryption.mdesupport.EncryptionKeyWrapProvider;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.implementation.Configs;
@@ -56,8 +57,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
-import com.microsoft.data.encryption.cryptography.KeyEncryptionKeyAlgorithm;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.mockito.stubbing.Answer;
@@ -1172,7 +1171,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         return CosmosBridgeInternal.cloneCosmosClientBuilder(builder);
     }
 
-    public static class TestEncryptionKeyStoreProvider extends EncryptionKeyStoreProvider {
+    public static class TestEncryptionKeyStoreProvider extends EncryptionKeyWrapProvider {
         Map<String, Integer> keyInfo = new HashMap<>();
         String providerName = "TEST_KEY_STORE_PROVIDER";
 
@@ -1181,24 +1180,19 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             return providerName;
         }
 
-        public TestEncryptionKeyStoreProvider() {
-            keyInfo.put("tempmetadata1", 1);
-            keyInfo.put("tempmetadata2", 2);
-        }
-
         @Override
-        public byte[] unwrapKey(String s, KeyEncryptionKeyAlgorithm keyEncryptionKeyAlgorithm, byte[] encryptedBytes) {
-            int moveBy = this.keyInfo.get(s);
-            byte[] plainkey = new byte[encryptedBytes.length];
-            for (int i = 0; i < encryptedBytes.length; i++) {
-                plainkey[i] = (byte) (encryptedBytes[i] - moveBy);
+        public byte[] unwrapKeyAsync(String encryptionKeyId, String keyEncryptionKeyAlgorithm, byte[] encryptedKey) {
+            int moveBy = this.keyInfo.get(encryptionKeyId);
+            byte[] plainkey = new byte[encryptedKey.length];
+            for (int i = 0; i < encryptedKey.length; i++) {
+                plainkey[i] = (byte) (encryptedKey[i] - moveBy);
             }
             return plainkey;
         }
 
         @Override
-        public byte[] wrapKey(String s, KeyEncryptionKeyAlgorithm keyEncryptionKeyAlgorithm, byte[] key) {
-            int moveBy = this.keyInfo.get(s);
+        public byte[] wrapKeyAsync(String encryptionKeyId, String keyEncryptionKeyAlgorithm, byte[] key) {
+            int moveBy = this.keyInfo.get(encryptionKeyId);
             byte[] encryptedBytes = new byte[key.length];
             for (int i = 0; i < key.length; i++) {
                 encryptedBytes[i] = (byte) (key[i] + moveBy);
@@ -1206,14 +1200,9 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             return encryptedBytes;
         }
 
-        @Override
-        public byte[] sign(String s, boolean b) {
-            return new byte[0];
-        }
-
-        @Override
-        public boolean verify(String s, boolean b, byte[] bytes) {
-            return true;
+        public TestEncryptionKeyStoreProvider() {
+            keyInfo.put("tempmetadata1", 1);
+            keyInfo.put("tempmetadata2", 2);
         }
     }
 

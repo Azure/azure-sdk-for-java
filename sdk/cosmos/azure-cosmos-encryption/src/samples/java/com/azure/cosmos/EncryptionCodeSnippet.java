@@ -6,6 +6,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncContainer;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncDatabase;
+import com.azure.cosmos.encryption.mdesupport.EncryptionKeyWrapProvider;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
@@ -16,9 +17,6 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.EncryptionKeyWrapMetadata;
 import com.azure.cosmos.models.PartitionKey;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
-import com.microsoft.data.encryption.cryptography.KeyEncryptionKeyAlgorithm;
-import com.microsoft.data.encryption.cryptography.MicrosoftDataEncryptionException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,7 +140,7 @@ public class EncryptionCodeSnippet {
             CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256, metadata2).block().getProperties();
     }
 
-    class SimpleEncryptionKeyStoreProvider extends EncryptionKeyStoreProvider {
+    class SimpleEncryptionKeyStoreProvider extends EncryptionKeyWrapProvider {
         // this is a naive data encryption key store provider which always uses the same data encryption key from the
         // service.
         // the user should implement EncryptionKeyStoreProvider as per use case;
@@ -154,23 +152,13 @@ public class EncryptionCodeSnippet {
         }
 
         @Override
-        public byte[] unwrapKey(String s, KeyEncryptionKeyAlgorithm keyEncryptionKeyAlgorithm, byte[] encryptedBytes) {
+        public byte[] unwrapKeyAsync(String s, String keyEncryptionKeyAlgorithm, byte[] encryptedBytes) {
             return encryptedBytes;
         }
 
         @Override
-        public byte[] wrapKey(String s, KeyEncryptionKeyAlgorithm keyEncryptionKeyAlgorithm, byte[] key) {
+        public byte[] wrapKeyAsync(String s, String keyEncryptionKeyAlgorithm, byte[] key) {
             return key;
-        }
-
-        @Override
-        public byte[] sign(String s, boolean b) throws MicrosoftDataEncryptionException {
-            return new byte[0];
-        }
-
-        @Override
-        public boolean verify(String s, boolean b, byte[] bytes) throws MicrosoftDataEncryptionException {
-            return true;
         }
     }
 

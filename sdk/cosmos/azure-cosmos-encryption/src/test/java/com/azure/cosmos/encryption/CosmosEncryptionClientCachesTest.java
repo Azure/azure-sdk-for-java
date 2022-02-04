@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.EncryptionCodeSnippet;
+import com.azure.cosmos.encryption.mdesupport.EncryptionKeyWrapProvider;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.implementation.ReflectionUtils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
@@ -19,7 +20,6 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.EncryptionKeyWrapMetadata;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
-import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
 import org.mockito.Mockito;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -51,17 +51,17 @@ public class CosmosEncryptionClientCachesTest extends TestSuiteBase {
     public void before_CosmosItemTest() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildAsyncClient();
-        EncryptionKeyStoreProvider encryptionKeyStoreProvider = new EncryptionAsyncApiCrudTest.TestEncryptionKeyStoreProvider();
+        EncryptionKeyWrapProvider encryptionKeyWrapProvider = new EncryptionAsyncApiCrudTest.TestEncryptionKeyStoreProvider();
         //Creating DB
         CosmosDatabaseProperties cosmosDatabaseProperties = this.client.createDatabase("TestDBForEncryptionCacheTest"
             , ThroughputProperties.createManualThroughput(1000)).block().getProperties();
         cosmosEncryptionAsyncClient = CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(this.client,
-            encryptionKeyStoreProvider);
+            encryptionKeyWrapProvider);
         cosmosEncryptionAsyncDatabase =
             cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(cosmosDatabaseProperties.getId());
         //Create ClientEncryptionKeys
-        metadata1 = new EncryptionKeyWrapMetadata(encryptionKeyStoreProvider.getProviderName(), "key1", "tempmetadata1");
-        metadata2 = new EncryptionKeyWrapMetadata(encryptionKeyStoreProvider.getProviderName(), "key2", "tempmetadata2");
+        metadata1 = new EncryptionKeyWrapMetadata(encryptionKeyWrapProvider.getProviderName(), "key1", "tempmetadata1");
+        metadata2 = new EncryptionKeyWrapMetadata(encryptionKeyWrapProvider.getProviderName(), "key2", "tempmetadata2");
         cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key1",
             CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256, metadata1).block();
         cosmosEncryptionAsyncDatabase.createClientEncryptionKey("key2",

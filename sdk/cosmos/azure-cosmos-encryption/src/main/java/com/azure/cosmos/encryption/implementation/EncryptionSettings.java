@@ -4,11 +4,11 @@
 package com.azure.cosmos.encryption.implementation;
 
 import com.azure.cosmos.encryption.EncryptionBridgeInternal;
+import com.azure.cosmos.encryption.mdesupport.MdeSupportBridgeHelpers;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
-import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.microsoft.data.encryption.cryptography.AeadAes256CbcHmac256EncryptionAlgorithm;
@@ -39,6 +39,8 @@ public final class EncryptionSettings {
     private AeadAes256CbcHmac256EncryptionAlgorithm aeadAes256CbcHmac256EncryptionAlgorithm;
     private EncryptionType encryptionType;
     private String databaseRid;
+    private final static MdeSupportBridgeHelpers.EncryptionKeyWrapProviderHelper.EncryptionKeyWrapProviderAccessor encryptionKeyWrapProviderAccessor =
+        MdeSupportBridgeHelpers.EncryptionKeyWrapProviderHelper.getEncryptionKeyWrapProviderAccessor();
 
     public Mono<EncryptionSettings> getEncryptionSettingForPropertyAsync(
         String propertyName,
@@ -85,7 +87,7 @@ public final class EncryptionSettings {
                                 ProtectedDataEncryptionKey protectedDataEncryptionKey;
                                 try {
                                     protectedDataEncryptionKey = buildProtectedDataEncryptionKey(keyProperties,
-                                        encryptionProcessor.getEncryptionKeyStoreProvider(),
+                                        encryptionKeyWrapProviderAccessor.getEncryptionKeyStoreProviderImpl(encryptionProcessor.getEncryptionKeyWrapProvider()),
                                         propertyToEncrypt.getClientEncryptionKeyId());
                                 } catch (Exception ex) {
                                     return Mono.error(ex);

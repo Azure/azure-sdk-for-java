@@ -9,14 +9,13 @@ import com.azure.cosmos.CosmosAsyncClientEncryptionKey;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.encryption.mdesupport.EncryptionKeyWrapProvider;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
-import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
-import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -29,27 +28,27 @@ public class CosmosEncryptionAsyncClient {
     private final CosmosAsyncClient cosmosAsyncClient;
     private final AsyncCache<String, CosmosContainerProperties> containerPropertiesCacheByContainerId;
     private final AsyncCache<String, CosmosClientEncryptionKeyProperties> clientEncryptionKeyPropertiesCacheByKeyId;
-    private EncryptionKeyStoreProvider encryptionKeyStoreProvider;
+    private EncryptionKeyWrapProvider encryptionKeyWrapProvider;
 
     CosmosEncryptionAsyncClient(CosmosAsyncClient cosmosAsyncClient,
-                                EncryptionKeyStoreProvider encryptionKeyStoreProvider) {
+                                EncryptionKeyWrapProvider encryptionKeyWrapProvider) {
         if (cosmosAsyncClient == null) {
             throw new IllegalArgumentException("cosmosClient is null");
         }
-        if (encryptionKeyStoreProvider == null) {
-            throw new IllegalArgumentException("encryptionKeyStoreProvider is null");
+        if (encryptionKeyWrapProvider == null) {
+            throw new IllegalArgumentException("encryptionKeyWrapProvider is null");
         }
         this.cosmosAsyncClient = cosmosAsyncClient;
-        this.encryptionKeyStoreProvider = encryptionKeyStoreProvider;
+        this.encryptionKeyWrapProvider = encryptionKeyWrapProvider;
         this.clientEncryptionKeyPropertiesCacheByKeyId = new AsyncCache<>();
         this.containerPropertiesCacheByContainerId = new AsyncCache<>();
     }
 
     /**
-     * @return the encryption key store provider
+     * @return the encryption key wrap provider
      */
-    public EncryptionKeyStoreProvider getEncryptionKeyStoreProvider() {
-        return encryptionKeyStoreProvider;
+    public EncryptionKeyWrapProvider getEncryptionKeyWrapProvider() {
+        return encryptionKeyWrapProvider;
     }
 
     Mono<CosmosContainerProperties> getContainerPropertiesAsync(
@@ -142,13 +141,13 @@ public class CosmosEncryptionAsyncClient {
      * Create Cosmos Client with Encryption support for performing operations using client-side encryption.
      *
      * @param cosmosAsyncClient          Regular Cosmos Client.
-     * @param encryptionKeyStoreProvider encryptionKeyStoreProvider, provider that allows interaction with the master
+     * @param encryptionKeyWrapProvider encryptionKeyWrapProvider, provider that allows interaction with the master
      *                                   keys.
      * @return encryptionAsyncCosmosClient to perform operations supporting client-side encryption / decryption.
      */
     public static CosmosEncryptionAsyncClient createCosmosEncryptionAsyncClient(CosmosAsyncClient cosmosAsyncClient,
-                                                                                EncryptionKeyStoreProvider encryptionKeyStoreProvider) {
-        return new CosmosEncryptionAsyncClient(cosmosAsyncClient, encryptionKeyStoreProvider);
+                                                                                EncryptionKeyWrapProvider encryptionKeyWrapProvider) {
+        return new CosmosEncryptionAsyncClient(cosmosAsyncClient, encryptionKeyWrapProvider);
     }
 
     /**
