@@ -396,7 +396,7 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all roles in a cloud service.
+     * @return a list of all roles in a cloud service as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CloudServiceRoleInner> listAsync(String resourceGroupName, String cloudServiceName) {
@@ -415,7 +415,7 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all roles in a cloud service.
+     * @return a list of all roles in a cloud service as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CloudServiceRoleInner> listAsync(
@@ -434,7 +434,7 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all roles in a cloud service.
+     * @return a list of all roles in a cloud service as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudServiceRoleInner> list(String resourceGroupName, String cloudServiceName) {
@@ -451,7 +451,7 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all roles in a cloud service.
+     * @return a list of all roles in a cloud service as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudServiceRoleInner> list(
