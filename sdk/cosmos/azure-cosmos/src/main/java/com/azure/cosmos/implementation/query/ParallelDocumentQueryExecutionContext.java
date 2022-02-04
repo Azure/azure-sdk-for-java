@@ -395,11 +395,13 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             BridgeInternal.getClientSideRequestStatisticsList(cosmosDiagnostics);
 
         try {
-            logger.info(
-                "Empty page request diagnostics for correlatedActivityId [{}] - activityId [{}] - [{}]",
-                correlatedActivityId,
-                activityId,
-                Utils.getSimpleObjectMapper().writeValueAsString(requestStatistics));
+            if (logger.isInfoEnabled()) {
+                logger.info(
+                    "Empty page request diagnostics for correlatedActivityId [{}] - activityId [{}] - [{}]",
+                    correlatedActivityId,
+                    activityId,
+                    Utils.getSimpleObjectMapper().writeValueAsString(requestStatistics));
+            }
 
         } catch (JsonProcessingException e) {
             logger.warn("Failed to log empty page diagnostics. ", e);
