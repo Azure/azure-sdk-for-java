@@ -11,7 +11,7 @@ Monitor Query client library for Java.
     * [Troubleshooting authentication issues with logs and metrics query requests](#authentication-errors)
 * [Troubleshooting Logs Query](#troubleshooting-logs-query)
     * [Troubleshooting insufficient access error](#troubleshooting-insufficient-access-error)
-    * [Troubleshooting invalid Kusto query](#troubleshooting-invalid-Kusto-query)
+    * [Troubleshooting invalid Kusto query](#troubleshooting-invalid-kusto-query)
     * [Troubleshooting empty log query results](#troubleshooting-empty-log-query-results)
     * [Troubleshooting client timeouts when executing logs query request](#troubleshooting-client-timeouts-when-executing-logs-query-request)
     * [Troubleshooting server timeouts when executing logs query request](#troubleshooting-server-timeouts-when-executing-logs-query-request)
@@ -23,6 +23,10 @@ Monitor Query client library for Java.
 ## General Troubleshooting
 
 ### Enable client logging
+
+To troubleshoot issues with Azure Monitor query library, it is important to first enable logging to monitor the 
+behavior of the application. The errors and warnings in the logs generally provide
+useful insights into what went wrong and sometimes include corrective actions to fix issues.
 The Azure client libraries for Java have two logging options:
 
 * A built-in logging framework.
