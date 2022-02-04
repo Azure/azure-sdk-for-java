@@ -109,7 +109,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
      * Creates an instance of exporter that is configured with given exporter client that sends telemetry events to
      * Application Insights resource identified by the instrumentation key.
      *
-     * @param client             The client used to send data to Azure Monitor.
+     * @param client The client used to send data to Azure Monitor.
      * @param instrumentationKey The instrumentation key of Application Insights resource.
      */
     AzureMonitorTraceExporter(MonitorExporterAsyncClient client, String instrumentationKey) {
@@ -746,6 +746,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
     }
 
     private void initTelemetry(AbstractTelemetryBuilder telemetryBuilder) {
+        telemetryBuilder.setInstrumentationKey(instrumentationKey);
         // Set AI Internal SDK Version
         telemetryBuilder.addTag(ContextTagKeys.AI_INTERNAL_SDK_VERSION.toString(), VersionGenerator.getSdkVersion());
     }
