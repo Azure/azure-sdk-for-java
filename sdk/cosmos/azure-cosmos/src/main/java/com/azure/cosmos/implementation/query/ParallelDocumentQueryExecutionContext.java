@@ -5,10 +5,12 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.RequestChargeTracker;
@@ -23,6 +25,8 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.concurrent.Queues;
@@ -44,6 +48,8 @@ import java.util.stream.Collectors;
  */
 public class ParallelDocumentQueryExecutionContext<T extends Resource>
         extends ParallelDocumentQueryExecutionContextBase<T> {
+    private static final Logger logger = LoggerFactory.getLogger(ParallelDocumentQueryExecutionContext.class);
+
     private final CosmosQueryRequestOptions cosmosQueryRequestOptions;
     private final Map<FeedRangeEpkImpl, String> partitionKeyRangeToContinuationTokenMap;
 
@@ -213,10 +219,11 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
         private final RequestChargeTracker tracker;
         private DocumentProducer<T>.DocumentProducerFeedResponse previousPage;
         private final CosmosQueryRequestOptions cosmosQueryRequestOptions;
+        private final UUID correlatedActivityId;
         private ConcurrentMap<String, QueryMetrics> emptyPageQueryMetricsMap = new ConcurrentHashMap<>();
         private CosmosDiagnostics cosmosDiagnostics;
 
-        public EmptyPagesFilterTransformer(RequestChargeTracker tracker, CosmosQueryRequestOptions options) {
+        public EmptyPagesFilterTransformer(RequestChargeTracker tracker, CosmosQueryRequestOptions options, UUID correlatedActivityId) {
 
             if (tracker == null) {
                 throw new IllegalArgumentException("Request Charge Tracker must not be null.");
@@ -225,6 +232,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             this.tracker = tracker;
             this.previousPage = null;
             this.cosmosQueryRequestOptions = options;
+            this.correlatedActivityId = correlatedActivityId;
         }
 
         private DocumentProducer<T>.DocumentProducerFeedResponse plusCharge(
@@ -286,6 +294,21 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                         BridgeInternal.queryMetricsFromFeedResponse(documentProducerFeedResponse.pageResult);
                     QueryMetrics.mergeQueryMetricsMap(emptyPageQueryMetricsMap, currentQueryMetrics);
                     cosmosDiagnostics = documentProducerFeedResponse.pageResult.getCosmosDiagnostics();
+
+                    if (ImplementationBridgeHelpers
+                        .CosmosQueryRequestOptionsHelper
+                        .getCosmosQueryRequestOptionsAccessor()
+                        .isEmptyPageDiagnosticsEnabled(cosmosQueryRequestOptions))
+                    {
+                        List<ClientSideRequestStatistics> requestStatistics =
+                            BridgeInternal.getClientSideRequestStatisticsList(cosmosDiagnostics);
+                        logger.info(
+                            "Empty page request diagnostics for correlatedActivityId [{}] - activityId [{}] - [{}]",
+                            this.correlatedActivityId,
+                            documentProducerFeedResponse.pageResult.getActivityId(),
+                            Utils.toJsonString(requestStatistics));
+                    }
+
                     return false;
                 }
                 return true;
@@ -386,7 +409,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
         logger.debug("ParallelQuery: flux mergeSequential" +
                          " concurrency {}, prefetch {}", fluxConcurrency, fluxPrefetch);
         return Flux.mergeSequential(obs, fluxConcurrency, fluxPrefetch)
-            .transformDeferred(new EmptyPagesFilterTransformer<>(new RequestChargeTracker(), this.cosmosQueryRequestOptions));
+            .transformDeferred(new EmptyPagesFilterTransformer<>(new RequestChargeTracker(), this.cosmosQueryRequestOptions, correlatedActivityId));
     }
 
     @Override

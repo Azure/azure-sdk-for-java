@@ -777,4 +777,12 @@ public class Utils {
         }
         return maxIntegratedCacheStaleness.toMillis();
     }
+
+    public static String toJsonString(Object input) {
+        try {
+            return getSimpleObjectMapper().writeValueAsString(input);
+        } catch (JsonProcessingException jsonError) {
+            return "EXCEPTION: " + jsonError.toString();
+        }
+    }
 }
