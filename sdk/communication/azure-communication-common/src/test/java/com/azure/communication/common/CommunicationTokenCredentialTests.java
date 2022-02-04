@@ -156,7 +156,7 @@ public class CommunicationTokenCredentialTests {
             throws InterruptedException, ExecutionException, IOException {
         int validForSecs = 8;
         double expectedTotalCallsTillLastSecond = Math.floor(Math.log(validForSecs));
-        String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", 8);
+        String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", validForSecs);
         AccessToken accessToken = (new TokenParser()).parseJWTToken(tokenStr);
         immediateFresher.resetCallCount();
         immediateFresher.setRefreshedToken(tokenStr);
@@ -164,10 +164,10 @@ public class CommunicationTokenCredentialTests {
                 .setRefreshProactively(true)
                 .setInitialToken(tokenStr);
         CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions);
-        long tokenTtlSecs = accessToken.getExpiresAt().toInstant().getEpochSecond() - Instant.now().getEpochSecond();
-        while (tokenTtlSecs > 1) {
+        long tokenTtlSecs = 0;
+        do {
             tokenTtlSecs = accessToken.getExpiresAt().toInstant().getEpochSecond() - Instant.now().getEpochSecond();
-        }
+        } while (tokenTtlSecs > 1);
         tokenCredential.close();
         assertEquals(expectedTotalCallsTillLastSecond, immediateFresher.numCalls());
     }

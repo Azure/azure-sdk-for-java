@@ -22,6 +22,7 @@ import java.util.function.Supplier;
  */
 public final class CommunicationTokenCredential implements AutoCloseable {
     private static final int DEFAULT_EXPIRING_OFFSET_MINUTES = 10;
+    private static final int DEFAULT_REFRESH_AFTER_TTL_DIVIDER = 2;
 
     private final ClientLogger logger = new ClientLogger(CommunicationTokenCredential.class);
 
@@ -70,9 +71,10 @@ public final class CommunicationTokenCredential implements AutoCloseable {
         } else {
             OffsetDateTime now = OffsetDateTime.now();
             long tokenTtlMs = accessToken.getExpiresAt().toInstant().toEpochMilli() - now.toInstant().toEpochMilli();
-            nextFetchTime = isTokenExpiringSoon()
-                    ? now.plusNanos(TimeUnit.NANOSECONDS.convert(tokenTtlMs / 2, TimeUnit.MILLISECONDS))
-                    : now.plusNanos(TimeUnit.NANOSECONDS.convert(tokenTtlMs, TimeUnit.MILLISECONDS) - TimeUnit.NANOSECONDS.convert(DEFAULT_EXPIRING_OFFSET_MINUTES, TimeUnit.MINUTES));
+            long nextFetchTimeMs = isTokenExpiringSoon()
+                    ? tokenTtlMs / DEFAULT_REFRESH_AFTER_TTL_DIVIDER
+                    : tokenTtlMs - TimeUnit.MILLISECONDS.convert(DEFAULT_EXPIRING_OFFSET_MINUTES, TimeUnit.MINUTES);
+            nextFetchTime = now.plusNanos(TimeUnit.NANOSECONDS.convert(nextFetchTimeMs, TimeUnit.MILLISECONDS));
         }
         fetchingTask = new FetchingTask(this, nextFetchTime);
     }
@@ -207,12 +209,13 @@ public final class CommunicationTokenCredential implements AutoCloseable {
             public void run() {
                 try {
                     Mono<String> tokenAsync = tokenCache.fetchFreshToken();
-                    String freshTokenString = tokenAsync.block();
-                    if (!tokenCache.isTokenExpired(freshTokenString)) {
-                        tokenCache.setToken(freshTokenString);
-                    } else {
-                        logger.logExceptionAsError(new IllegalArgumentException("The token returned from the tokenRefresher is expired."));
-                    }
+                    tokenAsync.subscribe(token -> {
+                        if (!tokenCache.isTokenExpired(token)) {
+                            tokenCache.setToken(token);
+                        } else {
+                            logger.logExceptionAsError(new IllegalArgumentException("The token returned from the tokenRefresher is expired."));
+                        }
+                    });
                 } catch (Exception exception) {
                     logger.logExceptionAsError(new RuntimeException(exception));
                 }
