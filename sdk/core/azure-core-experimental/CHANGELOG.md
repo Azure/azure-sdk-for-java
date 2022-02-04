@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Added `com.azure.core.experimental.messaging.MessageWithMetadata`.
+- Added `com.azure.core.experimental.models.MessageWithMetadata`.
 
 ### Other Changes
 
