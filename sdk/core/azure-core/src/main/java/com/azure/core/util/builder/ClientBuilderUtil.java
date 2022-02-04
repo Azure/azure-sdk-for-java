@@ -13,10 +13,10 @@ import java.util.Objects;
 /**
  * This class contains utility methods useful for client builders.
  */
-public final class BuilderUtil {
-    private BuilderUtil() { }
+public final class ClientBuilderUtil {
+    private ClientBuilderUtil() { }
 
-    private static final ClientLogger LOGGER = new ClientLogger(BuilderUtil.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ClientBuilderUtil.class);
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy();
 
     /**

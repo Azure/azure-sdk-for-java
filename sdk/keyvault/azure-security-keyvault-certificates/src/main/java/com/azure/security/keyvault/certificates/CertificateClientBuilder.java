@@ -27,7 +27,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
-import com.azure.core.util.builder.BuilderUtil;
+import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificateIdentifier;
@@ -228,7 +228,7 @@ public final class CertificateClientBuilder implements
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
         // Add retry policy.
-        policies.add(BuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
+        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
 
         policies.add(new KeyVaultCredentialPolicy(credential));
 
