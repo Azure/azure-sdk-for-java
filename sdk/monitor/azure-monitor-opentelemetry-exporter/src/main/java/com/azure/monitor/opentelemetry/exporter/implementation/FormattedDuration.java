@@ -1,32 +1,39 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+/*
+ * ApplicationInsights-Java
+ * Copyright (c) Microsoft Corporation
+ * All rights reserved.
+ *
+ * MIT License
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this
+ * software and associated documentation files (the ""Software""), to deal in the Software
+ * without restriction, including without limitation the rights to use, copy, modify, merge,
+ * publish, distribute, sublicense, and/or sell copies of the Software, and to permit
+ * persons to whom the Software is furnished to do so, subject to the following conditions:
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ * THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ * PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+ * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
 
 package com.azure.monitor.opentelemetry.exporter.implementation;
 
-import static java.util.concurrent.TimeUnit.DAYS;
-import static java.util.concurrent.TimeUnit.HOURS;
-import static java.util.concurrent.TimeUnit.MINUTES;
-import static java.util.concurrent.TimeUnit.NANOSECONDS;
-import static java.util.concurrent.TimeUnit.SECONDS;
+import static java.util.concurrent.TimeUnit.*;
 
-/**
- * This class contains several utility functions to format duration
- */
-public class FormattedDuration {
+public final class FormattedDuration {
+
     private static final long NANOSECONDS_PER_DAY = DAYS.toNanos(1);
     private static final long NANOSECONDS_PER_HOUR = HOURS.toNanos(1);
     private static final long NANOSECONDS_PER_MINUTE = MINUTES.toNanos(1);
     private static final long NANOSECONDS_PER_SECOND = SECONDS.toNanos(1);
 
-    private static final ThreadLocal<StringBuilder> REUSABLE_STRING_BUILDER =
+    private static final ThreadLocal<StringBuilder> reusableStringBuilder =
         ThreadLocal.withInitial(StringBuilder::new);
 
-    /**
-     * This method generates a formatted string based on input duration in nano seconds.
-     * @param durationNanos input duration in nano seconds.
-     * @return the formatted duration string.
-     */
-    public static String getFormattedDuration(long durationNanos) {
+    public static String fromNanos(long durationNanos) {
         long remainingNanos = durationNanos;
 
         long days = remainingNanos / NANOSECONDS_PER_DAY;
@@ -41,14 +48,19 @@ public class FormattedDuration {
         long seconds = remainingNanos / NANOSECONDS_PER_SECOND;
         remainingNanos = remainingNanos % NANOSECONDS_PER_SECOND;
 
-        StringBuilder sb = REUSABLE_STRING_BUILDER.get();
+        // TODO (trask) optimization: even better than reusing string builder would be to write this
+        //  directly to json stream during json serialization
+        StringBuilder sb = reusableStringBuilder.get();
         sb.setLength(0);
+
         appendDaysHoursMinutesSeconds(sb, days, hours, minutes, seconds);
         appendMinSixDigits(sb, NANOSECONDS.toMicros(remainingNanos));
+
         return sb.toString();
     }
 
-    private static void appendDaysHoursMinutesSeconds(StringBuilder sb, long days, long hours, long minutes, long seconds) {
+    private static void appendDaysHoursMinutesSeconds(
+        StringBuilder sb, long days, long hours, long minutes, long seconds) {
         if (days > 0) {
             sb.append(days);
             sb.append('.');
@@ -85,5 +97,8 @@ public class FormattedDuration {
             sb.append('0');
         }
         sb.append(value);
+    }
+
+    private FormattedDuration() {
     }
 }
