@@ -25,6 +25,7 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -295,11 +296,16 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                     QueryMetrics.mergeQueryMetricsMap(emptyPageQueryMetricsMap, currentQueryMetrics);
                     cosmosDiagnostics = documentProducerFeedResponse.pageResult.getCosmosDiagnostics();
 
-                    logEmptyPageDiagnostics(
-                        cosmosDiagnostics,
-                        this.cosmosQueryRequestOptions,
-                        this.correlatedActivityId,
-                        documentProducerFeedResponse.pageResult.getActivityId());
+                    if (ImplementationBridgeHelpers
+                        .CosmosQueryRequestOptionsHelper
+                        .getCosmosQueryRequestOptionsAccessor()
+                        .isEmptyPageDiagnosticsEnabled(cosmosQueryRequestOptions)) {
+
+                        logEmptyPageDiagnostics(
+                            cosmosDiagnostics,
+                            this.correlatedActivityId,
+                            documentProducerFeedResponse.pageResult.getActivityId());
+                    }
 
                     return false;
                 }
@@ -383,21 +389,20 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
 
     static void logEmptyPageDiagnostics(
         CosmosDiagnostics cosmosDiagnostics,
-        CosmosQueryRequestOptions queryRequestOptions,
         UUID correlatedActivityId,
         String activityId) {
-        if (ImplementationBridgeHelpers
-            .CosmosQueryRequestOptionsHelper
-            .getCosmosQueryRequestOptionsAccessor()
-            .isEmptyPageDiagnosticsEnabled(queryRequestOptions))
-        {
-            List<ClientSideRequestStatistics> requestStatistics =
-                BridgeInternal.getClientSideRequestStatisticsList(cosmosDiagnostics);
+        List<ClientSideRequestStatistics> requestStatistics =
+            BridgeInternal.getClientSideRequestStatisticsList(cosmosDiagnostics);
+
+        try {
             logger.info(
                 "Empty page request diagnostics for correlatedActivityId [{}] - activityId [{}] - [{}]",
                 correlatedActivityId,
                 activityId,
-                Utils.toJsonString(requestStatistics));
+                Utils.getSimpleObjectMapper().writeValueAsString(requestStatistics));
+
+        } catch (JsonProcessingException e) {
+            logger.warn("Failed to log empty page diagnostics. ", e);
         }
     }
 
