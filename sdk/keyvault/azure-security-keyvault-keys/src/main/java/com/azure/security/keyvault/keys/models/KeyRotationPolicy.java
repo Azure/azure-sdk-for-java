@@ -3,31 +3,30 @@
 
 package com.azure.security.keyvault.keys.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicyAttributes;
+import com.azure.security.keyvault.keys.implementation.models.LifetimeAction;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * The complete key rotation policy that belongs to a key.
  */
-@Immutable
-public final class KeyRotationPolicy extends KeyRotationPolicyProperties {
-    private final String id;
-    private final OffsetDateTime createdOn;
-    private final OffsetDateTime updatedOn;
+public final class KeyRotationPolicy {
+    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    private String id;
 
-    /**
-     * Creates an instance of {@link KeyRotationPolicy}.
-     *
-     * @param id The identifier of the {@link KeyRotationPolicy policy}.
-     * @param createdOn The {@link KeyRotationPolicy policy's} created time in UTC.
-     * @param updatedOn The {@link KeyRotationPolicy policy's} last updated time in UTC.
-     */
-    public KeyRotationPolicy(String id, OffsetDateTime createdOn, OffsetDateTime updatedOn) {
-        this.id = id;
-        this.createdOn = createdOn;
-        this.updatedOn = updatedOn;
+    private List<KeyRotationLifetimeAction> keyRotationLifetimeActions;
+    private String expiresIn;
+    private OffsetDateTime createdOn;
+    private OffsetDateTime updatedOn;
+
+    public KeyRotationPolicy() {
+        // Empty constructor for Jackson deserialization.
     }
 
     /**
@@ -39,6 +38,60 @@ public final class KeyRotationPolicy extends KeyRotationPolicyProperties {
      */
     public String getId() {
         return this.id;
+    }
+
+    /**
+     * Get the actions that will be performed by Key Vault over the lifetime of a key.
+     *
+     * <p>You may also pass an empty array to restore to its default values.</p>
+     *
+     * @return The {@link KeyRotationLifetimeAction actions} in this {@link KeyRotationPolicy policy}.
+     */
+    public List<KeyRotationLifetimeAction> getLifetimeActions() {
+        return this.keyRotationLifetimeActions;
+    }
+
+    /**
+     * Set the actions that will be performed by Key Vault over the lifetime of a key.
+     *
+     * <p>You may also pass an empty array to restore to its default values.</p>
+     *
+     * @param keyRotationLifetimeActions The {@link KeyRotationLifetimeAction actions} to set.
+     *
+     * @return The updated {@link KeyRotationPolicy} object.
+     */
+    public KeyRotationPolicy setLifetimeActions(List<KeyRotationLifetimeAction> keyRotationLifetimeActions) {
+        this.keyRotationLifetimeActions = keyRotationLifetimeActions;
+
+        return this;
+    }
+
+
+
+    /**
+     * Get the optional key expiration period used to define the duration after which a newly rotated key will expire.
+     * It should be defined as an ISO 8601 duration. For example, 90 days would be formatted as follows: "P90D", 3
+     * months would be "P3M", 48 hours would be "PT48H" and 1 year and 10 days would be "P1Y10D".
+     *
+     * @return The expiration time in ISO 8601 format.
+     */
+    public String getExpiresIn() {
+        return this.expiresIn;
+    }
+
+    /**
+     * Set the optional key expiration period used to define the duration after which a newly rotated key will expire.
+     * It should be defined as an ISO 8601 duration. For example, 90 days would be formatted as follows: "P90D", 3
+     * months would be "P3M", 48 hours would be "PT48H" and 1 year and 10 days would be "P1Y10D".
+     *
+     * @param expiresIn The expiration time to set in ISO 8601 format.
+     *
+     * @return The updated {@link KeyRotationPolicy} object.
+     */
+    public KeyRotationPolicy setExpiresIn(String expiresIn) {
+        this.expiresIn = expiresIn;
+
+        return this;
     }
 
     /**
@@ -63,33 +116,27 @@ public final class KeyRotationPolicy extends KeyRotationPolicyProperties {
         return this.updatedOn;
     }
 
-    /**
-     * Set the optional key expiration period used to define the duration after which a newly rotated key will expire.
-     * It should be defined as an ISO 8601 duration. For example, 90 days would be formatted as follows: "P90D", 3
-     * months would be "P3M", 48 hours would be "PT48H" and 1 year and 10 days would be "P1Y10D".
-     *
-     * @param expiryTime The expiry time to set in ISO 8601 format.
-     *
-     * @return The updated {@link KeyRotationPolicy} object.
-     */
-    public KeyRotationPolicy setExpiryTime(String expiryTime) {
-        this.expiryTime = expiryTime;
+    @JsonProperty(value = "lifetimeActions")
+    private void unpackLifetimeActions(List<LifetimeAction> lifetimeActions) {
+        if (lifetimeActions != null) {
+            this.keyRotationLifetimeActions = new ArrayList<>();
 
-        return this;
+            for (LifetimeAction lifetimeAction : lifetimeActions) {
+                this.keyRotationLifetimeActions.add(new KeyRotationLifetimeAction(lifetimeAction.getAction().getType())
+                    .setTimeBeforeExpiry(lifetimeAction.getTrigger().getTimeBeforeExpiry())
+                    .setTimeAfterCreate(lifetimeAction.getTrigger().getTimeAfterCreate()));
+            }
+        }
     }
 
-    /**
-     * Set the actions that will be performed by Key Vault over the lifetime of a key.
-     *
-     * <p>You may also pass an empty array to restore to its default values.</p>
-     *
-     * @param keyRotationLifetimeActions The {@link KeyRotationLifetimeAction actions} to set.
-     *
-     * @return The updated {@link KeyRotationPolicy} object.
-     */
-    public KeyRotationPolicy setLifetimeActions(List<KeyRotationLifetimeAction> keyRotationLifetimeActions) {
-        this.keyRotationLifetimeActions = keyRotationLifetimeActions;
-
-        return this;
+    @JsonProperty("attributes")
+    private void unpackAttributes(KeyRotationPolicyAttributes attributes) {
+        if (attributes != null) {
+            this.createdOn = OffsetDateTime.of(LocalDateTime.ofEpochSecond(attributes.getCreatedOn(), 0, ZoneOffset.UTC),
+                ZoneOffset.UTC);
+            this.updatedOn = OffsetDateTime.of(LocalDateTime.ofEpochSecond(attributes.getUpdatedOn(), 0, ZoneOffset.UTC),
+                ZoneOffset.UTC);
+            this.expiresIn = attributes.getExpiryTime();
+        }
     }
 }

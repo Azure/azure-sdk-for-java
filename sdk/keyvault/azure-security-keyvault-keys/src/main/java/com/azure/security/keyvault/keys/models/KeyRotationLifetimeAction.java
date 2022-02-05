@@ -10,26 +10,26 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public final class KeyRotationLifetimeAction {
-    private final KeyRotationPolicyAction type;
+    private final KeyRotationPolicyAction action;
     private String timeAfterCreate;
     private String timeBeforeExpiry;
 
     /**
      * Creates a {@link KeyRotationLifetimeAction}.
      *
-     * @param type The {@link KeyRotationPolicyAction type} of the action.
+     * @param action The {@link KeyRotationPolicyAction policy action}.
      */
-    public KeyRotationLifetimeAction(KeyRotationPolicyAction type) {
-        this.type = type;
+    public KeyRotationLifetimeAction(KeyRotationPolicyAction action) {
+        this.action = action;
     }
 
     /**
-     * Get the {@link KeyRotationPolicyAction type} of the action.
+     * Get the {@link KeyRotationPolicyAction policy action}.
      *
-     * @return The {@link KeyRotationPolicyAction type} of the action.
+     * @return The {@link KeyRotationPolicyAction policy action}.
      */
-    public KeyRotationPolicyAction getType() {
-        return this.type;
+    public KeyRotationPolicyAction getAction() {
+        return this.action;
     }
 
     /**

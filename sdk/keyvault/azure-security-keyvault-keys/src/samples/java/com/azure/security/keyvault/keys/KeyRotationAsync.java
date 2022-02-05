@@ -6,8 +6,8 @@ package com.azure.security.keyvault.keys;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.KeyRotationLifetimeAction;
+import com.azure.security.keyvault.keys.models.KeyRotationPolicy;
 import com.azure.security.keyvault.keys.models.KeyRotationPolicyAction;
-import com.azure.security.keyvault.keys.models.KeyRotationPolicyProperties;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,15 +46,15 @@ public class KeyRotationAsync {
         KeyRotationLifetimeAction rotateLifetimeAction = new KeyRotationLifetimeAction(KeyRotationPolicyAction.ROTATE)
             .setTimeAfterCreate("P90D"); // Rotate the key after 90 days of its creation.
         keyRotationLifetimeActionList.add(rotateLifetimeAction);
-        KeyRotationPolicyProperties keyRotationPolicyProperties = new KeyRotationPolicyProperties()
+        KeyRotationPolicy keyRotationPolicy = new KeyRotationPolicy()
             .setLifetimeActions(keyRotationLifetimeActionList)
-            .setExpiryTime("P6M"); // Make any new versions of the key expire 6 months after creation.
+            .setExpiresIn("P6M"); // Make any new versions of the key expire 6 months after creation.
 
         // An object containing the details of the recently updated key rotation policy will be returned by the update
         // method.
-        keyAsyncClient.updateKeyRotationPolicy(keyName, keyRotationPolicyProperties)
-            .subscribe(keyRotationPolicy ->
-                System.out.printf("Updated key rotation policy with id: %s%n", keyRotationPolicy.getId()));
+        keyAsyncClient.updateKeyRotationPolicy(keyName, keyRotationPolicy)
+            .subscribe(updatedPolicy ->
+                System.out.printf("Updated key rotation policy with id: %s%n", updatedPolicy.getId()));
 
         // You can also manually rotate a key by calling the following method.
         keyAsyncClient.rotateKey(keyName)
