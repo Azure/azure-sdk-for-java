@@ -11,7 +11,6 @@ import static com.microsoft.azure.spring.cloud.config.TestUtils.propPair;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
-import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 import java.io.InputStream;
 
@@ -23,7 +22,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.powermock.api.mockito.PowerMockito;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
@@ -52,9 +50,8 @@ public class AppConfigurationBootstrapConfigurationTest {
 
     @Before
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         try {
-            PowerMockito.whenNew(ObjectMapper.class).withAnyArguments().thenReturn(mockObjectMapper);
             when(mockClosableHttpResponse.getStatusLine())
                     .thenReturn(new BasicStatusLine(new ProtocolVersion("", 0, 0), 200, ""));
             when(mockClosableHttpResponse.getEntity()).thenReturn(mockHttpEntity);
@@ -66,14 +63,12 @@ public class AppConfigurationBootstrapConfigurationTest {
 
     @Test
     public void iniConnectionStringSystemAssigned() throws Exception {
-        whenNew(ClientStore.class).withAnyArguments().thenReturn(clientStoreMock);
         contextRunner.withPropertyValues(propPair(FAIL_FAST_PROP, "false"))
                 .run(context -> assertThat(context).hasSingleBean(AppConfigurationPropertySourceLocator.class));
     }
 
     @Test
     public void iniConnectionStringUserAssigned() throws Exception {
-        whenNew(ClientStore.class).withAnyArguments().thenReturn(clientStoreMock);
         contextRunner
                 .withPropertyValues(propPair(FAIL_FAST_PROP, "false"),
                         propPair("spring.cloud.azure.appconfiguration.managed-identity.client-id", "client-id"))
@@ -82,7 +77,6 @@ public class AppConfigurationBootstrapConfigurationTest {
 
     @Test
     public void propertySourceLocatorBeanCreated() throws Exception {
-        whenNew(ClientStore.class).withAnyArguments().thenReturn(clientStoreMock);
         contextRunner
                 .withPropertyValues(propPair(CONN_STRING_PROP, TEST_CONN_STRING), propPair(FAIL_FAST_PROP, "false"))
                 .run(context -> assertThat(context).hasSingleBean(AppConfigurationPropertySourceLocator.class));
@@ -90,11 +84,8 @@ public class AppConfigurationBootstrapConfigurationTest {
 
     @Test
     public void clientsBeanCreated() throws Exception {
-        whenNew(ClientStore.class).withAnyArguments().thenReturn(clientStoreMock);
         contextRunner
                 .withPropertyValues(propPair(CONN_STRING_PROP, TEST_CONN_STRING), propPair(FAIL_FAST_PROP, "false"))
-                .run(context -> {
-                    assertThat(context).hasSingleBean(ClientStore.class);
-                });
+                .run(context -> assertThat(context).hasSingleBean(ClientStore.class));
     }
 }

@@ -82,7 +82,7 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
     @Override
     public String[] getPropertyNames() {
         Set<String> keySet = properties.keySet();
-        return keySet.toArray(new String[keySet.size()]);
+        return keySet.toArray(new String[0]);
     }
 
     @Override
@@ -163,21 +163,22 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
 
             // Check if we already have a client for this key vault, if not we will make
             // one
-            if (!keyVaultClients.containsKey(uri.getHost())) {
-                KeyVaultClient client = new KeyVaultClient(appConfigurationProperties, uri, keyVaultCredentialProvider,
-                        keyVaultClientProvider);
-                keyVaultClients.put(uri.getHost(), client);
-            }
-            KeyVaultSecret secret = keyVaultClients.get(uri.getHost()).getSecret(uri, appProperties.getMaxRetryTime());
+            KeyVaultSecret secret = getKeyVaultClient(uri, uri.getHost())
+                .getSecret(uri, appProperties.getMaxRetryTime());
             if (secret == null) {
                 throw new IOException("No Key Vault Secret found for Reference.");
             }
             secretValue = secret.getValue();
         } catch (RuntimeException | IOException e) {
-            LOGGER.error("Error Retreiving Key Vault Entry");
+            LOGGER.error("Error Retrieving Key Vault Entry");
             ReflectionUtils.rethrowRuntimeException(e);
         }
         return secretValue;
+    }
+
+    KeyVaultClient getKeyVaultClient(URI uri, String uriHost) {
+        return keyVaultClients.computeIfAbsent(uriHost, ignored ->
+            new KeyVaultClient(appConfigurationProperties, uri, keyVaultCredentialProvider, keyVaultClientProvider));
     }
 
     /**
@@ -243,7 +244,7 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
                 return feature;
 
             } catch (IOException e) {
-                throw new IOException("Unabled to parse Feature Management values from Azure.", e);
+                throw new IOException("Unable to parse Feature Management values from Azure.", e);
             }
 
         } else {
