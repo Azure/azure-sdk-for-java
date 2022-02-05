@@ -219,7 +219,7 @@ public final class SchemaRegistryApacheAvroEncoder {
 
         // Temporary back-compat for the first beta while we phase this out. In the future, it will return an error.
         // Check if the first 4 bytes of the payload have the format.
-        final byte[] schemaIdBytes = new byte[RECORD_FORMAT_INDICATOR_SIZE];
+        final byte[] recordFormatIndicator = new byte[RECORD_FORMAT_INDICATOR_SIZE];
         contents.mark();
 
         // Don't try to get 4 bytes if there isn't enough, so we don't get a BufferUnderflowException.
@@ -227,12 +227,15 @@ public final class SchemaRegistryApacheAvroEncoder {
         if (contents.remaining() < RECORD_FORMAT_INDICATOR_SIZE) {
             hasPreamble = false;
         } else {
-            contents.get(schemaIdBytes);
-            hasPreamble = Arrays.equals(RECORD_FORMAT_INDICATOR, schemaIdBytes);
+            contents.get(recordFormatIndicator);
+            hasPreamble = Arrays.equals(RECORD_FORMAT_INDICATOR, recordFormatIndicator);
         }
 
         if (hasPreamble) {
-            schemaId = new String(schemaIdBytes, StandardCharsets.UTF_8);
+            final byte[] schemaGuidByteArray = new byte[SCHEMA_ID_SIZE];
+            contents.get(schemaGuidByteArray);
+
+            schemaId = new String(schemaGuidByteArray, StandardCharsets.UTF_8);
         } else {
             if (CoreUtils.isNullOrEmpty(message.getContentType())) {
                 return monoError(logger, new IllegalArgumentException("Cannot deserialize message with no content-type."));
