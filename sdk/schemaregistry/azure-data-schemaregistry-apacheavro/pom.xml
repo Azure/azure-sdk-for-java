@@ -60,6 +60,18 @@
       <version>1.10.1</version> <!-- {x-version-update;org.apache.avro:avro;external_dependency} -->
     </dependency>
 
+    <!-- Explicitly stating these because org.apache.avro uses an older version of jackson. -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>2.13.1</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.13.1</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+    </dependency>
+
     <!-- Test dependencies -->
     <dependency>
       <groupId>io.projectreactor</groupId>
