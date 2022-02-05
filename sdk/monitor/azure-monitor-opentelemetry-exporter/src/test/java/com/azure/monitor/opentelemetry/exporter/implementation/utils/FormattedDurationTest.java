@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.monitor.opentelemetry.exporter.implementation;
+package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 
 import org.junit.jupiter.api.Test;
 
