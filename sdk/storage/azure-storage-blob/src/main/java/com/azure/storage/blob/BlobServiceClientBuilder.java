@@ -23,7 +23,11 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationDoc;
+import com.azure.core.util.ConfigurationProperty;
+import com.azure.core.util.ConfigurationPropertyBuilder;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
@@ -68,6 +72,24 @@ public final class BlobServiceClientBuilder implements
     ConfigurationTrait<BlobServiceClientBuilder> {
     private final ClientLogger logger = new ClientLogger(BlobServiceClientBuilder.class);
 
+
+    @ConfigurationDoc(description = "connection string")
+    private final static ConfigurationProperty<String> CONNECTION_STRING_PROPERTY = ConfigurationProperty.stringPropertyBuilder("connection-string").build();
+
+    @ConfigurationDoc(description = "sas token")
+    private final static ConfigurationProperty<String> SAS_TOKEN_PROPERTY = ConfigurationProperty.stringPropertyBuilder("sas-token").build();
+
+    @ConfigurationDoc(description = "endpoint")
+    private final static ConfigurationProperty<String> ENDPOINT_PROPERTY = ConfigurationProperty.stringPropertyBuilder("endpoint").build();
+
+    @ConfigurationDoc(description = "encryption scope")
+    private final static ConfigurationProperty<String> ENCRYPTION_SCOPE_PROPERTY = ConfigurationProperty.stringPropertyBuilder("encryption-scope").build();
+
+    @ConfigurationDoc(description = "version")
+    private final static ConfigurationProperty<BlobServiceVersion> VERSION_PROPERTY = new ConfigurationPropertyBuilder<BlobServiceVersion>("service-version", s -> BlobServiceVersion.valueOf(s))
+        .build();
+
+
     private String endpoint;
     private String accountName;
 
@@ -107,12 +129,66 @@ public final class BlobServiceClientBuilder implements
         return new BlobServiceClient(buildAsyncClient());
     }
 
+    private void populateConfiguration(Configuration configuration) {
+        if (configuration == null) {
+            return;
+        }
+
+        if (this.version == null) {
+            BlobServiceVersion version =  configuration.get(VERSION_PROPERTY);
+            if (version != null) {
+                this.serviceVersion(version);
+            }
+        }
+
+        if (this.encryptionScope == null) {
+            String encryptionScope = configuration.get(ENCRYPTION_SCOPE_PROPERTY);
+            if (encryptionScope != null) {
+                this.encryptionScope(encryptionScope);
+            }
+        }
+
+        if (this.endpoint == null) {
+            String endpoint = configuration.get(ENDPOINT_PROPERTY);
+            if (endpoint != null) {
+                this.endpoint(endpoint);
+            }
+
+            String connectionString = configuration.get(CONNECTION_STRING_PROPERTY);
+            if (connectionString != null) {
+                this.connectionString(connectionString);
+            }
+        }
+
+        if (this.sasToken == null) {
+            String sasToken = configuration.get(SAS_TOKEN_PROPERTY);
+            if (sasToken != null) {
+                this.sasToken(sasToken);
+            }
+        }
+
+        if (this.retryOptions == null) {
+
+        }
+
+        this.clientOptions(HttpClientOptions.fromConfiguration(configuration, this.clientOptions));
+
+        if (this.logOptions == null) {
+            HttpLogOptions options = HttpLogOptions.fromConfiguration(configuration);
+            if (options != null) {
+                this.httpLogOptions(options);
+            }
+        }
+    }
+
+
     /**
      * @return a {@link BlobServiceAsyncClient} created from the configurations in this builder.
      * @throws IllegalArgumentException If no credentials are provided.
      * @throws IllegalStateException If multiple credentials have been specified.
      */
     public BlobServiceAsyncClient buildAsyncClient() {
+        populateConfiguration(configuration);
         BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, logger);
 
         boolean anonymousAccess = false;

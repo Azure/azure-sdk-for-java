@@ -76,7 +76,7 @@ public class AzureEventHubsMessagingAutoConfiguration {
             ConfigurationBuilder configurationBuilder) {
             return new DefaultEventHubsNamespaceProcessorFactory(checkpointStore, properties,
                 suppliers.getIfAvailable(),
-                configurationBuilder.section("eventhubs").build());
+                configurationBuilder.buildSection("eventhubs"));
         }
 
         @Bean
@@ -98,7 +98,7 @@ public class AzureEventHubsMessagingAutoConfiguration {
         public EventHubsProducerFactory defaultEventHubsNamespaceProducerFactory(
             NamespaceProperties properties,
             ObjectProvider<PropertiesSupplier<String, ProducerProperties>> suppliers, ConfigurationBuilder configurationBuilder) {
-            return new DefaultEventHubsNamespaceProducerFactory(properties, suppliers.getIfAvailable(), configurationBuilder.section("eventhubs").build());
+            return new DefaultEventHubsNamespaceProducerFactory(properties, suppliers.getIfAvailable(), configurationBuilder.buildSection("eventhubs"));
         }
 
         @Bean

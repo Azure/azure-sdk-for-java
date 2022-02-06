@@ -29,7 +29,7 @@ public class AzureServiceBusAutoConfiguration extends AzureServiceConfigurationB
 
 
     public AzureServiceBusAutoConfiguration(AzureGlobalProperties azureGlobalProperties, ConfigurationBuilder configurationBuilder) {
-        super(azureGlobalProperties, configurationBuilder.section("servicebus").build());
+        super(azureGlobalProperties, configurationBuilder.buildSection("servicebus"));
     }
 
     @Bean

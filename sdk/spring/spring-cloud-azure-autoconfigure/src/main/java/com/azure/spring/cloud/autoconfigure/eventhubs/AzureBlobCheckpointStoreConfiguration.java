@@ -74,7 +74,7 @@ public class AzureBlobCheckpointStoreConfiguration {
                                                                        Optional<AzureServiceClientBuilderCustomizer<BlobContainerClientBuilder>> builderCustomizer) {
         return Utils.configureBuilder(
             new BlobContainerClientBuilder(),
-            sdkConfigurationBuilder.section("eventhubs.processor.checkpoint-store").build(),
+            sdkConfigurationBuilder.buildSection("eventhubs.processor.checkpoint-store"),
             defaultTokenCredential,
             builderCustomizer);
     }

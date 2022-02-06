@@ -17,7 +17,6 @@ public class ConfigurationBuilder {
     private final ClientLogger logger;
     private String rootPath;
     private Configuration defaults;
-    private String path;
 
     public ConfigurationBuilder(ConfigurationSource source) {
         this.source = Objects.requireNonNull(source, "'source' cannot be null");
@@ -39,13 +38,16 @@ public class ConfigurationBuilder {
         return this;
     }
 
-    public ConfigurationBuilder section(String path) {
-        Objects.requireNonNull(path, "'clientPath' cannot be null");
-        this.path = path;
-        return this;
+    public Configuration build() {
+        if (defaults == null) {
+            // defaults can be reused to get different client sections.
+            defaults = new Configuration(readConfigurations(this.source, rootPath), environmentConfiguration, rootPath, null);
+        }
+        return defaults;
     }
 
-    public Configuration build() {
+    public Configuration buildSection(String path) {
+        Objects.requireNonNull(path, "'path' cannot be null");
         if (defaults == null) {
             // defaults can be reused to get different client sections.
             defaults = new Configuration(readConfigurations(this.source, rootPath), environmentConfiguration, rootPath, null);

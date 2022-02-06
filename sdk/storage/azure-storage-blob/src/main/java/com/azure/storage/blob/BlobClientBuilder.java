@@ -21,7 +21,11 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationDoc;
+import com.azure.core.util.ConfigurationProperty;
+import com.azure.core.util.ConfigurationPropertyBuilder;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
@@ -65,6 +69,32 @@ public final class BlobClientBuilder implements
         HttpTrait<BlobClientBuilder>,
     ConfigurationTrait<BlobClientBuilder> {
     private final ClientLogger logger = new ClientLogger(BlobClientBuilder.class);
+
+    @ConfigurationDoc(description = "connection string")
+    private final static ConfigurationProperty<String> CONNECTION_STRING_PROPERTY = ConfigurationProperty.stringPropertyBuilder("connection-string").build();
+
+    @ConfigurationDoc(description = "sas token")
+    private final static ConfigurationProperty<String> SAS_TOKEN_PROPERTY = ConfigurationProperty.stringPropertyBuilder("sas-token").build();
+
+    @ConfigurationDoc(description = "endpoint")
+    private final static ConfigurationProperty<String> ENDPOINT_PROPERTY = ConfigurationProperty.stringPropertyBuilder("endpoint").build();
+
+
+    @ConfigurationDoc(description = "container name")
+    private final static ConfigurationProperty<String> CONTAINER_NAME_PROPERTY = ConfigurationProperty.stringPropertyBuilder("container-name").build();
+
+    @ConfigurationDoc(description = "blob name")
+    private final static ConfigurationProperty<String> BLOB_NAME_PROPERTY = ConfigurationProperty.stringPropertyBuilder("blob-name").build();
+
+    @ConfigurationDoc(description = "encryption scope")
+    private final static ConfigurationProperty<String> ENCRYPTION_SCOPE_PROPERTY = ConfigurationProperty.stringPropertyBuilder("encryption-scope").build();
+
+    @ConfigurationDoc(description = "version")
+    private final static ConfigurationProperty<BlobServiceVersion> VERSION_PROPERTY = new ConfigurationPropertyBuilder<BlobServiceVersion>("service-version", s -> BlobServiceVersion.valueOf(s))
+        .build();
+
+    @ConfigurationDoc(description = "snapshot")
+    private final static ConfigurationProperty<String> SNAPSHOT_PROPERTY = ConfigurationProperty.stringPropertyBuilder("snapshot").build();
 
     private String endpoint;
     private String accountName;
@@ -142,6 +172,7 @@ public final class BlobClientBuilder implements
      * @throws IllegalStateException If multiple credentials have been specified.
      */
     public BlobAsyncClient buildAsyncClient() {
+        populateConfiguration(configuration);
         Objects.requireNonNull(blobName, "'blobName' cannot be null.");
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
 
@@ -168,6 +199,79 @@ public final class BlobClientBuilder implements
 
         return new BlobAsyncClient(pipeline, endpoint, serviceVersion, accountName, blobContainerName, blobName,
             snapshot, customerProvidedKey, encryptionScope, versionId);
+    }
+
+    private void populateConfiguration(Configuration configuration) {
+        if (configuration == null) {
+            return;
+        }
+
+        if (this.version == null) {
+            BlobServiceVersion version =  configuration.get(VERSION_PROPERTY);
+            if (version != null) {
+                this.serviceVersion(version);
+            }
+        }
+
+        if (this.encryptionScope == null) {
+            String encryptionScope = configuration.get(ENCRYPTION_SCOPE_PROPERTY);
+            if (encryptionScope != null) {
+                this.encryptionScope(encryptionScope);
+            }
+        }
+
+        if (this.endpoint == null) {
+            String endpoint = configuration.get(ENDPOINT_PROPERTY);
+            if (endpoint != null) {
+                this.endpoint(endpoint);
+            }
+
+            String connectionString = configuration.get(CONNECTION_STRING_PROPERTY);
+            if (connectionString != null) {
+                this.connectionString(connectionString);
+            }
+        }
+
+        if (this.containerName == null) {
+            String container =  configuration.get(CONTAINER_NAME_PROPERTY);
+            if (container != null) {
+                this.containerName(container);
+            }
+        }
+
+        if (this.blobName == null) {
+            String blobName =  configuration.get(BLOB_NAME_PROPERTY);
+            if (blobName != null) {
+                this.blobName(blobName);
+            }
+        }
+
+        if (this.sasToken == null) {
+            String sasToken = configuration.get(SAS_TOKEN_PROPERTY);
+            if (sasToken != null) {
+                this.sasToken(sasToken);
+            }
+        }
+
+        if (this.snapshot == null) {
+            String snapshot = configuration.get(SNAPSHOT_PROPERTY);
+            if (snapshot != null) {
+                this.snapshot(snapshot);
+            }
+        }
+
+        if (this.retryOptions == null) {
+
+        }
+
+        this.clientOptions(HttpClientOptions.fromConfiguration(configuration, this.clientOptions));
+
+        if (this.logOptions == null) {
+            HttpLogOptions options = HttpLogOptions.fromConfiguration(configuration);
+            if (options != null) {
+                this.httpLogOptions(options);
+            }
+        }
     }
 
     /**

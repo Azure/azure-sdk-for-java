@@ -5,7 +5,7 @@ package com.azure.spring.cloud.actuate.autoconfigure.storage;
 
 import com.azure.spring.cloud.actuate.storage.StorageBlobHealthIndicator;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
-import com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.storage.blob.implementation.AzureStorageBlobAutoConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;

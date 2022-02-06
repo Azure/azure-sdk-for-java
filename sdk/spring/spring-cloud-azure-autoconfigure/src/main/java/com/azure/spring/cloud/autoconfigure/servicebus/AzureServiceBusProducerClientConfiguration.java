@@ -59,7 +59,7 @@ class AzureServiceBusProducerClientConfiguration {
     @ConditionalOnBean(ServiceBusSenderClientBuilderFactory.class)
     ServiceBusClientBuilder.ServiceBusSenderClientBuilder serviceBusSenderClientBuilder(
         ServiceBusSenderClientBuilderFactory builderFactory) {
-        return builderFactory.build(sdkConfigurationBuilder.section("servicebus").build());
+        return builderFactory.build(sdkConfigurationBuilder.buildSection("servicebus"));
     }
 
     @Bean

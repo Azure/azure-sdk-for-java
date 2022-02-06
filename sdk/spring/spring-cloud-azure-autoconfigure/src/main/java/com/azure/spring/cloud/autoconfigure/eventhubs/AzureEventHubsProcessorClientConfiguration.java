@@ -67,7 +67,7 @@ class AzureEventHubsProcessorClientConfiguration {
     @Bean
     @ConditionalOnMissingBean
     EventProcessorClientBuilder eventProcessorClientBuilder(EventProcessorClientBuilderFactory factory) {
-        return factory.build(configurationBuilder.section("eventhubs").build());
+        return factory.build(configurationBuilder.buildSection("eventhubs"));
     }
 
     static class ProcessorAvailableCondition extends AllNestedConditions {

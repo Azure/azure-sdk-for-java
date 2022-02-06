@@ -61,8 +61,7 @@ public final class AzureKeyCredential {
     }
 
     @ConfigurationDoc(description = "key credential.")
-    private final static ConfigurationProperty<String> KEY_PROPERTY = ConfigurationProperty.stringPropertyBuilder("credential.key")
-        .build();
+    private final static ConfigurationProperty<String> KEY_PROPERTY = ConfigurationProperty.stringPropertyBuilder("credential.key").build();
 
     public static AzureKeyCredential fromConfiguration(Configuration configuration, AzureKeyCredential defaultValue) {
         String key = configuration.get(KEY_PROPERTY);

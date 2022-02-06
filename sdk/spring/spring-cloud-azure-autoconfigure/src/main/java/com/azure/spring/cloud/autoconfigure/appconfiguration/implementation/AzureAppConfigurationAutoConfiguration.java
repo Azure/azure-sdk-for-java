@@ -40,7 +40,7 @@ public class AzureAppConfigurationAutoConfiguration {
                                                           Optional<AzureServiceClientBuilderCustomizer<ConfigurationClientBuilder>> builderCustomizer) {
         return Utils.configureBuilder(
             new ConfigurationClientBuilder(),
-            configurationBuilder.section("appconfiguration").build(),
+            configurationBuilder.buildSection("appconfiguration"),
             defaultTokenCredential,
             builderCustomizer);
     }

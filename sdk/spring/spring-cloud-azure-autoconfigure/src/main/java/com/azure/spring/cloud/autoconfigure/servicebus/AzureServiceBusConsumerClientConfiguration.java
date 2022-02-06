@@ -45,7 +45,7 @@ class AzureServiceBusConsumerClientConfiguration {
 
         private final com.azure.core.util.Configuration configuration;
         public NoneSessionConsumerClientConfiguration(ConfigurationBuilder configurationBuilder) {
-            configuration = configurationBuilder.section("servicebus").build();
+            configuration = configurationBuilder.buildSection("servicebus");
         }
 
         @Bean
@@ -99,7 +99,7 @@ class AzureServiceBusConsumerClientConfiguration {
 
         private final com.azure.core.util.Configuration configuration;
         public SessionConsumerClientConfiguration(ConfigurationBuilder configurationBuilder) {
-            configuration = configurationBuilder.section("servicebus").build();
+            configuration = configurationBuilder.buildSection("servicebus");
         }
 
         @Bean

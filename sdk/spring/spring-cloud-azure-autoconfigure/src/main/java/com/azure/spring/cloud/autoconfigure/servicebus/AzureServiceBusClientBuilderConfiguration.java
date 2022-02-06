@@ -30,7 +30,7 @@ class AzureServiceBusClientBuilderConfiguration {
 
     AzureServiceBusClientBuilderConfiguration(AzureServiceBusProperties serviceBusProperties, ConfigurationBuilder configurationBuilder) {
         this.serviceBusProperties = serviceBusProperties;
-        configuration = configurationBuilder.section("servicebus").build();
+        configuration = configurationBuilder.buildSection("servicebus");
     }
 
     @Bean

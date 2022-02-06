@@ -32,7 +32,7 @@ import org.springframework.context.annotation.Bean;
 public class AzureKeyVaultSecretAutoConfiguration extends AzureServiceConfigurationBase {
 
     public AzureKeyVaultSecretAutoConfiguration(AzureGlobalProperties azureGlobalProperties, ConfigurationBuilder configurationBuilder) {
-        super(azureGlobalProperties, configurationBuilder.section("keyvault.secret").build());
+        super(azureGlobalProperties, configurationBuilder.buildSection("keyvault.secret"));
     }
 
     @Bean

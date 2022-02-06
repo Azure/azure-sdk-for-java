@@ -68,7 +68,7 @@ public class AzureServiceBusMessagingAutoConfiguration {
             NamespaceProperties properties,
             ObjectProvider<PropertiesSupplier<ConsumerIdentifier, ProcessorProperties>> suppliers,
             ConfigurationBuilder configurationBuilder) {
-            return new DefaultServiceBusNamespaceProcessorFactory(properties, suppliers.getIfAvailable(), configurationBuilder.section("servicebus").build());
+            return new DefaultServiceBusNamespaceProcessorFactory(properties, suppliers.getIfAvailable(), configurationBuilder.buildSection("servicebus"));
         }
 
         @Bean
@@ -90,7 +90,7 @@ public class AzureServiceBusMessagingAutoConfiguration {
             NamespaceProperties properties,
             ObjectProvider<PropertiesSupplier<String, ProducerProperties>> suppliers,
             com.azure.core.util.ConfigurationBuilder configurationBuilder) {
-            return new DefaultServiceBusNamespaceProducerFactory(properties, suppliers.getIfAvailable(), configurationBuilder.section("servicebus").build());
+            return new DefaultServiceBusNamespaceProducerFactory(properties, suppliers.getIfAvailable(), configurationBuilder.buildSection("servicebus"));
         }
 
         @Bean

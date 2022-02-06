@@ -24,7 +24,7 @@ com.azure.spring.cloud.autoconfigure.keyvault.certificates.AzureKeyVaultCertific
 com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.storage.blob.implementation.AzureStorageBlobAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobResourceAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.storage.fileshare.AzureStorageFileShareAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.storage.fileshare.AzureStorageFileShareResourceAutoConfiguration,\

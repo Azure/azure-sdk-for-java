@@ -34,7 +34,7 @@ import org.springframework.context.annotation.Bean;
 public class AzureKeyVaultCertificateAutoConfiguration extends AzureServiceConfigurationBase {
 
     public AzureKeyVaultCertificateAutoConfiguration(AzureGlobalProperties azureGlobalProperties, ConfigurationBuilder configurationBuilder) {
-        super(azureGlobalProperties, configurationBuilder.section("keyvault.certificate").build());
+        super(azureGlobalProperties, configurationBuilder.buildSection("keyvault.certificate"));
     }
 
     @ConfigurationProperties(prefix = "spring.cloud.azure.keyvault.certificate")

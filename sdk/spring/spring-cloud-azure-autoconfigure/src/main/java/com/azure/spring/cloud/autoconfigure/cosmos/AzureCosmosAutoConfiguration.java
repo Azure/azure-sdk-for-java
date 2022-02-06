@@ -30,7 +30,7 @@ import org.springframework.context.annotation.Bean;
 public class AzureCosmosAutoConfiguration extends AzureServiceConfigurationBase {
 
     public AzureCosmosAutoConfiguration(AzureGlobalProperties azureGlobalProperties, ConfigurationBuilder configurationBuilder) {
-        super(azureGlobalProperties, configurationBuilder.section("cosmos").build());
+        super(azureGlobalProperties, configurationBuilder.buildSection("cosmos"));
     }
 
     @Bean

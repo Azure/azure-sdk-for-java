@@ -35,7 +35,7 @@ public class AzureEventHubsAutoConfiguration extends AzureServiceConfigurationBa
 
     private ConfigurationBuilder configurationBuilder;
     public AzureEventHubsAutoConfiguration(AzureGlobalProperties azureGlobalProperties, ConfigurationBuilder configurationBuilder) {
-        super(azureGlobalProperties, configurationBuilder.section("eventhubs").build());
+        super(azureGlobalProperties, configurationBuilder.buildSection("eventhubs"));
     }
 
     @Bean

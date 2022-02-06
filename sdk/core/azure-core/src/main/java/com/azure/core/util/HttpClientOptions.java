@@ -49,6 +49,7 @@ public final class HttpClientOptions extends ClientOptions {
             Duration.ofSeconds(60), LOGGER);
     }
 
+    @ConfigurationDoc(description = "todo")
     private static final ConfigurationProperty<String> APPLICATION_ID_PROPERTY = ConfigurationProperty.stringPropertyBuilder("http.client.application-id")
         .global(true)
         .canLogValue(true)

@@ -27,15 +27,15 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnProperty(prefix = "spring.cloud.azure.eventhubs", name = "event-hub-name")
 class AzureEventHubsClientBuilderConfiguration {
 
-    private final ConfigurationBuilder configurationBuilder;
+    private final com.azure.core.util.Configuration configuration;
     public AzureEventHubsClientBuilderConfiguration(ConfigurationBuilder configurationBuilder) {
-        this.configurationBuilder = configurationBuilder.section("eventhubs");
+        this.configuration = configurationBuilder.buildSection("eventhubs");
     }
 
     @Bean
     @ConditionalOnMissingBean
     EventHubClientBuilder eventHubClientBuilder(EventHubClientBuilderFactory factory) {
-        return factory.build(configurationBuilder.build());
+        return factory.build(configuration);
     }
 
     @Bean

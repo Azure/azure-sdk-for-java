@@ -5,6 +5,7 @@ package com.azure.core.amqp;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationDoc;
 import com.azure.core.util.ConfigurationProperty;
 import com.azure.core.util.ConfigurationPropertyBuilder;
 import com.azure.core.util.logging.ClientLogger;
@@ -34,31 +35,37 @@ public class ProxyOptions implements AutoCloseable {
     private final Proxy proxyAddress;
     private final ProxyAuthenticationType authentication;
 
+    @ConfigurationDoc(description = "todo")
     private final static ConfigurationProperty<ProxyAuthenticationType> AUTHENTICATION_PROPERTY = new ConfigurationPropertyBuilder<>("amqp.proxy.authentication", type -> ProxyAuthenticationType.valueOf(type))
         .global(true)
         .canLogValue(true)
         .build();
 
+    @ConfigurationDoc(description = "todo")
     private final static ConfigurationProperty<Proxy.Type> TYPE_PROPERTY = new ConfigurationPropertyBuilder<>("amqp.proxy.type", type -> Proxy.Type.valueOf(type))
         .global(true)
         .defaultValue(Proxy.Type.DIRECT)
         .canLogValue(true)
         .build();
 
+    @ConfigurationDoc(description = "todo")
     private final static ConfigurationProperty<String> HOSTNAME_PROPERTY = ConfigurationProperty.stringPropertyBuilder("amqp.proxy.host")
         .global(true)
         .required(true)
         .build();
 
+    @ConfigurationDoc(description = "todo")
     private final static ConfigurationProperty<Integer> PORT_PROPERTY = ConfigurationProperty.integerPropertyBuilder("amqp.proxy.port")
         .global(true)
         .required(true)
         .build();
 
+    @ConfigurationDoc(description = "todo")
     private final static ConfigurationProperty<String> USERNAME_PROPERTY = ConfigurationProperty.stringPropertyBuilder("amqp.proxy.username")
         .global(true)
         .build();
 
+    @ConfigurationDoc(description = "todo")
     private final static ConfigurationProperty<String> PASSWORD_PROPERTY = ConfigurationProperty.stringPropertyBuilder("amqp.proxy.password")
         .global(true)
         .build();

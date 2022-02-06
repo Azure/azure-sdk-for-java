@@ -42,9 +42,9 @@ class AzureServiceBusProcessorClientConfiguration {
     @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "entity-type", "processor.entity-type" })
     static class NoneSessionProcessorClientConfiguration {
 
-        private final ConfigurationBuilder configurationBuilder;
+        private final com.azure.core.util.Configuration configuration;
         public NoneSessionProcessorClientConfiguration(ConfigurationBuilder configurationBuilder) {
-            this.configurationBuilder = configurationBuilder.section("servicebus");
+            this.configuration = configurationBuilder.buildSection("servicebus");
         }
 
         @Bean
@@ -73,7 +73,7 @@ class AzureServiceBusProcessorClientConfiguration {
         @ConditionalOnMissingBean
         ServiceBusClientBuilder.ServiceBusProcessorClientBuilder serviceBusProcessorClientBuilder(
             ServiceBusProcessorClientBuilderFactory builderFactory) {
-            return builderFactory.build(configurationBuilder.build());
+            return builderFactory.build(configuration);
         }
 
         @Bean
@@ -90,9 +90,9 @@ class AzureServiceBusProcessorClientConfiguration {
     @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "entity-type", "processor.entity-type" })
     static class SessionProcessorClientConfiguration {
 
-        private final ConfigurationBuilder configurationBuilder;
+        private final com.azure.core.util.Configuration configuration;
         public SessionProcessorClientConfiguration(ConfigurationBuilder configurationBuilder) {
-            this.configurationBuilder = configurationBuilder.section("servicebus");
+            this.configuration = configurationBuilder.buildSection("servicebus");
         }
 
         @Bean
@@ -122,7 +122,7 @@ class AzureServiceBusProcessorClientConfiguration {
         @ConditionalOnMissingBean
         ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder serviceBusSessionProcessorClientBuilder(
             ServiceBusSessionProcessorClientBuilderFactory builderFactory) {
-            return builderFactory.build(configurationBuilder.build());
+            return builderFactory.build(configuration);
         }
 
         @Bean

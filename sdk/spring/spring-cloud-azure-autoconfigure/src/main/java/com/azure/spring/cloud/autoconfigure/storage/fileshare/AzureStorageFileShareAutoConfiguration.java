@@ -40,7 +40,7 @@ import org.springframework.core.env.Environment;
 public class AzureStorageFileShareAutoConfiguration extends AzureServiceConfigurationBase {
 
     public AzureStorageFileShareAutoConfiguration(AzureGlobalProperties azureGlobalProperties, ConfigurationBuilder configurationBuilder) {
-        super(azureGlobalProperties, configurationBuilder.section("storage.fileshare").build());
+        super(azureGlobalProperties, configurationBuilder.buildSection("storage.fileshare"));
     }
 
     @Bean

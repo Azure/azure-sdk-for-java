@@ -5,7 +5,6 @@ package com.azure.spring.cloud.autoconfigure.cloudfoundry;
 
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
-import com.azure.spring.cloud.autoconfigure.storage.blob.properties.AzureStorageBlobProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -43,7 +42,7 @@ class AzureCloudFoundryEnvironmentPostProcessorTests {
                 assertThat(context).hasSingleBean(AzureProperties.class);
                 AzureProperties azureProperties = context.getBean(AzureProperties.class);
                 assertServiceBus(azureProperties.getServicebus());
-                assertStorage(azureProperties.getStorage().getBlob());
+                //assertStorage(azureProperties.getStorage().getBlob());
                 assertEventhub(azureProperties.getEventhubs());
                 assertRedis(context);
             });
@@ -54,11 +53,6 @@ class AzureCloudFoundryEnvironmentPostProcessorTests {
         assertThat(redisProperties.getHost()).isEqualTo("fake.redis.cache.windows.net");
         assertThat(redisProperties.getPassword()).isEqualTo("fakepwd=");
         assertThat(redisProperties.getPort()).isEqualTo(6379);
-    }
-
-    private void assertStorage(AzureStorageBlobProperties storageProperties) {
-        //assertThat(storageProperties.getAccountName()).isEqualTo("fake");
-        //assertThat(storageProperties.getAccountKey()).isEqualTo("fakekey==");
     }
 
     private void assertEventhub(AzureEventHubsProperties eventHubProperties) {
@@ -89,15 +83,7 @@ class AzureCloudFoundryEnvironmentPostProcessorTests {
     static class AzureProperties {
         private final AzureServiceBusProperties servicebus = new AzureServiceBusProperties();
         private final AzureEventHubsProperties eventhubs = new AzureEventHubsProperties();
-        private final Storage storage = new Storage();
 
-        static class Storage {
-            private final AzureStorageBlobProperties blob = new AzureStorageBlobProperties();
-
-            public AzureStorageBlobProperties getBlob() {
-                return blob;
-            }
-        }
 
         public AzureServiceBusProperties getServicebus() {
             return servicebus;
@@ -107,8 +93,5 @@ class AzureCloudFoundryEnvironmentPostProcessorTests {
             return eventhubs;
         }
 
-        public Storage getStorage() {
-            return storage;
-        }
     }
 }

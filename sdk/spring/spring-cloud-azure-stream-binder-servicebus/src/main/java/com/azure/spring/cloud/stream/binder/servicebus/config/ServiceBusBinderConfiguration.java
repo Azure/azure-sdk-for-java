@@ -89,7 +89,7 @@ public class ServiceBusBinderConfiguration {
                                                            @Nullable ServiceBusMessageConverter messageConverter,
                                                            ConfigurationBuilder configurationBuilder) {
 
-        ServiceBusMessageChannelBinder binder = new ServiceBusMessageChannelBinder(null, channelProvisioner, configurationBuilder.section("servicebus").build());
+        ServiceBusMessageChannelBinder binder = new ServiceBusMessageChannelBinder(null, channelProvisioner, configurationBuilder.buildSection("servicebus"));
         binder.setBindingProperties(bindingProperties);
         binder.setNamespaceProperties(namespaceProperties.getIfAvailable());
         binder.setMessageConverter(messageConverter);

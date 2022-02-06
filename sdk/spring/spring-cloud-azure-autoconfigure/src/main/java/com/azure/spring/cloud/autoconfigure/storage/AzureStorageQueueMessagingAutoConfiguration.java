@@ -38,7 +38,7 @@ public class AzureStorageQueueMessagingAutoConfiguration {
         StorageQueueProperties storageQueueProperties = new StorageQueueProperties();
         BeanUtils.copyProperties(properties, storageQueueProperties);
         copyAzureCommonProperties(properties, storageQueueProperties);
-        return new DefaultStorageQueueClientFactory(storageQueueProperties, configurationBuilder.section("storage.queue").build());
+        return new DefaultStorageQueueClientFactory(storageQueueProperties, configurationBuilder.buildSection("storage.queue"));
     }
 
     @Bean

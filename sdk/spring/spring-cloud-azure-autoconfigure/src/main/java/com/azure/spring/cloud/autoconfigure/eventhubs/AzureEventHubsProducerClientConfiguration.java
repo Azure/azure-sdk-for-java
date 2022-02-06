@@ -85,7 +85,7 @@ class AzureEventHubsProducerClientConfiguration {
         EventHubClientBuilder eventHubClientBuilderForProducer(
             @Qualifier(EVENT_HUB_PRODUCER_CLIENT_BUILDER_FACTORY_BEAN_NAME) EventHubClientBuilderFactory clientBuilderFactory) {
 
-            return clientBuilderFactory.build(configurationBuilder.section("eventhubs.producer").build());
+            return clientBuilderFactory.build(configurationBuilder.buildSection("eventhubs.producer"));
         }
 
         @Bean

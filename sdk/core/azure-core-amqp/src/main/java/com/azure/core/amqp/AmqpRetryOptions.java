@@ -5,6 +5,7 @@ package com.azure.core.amqp;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationDoc;
 import com.azure.core.util.ConfigurationProperty;
 import com.azure.core.util.ConfigurationPropertyBuilder;
 import com.azure.core.util.logging.ClientLogger;
@@ -20,27 +21,33 @@ import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RETRY_COU
 @Fluent
 public class AmqpRetryOptions {
     private final ClientLogger logger = new ClientLogger(AmqpRetryOptions.class);
+
+    @ConfigurationDoc(description = "todo")
     private final static ConfigurationProperty<Integer> MAX_RETRIES_PROPERTY = ConfigurationProperty.integerPropertyBuilder("amqp.retry.max-retries")
         .defaultValue(3)
         .environmentVariables(PROPERTY_AZURE_REQUEST_RETRY_COUNT)
         .global(true)
         .build();
 
+    @ConfigurationDoc(description = "todo")
     private final static ConfigurationProperty<Duration> BASE_DELAY_PROPERTY = ConfigurationProperty.durationPropertyBuilder("amqp.retry.base-delay")
         .defaultValue(Duration.ofMillis(800))
         .global(true)
         .build();
 
+    @ConfigurationDoc(description = "todo")
     private final static ConfigurationProperty<Duration> MAX_DELAY_PROPERTY = ConfigurationProperty.durationPropertyBuilder("amqp.retry.max-delay")
         .defaultValue(Duration.ofMinutes(1))
         .global(true)
         .build();
 
+    @ConfigurationDoc(description = "todo")
     private final static ConfigurationProperty<Duration> TRY_TIMEOUT_PROPERTY = ConfigurationProperty.durationPropertyBuilder("amqp.retry.try-timeout")
         .defaultValue(Duration.ofMinutes(1))
         .global(true)
         .build();
 
+    @ConfigurationDoc(description = "todo")
     private final static ConfigurationProperty<AmqpRetryMode> RETRY_MODE_PROPERTY = new ConfigurationPropertyBuilder<>("amqp.retry.mode", mode -> AmqpRetryMode.valueOf(mode))
         .global(true)
         .canLogValue(true)

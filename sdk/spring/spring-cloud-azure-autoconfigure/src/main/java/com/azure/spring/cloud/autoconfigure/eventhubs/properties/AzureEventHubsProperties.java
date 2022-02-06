@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.autoconfigure.eventhubs.properties;
 
 import com.azure.messaging.eventhubs.LoadBalancingStrategy;
-import com.azure.spring.cloud.autoconfigure.storage.blob.properties.AzureStorageBlobProperties;
 import com.azure.spring.core.util.AzurePropertiesUtils;
 import com.azure.spring.service.implementation.eventhubs.properties.EventHubConsumerProperties;
 import com.azure.spring.service.implementation.eventhubs.properties.EventHubProducerProperties;
@@ -364,7 +363,7 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties imp
         /**
          * Blob checkpoint store.
          */
-        public static class BlobCheckpointStore extends AzureStorageBlobProperties {
+        public static class BlobCheckpointStore {
 
             /**
              * Whether to create the container if it does not exist.

@@ -36,7 +36,7 @@ import org.springframework.context.annotation.Bean;
 public class AzureStorageQueueAutoConfiguration extends AzureServiceConfigurationBase {
 
     public AzureStorageQueueAutoConfiguration(AzureGlobalProperties azureGlobalProperties, ConfigurationBuilder configurationBuilder) {
-        super(azureGlobalProperties, configurationBuilder.section("storage.queue").build());
+        super(azureGlobalProperties, configurationBuilder.buildSection("storage.queue"));
     }
 
     @Bean

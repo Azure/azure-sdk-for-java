@@ -45,6 +45,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * Tests {@link OkHttpAsyncHttpClientBuilder}.
  */
+@SuppressWarnings("deprecation")
 public class OkHttpAsyncHttpClientBuilderTests {
     private static final String COOKIE_VALIDATOR_PATH = "/cookieValidator";
     private static final String DEFAULT_PATH = "/default";

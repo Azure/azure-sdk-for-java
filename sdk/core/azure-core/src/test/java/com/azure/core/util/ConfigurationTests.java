@@ -341,6 +341,6 @@ public class ConfigurationTests {
             return configBuilder.build();
         }
 
-        return configBuilder.section(section).build();
+        return configBuilder.buildSection(section);
     }
 }

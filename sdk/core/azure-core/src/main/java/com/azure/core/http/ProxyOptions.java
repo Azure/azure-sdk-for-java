@@ -4,6 +4,7 @@
 package com.azure.core.http;
 
 import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationDoc;
 import com.azure.core.util.ConfigurationProperty;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -40,18 +41,19 @@ public class ProxyOptions {
      * Java environment variables related to proxies. The protocol is removed since these are the same for 'https' and
      * 'http', the exception is 'http.nonProxyHosts' as it is used for both.
      */
+    @ConfigurationDoc(description = "todo")
     private static final ConfigurationProperty<String> PROPERTY_NO_PROXY = ConfigurationProperty.stringPropertyBuilder("http.proxy.non-proxy-hosts")
         .environmentVariables("http.nonProxyHosts", Configuration.PROPERTY_NO_PROXY)
         .canLogValue(true)
         .global(true)
         .build();
-
+    @ConfigurationDoc(description = "todo")
     private static final ConfigurationProperty<Boolean> PROPERTY_CREATE_UNRESOLVED = ConfigurationProperty.booleanPropertyBuilder("http.proxy.create-unresolved")
         .defaultValue(false)
         .global(true)
         .build();
 
-    // staying consistent with Java proxy configuration way
+    @ConfigurationDoc(description = "todo")
     private static final ConfigurationProperty<String> PROPERTY_HTTP_PROXY_HOST = ConfigurationProperty.stringPropertyBuilder("http.proxy.host")
         .environmentVariables( "http.proxyHost")
         .canLogValue(true)
@@ -64,6 +66,7 @@ public class ProxyOptions {
         .global(true)
         .build();
 
+    @ConfigurationDoc(description = "todo")
     private static final ConfigurationProperty<Integer> PROPERTY_HTTP_PROXY_PORT = ConfigurationProperty.integerPropertyBuilder("http.proxy.port")
         .environmentVariables("http.proxyPort")
         .global(true)
@@ -74,6 +77,7 @@ public class ProxyOptions {
         .global(true)
         .build();
 
+    @ConfigurationDoc(description = "todo")
     private static final ConfigurationProperty<String> PROPERTY_HTTP_PROXY_USER = ConfigurationProperty.stringPropertyBuilder("http.proxy.username")
         .environmentVariables("http.proxyUser")
         .global(true)
@@ -84,6 +88,7 @@ public class ProxyOptions {
         .global(true)
         .build();
 
+    @ConfigurationDoc(description = "todo")
     private static final ConfigurationProperty<String> PROPERTY_HTTP_PROXY_PASSWORD = ConfigurationProperty.stringPropertyBuilder("http.proxy.password")
         .environmentVariables("http.proxyPassword")
         .global(true)

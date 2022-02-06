@@ -87,7 +87,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
                 final AzureKeyVaultPropertySourceProperties properties = getMergeProperties(keyVaultSecretProperties,
                                                                                             propertySource);
                 if (properties.isEnabled()) {
-                    addKeyVaultPropertySource(environment, properties, configurationBuilder.section("keyvault.secret.property-sources[" + i + "]").build());
+                    addKeyVaultPropertySource(environment, properties, configurationBuilder.buildSection("keyvault.secret.property-sources[" + i + "]"));
                 }
 
                 i ++;
