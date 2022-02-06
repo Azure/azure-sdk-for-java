@@ -1,5 +1,51 @@
 # Release History
 
+## 12.8.0-beta.3 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+- Fixed a bug in builders that would cause fileSystem or path name to be erased if specified before the connection string.
+
+### Other Changes
+
+## 12.7.3 (2022-01-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.22.0` to version `1.24.1`.
+- Upgraded `azure-core-http-netty` from `1.11.2` to version `1.11.6`.
+- Upgraded `azure-storage-blob` from `12.14.2` to version `12.14.3`.
+
+## 12.8.0-beta.2 (2021-12-07)
+
+### Features Added
+- Added support for 2021-02-12 service version.
+- Added support for listing system containers.
+
+### Bugs Fixed
+- Fixed a bug in DataLakeFileClient.flush() in which the logic of the overwrite parameter was reversed.
+- Fixed a bug that would cause authenticating with a sas token to fail if the timestamps in the token were formatted differently.
+
+## 12.7.2 (2021-11-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.21.0` to version `1.22.0`.
+- Upgraded `azure-core-http-netty` from `1.11.1` to version `1.11.2`.
+- Upgraded `azure-storage-blob` from `12.14.1` to version `12.14.2`.
+
+## 12.8.0-beta.1 (2021-11-05)
+
+### Features Added
+- Added support for the 2020-12-06 service version.
+
 ## 12.7.1 (2021-10-12)
 
 ### Bugs Fixed

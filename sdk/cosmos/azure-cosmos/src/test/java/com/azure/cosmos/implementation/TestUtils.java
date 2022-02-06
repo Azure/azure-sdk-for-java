@@ -8,6 +8,8 @@ import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
 import org.mockito.Mockito;
 
+import java.util.UUID;
+
 public class TestUtils {
     private static final String DATABASES_PATH_SEGMENT = "dbs";
     private static final String COLLECTIONS_PATH_SEGMENT = "colls";
@@ -35,15 +37,15 @@ public class TestUtils {
 
         return DATABASES_PATH_SEGMENT + "/" + databaseId + "/" + COLLECTIONS_PATH_SEGMENT + "/" +collectionId + "/" + DOCUMENTS_PATH_SEGMENT + "/" + docId;
     }
-
     public static String getUserNameLink(String databaseId, String userId) {
+
         return DATABASES_PATH_SEGMENT + "/" + databaseId + "/" + USERS_PATH_SEGMENT + "/" + userId;
     }
 
     public static DiagnosticsClientContext mockDiagnosticsClientContext() {
         DiagnosticsClientContext clientContext = Mockito.mock(DiagnosticsClientContext.class);
         Mockito.doReturn(new DiagnosticsClientContext.DiagnosticsClientConfig()).when(clientContext).getConfig();
-        Mockito.doReturn(BridgeInternal.createCosmosDiagnostics(clientContext)).when(clientContext).createDiagnostics();
+        Mockito.doReturn(BridgeInternal.createCosmosDiagnostics(clientContext, Mockito.mock(GlobalEndpointManager.class))).when(clientContext).createDiagnostics();
 
         return clientContext;
     }
@@ -53,6 +55,7 @@ public class TestUtils {
         dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
         dsr.requestContext.cosmosDiagnostics = clientContext.createDiagnostics();
         Mockito.doReturn(clientContext.createDiagnostics()).when(dsr).createCosmosDiagnostics();
+        Mockito.doReturn(UUID.randomUUID()).when(dsr).getActivityId();
         return dsr;
     }
 

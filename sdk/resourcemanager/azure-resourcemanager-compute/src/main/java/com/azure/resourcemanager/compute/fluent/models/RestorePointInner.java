@@ -9,10 +9,11 @@ import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.ApiEntityReference;
 import com.azure.resourcemanager.compute.models.ConsistencyModeTypes;
-import com.azure.resourcemanager.compute.models.RestorePointProvisioningDetails;
+import com.azure.resourcemanager.compute.models.RestorePointInstanceView;
 import com.azure.resourcemanager.compute.models.RestorePointSourceMetadata;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 /** Restore Point details. */
@@ -89,13 +90,60 @@ public final class RestorePointInner extends ProxyResource {
     }
 
     /**
-     * Get the provisioningDetails property: Gets the provisioning details set by the server during Create restore point
-     * operation.
+     * Get the timeCreated property: Gets the creation time of the restore point.
      *
-     * @return the provisioningDetails value.
+     * @return the timeCreated value.
      */
-    public RestorePointProvisioningDetails provisioningDetails() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningDetails();
+    public OffsetDateTime timeCreated() {
+        return this.innerProperties() == null ? null : this.innerProperties().timeCreated();
+    }
+
+    /**
+     * Set the timeCreated property: Gets the creation time of the restore point.
+     *
+     * @param timeCreated the timeCreated value to set.
+     * @return the RestorePointInner object itself.
+     */
+    public RestorePointInner withTimeCreated(OffsetDateTime timeCreated) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestorePointProperties();
+        }
+        this.innerProperties().withTimeCreated(timeCreated);
+        return this;
+    }
+
+    /**
+     * Get the sourceRestorePoint property: Resource Id of the source restore point from which a copy needs to be
+     * created.
+     *
+     * @return the sourceRestorePoint value.
+     */
+    public ApiEntityReference sourceRestorePoint() {
+        return this.innerProperties() == null ? null : this.innerProperties().sourceRestorePoint();
+    }
+
+    /**
+     * Set the sourceRestorePoint property: Resource Id of the source restore point from which a copy needs to be
+     * created.
+     *
+     * @param sourceRestorePoint the sourceRestorePoint value to set.
+     * @return the RestorePointInner object itself.
+     */
+    public RestorePointInner withSourceRestorePoint(ApiEntityReference sourceRestorePoint) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestorePointProperties();
+        }
+        this.innerProperties().withSourceRestorePoint(sourceRestorePoint);
+        return this;
+    }
+
+    /**
+     * Get the instanceView property: The restore point instance view.
+     *
+     * @return the instanceView value.
+     */
+    public RestorePointInstanceView instanceView() {
+        return this.innerProperties() == null ? null : this.innerProperties().instanceView();
     }
 
     /**

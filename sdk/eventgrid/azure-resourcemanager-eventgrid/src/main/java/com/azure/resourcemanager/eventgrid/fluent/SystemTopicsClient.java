@@ -13,6 +13,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.eventgrid.fluent.models.SystemTopicInner;
 import com.azure.resourcemanager.eventgrid.models.SystemTopicUpdateParameters;
+import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SystemTopicsClient. */
 public interface SystemTopicsClient {
@@ -38,7 +39,7 @@ public interface SystemTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a system topic.
+     * @return properties of a system topic along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SystemTopicInner> getByResourceGroupWithResponse(
@@ -53,9 +54,9 @@ public interface SystemTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid System Topic.
+     * @return eventGrid System Topic along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SystemTopicInner>, SystemTopicInner> beginCreateOrUpdate(
         String resourceGroupName, String systemTopicName, SystemTopicInner systemTopicInfo);
 
@@ -69,9 +70,9 @@ public interface SystemTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid System Topic.
+     * @return eventGrid System Topic along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SystemTopicInner>, SystemTopicInner> beginCreateOrUpdate(
         String resourceGroupName, String systemTopicName, SystemTopicInner systemTopicInfo, Context context);
 
@@ -113,9 +114,9 @@ public interface SystemTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String systemTopicName);
 
     /**
@@ -127,9 +128,9 @@ public interface SystemTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String systemTopicName, Context context);
 
     /**
@@ -166,9 +167,9 @@ public interface SystemTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid System Topic.
+     * @return eventGrid System Topic along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SystemTopicInner>, SystemTopicInner> beginUpdate(
         String resourceGroupName, String systemTopicName, SystemTopicUpdateParameters systemTopicUpdateParameters);
 
@@ -182,9 +183,9 @@ public interface SystemTopicsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid System Topic.
+     * @return eventGrid System Topic along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SystemTopicInner>, SystemTopicInner> beginUpdate(
         String resourceGroupName,
         String systemTopicName,

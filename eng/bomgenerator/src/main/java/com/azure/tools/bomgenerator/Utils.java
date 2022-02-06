@@ -7,12 +7,11 @@ import com.azure.tools.bomgenerator.models.BomDependency;
 import com.azure.tools.bomgenerator.models.BomDependencyNoVersion;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import org.apache.maven.model.Dependency;
-import org.apache.maven.model.DependencyManagement;
 import org.apache.maven.model.Model;
-import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
-import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenFormatStage;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenResolvedArtifact;
@@ -26,9 +25,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -38,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Properties;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -172,53 +172,103 @@ public class Utils {
         return new BomDependencyNoVersion(bomDependency.getGroupId(), bomDependency.getArtifactId());
     }
 
-    static List<BomDependency> parsePomFileContent(String fileName) {
+    static <T> T parsePomFileModel(String fileName, Class<T> valueType) {
         try (FileReader reader = new FileReader(fileName)) {
-            return parsePomFileContent(reader);
-        } catch (IOException exception) {
-            logger.error("Failed to read the contents of the pom file: {}", fileName);
+            return parsePomFileModel(reader, valueType);
+        }
+        catch(IOException exception) {
+            logger.error("Failed to read the contents of the file.");
         }
 
-        return new ArrayList<>();
+        return null;
     }
 
-    static List<BomDependency> parsePomFileContent(Reader responseStream) {
+    static <T> T parsePomFileModel(InputStreamReader reader, Class<T> valueType) {
+        ObjectMapper mapper = new XmlMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        try{
+            T value = mapper.readValue(reader, valueType);
+            return value;
+        }
+        catch(IOException exception) {
+            logger.error("Failed to read the contents of the file.");
+        }
+
+        return null;
+    }
+
+    static List<BomDependency> parsePomFileContent(InputStreamReader reader) {
+        Model value = parsePomFileModel(reader, Model.class);
+        return parseDependenciesFromModel(value);
+    }
+
+    static List<BomDependency> parseDependenciesFromModel(Model value) {
         List<BomDependency> bomDependencies = new ArrayList<>();
         List<Dependency> dependencies;
 
-        ObjectMapper mapper = new XmlMapper();
-        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        try {
-            Model value = mapper.readValue(responseStream, Model.class);
-            if(value.getPackaging().equalsIgnoreCase("pom")) {
-               // This is a bom file.
-                dependencies = value.getDependencyManagement().getDependencies();
-            }
-            else {
-                dependencies = value.getDependencies();
-            }
-
-            if(dependencies == null) {
-                return bomDependencies;
-            }
-
-            for(Dependency dependency : dependencies) {
-                ScopeType scopeType = ScopeType.COMPILE;
-
-                if("test".equals(dependency.getScope())) {
-                    scopeType = ScopeType.TEST;
-                }
-
-                bomDependencies.add(new BomDependency(
-                    dependency.getGroupId(),
-                    dependency.getArtifactId(),
-                    dependency.getVersion(),
-                    scopeType));
-            }
-        } catch (IOException exception) {
-            exception.printStackTrace();
+        if (value == null) {
+            return bomDependencies;
         }
 
+        if (value.getPackaging().equalsIgnoreCase("pom")) {
+            // This is a bom file.
+            dependencies = value.getDependencyManagement().getDependencies();
+        } else {
+            dependencies = value.getDependencies();
+        }
+
+        if (dependencies == null) {
+            return bomDependencies;
+        }
+
+        Properties properties = value.getProperties();
+        bomDependencies.addAll(parseDependencyVersion(dependencies, properties, value.getModelVersion()));
+
         return bomDependencies.stream().distinct().collect(Collectors.toList());
+    }
+
+
+    static List<BomDependency> parsePomFileContent(String fileName) {
+        Model value = parsePomFileModel(fileName, Model.class);
+        return parseDependenciesFromModel(value);
+    }
+
+    static List<BomDependency> parseDependencyVersion(List<Dependency> dependencies, Properties properties, String modelVersion) {
+        return dependencies.stream().map(dep -> {
+                String version = getPropertyName(dep.getVersion());
+
+                while(properties.getProperty(version) != null) {
+                    version = getPropertyName(properties.getProperty(version));
+
+                    if(version.equals(PROJECT_VERSION)) {
+                        version = modelVersion;
+                    }
+                }
+
+            if(version == null) {
+                version = dep.getVersion();
+            }
+
+            ScopeType scopeType = ScopeType.COMPILE;
+
+            if("test".equals(dep.getScope())) {
+                scopeType = ScopeType.TEST;
+            }
+
+            return new BomDependency(
+                dep.getGroupId(),
+                dep.getArtifactId(),
+                version,
+                scopeType);
+
+            }).collect(Collectors.toList());
+    }
+
+    private static String getPropertyName(String propertyValue) {
+        if(propertyValue.startsWith("${")) {
+            return propertyValue.substring(2, propertyValue.length() - 1);
+        }
+
+        return propertyValue;
     }
 }

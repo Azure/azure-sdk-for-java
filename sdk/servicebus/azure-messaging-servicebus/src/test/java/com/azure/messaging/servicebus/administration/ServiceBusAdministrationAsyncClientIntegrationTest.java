@@ -167,6 +167,32 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
 
     @ParameterizedTest
     @MethodSource("createHttpClients")
+    void createQueueWithForwarding(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
+        final String queueName = testResourceNamer.randomName("test", 10);
+        final String forwardToEntityName = interceptorManager.isPlaybackMode()
+            ? "queue-5"
+            : getEntityName(TestUtils.getQueueBaseName(), 5);
+        final CreateQueueOptions expected = new CreateQueueOptions()
+            .setForwardTo(forwardToEntityName)
+            .setForwardDeadLetteredMessagesTo(forwardToEntityName);
+
+        // Act & Assert
+        StepVerifier.create(client.createQueue(queueName, expected))
+            .assertNext(actual -> {
+                assertEquals(queueName, actual.getName());
+                assertEquals(expected.getForwardTo(), actual.getForwardTo());
+                assertEquals(expected.getForwardDeadLetteredMessagesTo(), actual.getForwardDeadLetteredMessagesTo());
+
+                final QueueRuntimeProperties runtimeProperties = new QueueRuntimeProperties(actual);
+                assertNotNull(runtimeProperties.getCreatedAt());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
     void createQueueAuthorizationRules(HttpClient httpClient) {
         // Arrange
         final String keyName = "test-rule";
@@ -361,6 +387,34 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         StepVerifier.create(client.createSubscription(topicName, subscriptionName))
             .expectError(ResourceExistsException.class)
             .verify();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void createSubscriptionWithForwarding(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
+        final String topicName = interceptorManager.isPlaybackMode()
+            ? "topic-0"
+            : getEntityName(getTopicBaseName(), 99);
+        final String subscriptionName = testResourceNamer.randomName("sub", 99);
+        final String forwardToTopic = interceptorManager.isPlaybackMode()
+            ? "topic-1"
+            : getEntityName(getTopicBaseName(), 1);
+        final CreateSubscriptionOptions expected = new CreateSubscriptionOptions()
+            .setForwardTo(forwardToTopic)
+            .setForwardDeadLetteredMessagesTo(forwardToTopic);
+
+        // Act & Assert
+        StepVerifier.create(client.createSubscription(topicName, subscriptionName, expected))
+            .assertNext(actual -> {
+                assertEquals(topicName, actual.getTopicName());
+                assertEquals(subscriptionName, actual.getSubscriptionName());
+
+                assertEquals(expected.getForwardTo(), actual.getForwardTo());
+                assertEquals(expected.getForwardDeadLetteredMessagesTo(), actual.getForwardDeadLetteredMessagesTo());
+            })
+            .verifyComplete();
     }
 
     @ParameterizedTest

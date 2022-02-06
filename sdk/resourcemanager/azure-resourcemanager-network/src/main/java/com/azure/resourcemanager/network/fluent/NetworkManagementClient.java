@@ -277,6 +277,27 @@ public interface NetworkManagementClient {
     FirewallPolicyRuleCollectionGroupsClient getFirewallPolicyRuleCollectionGroups();
 
     /**
+     * Gets the FirewallPolicyIdpsSignaturesClient object to access its operations.
+     *
+     * @return the FirewallPolicyIdpsSignaturesClient object.
+     */
+    FirewallPolicyIdpsSignaturesClient getFirewallPolicyIdpsSignatures();
+
+    /**
+     * Gets the FirewallPolicyIdpsSignaturesOverridesClient object to access its operations.
+     *
+     * @return the FirewallPolicyIdpsSignaturesOverridesClient object.
+     */
+    FirewallPolicyIdpsSignaturesOverridesClient getFirewallPolicyIdpsSignaturesOverrides();
+
+    /**
+     * Gets the FirewallPolicyIdpsSignaturesFilterValuesClient object to access its operations.
+     *
+     * @return the FirewallPolicyIdpsSignaturesFilterValuesClient object.
+     */
+    FirewallPolicyIdpsSignaturesFilterValuesClient getFirewallPolicyIdpsSignaturesFilterValues();
+
+    /**
      * Gets the IpAllocationsClient object to access its operations.
      *
      * @return the IpAllocationsClient object.
@@ -802,6 +823,13 @@ public interface NetworkManagementClient {
     HubRouteTablesClient getHubRouteTables();
 
     /**
+     * Gets the RoutingIntentsClient object to access its operations.
+     *
+     * @return the RoutingIntentsClient object.
+     */
+    RoutingIntentsClient getRoutingIntents();
+
+    /**
      * Gets the WebApplicationFirewallPoliciesClient object to access its operations.
      *
      * @return the WebApplicationFirewallPoliciesClient object.
@@ -880,7 +908,7 @@ public interface NetworkManagementClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteBastionShareableLinkAsync(
         String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest);
 
@@ -895,7 +923,7 @@ public interface NetworkManagementClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteBastionShareableLink(
         String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest);
 
@@ -911,7 +939,7 @@ public interface NetworkManagementClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteBastionShareableLink(
         String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest, Context context);
 
@@ -1235,7 +1263,7 @@ public interface NetworkManagementClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpn Profile Response for package generation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner>
         beginGeneratevirtualwanvpnserverconfigurationvpnprofileAsync(
             String resourceGroupName, String virtualWanName, VirtualWanVpnProfileParameters vpnClientParams);
@@ -1252,7 +1280,7 @@ public interface NetworkManagementClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpn Profile Response for package generation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner>
         beginGeneratevirtualwanvpnserverconfigurationvpnprofile(
             String resourceGroupName, String virtualWanName, VirtualWanVpnProfileParameters vpnClientParams);
@@ -1270,7 +1298,7 @@ public interface NetworkManagementClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpn Profile Response for package generation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner>
         beginGeneratevirtualwanvpnserverconfigurationvpnprofile(
             String resourceGroupName,

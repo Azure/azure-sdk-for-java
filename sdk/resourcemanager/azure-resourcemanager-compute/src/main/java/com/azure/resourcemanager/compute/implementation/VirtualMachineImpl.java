@@ -12,6 +12,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.compute.ComputeManager;
+import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
 import com.azure.resourcemanager.compute.models.AvailabilitySetSkuTypes;
 import com.azure.resourcemanager.compute.models.BillingProfile;
@@ -85,11 +86,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.implementation.Accep
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.StorageManager;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.introspect.Annotated;
-import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -185,19 +182,6 @@ class VirtualMachineImpl
     private static final SerializerAdapter SERIALIZER_ADAPTER =
         SerializerFactory.createDefaultManagementSerializerAdapter();
 
-    private final ObjectMapper mapper;
-    private static final JacksonAnnotationIntrospector ANNOTATION_INTROSPECTOR =
-        new JacksonAnnotationIntrospector() {
-            @Override
-            public JsonProperty.Access findPropertyAccess(Annotated annotated) {
-                JsonProperty.Access access = super.findPropertyAccess(annotated);
-                if (access == JsonProperty.Access.WRITE_ONLY) {
-                    return JsonProperty.Access.AUTO;
-                }
-                return access;
-            }
-        };
-
     VirtualMachineImpl(
         String name,
         VirtualMachineInner innerModel,
@@ -223,9 +207,6 @@ class VirtualMachineImpl
         this.virtualMachineMsiHandler = new VirtualMachineMsiHandler(authorizationManager, this);
         this.newProximityPlacementGroupName = null;
         this.newProximityPlacementGroupType = null;
-
-        this.mapper = new ObjectMapper();
-        this.mapper.setAnnotationIntrospector(ANNOTATION_INTROSPECTOR);
     }
 
     // Verbs
@@ -269,6 +250,23 @@ class VirtualMachineImpl
             .serviceClient()
             .getVirtualMachines()
             .deallocateAsync(this.resourceGroupName(), this.name())
+            // Refresh after deallocate to ensure the inner is updatable (due to a change in behavior in Managed Disks)
+            .map(aVoid -> this.refreshAsync())
+            .then();
+    }
+
+    @Override
+    public void deallocate(boolean hibernate) {
+        this.deallocateAsync(hibernate).block();
+    }
+
+    @Override
+    public Mono<Void> deallocateAsync(boolean hibernate) {
+        return this
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .deallocateAsync(this.resourceGroupName(), this.name(), hibernate)
             // Refresh after deallocate to ensure the inner is updatable (due to a change in behavior in Managed Disks)
             .map(aVoid -> this.refreshAsync())
             .then();
@@ -401,7 +399,7 @@ class VirtualMachineImpl
             .map(
                 captureResultInner -> {
                     try {
-                        return mapper.writeValueAsString(captureResultInner);
+                        return SerializerUtils.getObjectMapper().writeValueAsString(captureResultInner);
                     } catch (JsonProcessingException ex) {
                         throw logger.logExceptionAsError(Exceptions.propagate(ex));
                     }
@@ -1421,6 +1419,24 @@ class VirtualMachineImpl
         return this;
     }
 
+    @Override
+    public VirtualMachineImpl enableHibernation() {
+        if (this.innerModel().additionalCapabilities() == null) {
+            this.innerModel().withAdditionalCapabilities(new AdditionalCapabilities());
+        }
+        this.innerModel().additionalCapabilities().withHibernationEnabled(true);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl disableHibernation() {
+        if (this.innerModel().additionalCapabilities() == null) {
+            this.innerModel().withAdditionalCapabilities(new AdditionalCapabilities());
+        }
+        this.innerModel().additionalCapabilities().withHibernationEnabled(false);
+        return this;
+    }
+
     // GETTERS
     @Override
     public boolean isManagedDiskEnabled() {
@@ -1740,6 +1756,12 @@ class VirtualMachineImpl
     @Override
     public BillingProfile billingProfile() {
         return this.innerModel().billingProfile();
+    }
+
+    @Override
+    public boolean isHibernationEnabled() {
+        return this.innerModel().additionalCapabilities() != null
+            && ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().additionalCapabilities().hibernationEnabled());
     }
 
     @Override
@@ -2403,12 +2425,15 @@ class VirtualMachineImpl
         updateParameter.withNetworkProfile(this.innerModel().networkProfile());
         updateParameter.withDiagnosticsProfile(this.innerModel().diagnosticsProfile());
         updateParameter.withBillingProfile(this.innerModel().billingProfile());
+        updateParameter.withSecurityProfile(this.innerModel().securityProfile());
+        updateParameter.withAdditionalCapabilities(this.innerModel().additionalCapabilities());
         updateParameter.withAvailabilitySet(this.innerModel().availabilitySet());
         updateParameter.withLicenseType(this.innerModel().licenseType());
         updateParameter.withZones(this.innerModel().zones());
         updateParameter.withTags(this.innerModel().tags());
         updateParameter.withProximityPlacementGroup(this.innerModel().proximityPlacementGroup());
         updateParameter.withPriority(this.innerModel().priority());
+        updateParameter.withEvictionPolicy(this.innerModel().evictionPolicy());
     }
 
     RoleAssignmentHelper.IdProvider idProvider() {

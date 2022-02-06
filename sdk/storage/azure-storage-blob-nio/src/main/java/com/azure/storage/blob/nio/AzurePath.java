@@ -6,6 +6,7 @@ package com.azure.storage.blob.nio;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobUrlParts;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,8 +34,11 @@ import java.util.stream.Stream;
  * An object that may be used to locate a file in a file system.
  * <p>
  * The root component, if it is present, is the first element of the path and is denoted by a {@code ':'} as the last
- * character. Hence, only one instance of {@code ':'} may appear in a path string and it may only be the last character
- * of the first element in the path. The root component is used to identify which container a path belongs to.
+ * character. Hence, only one instance of {@code ':'} may appear in a path string, and it may only be the last character
+ * of the first element in the path. The root component is used to identify which container a path belongs to. All other
+ * path elements, including separators, are considered as the blob name. {@link AzurePath#fromBlobUrl} may
+ * be used to convert a typical http url pointing to a blob into an {@code AzurePath} object pointing to the same
+ * resource.
  * <p>
  * Constructing a syntactically valid path does not ensure a resource exists at the given path. An error will
  * not be thrown until trying to access an invalid resource, e.g. trying to access a resource that does not exist.
@@ -395,9 +399,9 @@ public final class AzurePath implements Path {
         Path root = this.getRoot();
         String rootStr = root == null ? null : root.toString();
         for (String element : pathElements) {
-            if (element.equals(".")) {
+            if (".".equals(element)) {
                 continue;
-            } else if (element.equals("..")) {
+            } else if ("..".equals(element)) {
                 if (rootStr != null) {
                     // Root path. We never push "..".
                     if (!stack.isEmpty() && stack.peekLast().equals(rootStr)) {
@@ -578,7 +582,7 @@ public final class AzurePath implements Path {
 
     /**
      * Unsupported.
-     * <p>
+     *
      * @param linkOptions options
      * @return the real path
      * @throws UnsupportedOperationException operation not suported.
@@ -590,7 +594,7 @@ public final class AzurePath implements Path {
 
     /**
      * Unsupported.
-     * <p>
+     *
      * @return the file
      * @throws UnsupportedOperationException operation not suported.
      */
@@ -601,7 +605,7 @@ public final class AzurePath implements Path {
 
     /**
      * Unsupported.
-     * <p>
+     *
      * @param watchService watchService
      * @param kinds kinds
      * @param modifiers modifiers
@@ -616,7 +620,7 @@ public final class AzurePath implements Path {
 
     /**
      * Unsupported.
-     * <p>
+     *
      * @param watchService watchService
      * @param kinds kinds
      * @return the watch key
@@ -743,6 +747,36 @@ public final class AzurePath implements Path {
     }
 
     /**
+     * A utility method to conveniently convert from a url to a storage resource to an {@code AzurePath} pointing to the
+     * same resource.
+     *
+     * The url must be well formatted. There must be an open filesystem corresponding to the account which contains the
+     * blob. Otherwise, a {@link java.nio.file.FileSystemNotFoundException} will be thrown.
+     *
+     * The url may point to either an account, container, or blob. If it points to an account, the path will be empty,
+     * but it will have an internal reference to the file system containing it, meaning instance methods may be
+     * performed on the path to construct a reference to another object. If it points to a container, there will be one
+     * element, which is the root element. Everything after the container, that is the blob name, will then be appended
+     * after the root element.
+     *
+     * IP style urls are not currently supported.
+     *
+     * The {@link AzureFileSystemProvider} can typically be obtained via {@link AzureFileSystem#provider()}.
+     *
+     * @param provider The installed {@link AzureFileSystemProvider} that manages open file systems for this jvm.
+     * @param url The url to the desired resource.
+     * @return An {@link AzurePath} which points to the resrouce identified by the url.
+     * @throws URISyntaxException If the url contains elements which are not well formatted.
+     */
+    public static AzurePath fromBlobUrl(AzureFileSystemProvider provider, String url) throws URISyntaxException {
+        BlobUrlParts parts = BlobUrlParts.parse(url);
+        URI fileSystemUri = hostToFileSystemUri(provider, parts.getScheme(), parts.getHost());
+        FileSystem parentFileSystem = provider.getFileSystem(fileSystemUri);
+        return new AzurePath((AzureFileSystem) parentFileSystem, fileStoreToRoot(parts.getBlobContainerName()),
+            parts.getBlobName() == null ? "" : parts.getBlobName());
+    }
+
+    /**
      * @return Whether this path consists of only a root component.
      */
     boolean isRoot() {
@@ -780,6 +814,18 @@ public final class AzurePath implements Path {
 
     private String rootToFileStore(String root) {
         return root.substring(0, root.length() - 1); // Remove the ROOT_DIR_SUFFIX
+    }
+
+    private static String fileStoreToRoot(String fileStore) {
+        if (fileStore == null || "".equals(fileStore)) {
+            return "";
+        }
+        return fileStore + ROOT_DIR_SUFFIX;
+    }
+
+    private static URI hostToFileSystemUri(AzureFileSystemProvider provider, String scheme, String host)
+        throws URISyntaxException {
+        return new URI(provider.getScheme() + "://?endpoint=" + scheme + "://" + host);
     }
 
     static void ensureFileSystemOpen(Path p) {

@@ -179,7 +179,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
+     * @return specifies information about the capacity reservation along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -219,7 +220,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -250,7 +251,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
+     * @return specifies information about the capacity reservation along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -291,7 +293,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -318,9 +320,9 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
+     * @return the {@link PollerFlux} for polling of specifies information about the capacity reservation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<CapacityReservationInner>, CapacityReservationInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String capacityReservationGroupName,
@@ -336,7 +338,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                 this.client.getHttpPipeline(),
                 CapacityReservationInner.class,
                 CapacityReservationInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -351,9 +353,9 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
+     * @return the {@link PollerFlux} for polling of specifies information about the capacity reservation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CapacityReservationInner>, CapacityReservationInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String capacityReservationGroupName,
@@ -385,9 +387,9 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
+     * @return the {@link SyncPoller} for polling of specifies information about the capacity reservation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CapacityReservationInner>, CapacityReservationInner> beginCreateOrUpdate(
         String resourceGroupName,
         String capacityReservationGroupName,
@@ -410,9 +412,9 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
+     * @return the {@link SyncPoller} for polling of specifies information about the capacity reservation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CapacityReservationInner>, CapacityReservationInner> beginCreateOrUpdate(
         String resourceGroupName,
         String capacityReservationGroupName,
@@ -435,7 +437,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
+     * @return specifies information about the capacity reservation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CapacityReservationInner> createOrUpdateAsync(
@@ -461,7 +463,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
+     * @return specifies information about the capacity reservation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CapacityReservationInner> createOrUpdateAsync(
@@ -535,7 +537,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
+     * @return specifies information about the capacity reservation along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -575,7 +578,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -605,7 +608,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
+     * @return specifies information about the capacity reservation along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -646,7 +650,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -672,9 +676,9 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
+     * @return the {@link PollerFlux} for polling of specifies information about the capacity reservation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<CapacityReservationInner>, CapacityReservationInner> beginUpdateAsync(
         String resourceGroupName,
         String capacityReservationGroupName,
@@ -690,7 +694,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                 this.client.getHttpPipeline(),
                 CapacityReservationInner.class,
                 CapacityReservationInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -704,9 +708,9 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
+     * @return the {@link PollerFlux} for polling of specifies information about the capacity reservation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CapacityReservationInner>, CapacityReservationInner> beginUpdateAsync(
         String resourceGroupName,
         String capacityReservationGroupName,
@@ -737,9 +741,9 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
+     * @return the {@link SyncPoller} for polling of specifies information about the capacity reservation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CapacityReservationInner>, CapacityReservationInner> beginUpdate(
         String resourceGroupName,
         String capacityReservationGroupName,
@@ -760,9 +764,9 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
+     * @return the {@link SyncPoller} for polling of specifies information about the capacity reservation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CapacityReservationInner>, CapacityReservationInner> beginUpdate(
         String resourceGroupName,
         String capacityReservationGroupName,
@@ -784,7 +788,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
+     * @return specifies information about the capacity reservation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CapacityReservationInner> updateAsync(
@@ -808,7 +812,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
+     * @return specifies information about the capacity reservation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CapacityReservationInner> updateAsync(
@@ -881,7 +885,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -913,7 +917,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -943,7 +947,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -978,7 +982,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1004,16 +1008,17 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String capacityReservationGroupName, String capacityReservationName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, capacityReservationGroupName, capacityReservationName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1028,9 +1033,9 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName,
         String capacityReservationGroupName,
@@ -1055,9 +1060,9 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String capacityReservationGroupName, String capacityReservationName) {
         return beginDeleteAsync(resourceGroupName, capacityReservationGroupName, capacityReservationName)
@@ -1076,9 +1081,9 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName,
         String capacityReservationGroupName,
@@ -1099,7 +1104,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
@@ -1121,7 +1126,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1185,7 +1190,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
+     * @return specifies information about the capacity reservation along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CapacityReservationInner>> getWithResponseAsync(
@@ -1220,7 +1226,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1252,7 +1258,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
+     * @return specifies information about the capacity reservation along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CapacityReservationInner>> getWithResponseAsync(
@@ -1288,7 +1295,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1316,7 +1323,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
+     * @return specifies information about the capacity reservation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CapacityReservationInner> getAsync(
@@ -1344,7 +1351,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
+     * @return specifies information about the capacity reservation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CapacityReservationInner> getAsync(
@@ -1392,7 +1399,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
+     * @return specifies information about the capacity reservation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CapacityReservationInner> getWithResponse(
@@ -1415,7 +1422,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list capacity reservation operation response.
+     * @return the list capacity reservation operation response along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CapacityReservationInner>> listByCapacityReservationGroupSinglePageAsync(
@@ -1442,7 +1450,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1478,7 +1486,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list capacity reservation operation response.
+     * @return the list capacity reservation operation response along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CapacityReservationInner>> listByCapacityReservationGroupSinglePageAsync(
@@ -1505,7 +1514,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1537,7 +1546,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list capacity reservation operation response.
+     * @return the list capacity reservation operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CapacityReservationInner> listByCapacityReservationGroupAsync(
@@ -1557,7 +1566,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list capacity reservation operation response.
+     * @return the list capacity reservation operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CapacityReservationInner> listByCapacityReservationGroupAsync(
@@ -1577,7 +1586,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list capacity reservation operation response.
+     * @return the list capacity reservation operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CapacityReservationInner> listByCapacityReservationGroup(
@@ -1596,7 +1605,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list capacity reservation operation response.
+     * @return the list capacity reservation operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CapacityReservationInner> listByCapacityReservationGroup(
@@ -1612,7 +1621,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list capacity reservation operation response.
+     * @return the list capacity reservation operation response along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CapacityReservationInner>> listByCapacityReservationGroupNextSinglePageAsync(
@@ -1651,7 +1661,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list capacity reservation operation response.
+     * @return the list capacity reservation operation response along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CapacityReservationInner>> listByCapacityReservationGroupNextSinglePageAsync(

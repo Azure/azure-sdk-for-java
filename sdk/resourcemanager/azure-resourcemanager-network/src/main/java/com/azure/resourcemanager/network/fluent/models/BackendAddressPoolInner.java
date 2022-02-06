@@ -209,6 +209,15 @@ public final class BackendAddressPoolInner extends SubResource {
     }
 
     /**
+     * Get the inboundNatRules property: An array of references to inbound NAT rules that use this backend address pool.
+     *
+     * @return the inboundNatRules value.
+     */
+    public List<SubResource> inboundNatRules() {
+        return this.innerProperties() == null ? null : this.innerProperties().inboundNatRules();
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the backend address pool resource.
      *
      * @return the provisioningState value.

@@ -63,7 +63,7 @@ public interface OrganizationResource {
     OffsetDateTime createdTime();
 
     /**
-     * Gets the provisioningState property: Provision states for confluent RP.
+     * Gets the provisioningState property: ProvisioningState Provision states for confluent RP.
      *
      * @return the provisioningState value.
      */

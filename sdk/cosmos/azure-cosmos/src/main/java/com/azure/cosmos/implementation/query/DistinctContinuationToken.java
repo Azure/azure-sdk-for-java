@@ -79,7 +79,7 @@ public class DistinctContinuationToken extends JsonSerializable {
      */
     public void setLastHash(UInt128 lastHash) {
         if (lastHash != null) {
-            BridgeInternal.setProperty(this, LAST_HASH_PROPERTY_NAME, lastHash.toByteBuffer());
+            BridgeInternal.setProperty(this, LAST_HASH_PROPERTY_NAME, lastHash.toByteBuffer().array());
         } else {
             this.set(LAST_HASH_PROPERTY_NAME, null);
         }

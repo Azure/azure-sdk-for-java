@@ -4,19 +4,34 @@
 package com.azure.tools.bomgenerator;
 
 import com.azure.tools.bomgenerator.models.BomDependency;
+import com.azure.tools.bomgenerator.models.BomDependencyManagement;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.DependencyManagement;
 import org.apache.maven.model.Model;
-import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
-import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
-import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,9 +44,9 @@ import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
 import static com.azure.tools.bomgenerator.Utils.ANALYZE_MODE;
-import static com.azure.tools.bomgenerator.Utils.BASE_AZURE_GROUPID;
 import static com.azure.tools.bomgenerator.Utils.AZURE_PERF_LIBRARY_IDENTIFIER;
 import static com.azure.tools.bomgenerator.Utils.AZURE_TEST_LIBRARY_IDENTIFIER;
+import static com.azure.tools.bomgenerator.Utils.BASE_AZURE_GROUPID;
 import static com.azure.tools.bomgenerator.Utils.EXCLUSION_LIST;
 import static com.azure.tools.bomgenerator.Utils.GENERATE_MODE;
 import static com.azure.tools.bomgenerator.Utils.INPUT_DEPENDENCY_PATTERN;
@@ -40,8 +55,10 @@ import static com.azure.tools.bomgenerator.Utils.SDK_DEPENDENCY_PATTERN;
 import static com.azure.tools.bomgenerator.Utils.STRING_SPLIT_BY_COLON;
 import static com.azure.tools.bomgenerator.Utils.isPublishedArtifact;
 import static com.azure.tools.bomgenerator.Utils.parsePomFileContent;
+import static com.azure.tools.bomgenerator.Utils.parsePomFileModel;
 import static com.azure.tools.bomgenerator.Utils.toBomDependencyNoVersion;
 import static com.azure.tools.bomgenerator.Utils.validateNotNullOrEmpty;
+import static javax.xml.transform.OutputKeys.OMIT_XML_DECLARATION;
 
 public class BomGenerator {
     private String outputFileName;
@@ -137,8 +154,6 @@ public class BomGenerator {
 
         // 4. Create the new BOM file.
         if (!validationFailed) {
-            // Rewrite the existing BOM to have the dependencies in the order in which we insert them, making the diff PR easier to review.
-            rewriteExistingBomFile();
             writeBom(outputDependencies);
             return true;
         }
@@ -257,28 +272,41 @@ public class BomGenerator {
     }
 
     private Model readModel() {
-        MavenXpp3Reader reader = new MavenXpp3Reader();
-        try {
-            Model model = reader.read(new FileReader(this.pomFileName));
-            return model;
-        } catch (XmlPullParserException | IOException e) {
-            logger.error("BOM reading failed with: {}", e.toString());
-        }
-
-        return null;
+        return parsePomFileModel(this.pomFileName, Model.class);
     }
 
-	private void writeModel(Model model) {
-        String pomFileName = this.pomFileName;
-        writeModel(pomFileName, model);
-    }
-
-    private void writeModel(String fileName, Model model) {
-        MavenXpp3Writer writer = new MavenXpp3Writer();
+    private void writeModel(String inputFileName, String outputFileName, Model model) {
+        // First read the pom file.
         try {
-            writer.write(new FileWriter(fileName), model);
-        } catch (IOException exception) {
-            logger.error("BOM writing failed with: {}", exception.toString());
+            DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Document oldBomDoc = db.parse(new File(inputFileName));
+            Node oldDependencyManagementNode = oldBomDoc.getElementsByTagName("dependencyManagement").item(0);
+            Node parentNode = oldDependencyManagementNode.getParentNode();
+
+            // Now add the other node to this list.
+            XmlMapper mapper = new XmlMapper();
+            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+            mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+            BomDependencyManagement dependencyManagement = new BomDependencyManagement(model.getDependencyManagement().getDependencies());
+            String dependencies = mapper.writeValueAsString(dependencyManagement);
+            DocumentBuilder newBomDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Document newDependencies = newBomDoc.parse(new InputSource(new StringReader(dependencies)));
+            Node newDependencyManagementNode = newDependencies.getElementsByTagName("dependencyManagement").item(0);
+            Node firstDocImportedDependencyManagementNode = oldBomDoc.importNode(newDependencyManagementNode, true);
+            parentNode.replaceChild(firstDocImportedDependencyManagementNode, oldDependencyManagementNode);
+
+            // Use a Transformer for output
+            TransformerFactory tFactory = TransformerFactory.newInstance();
+            Transformer transformer = tFactory.newTransformer();
+            transformer.setOutputProperty(OMIT_XML_DECLARATION, "yes");
+            transformer.setOutputProperty(OutputKeys.INDENT, "no");
+            DOMSource source = new DOMSource(oldBomDoc);
+            FileWriter writer = new FileWriter(outputFileName);
+            StreamResult result = new StreamResult(writer);
+            transformer.transform(source, result);
+
+        } catch (IOException | ParserConfigurationException | SAXException | TransformerException e) {
+            e.printStackTrace();
         }
     }
 
@@ -295,15 +323,6 @@ public class BomGenerator {
         return management.getDependencies().stream().filter(dependency -> dependency.getType().equals(POM_TYPE)).collect(Collectors.toList());
     }
 
-    private void rewriteExistingBomFile() {
-        Model model = readModel();
-        DependencyManagement management = model.getDependencyManagement();
-        List<Dependency> dependencies = management.getDependencies();
-        dependencies.sort(new DependencyComparator());
-        management.setDependencies(dependencies);
-        writeModel(model);
-    }
-
     private void writeBom(Collection<BomDependency> bomDependencies) {
         Model model = readModel();
         DependencyManagement management = model.getDependencyManagement();
@@ -317,7 +336,10 @@ public class BomGenerator {
         }).collect(Collectors.toList());
         dependencies.addAll(externalBomDependencies);
         dependencies.sort(new DependencyComparator());
+
+        // Remove external dependencies from the BOM.
+        dependencies = dependencies.stream().filter(dependency -> BASE_AZURE_GROUPID.equals(dependency.getGroupId())).collect(Collectors.toList());
         management.setDependencies(dependencies);
-        writeModel(this.outputFileName, model);
+        writeModel(this.pomFileName, this.outputFileName, model);
     }
 }

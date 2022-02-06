@@ -26,6 +26,12 @@ public final class GrantAccessData {
     @JsonProperty(value = "durationInSeconds", required = true)
     private int durationInSeconds;
 
+    /*
+     * Set this flag to true to get additional SAS for VM guest state
+     */
+    @JsonProperty(value = "getSecureVMGuestStateSAS")
+    private Boolean getSecureVMGuestStateSas;
+
     /**
      * Get the access property: The access property.
      *
@@ -63,6 +69,26 @@ public final class GrantAccessData {
      */
     public GrantAccessData withDurationInSeconds(int durationInSeconds) {
         this.durationInSeconds = durationInSeconds;
+        return this;
+    }
+
+    /**
+     * Get the getSecureVMGuestStateSas property: Set this flag to true to get additional SAS for VM guest state.
+     *
+     * @return the getSecureVMGuestStateSas value.
+     */
+    public Boolean getSecureVMGuestStateSas() {
+        return this.getSecureVMGuestStateSas;
+    }
+
+    /**
+     * Set the getSecureVMGuestStateSas property: Set this flag to true to get additional SAS for VM guest state.
+     *
+     * @param getSecureVMGuestStateSas the getSecureVMGuestStateSas value to set.
+     * @return the GrantAccessData object itself.
+     */
+    public GrantAccessData withGetSecureVMGuestStateSas(Boolean getSecureVMGuestStateSas) {
+        this.getSecureVMGuestStateSas = getSecureVMGuestStateSas;
         return this;
     }
 

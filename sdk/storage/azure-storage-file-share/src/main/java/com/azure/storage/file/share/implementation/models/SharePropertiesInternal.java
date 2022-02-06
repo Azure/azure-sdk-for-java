@@ -56,6 +56,12 @@ public final class SharePropertiesInternal {
     private Integer provisionedEgressMBps;
 
     /*
+     * The ProvisionedBandwidthMiBps property.
+     */
+    @JsonProperty(value = "ProvisionedBandwidthMiBps")
+    private Integer provisionedBandwidthMiBps;
+
+    /*
      * The NextAllowedQuotaDowngradeTime property.
      */
     @JsonProperty(value = "NextAllowedQuotaDowngradeTime")
@@ -252,6 +258,26 @@ public final class SharePropertiesInternal {
      */
     public SharePropertiesInternal setProvisionedEgressMBps(Integer provisionedEgressMBps) {
         this.provisionedEgressMBps = provisionedEgressMBps;
+        return this;
+    }
+
+    /**
+     * Get the provisionedBandwidthMiBps property: The ProvisionedBandwidthMiBps property.
+     *
+     * @return the provisionedBandwidthMiBps value.
+     */
+    public Integer getProvisionedBandwidthMiBps() {
+        return this.provisionedBandwidthMiBps;
+    }
+
+    /**
+     * Set the provisionedBandwidthMiBps property: The ProvisionedBandwidthMiBps property.
+     *
+     * @param provisionedBandwidthMiBps the provisionedBandwidthMiBps value to set.
+     * @return the SharePropertiesInternal object itself.
+     */
+    public SharePropertiesInternal setProvisionedBandwidthMiBps(Integer provisionedBandwidthMiBps) {
+        this.provisionedBandwidthMiBps = provisionedBandwidthMiBps;
         return this;
     }
 

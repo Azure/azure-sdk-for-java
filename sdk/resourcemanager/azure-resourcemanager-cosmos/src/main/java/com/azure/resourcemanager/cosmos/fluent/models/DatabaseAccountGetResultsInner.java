@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.AnalyticalStorageConfiguration;
@@ -13,6 +12,7 @@ import com.azure.resourcemanager.cosmos.models.ApiProperties;
 import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
 import com.azure.resourcemanager.cosmos.models.BackupPolicy;
 import com.azure.resourcemanager.cosmos.models.Capability;
+import com.azure.resourcemanager.cosmos.models.Capacity;
 import com.azure.resourcemanager.cosmos.models.ConnectorOffer;
 import com.azure.resourcemanager.cosmos.models.ConsistencyPolicy;
 import com.azure.resourcemanager.cosmos.models.CorsPolicy;
@@ -33,9 +33,8 @@ import java.util.List;
 import java.util.Map;
 
 /** An Azure Cosmos DB database account. */
-@JsonFlatten
 @Fluent
-public class DatabaseAccountGetResultsInner extends ArmResourceProperties {
+public final class DatabaseAccountGetResultsInner extends ArmResourceProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseAccountGetResultsInner.class);
 
     /*
@@ -52,230 +51,16 @@ public class DatabaseAccountGetResultsInner extends ArmResourceProperties {
     private ManagedServiceIdentity identity;
 
     /*
+     * Properties for the database account.
+     */
+    @JsonProperty(value = "properties")
+    private DatabaseAccountGetProperties innerProperties;
+
+    /*
      * The system meta data relating to this resource.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
-
-    /*
-     * The status of the Cosmos DB account at the time the operation was
-     * called. The status can be one of following. 'Creating' – the Cosmos DB
-     * account is being created. When an account is in Creating state, only
-     * properties that are specified as input for the Create Cosmos DB account
-     * operation are returned. 'Succeeded' – the Cosmos DB account is active
-     * for use. 'Updating' – the Cosmos DB account is being updated. 'Deleting'
-     * – the Cosmos DB account is being deleted. 'Failed' – the Cosmos DB
-     * account failed creation. 'DeletionFailed' – the Cosmos DB account
-     * deletion failed.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * The connection endpoint for the Cosmos DB database account.
-     */
-    @JsonProperty(value = "properties.documentEndpoint", access = JsonProperty.Access.WRITE_ONLY)
-    private String documentEndpoint;
-
-    /*
-     * The offer type for the Cosmos DB database account. Default value:
-     * Standard.
-     */
-    @JsonProperty(value = "properties.databaseAccountOfferType", access = JsonProperty.Access.WRITE_ONLY)
-    private DatabaseAccountOfferType databaseAccountOfferType;
-
-    /*
-     * List of IpRules.
-     */
-    @JsonProperty(value = "properties.ipRules")
-    private List<IpAddressOrRange> ipRules;
-
-    /*
-     * Flag to indicate whether to enable/disable Virtual Network ACL rules.
-     */
-    @JsonProperty(value = "properties.isVirtualNetworkFilterEnabled")
-    private Boolean isVirtualNetworkFilterEnabled;
-
-    /*
-     * Enables automatic failover of the write region in the rare event that
-     * the region is unavailable due to an outage. Automatic failover will
-     * result in a new write region for the account and is chosen based on the
-     * failover priorities configured for the account.
-     */
-    @JsonProperty(value = "properties.enableAutomaticFailover")
-    private Boolean enableAutomaticFailover;
-
-    /*
-     * The consistency policy for the Cosmos DB database account.
-     */
-    @JsonProperty(value = "properties.consistencyPolicy")
-    private ConsistencyPolicy consistencyPolicy;
-
-    /*
-     * List of Cosmos DB capabilities for the account
-     */
-    @JsonProperty(value = "properties.capabilities")
-    private List<Capability> capabilities;
-
-    /*
-     * An array that contains the write location for the Cosmos DB account.
-     */
-    @JsonProperty(value = "properties.writeLocations", access = JsonProperty.Access.WRITE_ONLY)
-    private List<Location> writeLocations;
-
-    /*
-     * An array that contains of the read locations enabled for the Cosmos DB
-     * account.
-     */
-    @JsonProperty(value = "properties.readLocations", access = JsonProperty.Access.WRITE_ONLY)
-    private List<Location> readLocations;
-
-    /*
-     * An array that contains all of the locations enabled for the Cosmos DB
-     * account.
-     */
-    @JsonProperty(value = "properties.locations", access = JsonProperty.Access.WRITE_ONLY)
-    private List<Location> locations;
-
-    /*
-     * An array that contains the regions ordered by their failover priorities.
-     */
-    @JsonProperty(value = "properties.failoverPolicies", access = JsonProperty.Access.WRITE_ONLY)
-    private List<FailoverPolicy> failoverPolicies;
-
-    /*
-     * List of Virtual Network ACL rules configured for the Cosmos DB account.
-     */
-    @JsonProperty(value = "properties.virtualNetworkRules")
-    private List<VirtualNetworkRule> virtualNetworkRules;
-
-    /*
-     * List of Private Endpoint Connections configured for the Cosmos DB
-     * account.
-     */
-    @JsonProperty(value = "properties.privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
-    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
-
-    /*
-     * Enables the account to write in multiple locations
-     */
-    @JsonProperty(value = "properties.enableMultipleWriteLocations")
-    private Boolean enableMultipleWriteLocations;
-
-    /*
-     * Enables the cassandra connector on the Cosmos DB C* account
-     */
-    @JsonProperty(value = "properties.enableCassandraConnector")
-    private Boolean enableCassandraConnector;
-
-    /*
-     * The cassandra connector offer type for the Cosmos DB database C*
-     * account.
-     */
-    @JsonProperty(value = "properties.connectorOffer")
-    private ConnectorOffer connectorOffer;
-
-    /*
-     * Disable write operations on metadata resources (databases, containers,
-     * throughput) via account keys
-     */
-    @JsonProperty(value = "properties.disableKeyBasedMetadataWriteAccess")
-    private Boolean disableKeyBasedMetadataWriteAccess;
-
-    /*
-     * The URI of the key vault
-     */
-    @JsonProperty(value = "properties.keyVaultKeyUri")
-    private String keyVaultKeyUri;
-
-    /*
-     * The default identity for accessing key vault used in features like
-     * customer managed keys. The default identity needs to be explicitly set
-     * by the users. It can be "FirstPartyIdentity", "SystemAssignedIdentity"
-     * and more.
-     */
-    @JsonProperty(value = "properties.defaultIdentity")
-    private String defaultIdentity;
-
-    /*
-     * Whether requests from Public Network are allowed
-     */
-    @JsonProperty(value = "properties.publicNetworkAccess")
-    private PublicNetworkAccess publicNetworkAccess;
-
-    /*
-     * Flag to indicate whether Free Tier is enabled.
-     */
-    @JsonProperty(value = "properties.enableFreeTier")
-    private Boolean enableFreeTier;
-
-    /*
-     * API specific properties.
-     */
-    @JsonProperty(value = "properties.apiProperties")
-    private ApiProperties apiProperties;
-
-    /*
-     * Flag to indicate whether to enable storage analytics.
-     */
-    @JsonProperty(value = "properties.enableAnalyticalStorage")
-    private Boolean enableAnalyticalStorage;
-
-    /*
-     * Analytical storage specific properties.
-     */
-    @JsonProperty(value = "properties.analyticalStorageConfiguration")
-    private AnalyticalStorageConfiguration analyticalStorageConfiguration;
-
-    /*
-     * A unique identifier assigned to the database account
-     */
-    @JsonProperty(value = "properties.instanceId", access = JsonProperty.Access.WRITE_ONLY)
-    private String instanceId;
-
-    /*
-     * Enum to indicate the mode of account creation.
-     */
-    @JsonProperty(value = "properties.createMode")
-    private CreateMode createMode;
-
-    /*
-     * Parameters to indicate the information about the restore.
-     */
-    @JsonProperty(value = "properties.restoreParameters")
-    private RestoreParameters restoreParameters;
-
-    /*
-     * The object representing the policy for taking backups on an account.
-     */
-    @JsonProperty(value = "properties.backupPolicy")
-    private BackupPolicy backupPolicy;
-
-    /*
-     * The CORS policy for the Cosmos DB database account.
-     */
-    @JsonProperty(value = "properties.cors")
-    private List<CorsPolicy> cors;
-
-    /*
-     * Indicates what services are allowed to bypass firewall checks.
-     */
-    @JsonProperty(value = "properties.networkAclBypass")
-    private NetworkAclBypass networkAclBypass;
-
-    /*
-     * An array that contains the Resource Ids for Network Acl Bypass for the
-     * Cosmos DB account.
-     */
-    @JsonProperty(value = "properties.networkAclBypassResourceIds")
-    private List<String> networkAclBypassResourceIds;
-
-    /*
-     * Opt-out of local authentication and ensure only MSI and AAD can be used
-     * exclusively for authentication.
-     */
-    @JsonProperty(value = "properties.disableLocalAuth")
-    private Boolean disableLocalAuth;
 
     /**
      * Get the kind property: Indicates the type of database account. This can only be set at database account creation.
@@ -318,598 +103,21 @@ public class DatabaseAccountGetResultsInner extends ArmResourceProperties {
     }
 
     /**
+     * Get the innerProperties property: Properties for the database account.
+     *
+     * @return the innerProperties value.
+     */
+    private DatabaseAccountGetProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the systemData property: The system meta data relating to this resource.
      *
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
-    }
-
-    /**
-     * Get the provisioningState property: The status of the Cosmos DB account at the time the operation was called. The
-     * status can be one of following. 'Creating' – the Cosmos DB account is being created. When an account is in
-     * Creating state, only properties that are specified as input for the Create Cosmos DB account operation are
-     * returned. 'Succeeded' – the Cosmos DB account is active for use. 'Updating' – the Cosmos DB account is being
-     * updated. 'Deleting' – the Cosmos DB account is being deleted. 'Failed' – the Cosmos DB account failed creation.
-     * 'DeletionFailed' – the Cosmos DB account deletion failed.
-     *
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the documentEndpoint property: The connection endpoint for the Cosmos DB database account.
-     *
-     * @return the documentEndpoint value.
-     */
-    public String documentEndpoint() {
-        return this.documentEndpoint;
-    }
-
-    /**
-     * Get the databaseAccountOfferType property: The offer type for the Cosmos DB database account. Default value:
-     * Standard.
-     *
-     * @return the databaseAccountOfferType value.
-     */
-    public DatabaseAccountOfferType databaseAccountOfferType() {
-        return this.databaseAccountOfferType;
-    }
-
-    /**
-     * Get the ipRules property: List of IpRules.
-     *
-     * @return the ipRules value.
-     */
-    public List<IpAddressOrRange> ipRules() {
-        return this.ipRules;
-    }
-
-    /**
-     * Set the ipRules property: List of IpRules.
-     *
-     * @param ipRules the ipRules value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withIpRules(List<IpAddressOrRange> ipRules) {
-        this.ipRules = ipRules;
-        return this;
-    }
-
-    /**
-     * Get the isVirtualNetworkFilterEnabled property: Flag to indicate whether to enable/disable Virtual Network ACL
-     * rules.
-     *
-     * @return the isVirtualNetworkFilterEnabled value.
-     */
-    public Boolean isVirtualNetworkFilterEnabled() {
-        return this.isVirtualNetworkFilterEnabled;
-    }
-
-    /**
-     * Set the isVirtualNetworkFilterEnabled property: Flag to indicate whether to enable/disable Virtual Network ACL
-     * rules.
-     *
-     * @param isVirtualNetworkFilterEnabled the isVirtualNetworkFilterEnabled value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withIsVirtualNetworkFilterEnabled(Boolean isVirtualNetworkFilterEnabled) {
-        this.isVirtualNetworkFilterEnabled = isVirtualNetworkFilterEnabled;
-        return this;
-    }
-
-    /**
-     * Get the enableAutomaticFailover property: Enables automatic failover of the write region in the rare event that
-     * the region is unavailable due to an outage. Automatic failover will result in a new write region for the account
-     * and is chosen based on the failover priorities configured for the account.
-     *
-     * @return the enableAutomaticFailover value.
-     */
-    public Boolean enableAutomaticFailover() {
-        return this.enableAutomaticFailover;
-    }
-
-    /**
-     * Set the enableAutomaticFailover property: Enables automatic failover of the write region in the rare event that
-     * the region is unavailable due to an outage. Automatic failover will result in a new write region for the account
-     * and is chosen based on the failover priorities configured for the account.
-     *
-     * @param enableAutomaticFailover the enableAutomaticFailover value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withEnableAutomaticFailover(Boolean enableAutomaticFailover) {
-        this.enableAutomaticFailover = enableAutomaticFailover;
-        return this;
-    }
-
-    /**
-     * Get the consistencyPolicy property: The consistency policy for the Cosmos DB database account.
-     *
-     * @return the consistencyPolicy value.
-     */
-    public ConsistencyPolicy consistencyPolicy() {
-        return this.consistencyPolicy;
-    }
-
-    /**
-     * Set the consistencyPolicy property: The consistency policy for the Cosmos DB database account.
-     *
-     * @param consistencyPolicy the consistencyPolicy value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withConsistencyPolicy(ConsistencyPolicy consistencyPolicy) {
-        this.consistencyPolicy = consistencyPolicy;
-        return this;
-    }
-
-    /**
-     * Get the capabilities property: List of Cosmos DB capabilities for the account.
-     *
-     * @return the capabilities value.
-     */
-    public List<Capability> capabilities() {
-        return this.capabilities;
-    }
-
-    /**
-     * Set the capabilities property: List of Cosmos DB capabilities for the account.
-     *
-     * @param capabilities the capabilities value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withCapabilities(List<Capability> capabilities) {
-        this.capabilities = capabilities;
-        return this;
-    }
-
-    /**
-     * Get the writeLocations property: An array that contains the write location for the Cosmos DB account.
-     *
-     * @return the writeLocations value.
-     */
-    public List<Location> writeLocations() {
-        return this.writeLocations;
-    }
-
-    /**
-     * Get the readLocations property: An array that contains of the read locations enabled for the Cosmos DB account.
-     *
-     * @return the readLocations value.
-     */
-    public List<Location> readLocations() {
-        return this.readLocations;
-    }
-
-    /**
-     * Get the locations property: An array that contains all of the locations enabled for the Cosmos DB account.
-     *
-     * @return the locations value.
-     */
-    public List<Location> locations() {
-        return this.locations;
-    }
-
-    /**
-     * Get the failoverPolicies property: An array that contains the regions ordered by their failover priorities.
-     *
-     * @return the failoverPolicies value.
-     */
-    public List<FailoverPolicy> failoverPolicies() {
-        return this.failoverPolicies;
-    }
-
-    /**
-     * Get the virtualNetworkRules property: List of Virtual Network ACL rules configured for the Cosmos DB account.
-     *
-     * @return the virtualNetworkRules value.
-     */
-    public List<VirtualNetworkRule> virtualNetworkRules() {
-        return this.virtualNetworkRules;
-    }
-
-    /**
-     * Set the virtualNetworkRules property: List of Virtual Network ACL rules configured for the Cosmos DB account.
-     *
-     * @param virtualNetworkRules the virtualNetworkRules value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withVirtualNetworkRules(List<VirtualNetworkRule> virtualNetworkRules) {
-        this.virtualNetworkRules = virtualNetworkRules;
-        return this;
-    }
-
-    /**
-     * Get the privateEndpointConnections property: List of Private Endpoint Connections configured for the Cosmos DB
-     * account.
-     *
-     * @return the privateEndpointConnections value.
-     */
-    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
-        return this.privateEndpointConnections;
-    }
-
-    /**
-     * Get the enableMultipleWriteLocations property: Enables the account to write in multiple locations.
-     *
-     * @return the enableMultipleWriteLocations value.
-     */
-    public Boolean enableMultipleWriteLocations() {
-        return this.enableMultipleWriteLocations;
-    }
-
-    /**
-     * Set the enableMultipleWriteLocations property: Enables the account to write in multiple locations.
-     *
-     * @param enableMultipleWriteLocations the enableMultipleWriteLocations value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withEnableMultipleWriteLocations(Boolean enableMultipleWriteLocations) {
-        this.enableMultipleWriteLocations = enableMultipleWriteLocations;
-        return this;
-    }
-
-    /**
-     * Get the enableCassandraConnector property: Enables the cassandra connector on the Cosmos DB C* account.
-     *
-     * @return the enableCassandraConnector value.
-     */
-    public Boolean enableCassandraConnector() {
-        return this.enableCassandraConnector;
-    }
-
-    /**
-     * Set the enableCassandraConnector property: Enables the cassandra connector on the Cosmos DB C* account.
-     *
-     * @param enableCassandraConnector the enableCassandraConnector value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withEnableCassandraConnector(Boolean enableCassandraConnector) {
-        this.enableCassandraConnector = enableCassandraConnector;
-        return this;
-    }
-
-    /**
-     * Get the connectorOffer property: The cassandra connector offer type for the Cosmos DB database C* account.
-     *
-     * @return the connectorOffer value.
-     */
-    public ConnectorOffer connectorOffer() {
-        return this.connectorOffer;
-    }
-
-    /**
-     * Set the connectorOffer property: The cassandra connector offer type for the Cosmos DB database C* account.
-     *
-     * @param connectorOffer the connectorOffer value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withConnectorOffer(ConnectorOffer connectorOffer) {
-        this.connectorOffer = connectorOffer;
-        return this;
-    }
-
-    /**
-     * Get the disableKeyBasedMetadataWriteAccess property: Disable write operations on metadata resources (databases,
-     * containers, throughput) via account keys.
-     *
-     * @return the disableKeyBasedMetadataWriteAccess value.
-     */
-    public Boolean disableKeyBasedMetadataWriteAccess() {
-        return this.disableKeyBasedMetadataWriteAccess;
-    }
-
-    /**
-     * Set the disableKeyBasedMetadataWriteAccess property: Disable write operations on metadata resources (databases,
-     * containers, throughput) via account keys.
-     *
-     * @param disableKeyBasedMetadataWriteAccess the disableKeyBasedMetadataWriteAccess value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withDisableKeyBasedMetadataWriteAccess(
-        Boolean disableKeyBasedMetadataWriteAccess) {
-        this.disableKeyBasedMetadataWriteAccess = disableKeyBasedMetadataWriteAccess;
-        return this;
-    }
-
-    /**
-     * Get the keyVaultKeyUri property: The URI of the key vault.
-     *
-     * @return the keyVaultKeyUri value.
-     */
-    public String keyVaultKeyUri() {
-        return this.keyVaultKeyUri;
-    }
-
-    /**
-     * Set the keyVaultKeyUri property: The URI of the key vault.
-     *
-     * @param keyVaultKeyUri the keyVaultKeyUri value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withKeyVaultKeyUri(String keyVaultKeyUri) {
-        this.keyVaultKeyUri = keyVaultKeyUri;
-        return this;
-    }
-
-    /**
-     * Get the defaultIdentity property: The default identity for accessing key vault used in features like customer
-     * managed keys. The default identity needs to be explicitly set by the users. It can be "FirstPartyIdentity",
-     * "SystemAssignedIdentity" and more.
-     *
-     * @return the defaultIdentity value.
-     */
-    public String defaultIdentity() {
-        return this.defaultIdentity;
-    }
-
-    /**
-     * Set the defaultIdentity property: The default identity for accessing key vault used in features like customer
-     * managed keys. The default identity needs to be explicitly set by the users. It can be "FirstPartyIdentity",
-     * "SystemAssignedIdentity" and more.
-     *
-     * @param defaultIdentity the defaultIdentity value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withDefaultIdentity(String defaultIdentity) {
-        this.defaultIdentity = defaultIdentity;
-        return this;
-    }
-
-    /**
-     * Get the publicNetworkAccess property: Whether requests from Public Network are allowed.
-     *
-     * @return the publicNetworkAccess value.
-     */
-    public PublicNetworkAccess publicNetworkAccess() {
-        return this.publicNetworkAccess;
-    }
-
-    /**
-     * Set the publicNetworkAccess property: Whether requests from Public Network are allowed.
-     *
-     * @param publicNetworkAccess the publicNetworkAccess value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
-        this.publicNetworkAccess = publicNetworkAccess;
-        return this;
-    }
-
-    /**
-     * Get the enableFreeTier property: Flag to indicate whether Free Tier is enabled.
-     *
-     * @return the enableFreeTier value.
-     */
-    public Boolean enableFreeTier() {
-        return this.enableFreeTier;
-    }
-
-    /**
-     * Set the enableFreeTier property: Flag to indicate whether Free Tier is enabled.
-     *
-     * @param enableFreeTier the enableFreeTier value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withEnableFreeTier(Boolean enableFreeTier) {
-        this.enableFreeTier = enableFreeTier;
-        return this;
-    }
-
-    /**
-     * Get the apiProperties property: API specific properties.
-     *
-     * @return the apiProperties value.
-     */
-    public ApiProperties apiProperties() {
-        return this.apiProperties;
-    }
-
-    /**
-     * Set the apiProperties property: API specific properties.
-     *
-     * @param apiProperties the apiProperties value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withApiProperties(ApiProperties apiProperties) {
-        this.apiProperties = apiProperties;
-        return this;
-    }
-
-    /**
-     * Get the enableAnalyticalStorage property: Flag to indicate whether to enable storage analytics.
-     *
-     * @return the enableAnalyticalStorage value.
-     */
-    public Boolean enableAnalyticalStorage() {
-        return this.enableAnalyticalStorage;
-    }
-
-    /**
-     * Set the enableAnalyticalStorage property: Flag to indicate whether to enable storage analytics.
-     *
-     * @param enableAnalyticalStorage the enableAnalyticalStorage value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withEnableAnalyticalStorage(Boolean enableAnalyticalStorage) {
-        this.enableAnalyticalStorage = enableAnalyticalStorage;
-        return this;
-    }
-
-    /**
-     * Get the analyticalStorageConfiguration property: Analytical storage specific properties.
-     *
-     * @return the analyticalStorageConfiguration value.
-     */
-    public AnalyticalStorageConfiguration analyticalStorageConfiguration() {
-        return this.analyticalStorageConfiguration;
-    }
-
-    /**
-     * Set the analyticalStorageConfiguration property: Analytical storage specific properties.
-     *
-     * @param analyticalStorageConfiguration the analyticalStorageConfiguration value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withAnalyticalStorageConfiguration(
-        AnalyticalStorageConfiguration analyticalStorageConfiguration) {
-        this.analyticalStorageConfiguration = analyticalStorageConfiguration;
-        return this;
-    }
-
-    /**
-     * Get the instanceId property: A unique identifier assigned to the database account.
-     *
-     * @return the instanceId value.
-     */
-    public String instanceId() {
-        return this.instanceId;
-    }
-
-    /**
-     * Get the createMode property: Enum to indicate the mode of account creation.
-     *
-     * @return the createMode value.
-     */
-    public CreateMode createMode() {
-        return this.createMode;
-    }
-
-    /**
-     * Set the createMode property: Enum to indicate the mode of account creation.
-     *
-     * @param createMode the createMode value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withCreateMode(CreateMode createMode) {
-        this.createMode = createMode;
-        return this;
-    }
-
-    /**
-     * Get the restoreParameters property: Parameters to indicate the information about the restore.
-     *
-     * @return the restoreParameters value.
-     */
-    public RestoreParameters restoreParameters() {
-        return this.restoreParameters;
-    }
-
-    /**
-     * Set the restoreParameters property: Parameters to indicate the information about the restore.
-     *
-     * @param restoreParameters the restoreParameters value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withRestoreParameters(RestoreParameters restoreParameters) {
-        this.restoreParameters = restoreParameters;
-        return this;
-    }
-
-    /**
-     * Get the backupPolicy property: The object representing the policy for taking backups on an account.
-     *
-     * @return the backupPolicy value.
-     */
-    public BackupPolicy backupPolicy() {
-        return this.backupPolicy;
-    }
-
-    /**
-     * Set the backupPolicy property: The object representing the policy for taking backups on an account.
-     *
-     * @param backupPolicy the backupPolicy value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withBackupPolicy(BackupPolicy backupPolicy) {
-        this.backupPolicy = backupPolicy;
-        return this;
-    }
-
-    /**
-     * Get the cors property: The CORS policy for the Cosmos DB database account.
-     *
-     * @return the cors value.
-     */
-    public List<CorsPolicy> cors() {
-        return this.cors;
-    }
-
-    /**
-     * Set the cors property: The CORS policy for the Cosmos DB database account.
-     *
-     * @param cors the cors value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withCors(List<CorsPolicy> cors) {
-        this.cors = cors;
-        return this;
-    }
-
-    /**
-     * Get the networkAclBypass property: Indicates what services are allowed to bypass firewall checks.
-     *
-     * @return the networkAclBypass value.
-     */
-    public NetworkAclBypass networkAclBypass() {
-        return this.networkAclBypass;
-    }
-
-    /**
-     * Set the networkAclBypass property: Indicates what services are allowed to bypass firewall checks.
-     *
-     * @param networkAclBypass the networkAclBypass value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withNetworkAclBypass(NetworkAclBypass networkAclBypass) {
-        this.networkAclBypass = networkAclBypass;
-        return this;
-    }
-
-    /**
-     * Get the networkAclBypassResourceIds property: An array that contains the Resource Ids for Network Acl Bypass for
-     * the Cosmos DB account.
-     *
-     * @return the networkAclBypassResourceIds value.
-     */
-    public List<String> networkAclBypassResourceIds() {
-        return this.networkAclBypassResourceIds;
-    }
-
-    /**
-     * Set the networkAclBypassResourceIds property: An array that contains the Resource Ids for Network Acl Bypass for
-     * the Cosmos DB account.
-     *
-     * @param networkAclBypassResourceIds the networkAclBypassResourceIds value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withNetworkAclBypassResourceIds(List<String> networkAclBypassResourceIds) {
-        this.networkAclBypassResourceIds = networkAclBypassResourceIds;
-        return this;
-    }
-
-    /**
-     * Get the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
-     * exclusively for authentication.
-     *
-     * @return the disableLocalAuth value.
-     */
-    public Boolean disableLocalAuth() {
-        return this.disableLocalAuth;
-    }
-
-    /**
-     * Set the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
-     * exclusively for authentication.
-     *
-     * @param disableLocalAuth the disableLocalAuth value to set.
-     * @return the DatabaseAccountGetResultsInner object itself.
-     */
-    public DatabaseAccountGetResultsInner withDisableLocalAuth(Boolean disableLocalAuth) {
-        this.disableLocalAuth = disableLocalAuth;
-        return this;
     }
 
     /** {@inheritDoc} */
@@ -927,6 +135,689 @@ public class DatabaseAccountGetResultsInner extends ArmResourceProperties {
     }
 
     /**
+     * Get the provisioningState property: The status of the Cosmos DB account at the time the operation was called. The
+     * status can be one of following. 'Creating' – the Cosmos DB account is being created. When an account is in
+     * Creating state, only properties that are specified as input for the Create Cosmos DB account operation are
+     * returned. 'Succeeded' – the Cosmos DB account is active for use. 'Updating' – the Cosmos DB account is being
+     * updated. 'Deleting' – the Cosmos DB account is being deleted. 'Failed' – the Cosmos DB account failed creation.
+     * 'DeletionFailed' – the Cosmos DB account deletion failed.
+     *
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the documentEndpoint property: The connection endpoint for the Cosmos DB database account.
+     *
+     * @return the documentEndpoint value.
+     */
+    public String documentEndpoint() {
+        return this.innerProperties() == null ? null : this.innerProperties().documentEndpoint();
+    }
+
+    /**
+     * Get the databaseAccountOfferType property: The offer type for the Cosmos DB database account. Default value:
+     * Standard.
+     *
+     * @return the databaseAccountOfferType value.
+     */
+    public DatabaseAccountOfferType databaseAccountOfferType() {
+        return this.innerProperties() == null ? null : this.innerProperties().databaseAccountOfferType();
+    }
+
+    /**
+     * Get the ipRules property: List of IpRules.
+     *
+     * @return the ipRules value.
+     */
+    public List<IpAddressOrRange> ipRules() {
+        return this.innerProperties() == null ? null : this.innerProperties().ipRules();
+    }
+
+    /**
+     * Set the ipRules property: List of IpRules.
+     *
+     * @param ipRules the ipRules value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withIpRules(List<IpAddressOrRange> ipRules) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withIpRules(ipRules);
+        return this;
+    }
+
+    /**
+     * Get the isVirtualNetworkFilterEnabled property: Flag to indicate whether to enable/disable Virtual Network ACL
+     * rules.
+     *
+     * @return the isVirtualNetworkFilterEnabled value.
+     */
+    public Boolean isVirtualNetworkFilterEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().isVirtualNetworkFilterEnabled();
+    }
+
+    /**
+     * Set the isVirtualNetworkFilterEnabled property: Flag to indicate whether to enable/disable Virtual Network ACL
+     * rules.
+     *
+     * @param isVirtualNetworkFilterEnabled the isVirtualNetworkFilterEnabled value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withIsVirtualNetworkFilterEnabled(Boolean isVirtualNetworkFilterEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withIsVirtualNetworkFilterEnabled(isVirtualNetworkFilterEnabled);
+        return this;
+    }
+
+    /**
+     * Get the enableAutomaticFailover property: Enables automatic failover of the write region in the rare event that
+     * the region is unavailable due to an outage. Automatic failover will result in a new write region for the account
+     * and is chosen based on the failover priorities configured for the account.
+     *
+     * @return the enableAutomaticFailover value.
+     */
+    public Boolean enableAutomaticFailover() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableAutomaticFailover();
+    }
+
+    /**
+     * Set the enableAutomaticFailover property: Enables automatic failover of the write region in the rare event that
+     * the region is unavailable due to an outage. Automatic failover will result in a new write region for the account
+     * and is chosen based on the failover priorities configured for the account.
+     *
+     * @param enableAutomaticFailover the enableAutomaticFailover value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withEnableAutomaticFailover(Boolean enableAutomaticFailover) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withEnableAutomaticFailover(enableAutomaticFailover);
+        return this;
+    }
+
+    /**
+     * Get the consistencyPolicy property: The consistency policy for the Cosmos DB database account.
+     *
+     * @return the consistencyPolicy value.
+     */
+    public ConsistencyPolicy consistencyPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().consistencyPolicy();
+    }
+
+    /**
+     * Set the consistencyPolicy property: The consistency policy for the Cosmos DB database account.
+     *
+     * @param consistencyPolicy the consistencyPolicy value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withConsistencyPolicy(ConsistencyPolicy consistencyPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withConsistencyPolicy(consistencyPolicy);
+        return this;
+    }
+
+    /**
+     * Get the capabilities property: List of Cosmos DB capabilities for the account.
+     *
+     * @return the capabilities value.
+     */
+    public List<Capability> capabilities() {
+        return this.innerProperties() == null ? null : this.innerProperties().capabilities();
+    }
+
+    /**
+     * Set the capabilities property: List of Cosmos DB capabilities for the account.
+     *
+     * @param capabilities the capabilities value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withCapabilities(List<Capability> capabilities) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withCapabilities(capabilities);
+        return this;
+    }
+
+    /**
+     * Get the writeLocations property: An array that contains the write location for the Cosmos DB account.
+     *
+     * @return the writeLocations value.
+     */
+    public List<Location> writeLocations() {
+        return this.innerProperties() == null ? null : this.innerProperties().writeLocations();
+    }
+
+    /**
+     * Get the readLocations property: An array that contains of the read locations enabled for the Cosmos DB account.
+     *
+     * @return the readLocations value.
+     */
+    public List<Location> readLocations() {
+        return this.innerProperties() == null ? null : this.innerProperties().readLocations();
+    }
+
+    /**
+     * Get the locations property: An array that contains all of the locations enabled for the Cosmos DB account.
+     *
+     * @return the locations value.
+     */
+    public List<Location> locations() {
+        return this.innerProperties() == null ? null : this.innerProperties().locations();
+    }
+
+    /**
+     * Get the failoverPolicies property: An array that contains the regions ordered by their failover priorities.
+     *
+     * @return the failoverPolicies value.
+     */
+    public List<FailoverPolicy> failoverPolicies() {
+        return this.innerProperties() == null ? null : this.innerProperties().failoverPolicies();
+    }
+
+    /**
+     * Get the virtualNetworkRules property: List of Virtual Network ACL rules configured for the Cosmos DB account.
+     *
+     * @return the virtualNetworkRules value.
+     */
+    public List<VirtualNetworkRule> virtualNetworkRules() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualNetworkRules();
+    }
+
+    /**
+     * Set the virtualNetworkRules property: List of Virtual Network ACL rules configured for the Cosmos DB account.
+     *
+     * @param virtualNetworkRules the virtualNetworkRules value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withVirtualNetworkRules(List<VirtualNetworkRule> virtualNetworkRules) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withVirtualNetworkRules(virtualNetworkRules);
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: List of Private Endpoint Connections configured for the Cosmos DB
+     * account.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    }
+
+    /**
+     * Get the enableMultipleWriteLocations property: Enables the account to write in multiple locations.
+     *
+     * @return the enableMultipleWriteLocations value.
+     */
+    public Boolean enableMultipleWriteLocations() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableMultipleWriteLocations();
+    }
+
+    /**
+     * Set the enableMultipleWriteLocations property: Enables the account to write in multiple locations.
+     *
+     * @param enableMultipleWriteLocations the enableMultipleWriteLocations value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withEnableMultipleWriteLocations(Boolean enableMultipleWriteLocations) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withEnableMultipleWriteLocations(enableMultipleWriteLocations);
+        return this;
+    }
+
+    /**
+     * Get the enableCassandraConnector property: Enables the cassandra connector on the Cosmos DB C* account.
+     *
+     * @return the enableCassandraConnector value.
+     */
+    public Boolean enableCassandraConnector() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableCassandraConnector();
+    }
+
+    /**
+     * Set the enableCassandraConnector property: Enables the cassandra connector on the Cosmos DB C* account.
+     *
+     * @param enableCassandraConnector the enableCassandraConnector value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withEnableCassandraConnector(Boolean enableCassandraConnector) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withEnableCassandraConnector(enableCassandraConnector);
+        return this;
+    }
+
+    /**
+     * Get the connectorOffer property: The cassandra connector offer type for the Cosmos DB database C* account.
+     *
+     * @return the connectorOffer value.
+     */
+    public ConnectorOffer connectorOffer() {
+        return this.innerProperties() == null ? null : this.innerProperties().connectorOffer();
+    }
+
+    /**
+     * Set the connectorOffer property: The cassandra connector offer type for the Cosmos DB database C* account.
+     *
+     * @param connectorOffer the connectorOffer value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withConnectorOffer(ConnectorOffer connectorOffer) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withConnectorOffer(connectorOffer);
+        return this;
+    }
+
+    /**
+     * Get the disableKeyBasedMetadataWriteAccess property: Disable write operations on metadata resources (databases,
+     * containers, throughput) via account keys.
+     *
+     * @return the disableKeyBasedMetadataWriteAccess value.
+     */
+    public Boolean disableKeyBasedMetadataWriteAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().disableKeyBasedMetadataWriteAccess();
+    }
+
+    /**
+     * Set the disableKeyBasedMetadataWriteAccess property: Disable write operations on metadata resources (databases,
+     * containers, throughput) via account keys.
+     *
+     * @param disableKeyBasedMetadataWriteAccess the disableKeyBasedMetadataWriteAccess value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withDisableKeyBasedMetadataWriteAccess(
+        Boolean disableKeyBasedMetadataWriteAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withDisableKeyBasedMetadataWriteAccess(disableKeyBasedMetadataWriteAccess);
+        return this;
+    }
+
+    /**
+     * Get the keyVaultKeyUri property: The URI of the key vault.
+     *
+     * @return the keyVaultKeyUri value.
+     */
+    public String keyVaultKeyUri() {
+        return this.innerProperties() == null ? null : this.innerProperties().keyVaultKeyUri();
+    }
+
+    /**
+     * Set the keyVaultKeyUri property: The URI of the key vault.
+     *
+     * @param keyVaultKeyUri the keyVaultKeyUri value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withKeyVaultKeyUri(String keyVaultKeyUri) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withKeyVaultKeyUri(keyVaultKeyUri);
+        return this;
+    }
+
+    /**
+     * Get the defaultIdentity property: The default identity for accessing key vault used in features like customer
+     * managed keys. The default identity needs to be explicitly set by the users. It can be "FirstPartyIdentity",
+     * "SystemAssignedIdentity" and more.
+     *
+     * @return the defaultIdentity value.
+     */
+    public String defaultIdentity() {
+        return this.innerProperties() == null ? null : this.innerProperties().defaultIdentity();
+    }
+
+    /**
+     * Set the defaultIdentity property: The default identity for accessing key vault used in features like customer
+     * managed keys. The default identity needs to be explicitly set by the users. It can be "FirstPartyIdentity",
+     * "SystemAssignedIdentity" and more.
+     *
+     * @param defaultIdentity the defaultIdentity value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withDefaultIdentity(String defaultIdentity) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withDefaultIdentity(defaultIdentity);
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Whether requests from Public Network are allowed.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether requests from Public Network are allowed.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the enableFreeTier property: Flag to indicate whether Free Tier is enabled.
+     *
+     * @return the enableFreeTier value.
+     */
+    public Boolean enableFreeTier() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableFreeTier();
+    }
+
+    /**
+     * Set the enableFreeTier property: Flag to indicate whether Free Tier is enabled.
+     *
+     * @param enableFreeTier the enableFreeTier value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withEnableFreeTier(Boolean enableFreeTier) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withEnableFreeTier(enableFreeTier);
+        return this;
+    }
+
+    /**
+     * Get the apiProperties property: API specific properties.
+     *
+     * @return the apiProperties value.
+     */
+    public ApiProperties apiProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().apiProperties();
+    }
+
+    /**
+     * Set the apiProperties property: API specific properties.
+     *
+     * @param apiProperties the apiProperties value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withApiProperties(ApiProperties apiProperties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withApiProperties(apiProperties);
+        return this;
+    }
+
+    /**
+     * Get the enableAnalyticalStorage property: Flag to indicate whether to enable storage analytics.
+     *
+     * @return the enableAnalyticalStorage value.
+     */
+    public Boolean enableAnalyticalStorage() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableAnalyticalStorage();
+    }
+
+    /**
+     * Set the enableAnalyticalStorage property: Flag to indicate whether to enable storage analytics.
+     *
+     * @param enableAnalyticalStorage the enableAnalyticalStorage value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withEnableAnalyticalStorage(Boolean enableAnalyticalStorage) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withEnableAnalyticalStorage(enableAnalyticalStorage);
+        return this;
+    }
+
+    /**
+     * Get the analyticalStorageConfiguration property: Analytical storage specific properties.
+     *
+     * @return the analyticalStorageConfiguration value.
+     */
+    public AnalyticalStorageConfiguration analyticalStorageConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().analyticalStorageConfiguration();
+    }
+
+    /**
+     * Set the analyticalStorageConfiguration property: Analytical storage specific properties.
+     *
+     * @param analyticalStorageConfiguration the analyticalStorageConfiguration value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withAnalyticalStorageConfiguration(
+        AnalyticalStorageConfiguration analyticalStorageConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withAnalyticalStorageConfiguration(analyticalStorageConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the instanceId property: A unique identifier assigned to the database account.
+     *
+     * @return the instanceId value.
+     */
+    public String instanceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().instanceId();
+    }
+
+    /**
+     * Get the createMode property: Enum to indicate the mode of account creation.
+     *
+     * @return the createMode value.
+     */
+    public CreateMode createMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().createMode();
+    }
+
+    /**
+     * Set the createMode property: Enum to indicate the mode of account creation.
+     *
+     * @param createMode the createMode value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withCreateMode(CreateMode createMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withCreateMode(createMode);
+        return this;
+    }
+
+    /**
+     * Get the restoreParameters property: Parameters to indicate the information about the restore.
+     *
+     * @return the restoreParameters value.
+     */
+    public RestoreParameters restoreParameters() {
+        return this.innerProperties() == null ? null : this.innerProperties().restoreParameters();
+    }
+
+    /**
+     * Set the restoreParameters property: Parameters to indicate the information about the restore.
+     *
+     * @param restoreParameters the restoreParameters value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withRestoreParameters(RestoreParameters restoreParameters) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withRestoreParameters(restoreParameters);
+        return this;
+    }
+
+    /**
+     * Get the backupPolicy property: The object representing the policy for taking backups on an account.
+     *
+     * @return the backupPolicy value.
+     */
+    public BackupPolicy backupPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().backupPolicy();
+    }
+
+    /**
+     * Set the backupPolicy property: The object representing the policy for taking backups on an account.
+     *
+     * @param backupPolicy the backupPolicy value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withBackupPolicy(BackupPolicy backupPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withBackupPolicy(backupPolicy);
+        return this;
+    }
+
+    /**
+     * Get the cors property: The CORS policy for the Cosmos DB database account.
+     *
+     * @return the cors value.
+     */
+    public List<CorsPolicy> cors() {
+        return this.innerProperties() == null ? null : this.innerProperties().cors();
+    }
+
+    /**
+     * Set the cors property: The CORS policy for the Cosmos DB database account.
+     *
+     * @param cors the cors value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withCors(List<CorsPolicy> cors) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withCors(cors);
+        return this;
+    }
+
+    /**
+     * Get the networkAclBypass property: Indicates what services are allowed to bypass firewall checks.
+     *
+     * @return the networkAclBypass value.
+     */
+    public NetworkAclBypass networkAclBypass() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkAclBypass();
+    }
+
+    /**
+     * Set the networkAclBypass property: Indicates what services are allowed to bypass firewall checks.
+     *
+     * @param networkAclBypass the networkAclBypass value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withNetworkAclBypass(NetworkAclBypass networkAclBypass) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withNetworkAclBypass(networkAclBypass);
+        return this;
+    }
+
+    /**
+     * Get the networkAclBypassResourceIds property: An array that contains the Resource Ids for Network Acl Bypass for
+     * the Cosmos DB account.
+     *
+     * @return the networkAclBypassResourceIds value.
+     */
+    public List<String> networkAclBypassResourceIds() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkAclBypassResourceIds();
+    }
+
+    /**
+     * Set the networkAclBypassResourceIds property: An array that contains the Resource Ids for Network Acl Bypass for
+     * the Cosmos DB account.
+     *
+     * @param networkAclBypassResourceIds the networkAclBypassResourceIds value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withNetworkAclBypassResourceIds(List<String> networkAclBypassResourceIds) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withNetworkAclBypassResourceIds(networkAclBypassResourceIds);
+        return this;
+    }
+
+    /**
+     * Get the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
+     * exclusively for authentication.
+     *
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.innerProperties() == null ? null : this.innerProperties().disableLocalAuth();
+    }
+
+    /**
+     * Set the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
+     * exclusively for authentication.
+     *
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withDisableLocalAuth(Boolean disableLocalAuth) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withDisableLocalAuth(disableLocalAuth);
+        return this;
+    }
+
+    /**
+     * Get the capacity property: The object that represents all properties related to capacity enforcement on an
+     * account.
+     *
+     * @return the capacity value.
+     */
+    public Capacity capacity() {
+        return this.innerProperties() == null ? null : this.innerProperties().capacity();
+    }
+
+    /**
+     * Set the capacity property: The object that represents all properties related to capacity enforcement on an
+     * account.
+     *
+     * @param capacity the capacity value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withCapacity(Capacity capacity) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withCapacity(capacity);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -937,47 +828,8 @@ public class DatabaseAccountGetResultsInner extends ArmResourceProperties {
         if (identity() != null) {
             identity().validate();
         }
-        if (ipRules() != null) {
-            ipRules().forEach(e -> e.validate());
-        }
-        if (consistencyPolicy() != null) {
-            consistencyPolicy().validate();
-        }
-        if (capabilities() != null) {
-            capabilities().forEach(e -> e.validate());
-        }
-        if (writeLocations() != null) {
-            writeLocations().forEach(e -> e.validate());
-        }
-        if (readLocations() != null) {
-            readLocations().forEach(e -> e.validate());
-        }
-        if (locations() != null) {
-            locations().forEach(e -> e.validate());
-        }
-        if (failoverPolicies() != null) {
-            failoverPolicies().forEach(e -> e.validate());
-        }
-        if (virtualNetworkRules() != null) {
-            virtualNetworkRules().forEach(e -> e.validate());
-        }
-        if (privateEndpointConnections() != null) {
-            privateEndpointConnections().forEach(e -> e.validate());
-        }
-        if (apiProperties() != null) {
-            apiProperties().validate();
-        }
-        if (analyticalStorageConfiguration() != null) {
-            analyticalStorageConfiguration().validate();
-        }
-        if (restoreParameters() != null) {
-            restoreParameters().validate();
-        }
-        if (backupPolicy() != null) {
-            backupPolicy().validate();
-        }
-        if (cors() != null) {
-            cors().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

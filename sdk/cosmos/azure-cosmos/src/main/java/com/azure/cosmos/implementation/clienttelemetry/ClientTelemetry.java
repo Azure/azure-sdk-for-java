@@ -43,22 +43,28 @@ import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class ClientTelemetry {
     public final static int ONE_KB_TO_BYTES = 1024;
-    public final static int REQUEST_LATENCY_MAX_MICRO_SEC = 300000000;
+    public final static int REQUEST_LATENCY_MAX_MILLI_SEC = 300000;
     public final static int REQUEST_LATENCY_SUCCESS_PRECISION = 4;
     public final static int REQUEST_LATENCY_FAILURE_PRECISION = 2;
     public final static String REQUEST_LATENCY_NAME = "RequestLatency";
-    public final static String REQUEST_LATENCY_UNIT = "MicroSec";
+    public final static String REQUEST_LATENCY_UNIT = "MilliSecond";
 
     public final static int REQUEST_CHARGE_MAX = 10000;
     public final static int REQUEST_CHARGE_PRECISION = 2;
     public final static String REQUEST_CHARGE_NAME = "RequestCharge";
     public final static String REQUEST_CHARGE_UNIT = "RU";
+
+    public final static String TCP_NEW_CHANNEL_LATENCY_NAME = "TcpNewChannelOpenLatency";
+    public final static String TCP_NEW_CHANNEL_LATENCY_UNIT = "MilliSecond";
+    public final static int TCP_NEW_CHANNEL_LATENCY_MAX_MILLI_SEC = 300000;
+    public final static int TCP_NEW_CHANNEL_LATENCY_PRECISION = 2;
 
     public final static int CPU_MAX = 100;
     public final static int CPU_PRECISION = 2;
@@ -102,10 +108,11 @@ public class ClientTelemetry {
                            String hostEnvInfo,
                            HttpClient httpClient,
                            boolean isClientTelemetryEnabled,
-                           IAuthorizationTokenProvider tokenProvider
+                           IAuthorizationTokenProvider tokenProvider,
+                           List<String> preferredRegions
     ) {
         clientTelemetryInfo = new ClientTelemetryInfo(clientId, processId, userAgent, connectionMode,
-            globalDatabaseAccountName, applicationRegion, hostEnvInfo, acceleratedNetworking);
+            globalDatabaseAccountName, applicationRegion, hostEnvInfo, acceleratedNetworking, preferredRegions);
         this.isClosed = false;
         this.httpClient = httpClient;
         this.isClientTelemetryEnabled = isClientTelemetryEnabled;
@@ -132,6 +139,10 @@ public class ClientTelemetry {
         } catch (Exception ex) {
             logger.warn("Error while recording value for client telemetry. ", ex);
         }
+    }
+
+    public boolean isClientTelemetryEnabled() {
+        return isClientTelemetryEnabled;
     }
 
     public void init() {
@@ -264,6 +275,7 @@ public class ClientTelemetry {
     }
 
     private void clearDataForNextRun() {
+        this.clientTelemetryInfo.getSystemInfoMap().clear();
         this.clientTelemetryInfo.getOperationInfoMap().clear();
         this.clientTelemetryInfo.getCacheRefreshInfoMap().clear();
         for (ConcurrentDoubleHistogram histogram : this.clientTelemetryInfo.getSystemInfoMap().values()) {

@@ -128,7 +128,11 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.create}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobClient.create -->
+     * <pre>
+     * System.out.printf&#40;&quot;Created AppendBlob at %s%n&quot;, client.create&#40;&#41;.getLastModified&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobClient.create -->
      *
      * @return The information of the created appended blob.
      */
@@ -142,7 +146,12 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.create#boolean}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobClient.create#boolean -->
+     * <pre>
+     * boolean overwrite = false; &#47;&#47; Default value
+     * System.out.printf&#40;&quot;Created AppendBlob at %s%n&quot;, client.create&#40;overwrite&#41;.getLastModified&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobClient.create#boolean -->
      *
      * @param overwrite Whether or not to overwrite, should data exist on the blob.
      *
@@ -164,7 +173,22 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#BlobHttpHeaders-Map-BlobRequestConditions-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#BlobHttpHeaders-Map-BlobRequestConditions-Duration-Context -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;;
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     * Context context = new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Created AppendBlob at %s%n&quot;,
+     *     client.createWithResponse&#40;headers, metadata, requestConditions, timeout, context&#41;.getValue&#40;&#41;
+     *         .getLastModified&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#BlobHttpHeaders-Map-BlobRequestConditions-Duration-Context -->
      *
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any
@@ -188,7 +212,23 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#AppendBlobCreateOptions-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#AppendBlobCreateOptions-Duration-Context -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;;
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * Map&lt;String, String&gt; tags = Collections.singletonMap&#40;&quot;tags&quot;, &quot;value&quot;&#41;;
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     * Context context = new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Created AppendBlob at %s%n&quot;,
+     *     client.createWithResponse&#40;new AppendBlobCreateOptions&#40;&#41;.setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;
+     *         .setTags&#40;tags&#41;.setRequestConditions&#40;requestConditions&#41;, timeout, context&#41;.getValue&#40;&#41;
+     *         .getLastModified&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#AppendBlobCreateOptions-Duration-Context -->
      *
      * @param options {@link AppendBlobCreateOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -210,7 +250,12 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.appendBlock#InputStream-long}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobClient.appendBlock#InputStream-long -->
+     * <pre>
+     * System.out.printf&#40;&quot;AppendBlob has %d committed blocks%n&quot;,
+     *     client.appendBlock&#40;data, length&#41;.getBlobCommittedBlockCount&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobClient.appendBlock#InputStream-long -->
      *
      * @param data The data to write to the blob. The data must be markable. This is in order to support retries. If
      * the data is not markable, consider using {@link #getBlobOutputStream()} and writing to the returned OutputStream.
@@ -232,7 +277,19 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.appendBlockWithResponse#InputStream-long-byte-AppendBlobRequestConditions-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobClient.appendBlockWithResponse#InputStream-long-byte-AppendBlobRequestConditions-Duration-Context -->
+     * <pre>
+     * byte[] md5 = MessageDigest.getInstance&#40;&quot;MD5&quot;&#41;.digest&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
+     * AppendBlobRequestConditions requestConditions = new AppendBlobRequestConditions&#40;&#41;
+     *     .setAppendPosition&#40;POSITION&#41;
+     *     .setMaxSize&#40;maxSize&#41;;
+     * Context context = new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;AppendBlob has %d committed blocks%n&quot;,
+     *     client.appendBlockWithResponse&#40;data, length, md5, requestConditions, timeout, context&#41;
+     *         .getValue&#40;&#41;.getBlobCommittedBlockCount&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobClient.appendBlockWithResponse#InputStream-long-byte-AppendBlobRequestConditions-Duration-Context -->
      *
      * @param data The data to write to the blob. The data must be markable. This is in order to support retries. If
      * the data is not markable, consider using {@link #getBlobOutputStream()} and writing to the returned OutputStream.
@@ -265,7 +322,12 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.appendBlockFromUrl#String-BlobRange}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobClient.appendBlockFromUrl#String-BlobRange -->
+     * <pre>
+     * System.out.printf&#40;&quot;AppendBlob has %d committed blocks%n&quot;,
+     *     client.appendBlockFromUrl&#40;sourceUrl, new BlobRange&#40;offset, count&#41;&#41;.getBlobCommittedBlockCount&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobClient.appendBlockFromUrl#String-BlobRange -->
      *
      * @param sourceUrl The url to the blob that will be the source of the copy.  A source blob in the same storage
      * account can be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
@@ -284,7 +346,23 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.appendBlockFromUrlWithResponse#String-BlobRange-byte-AppendBlobRequestConditions-BlobRequestConditions-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobClient.appendBlockFromUrlWithResponse#String-BlobRange-byte-AppendBlobRequestConditions-BlobRequestConditions-Duration-Context -->
+     * <pre>
+     * AppendBlobRequestConditions appendBlobRequestConditions = new AppendBlobRequestConditions&#40;&#41;
+     *     .setAppendPosition&#40;POSITION&#41;
+     *     .setMaxSize&#40;maxSize&#41;;
+     *
+     * BlobRequestConditions modifiedRequestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     *
+     * Context context = new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;AppendBlob has %d committed blocks%n&quot;,
+     *     client.appendBlockFromUrlWithResponse&#40;sourceUrl, new BlobRange&#40;offset, count&#41;, null,
+     *         appendBlobRequestConditions, modifiedRequestConditions, timeout,
+     *         context&#41;.getValue&#40;&#41;.getBlobCommittedBlockCount&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobClient.appendBlockFromUrlWithResponse#String-BlobRange-byte-AppendBlobRequestConditions-BlobRequestConditions-Duration-Context -->
      *
      * @param sourceUrl The url to the blob that will be the source of the copy.  A source blob in the same storage
      * account can be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
@@ -315,7 +393,25 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.appendBlockFromUrlWithResponse#AppendBlobAppendBlockFromUrlOptions-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobClient.appendBlockFromUrlWithResponse#AppendBlobAppendBlockFromUrlOptions-Duration-Context -->
+     * <pre>
+     * AppendBlobRequestConditions appendBlobRequestConditions = new AppendBlobRequestConditions&#40;&#41;
+     *     .setAppendPosition&#40;POSITION&#41;
+     *     .setMaxSize&#40;maxSize&#41;;
+     *
+     * BlobRequestConditions modifiedRequestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     *
+     * Context context = new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;AppendBlob has %d committed blocks%n&quot;,
+     *     client.appendBlockFromUrlWithResponse&#40;new AppendBlobAppendBlockFromUrlOptions&#40;sourceUrl&#41;
+     *         .setSourceRange&#40;new BlobRange&#40;offset, count&#41;&#41;
+     *         .setDestinationRequestConditions&#40;appendBlobRequestConditions&#41;
+     *         .setSourceRequestConditions&#40;modifiedRequestConditions&#41;, timeout,
+     *         context&#41;.getValue&#40;&#41;.getBlobCommittedBlockCount&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobClient.appendBlockFromUrlWithResponse#AppendBlobAppendBlockFromUrlOptions-Duration-Context -->
      *
      * @param options options for the operation
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -335,7 +431,12 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.seal}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobClient.seal -->
+     * <pre>
+     * client.seal&#40;&#41;;
+     * System.out.println&#40;&quot;Sealed AppendBlob&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobClient.seal -->
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void seal() {
@@ -347,7 +448,16 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.sealWithResponse#AppendBlobSealOptions-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobClient.sealWithResponse#AppendBlobSealOptions-Duration-Context -->
+     * <pre>
+     * AppendBlobRequestConditions requestConditions = new AppendBlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     * Context context = new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;;
+     *
+     * client.sealWithResponse&#40;new AppendBlobSealOptions&#40;&#41;.setRequestConditions&#40;requestConditions&#41;, timeout, context&#41;;
+     * System.out.println&#40;&quot;Sealed AppendBlob&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobClient.sealWithResponse#AppendBlobSealOptions-Duration-Context -->
      *
      * @param options {@link AppendBlobSealOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.

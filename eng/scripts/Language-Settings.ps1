@@ -262,6 +262,8 @@ function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$nu
 
 $PackageExclusions = @{
   "azure-core-experimental" = "Don't want to include an experimental package.";
+  "azure-sdk-bom" = "Don't want to include the sdk bom.";
+  "azure-storage-internal-avro" = "No external APIs."
 }
 
 # Validates if the package will succeed in the CI build by validating the
@@ -273,7 +275,7 @@ function SourcePackageHasComFolder($artifactNamePrefix, $packageDirectory) {
     $mvnResults = mvn `
       dependency:copy `
       -Dartifact="$packageArtifact" `
-      -DoutputDirectory="$packageDirectory"
+      -DoutputDirectory="$packageDirectory" 
 
     if ($LASTEXITCODE) {
       LogWarning "Could not download source artifact: $packageArtifact"
@@ -335,7 +337,12 @@ function PackageDependenciesResolve($artifactNamePrefix, $packageDirectory) {
   return $true
 }
 
-function ValidatePackage($groupId, $artifactId, $version, $workingDirectory) {
+function ValidatePackage($groupId, $artifactId, $version, $DocValidationImageId) {
+  $workingDirectory = Join-Path ([System.IO.Path]::GetTempPath()) "validation"
+  if (!(Test-Path $workingDirectory)) {
+    New-Item -ItemType Directory -Force -Path $workingDirectory | Out-Null
+  }
+
   $artifactNamePrefix = "${groupId}:${artifactId}:${version}"
 
   $packageDirectory = Join-Path `
@@ -343,11 +350,51 @@ function ValidatePackage($groupId, $artifactId, $version, $workingDirectory) {
     "${groupId}__${artifactId}__${version}"
   New-Item -ItemType Directory -Path $packageDirectory -Force | Out-Null
 
-  return (SourcePackageHasComFolder $artifactNamePrefix $packageDirectory) `
-    -and (PackageDependenciesResolve $artifactNamePrefix $packageDirectory)
+  # Add more validation by replicating as much of the docs CI process as
+  # possible
+  # https://github.com/Azure/azure-sdk-for-python/issues/20109
+  if (!$DocValidationImageId) 
+  {
+    Write-Host "Validating using mvn command directly on $artifactId."
+    return FallbackValidation -artifactNamePrefix $artifactNamePrefix -workingDirectory $packageDirectory
+  } 
+  else 
+  {
+    Write-Host "Validating using $DocValidationImageId on $artifactId."
+    return DockerValidation -packageName "$artifactId" -packageVersion "$version" -groupId "$groupId" -DocValidationImageId $DocValidationImageId -workingDirectory $packageDirectory
+  }
 }
 
-function Update-java-DocsMsPackages($DocsRepoLocation, $DocsMetadata) {
+function FallbackValidation ($artifactNamePrefix, $workingDirectory) 
+{
+  return (SourcePackageHasComFolder $artifactNamePrefix $workingDirectory) `
+    -and (PackageDependenciesResolve $artifactNamePrefix $workingDirectory)
+}
+
+function DockerValidation($packageName, $packageVersion, $groupId, $DocValidationImageId, $workingdirectory) 
+{
+  $output = docker run -v "${workingDirectory}:/workdir/out" `
+    -e TARGET_PACKAGE=$packageName -e TARGET_VERSION=$packageVersion -e TARGET_GROUP_ID=$groupId -t $DocValidationImageId 2>&1 
+  # The docker exit codes: https://docs.docker.com/engine/reference/run/#exit-status
+  # If the docker failed because of docker itself instead of the application, 
+  # we should skip the validation and keep the packages. 
+  $artifactNamePrefix = "${groupId}:${packageName}:${packageVersion}"
+  if ($LASTEXITCODE -eq 125 -Or $LASTEXITCODE -eq 126 -Or $LASTEXITCODE -eq 127) 
+  { 
+    LogWarning "The `docker` command does not work with exit code $LASTEXITCODE. Fall back to mvn install $artifactNamePrefix directly."
+    $output | Write-Host
+    FallbackValidation -artifactNamePrefix "$artifactNamePrefix" -workingDirectory $workingdirectory
+  }
+  elseif ($LASTEXITCODE -ne 0) 
+  { 
+    LogWarning "Package $artifactNamePrefix ref docs validation failed."
+    $output | Write-Host
+    return $false
+  }
+  return $true
+}
+
+function Update-java-DocsMsPackages($DocsRepoLocation, $DocsMetadata, $DocValidationImageId) {
   Write-Host "Excluded packages:"
   foreach ($excludedPackage in $PackageExclusions.Keys) {
     Write-Host "  $excludedPackage - $($PackageExclusions[$excludedPackage])"
@@ -370,9 +417,6 @@ function Update-java-DocsMsPackages($DocsRepoLocation, $DocsMetadata) {
 
 function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
   $packageConfig = Get-Content $DocConfigFile -Raw | ConvertFrom-Json
-
-  $workingDirectory = Join-Path ([System.IO.Path]::GetTempPath()) ([System.IO.Path]::GetRandomFileName())
-  New-Item -ItemType Directory -Force -Path $workingDirectory | Out-Null
 
   $packageOutputPath = 'docs-ref-autogen'
   if ($Mode -eq 'preview') {
@@ -438,7 +482,7 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
     # If upgrading the package, run basic sanity checks against the package
     if ($package.packageVersion -ne $packageVersion) {
       Write-Host "Validating new version detected for $packageName ($packageVersion)"
-      $validatePackageResult = ValidatePackage $package.packageGroupId $package.packageArtifactId $packageVersion $workingDirectory
+      $validatePackageResult = ValidatePackage $package.packageGroupId $package.packageArtifactId $packageVersion 
 
       if (!$validatePackageResult) {
         LogWarning "Package is not valid: $packageName. Keeping old version."
@@ -479,7 +523,7 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata) {
     }
 
     Write-Host "Validating new package $($packageGroupId):$($packageName):$($packageVersion)"
-    $validatePackageResult = ValidatePackage $packageGroupId $packageName $packageVersion $workingDirectory
+    $validatePackageResult = ValidatePackage $packageGroupId $packageName $packageVersion 
     if (!$validatePackageResult) {
       LogWarning "Package is not valid: ${packageGroupId}:$packageName. Cannot onboard."
       continue
@@ -539,7 +583,7 @@ function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName)
   return $packages
 }
 
-function SetPackageVersion ($PackageName, $Version, $ServiceDirectory, $ReleaseDate, $BuildType = "client", $GroupId = "com.azure", $PackageProperties)
+function SetPackageVersion ($PackageName, $Version, $ServiceDirectory, $ReleaseDate, $ReplaceLatestEntryTitle=$true, $BuildType = "client", $GroupId = "com.azure", $PackageProperties)
 {
   if ($PackageProperties)
   {
@@ -561,21 +605,62 @@ function SetPackageVersion ($PackageName, $Version, $ServiceDirectory, $ReleaseD
   }
   python "$EngDir/versioning/set_versions.py" --build-type $BuildType --new-version $Version --ai $PackageName --gi $GroupId
   python "$EngDir/versioning/update_versions.py" --update-type library --build-type $BuildType --sr
+  python "$EngDir/versioning/update_versions.py" --update-type library --build-type $BuildType --tf $PackageProperties.ReadMePath
   & "$EngCommonScriptsDir/Update-ChangeLog.ps1" -Version $Version -ServiceDirectory $ServiceDirectory -PackageName $PackageName `
-  -Unreleased $False -ReplaceLatestEntryTitle $True -ReleaseDate $ReleaseDate
+  -Unreleased $False -ReplaceLatestEntryTitle $ReplaceLatestEntryTitle -ReleaseDate $ReleaseDate
 }
 
 function GetExistingPackageVersions ($PackageName, $GroupId=$null)
 {
   try {
     $Uri = 'https://search.maven.org/solrsearch/select?q=g:"' + $GroupId + '"+AND+a:"' + $PackageName +'"&core=gav&rows=20&wt=json'
-    $existingVersion = Invoke-RestMethod -Method GET -Uri $Uri
-    $existingVersion = $existingVersion.response.docs.v
-    [Array]::Reverse($existingVersion)
-    return $existingVersion
-  }
-  catch {
-    LogError "Failed to retrieve package versions. `n$_"
+    $response = (Invoke-RestMethod -Method GET -Uri $Uri).response
+    if($response.numFound -ne 0)
+    {
+      $existingVersion = $response.docs.v
+      if ($existingVersion.Count -gt 0) 
+      {
+        [Array]::Reverse($existingVersion)
+        return $existingVersion
+      }
+    }
     return $null
   }
+  catch {
+    LogError "Failed to retrieve package versions for ${PackageName}. $($_.Exception.Message)"
+    return $null
+  }
+}
+
+function Get-java-DocsMsMetadataForPackage($PackageInfo) { 
+  $readmeName = $PackageInfo.Name.ToLower()
+  Write-Host "Docs.ms Readme name: $($readmeName)"
+
+  # Readme names (which are used in the URL) should not include redundant terms
+  # when viewed in URL form. For example: 
+  # https://review.docs.microsoft.com/en-us/java/api/overview/azure/storage-blob-readme
+  # Note how the end of the URL doesn't look like:
+  # ".../azure/azure-storage-blobs-readme" 
+
+  # This logic eliminates a preceeding "azure-" in the readme filename.
+  # "azure-storage-blobs" -> "storage-blobs"
+  if ($readmeName.StartsWith('azure-')) {
+    $readmeName = $readmeName.Substring(6)
+  }
+
+  New-Object PSObject -Property @{
+    DocsMsReadMeName = $readmeName
+    LatestReadMeLocation  = 'docs-ref-services/latest'
+    PreviewReadMeLocation = 'docs-ref-services/preview'
+    Suffix = ''
+  }
+}
+
+function Validate-java-DocMsPackages ($PackageInfo, $DocValidationImageId) 
+{
+  if (!(ValidatePackage $PackageInfo.Group $PackageInfo.Name $PackageInfo.Version $DocValidationImageId)) 
+  {
+    Write-Error "Package $($PackageInfo.Name) failed on validation" -ErrorAction Continue
+  }
+  return
 }

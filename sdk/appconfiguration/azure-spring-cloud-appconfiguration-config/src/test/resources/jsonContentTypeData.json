@@ -15,6 +15,10 @@
 						"GlossSeeAlso": [
 							"GML",
 							"XML"
+						],
+						"Values": [
+                            1,
+                            2
 						]
 					},
 					"GlossSee": "markup"

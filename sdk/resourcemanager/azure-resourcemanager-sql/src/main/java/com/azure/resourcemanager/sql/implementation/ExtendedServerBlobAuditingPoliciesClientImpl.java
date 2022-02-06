@@ -420,7 +420,7 @@ public final class ExtendedServerBlobAuditingPoliciesClientImpl implements Exten
                 this.client.getHttpPipeline(),
                 ExtendedServerBlobAuditingPolicyInner.class,
                 ExtendedServerBlobAuditingPolicyInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

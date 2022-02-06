@@ -7,7 +7,7 @@ package com.azure.ai.anomalydetector.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The LastDetectResponse model. */
+/** The response of last anomaly detection. */
 @Fluent
 public final class LastDetectResponse {
     /*
@@ -70,6 +70,14 @@ public final class LastDetectResponse {
      */
     @JsonProperty(value = "isPositiveAnomaly", required = true)
     private boolean isPositiveAnomaly;
+
+    /*
+     * The severity score for the last input point. The larger the value is,
+     * the more sever the anomaly is. For normal points, the "severity" is
+     * always 0.
+     */
+    @JsonProperty(value = "severity")
+    private Float severity;
 
     /**
      * Get the period property: Frequency extracted from the series, zero means no recurrent pattern has been found.
@@ -242,6 +250,28 @@ public final class LastDetectResponse {
      */
     public LastDetectResponse setIsPositiveAnomaly(boolean isPositiveAnomaly) {
         this.isPositiveAnomaly = isPositiveAnomaly;
+        return this;
+    }
+
+    /**
+     * Get the severity property: The severity score for the last input point. The larger the value is, the more sever
+     * the anomaly is. For normal points, the "severity" is always 0.
+     *
+     * @return the severity value.
+     */
+    public Float getSeverity() {
+        return this.severity;
+    }
+
+    /**
+     * Set the severity property: The severity score for the last input point. The larger the value is, the more sever
+     * the anomaly is. For normal points, the "severity" is always 0.
+     *
+     * @param severity the severity value to set.
+     * @return the LastDetectResponse object itself.
+     */
+    public LastDetectResponse setSeverity(Float severity) {
+        this.severity = severity;
         return this;
     }
 }

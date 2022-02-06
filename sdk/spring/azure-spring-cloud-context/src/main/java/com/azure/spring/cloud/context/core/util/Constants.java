@@ -22,14 +22,27 @@ public class Constants {
     private static final String APP_CONFIGURATION = "cfg";
 
 
+    /**
+     * Spring cloud version.
+     */
     public static final String SPRING_CLOUD_VERSION = SNAPSHOT_VERSION;
 
     // the max length of application id is 24
+    /**
+     * Spring integration Storage Queue application ID.
+     */
     public static final String SPRING_INTEGRATION_STORAGE_QUEUE_APPLICATION_ID =
         String.join("-", AZURE, SPRING_INTEGRATION, STORAGE_QUEUE) + "/" + SPRING_CLOUD_VERSION;
 
+    /**
+     * Spring EventHubs application ID.
+     */
     public static final String SPRING_EVENT_HUB_APPLICATION_ID =
         String.join("-", AZURE, SPRING_CLOUD, EVENT_HUB) + "/" + SPRING_CLOUD_VERSION;
+
+    /**
+     * Spring ServiceBus application ID.
+     */
     public static final String SPRING_SERVICE_BUS_APPLICATION_ID =
         String.join("-", AZURE, SPRING_CLOUD, SERVICE_BUS) + "/" + SPRING_CLOUD_VERSION;
 }

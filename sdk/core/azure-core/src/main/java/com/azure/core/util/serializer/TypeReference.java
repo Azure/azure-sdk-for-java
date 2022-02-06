@@ -3,6 +3,7 @@
 
 package com.azure.core.util.serializer;
 
+import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.lang.reflect.ParameterizedType;
@@ -41,12 +42,14 @@ public abstract class TypeReference<T> {
     private static final Map<Class<?>, TypeReference<?>> CACHE = new ConcurrentHashMap<>();
 
     private final Type javaType;
+    private final Class<T> clazz;
 
     /**
      * Constructs a new {@link TypeReference} which maintains generic information.
      *
      * @throws IllegalArgumentException If the reference is constructed without type information.
      */
+    @SuppressWarnings("unchecked")
     public TypeReference() {
         Type superClass = this.getClass().getGenericSuperclass();
         if (superClass instanceof Class) {
@@ -54,10 +57,12 @@ public abstract class TypeReference<T> {
         } else {
             this.javaType = ((ParameterizedType) superClass).getActualTypeArguments()[0];
         }
+        this.clazz = (Class<T>) TypeUtil.getRawClass(javaType);
     }
 
     private TypeReference(Class<T> clazz) {
         this.javaType = clazz;
+        this.clazz = clazz;
     }
 
     /**
@@ -87,5 +92,15 @@ public abstract class TypeReference<T> {
          * compute function wildcards to T type which causes the type system to breakdown.
          */
         return (TypeReference<T>) CACHE.computeIfAbsent(clazz, c -> new TypeReference<T>(clazz) { });
+    }
+
+    /**
+     * Returns the {@link Class} representing instance of the {@link TypeReference} created.
+     *
+     * @return The {@link Class} representing instance of the {@link TypeReference} created
+     * using the {@link TypeReference#createInstance(Class)}, otherwise returns {@code null}.
+     */
+    public Class<T> getJavaClass() {
+        return this.clazz;
     }
 }

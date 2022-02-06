@@ -15,6 +15,7 @@ module com.azure.core {
 
     // public API surface area
     exports com.azure.core.annotation;
+    exports com.azure.core.client.traits;
     exports com.azure.core.credential;
     exports com.azure.core.cryptography;
     exports com.azure.core.exception;
@@ -23,6 +24,7 @@ module com.azure.core {
     exports com.azure.core.http.rest;
     exports com.azure.core.models;
     exports com.azure.core.util;
+    exports com.azure.core.util.builder;
     exports com.azure.core.util.logging;
     exports com.azure.core.util.paging;
     exports com.azure.core.util.polling;
@@ -37,6 +39,7 @@ module com.azure.core {
     opens com.azure.core.models to com.fasterxml.jackson.databind;
     opens com.azure.core.util to com.fasterxml.jackson.databind;
     opens com.azure.core.util.logging to com.fasterxml.jackson.databind;
+    opens com.azure.core.util.polling to com.fasterxml.jackson.databind;
     opens com.azure.core.util.serializer to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation.logging to com.fasterxml.jackson.databind;

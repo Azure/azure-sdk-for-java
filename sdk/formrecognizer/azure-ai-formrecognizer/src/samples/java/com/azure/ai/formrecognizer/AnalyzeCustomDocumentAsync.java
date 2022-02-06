@@ -78,13 +78,13 @@ public class AnalyzeCustomDocumentAsync {
 
                 // lines
                 documentPage.getLines().forEach(documentLine ->
-                    System.out.printf("Line %s is within a bounding box %s.%n",
+                    System.out.printf("Line '%s' is within a bounding box %s.%n",
                         documentLine.getContent(),
                         documentLine.getBoundingBox().toString()));
 
                 // words
                 documentPage.getWords().forEach(documentWord ->
-                    System.out.printf("Word %s has a confidence score of %.2f%n.",
+                    System.out.printf("Word '%s' has a confidence score of %.2f.%n",
                         documentWord.getContent(),
                         documentWord.getConfidence()));
             });

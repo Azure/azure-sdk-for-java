@@ -153,8 +153,13 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
 
     @Override
     public Mono<Void> closeAsync() {
+        return closeAsync("User invoked close operation.", null);
+    }
+
+    @Override
+    protected Mono<Void> closeAsync(String message, ErrorCondition errorCondition) {
         if (isDisposed.getAndSet(true)) {
-            return super.closeAsync();
+            return super.getIsClosedMono();
         }
 
         cleanupWorkItems();
@@ -186,7 +191,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
         return disposeMono.onErrorResume(error -> {
             logger.info("There was an exception while disposing of all links.", error);
             return Mono.empty();
-        }).doFinally(signal -> subscription.dispose()).then(super.closeAsync());
+        }).doFinally(signal -> subscription.dispose()).then(super.closeAsync(message, errorCondition));
     }
 
     @Override
@@ -346,6 +351,10 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     }
 
     private void cleanupWorkItems() {
+        if (pendingUpdates.isEmpty()) {
+            return;
+        }
+
         logger.verbose("linkName[{}]: Cleaning timed out update work tasks.", getLinkName());
         pendingUpdates.forEach((key, value) -> {
             if (value == null || !value.hasTimedout()) {

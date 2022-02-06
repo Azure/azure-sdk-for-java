@@ -30,6 +30,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
@@ -376,6 +377,7 @@ public class RetryPolicyTests {
 
             // Retry-After was before the current time, fallback to the default.
             Arguments.of(new HttpHeaders().set("Retry-After", OffsetDateTime.now().minusMinutes(1)
+                .atZoneSameInstant(ZoneOffset.UTC)
                 .format(DateTimeFormatter.RFC_1123_DATE_TIME)), retryStrategy, Duration.ofSeconds(1))
         );
     }

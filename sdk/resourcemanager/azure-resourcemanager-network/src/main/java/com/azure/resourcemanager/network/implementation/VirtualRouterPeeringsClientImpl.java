@@ -180,7 +180,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -236,7 +236,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -262,14 +262,15 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualRouterName, String peeringName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, virtualRouterName, peeringName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -284,7 +285,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualRouterName, String peeringName, Context context) {
         context = this.client.mergeContext(context);
@@ -306,7 +307,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualRouterName, String peeringName) {
         return beginDeleteAsync(resourceGroupName, virtualRouterName, peeringName).getSyncPoller();
@@ -324,7 +325,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualRouterName, String peeringName, Context context) {
         return beginDeleteAsync(resourceGroupName, virtualRouterName, peeringName, context).getSyncPoller();
@@ -436,7 +437,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -492,7 +493,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -609,7 +610,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -676,7 +677,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -704,7 +705,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Router Peering resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualRouterPeeringInner>, VirtualRouterPeeringInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String virtualRouterName, String peeringName, VirtualRouterPeeringInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -716,7 +717,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
                 this.client.getHttpPipeline(),
                 VirtualRouterPeeringInner.class,
                 VirtualRouterPeeringInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -732,7 +733,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Router Peering resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualRouterPeeringInner>, VirtualRouterPeeringInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String virtualRouterName,
@@ -764,7 +765,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Router Peering resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualRouterPeeringInner>, VirtualRouterPeeringInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualRouterName, String peeringName, VirtualRouterPeeringInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, virtualRouterName, peeringName, parameters).getSyncPoller();
@@ -783,7 +784,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Router Peering resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualRouterPeeringInner>, VirtualRouterPeeringInner> beginCreateOrUpdate(
         String resourceGroupName,
         String virtualRouterName,
@@ -913,7 +914,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -973,7 +974,7 @@ public final class VirtualRouterPeeringsClientImpl implements VirtualRouterPeeri
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

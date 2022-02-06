@@ -9,6 +9,8 @@ trigger:
   paths:
     include:
       - sdk/template/
+      # eng/common code changes trigger template pipeline for basic checking.
+      - eng/common
     exclude:
       - sdk/template/pom.xml
       - sdk/template/azure-sdk-template/pom.xml
@@ -24,6 +26,8 @@ pr:
   paths:
     include:
       - sdk/template/
+      # eng/common code changes trigger template pipeline for basic checking.
+      - eng/common
       # The following path should only be included in template/ci.yml, and removed from any other SDKs which copy this file.
       - common/perf-test-core/
     exclude:

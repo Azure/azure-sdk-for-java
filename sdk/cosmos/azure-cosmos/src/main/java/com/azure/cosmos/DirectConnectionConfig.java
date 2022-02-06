@@ -3,11 +3,13 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import io.netty.channel.ChannelOption;
 
 import java.time.Duration;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Represents the connection config with {@link ConnectionMode#DIRECT} associated with Cosmos Client in the Azure Cosmos DB database service.
@@ -20,17 +22,21 @@ public final class DirectConnectionConfig {
     private static final Boolean DEFAULT_CONNECTION_ENDPOINT_REDISCOVERY_ENABLED = false;
     private static final Duration DEFAULT_IDLE_ENDPOINT_TIMEOUT = Duration.ofHours(1l);
     private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(5L);
-    private static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(5L);
+    private static final Duration DEFAULT_NETWORK_REQUEST_TIMEOUT = Duration.ofSeconds(5L);
+    private static final Duration MIN_NETWORK_REQUEST_TIMEOUT = Duration.ofSeconds(5L);
+    private static final Duration MAX_NETWORK_REQUEST_TIMEOUT = Duration.ofSeconds(10L);
     private static final int DEFAULT_MAX_CONNECTIONS_PER_ENDPOINT = 130;
     private static final int DEFAULT_MAX_REQUESTS_PER_CONNECTION = 30;
+    private static final int DEFAULT_IO_THREAD_COUNT_PER_CORE_FACTOR = 2;
 
     private boolean connectionEndpointRediscoveryEnabled;
     private Duration connectTimeout;
     private Duration idleConnectionTimeout;
     private Duration idleEndpointTimeout;
-    private Duration requestTimeout;
+    private Duration networkRequestTimeout;
     private int maxConnectionsPerEndpoint;
     private int maxRequestsPerConnection;
+    private int ioThreadCountPerCoreFactor;
 
     /**
      * Constructor
@@ -42,7 +48,8 @@ public final class DirectConnectionConfig {
         this.idleEndpointTimeout = DEFAULT_IDLE_ENDPOINT_TIMEOUT;
         this.maxConnectionsPerEndpoint = DEFAULT_MAX_CONNECTIONS_PER_ENDPOINT;
         this.maxRequestsPerConnection = DEFAULT_MAX_REQUESTS_PER_CONNECTION;
-        this.requestTimeout = DEFAULT_REQUEST_TIMEOUT;
+        this.networkRequestTimeout = DEFAULT_NETWORK_REQUEST_TIMEOUT;
+        this.ioThreadCountPerCoreFactor = DEFAULT_IO_THREAD_COUNT_PER_CORE_FACTOR;
     }
 
     /**
@@ -234,28 +241,48 @@ public final class DirectConnectionConfig {
     }
 
     /**
-     * Gets the request timeout interval
-     * This represents the timeout interval for requests
-     *
-     * Default value is 60 seconds
-     *
-     * @return the request timeout interval
-     */
-    Duration getRequestTimeout() {
-        return requestTimeout;
-    }
-
-    /**
-     * Sets the request timeout interval
-     * This represents the timeout interval for requests
+     * Gets the network request timeout interval (time to wait for response from network peer).
      *
      * Default value is 5 seconds
      *
-     * @param requestTimeout the request timeout interval
+     * @return the network request timeout interval
+     */
+    public Duration getNetworkRequestTimeout() {
+        return networkRequestTimeout;
+    }
+
+    /**
+     * Sets the network request timeout interval (time to wait for response from network peer).
+     *
+     * Default value is 5 seconds.
+     * It only allows values &ge;5s and &le;10s. (backend allows requests to take up-to 5 seconds processing time - 5 seconds
+     * buffer so 10 seconds in total for transport is more than sufficient).
+     *
+     * Attention! Please adjust this value with caution.
+     * This config represents the max time allowed to wait for and consume a service response after the request has been written to the network connection.
+     * Setting a value too low can result in having not enough time to wait for the service response - which could cause too aggressive retries and degrade performance.
+     * Setting a value too high can result in fewer retries and reduce chances of success by retries.
+     *
+     * @param networkRequestTimeout the network request timeout interval.
      * @return the {@link DirectConnectionConfig}
      */
-    DirectConnectionConfig setRequestTimeout(Duration requestTimeout) {
-        this.requestTimeout = requestTimeout;
+    public DirectConnectionConfig setNetworkRequestTimeout(Duration networkRequestTimeout) {
+        checkNotNull(networkRequestTimeout, "NetworkRequestTimeout can not be null");
+        checkArgument(networkRequestTimeout.toMillis() >= MIN_NETWORK_REQUEST_TIMEOUT.toMillis(),
+            "NetworkRequestTimeout can not be less than %s Millis", MIN_NETWORK_REQUEST_TIMEOUT.toMillis());
+        checkArgument(networkRequestTimeout.toMillis() <= MAX_NETWORK_REQUEST_TIMEOUT.toMillis(),
+            "NetworkRequestTimeout can not be larger than %s Millis", MAX_NETWORK_REQUEST_TIMEOUT.toMillis());
+
+        this.networkRequestTimeout = networkRequestTimeout;
+        return this;
+    }
+
+    int getIoThreadCountPerCoreFactor() {
+        return ioThreadCountPerCoreFactor;
+    }
+
+    DirectConnectionConfig setIoThreadCountPerCoreFactor(int ioThreadCountPerCoreFactor) {
+        this.ioThreadCountPerCoreFactor = ioThreadCountPerCoreFactor;
         return this;
     }
 
@@ -267,6 +294,28 @@ public final class DirectConnectionConfig {
             ", idleEndpointTimeout=" + idleEndpointTimeout +
             ", maxConnectionsPerEndpoint=" + maxConnectionsPerEndpoint +
             ", maxRequestsPerConnection=" + maxRequestsPerConnection +
+            ", networkRequestTimeout=" + networkRequestTimeout +
+            ", ioThreadCountPerCoreFactor=" + ioThreadCountPerCoreFactor +
             '}';
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        ImplementationBridgeHelpers.DirectConnectionConfigHelper.setDirectConnectionConfigAccessor(
+            new ImplementationBridgeHelpers.DirectConnectionConfigHelper.DirectConnectionConfigAccessor() {
+                @Override
+                public int getIoThreadCountPerCoreFactor(DirectConnectionConfig config) {
+                    return config.getIoThreadCountPerCoreFactor();
+                }
+
+                @Override
+                public DirectConnectionConfig setIoThreadCountPerCoreFactor(DirectConnectionConfig config,
+                                                                            int ioThreadCountPerCoreFactor) {
+                    return config.setIoThreadCountPerCoreFactor(ioThreadCountPerCoreFactor);
+                }
+            });
     }
 }

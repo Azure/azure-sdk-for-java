@@ -158,7 +158,7 @@ public interface GremlinResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Gremlin database.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<GremlinDatabaseGetResultsInner>, GremlinDatabaseGetResultsInner>
         beginCreateUpdateGremlinDatabaseAsync(
             String resourceGroupName,
@@ -178,7 +178,7 @@ public interface GremlinResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Gremlin database.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<GremlinDatabaseGetResultsInner>, GremlinDatabaseGetResultsInner>
         beginCreateUpdateGremlinDatabase(
             String resourceGroupName,
@@ -199,7 +199,7 @@ public interface GremlinResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Gremlin database.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<GremlinDatabaseGetResultsInner>, GremlinDatabaseGetResultsInner>
         beginCreateUpdateGremlinDatabase(
             String resourceGroupName,
@@ -293,7 +293,7 @@ public interface GremlinResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteGremlinDatabaseAsync(
         String resourceGroupName, String accountName, String databaseName);
 
@@ -308,7 +308,7 @@ public interface GremlinResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteGremlinDatabase(
         String resourceGroupName, String accountName, String databaseName);
 
@@ -324,7 +324,7 @@ public interface GremlinResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteGremlinDatabase(
         String resourceGroupName, String accountName, String databaseName, Context context);
 
@@ -471,7 +471,7 @@ public interface GremlinResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateGremlinDatabaseThroughputAsync(
             String resourceGroupName,
@@ -492,7 +492,7 @@ public interface GremlinResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateGremlinDatabaseThroughput(
             String resourceGroupName,
@@ -514,7 +514,7 @@ public interface GremlinResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateGremlinDatabaseThroughput(
             String resourceGroupName,
@@ -611,7 +611,7 @@ public interface GremlinResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateGremlinDatabaseToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName);
 
@@ -626,7 +626,7 @@ public interface GremlinResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateGremlinDatabaseToAutoscale(String resourceGroupName, String accountName, String databaseName);
 
@@ -642,7 +642,7 @@ public interface GremlinResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateGremlinDatabaseToAutoscale(
             String resourceGroupName, String accountName, String databaseName, Context context);
@@ -719,7 +719,7 @@ public interface GremlinResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateGremlinDatabaseToManualThroughputAsync(
             String resourceGroupName, String accountName, String databaseName);
@@ -735,7 +735,7 @@ public interface GremlinResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateGremlinDatabaseToManualThroughput(
             String resourceGroupName, String accountName, String databaseName);
@@ -752,7 +752,7 @@ public interface GremlinResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateGremlinDatabaseToManualThroughput(
             String resourceGroupName, String accountName, String databaseName, Context context);
@@ -948,7 +948,7 @@ public interface GremlinResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Gremlin graph.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<GremlinGraphGetResultsInner>, GremlinGraphGetResultsInner> beginCreateUpdateGremlinGraphAsync(
         String resourceGroupName,
         String accountName,
@@ -969,7 +969,7 @@ public interface GremlinResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Gremlin graph.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<GremlinGraphGetResultsInner>, GremlinGraphGetResultsInner> beginCreateUpdateGremlinGraph(
         String resourceGroupName,
         String accountName,
@@ -991,7 +991,7 @@ public interface GremlinResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB Gremlin graph.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<GremlinGraphGetResultsInner>, GremlinGraphGetResultsInner> beginCreateUpdateGremlinGraph(
         String resourceGroupName,
         String accountName,
@@ -1093,7 +1093,7 @@ public interface GremlinResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteGremlinGraphAsync(
         String resourceGroupName, String accountName, String databaseName, String graphName);
 
@@ -1109,7 +1109,7 @@ public interface GremlinResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteGremlinGraph(
         String resourceGroupName, String accountName, String databaseName, String graphName);
 
@@ -1126,7 +1126,7 @@ public interface GremlinResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteGremlinGraph(
         String resourceGroupName, String accountName, String databaseName, String graphName, Context context);
 
@@ -1275,7 +1275,7 @@ public interface GremlinResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateGremlinGraphThroughputAsync(
             String resourceGroupName,
@@ -1297,7 +1297,7 @@ public interface GremlinResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateGremlinGraphThroughput(
             String resourceGroupName,
@@ -1320,7 +1320,7 @@ public interface GremlinResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateGremlinGraphThroughput(
             String resourceGroupName,
@@ -1423,7 +1423,7 @@ public interface GremlinResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateGremlinGraphToAutoscaleAsync(
             String resourceGroupName, String accountName, String databaseName, String graphName);
@@ -1440,7 +1440,7 @@ public interface GremlinResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateGremlinGraphToAutoscale(
             String resourceGroupName, String accountName, String databaseName, String graphName);
@@ -1458,7 +1458,7 @@ public interface GremlinResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateGremlinGraphToAutoscale(
             String resourceGroupName, String accountName, String databaseName, String graphName, Context context);
@@ -1540,7 +1540,7 @@ public interface GremlinResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateGremlinGraphToManualThroughputAsync(
             String resourceGroupName, String accountName, String databaseName, String graphName);
@@ -1557,7 +1557,7 @@ public interface GremlinResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateGremlinGraphToManualThroughput(
             String resourceGroupName, String accountName, String databaseName, String graphName);
@@ -1575,7 +1575,7 @@ public interface GremlinResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateGremlinGraphToManualThroughput(
             String resourceGroupName, String accountName, String databaseName, String graphName, Context context);

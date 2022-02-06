@@ -100,10 +100,8 @@ stages:
         Clouds: ${{ parameters.Clouds }}
         TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
         Artifacts: ${{ parameters.Artifacts }}
-        TestStepMavenInputs:
-          options: '$(DefaultTestOptions) -DskipSpringITs=false'
-          mavenOptions: '$(DefaultTestMavenOptions)'
-          goals: "verify"
+        TestGoals: 'verify'
+        TestOptions: '-DskipSpringITs=false'
         PreSteps:
             - script: |
                   az cloud set --name AzureChinaCloud
@@ -131,7 +129,7 @@ stages:
             inputs:
               mavenPomFile: pom.xml
               goals: 'install'
-              options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+              options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
               mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: $(JavaBuildVersion)

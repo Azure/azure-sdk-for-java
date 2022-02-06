@@ -11,13 +11,14 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.security.attestation.models.AttestationData;
 import com.azure.security.attestation.models.AttestationOpenIdMetadata;
 import com.azure.security.attestation.models.AttestationOptions;
+import com.azure.security.attestation.models.AttestationResponse;
 import com.azure.security.attestation.models.AttestationResult;
 import com.azure.security.attestation.models.AttestationSigner;
+import com.azure.security.attestation.models.AttestationSignerCollection;
 import com.azure.security.attestation.models.AttestationToken;
-
-import java.util.List;
 
 /**
  * The AttestationClient implements the functionality required by the "Attest" family of APIs.
@@ -127,6 +128,13 @@ import java.util.List;
  *     the attestation service. All tokens emitted by the attestation service will be signed by one
  *     of the certificates listed in the attestation signing keys.
  * </p>
+ * <p>
+ *     <strong>Note:</strong> The {@link Response} returned by the {@code WithResponse} APIs is actually an
+ * {@link AttestationToken} object, which contains a method {@link AttestationToken#serialize()} which returns the
+ * actual JSON Web Token returned by the attestation service. If a client is going to be transmitting the attestation
+ * token from the MAA service to an external relying party, they should send the actual token from the service to
+ * the relying party.
+ * </p>
  */
 @ServiceClient(builder = AttestationClientBuilder.class)
 public final class AttestationClient {
@@ -142,8 +150,26 @@ public final class AttestationClient {
     }
 
     /**
-     * Retrieves the OpenId Metadata for this AttestationClient instance.
-     * @return Object containing the OpenId metadata configuration for this instance.
+     * Retrieves the open-id metadata about the attestation signing keys in use by the attestation service.
+     *
+     * <p>
+     *     The attestation service exposes a standard <a href='https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderMetadata'>OpenID metadata Discovery Document</a> which
+     *     can be used to discover attributes of the attestation service.
+     * </p>
+     * <p>The {@code getOpenIdMetadata} API allows the client to retrieve the information contained in
+     * the metadata discovery document.
+     * </p><p>This is required if an application is manually validating the tokens returned from the attestation
+     * service.</p>
+     * <p><strong>Retrieve the OpenID metadata for this client.</strong></p>
+     * <!-- src_embed com.azure.security.attestation.AttestationClient.getOpenIdMetadata -->
+     * <pre>
+     * AttestationOpenIdMetadata openIdMetadata = client.getOpenIdMetadata&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationClient.getOpenIdMetadata -->
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return An {@link AttestationOpenIdMetadata} object containing the MAA provided OpenID connect information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AttestationOpenIdMetadata getOpenIdMetadata() {
@@ -152,10 +178,27 @@ public final class AttestationClient {
     }
 
     /**
-     * Retrieves the OpenId Metadata for this AttestationClient instance.
+     * Retrieves the open-id metadata about the attestation signing keys in use by the attestation service.
      *
-     * @param context Context for operation.
-     * @return Object containing the OpenId metadata configuration for this instance.
+     * <p>
+     *     The attestation service exposes a standard <a href='https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderMetadata'>OpenID metadata Discovery Document</a> which
+     *     can be used to discover attributes of the attestation service.
+     * </p>
+     * <p>The {@code getOpenIdMetadata} API allows the client to retrieve the information contained in
+     * the metadata discovery document.
+     * </p><p>This is required if an application is manually validating the tokens returned from the attestation
+     * service.</p>
+     * <p><strong>Retrieve the OpenID metadata for this attestation instance.</strong></p>
+     * <!-- src_embed com.azure.security.attestation.AttestationClient.getOpenIdMetadataWithResponse -->
+     * <pre>
+     * Response&lt;AttestationOpenIdMetadata&gt; response = client.getOpenIdMetadataWithResponse&#40;Context.NONE&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationClient.getOpenIdMetadataWithResponse -->
+     *
+     * @param context Context for the operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return An {@link AttestationOpenIdMetadata} object containing the MAA provided OpenID connect information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AttestationOpenIdMetadata> getOpenIdMetadataWithResponse(Context context) {
@@ -164,13 +207,33 @@ public final class AttestationClient {
 
     /**
      * Retrieves the list of {@link AttestationSigner} objects associated with this attestation instance.
-     * An {@link AttestationSigner} represents an X.509 certificate chain and KeyId which can be used
-     * to validate an attestation token returned by the service.
+     * <p>
+     *  An {@link AttestationSigner} represents an X.509 certificate chain and KeyId which can be used
+     *  to validate an attestation token returned by the service.
+     * </p>
+     * <p><strong>Retrieve Attestation Signers for this async client.</strong></p>
+     * <!-- src_embed com.azure.security.attestation.AttestationClient.getAttestationSigners -->
+     * <pre>
+     * AttestationSignerCollection signers = client.listAttestationSigners&#40;&#41;;
+     * signers.getAttestationSigners&#40;&#41;.forEach&#40;cert -&gt; &#123;
+     *     System.out.println&#40;&quot;Found certificate.&quot;&#41;;
+     *     if &#40;cert.getKeyId&#40;&#41; != null&#41; &#123;
+     *         System.out.println&#40;&quot;    Certificate Key ID: &quot; + cert.getKeyId&#40;&#41;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;    Signer does not have a Key ID&quot;&#41;;
+     *     &#125;
+     *     cert.getCertificates&#40;&#41;.forEach&#40;chainElement -&gt; &#123;
+     *         System.out.println&#40;&quot;        Cert Subject: &quot; + chainElement.getSubjectDN&#40;&#41;.getName&#40;&#41;&#41;;
+     *         System.out.println&#40;&quot;        Cert Issuer: &quot; + chainElement.getIssuerDN&#40;&#41;.getName&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationClient.getAttestationSigners -->
      *
-     * @return Returns an array of {@link AttestationSigner} objects.
+     * @return Returns a collection of {@link AttestationSigner} objects which will be used to sign tokens returned from the attestation service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AttestationSigner> listAttestationSigners() {
+    public AttestationSignerCollection listAttestationSigners() {
         return asyncClient.listAttestationSignersWithResponse()
             .map(Response::getValue).block();
     }
@@ -180,19 +243,35 @@ public final class AttestationClient {
      * An {@link AttestationSigner} represents an X.509 certificate chain and KeyId which can be used
      * to validate an attestation token returned by the service.
      *
+     * <!-- src_embed com.azure.security.attestation.AttestationClient.getAttestationSignersWithResponse -->
+     * <pre>
+     * Response&lt;AttestationSignerCollection&gt; responseOfSigners = client.listAttestationSignersWithResponse&#40;Context.NONE&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationClient.getAttestationSignersWithResponse -->
+     *
+     *
      * @param context Context for operation.
      * @return Returns an array of {@link AttestationSigner} objects.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<AttestationSigner>> listAttestationSignersWithResponse(Context context) {
+    public Response<AttestationSignerCollection> listAttestationSignersWithResponse(Context context) {
         return asyncClient.listAttestationSignersWithResponse(context).block();
     }
 
 
 
     /**
-     * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
-     * attestation policy.
+     * Attest an OpenEnclave report.
+     *
+     * <p>This method is a convenience method which attests evidence from an OpenEnclave enclave
+     * with no {@code RuntimeData} or {@code InitTimeData}.</p>
+     * <p>The {@code report} is generated via the <a href='https://openenclave.github.io/openenclave/api/enclave_8h_aefcb89c91a9078d595e255bd7901ac71.html'>{@code }oe_get_report}</a>.</p>
+     * It returns an {@link AttestationResult} containing the claims emitted by the attestation service.
+     * <!-- src_embed com.azure.security.attestation.AttestationClient.attestOpenEnclaveWithReport -->
+     * <pre>
+     * AttestationResult resultWithReport = client.attestOpenEnclave&#40;openEnclaveReport&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationClient.attestOpenEnclaveWithReport -->
      *
      * @param report - OpenEnclave generated report.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -206,10 +285,27 @@ public final class AttestationClient {
     }
 
     /**
-     * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
-     * attestation policy.
+     * Attest an OpenEnclave report, specifying RunTimeData and InitTimeData.
      *
-     * @param options Attestation options for Intel SGX enclaves.
+     * The {@link AttestationOptions} parameter allows the caller to specify the OpenEnclave {@code report} which
+     * contains evidence from the enclave, and runtime data which allows the enclave to specify additional
+     * data from within the enclave.
+     *
+     * When calling the {@link AttestationOptions#setRunTimeData(AttestationData)} API, the caller
+     * can specify whether the attestation service should treat the runtime data as binary or as JSON when it is
+     * included in the response attestation token.
+     *
+     * <p><strong>Attest an OpenEnclave enclave with attestation options.</strong></p>
+     * <!-- src_embed com.azure.security.attestation.AttestationClient.attestOpenEnclave -->
+     * <pre>
+     * AttestationResult result = client.attestOpenEnclave&#40;new AttestationOptions&#40;openEnclaveReport&#41;
+     *     .setRunTimeData&#40;new AttestationData&#40;runtimeData, AttestationDataInterpretation.BINARY&#41;&#41;&#41;;
+     *
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationClient.attestOpenEnclave -->
+     *
+     *
+     * @param options Attestation options for an OpenEnclave enclave.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -221,25 +317,25 @@ public final class AttestationClient {
     }
 
     /**
-     * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
-     * attestation policy.
+     * Attest an OpenEnclave report, specifying RunTimeData and InitTimeData.
      *
-     * @param report OpenEnclave generated report.
-     * @param context Context for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of an attestation operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AttestationResult> attestOpenEnclaveWithResponse(
-        BinaryData report, Context context) {
-        return asyncClient.attestOpenEnclaveWithResponse(report, context).block();
-    }
-
-    /**
-     * Processes an OpenEnclave report , producing an artifact. The type of artifact produced is dependent upon
-     * attestation policy.
+     * The {@link AttestationOptions} parameter allows the caller to specify the OpenEnclave {@code report} which
+     * contains evidence from the enclave, and runtime data which allows the enclave to specify additional
+     * data from within the enclave.
+     *
+     * When calling the {@link AttestationOptions#setRunTimeData(AttestationData)} API, the caller
+     * can specify whether the attestation service should treat the runtime data as binary or as JSON when it is
+     * included in the response attestation token.
+     *
+     * <p><strong>Attest an OpenEnclave enclave with attestation options.</strong></p>
+     * <!-- src_embed com.azure.security.attestation.AttestationClient.attestOpenEnclaveWithResponse -->
+     * <pre>
+     * Response&lt;AttestationResult&gt; openEnclaveResponse = client.attestOpenEnclaveWithResponse&#40;
+     *     new AttestationOptions&#40;openEnclaveReport&#41;
+     *         .setRunTimeData&#40;new AttestationData&#40;runtimeData, AttestationDataInterpretation.JSON&#41;&#41;, Context.NONE&#41;;
+     *
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationClient.attestOpenEnclaveWithResponse -->
      *
      * @param options Attestation request for Intel SGX enclaves.
      * @param context Context for the operation.
@@ -249,14 +345,22 @@ public final class AttestationClient {
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AttestationResult> attestOpenEnclaveWithResponse(
+    public AttestationResponse<AttestationResult> attestOpenEnclaveWithResponse(
         AttestationOptions options, Context context) {
         return asyncClient.attestOpenEnclaveWithResponse(options, context).block();
     }
 
     /**
-     * Processes an SGX enclave quote, producing an artifact. The type of artifact produced is dependent upon
-     * attestation policy.
+     * Attest an SGX Enclave Quote.
+     *
+     * <p>This method is a convenience method which attests evidence from an Intel SGX enclave
+     * with no {@code RuntimeData} or {@code InitTimeData}.</p>
+     * It returns an {@link AttestationResult} containing the claims emitted by the attestation service.
+     * <!-- src_embed com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithReport -->
+     * <pre>
+     * AttestationResult resultWithReport = client.attestSgxEnclave&#40;sgxEnclaveReport&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithReport -->
      *
      * @param quote SGX Quote to attest.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -269,10 +373,25 @@ public final class AttestationClient {
         return asyncClient.attestSgxEnclave(quote).block();
     }
 
-
     /**
-     * Processes an SGX enclave quote, producing an artifact. The type of artifact produced is dependent upon
-     * attestation policy.
+     * Attest an SGX enclave quote, specifying RunTimeData and InitTimeData.
+     *
+     * The {@link AttestationOptions} parameter allows the caller to specify the SGX {@code quote} which
+     * contains evidence from the enclave, and runtime data which allows the enclave to specify additional
+     * data from within the enclave.
+     *
+     * When calling the {@link AttestationOptions#setRunTimeData(AttestationData)} API, the caller
+     * can specify whether the attestation service should treat the runtime data as binary or as JSON when it is
+     * included in the response attestation token.
+     *
+     * <p><strong>Attest an OpenEnclave enclave with attestation options.</strong></p>
+     * <!-- src_embed com.azure.security.attestation.AttestationClient.attestSgxEnclave -->
+     * <pre>
+     * AttestationResult result = client.attestSgxEnclave&#40;new AttestationOptions&#40;sgxQuote&#41;
+     *     .setRunTimeData&#40;new AttestationData&#40;runtimeData, AttestationDataInterpretation.BINARY&#41;&#41;&#41;;
+     *
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationClient.attestSgxEnclave -->
      *
      * @param options Attestation options for Intel SGX enclaves.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -286,25 +405,25 @@ public final class AttestationClient {
     }
 
     /**
-     * Processes an SGX enclave quote, producing an artifact. The type of artifact produced is dependent upon
-     * attestation policy.
+     * Attest an SGX enclave report, specifying RunTimeData and InitTimeData.
      *
-     * @param quote Intel SGX Quote to validate.
-     * @param context Context for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of an attestation operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AttestationResult> attestSgxEnclaveWithResponse(
-        BinaryData quote, Context context) {
-        return asyncClient.attestSgxEnclaveWithResponse(quote, context).block();
-    }
-
-    /**
-     * Processes an SGX enclave quote, producing an artifact. The type of artifact produced is dependent upon
-     * attestation policy.
+     * The {@link AttestationOptions} parameter allows the caller to specify the OpenEnclave {@code report} which
+     * contains evidence from the enclave, and runtime data which allows the enclave to specify additional
+     * data from within the enclave.
+     *
+     * When calling the {@link AttestationOptions#setRunTimeData(AttestationData)} API, the caller
+     * can specify whether the attestation service should treat the runtime data as binary or as JSON when it is
+     * included in the response attestation token.
+     *
+     * <p><strong>Attest an OpenEnclave enclave with attestation options.</strong></p>
+     * <!-- src_embed com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithResponse -->
+     * <pre>
+     * Response&lt;AttestationResult&gt; openEnclaveResponse = client.attestSgxEnclaveWithResponse&#40;
+     *     new AttestationOptions&#40;sgxQuote&#41;
+     *         .setRunTimeData&#40;new AttestationData&#40;runtimeData, AttestationDataInterpretation.JSON&#41;&#41;, Context.NONE&#41;;
+     *
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationClient.attestSgxEnclaveWithResponse -->
      *
      * @param request Attestation request for Intel SGX enclaves.
      * @param context Context for the operation.
@@ -314,14 +433,29 @@ public final class AttestationClient {
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AttestationResult> attestSgxEnclaveWithResponse(
+    public AttestationResponse<AttestationResult> attestSgxEnclaveWithResponse(
         AttestationOptions request, Context context) {
         return asyncClient.attestSgxEnclaveWithResponse(request, context).block();
     }
 
-    /**
-     * Processes attestation evidence from a VBS enclave, producing an attestation result. The attestation result
-     * produced is dependent upon the attestation policy.
+    /** Performs TPM attestation.
+     *
+     * Processes attestation evidence from a VBS enclave, producing an attestation result.
+     * <p>The TPM attestation protocol is defined <a href='https://docs.microsoft.com/azure/attestation/virtualization-based-security-protocol'>here.</a></p>
+     * <p>Unlike OpenEnclave reports and SGX enclave quotes, TPM attestation is implemented using JSON encoded
+     * strings. </p><p>The client formats a string serialized JSON request to the service, which responds with a
+     * JSON response. The serialized JSON object exchange continues until the service responds with a JSON string
+     * with a property named {@code "report"}, whose value will be an attestation result token.</p>
+     * <p><strong>Perform the first leg of a TPM attestation operation</strong></p>
+     * <!-- src_embed com.azure.security.attestation.AttestationClient.attestTpm -->
+     * <pre>
+     * &#47;&#47; The initial payload for TPM attestation is a JSON object with a property named &quot;payload&quot;,
+     * &#47;&#47; containing an object with a property named &quot;type&quot; whose value is &quot;aikcert&quot;.
+     *
+     * String attestInitialPayload = &quot;&#123;&#92;&quot;payload&#92;&quot;: &#123; &#92;&quot;type&#92;&quot;: &#92;&quot;aikcert&#92;&quot; &#125; &#125;&quot;;
+     * String tpmResponse = client.attestTpm&#40;attestInitialPayload&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationClient.attestTpm -->
      *
      * @param request Attestation request for Trusted Platform Module (TPM) attestation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -334,9 +468,24 @@ public final class AttestationClient {
         return asyncClient.attestTpm(request).block();
     }
 
-    /**
-     * Processes attestation evidence from a VBS enclave, producing an attestation result. The attestation result
-     * produced is dependent upon the attestation policy.
+    /** Performs TPM attestation.
+     *
+     * Processes attestation evidence from a VBS enclave, producing an attestation result.
+     * <p>The TPM attestation protocol is defined <a href='https://docs.microsoft.com/azure/attestation/virtualization-based-security-protocol'>here.</a></p>
+     * <p>Unlike OpenEnclave reports and SGX enclave quotes, TPM attestation is implemented using JSON encoded
+     * strings. </p><p>The client formats a string serialized JSON request to the service, which responds with a
+     * JSON response. The serialized JSON object exchange continues until the service responds with a JSON string
+     * with a property named {@code "report"}, whose value will be an attestation result token.</p>
+     * <p><strong>Perform the first leg of a TPM attestation operation</strong></p>
+     * <!-- src_embed com.azure.security.attestation.AttestationClient.attestTpmWithResponse -->
+     * <pre>
+     * &#47;&#47; The initial payload for TPM attestation is a JSON object with a property named &quot;payload&quot;,
+     * &#47;&#47; containing an object with a property named &quot;type&quot; whose value is &quot;aikcert&quot;.
+     *
+     * String attestInitialPayload = &quot;&#123;&#92;&quot;payload&#92;&quot;: &#123; &#92;&quot;type&#92;&quot;: &#92;&quot;aikcert&#92;&quot; &#125; &#125;&quot;;
+     * Response&lt;String&gt; tpmResponse = client.attestTpmWithResponse&#40;attestInitialPayload, Context.NONE&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationClient.attestTpmWithResponse -->
      *
      * @param request Attestation request for Trusted Platform Module (TPM) attestation.
      * @param context Context for the operation.

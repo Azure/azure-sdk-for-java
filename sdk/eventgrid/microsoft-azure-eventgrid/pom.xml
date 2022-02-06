@@ -68,7 +68,7 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.6</version> <!-- {x-version-update;eventgrid_commons-io:commons-io;external_dependency} -->
+            <version>2.7</version> <!-- {x-version-update;eventgrid_commons-io:commons-io;external_dependency} -->
         </dependency>
     </dependencies>
     <build>

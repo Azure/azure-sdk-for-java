@@ -288,7 +288,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk access resource.
+     * @return disk access resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -317,7 +317,7 @@ public final class DiskAccessesClientImpl
         } else {
             diskAccess.validate();
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -347,7 +347,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk access resource.
+     * @return disk access resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -376,7 +376,7 @@ public final class DiskAccessesClientImpl
         } else {
             diskAccess.validate();
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -402,9 +402,9 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk access resource.
+     * @return the {@link PollerFlux} for polling of disk access resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DiskAccessInner>, DiskAccessInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String diskAccessName, DiskAccessInner diskAccess) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -412,7 +412,11 @@ public final class DiskAccessesClientImpl
         return this
             .client
             .<DiskAccessInner, DiskAccessInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DiskAccessInner.class, DiskAccessInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                DiskAccessInner.class,
+                DiskAccessInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -427,9 +431,9 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk access resource.
+     * @return the {@link PollerFlux} for polling of disk access resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DiskAccessInner>, DiskAccessInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String diskAccessName, DiskAccessInner diskAccess, Context context) {
         context = this.client.mergeContext(context);
@@ -452,9 +456,9 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk access resource.
+     * @return the {@link SyncPoller} for polling of disk access resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiskAccessInner>, DiskAccessInner> beginCreateOrUpdate(
         String resourceGroupName, String diskAccessName, DiskAccessInner diskAccess) {
         return beginCreateOrUpdateAsync(resourceGroupName, diskAccessName, diskAccess).getSyncPoller();
@@ -472,9 +476,9 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk access resource.
+     * @return the {@link SyncPoller} for polling of disk access resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiskAccessInner>, DiskAccessInner> beginCreateOrUpdate(
         String resourceGroupName, String diskAccessName, DiskAccessInner diskAccess, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, diskAccessName, diskAccess, context).getSyncPoller();
@@ -491,7 +495,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk access resource.
+     * @return disk access resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiskAccessInner> createOrUpdateAsync(
@@ -513,7 +517,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk access resource.
+     * @return disk access resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DiskAccessInner> createOrUpdateAsync(
@@ -572,7 +576,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk access resource.
+     * @return disk access resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -601,7 +605,7 @@ public final class DiskAccessesClientImpl
         } else {
             diskAccess.validate();
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -631,7 +635,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk access resource.
+     * @return disk access resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -660,7 +664,7 @@ public final class DiskAccessesClientImpl
         } else {
             diskAccess.validate();
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -686,16 +690,20 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk access resource.
+     * @return the {@link PollerFlux} for polling of disk access resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<DiskAccessInner>, DiskAccessInner> beginUpdateAsync(
         String resourceGroupName, String diskAccessName, DiskAccessUpdate diskAccess) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, diskAccessName, diskAccess);
         return this
             .client
             .<DiskAccessInner, DiskAccessInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DiskAccessInner.class, DiskAccessInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                DiskAccessInner.class,
+                DiskAccessInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -710,9 +718,9 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk access resource.
+     * @return the {@link PollerFlux} for polling of disk access resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DiskAccessInner>, DiskAccessInner> beginUpdateAsync(
         String resourceGroupName, String diskAccessName, DiskAccessUpdate diskAccess, Context context) {
         context = this.client.mergeContext(context);
@@ -735,9 +743,9 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk access resource.
+     * @return the {@link SyncPoller} for polling of disk access resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiskAccessInner>, DiskAccessInner> beginUpdate(
         String resourceGroupName, String diskAccessName, DiskAccessUpdate diskAccess) {
         return beginUpdateAsync(resourceGroupName, diskAccessName, diskAccess).getSyncPoller();
@@ -755,9 +763,9 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk access resource.
+     * @return the {@link SyncPoller} for polling of disk access resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiskAccessInner>, DiskAccessInner> beginUpdate(
         String resourceGroupName, String diskAccessName, DiskAccessUpdate diskAccess, Context context) {
         return beginUpdateAsync(resourceGroupName, diskAccessName, diskAccess, context).getSyncPoller();
@@ -774,7 +782,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk access resource.
+     * @return disk access resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiskAccessInner> updateAsync(
@@ -796,7 +804,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk access resource.
+     * @return disk access resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DiskAccessInner> updateAsync(
@@ -854,7 +862,8 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a disk access resource.
+     * @return information about a disk access resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DiskAccessInner>> getByResourceGroupWithResponseAsync(
@@ -878,7 +887,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -906,7 +915,8 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a disk access resource.
+     * @return information about a disk access resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DiskAccessInner>> getByResourceGroupWithResponseAsync(
@@ -930,7 +940,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -954,7 +964,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a disk access resource.
+     * @return information about a disk access resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiskAccessInner> getByResourceGroupAsync(String resourceGroupName, String diskAccessName) {
@@ -997,7 +1007,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a disk access resource.
+     * @return information about a disk access resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DiskAccessInner> getByResourceGroupWithResponse(
@@ -1015,7 +1025,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String diskAccessName) {
@@ -1038,7 +1048,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1066,7 +1076,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1090,7 +1100,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1114,14 +1124,15 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String diskAccessName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, diskAccessName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1135,9 +1146,9 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String diskAccessName, Context context) {
         context = this.client.mergeContext(context);
@@ -1157,9 +1168,9 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String diskAccessName) {
         return beginDeleteAsync(resourceGroupName, diskAccessName).getSyncPoller();
     }
@@ -1175,9 +1186,9 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String diskAccessName, Context context) {
         return beginDeleteAsync(resourceGroupName, diskAccessName, context).getSyncPoller();
@@ -1193,7 +1204,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String diskAccessName) {
@@ -1213,7 +1224,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String diskAccessName, Context context) {
@@ -1262,7 +1273,8 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List disk access operation response.
+     * @return the List disk access operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiskAccessInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -1282,7 +1294,7 @@ public final class DiskAccessesClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1315,7 +1327,8 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List disk access operation response.
+     * @return the List disk access operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiskAccessInner>> listByResourceGroupSinglePageAsync(
@@ -1336,7 +1349,7 @@ public final class DiskAccessesClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1365,7 +1378,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List disk access operation response.
+     * @return the List disk access operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DiskAccessInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1382,7 +1395,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List disk access operation response.
+     * @return the List disk access operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DiskAccessInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1398,7 +1411,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List disk access operation response.
+     * @return the List disk access operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiskAccessInner> listByResourceGroup(String resourceGroupName) {
@@ -1413,7 +1426,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List disk access operation response.
+     * @return the List disk access operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiskAccessInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1425,7 +1438,8 @@ public final class DiskAccessesClientImpl
      *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List disk access operation response.
+     * @return the List disk access operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiskAccessInner>> listSinglePageAsync() {
@@ -1441,7 +1455,7 @@ public final class DiskAccessesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1467,7 +1481,8 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List disk access operation response.
+     * @return the List disk access operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiskAccessInner>> listSinglePageAsync(Context context) {
@@ -1483,7 +1498,7 @@ public final class DiskAccessesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1504,7 +1519,7 @@ public final class DiskAccessesClientImpl
      *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List disk access operation response.
+     * @return the List disk access operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DiskAccessInner> listAsync() {
@@ -1518,7 +1533,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List disk access operation response.
+     * @return the List disk access operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DiskAccessInner> listAsync(Context context) {
@@ -1531,7 +1546,7 @@ public final class DiskAccessesClientImpl
      *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List disk access operation response.
+     * @return the List disk access operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiskAccessInner> list() {
@@ -1545,7 +1560,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List disk access operation response.
+     * @return the List disk access operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiskAccessInner> list(Context context) {
@@ -1562,7 +1577,8 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources possible under disk access resource.
+     * @return the private link resources possible under disk access resource along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateLinkResourceListResultInner>> getPrivateLinkResourcesWithResponseAsync(
@@ -1586,7 +1602,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1614,7 +1630,8 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources possible under disk access resource.
+     * @return the private link resources possible under disk access resource along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateLinkResourceListResultInner>> getPrivateLinkResourcesWithResponseAsync(
@@ -1638,7 +1655,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1662,7 +1679,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources possible under disk access resource.
+     * @return the private link resources possible under disk access resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateLinkResourceListResultInner> getPrivateLinkResourcesAsync(
@@ -1706,7 +1723,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources possible under disk access resource.
+     * @return the private link resources possible under disk access resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateLinkResourceListResultInner> getPrivateLinkResourcesWithResponse(
@@ -1728,7 +1745,8 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
+     * @return the Private Endpoint Connection resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateAPrivateEndpointConnectionWithResponseAsync(
@@ -1769,7 +1787,7 @@ public final class DiskAccessesClientImpl
         } else {
             privateEndpointConnection.validate();
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1803,7 +1821,8 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
+     * @return the Private Endpoint Connection resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateAPrivateEndpointConnectionWithResponseAsync(
@@ -1845,7 +1864,7 @@ public final class DiskAccessesClientImpl
         } else {
             privateEndpointConnection.validate();
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1875,9 +1894,9 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
+     * @return the {@link PollerFlux} for polling of the Private Endpoint Connection resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
         beginUpdateAPrivateEndpointConnectionAsync(
             String resourceGroupName,
@@ -1894,7 +1913,7 @@ public final class DiskAccessesClientImpl
                 this.client.getHttpPipeline(),
                 PrivateEndpointConnectionInner.class,
                 PrivateEndpointConnectionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1912,9 +1931,9 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
+     * @return the {@link PollerFlux} for polling of the Private Endpoint Connection resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
         beginUpdateAPrivateEndpointConnectionAsync(
             String resourceGroupName,
@@ -1950,9 +1969,9 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
+     * @return the {@link SyncPoller} for polling of the Private Endpoint Connection resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
         beginUpdateAPrivateEndpointConnection(
             String resourceGroupName,
@@ -1979,9 +1998,9 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
+     * @return the {@link SyncPoller} for polling of the Private Endpoint Connection resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
         beginUpdateAPrivateEndpointConnection(
             String resourceGroupName,
@@ -2008,7 +2027,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
+     * @return the Private Endpoint Connection resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateEndpointConnectionInner> updateAPrivateEndpointConnectionAsync(
@@ -2037,7 +2056,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
+     * @return the Private Endpoint Connection resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PrivateEndpointConnectionInner> updateAPrivateEndpointConnectionAsync(
@@ -2119,7 +2138,8 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a private endpoint connection under a disk access resource.
+     * @return information about a private endpoint connection under a disk access resource along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateEndpointConnectionInner>> getAPrivateEndpointConnectionWithResponseAsync(
@@ -2149,7 +2169,7 @@ public final class DiskAccessesClientImpl
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2179,7 +2199,8 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a private endpoint connection under a disk access resource.
+     * @return information about a private endpoint connection under a disk access resource along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateEndpointConnectionInner>> getAPrivateEndpointConnectionWithResponseAsync(
@@ -2209,7 +2230,7 @@ public final class DiskAccessesClientImpl
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2235,7 +2256,8 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a private endpoint connection under a disk access resource.
+     * @return information about a private endpoint connection under a disk access resource on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateEndpointConnectionInner> getAPrivateEndpointConnectionAsync(
@@ -2284,7 +2306,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a private endpoint connection under a disk access resource.
+     * @return information about a private endpoint connection under a disk access resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> getAPrivateEndpointConnectionWithResponse(
@@ -2305,7 +2327,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteAPrivateEndpointConnectionWithResponseAsync(
@@ -2335,7 +2357,7 @@ public final class DiskAccessesClientImpl
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2365,7 +2387,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteAPrivateEndpointConnectionWithResponseAsync(
@@ -2395,7 +2417,7 @@ public final class DiskAccessesClientImpl
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2421,9 +2443,9 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAPrivateEndpointConnectionAsync(
         String resourceGroupName, String diskAccessName, String privateEndpointConnectionName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2431,7 +2453,8 @@ public final class DiskAccessesClientImpl
                 resourceGroupName, diskAccessName, privateEndpointConnectionName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2446,9 +2469,9 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAPrivateEndpointConnectionAsync(
         String resourceGroupName, String diskAccessName, String privateEndpointConnectionName, Context context) {
         context = this.client.mergeContext(context);
@@ -2471,9 +2494,9 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAPrivateEndpointConnection(
         String resourceGroupName, String diskAccessName, String privateEndpointConnectionName) {
         return beginDeleteAPrivateEndpointConnectionAsync(
@@ -2493,9 +2516,9 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAPrivateEndpointConnection(
         String resourceGroupName, String diskAccessName, String privateEndpointConnectionName, Context context) {
         return beginDeleteAPrivateEndpointConnectionAsync(
@@ -2514,7 +2537,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAPrivateEndpointConnectionAsync(
@@ -2537,7 +2560,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAPrivateEndpointConnectionAsync(
@@ -2596,7 +2619,8 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources.
+     * @return a list of private link resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionInner>> listPrivateEndpointConnectionsSinglePageAsync(
@@ -2620,7 +2644,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2657,7 +2681,8 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources.
+     * @return a list of private link resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionInner>> listPrivateEndpointConnectionsSinglePageAsync(
@@ -2681,7 +2706,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2714,7 +2739,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources.
+     * @return a list of private link resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PrivateEndpointConnectionInner> listPrivateEndpointConnectionsAsync(
@@ -2735,7 +2760,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources.
+     * @return a list of private link resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PrivateEndpointConnectionInner> listPrivateEndpointConnectionsAsync(
@@ -2755,7 +2780,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources.
+     * @return a list of private link resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionInner> listPrivateEndpointConnections(
@@ -2774,7 +2799,7 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources.
+     * @return a list of private link resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionInner> listPrivateEndpointConnections(
@@ -2789,7 +2814,8 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List disk access operation response.
+     * @return the List disk access operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiskAccessInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -2826,7 +2852,8 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List disk access operation response.
+     * @return the List disk access operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiskAccessInner>> listByResourceGroupNextSinglePageAsync(
@@ -2862,7 +2889,8 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List disk access operation response.
+     * @return the List disk access operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiskAccessInner>> listNextSinglePageAsync(String nextLink) {
@@ -2898,7 +2926,8 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List disk access operation response.
+     * @return the List disk access operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiskAccessInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -2933,7 +2962,8 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources.
+     * @return a list of private link resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionInner>> listPrivateEndpointConnectionsNextSinglePageAsync(
@@ -2972,7 +3002,8 @@ public final class DiskAccessesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources.
+     * @return a list of private link resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionInner>> listPrivateEndpointConnectionsNextSinglePageAsync(

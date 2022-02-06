@@ -22,9 +22,22 @@ public abstract class AzureManager<T, K> implements ResourceManager<T, K> {
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureManager.class);
 
     private final AzureProperties azureProperties;
+
+    /**
+     * The resource group.
+     */
     protected final String resourceGroup;
+
+    /**
+     * The region.
+     */
     protected final String region;
 
+    /**
+     * Creates a new instance of {@link AzureManager}.
+     *
+     * @param azureProperties The Azure properties.
+     */
     public AzureManager(@NonNull AzureProperties azureProperties) {
         this.azureProperties = azureProperties;
         this.resourceGroup = azureProperties.getResourceGroup();

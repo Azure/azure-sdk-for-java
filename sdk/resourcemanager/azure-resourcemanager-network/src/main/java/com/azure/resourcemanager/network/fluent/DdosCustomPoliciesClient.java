@@ -44,7 +44,7 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String ddosCustomPolicyName);
 
     /**
@@ -57,7 +57,7 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String ddosCustomPolicyName);
 
     /**
@@ -71,7 +71,7 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String ddosCustomPolicyName, Context context);
 
@@ -194,7 +194,7 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a DDoS custom policy in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<DdosCustomPolicyInner>, DdosCustomPolicyInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String ddosCustomPolicyName, DdosCustomPolicyInner parameters);
 
@@ -209,7 +209,7 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a DDoS custom policy in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DdosCustomPolicyInner>, DdosCustomPolicyInner> beginCreateOrUpdate(
         String resourceGroupName, String ddosCustomPolicyName, DdosCustomPolicyInner parameters);
 
@@ -225,7 +225,7 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a DDoS custom policy in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DdosCustomPolicyInner>, DdosCustomPolicyInner> beginCreateOrUpdate(
         String resourceGroupName, String ddosCustomPolicyName, DdosCustomPolicyInner parameters, Context context);
 

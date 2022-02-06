@@ -49,7 +49,6 @@ public class ServiceBusConsumerProperties {
      * Controls the max concurrent calls of service bus message handler and
      * the size of fixed thread pool that handles user's business logic
      *
-     * <p>
      * @return int, default : 1
      */
     public Integer getMaxConcurrentCalls() {
@@ -63,7 +62,6 @@ public class ServiceBusConsumerProperties {
     /**
      * Maximum number of concurrent sessions to process at any given time
      *
-     * <p>
      * @return int, default : 1
      */
     public Integer getMaxConcurrentSessions() {
@@ -76,8 +74,6 @@ public class ServiceBusConsumerProperties {
 
     /**
      * Prefetch count of underlying service bus client.
-     *
-     * <p>
      *
      * @return int, default : 1
      */
@@ -93,7 +89,6 @@ public class ServiceBusConsumerProperties {
      * Controls the max concurrent calls of service bus message handler and
      * the size of fixed thread pool that handles user's business logic
      *
-     * <p>
      * @return int, default : 1
      * @deprecated Use maxConcurrentSessions and maxConcurrentCalls.
      */
@@ -112,7 +107,6 @@ public class ServiceBusConsumerProperties {
     /**
      * Controls if is session aware
      *
-     * <p>
      * @return boolean, default : false
      */
     public boolean isSessionsEnabled() {
@@ -126,7 +120,6 @@ public class ServiceBusConsumerProperties {
     /**
      * Controls if the failed messages are routed to the DLQ
      *
-     * <p>
      * @return boolean, default : false
      */
     public boolean isRequeueRejected() {

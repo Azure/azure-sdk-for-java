@@ -41,6 +41,14 @@ public final class VideoCreationProperties {
     @JsonProperty(value = "segmentLength")
     private String segmentLength;
 
+    /*
+     * Video retention period indicates how long the video is kept in storage,
+     * and must be a multiple of 1 day. For example, if this is set to 30 days,
+     * then content older than 30 days will be deleted.
+     */
+    @JsonProperty(value = "retentionPeriod")
+    private String retentionPeriod;
+
     /**
      * Get the title property: Optional video title provided by the user. Value can be up to 256 characters long.
      *
@@ -110,6 +118,30 @@ public final class VideoCreationProperties {
      */
     public VideoCreationProperties setSegmentLength(String segmentLength) {
         this.segmentLength = segmentLength;
+        return this;
+    }
+
+    /**
+     * Get the retentionPeriod property: Video retention period indicates how long the video is kept in storage, and
+     * must be a multiple of 1 day. For example, if this is set to 30 days, then content older than 30 days will be
+     * deleted.
+     *
+     * @return the retentionPeriod value.
+     */
+    public String getRetentionPeriod() {
+        return this.retentionPeriod;
+    }
+
+    /**
+     * Set the retentionPeriod property: Video retention period indicates how long the video is kept in storage, and
+     * must be a multiple of 1 day. For example, if this is set to 30 days, then content older than 30 days will be
+     * deleted.
+     *
+     * @param retentionPeriod the retentionPeriod value to set.
+     * @return the VideoCreationProperties object itself.
+     */
+    public VideoCreationProperties setRetentionPeriod(String retentionPeriod) {
+        this.retentionPeriod = retentionPeriod;
         return this;
     }
 }

@@ -3,6 +3,7 @@
 
 package com.azure.spring.integration.core.converter;
 
+import com.azure.spring.integration.core.EventHubHeaders;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -16,8 +17,11 @@ import org.springframework.util.Assert;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Abstract class handles common conversion logic between &lt;T&gt; and {@link Message}
@@ -29,7 +33,11 @@ public abstract class AbstractAzureMessageConverter<I, O> implements AzureMessag
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAzureMessageConverter.class);
 
     protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
+    protected static final Set<String> SYSTEM_HEADERS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+        EventHubHeaders.PARTITION_KEY,
+        EventHubHeaders.ENQUEUED_TIME,
+        EventHubHeaders.OFFSET,
+        EventHubHeaders.SEQUENCE_NUMBER)));
     protected ObjectMapper getObjectMapper() {
         return OBJECT_MAPPER;
     }
@@ -57,11 +65,11 @@ public abstract class AbstractAzureMessageConverter<I, O> implements AzureMessag
      * @return The converted object.
      * @throws ConversionException When fail to convert to object from byte array.
      */
-    private <U> U fromPayload(byte[] payload, Class<U> payloadType) {
+    protected <U> U fromPayload(Object payload, Class<U> payloadType) {
         try {
-            return getObjectMapper().readerFor(payloadType).readValue(payload);
+            return getObjectMapper().readerFor(payloadType).readValue((byte[]) payload);
         } catch (IOException e) {
-            throw new ConversionException("Failed to read JSON: " + Arrays.toString(payload), e);
+            throw new ConversionException("Failed to read JSON: " + Arrays.toString((byte[]) payload), e);
         }
     }
 
@@ -85,7 +93,7 @@ public abstract class AbstractAzureMessageConverter<I, O> implements AzureMessag
         return (Message<U>) internalToMessage(azureMessage, mergedHeaders, targetPayloadClass);
     }
 
-    protected abstract byte[] getPayload(I azureMessage);
+    protected abstract Object getPayload(I azureMessage);
 
     protected abstract O fromString(String payload);
 
@@ -121,15 +129,15 @@ public abstract class AbstractAzureMessageConverter<I, O> implements AzureMessag
         return fromByte(toPayload(payload));
     }
 
-    private <U> Message<?> internalToMessage(I azureMessage, Map<String, Object> headers, Class<U> targetPayloadClass) {
-        byte[] payload = getPayload(azureMessage);
-        Assert.isTrue(payload != null && payload.length > 0, "payload must not be null");
+    protected <U> Message<?> internalToMessage(I azureMessage, Map<String, Object> headers, Class<U> targetPayloadClass) {
+        Object payload = getPayload(azureMessage);
+        Assert.isTrue(payload != null, "payload must not be null");
         if (targetPayloadClass.isInstance(azureMessage)) {
             return MessageBuilder.withPayload(azureMessage).copyHeaders(headers).build();
         }
 
         if (targetPayloadClass == String.class) {
-            return MessageBuilder.withPayload(new String(payload, StandardCharsets.UTF_8)).copyHeaders(headers).build();
+            return MessageBuilder.withPayload(new String((byte[]) payload, StandardCharsets.UTF_8)).copyHeaders(headers).build();
         }
 
         if (targetPayloadClass == byte[].class) {
@@ -138,4 +146,5 @@ public abstract class AbstractAzureMessageConverter<I, O> implements AzureMessag
 
         return MessageBuilder.withPayload(fromPayload(payload, targetPayloadClass)).copyHeaders(headers).build();
     }
+
 }

@@ -132,7 +132,7 @@ public interface StorageAccountsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the storage account.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<StorageAccountInner>, StorageAccountInner> beginCreateAsync(
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters);
 
@@ -152,7 +152,7 @@ public interface StorageAccountsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the storage account.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<StorageAccountInner>, StorageAccountInner> beginCreate(
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters);
 
@@ -173,7 +173,7 @@ public interface StorageAccountsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the storage account.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<StorageAccountInner>, StorageAccountInner> beginCreate(
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters, Context context);
 
@@ -876,7 +876,7 @@ public interface StorageAccountsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginFailoverAsync(String resourceGroupName, String accountName);
 
     /**
@@ -893,7 +893,7 @@ public interface StorageAccountsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginFailover(String resourceGroupName, String accountName);
 
     /**
@@ -911,7 +911,7 @@ public interface StorageAccountsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginFailover(String resourceGroupName, String accountName, Context context);
 
     /**
@@ -994,7 +994,7 @@ public interface StorageAccountsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return blob restore status.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<BlobRestoreStatusInner>, BlobRestoreStatusInner> beginRestoreBlobRangesAsync(
         String resourceGroupName, String accountName, BlobRestoreParameters parameters);
 
@@ -1011,7 +1011,7 @@ public interface StorageAccountsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return blob restore status.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BlobRestoreStatusInner>, BlobRestoreStatusInner> beginRestoreBlobRanges(
         String resourceGroupName, String accountName, BlobRestoreParameters parameters);
 
@@ -1029,7 +1029,7 @@ public interface StorageAccountsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return blob restore status.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BlobRestoreStatusInner>, BlobRestoreStatusInner> beginRestoreBlobRanges(
         String resourceGroupName, String accountName, BlobRestoreParameters parameters, Context context);
 

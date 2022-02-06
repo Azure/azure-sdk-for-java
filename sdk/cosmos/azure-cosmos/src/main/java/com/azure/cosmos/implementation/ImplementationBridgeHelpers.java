@@ -10,13 +10,13 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosBatch;
-import com.azure.cosmos.models.CosmosBatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
 import com.azure.cosmos.models.CosmosBatchRequestOptions;
 import com.azure.cosmos.models.CosmosBatchResponse;
@@ -31,6 +31,7 @@ import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
@@ -62,7 +63,7 @@ public class ImplementationBridgeHelpers {
             accessor = newAccessor;
         }
 
-        static CosmosClientBuilderAccessor getCosmosClientBuilderAccessor() {
+        public static CosmosClientBuilderAccessor getCosmosClientBuilderAccessor() {
             if (accessor == null) {
                 throw new IllegalStateException("CosmosClientBuilder accessor is not initialized yet!");
             }
@@ -73,8 +74,12 @@ public class ImplementationBridgeHelpers {
         public interface CosmosClientBuilderAccessor {
             void setCosmosClientMetadataCachesSnapshot(CosmosClientBuilder builder,
                                                        CosmosClientMetadataCachesSnapshot metadataCache);
+
             CosmosClientMetadataCachesSnapshot getCosmosClientMetadataCachesSnapshot(CosmosClientBuilder builder);
 
+            void setCosmosClientApiType(CosmosClientBuilder builder, ApiType apiType);
+
+            ApiType getCosmosClientApiType(CosmosClientBuilder builder);
         }
     }
 
@@ -107,6 +112,37 @@ public class ImplementationBridgeHelpers {
         }
     }
 
+    public static final class DirectConnectionConfigHelper {
+        static {
+            ensureClassLoaded(DirectConnectionConfig.class);
+        }
+        private static DirectConnectionConfigAccessor accessor;
+
+        private DirectConnectionConfigHelper() {}
+
+        public static void setDirectConnectionConfigAccessor(final DirectConnectionConfigAccessor newAccessor) {
+            if (accessor != null) {
+                throw new IllegalStateException("DirectConnectionConfig accessor already initialized!");
+            }
+
+            accessor = newAccessor;
+        }
+
+        public static DirectConnectionConfigAccessor getDirectConnectionConfigAccessor() {
+            if (accessor == null) {
+                throw new IllegalStateException("DirectConnectionConfig accessor is not initialized!");
+            }
+
+            return accessor;
+        }
+
+        public interface DirectConnectionConfigAccessor {
+            int getIoThreadCountPerCoreFactor(DirectConnectionConfig config);
+            DirectConnectionConfig setIoThreadCountPerCoreFactor(
+                DirectConnectionConfig config, int ioThreadCountPerCoreFactor);
+        }
+    }
+
     public static final class CosmosQueryRequestOptionsHelper {
         private static CosmosQueryRequestOptionsAccessor accessor;
 
@@ -136,6 +172,8 @@ public class ImplementationBridgeHelpers {
             OperationContextAndListenerTuple getOperationContext(CosmosQueryRequestOptions queryRequestOptions);
             CosmosQueryRequestOptions setHeader(CosmosQueryRequestOptions queryRequestOptions, String name, String value);
             Map<String, String> getHeader(CosmosQueryRequestOptions queryRequestOptions);
+            boolean isQueryPlanRetrievalDisallowed(CosmosQueryRequestOptions queryRequestOptions);
+            CosmosQueryRequestOptions disallowQueryPlanRetrieval(CosmosQueryRequestOptions queryRequestOptions);
         }
     }
 
@@ -250,7 +288,19 @@ public class ImplementationBridgeHelpers {
 
             int getMaxMicroBatchConcurrency(CosmosBulkExecutionOptions options);
 
+            Integer getMaxConcurrentCosmosPartitions(CosmosBulkExecutionOptions options);
+
+            CosmosBulkExecutionOptions setMaxConcurrentCosmosPartitions(
+                CosmosBulkExecutionOptions options, int mxConcurrentCosmosPartitions);
+
             Duration getMaxMicroBatchInterval(CosmosBulkExecutionOptions options);
+
+            CosmosBulkExecutionOptions setHeader(CosmosBulkExecutionOptions cosmosBulkExecutionOptions,
+                                                 String name, String value);
+
+            Map<String, String> getHeader(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
+
+            Map<String, String> getCustomOptions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
         }
     }
 
@@ -681,29 +731,9 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosBulkItemResponseAccessor {
             ObjectNode getResourceObject(CosmosBulkItemResponse cosmosBulkItemResponse);
-        }
-    }
 
-    public static final class DeprecatedCosmosBulkItemResponseHelper {
-        private static DeprecatedCosmosBulkItemResponseAccessor accessor;
-
-        private DeprecatedCosmosBulkItemResponseHelper() {
-        }
-
-        static {
-            ensureClassLoaded(com.azure.cosmos.CosmosBulkItemResponse.class);
-        }
-
-        public static DeprecatedCosmosBulkItemResponseAccessor getCosmosBulkItemResponseAccessor() {
-            return accessor;
-        }
-
-        public static void setCosmosBulkItemResponseAccessor(DeprecatedCosmosBulkItemResponseAccessor accessor) {
-            DeprecatedCosmosBulkItemResponseHelper.accessor = accessor;
-        }
-
-        public interface DeprecatedCosmosBulkItemResponseAccessor {
-            ObjectNode getResourceObject(com.azure.cosmos.CosmosBulkItemResponse cosmosBulkItemResponse);
+            void setResourceObject(CosmosBulkItemResponse cosmosBulkItemResponse,
+                                   ObjectNode objectNode);
         }
     }
 

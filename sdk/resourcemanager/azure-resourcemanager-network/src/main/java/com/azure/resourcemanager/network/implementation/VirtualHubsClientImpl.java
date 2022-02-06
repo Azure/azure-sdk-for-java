@@ -234,7 +234,7 @@ public final class VirtualHubsClientImpl
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -284,7 +284,7 @@ public final class VirtualHubsClientImpl
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -392,7 +392,7 @@ public final class VirtualHubsClientImpl
         } else {
             virtualHubParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -450,7 +450,7 @@ public final class VirtualHubsClientImpl
         } else {
             virtualHubParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -476,7 +476,7 @@ public final class VirtualHubsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualHubInner>, VirtualHubInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String virtualHubName, VirtualHubInner virtualHubParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -484,7 +484,11 @@ public final class VirtualHubsClientImpl
         return this
             .client
             .<VirtualHubInner, VirtualHubInner>getLroResult(
-                mono, this.client.getHttpPipeline(), VirtualHubInner.class, VirtualHubInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                VirtualHubInner.class,
+                VirtualHubInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -499,7 +503,7 @@ public final class VirtualHubsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualHubInner>, VirtualHubInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String virtualHubName, VirtualHubInner virtualHubParameters, Context context) {
         context = this.client.mergeContext(context);
@@ -522,7 +526,7 @@ public final class VirtualHubsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualHubInner>, VirtualHubInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualHubName, VirtualHubInner virtualHubParameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, virtualHubParameters).getSyncPoller();
@@ -540,7 +544,7 @@ public final class VirtualHubsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHub Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualHubInner>, VirtualHubInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualHubName, VirtualHubInner virtualHubParameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, virtualHubParameters, context)
@@ -660,7 +664,7 @@ public final class VirtualHubsClientImpl
         } else {
             virtualHubParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -718,7 +722,7 @@ public final class VirtualHubsClientImpl
         } else {
             virtualHubParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -824,7 +828,7 @@ public final class VirtualHubsClientImpl
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -874,7 +878,7 @@ public final class VirtualHubsClientImpl
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -898,12 +902,13 @@ public final class VirtualHubsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualHubName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualHubName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -917,7 +922,7 @@ public final class VirtualHubsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualHubName, Context context) {
         context = this.client.mergeContext(context);
@@ -937,7 +942,7 @@ public final class VirtualHubsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHubName) {
         return beginDeleteAsync(resourceGroupName, virtualHubName).getSyncPoller();
     }
@@ -953,7 +958,7 @@ public final class VirtualHubsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualHubName, Context context) {
         return beginDeleteAsync(resourceGroupName, virtualHubName, context).getSyncPoller();
@@ -1050,7 +1055,7 @@ public final class VirtualHubsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1104,7 +1109,7 @@ public final class VirtualHubsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1209,7 +1214,7 @@ public final class VirtualHubsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1251,7 +1256,7 @@ public final class VirtualHubsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1356,7 +1361,7 @@ public final class VirtualHubsClientImpl
         if (effectiveRoutesParameters != null) {
             effectiveRoutesParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1414,7 +1419,7 @@ public final class VirtualHubsClientImpl
         if (effectiveRoutesParameters != null) {
             effectiveRoutesParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1440,14 +1445,15 @@ public final class VirtualHubsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the effective routes configured for the Virtual Hub resource or the specified resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginGetEffectiveVirtualHubRoutesAsync(
         String resourceGroupName, String virtualHubName, EffectiveRoutesParameters effectiveRoutesParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             getEffectiveVirtualHubRoutesWithResponseAsync(resourceGroupName, virtualHubName, effectiveRoutesParameters);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1462,7 +1468,7 @@ public final class VirtualHubsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the effective routes configured for the Virtual Hub resource or the specified resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginGetEffectiveVirtualHubRoutesAsync(
         String resourceGroupName,
         String virtualHubName,
@@ -1488,7 +1494,7 @@ public final class VirtualHubsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the effective routes configured for the Virtual Hub resource or the specified resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginGetEffectiveVirtualHubRoutes(
         String resourceGroupName, String virtualHubName, EffectiveRoutesParameters effectiveRoutesParameters) {
         return beginGetEffectiveVirtualHubRoutesAsync(resourceGroupName, virtualHubName, effectiveRoutesParameters)
@@ -1507,7 +1513,7 @@ public final class VirtualHubsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the effective routes configured for the Virtual Hub resource or the specified resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginGetEffectiveVirtualHubRoutes(
         String resourceGroupName,
         String virtualHubName,

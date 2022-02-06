@@ -38,12 +38,20 @@ import java.util.concurrent.TimeUnit;
 @ConditionalOnProperty(prefix = AADAuthenticationFilterAutoConfiguration.PROPERTY_PREFIX, value = { "client-id" })
 @EnableConfigurationProperties({ AADAuthenticationProperties.class })
 public class AADAuthenticationFilterAutoConfiguration {
+    /**
+     * The property prefix
+     */
     public static final String PROPERTY_PREFIX = "azure.activedirectory";
     private static final Logger LOG = LoggerFactory.getLogger(AADAuthenticationProperties.class);
 
     private final AADAuthenticationProperties properties;
     private final AADAuthorizationServerEndpoints endpoints;
 
+    /**
+     * Creates a new instance of {@link AADAuthenticationFilterAutoConfiguration}.
+     *
+     * @param properties the AAD authentication properties
+     */
     public AADAuthenticationFilterAutoConfiguration(AADAuthenticationProperties properties) {
         this.properties = properties;
         this.endpoints = new AADAuthorizationServerEndpoints(properties.getBaseUri(), properties.getTenantId());
@@ -69,6 +77,12 @@ public class AADAuthenticationFilterAutoConfiguration {
         );
     }
 
+    /**
+     * Declare AADAppRoleStatelessAuthenticationFilter bean.
+     *
+     * @param resourceRetriever the resource retriever
+     * @return AADAppRoleStatelessAuthenticationFilter bean
+     */
     @Bean
     @ConditionalOnMissingBean(AADAppRoleStatelessAuthenticationFilter.class)
     @ConditionalOnExpression("${azure.activedirectory.session-stateless:false} == true")
@@ -86,6 +100,11 @@ public class AADAuthenticationFilterAutoConfiguration {
         );
     }
 
+    /**
+     * Declare JWT ResourceRetriever bean.
+     *
+     * @return JWT ResourceRetriever bean
+     */
     @Bean
     @ConditionalOnMissingBean(ResourceRetriever.class)
     public ResourceRetriever getJWTResourceRetriever() {
@@ -96,6 +115,11 @@ public class AADAuthenticationFilterAutoConfiguration {
         );
     }
 
+    /**
+     * Declare JWTSetCache bean.
+     *
+     * @return JWTSetCache bean
+     */
     @Bean
     @ConditionalOnMissingBean(JWKSetCache.class)
     public JWKSetCache getJWKSetCache() {

@@ -5,34 +5,30 @@
 package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.notificationhubs.fluent.models.BaiduCredentialProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Description of a NotificationHub BaiduCredential. */
-@JsonFlatten
 @Fluent
-public class BaiduCredential {
+public final class BaiduCredential {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BaiduCredential.class);
 
     /*
-     * Baidu Api Key.
+     * Properties of NotificationHub BaiduCredential.
      */
-    @JsonProperty(value = "properties.baiduApiKey")
-    private String baiduApiKey;
+    @JsonProperty(value = "properties")
+    private BaiduCredentialProperties innerProperties;
 
-    /*
-     * Baidu Endpoint.
+    /**
+     * Get the innerProperties property: Properties of NotificationHub BaiduCredential.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.baiduEndPoint")
-    private String baiduEndPoint;
-
-    /*
-     * Baidu Secret Key
-     */
-    @JsonProperty(value = "properties.baiduSecretKey")
-    private String baiduSecretKey;
+    private BaiduCredentialProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the baiduApiKey property: Baidu Api Key.
@@ -40,7 +36,7 @@ public class BaiduCredential {
      * @return the baiduApiKey value.
      */
     public String baiduApiKey() {
-        return this.baiduApiKey;
+        return this.innerProperties() == null ? null : this.innerProperties().baiduApiKey();
     }
 
     /**
@@ -50,7 +46,10 @@ public class BaiduCredential {
      * @return the BaiduCredential object itself.
      */
     public BaiduCredential withBaiduApiKey(String baiduApiKey) {
-        this.baiduApiKey = baiduApiKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BaiduCredentialProperties();
+        }
+        this.innerProperties().withBaiduApiKey(baiduApiKey);
         return this;
     }
 
@@ -60,7 +59,7 @@ public class BaiduCredential {
      * @return the baiduEndPoint value.
      */
     public String baiduEndPoint() {
-        return this.baiduEndPoint;
+        return this.innerProperties() == null ? null : this.innerProperties().baiduEndPoint();
     }
 
     /**
@@ -70,7 +69,10 @@ public class BaiduCredential {
      * @return the BaiduCredential object itself.
      */
     public BaiduCredential withBaiduEndPoint(String baiduEndPoint) {
-        this.baiduEndPoint = baiduEndPoint;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BaiduCredentialProperties();
+        }
+        this.innerProperties().withBaiduEndPoint(baiduEndPoint);
         return this;
     }
 
@@ -80,7 +82,7 @@ public class BaiduCredential {
      * @return the baiduSecretKey value.
      */
     public String baiduSecretKey() {
-        return this.baiduSecretKey;
+        return this.innerProperties() == null ? null : this.innerProperties().baiduSecretKey();
     }
 
     /**
@@ -90,7 +92,10 @@ public class BaiduCredential {
      * @return the BaiduCredential object itself.
      */
     public BaiduCredential withBaiduSecretKey(String baiduSecretKey) {
-        this.baiduSecretKey = baiduSecretKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BaiduCredentialProperties();
+        }
+        this.innerProperties().withBaiduSecretKey(baiduSecretKey);
         return this;
     }
 
@@ -100,5 +105,8 @@ public class BaiduCredential {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

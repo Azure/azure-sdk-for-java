@@ -4,26 +4,29 @@
 package com.azure.core.http.rest;
 
 import com.azure.core.annotation.QueryParam;
-import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 
+import java.util.EnumSet;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
- * This class contains the options to customize an HTTP request. {@link RequestOptions} can be
- * used to configure the request headers, query params, the request body, or add a callback
- * to modify all aspects of the HTTP request.
+ * This class contains the options to customize an HTTP request. {@link RequestOptions} can be used to configure the
+ * request headers, query params, the request body, or add a callback to modify all aspects of the HTTP request.
  *
  * <p>
- * An instance of fully configured {@link RequestOptions} can be passed to a service method that
- * preconfigures known components of the request like URL, path params etc, further modifying both
- * un-configured, or preconfigured components.
+ * An instance of fully configured {@link RequestOptions} can be passed to a service method that preconfigures known
+ * components of the request like URL, path params etc, further modifying both un-configured, or preconfigured
+ * components.
  * </p>
  *
  * <p>
  * To demonstrate how this class can be used to construct a request, let's use a Pet Store service as an example. The
- * list of APIs available on this service are <a href="https://petstore.swagger.io/#/pet">documented in the swagger definition.</a>
+ * list of APIs available on this service are <a href="https://petstore.swagger.io/#/pet">documented in the swagger
+ * definition.</a>
  * </p>
  *
  * <p><strong>Creating an instance of RequestOptions</strong></p>
@@ -36,8 +39,8 @@ import java.util.function.Consumer;
  * <!-- end com.azure.core.http.rest.requestoptions.instantiation -->
  *
  * <p><strong>Configuring the request with JSON body and making a HTTP POST request</strong></p>
- * To <a href="https://petstore.swagger.io/#/pet/addPet">add a new pet to the pet store</a>, an HTTP POST call should
- * be made to the service with the details of the pet that is to be added. The details of the pet are included as the
+ * To <a href="https://petstore.swagger.io/#/pet/addPet">add a new pet to the pet store</a>, an HTTP POST call should be
+ * made to the service with the details of the pet that is to be added. The details of the pet are included as the
  * request body in JSON format.
  *
  * The JSON structure for the request is defined as follows:
@@ -110,12 +113,19 @@ import java.util.function.Consumer;
  * </pre>
  * <!-- end com.azure.core.http.rest.requestoptions.postrequest -->
  */
-final class RequestOptions {
-    private Consumer<HttpRequest> requestCallback = request -> { };
-    private boolean throwOnError = true;
+public final class RequestOptions {
+    private static final ClientLogger LOGGER = new ClientLogger(RequestOptions.class);
+
+    private static final EnumSet<ErrorOptions> DEFAULT = EnumSet.of(ErrorOptions.THROW);
+
+    private Consumer<HttpRequest> requestCallback = request -> {
+    };
+    private EnumSet<ErrorOptions> errorOptions = DEFAULT;
+    private Context context;
 
     /**
      * Gets the request callback, applying all the configurations set on this RequestOptions.
+     *
      * @return the request callback
      */
     Consumer<HttpRequest> getRequestCallback() {
@@ -123,37 +133,58 @@ final class RequestOptions {
     }
 
     /**
-     * Gets whether an exception is thrown when an HTTP response with a status code indicating an error
-     * (400 or above) is received.
+     * Gets the {@link ErrorOptions} that determines how error responses (400 or above) are handled.
+     * <p>
+     * Default is to throw.
      *
-     * @return true if to throw on status codes of 400 or above, false if not. Default is true.
+     * @return The {@link ErrorOptions} that determines how error responses (400 or above) are handled. Default is to
+     * throw.
      */
-    boolean isThrowOnError() {
-        return this.throwOnError;
+    EnumSet<ErrorOptions> getErrorOptions() {
+        return this.errorOptions;
+    }
+
+    /**
+     * Gets the additional context on the request that is passed during the service call.
+     *
+     * @return The additional context that is passed during the service call.
+     */
+    Context getContext() {
+        return context;
     }
 
     /**
      * Adds a header to the HTTP request.
+     * <p>
+     * If a header with the given name exists the {@code value} is added to the existing header (comma-separated),
+     * otherwise a new header is created.
+     *
      * @param header the header key
      * @param value the header value
-     *
      * @return the modified RequestOptions object
      */
     public RequestOptions addHeader(String header, String value) {
-        this.requestCallback = this.requestCallback.andThen(request -> {
-            HttpHeader httpHeader = request.getHeaders().get(header);
-            if (httpHeader == null) {
-                request.getHeaders().set(header, value);
-            } else {
-                httpHeader.addValue(value);
-            }
-        });
+        this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().add(header, value));
         return this;
     }
 
     /**
-     * Adds a query parameter to the request URL. The parameter name and value will be URL encoded.
-     * To use an already encoded parameter name and value, call {@code addQueryParam("name", "value", true)}.
+     * Sets a header on the HTTP request.
+     * <p>
+     * If a header with the given name exists it is overridden by the new {@code value}.
+     *
+     * @param header the header key
+     * @param value the header value
+     * @return the modified RequestOptions object
+     */
+    public RequestOptions setHeader(String header, String value) {
+        this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().set(header, value));
+        return this;
+    }
+
+    /**
+     * Adds a query parameter to the request URL. The parameter name and value will be URL encoded. To use an already
+     * encoded parameter name and value, call {@code addQueryParam("name", "value", true)}.
      *
      * @param parameterName the name of the query parameter
      * @param value the value of the query parameter
@@ -164,9 +195,9 @@ final class RequestOptions {
     }
 
     /**
-     * Adds a query parameter to the request URL, specifying whether the parameter is already encoded.
-     * A value true for this argument indicates that value of {@link QueryParam#value()} is already encoded
-     * hence engine should not encode it, by default value will be encoded.
+     * Adds a query parameter to the request URL, specifying whether the parameter is already encoded. A value true for
+     * this argument indicates that value of {@link QueryParam#value()} is already encoded hence engine should not
+     * encode it, by default value will be encoded.
      *
      * @param parameterName the name of the query parameter
      * @param value the value of the query parameter
@@ -184,38 +215,66 @@ final class RequestOptions {
     }
 
     /**
-     * Adds a custom request callback to modify the HTTP request before it's sent by the HttpClient.
-     * The modifications made on a RequestOptions object is applied in order on the request.
+     * Adds a custom request callback to modify the HTTP request before it's sent by the HttpClient. The modifications
+     * made on a RequestOptions object is applied in order on the request.
      *
      * @param requestCallback the request callback
      * @return the modified RequestOptions object
+     * @throws NullPointerException If {@code requestCallback} is null.
      */
     public RequestOptions addRequestCallback(Consumer<HttpRequest> requestCallback) {
+        Objects.requireNonNull(requestCallback, "'requestCallback' cannot be null.");
         this.requestCallback = this.requestCallback.andThen(requestCallback);
         return this;
     }
 
     /**
      * Sets the body to send as part of the HTTP request.
+     *
      * @param requestBody the request body data
      * @return the modified RequestOptions object
+     * @throws NullPointerException If {@code requestBody} is null.
      */
     public RequestOptions setBody(BinaryData requestBody) {
-        this.requestCallback = this.requestCallback.andThen(request -> {
-            request.setBody(requestBody.toBytes());
-        });
+        Objects.requireNonNull(requestBody, "'requestBody' cannot be null.");
+        this.requestCallback = this.requestCallback.andThen(request -> request.setBody(requestBody.toBytes()));
         return this;
     }
 
     /**
-     * Sets whether exception is thrown when an HTTP response with a status code indicating an error
-     * (400 or above) is received. By default, an exception will be thrown when an error response is received.
+     * Sets the {@link ErrorOptions} that determines how error responses (400 or above) are handled.
+     * <p>
+     * Default is to throw.
+     * <p>
+     * If both {@link ErrorOptions#THROW} and {@link ErrorOptions#NO_THROW} are included in {@code errorOptions}
+     * an exception will be thrown as they aren't compatible with each other.
      *
-     * @param throwOnError true if to throw on status codes of 400 or above, false if not. Default is true.
+     * @param errorOptions The {@link ErrorOptions} that determines how error responses (400 or above) are handled.
+     * @return the modified RequestOptions object
+     * @throws NullPointerException If {@code errorOptions} is null.
+     * @throws IllegalArgumentException If both {@link ErrorOptions#THROW} and {@link ErrorOptions#NO_THROW} are
+     * included in {@code errorOptions}.
+     */
+    RequestOptions setErrorOptions(EnumSet<ErrorOptions> errorOptions) {
+        Objects.requireNonNull(errorOptions, "'errorOptions' cannot be null.");
+
+        if (errorOptions.contains(ErrorOptions.THROW) && errorOptions.contains(ErrorOptions.NO_THROW)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "'errorOptions' cannot contain both 'ErrorOptions.THROW' and 'ErrorOptions.NO_THROW'."));
+        }
+
+        this.errorOptions = errorOptions;
+        return this;
+    }
+
+    /**
+     * Sets the additional context on the request that is passed during the service call.
+     *
+     * @param context Additional context that is passed during the service call.
      * @return the modified RequestOptions object
      */
-    public RequestOptions setThrowOnError(boolean throwOnError) {
-        this.throwOnError = throwOnError;
+    public RequestOptions setContext(Context context) {
+        this.context = context;
         return this;
     }
 }

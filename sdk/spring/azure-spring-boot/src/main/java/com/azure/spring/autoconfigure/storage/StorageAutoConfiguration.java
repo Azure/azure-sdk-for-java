@@ -29,6 +29,12 @@ import org.springframework.context.annotation.Import;
 @EnableConfigurationProperties(StorageProperties.class)
 public class StorageAutoConfiguration {
 
+    /**
+     * Declare BlobServiceClientBuilder bean.
+     *
+     * @param storageProperties the Storage properties
+     * @return BlobServiceClientBuilder bean
+     */
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty("azure.storage.blob-endpoint")
@@ -42,6 +48,12 @@ public class StorageAutoConfiguration {
             .httpLogOptions(new HttpLogOptions().setApplicationId(ApplicationId.AZURE_SPRING_STORAGE_BLOB));
     }
 
+    /**
+     * Declare ShareServiceClientBuilder bean.
+     *
+     * @param storageProperties the Storage properties
+     * @return ShareServiceClientBuilder bean
+     */
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty("azure.storage.file-endpoint")

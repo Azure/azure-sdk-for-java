@@ -843,7 +843,7 @@ public final class WebPubSubPrivateEndpointConnectionsClientImpl implements WebP
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String privateEndpointConnectionName, String resourceGroupName, String resourceName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -866,7 +866,7 @@ public final class WebPubSubPrivateEndpointConnectionsClientImpl implements WebP
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String privateEndpointConnectionName, String resourceGroupName, String resourceName, Context context) {
         context = this.client.mergeContext(context);
@@ -889,7 +889,7 @@ public final class WebPubSubPrivateEndpointConnectionsClientImpl implements WebP
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String privateEndpointConnectionName, String resourceGroupName, String resourceName) {
         return beginDeleteAsync(privateEndpointConnectionName, resourceGroupName, resourceName).getSyncPoller();
@@ -908,7 +908,7 @@ public final class WebPubSubPrivateEndpointConnectionsClientImpl implements WebP
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String privateEndpointConnectionName, String resourceGroupName, String resourceName, Context context) {
         return beginDeleteAsync(privateEndpointConnectionName, resourceGroupName, resourceName, context)

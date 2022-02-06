@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.CloudLinkStatus;
@@ -13,22 +12,24 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A cloud link resource. */
-@JsonFlatten
 @Fluent
-public class CloudLinkInner extends ProxyResource {
+public final class CloudLinkInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CloudLinkInner.class);
 
     /*
-     * The state of the cloud link.
+     * The properties of a cloud link.
      */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private CloudLinkStatus status;
+    @JsonProperty(value = "properties")
+    private CloudLinkProperties innerProperties;
 
-    /*
-     * Identifier of the other private cloud participating in the link.
+    /**
+     * Get the innerProperties property: The properties of a cloud link.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.linkedCloud")
-    private String linkedCloud;
+    private CloudLinkProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the status property: The state of the cloud link.
@@ -36,7 +37,7 @@ public class CloudLinkInner extends ProxyResource {
      * @return the status value.
      */
     public CloudLinkStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -45,7 +46,7 @@ public class CloudLinkInner extends ProxyResource {
      * @return the linkedCloud value.
      */
     public String linkedCloud() {
-        return this.linkedCloud;
+        return this.innerProperties() == null ? null : this.innerProperties().linkedCloud();
     }
 
     /**
@@ -55,7 +56,10 @@ public class CloudLinkInner extends ProxyResource {
      * @return the CloudLinkInner object itself.
      */
     public CloudLinkInner withLinkedCloud(String linkedCloud) {
-        this.linkedCloud = linkedCloud;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CloudLinkProperties();
+        }
+        this.innerProperties().withLinkedCloud(linkedCloud);
         return this;
     }
 
@@ -65,5 +69,8 @@ public class CloudLinkInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

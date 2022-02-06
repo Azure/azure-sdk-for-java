@@ -30,11 +30,11 @@ public final class PatchOperationCore<T> extends PatchOperation {
         this.resource = value;
     }
 
-    String getPath() {
+    public String getPath() {
         return path;
     }
 
-    T getResource() {
+    public T getResource() {
         return resource;
     }
 }
