@@ -73,10 +73,10 @@ SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBu
 #### Create `SchemaRegistryAvroSerializer` through the builder
 
 ```java readme-sample-createSchemaRegistryAvroSerializer
-SchemaRegistryApacheAvroSerializer schemaRegistryAvroSerializer = new SchemaRegistryApacheAvroSerializerBuilder()
+SchemaRegistryApacheAvroEncoder schemaRegistryAvroSerializer = new SchemaRegistryApacheAvroEncoderBuilder()
     .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
     .schemaGroup("{schema-group}")
-    .buildSerializer();
+    .buildEncoder();
 ```
 
 ## Key concepts
@@ -124,7 +124,7 @@ The avro type `PlayingCard` is available in samples package
 Deserialize a Schema Registry-compatible avro payload into a strongly-type object.
 
 ```java readme-sample-deserializeSample
-SchemaRegistryApacheAvroSerializer schemaRegistryAvroSerializer = createAvroSchemaRegistrySerializer();
+SchemaRegistryApacheAvroEncoder schemaRegistryAvroSerializer = createAvroSchemaRegistryEncoder();
 InputStream inputStream = getSchemaRegistryAvroData();
 PlayingCard playingCard = schemaRegistryAvroSerializer.deserialize(inputStream,
     TypeReference.createInstance(PlayingCard.class));

@@ -4,6 +4,8 @@
 package com.azure.data.schemaregistry.apacheavro;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.experimental.models.MessageWithMetadata;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
 import com.azure.data.schemaregistry.SchemaRegistryClientBuilder;
@@ -11,20 +13,16 @@ import com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCard
 import com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCardSuit;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-
 /**
  * Code samples for the README.md
  */
 public class ReadmeSamples {
 
     /**
-     * Sample to demonstrate creation of {@link SchemaRegistryApacheAvroSerializer}.
-     * @return The {@link SchemaRegistryApacheAvroSerializer}.
+     * Sample to demonstrate creation of {@link SchemaRegistryApacheAvroEncoder}.
+     * @return The {@link SchemaRegistryApacheAvroEncoder}.
      */
-    public SchemaRegistryApacheAvroSerializer createAvroSchemaRegistrySerializer() {
+    public SchemaRegistryApacheAvroEncoder createAvroSchemaRegistryEncoder() {
         // BEGIN: readme-sample-createSchemaRegistryAsyncClient
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
@@ -37,10 +35,10 @@ public class ReadmeSamples {
         // END: readme-sample-createSchemaRegistryAsyncClient
 
         // BEGIN: readme-sample-createSchemaRegistryAvroSerializer
-        SchemaRegistryApacheAvroSerializer schemaRegistryAvroSerializer = new SchemaRegistryApacheAvroSerializerBuilder()
+        SchemaRegistryApacheAvroEncoder schemaRegistryAvroSerializer = new SchemaRegistryApacheAvroEncoderBuilder()
             .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
             .schemaGroup("{schema-group}")
-            .buildSerializer();
+            .buildEncoder();
         // END: readme-sample-createSchemaRegistryAvroSerializer
 
         return schemaRegistryAvroSerializer;
@@ -50,7 +48,7 @@ public class ReadmeSamples {
      * Serialize a strongly-typed object into avro payload compatible with schema registry.
      */
     public void serializeSample() {
-        SchemaRegistryApacheAvroSerializer schemaRegistryAvroSerializer = createAvroSchemaRegistrySerializer();
+        SchemaRegistryApacheAvroEncoder encoder = createAvroSchemaRegistryEncoder();
 
         // BEGIN: readme-sample-serializeSample
         PlayingCard playingCard = new PlayingCard();
@@ -58,10 +56,8 @@ public class ReadmeSamples {
         playingCard.setIsFaceCard(false);
         playingCard.setCardValue(5);
 
-        // write serialized data to ByteArrayOutputStream
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-        schemaRegistryAvroSerializer.serialize(outputStream, playingCard);
+        MessageWithMetadata message = encoder.encodeMessageData(playingCard,
+            TypeReference.createInstance(MessageWithMetadata.class));
         // END: readme-sample-serializeSample
     }
 
@@ -70,19 +66,19 @@ public class ReadmeSamples {
      */
     public void deserializeSample() {
         // BEGIN: readme-sample-deserializeSample
-        SchemaRegistryApacheAvroSerializer schemaRegistryAvroSerializer = createAvroSchemaRegistrySerializer();
-        InputStream inputStream = getSchemaRegistryAvroData();
-        PlayingCard playingCard = schemaRegistryAvroSerializer.deserialize(inputStream,
-            TypeReference.createInstance(PlayingCard.class));
+        SchemaRegistryApacheAvroEncoder encoder = createAvroSchemaRegistryEncoder();
+        MessageWithMetadata message = getSchemaRegistryAvroMessage();
+        PlayingCard playingCard = encoder.decodeMessageData(message, TypeReference.createInstance(PlayingCard.class));
         // END: readme-sample-deserializeSample
     }
 
     /**
      * Non-functional method not visible on README sample
-     * @return a new ByteArrayInputStream
+     * @return a new message.
      */
-    private InputStream getSchemaRegistryAvroData() {
-        return new ByteArrayInputStream(new byte[1]);
+    private MessageWithMetadata getSchemaRegistryAvroMessage() {
+        return new MessageWithMetadata()
+            .setBodyAsBinaryData(BinaryData.fromBytes(new byte[1]))
+            .setContentType("avro/binary+schema_id");
     }
-
 }

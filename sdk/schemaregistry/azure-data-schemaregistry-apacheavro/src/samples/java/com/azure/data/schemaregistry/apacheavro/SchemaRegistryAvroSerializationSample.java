@@ -4,17 +4,16 @@
 package com.azure.data.schemaregistry.apacheavro;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.experimental.models.MessageWithMetadata;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
 import com.azure.data.schemaregistry.SchemaRegistryClientBuilder;
 import com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCard;
 import com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCardSuit;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
-
 /**
- * Sample to demonstrate using {@link SchemaRegistryApacheAvroSerializer} for serialization of data.
+ * Sample to demonstrate using {@link SchemaRegistryApacheAvroEncoder} for serialization of data.
  */
 public class SchemaRegistryAvroSerializationSample {
     /**
@@ -34,20 +33,19 @@ public class SchemaRegistryAvroSerializationSample {
 
         // Create the serializer instance by configuring the serializer with the schema registry client and
         // enabling auto registering of new schemas
-        SchemaRegistryApacheAvroSerializer schemaRegistryAvroSerializer = new SchemaRegistryApacheAvroSerializerBuilder()
+        SchemaRegistryApacheAvroEncoder encoder = new SchemaRegistryApacheAvroEncoderBuilder()
             .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
             .schemaGroup("{schema-group}")
             .avroSpecificReader(true)
-            .buildSerializer();
+            .buildEncoder();
 
         PlayingCard playingCard = new PlayingCard();
         playingCard.setCardValue(5);
         playingCard.setIsFaceCard(false);
         playingCard.setPlayingCardSuit(PlayingCardSuit.SPADES);
 
-        OutputStream outputStream = new ByteArrayOutputStream();
-
         // Serialize the playing card object and write to the output stream.
-        schemaRegistryAvroSerializer.serialize(outputStream, playingCard);
+        MessageWithMetadata message = encoder.encodeMessageData(playingCard,
+            TypeReference.createInstance(MessageWithMetadata.class));
     }
 }
