@@ -1097,6 +1097,85 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     }
 
     @Test
+    public void canUpdateVirtualMachineWithDeleteOption() throws Exception {
+        Region region = Region.US_WEST2;
+
+        Network network = this
+            .networkManager
+            .networks()
+            .define("network1")
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/24")
+            .withSubnet("default", "10.0.0.0/24")
+            .create();
+
+        // 1. VM with DeleteOptions=DELETE, to be updated
+        VirtualMachine vm1 = computeManager
+            .virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withExistingPrimaryNetwork(network)
+            .withSubnet("default")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withRootUsername("testuser")
+            .withSsh(sshPublicKey())
+            .withNewDataDisk(10)
+            .withDataDiskDefaultDeleteOptions(DeleteOptions.DELETE)
+            .withOSDiskDeleteOptions(DeleteOptions.DELETE)
+            .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DELETE)
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
+            .create();
+
+        // update with new Disk without DeleteOptions
+        vm1.update()
+            .withNewDataDisk(10)
+            .apply();
+
+        computeManager.virtualMachines().deleteById(vm1.id());
+        ResourceManagerUtils.sleep(Duration.ofSeconds(10));
+
+        // verify disk in update is not deleted
+        Assertions.assertEquals(1, computeManager.disks().listByResourceGroup(rgName).stream().count());
+        Disk disk = computeManager.disks().listByResourceGroup(rgName).stream().findFirst().get();
+        computeManager.disks().deleteById(disk.id());
+
+
+        // 2. VM with DeleteOptions=null for Disk, to be updated
+        VirtualMachine vm2 = computeManager
+            .virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withExistingPrimaryNetwork(network)
+            .withSubnet("default")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withRootUsername("testuser")
+            .withSsh(sshPublicKey())
+            .withNewDataDisk(10)
+            .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DELETE)
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
+            .create();
+
+        // update with new Disk with DeleteOptions=DELETE
+        vm2.update()
+            .withNewDataDisk(10)
+            .withDataDiskDefaultDeleteOptions(DeleteOptions.DELETE)
+            .apply();
+
+        computeManager.virtualMachines().deleteById(vm2.id());
+        ResourceManagerUtils.sleep(Duration.ofSeconds(10));
+
+        // verify disk in create is not deleted
+        Assertions.assertEquals(2, computeManager.disks().listByResourceGroup(rgName).stream().count());
+    }
+
+    @Test
     public void canHibernateVirtualMachine() {
         // preview feature
 

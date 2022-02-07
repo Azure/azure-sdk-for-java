@@ -2313,6 +2313,14 @@ public interface VirtualMachine
         Update withDataDiskDefaultStorageAccountType(StorageAccountTypes storageAccountType);
 
         /**
+         * Specifies the delete options for managed data disks.
+         *
+         * @param deleteOptions the delete options to the IP address version
+         * @return the next stage of the definition
+         */
+        Update withDataDiskDefaultDeleteOptions(DeleteOptions deleteOptions);
+
+        /**
          * Specifies the caching type for the OS disk.
          *
          * @param cachingType a caching type.

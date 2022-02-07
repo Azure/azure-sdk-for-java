@@ -2613,6 +2613,9 @@ class VirtualMachineImpl
             implicitDisksToAssociate.clear();
             diskLunsToRemove.clear();
             newDisksFromImage.clear();
+            defaultCachingType = null;
+            defaultStorageAccountType = null;
+            defaultDeleteOptions = null;
         }
 
         private boolean isPending() {
