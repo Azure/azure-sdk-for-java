@@ -40,7 +40,7 @@ class EncryptionKeyStoreProviderImpl extends EncryptionKeyStoreProvider {
      */
     @Override
     public byte[] unwrapKey(String encryptionKeyId, KeyEncryptionKeyAlgorithm algorithm, byte[] encryptedKey) throws MicrosoftDataEncryptionException {
-        return this.encryptionKeyWrapProvider.unwrapKeyAsync(encryptionKeyId, algorithm.toString(), encryptedKey);
+        return this.encryptionKeyWrapProvider.unwrapKey(encryptionKeyId, algorithm.toString(), encryptedKey);
     }
 
     /**
@@ -59,7 +59,7 @@ class EncryptionKeyStoreProviderImpl extends EncryptionKeyStoreProvider {
      */
     @Override
     public byte[] wrapKey(String encryptionKeyId, KeyEncryptionKeyAlgorithm algorithm, byte[] key) throws MicrosoftDataEncryptionException {
-        return this.encryptionKeyWrapProvider.wrapKeyAsync(encryptionKeyId, algorithm.toString(), key);
+        return this.encryptionKeyWrapProvider.wrapKey(encryptionKeyId, algorithm.toString(), key);
     }
 
     /**

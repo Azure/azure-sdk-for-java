@@ -1181,7 +1181,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
 
         @Override
-        public byte[] unwrapKeyAsync(String encryptionKeyId, String keyEncryptionKeyAlgorithm, byte[] encryptedKey) {
+        public byte[] unwrapKey(String encryptionKeyId, String keyEncryptionKeyAlgorithm, byte[] encryptedKey) {
             int moveBy = this.keyInfo.get(encryptionKeyId);
             byte[] plainkey = new byte[encryptedKey.length];
             for (int i = 0; i < encryptedKey.length; i++) {
@@ -1191,7 +1191,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
 
         @Override
-        public byte[] wrapKeyAsync(String encryptionKeyId, String keyEncryptionKeyAlgorithm, byte[] key) {
+        public byte[] wrapKey(String encryptionKeyId, String keyEncryptionKeyAlgorithm, byte[] key) {
             int moveBy = this.keyInfo.get(encryptionKeyId);
             byte[] encryptedBytes = new byte[key.length];
             for (int i = 0; i < key.length; i++) {

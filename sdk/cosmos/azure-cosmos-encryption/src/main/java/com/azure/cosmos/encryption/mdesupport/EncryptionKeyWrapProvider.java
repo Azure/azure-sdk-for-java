@@ -3,8 +3,17 @@
 
 package com.azure.cosmos.encryption.mdesupport;
 
+import com.azure.cosmos.implementation.Warning;
 import com.microsoft.data.encryption.cryptography.MicrosoftDataEncryptionException;
 
+import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
+
+/**
+ * DO NOT USE.
+ * This is meant to be used only internally as a bridge access to classes in
+ * com.azure.cosmos.encryption.mdesupport
+ **/
+@Warning(value = INTERNAL_USE_ONLY_WARNING)
 public abstract class EncryptionKeyWrapProvider {
     private EncryptionKeyStoreProviderImpl encryptionKeyStoreProviderImpl;
     public EncryptionKeyWrapProvider () {
@@ -27,7 +36,7 @@ public abstract class EncryptionKeyWrapProvider {
      * @throws MicrosoftDataEncryptionException
      *         on error
      */
-    public abstract byte[] unwrapKeyAsync(String encryptionKeyId, String keyEncryptionKeyAlgorithm, byte[] encryptedKey);
+    public abstract byte[] unwrapKey(String encryptionKeyId, String keyEncryptionKeyAlgorithm, byte[] encryptedKey);
 
     /**
      * Wraps a data encryption key using the key encryption key with the specified encryptionKeyId and using the
@@ -43,7 +52,7 @@ public abstract class EncryptionKeyWrapProvider {
      * @throws MicrosoftDataEncryptionException
      *         on error
      */
-    public abstract byte[] wrapKeyAsync(String encryptionKeyId, String keyEncryptionKeyAlgorithm, byte[] key);
+    public abstract byte[] wrapKey(String encryptionKeyId, String keyEncryptionKeyAlgorithm, byte[] key);
 
     private EncryptionKeyStoreProviderImpl getEncryptionKeyStoreProviderImpl() {
         return encryptionKeyStoreProviderImpl;

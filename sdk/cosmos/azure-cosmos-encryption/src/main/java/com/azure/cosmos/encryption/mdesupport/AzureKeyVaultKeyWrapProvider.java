@@ -61,7 +61,7 @@ public class AzureKeyVaultKeyWrapProvider extends EncryptionKeyWrapProvider {
      * @return Plain text data encryption key
      */
     @Override
-    public byte[] unwrapKeyAsync(String encryptionKeyId, String cosmosKeyEncryptionKeyAlgorithm, byte[] encryptedKey) {
+    public byte[] unwrapKey(String encryptionKeyId, String cosmosKeyEncryptionKeyAlgorithm, byte[] encryptedKey) {
         try {
             if (!KeyEncryptionKeyAlgorithm.RSA_OAEP.equals(cosmosKeyEncryptionKeyAlgorithm)) {
                 throw new IllegalArgumentException("The specified KeyEncryptionAlgorithm is not supported. Please " +
@@ -83,7 +83,7 @@ public class AzureKeyVaultKeyWrapProvider extends EncryptionKeyWrapProvider {
      * @return Encrypted data encryption key
      */
     @Override
-    public byte[] wrapKeyAsync(String encryptionKeyId, String cosmosKeyEncryptionKeyAlgorithm, byte[] key) {
+    public byte[] wrapKey(String encryptionKeyId, String cosmosKeyEncryptionKeyAlgorithm, byte[] key) {
         try {
             if (!KeyEncryptionKeyAlgorithm.RSA_OAEP.equals(cosmosKeyEncryptionKeyAlgorithm)) {
                 throw new IllegalArgumentException("The specified KeyEncryptionAlgorithm is not supported. Please " +

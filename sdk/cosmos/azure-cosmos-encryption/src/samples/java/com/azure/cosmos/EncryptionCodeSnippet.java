@@ -152,12 +152,12 @@ public class EncryptionCodeSnippet {
         }
 
         @Override
-        public byte[] unwrapKeyAsync(String s, String keyEncryptionKeyAlgorithm, byte[] encryptedBytes) {
+        public byte[] unwrapKey(String s, String keyEncryptionKeyAlgorithm, byte[] encryptedBytes) {
             return encryptedBytes;
         }
 
         @Override
-        public byte[] wrapKeyAsync(String s, String keyEncryptionKeyAlgorithm, byte[] key) {
+        public byte[] wrapKey(String s, String keyEncryptionKeyAlgorithm, byte[] key) {
             return key;
         }
     }
