@@ -1978,6 +1978,9 @@ class VirtualMachineImpl
         clearCachedRelatedResources();
         initializeDataDisks();
         virtualMachineMsiHandler.clear();
+
+        creatableSecondaryNetworkInterfaceKeys.clear();
+        existingSecondaryNetworkInterfacesToAssociate.clear();
         secondaryNetworkInterfaceDeleteOptions.clear();
     }
 
