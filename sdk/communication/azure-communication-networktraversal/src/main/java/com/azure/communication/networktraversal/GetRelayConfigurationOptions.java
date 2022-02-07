@@ -15,42 +15,6 @@ public final class GetRelayConfigurationOptions {
     private RouteType routeType;
 
     /**
-     * Empty constructor for GetRelayConfigurationOptions
-     *
-     */
-    public GetRelayConfigurationOptions() {
-
-    }
-
-    /**
-     *
-     * @param communicationUser The CommunicationUserIdentifier for whom to issue a token
-     * @param routeType The specified RouteType for the relay requests
-     */
-    public GetRelayConfigurationOptions(CommunicationUserIdentifier communicationUser, RouteType routeType) {
-        this.communicationUser = communicationUser;
-        this.routeType = routeType;
-    }
-
-    /**
-     *
-     *
-     * @param communicationUser The CommunicationUserIdentifier for whom to issue a token
-     */
-    public GetRelayConfigurationOptions(CommunicationUserIdentifier communicationUser) {
-        this.communicationUser = communicationUser;
-    }
-
-    /**
-     * Set the routeType property: The routing methodology to where the ICE server will be located from the client.
-     *
-     * @param routeType The specified RouteType for the relay request
-     */
-    public GetRelayConfigurationOptions(RouteType routeType) {
-        this.routeType = routeType;
-    }
-
-    /**
      * Get the communicationUser property: The CommunicationUserIdentifier for whom to issue a token.
      *
      * @return the communicationUser value.
@@ -63,9 +27,11 @@ public final class GetRelayConfigurationOptions {
      * Set the communicationUser property: The CommunicationUserIdentifier for whom to issue a token
      *
      * @param communicationUser the communicationUser value to set.
+     * @return the GetRelayConfigurationOptions object itself.
      */
-    public void setCommunicationUserIdentifier(CommunicationUserIdentifier communicationUser) {
+    public GetRelayConfigurationOptions setCommunicationUserIdentifier(CommunicationUserIdentifier communicationUser) {
         this.communicationUser = communicationUser;
+        return this;
     }
 
     /**
@@ -81,8 +47,10 @@ public final class GetRelayConfigurationOptions {
      * Set the routeType property: The routing methodology to where the ICE server will be located from the client.
      *
      * @param routeType the routeType value to set.
+     * @return the GetRelayConfigurationOptions object itself.
      */
-    public void setRouteType(RouteType routeType) {
+    public GetRelayConfigurationOptions setRouteType(RouteType routeType) {
         this.routeType = routeType;
+        return this;
     }
 }

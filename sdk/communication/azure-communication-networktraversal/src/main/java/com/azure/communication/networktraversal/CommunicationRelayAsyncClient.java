@@ -18,7 +18,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.Context;
 
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * Asynchronous client interface for Azure Communication Network Traversal
@@ -41,7 +40,8 @@ public final class CommunicationRelayAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CommunicationRelayConfiguration> getRelayConfiguration() {
-        return this.getRelayConfigurationWithResponse().flatMap(FluxUtil::toMono);
+        GetRelayConfigurationOptions options = new GetRelayConfigurationOptions();
+        return this.getRelayConfigurationWithResponse(options, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -53,18 +53,6 @@ public final class CommunicationRelayAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CommunicationRelayConfiguration> getRelayConfiguration(GetRelayConfigurationOptions options) {
         return this.getRelayConfigurationWithResponse(options, null).flatMap(FluxUtil::toMono);
-    }
-
-
-
-    /**
-     * Gets a Relay Configuration with response.
-     *
-     * @return The obtained Communication Relay Configuration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CommunicationRelayConfiguration>> getRelayConfigurationWithResponse() {
-        return withContext(context -> getRelayConfigurationWithResponse(null, context));
     }
 
     /**
