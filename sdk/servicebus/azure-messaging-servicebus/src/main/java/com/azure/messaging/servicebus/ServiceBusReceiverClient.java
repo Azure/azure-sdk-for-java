@@ -716,7 +716,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
             return;
         }
 
-        final SynchronousMessageSubscriber newSubscriber = new SynchronousMessageSubscriber(work);
+        final SynchronousMessageSubscriber newSubscriber = new SynchronousMessageSubscriber(asyncClient, work,
+            operationTimeout);
 
         // NOTE: We asynchronously send the credit to the service as soon as receiveMessage() API is called (for first
         // time).

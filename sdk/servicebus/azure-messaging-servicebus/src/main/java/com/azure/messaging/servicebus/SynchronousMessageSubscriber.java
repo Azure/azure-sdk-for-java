@@ -6,8 +6,13 @@ package com.azure.messaging.servicebus;
 import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
+import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
+import reactor.util.context.Context;
 
+import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -15,6 +20,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
+import java.util.stream.Collectors;
 
 /**
  * Subscriber that listens to events and publishes them downstream and publishes events to them in the order received.
@@ -27,6 +33,9 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     private final ConcurrentLinkedDeque<ServiceBusReceivedMessage> bufferMessages = new ConcurrentLinkedDeque<>();
 
     private final Object currentWorkLock = new Object();
+    private final ServiceBusReceiverAsyncClient asyncClient;
+    private final Duration operationTimeout;
+
     private volatile SynchronousReceiveWork currentWork;
 
     /**
@@ -44,12 +53,18 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     /**
      * Creates a synchronous subscriber with some initial work to queue.
      *
+     *
+     * @param asyncClient Client to update disposition of messages.
+     * @param operationTimeout Timeout to wait for operation to complete.
      * @param initialWork Initial work to queue.
      *
      * @throws NullPointerException if {@code initialWork} is null.
      * @throws IllegalArgumentException if {@code initialWork.getNumberOfEvents()} is less than 1.
      */
-    SynchronousMessageSubscriber(SynchronousReceiveWork initialWork) {
+    SynchronousMessageSubscriber(ServiceBusReceiverAsyncClient asyncClient, SynchronousReceiveWork initialWork,
+        Duration operationTimeout) {
+        this.asyncClient = Objects.requireNonNull(asyncClient, "'asyncClient' cannot be null.");
+        this.operationTimeout = Objects.requireNonNull(operationTimeout, "'operationTimeout' cannot be null.");
         this.workQueue.add(Objects.requireNonNull(initialWork, "'initialWork' cannot be null."));
 
         if (initialWork.getNumberOfEvents() < 1) {
@@ -87,8 +102,12 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
      */
     @Override
     protected void hookOnNext(ServiceBusReceivedMessage message) {
-        bufferMessages.add(message);
-        drain();
+        if (isTerminated()) {
+            Operators.onNextDropped(message, Context.empty());
+        } else {
+            bufferMessages.add(message);
+            drain();
+        }
     }
 
     /**
@@ -160,6 +179,24 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                 }
 
                 final ServiceBusReceivedMessage message = bufferMessages.poll();
+
+                if (message != null && !message.isSettled() && message.getExpiresAt() != null
+                    && OffsetDateTime.now().isAfter(message.getExpiresAt())) {
+
+                    logger.info("lockToken[{}] expiration[{}] Releasing expired message.",
+                        message.getLockToken(), message.getExpiresAt());
+
+                    asyncClient.release(message).subscribe(unused -> {
+                    },
+                        error -> logger.warning("lockToken[{}] Issue encountered releasing expired message.",
+                            message.getLockToken(), error),
+                        () -> logger.verbose("lockToken[{}] Message successfully released."));
+
+                    // Try polling another message from the queue. Maybe the next one won't be expired.
+                    continue;
+                }
+
+                // While there are pending messages, try to find the current work item to emit it downstream to.
                 boolean isEmitted = false;
                 while (!isEmitted) {
                     work = getOrUpdateCurrentWork();
@@ -224,12 +261,14 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
             currentWork = workQueue.poll();
             while (currentWork != null) {
                 // For the terminal work, subtract the remaining number of messages from our current request
-                // count. This is so we don't keep adding credits for work that was expired but we never
+                // count. This is so we don't keep adding credits for work that was expired, but we never
                 // received messages for.
                 if (currentWork.isTerminal()) {
                     REQUESTED.updateAndGet(this, currentRequest -> {
                         final int remainingEvents = currentWork.getRemainingEvents();
 
+                        // The work had probably emitted all its messages and then terminated.
+                        // The currentRequest is fine.
                         if (remainingEvents < 1) {
                             return currentRequest;
                         }
@@ -243,7 +282,6 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                         return difference < 0 ? 0 : difference;
                     });
 
-
                     currentWork = workQueue.poll();
                     continue;
                 }
@@ -253,6 +291,9 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                     work.getNumberOfEvents());
 
                 work.start();
+
+                // Now that we considered the difference in number of events in lines 254 - 269, add the credits on the
+                // line for this new work item.
                 requestUpstream(work.getNumberOfEvents());
 
                 return work;
@@ -320,6 +361,21 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                 w.complete(message, throwable);
                 w = workQueue.poll();
             }
+        }
+
+        if (bufferMessages.isEmpty()) {
+            return;
+        }
+
+        final List<Mono<Void>> pendingReleases = bufferMessages.stream()
+            .map(m -> asyncClient.release(m))
+            .collect(Collectors.toList());
+
+        logger.info("Client closed. Releasing {} messages.", pendingReleases.size());
+        try {
+            Mono.whenDelayError(pendingReleases).block(operationTimeout);
+        } catch (Exception e) {
+            logger.warning("Exception occurred while releasing messages.", e);
         }
     }
 
