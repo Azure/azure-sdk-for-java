@@ -145,9 +145,9 @@ public class CloudPool {
     private Integer currentDedicatedNodes;
 
     /**
-     * The number of low-priority Compute Nodes currently in the Pool.
-     * low-priority Compute Nodes which have been preempted are included in
-     * this count.
+     * The number of Spot/Low-priority Compute Nodes currently in the Pool.
+     * Spot/Low-priority Compute Nodes which have been preempted are included
+     * in this count.
      */
     @JsonProperty(value = "currentLowPriorityNodes")
     private Integer currentLowPriorityNodes;
@@ -632,7 +632,7 @@ public class CloudPool {
     }
 
     /**
-     * Get low-priority Compute Nodes which have been preempted are included in this count.
+     * Get spot/Low-priority Compute Nodes which have been preempted are included in this count.
      *
      * @return the currentLowPriorityNodes value
      */
@@ -641,7 +641,7 @@ public class CloudPool {
     }
 
     /**
-     * Set low-priority Compute Nodes which have been preempted are included in this count.
+     * Set spot/Low-priority Compute Nodes which have been preempted are included in this count.
      *
      * @param currentLowPriorityNodes the currentLowPriorityNodes value to set
      * @return the CloudPool object itself.

@@ -44,7 +44,9 @@ public class TaskConstraints {
      * maximum retry count is 3, Batch tries the Task up to 4 times (one
      * initial try and 3 retries). If the maximum retry count is 0, the Batch
      * service does not retry the Task after the first attempt. If the maximum
-     * retry count is -1, the Batch service retries the Task without limit.
+     * retry count is -1, the Batch service retries the Task without limit,
+     * however this is not recommended for a start task or any task. The
+     * default value is 0 (no retries).
      */
     @JsonProperty(value = "maxTaskRetryCount")
     private Integer maxTaskRetryCount;
@@ -90,7 +92,7 @@ public class TaskConstraints {
     }
 
     /**
-     * Get note that this value specifically controls the number of retries for the Task executable due to a nonzero exit code. The Batch service will try the Task once, and may then retry up to this limit. For example, if the maximum retry count is 3, Batch tries the Task up to 4 times (one initial try and 3 retries). If the maximum retry count is 0, the Batch service does not retry the Task after the first attempt. If the maximum retry count is -1, the Batch service retries the Task without limit.
+     * Get note that this value specifically controls the number of retries for the Task executable due to a nonzero exit code. The Batch service will try the Task once, and may then retry up to this limit. For example, if the maximum retry count is 3, Batch tries the Task up to 4 times (one initial try and 3 retries). If the maximum retry count is 0, the Batch service does not retry the Task after the first attempt. If the maximum retry count is -1, the Batch service retries the Task without limit, however this is not recommended for a start task or any task. The default value is 0 (no retries).
      *
      * @return the maxTaskRetryCount value
      */
@@ -99,7 +101,7 @@ public class TaskConstraints {
     }
 
     /**
-     * Set note that this value specifically controls the number of retries for the Task executable due to a nonzero exit code. The Batch service will try the Task once, and may then retry up to this limit. For example, if the maximum retry count is 3, Batch tries the Task up to 4 times (one initial try and 3 retries). If the maximum retry count is 0, the Batch service does not retry the Task after the first attempt. If the maximum retry count is -1, the Batch service retries the Task without limit.
+     * Set note that this value specifically controls the number of retries for the Task executable due to a nonzero exit code. The Batch service will try the Task once, and may then retry up to this limit. For example, if the maximum retry count is 3, Batch tries the Task up to 4 times (one initial try and 3 retries). If the maximum retry count is 0, the Batch service does not retry the Task after the first attempt. If the maximum retry count is -1, the Batch service retries the Task without limit, however this is not recommended for a start task or any task. The default value is 0 (no retries).
      *
      * @param maxTaskRetryCount the maxTaskRetryCount value to set
      * @return the TaskConstraints object itself.

@@ -27,12 +27,23 @@ public class JobSpecification {
     private Integer priority;
 
     /**
+     * Whether Tasks in this job can be preempted by other high priority jobs.
+     * If the value is set to True, other high priority jobs submitted to the
+     * system will take precedence and will be able requeue tasks from this
+     * job. You can update a job's allowTaskPreemption after it has been
+     * created using the update job API.
+     */
+    @JsonProperty(value = "allowTaskPreemption")
+    private Boolean allowTaskPreemption;
+
+    /**
      * The maximum number of tasks that can be executed in parallel for the
      * job.
      * The value of maxParallelTasks must be -1 or greater than 0 if specified.
      * If not specified, the default value is -1, which means there's no limit
      * to the number of tasks that can be run at once. You can update a job's
      * maxParallelTasks after it has been created using the update job API.
+     * This property is currently in private preview.
      */
     @JsonProperty(value = "maxParallelTasks")
     private Integer maxParallelTasks;
@@ -172,6 +183,26 @@ public class JobSpecification {
     }
 
     /**
+     * Get if the value is set to True, other high priority jobs submitted to the system will take precedence and will be able requeue tasks from this job. You can update a job's allowTaskPreemption after it has been created using the update job API.
+     *
+     * @return the allowTaskPreemption value
+     */
+    public Boolean allowTaskPreemption() {
+        return this.allowTaskPreemption;
+    }
+
+    /**
+     * Set if the value is set to True, other high priority jobs submitted to the system will take precedence and will be able requeue tasks from this job. You can update a job's allowTaskPreemption after it has been created using the update job API.
+     *
+     * @param allowTaskPreemption the allowTaskPreemption value to set
+     * @return the JobSpecification object itself.
+     */
+    public JobSpecification withAllowTaskPreemption(Boolean allowTaskPreemption) {
+        this.allowTaskPreemption = allowTaskPreemption;
+        return this;
+    }
+
+    /**
      * Get the value of maxParallelTasks must be -1 or greater than 0 if specified. If not specified, the default value is -1, which means there's no limit to the number of tasks that can be run at once. You can update a job's maxParallelTasks after it has been created using the update job API.
      *
      * @return the maxParallelTasks value
@@ -181,7 +212,7 @@ public class JobSpecification {
     }
 
     /**
-     * Set the value of maxParallelTasks must be -1 or greater than 0 if specified. If not specified, the default value is -1, which means there's no limit to the number of tasks that can be run at once. You can update a job's maxParallelTasks after it has been created using the update job API.
+     * Set the value of maxParallelTasks must be -1 or greater than 0 if specified. If not specified, the default value is -1, which means there's no limit to the number of tasks that can be run at once. You can update a job's maxParallelTasks after it has been created using the update job API. This property is currently in private preview.
      *
      * @param maxParallelTasks the maxParallelTasks value to set
      * @return the JobSpecification object itself.
