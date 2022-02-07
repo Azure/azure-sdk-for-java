@@ -95,6 +95,10 @@
           {
             "matcher": "java-package",
             "match": "/com\\.azure\\.resourcemanager(\\..+?)?\\.fluent(\\..*)?/"
+          },
+          {
+            "matcher": "java-package",
+            "match": "/org\\.junit(\\..*)?/"
           }
         ]
       }
