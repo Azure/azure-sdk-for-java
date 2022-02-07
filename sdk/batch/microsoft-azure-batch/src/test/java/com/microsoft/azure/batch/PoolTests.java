@@ -74,9 +74,9 @@ public class PoolTests extends BatchIntegrationTestBase {
         // Check if pool exists
         if (!batchClient.poolOperations().existsPool(poolId)) {
             ImageReference imgRef = new ImageReference().withPublisher("Canonical").withOffer("UbuntuServer")
-                    .withSku("16.04-LTS").withVersion("latest");
+                    .withSku("18.04-lts").withVersion("latest");
             VirtualMachineConfiguration configuration = new VirtualMachineConfiguration();
-            configuration.withNodeAgentSKUId("batch.node.ubuntu 16.04").withImageReference(imgRef);
+            configuration.withNodeAgentSKUId("batch.node.ubuntu 18.04").withImageReference(imgRef);
 
             NetworkConfiguration netConfig = createNetworkConfiguration();
             PoolEndpointConfiguration endpointConfig = new PoolEndpointConfiguration();
@@ -202,8 +202,8 @@ public class PoolTests extends BatchIntegrationTestBase {
         VirtualMachineConfiguration configuration = new VirtualMachineConfiguration();
         configuration
                 .withImageReference(
-                        new ImageReference().withPublisher("Canonical").withOffer("UbuntuServer").withSku("16.04-LTS"))
-                .withNodeAgentSKUId("batch.node.ubuntu 16.04").withDataDisks(dataDisks);
+                        new ImageReference().withPublisher("Canonical").withOffer("UbuntuServer").withSku("18.04-lts"))
+                .withNodeAgentSKUId("batch.node.ubuntu 18.04").withDataDisks(dataDisks);
         PoolAddParameter poolConfig =  new PoolAddParameter()
             .withId(poolId)
             .withNetworkConfiguration(networkConfiguration)
@@ -240,7 +240,7 @@ public class PoolTests extends BatchIntegrationTestBase {
         configuration.withImageReference(new ImageReference().withVirtualMachineImageId(String.format(
             "/subscriptions/%s/resourceGroups/batchexp/providers/Microsoft.Compute/images/FakeImage",
             System.getenv("SUBSCRIPTION_ID"))))
-            .withNodeAgentSKUId("batch.node.ubuntu 16.04");
+            .withNodeAgentSKUId("batch.node.ubuntu 18.04");
         PoolAddParameter poolConfig = new PoolAddParameter()
             .withId(poolId)
             .withVmSize(POOL_VM_SIZE)
@@ -285,8 +285,8 @@ public class PoolTests extends BatchIntegrationTestBase {
         VirtualMachineConfiguration configuration = new VirtualMachineConfiguration();
         configuration
                 .withImageReference(
-                        new ImageReference().withPublisher("Canonical").withOffer("UbuntuServer").withSku("16.04-LTS"))
-                .withNodeAgentSKUId("batch.node.ubuntu 16.04")
+                        new ImageReference().withPublisher("Canonical").withOffer("UbuntuServer").withSku("18.04-lts"))
+                .withNodeAgentSKUId("batch.node.ubuntu 18.04")
                 .withContainerConfiguration(new ContainerConfiguration().withContainerImageNames(images));
         PoolAddParameter poolConfig = new PoolAddParameter()
             .withId(poolId)
@@ -303,7 +303,7 @@ public class PoolTests extends BatchIntegrationTestBase {
                 for (int i = 0; i < err.body().values().size(); i++) {
                     if (err.body().values().get(i).key().equals("Reason")) {
                         Assert.assertEquals(
-                                "The specified imageReference with publisher Canonical offer UbuntuServer sku 16.04-LTS does not support container feature.",
+                                "The specified imageReference with publisher Canonical offer UbuntuServer sku 18.04-lts does not support container feature.",
                                 err.body().values().get(i).value());
                         return;
                     }
@@ -338,8 +338,8 @@ public class PoolTests extends BatchIntegrationTestBase {
         VirtualMachineConfiguration configuration = new VirtualMachineConfiguration();
         configuration
                 .withImageReference(
-                        new ImageReference().withPublisher("Canonical").withOffer("UbuntuServer").withSku("16.04-LTS"))
-                .withNodeAgentSKUId("batch.node.ubuntu 16.04");
+                        new ImageReference().withPublisher("Canonical").withOffer("UbuntuServer").withSku("18.04-lts"))
+                .withNodeAgentSKUId("batch.node.ubuntu 18.04");
         UserAccount windowsUser = new UserAccount();
         windowsUser.withWindowsUserConfiguration(new WindowsUserConfiguration().withLoginMode(LoginMode.INTERACTIVE))
                 .withName("testaccount")

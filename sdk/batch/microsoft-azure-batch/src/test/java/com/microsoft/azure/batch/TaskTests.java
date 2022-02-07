@@ -456,7 +456,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
                 // Accepted Error
                 for (int i = 0; i < err.body().values().size(); i++) {
                     if (err.body().values().get(i).key().equals("Reason")) {
-                        Assert.assertEquals("The specified imageReference with publisher Canonical offer UbuntuServer sku 16.04-LTS does not support container feature.", err.body().values().get(i).value());
+                        Assert.assertEquals("The specified imageReference with publisher Canonical offer UbuntuServer sku 18.04-lts does not support container feature.", err.body().values().get(i).value());
                         return;
                     }
                 }

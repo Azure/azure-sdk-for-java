@@ -382,9 +382,9 @@ public class BatchIntegrationTestBase {
         if (!batchClient.poolOperations().existsPool(poolId)) {
             // Use IaaS VM with Ubuntu
             ImageReference imgRef = new ImageReference().withPublisher("Canonical").withOffer("UbuntuServer")
-                    .withSku("16.04-LTS").withVersion("latest");
+                    .withSku("18.04-lts").withVersion("latest");
             VirtualMachineConfiguration configuration = new VirtualMachineConfiguration();
-            configuration.withNodeAgentSKUId("batch.node.ubuntu 16.04").withImageReference(imgRef);
+            configuration.withNodeAgentSKUId("batch.node.ubuntu 18.04").withImageReference(imgRef);
 
             List<UserAccount> userList = new ArrayList<>();
             userList.add(new UserAccount().withName("test-user").withPassword("kt#_gahr!@aGERDXA")
