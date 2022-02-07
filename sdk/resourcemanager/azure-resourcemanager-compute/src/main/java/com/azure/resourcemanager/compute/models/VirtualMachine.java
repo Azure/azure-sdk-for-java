@@ -561,7 +561,7 @@ public interface VirtualMachine
 //             * <p>The internal name for the public IP address will be derived from the DNS label.
 //             *
 //             * @param leafDnsLabel a leaf domain label
-//             * @param deleteOptions the delete options to the IP address
+//             * @param deleteOptions the delete options for the IP address
 //             * @return the next stage of the definition
 //             */
 //            WithProximityPlacementGroup withNewPrimaryPublicIPAddress(String leafDnsLabel, DeleteOptions deleteOptions);
@@ -1168,9 +1168,9 @@ public interface VirtualMachine
             WithCreate withOSDiskName(String name);
 
             /**
-             * Specifies the delete options for the OS disks.
+             * Specifies the delete options for the OS disk.
              *
-             * @param deleteOptions the delete options to the IP address version
+             * @param deleteOptions the delete options for the OS disk.
              * @return the next stage of the definition
              */
             WithCreate withOSDiskDeleteOptions(DeleteOptions deleteOptions);
@@ -1422,7 +1422,7 @@ public interface VirtualMachine
              * added to the virtual machine.
              *
              * @param creatable a creatable definition for a new network interface
-             * @param deleteOptions the delete options to the network interface
+             * @param deleteOptions the delete options for the secondary network interface
              * @return the next stage of the definition
              */
             WithCreate withNewSecondaryNetworkInterface(Creatable<NetworkInterface> creatable,
@@ -1705,7 +1705,7 @@ public interface VirtualMachine
             WithManagedCreate withDataDiskDefaultCachingType(CachingTypes cachingType);
 
             /**
-             * Specifies the default delete options for managed data disks.
+             * Specifies the default storage account type for managed data disks.
              *
              * @param storageAccountType a storage account type
              * @return the next stage of the definition
@@ -1715,7 +1715,7 @@ public interface VirtualMachine
             /**
              * Specifies the delete options for managed data disks.
              *
-             * @param deleteOptions the delete options to the IP address version
+             * @param deleteOptions the delete options for managed data disks
              * @return the next stage of the definition
              */
             WithManagedCreate withDataDiskDefaultDeleteOptions(DeleteOptions deleteOptions);
@@ -1737,12 +1737,12 @@ public interface VirtualMachine
             WithUnmanagedCreate withOSDiskVhdLocation(String containerName, String vhdName);
         }
 
-        /** The stage of the definition allowing to specify delete options to the network interface. */
+        /** The stage of the definition allowing to specify delete options for the network interface. */
         interface WithNetworkInterfaceDeleteOptions {
             /**
-             * Sets IP address delete options.
+             * Sets delete options for primary network interfaces.
              *
-             * @param deleteOptions the delete options to all network interfaces
+             * @param deleteOptions the delete options for primary network interfaces
              * @return the next stage of the definition
              */
             WithCreate withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions deleteOptions);
@@ -2032,7 +2032,7 @@ public interface VirtualMachine
              * added to the virtual machine.
              *
              * @param creatable a creatable definition for a new network interface
-             * @param deleteOptions the delete options to the network interface
+             * @param deleteOptions the delete options for the secondary network interface
              * @return the next stage of the definition
              */
             Update withNewSecondaryNetworkInterface(Creatable<NetworkInterface> creatable,
@@ -2315,7 +2315,7 @@ public interface VirtualMachine
         /**
          * Specifies the delete options for managed data disks.
          *
-         * @param deleteOptions the delete options to the IP address version
+         * @param deleteOptions the delete options for managed data disks
          * @return the next stage of the definition
          */
         Update withDataDiskDefaultDeleteOptions(DeleteOptions deleteOptions);
