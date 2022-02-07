@@ -15,6 +15,8 @@ import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.service.implementation.storage.fileshare.ShareServiceClientBuilderFactory;
 import com.azure.storage.file.share.ShareAsyncClient;
 import com.azure.storage.file.share.ShareClient;
+import com.azure.storage.file.share.ShareDirectoryAsyncClient;
+import com.azure.storage.file.share.ShareDirectoryClient;
 import com.azure.storage.file.share.ShareFileAsyncClient;
 import com.azure.storage.file.share.ShareFileClient;
 import com.azure.storage.file.share.ShareServiceAsyncClient;
@@ -79,14 +81,6 @@ public class AzureStorageFileShareAutoConfiguration extends AzureServiceConfigur
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(prefix = AzureStorageFileShareProperties.PREFIX, name = "file-name")
-    public ShareFileAsyncClient shareFileAsyncClient(AzureStorageFileShareProperties properties,
-                                                     ShareAsyncClient shareAsyncClient) {
-        return shareAsyncClient.getFileClient(properties.getFileName());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureStorageFileShareProperties.PREFIX, name = "share-name")
     public ShareAsyncClient shareAsyncClient(AzureStorageFileShareProperties properties,
                                              ShareServiceAsyncClient shareServiceAsyncClient) {
@@ -95,17 +89,41 @@ public class AzureStorageFileShareAutoConfiguration extends AzureServiceConfigur
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(prefix = AzureStorageFileShareProperties.PREFIX, name = "file-name")
-    public ShareFileClient shareFileClient(AzureStorageFileShareProperties properties,
-                                           ShareClient shareClient) {
-        return shareClient.getFileClient(properties.getFileName());
+    @ConditionalOnProperty(prefix = AzureStorageFileShareProperties.PREFIX, name = "share-name")
+    public ShareClient shareClient(AzureStorageFileShareProperties properties, ShareServiceClient shareServiceClient) {
+        return shareServiceClient.getShareClient(properties.getShareName());
     }
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(prefix = AzureStorageFileShareProperties.PREFIX, name = "share-name")
-    public ShareClient shareClient(AzureStorageFileShareProperties properties, ShareServiceClient shareServiceClient) {
-        return shareServiceClient.getShareClient(properties.getShareName());
+    @ConditionalOnProperty(prefix = AzureStorageFileShareProperties.PREFIX, name = "file-path")
+    public ShareFileAsyncClient shareFileAsyncClient(AzureStorageFileShareProperties properties,
+                                                     ShareAsyncClient shareAsyncClient) {
+        return shareAsyncClient.getFileClient(properties.getFilePath());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(prefix = AzureStorageFileShareProperties.PREFIX, name = "file-path")
+    public ShareFileClient shareFileClient(AzureStorageFileShareProperties properties,
+                                           ShareClient shareClient) {
+        return shareClient.getFileClient(properties.getFilePath());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(prefix = AzureStorageFileShareProperties.PREFIX, name = "directory-path")
+    public ShareDirectoryAsyncClient shareDirectoryAsyncClient(AzureStorageFileShareProperties properties,
+                                                               ShareAsyncClient shareAsyncClient) {
+        return shareAsyncClient.getDirectoryClient(properties.getDirectoryPath());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(prefix = AzureStorageFileShareProperties.PREFIX, name = "directory-path")
+    public ShareDirectoryClient shareDirectoryClient(AzureStorageFileShareProperties properties,
+                                                     ShareClient shareClient) {
+        return shareClient.getDirectoryClient(properties.getDirectoryPath());
     }
 
     @Bean

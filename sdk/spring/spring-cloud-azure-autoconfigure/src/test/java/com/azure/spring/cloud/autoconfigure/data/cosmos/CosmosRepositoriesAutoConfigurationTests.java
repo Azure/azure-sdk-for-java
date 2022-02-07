@@ -14,13 +14,8 @@ import com.azure.spring.data.cosmos.repository.config.CosmosRepositoryConfigurat
 import com.azure.spring.data.cosmos.repository.config.EnableCosmosRepositories;
 import com.azure.spring.data.cosmos.repository.support.CosmosRepositoryFactoryBean;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -31,8 +26,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CosmosRepositoriesAutoConfigurationTests {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
@@ -40,19 +33,14 @@ class CosmosRepositoriesAutoConfigurationTests {
 
     private CosmosTemplate cosmosTemplate;
 
-    @BeforeAll
-    void beforeAll() {
+    @BeforeEach
+    void beforeEach() {
         cosmosTemplate = mock(CosmosTemplate.class);
         CosmosMappingContext mappingContext = new CosmosMappingContext();
         MappingCosmosConverter cosmosConverter = new MappingCosmosConverter(mappingContext, new ObjectMapper());
 
         when(cosmosTemplate.getContainerProperties(any())).thenReturn(mock(CosmosContainerProperties.class));
         when(cosmosTemplate.getConverter()).thenReturn(cosmosConverter);
-    }
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -107,7 +95,7 @@ class CosmosRepositoriesAutoConfigurationTests {
     }
 
     @Test
-    void autoConfigNotKickInIfManualConfigDidNotCreateRepositories() throws Exception {
+    void autoConfigNotKickInIfManualConfigDidNotCreateRepositories() {
         this.contextRunner
             .withBean(CosmosTemplate.class, () -> cosmosTemplate)
             .withUserConfiguration(InvalidCustomConfiguration.class)

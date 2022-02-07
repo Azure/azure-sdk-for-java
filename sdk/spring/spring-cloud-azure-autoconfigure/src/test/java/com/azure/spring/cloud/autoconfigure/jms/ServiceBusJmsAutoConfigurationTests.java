@@ -4,6 +4,8 @@
 package com.azure.spring.cloud.autoconfigure.jms;
 
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
+import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
+import com.azure.spring.core.service.AzureServiceType;
 import org.apache.qpid.jms.JmsConnectionFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,6 +18,8 @@ import org.springframework.boot.autoconfigure.jms.JmsProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.assertj.AssertableApplicationContext;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerEndpoint;
 import org.springframework.jms.connection.CachingConnectionFactory;
@@ -129,7 +133,6 @@ class ServiceBusJmsAutoConfigurationTests {
             });
     }
 
-
     @ParameterizedTest
     @ValueSource(strings = { "premium" })
     void autoconfigurationEnabledAndContextSuccessWithPremiumTier(String pricingTier) {
@@ -147,6 +150,40 @@ class ServiceBusJmsAutoConfigurationTests {
                 assertThat(context).hasBean("topicJmsListenerContainerFactory");
                 assertThat(context).hasBean("amqpOpenPropertiesCustomizer");
             });
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "basic", "standard", "premium" })
+    void doesnotHaveBeanOfAzureServiceBusJmsPropertiesBeanPostProcessor(String pricingTier) {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.jms.servicebus.pricing-tier=" + pricingTier,
+                "spring.jms.servicebus.connection-string=" + CONNECTION_STRING)
+            .run(context -> {
+                assertThat(context).doesNotHaveBean(AzureServiceBusJmsPropertiesBeanPostProcessor.class);
+            });
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "basic" })
+    void doesHaveBeanOfAzureServiceBusJmsPropertiesBeanPostProcessor(String pricingTier) {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.jms.servicebus.pricing-tier=" + pricingTier)
+            .withUserConfiguration(UserMockConfiguration.class)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureServiceBusJmsPropertiesBeanPostProcessor.class);
+                String actual = context.getBean(AzureServiceBusJmsProperties.class).getConnectionString();
+                assertThat(actual).isEqualTo(CONNECTION_STRING);
+            });
+    }
+
+    @Configuration
+    static class UserMockConfiguration {
+        @Bean
+        StaticConnectionStringProvider<AzureServiceType.ServiceBus> connectionStringProvider() {
+            return new StaticConnectionStringProvider<>(AzureServiceType.SERVICE_BUS, CONNECTION_STRING);
+        }
     }
 
     @ParameterizedTest

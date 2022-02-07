@@ -54,7 +54,7 @@ public class EventHubsConsumerGroupCrud
         return this.resourceManager
             .eventHubs()
             .consumerGroups()
-            .define(consumerGroupCoordinate.getT2())
+            .define(consumerGroupCoordinate.getT3())
             .withExistingEventHub(new EventHubsCrud(this.resourceManager, this.resourceMetadata)
                                       .getOrCreate(Tuples.of(consumerGroupCoordinate.getT1(),
                                                             consumerGroupCoordinate.getT2())))
