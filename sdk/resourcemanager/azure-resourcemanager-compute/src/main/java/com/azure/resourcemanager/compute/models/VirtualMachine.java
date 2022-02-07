@@ -554,17 +554,17 @@ public interface VirtualMachine
              */
             WithProximityPlacementGroup withNewPrimaryPublicIPAddress(String leafDnsLabel);
 
-            /**
-             * Creates a new public IP address in the same region and resource group as the resource, with the specified
-             * DNS label and associates it with the VM's primary network interface.
-             *
-             * <p>The internal name for the public IP address will be derived from the DNS label.
-             *
-             * @param leafDnsLabel a leaf domain label
-             * @param deleteOptions the delete options to the IP address
-             * @return the next stage of the definition
-             */
-            WithProximityPlacementGroup withNewPrimaryPublicIPAddress(String leafDnsLabel, DeleteOptions deleteOptions);
+//            /**
+//             * Creates a new public IP address in the same region and resource group as the resource, with the specified
+//             * DNS label and associates it with the VM's primary network interface.
+//             *
+//             * <p>The internal name for the public IP address will be derived from the DNS label.
+//             *
+//             * @param leafDnsLabel a leaf domain label
+//             * @param deleteOptions the delete options to the IP address
+//             * @return the next stage of the definition
+//             */
+//            WithProximityPlacementGroup withNewPrimaryPublicIPAddress(String leafDnsLabel, DeleteOptions deleteOptions);
 
             /**
              * Associates an existing public IP address with the VM's primary network interface.

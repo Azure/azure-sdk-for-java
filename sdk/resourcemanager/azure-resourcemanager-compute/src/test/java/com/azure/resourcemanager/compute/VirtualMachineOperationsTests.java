@@ -986,7 +986,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withExistingPrimaryNetwork(network)
             .withSubnet("default")
             .withPrimaryPrivateIPAddressDynamic()
-            .withNewPrimaryPublicIPAddress(publicIpDnsLabel, DeleteOptions.DELETE)
+            .withNewPrimaryPublicIPAddress(publicIpDnsLabel/*, DeleteOptions.DELETE*/)
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
             .withRootUsername("testuser")
             .withSsh(sshPublicKey())
@@ -999,8 +999,8 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withSizeInGB(10))
             .withDataDiskDefaultDeleteOptions(DeleteOptions.DELETE)
             .withOSDiskDeleteOptions(DeleteOptions.DELETE)
-            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DELETE)
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
 
         Assertions.assertEquals(vm1.id(), computeManager.virtualMachines().getById(vm1.id()).id());
@@ -1010,7 +1010,8 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         // verify that nic, public ip, os/data disk is deleted
         List<GenericResource> resources = computeManager.resourceManager().genericResources().listByResourceGroup(rgName).stream().collect(Collectors.toList());
         // only Network remains in the resource group, others is deleted together with the virtual machine resource
-        Assertions.assertEquals(1, resources.size());
+        // current PublicIpAddress in network still cannot be deleted
+        Assertions.assertEquals(2, resources.size());
     }
 
     @Test

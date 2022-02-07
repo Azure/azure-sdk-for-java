@@ -543,7 +543,7 @@ class VirtualMachineImpl
         return withNewPrimaryPublicIPAddress(leafDnsLabel, null);
     }
 
-    @Override
+//    @Override
     public VirtualMachineImpl withNewPrimaryPublicIPAddress(String leafDnsLabel, DeleteOptions deleteOptions) {
         PublicIpAddress.DefinitionStages.WithGroup definitionWithGroup =
             this
