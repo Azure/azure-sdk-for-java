@@ -20,7 +20,7 @@
         <!-- App Configuration -->
 <!--        <module>sdk/appconfiguration/spring-cloud-starter-azure-appconfiguration-config</module>-->
 <!--        <module>sdk/appconfiguration/spring-cloud-azure-appconfiguration-config</module>-->
-        <module>sdk/appconfiguration/azure-data-appconfiguration</module>
+<!--        <module>sdk/appconfiguration/azure-data-appconfiguration</module>-->
 <!--        <module>sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config</module>-->
 <!--        <module>sdk/appconfiguration/azure-spring-cloud-appconfiguration-config</module>-->
 <!--        <module>sdk/appconfiguration/azure-spring-cloud-appconfiguration-config-web</module>-->
@@ -59,8 +59,8 @@
         <module>sdk/core/azure-core-tracing-opentelemetry</module>
 
         <!-- Cosmos -->
-        <module>sdk/cosmos/azure-cosmos</module>
-        <module>sdk/cosmos/azure-cosmos-encryption</module>
+<!--        <module>sdk/cosmos/azure-cosmos</module>-->
+<!--        <module>sdk/cosmos/azure-cosmos-encryption</module>-->
 <!--        <module>sdk/cosmos/azure-spring-data-cosmos</module>-->
 
         <!-- Device Update -->
@@ -116,8 +116,8 @@
 <!--        <module>sdk/resourcemanager</module>-->
 
         <!-- Schema Registry -->
-        <module>sdk/schemaregistry/azure-data-schemaregistry</module>
-        <module>sdk/schemaregistry/azure-data-schemaregistry-apacheavro</module>
+<!--        <module>sdk/schemaregistry/azure-data-schemaregistry</module>-->
+<!--        <module>sdk/schemaregistry/azure-data-schemaregistry-apacheavro</module>-->
 
         <!-- Cognitive Search -->
         <module>sdk/search/azure-search-documents</module>
@@ -138,7 +138,7 @@
         <module>sdk/storage/azure-storage-file-datalake</module>
         <module>sdk/storage/azure-storage-file-share</module>
         <module>sdk/storage/azure-storage-internal-avro</module>
-        <module>sdk/storage/azure-storage-queue</module>
+<!--        <module>sdk/storage/azure-storage-queue</module>-->
 
         <!-- Synapse -->
         <module>sdk/synapse/azure-analytics-synapse-accesscontrol</module>
