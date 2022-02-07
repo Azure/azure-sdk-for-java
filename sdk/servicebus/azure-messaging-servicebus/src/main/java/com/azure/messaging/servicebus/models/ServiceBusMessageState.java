@@ -36,4 +36,27 @@ public enum ServiceBusMessageState {
     public int getValue() {
         return value;
     }
+
+    /**
+     * Gets the message state from {@code value}.
+     *
+     * @param value Integer value of the message state.
+     *
+     * @return The corresponding message state.
+     *
+     * @throws UnsupportedOperationException if {@code value} is not a known message state.
+     */
+    public static ServiceBusMessageState fromValue(int value) {
+        switch (value) {
+            case 0:
+                return ServiceBusMessageState.ACTIVE;
+            case 1:
+                return ServiceBusMessageState.DEFERRED;
+            case 2:
+                return ServiceBusMessageState.SCHEDULED;
+            default:
+                throw new UnsupportedOperationException(
+                    "Value is not supported. Should be ACTIVE, DEFERRED, or SCHEDULED. Actual: " + value);
+        }
+    }
 }
