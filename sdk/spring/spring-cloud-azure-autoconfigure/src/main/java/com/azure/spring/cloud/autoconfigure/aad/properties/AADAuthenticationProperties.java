@@ -4,12 +4,9 @@
 package com.azure.spring.cloud.autoconfigure.aad.properties;
 
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.util.StringUtils;
 
@@ -106,12 +103,10 @@ public class AADAuthenticationProperties implements InitializingBean {
      */
     private long jwkSetCacheRefreshTime = DEFAULT_JWK_SET_CACHE_REFRESH_TIME;
 
-    private String postLogoutRedirectUri;
-
     /**
-     * If Telemetry events should be published to Azure AD.
+     * The redirect uri after logout.
      */
-    private boolean allowTelemetry = true;
+    private String postLogoutRedirectUri;
 
     /**
      * If true activates the stateless auth filter AADAppRoleStatelessAuthenticationFilter. The
@@ -119,6 +114,9 @@ public class AADAuthenticationProperties implements InitializingBean {
      */
     private Boolean sessionStateless = false;
 
+    /**
+     * The OAuth2 authorization clients.
+     */
     private Map<String, AuthorizationClientProperties> authorizationClients = new HashMap<>();
 
     /**
@@ -177,39 +175,25 @@ public class AADAuthenticationProperties implements InitializingBean {
     }
 
     /**
-     * Gets the list of Active Directory groups.
-     *
-     * @return the list of Active Directory groups
-     */
-    @DeprecatedConfigurationProperty(
-        reason = "Configuration moved to UserGroup class to keep UserGroup properties together",
-        replacement = "spring.cloud.azure.active-directory.user-group.allowed-group-names")
-    public List<String> getActiveDirectoryGroups() {
-        return userGroup.getAllowedGroups();
-    }
-
-    /**
      * Properties dedicated to changing the behavior of how the groups are mapped from the Azure AD response. Depending
      * on the graph API used the object will not be the same.
      */
     public static class UserGroupProperties {
 
-        private final Log logger = LogFactory.getLog(UserGroupProperties.class);
-
         /**
-         * Expected UserGroups that an authority will be granted to if found in the response from the MemberOf Graph
-         * API Call.
+         * The group names can be used to construct GrantedAuthority.
          */
         private List<String> allowedGroupNames = new ArrayList<>();
 
+        /**
+         * The group ids can be used to construct GrantedAuthority.
+         */
         private Set<String> allowedGroupIds = new HashSet<>();
 
-        private Boolean useTransitiveMembers = false;
-
         /**
-         * enableFullList is used to control whether to list all group id, default is false
+         * If "true", use "v1.0/me/transitiveMemberOf" to get members. Otherwise, use "v1.0/me/memberOf".
          */
-        private Boolean enableFullList = false;
+        private Boolean useTransitiveMembers = false;
 
         /**
          * Gets the set of allowed group IDs.
@@ -245,61 +229,6 @@ public class AADAuthenticationProperties implements InitializingBean {
          */
         public void setAllowedGroupNames(List<String> allowedGroupNames) {
             this.allowedGroupNames = allowedGroupNames;
-        }
-
-        /**
-         * Whether full list is enabled.
-         *
-         * @return whether full list is enabled
-         * @deprecated Use 'allowed-group-ids: all'
-         */
-        @Deprecated
-        @DeprecatedConfigurationProperty(
-            reason = "enable-full-list is not easy to understand.",
-            replacement = "allowed-group-ids: all")
-        public Boolean getEnableFullList() {
-            return enableFullList;
-        }
-
-        /**
-         * Sets whether full list is enabled.
-         *
-         * @param enableFullList whether full list is enabled
-         * @deprecated Use 'azure.activedirectory.user-group.allowed-group-ids: all'
-         */
-        @Deprecated
-        public void setEnableFullList(Boolean enableFullList) {
-            logger.warn(" 'spring.cloud.azure.active-directory.user-group.enable-full-list' property detected! "
-                + "Use 'spring.cloud.azure.active-directory.user-group.allowed-group-ids: all' instead!");
-            this.enableFullList = enableFullList;
-        }
-
-        /**
-         * Gets the list of allowed groups.
-         *
-         * @return the list of allowed groups
-         * @deprecated Use 'azure.activedirectory.user-group.allowed-group-names'
-         */
-        @Deprecated
-        @DeprecatedConfigurationProperty(
-            reason = "In order to distinguish between allowed-group-ids and allowed-group-names, set allowed-groups "
-                + "deprecated.",
-            replacement = "spring.cloud.azure.active-directory.user-group.allowed-group-names")
-        public List<String> getAllowedGroups() {
-            return allowedGroupNames;
-        }
-
-        /**
-         * Sets the list of allowed groups.
-         *
-         * @param allowedGroups the list of allowed groups
-         * @deprecated Use 'azure.activedirectory.user-group.allowed-group-names'
-         */
-        @Deprecated
-        public void setAllowedGroups(List<String> allowedGroups) {
-            logger.warn(" 'spring.cloud.azure.active-directory.user-group.allowed-groups' property detected! "
-                + " Use 'azure.activedirectory.user-group.allowed-group-names' instead!");
-            this.allowedGroupNames = allowedGroups;
         }
 
         public Boolean getUseTransitiveMembers() {
@@ -388,17 +317,6 @@ public class AADAuthenticationProperties implements InitializingBean {
      */
     public void setRedirectUriTemplate(String redirectUriTemplate) {
         this.redirectUriTemplate = redirectUriTemplate;
-    }
-
-    /**
-     * Sets the list of Active Directory groups.
-     *
-     * @param activeDirectoryGroups the list of Active Directory groups
-     * @deprecated deprecated
-     */
-    @Deprecated
-    public void setActiveDirectoryGroups(List<String> activeDirectoryGroups) {
-        this.userGroup.setAllowedGroups(activeDirectoryGroups);
     }
 
     /**
@@ -546,28 +464,6 @@ public class AADAuthenticationProperties implements InitializingBean {
     }
 
     /**
-     * Whether telemetry is allowed.
-     *
-     * @return whether telemetry is allowed
-     * @deprecated Determined by HTTP header User-Agent instead
-     */
-    @Deprecated
-    @DeprecatedConfigurationProperty(
-        reason = "Deprecate the telemetry endpoint and use HTTP header User Agent instead.")
-    public boolean isAllowTelemetry() {
-        return allowTelemetry;
-    }
-
-    /**
-     * Sets whether telemetry is allowed.
-     *
-     * @param allowTelemetry whether telemetry is allowed
-     */
-    public void setAllowTelemetry(boolean allowTelemetry) {
-        this.allowTelemetry = allowTelemetry;
-    }
-
-    /**
      * Whether the session is stateless.
      *
      * @return whether the session is stateless
@@ -662,13 +558,13 @@ public class AADAuthenticationProperties implements InitializingBean {
     }
 
     private void validateTenantId() {
-        if (isMultiTenantsApplication(getProfile().getTenantId()) && !userGroup.getAllowedGroups().isEmpty()) {
+        if (isMultiTenantsApplication(getProfile().getTenantId()) && !userGroup.getAllowedGroupNames().isEmpty()) {
             throw new IllegalStateException("When spring.cloud.azure.active-directory.profile.tenant-id is "
                 + "'common/organizations/consumers', "
-                + "spring.cloud.azure.active-directory.user-group.allowed-groups/allowed-group-names should be empty. "
+                + "spring.cloud.azure.active-directory.user-group.allowed-group-names should be empty. "
                 + "But actually spring.cloud.azure.active-directory.profile.tenant-id=" + getProfile().getTenantId()
-                + ", and spring.cloud.azure.active-directory.user-group.allowed-groups/allowed-group-names="
-                + userGroup.getAllowedGroups());
+                + ", and spring.cloud.azure.active-directory.user-group.allowed-group-names="
+                + userGroup.getAllowedGroupNames());
         }
 
         if (isMultiTenantsApplication(getProfile().getTenantId()) && !userGroup.getAllowedGroupIds().isEmpty()) {
@@ -713,7 +609,7 @@ public class AADAuthenticationProperties implements InitializingBean {
             // Set default value for authorization grant grantType
             switch (applicationType) {
                 case WEB_APPLICATION:
-                    if (properties.isOnDemand() || registrationId.equals(AZURE_CLIENT_REGISTRATION_ID)) {
+                    if (registrationId.equals(AZURE_CLIENT_REGISTRATION_ID)) {
                         properties.setAuthorizationGrantType(AUTHORIZATION_CODE);
                     } else {
                         properties.setAuthorizationGrantType(AZURE_DELEGATED);
@@ -767,14 +663,6 @@ public class AADAuthenticationProperties implements InitializingBean {
                 default:
                     LOGGER.debug("'spring.cloud.azure.active-directory.authorization-clients." + registrationId
                         + ".authorization-grant-type' is valid.");
-            }
-
-            if (properties.isOnDemand()
-                && !AUTHORIZATION_CODE.getValue().equals(grantType)) {
-                throw new IllegalStateException("onDemand only support authorization_code grant grantType. Please set "
-                    + "'spring.cloud.azure.active-directory.authorization-clients." + registrationId
-                    + ".authorization-grant-grantType=authorization_code'"
-                    + " or 'spring.cloud.azure.active-directory.authorization-clients." + registrationId + ".on-demand=false'.");
             }
 
             if (AZURE_CLIENT_REGISTRATION_ID.equals(registrationId)

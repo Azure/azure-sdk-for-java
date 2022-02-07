@@ -40,7 +40,7 @@ public class AADAuthenticationFilterPropertiesTests {
 
             assertThat(properties.getCredential().getClientId()).isEqualTo(TestConstants.CLIENT_ID);
             assertThat(properties.getCredential().getClientSecret()).isEqualTo(TestConstants.CLIENT_SECRET);
-            assertThat(properties.getActiveDirectoryGroups()
+            assertThat(properties.getUserGroup().getAllowedGroupNames()
                                  .toString()).isEqualTo(TestConstants.TARGETED_GROUPS.toString());
         }
     }
@@ -51,7 +51,7 @@ public class AADAuthenticationFilterPropertiesTests {
             AAD_PROPERTY_PREFIX + "profile.tenant-id=demo-tenant-id",
             AAD_PROPERTY_PREFIX + "credential.client-id=" + TestConstants.CLIENT_ID,
             AAD_PROPERTY_PREFIX + "credential.client-secret=" + TestConstants.CLIENT_SECRET,
-            AAD_PROPERTY_PREFIX + "user-group.allowed-groups="
+            AAD_PROPERTY_PREFIX + "user-group.allowed-group-names="
                 + TestConstants.TARGETED_GROUPS.toString().replace("[", "").replace("]", "")
         );
     }
