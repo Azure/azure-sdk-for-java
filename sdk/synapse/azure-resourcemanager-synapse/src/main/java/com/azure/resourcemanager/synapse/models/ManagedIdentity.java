@@ -7,7 +7,9 @@ package com.azure.resourcemanager.synapse.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 import java.util.UUID;
 
 /** The workspace managed identity. */
@@ -32,6 +34,13 @@ public class ManagedIdentity {
      */
     @JsonProperty(value = "type")
     private ResourceIdentityType type;
+
+    /*
+     * The user assigned managed identities.
+     */
+    @JsonProperty(value = "userAssignedIdentities")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, UserAssignedManagedIdentity> userAssignedIdentities;
 
     /**
      * Get the principalId property: The principal ID of the workspace managed identity.
@@ -72,10 +81,40 @@ public class ManagedIdentity {
     }
 
     /**
+     * Get the userAssignedIdentities property: The user assigned managed identities.
+     *
+     * @return the userAssignedIdentities value.
+     */
+    public Map<String, UserAssignedManagedIdentity> userAssignedIdentities() {
+        return this.userAssignedIdentities;
+    }
+
+    /**
+     * Set the userAssignedIdentities property: The user assigned managed identities.
+     *
+     * @param userAssignedIdentities the userAssignedIdentities value to set.
+     * @return the ManagedIdentity object itself.
+     */
+    public ManagedIdentity withUserAssignedIdentities(Map<String, UserAssignedManagedIdentity> userAssignedIdentities) {
+        this.userAssignedIdentities = userAssignedIdentities;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (userAssignedIdentities() != null) {
+            userAssignedIdentities()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
+        }
     }
 }

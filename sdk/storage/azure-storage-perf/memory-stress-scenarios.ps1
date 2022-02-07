@@ -22,7 +22,7 @@ function Run-Scenario {
 }
 
 # Blobs
-$env:STORAGE_CONNECTION_STRING=$env:PRIMARY_STORAGE_CONNECTION_STRING
+$env:STORAGE_CONNECTION_STRING="UseDevelopmentStorage=true"
 # Default transfer options
 Run-Scenario "600m" "uploadoutputstream --warmup 0 --duration 1 --size 1048576000 --sync"
 Run-Scenario "600m" "uploadblob --warmup 0 --duration 1 --size 1048576000"

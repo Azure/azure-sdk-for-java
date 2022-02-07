@@ -521,7 +521,7 @@ public class ShareFileJavaDocCodeSamples {
             DownloadRetryOptions retryOptions = new DownloadRetryOptions().setMaxRetryRequests(3);
             ShareFileDownloadOptions options = new ShareFileDownloadOptions().setRange(range)
                 .setRequestConditions(requestConditions)
-                .setRangeContentMd5(false)
+                .setRangeContentMd5Requested(false)
                 .setRetryOptions(retryOptions);
             Response<Void> response = fileClient.downloadWithResponse(stream, options, Duration.ofSeconds(30),
                 new Context(key1, value1));

@@ -19,22 +19,22 @@ public final class ScaleSettings {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ScaleSettings.class);
 
     /*
-     * This property and autoScale are mutually exclusive and one of the
-     * properties must be specified.
+     * Fixed scale settings for the pool. This property and autoScale are
+     * mutually exclusive and one of the properties must be specified.
      */
     @JsonProperty(value = "fixedScale")
     private FixedScaleSettings fixedScale;
 
     /*
-     * This property and fixedScale are mutually exclusive and one of the
-     * properties must be specified.
+     * AutoScale settings for the pool. This property and fixedScale are
+     * mutually exclusive and one of the properties must be specified.
      */
     @JsonProperty(value = "autoScale")
     private AutoScaleSettings autoScale;
 
     /**
-     * Get the fixedScale property: This property and autoScale are mutually exclusive and one of the properties must be
-     * specified.
+     * Get the fixedScale property: Fixed scale settings for the pool. This property and autoScale are mutually
+     * exclusive and one of the properties must be specified.
      *
      * @return the fixedScale value.
      */
@@ -43,8 +43,8 @@ public final class ScaleSettings {
     }
 
     /**
-     * Set the fixedScale property: This property and autoScale are mutually exclusive and one of the properties must be
-     * specified.
+     * Set the fixedScale property: Fixed scale settings for the pool. This property and autoScale are mutually
+     * exclusive and one of the properties must be specified.
      *
      * @param fixedScale the fixedScale value to set.
      * @return the ScaleSettings object itself.
@@ -55,8 +55,8 @@ public final class ScaleSettings {
     }
 
     /**
-     * Get the autoScale property: This property and fixedScale are mutually exclusive and one of the properties must be
-     * specified.
+     * Get the autoScale property: AutoScale settings for the pool. This property and fixedScale are mutually exclusive
+     * and one of the properties must be specified.
      *
      * @return the autoScale value.
      */
@@ -65,8 +65,8 @@ public final class ScaleSettings {
     }
 
     /**
-     * Set the autoScale property: This property and fixedScale are mutually exclusive and one of the properties must be
-     * specified.
+     * Set the autoScale property: AutoScale settings for the pool. This property and fixedScale are mutually exclusive
+     * and one of the properties must be specified.
      *
      * @param autoScale the autoScale value to set.
      * @return the ScaleSettings object itself.

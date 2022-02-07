@@ -5,46 +5,37 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.fluent.models.StaticSiteUserInvitationRequestResourceProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Static sites user roles invitation resource. */
-@JsonFlatten
 @Fluent
-public class StaticSiteUserInvitationRequestResource extends ProxyOnlyResource {
+public final class StaticSiteUserInvitationRequestResource extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticSiteUserInvitationRequestResource.class);
 
     /*
-     * The domain name for the static site custom domain.
+     * StaticSiteUserInvitationRequestResource resource specific properties
      */
-    @JsonProperty(value = "properties.domain")
-    private String domain;
+    @JsonProperty(value = "properties")
+    private StaticSiteUserInvitationRequestResourceProperties innerProperties;
 
-    /*
-     * The identity provider for the static site user.
+    /**
+     * Get the innerProperties property: StaticSiteUserInvitationRequestResource resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.provider")
-    private String provider;
+    private StaticSiteUserInvitationRequestResourceProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * The user id for the static site user.
-     */
-    @JsonProperty(value = "properties.userDetails")
-    private String userDetails;
-
-    /*
-     * The roles for the static site user, in free-form string format
-     */
-    @JsonProperty(value = "properties.roles")
-    private String roles;
-
-    /*
-     * The number of hours the sas token stays valid
-     */
-    @JsonProperty(value = "properties.numHoursToExpiration")
-    private Integer numHoursToExpiration;
+    /** {@inheritDoc} */
+    @Override
+    public StaticSiteUserInvitationRequestResource withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the domain property: The domain name for the static site custom domain.
@@ -52,7 +43,7 @@ public class StaticSiteUserInvitationRequestResource extends ProxyOnlyResource {
      * @return the domain value.
      */
     public String domain() {
-        return this.domain;
+        return this.innerProperties() == null ? null : this.innerProperties().domain();
     }
 
     /**
@@ -62,7 +53,10 @@ public class StaticSiteUserInvitationRequestResource extends ProxyOnlyResource {
      * @return the StaticSiteUserInvitationRequestResource object itself.
      */
     public StaticSiteUserInvitationRequestResource withDomain(String domain) {
-        this.domain = domain;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StaticSiteUserInvitationRequestResourceProperties();
+        }
+        this.innerProperties().withDomain(domain);
         return this;
     }
 
@@ -72,7 +66,7 @@ public class StaticSiteUserInvitationRequestResource extends ProxyOnlyResource {
      * @return the provider value.
      */
     public String provider() {
-        return this.provider;
+        return this.innerProperties() == null ? null : this.innerProperties().provider();
     }
 
     /**
@@ -82,7 +76,10 @@ public class StaticSiteUserInvitationRequestResource extends ProxyOnlyResource {
      * @return the StaticSiteUserInvitationRequestResource object itself.
      */
     public StaticSiteUserInvitationRequestResource withProvider(String provider) {
-        this.provider = provider;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StaticSiteUserInvitationRequestResourceProperties();
+        }
+        this.innerProperties().withProvider(provider);
         return this;
     }
 
@@ -92,7 +89,7 @@ public class StaticSiteUserInvitationRequestResource extends ProxyOnlyResource {
      * @return the userDetails value.
      */
     public String userDetails() {
-        return this.userDetails;
+        return this.innerProperties() == null ? null : this.innerProperties().userDetails();
     }
 
     /**
@@ -102,7 +99,10 @@ public class StaticSiteUserInvitationRequestResource extends ProxyOnlyResource {
      * @return the StaticSiteUserInvitationRequestResource object itself.
      */
     public StaticSiteUserInvitationRequestResource withUserDetails(String userDetails) {
-        this.userDetails = userDetails;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StaticSiteUserInvitationRequestResourceProperties();
+        }
+        this.innerProperties().withUserDetails(userDetails);
         return this;
     }
 
@@ -112,7 +112,7 @@ public class StaticSiteUserInvitationRequestResource extends ProxyOnlyResource {
      * @return the roles value.
      */
     public String roles() {
-        return this.roles;
+        return this.innerProperties() == null ? null : this.innerProperties().roles();
     }
 
     /**
@@ -122,7 +122,10 @@ public class StaticSiteUserInvitationRequestResource extends ProxyOnlyResource {
      * @return the StaticSiteUserInvitationRequestResource object itself.
      */
     public StaticSiteUserInvitationRequestResource withRoles(String roles) {
-        this.roles = roles;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StaticSiteUserInvitationRequestResourceProperties();
+        }
+        this.innerProperties().withRoles(roles);
         return this;
     }
 
@@ -132,7 +135,7 @@ public class StaticSiteUserInvitationRequestResource extends ProxyOnlyResource {
      * @return the numHoursToExpiration value.
      */
     public Integer numHoursToExpiration() {
-        return this.numHoursToExpiration;
+        return this.innerProperties() == null ? null : this.innerProperties().numHoursToExpiration();
     }
 
     /**
@@ -142,14 +145,10 @@ public class StaticSiteUserInvitationRequestResource extends ProxyOnlyResource {
      * @return the StaticSiteUserInvitationRequestResource object itself.
      */
     public StaticSiteUserInvitationRequestResource withNumHoursToExpiration(Integer numHoursToExpiration) {
-        this.numHoursToExpiration = numHoursToExpiration;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public StaticSiteUserInvitationRequestResource withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StaticSiteUserInvitationRequestResourceProperties();
+        }
+        this.innerProperties().withNumHoursToExpiration(numHoursToExpiration);
         return this;
     }
 
@@ -161,5 +160,8 @@ public class StaticSiteUserInvitationRequestResource extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -55,7 +55,6 @@ public abstract class CheckpointManager {
         // no-op
     }
 
-    @Deprecated
     public void completeBatch(EventContext context) {
         // no-op
     }

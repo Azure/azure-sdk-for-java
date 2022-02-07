@@ -9,6 +9,9 @@ trigger:
   paths:
     include:
       - sdk/botservice/
+    exclude:
+      - sdk/botservice/pom.xml
+      - sdk/botservice/azure-resourcemanager-botservice/pom.xml
 
 pr:
   branches:
@@ -20,6 +23,9 @@ pr:
   paths:
     include:
       - sdk/botservice/
+    exclude:
+      - sdk/botservice/pom.xml
+      - sdk/botservice/azure-resourcemanager-botservice/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

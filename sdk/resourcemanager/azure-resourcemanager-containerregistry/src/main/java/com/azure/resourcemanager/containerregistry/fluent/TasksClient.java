@@ -125,8 +125,7 @@ public interface TasksClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
-     * @param taskCreateParameters The task that has the ARM resource and task properties. The task will have all
-     *     information to schedule a run against it.
+     * @param taskCreateParameters The parameters for creating a task.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -142,14 +141,13 @@ public interface TasksClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
-     * @param taskCreateParameters The task that has the ARM resource and task properties. The task will have all
-     *     information to schedule a run against it.
+     * @param taskCreateParameters The parameters for creating a task.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the task that has the ARM resource and task properties.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<TaskInner>, TaskInner> beginCreateAsync(
         String resourceGroupName, String registryName, String taskName, TaskInner taskCreateParameters);
 
@@ -159,14 +157,13 @@ public interface TasksClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
-     * @param taskCreateParameters The task that has the ARM resource and task properties. The task will have all
-     *     information to schedule a run against it.
+     * @param taskCreateParameters The parameters for creating a task.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the task that has the ARM resource and task properties.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TaskInner>, TaskInner> beginCreate(
         String resourceGroupName, String registryName, String taskName, TaskInner taskCreateParameters);
 
@@ -176,15 +173,14 @@ public interface TasksClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
-     * @param taskCreateParameters The task that has the ARM resource and task properties. The task will have all
-     *     information to schedule a run against it.
+     * @param taskCreateParameters The parameters for creating a task.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the task that has the ARM resource and task properties.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TaskInner>, TaskInner> beginCreate(
         String resourceGroupName,
         String registryName,
@@ -198,8 +194,7 @@ public interface TasksClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
-     * @param taskCreateParameters The task that has the ARM resource and task properties. The task will have all
-     *     information to schedule a run against it.
+     * @param taskCreateParameters The parameters for creating a task.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -215,8 +210,7 @@ public interface TasksClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
-     * @param taskCreateParameters The task that has the ARM resource and task properties. The task will have all
-     *     information to schedule a run against it.
+     * @param taskCreateParameters The parameters for creating a task.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -231,8 +225,7 @@ public interface TasksClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
-     * @param taskCreateParameters The task that has the ARM resource and task properties. The task will have all
-     *     information to schedule a run against it.
+     * @param taskCreateParameters The parameters for creating a task.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -273,7 +266,7 @@ public interface TasksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String registryName, String taskName);
 
     /**
@@ -287,7 +280,7 @@ public interface TasksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName, String taskName);
 
     /**
@@ -302,7 +295,7 @@ public interface TasksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String registryName, String taskName, Context context);
 
@@ -375,7 +368,7 @@ public interface TasksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the task that has the ARM resource and task properties.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<TaskInner>, TaskInner> beginUpdateAsync(
         String resourceGroupName, String registryName, String taskName, TaskUpdateParameters taskUpdateParameters);
 
@@ -391,7 +384,7 @@ public interface TasksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the task that has the ARM resource and task properties.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TaskInner>, TaskInner> beginUpdate(
         String resourceGroupName, String registryName, String taskName, TaskUpdateParameters taskUpdateParameters);
 
@@ -408,7 +401,7 @@ public interface TasksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the task that has the ARM resource and task properties.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TaskInner>, TaskInner> beginUpdate(
         String resourceGroupName,
         String registryName,

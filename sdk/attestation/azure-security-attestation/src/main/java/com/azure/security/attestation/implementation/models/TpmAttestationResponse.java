@@ -25,7 +25,7 @@ public final class TpmAttestationResponse {
      */
     public byte[] getData() {
         if (this.data == null) {
-            return null;
+            return new byte[0];
         }
         return this.data.decodedBytes();
     }
@@ -50,5 +50,5 @@ public final class TpmAttestationResponse {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    public void validate() { }
+    public void validate() {}
 }

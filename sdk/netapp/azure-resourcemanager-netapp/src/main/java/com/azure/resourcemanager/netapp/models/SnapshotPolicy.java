@@ -47,6 +47,13 @@ public interface SnapshotPolicy {
     Map<String, String> tags();
 
     /**
+     * Gets the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
      * Gets the hourlySchedule property: Schedule for hourly snapshots.
      *
      * @return the hourlySchedule value.

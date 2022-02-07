@@ -45,7 +45,7 @@ steps:
     inputs:
       scriptPath: 'eng/versioning/update_versions.py'
       arguments: '--update-type library --build-type client --sr'
-    condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
+    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   - template: generate-project-list.yml
     parameters:

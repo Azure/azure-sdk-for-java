@@ -5,46 +5,39 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.fluent.models.ImageProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The source user image virtual hard disk. Only tags may be updated. */
-@JsonFlatten
 @Fluent
-public class ImageUpdate extends UpdateResource {
+public final class ImageUpdate extends UpdateResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageUpdate.class);
 
     /*
-     * The source virtual machine from which Image is created.
+     * Describes the properties of an Image.
      */
-    @JsonProperty(value = "properties.sourceVirtualMachine")
-    private SubResource sourceVirtualMachine;
+    @JsonProperty(value = "properties")
+    private ImageProperties innerProperties;
 
-    /*
-     * Specifies the storage settings for the virtual machine disks.
+    /**
+     * Get the innerProperties property: Describes the properties of an Image.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.storageProfile")
-    private ImageStorageProfile storageProfile;
+    private ImageProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * The provisioning state.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * Specifies the HyperVGenerationType of the VirtualMachine created from
-     * the image. From API Version 2019-03-01 if the image source is a blob,
-     * then we need the user to specify the value, if the source is managed
-     * resource like disk or snapshot, we may require the user to specify the
-     * property if we cannot deduce it from the source managed resource.
-     */
-    @JsonProperty(value = "properties.hyperVGeneration")
-    private HyperVGenerationTypes hyperVGeneration;
+    /** {@inheritDoc} */
+    @Override
+    public ImageUpdate withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
 
     /**
      * Get the sourceVirtualMachine property: The source virtual machine from which Image is created.
@@ -52,7 +45,7 @@ public class ImageUpdate extends UpdateResource {
      * @return the sourceVirtualMachine value.
      */
     public SubResource sourceVirtualMachine() {
-        return this.sourceVirtualMachine;
+        return this.innerProperties() == null ? null : this.innerProperties().sourceVirtualMachine();
     }
 
     /**
@@ -62,7 +55,10 @@ public class ImageUpdate extends UpdateResource {
      * @return the ImageUpdate object itself.
      */
     public ImageUpdate withSourceVirtualMachine(SubResource sourceVirtualMachine) {
-        this.sourceVirtualMachine = sourceVirtualMachine;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ImageProperties();
+        }
+        this.innerProperties().withSourceVirtualMachine(sourceVirtualMachine);
         return this;
     }
 
@@ -72,7 +68,7 @@ public class ImageUpdate extends UpdateResource {
      * @return the storageProfile value.
      */
     public ImageStorageProfile storageProfile() {
-        return this.storageProfile;
+        return this.innerProperties() == null ? null : this.innerProperties().storageProfile();
     }
 
     /**
@@ -82,7 +78,10 @@ public class ImageUpdate extends UpdateResource {
      * @return the ImageUpdate object itself.
      */
     public ImageUpdate withStorageProfile(ImageStorageProfile storageProfile) {
-        this.storageProfile = storageProfile;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ImageProperties();
+        }
+        this.innerProperties().withStorageProfile(storageProfile);
         return this;
     }
 
@@ -92,7 +91,7 @@ public class ImageUpdate extends UpdateResource {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -104,7 +103,7 @@ public class ImageUpdate extends UpdateResource {
      * @return the hyperVGeneration value.
      */
     public HyperVGenerationTypes hyperVGeneration() {
-        return this.hyperVGeneration;
+        return this.innerProperties() == null ? null : this.innerProperties().hyperVGeneration();
     }
 
     /**
@@ -117,14 +116,10 @@ public class ImageUpdate extends UpdateResource {
      * @return the ImageUpdate object itself.
      */
     public ImageUpdate withHyperVGeneration(HyperVGenerationTypes hyperVGeneration) {
-        this.hyperVGeneration = hyperVGeneration;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ImageUpdate withTags(Map<String, String> tags) {
-        super.withTags(tags);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ImageProperties();
+        }
+        this.innerProperties().withHyperVGeneration(hyperVGeneration);
         return this;
     }
 
@@ -136,8 +131,8 @@ public class ImageUpdate extends UpdateResource {
     @Override
     public void validate() {
         super.validate();
-        if (storageProfile() != null) {
-            storageProfile().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

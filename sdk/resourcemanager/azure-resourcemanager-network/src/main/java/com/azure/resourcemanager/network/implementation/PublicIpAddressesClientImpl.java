@@ -41,7 +41,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -371,7 +370,7 @@ public final class PublicIpAddressesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -431,7 +430,7 @@ public final class PublicIpAddressesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -577,7 +576,7 @@ public final class PublicIpAddressesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -660,7 +659,7 @@ public final class PublicIpAddressesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -864,7 +863,7 @@ public final class PublicIpAddressesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -948,7 +947,7 @@ public final class PublicIpAddressesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1155,7 +1154,7 @@ public final class PublicIpAddressesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1206,7 +1205,7 @@ public final class PublicIpAddressesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1230,12 +1229,13 @@ public final class PublicIpAddressesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String publicIpAddressName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, publicIpAddressName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1249,7 +1249,7 @@ public final class PublicIpAddressesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String publicIpAddressName, Context context) {
         context = this.client.mergeContext(context);
@@ -1270,7 +1270,7 @@ public final class PublicIpAddressesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String publicIpAddressName) {
         return beginDeleteAsync(resourceGroupName, publicIpAddressName).getSyncPoller();
     }
@@ -1286,7 +1286,7 @@ public final class PublicIpAddressesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String publicIpAddressName, Context context) {
         return beginDeleteAsync(resourceGroupName, publicIpAddressName, context).getSyncPoller();
@@ -1390,7 +1390,7 @@ public final class PublicIpAddressesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1443,7 +1443,7 @@ public final class PublicIpAddressesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1580,7 +1580,7 @@ public final class PublicIpAddressesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1638,7 +1638,7 @@ public final class PublicIpAddressesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1664,7 +1664,7 @@ public final class PublicIpAddressesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return public IP address resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<PublicIpAddressInner>, PublicIpAddressInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String publicIpAddressName, PublicIpAddressInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1676,7 +1676,7 @@ public final class PublicIpAddressesClientImpl
                 this.client.getHttpPipeline(),
                 PublicIpAddressInner.class,
                 PublicIpAddressInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1691,7 +1691,7 @@ public final class PublicIpAddressesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return public IP address resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PublicIpAddressInner>, PublicIpAddressInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String publicIpAddressName, PublicIpAddressInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -1714,7 +1714,7 @@ public final class PublicIpAddressesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return public IP address resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PublicIpAddressInner>, PublicIpAddressInner> beginCreateOrUpdate(
         String resourceGroupName, String publicIpAddressName, PublicIpAddressInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, publicIpAddressName, parameters).getSyncPoller();
@@ -1732,7 +1732,7 @@ public final class PublicIpAddressesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return public IP address resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PublicIpAddressInner>, PublicIpAddressInner> beginCreateOrUpdate(
         String resourceGroupName, String publicIpAddressName, PublicIpAddressInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, publicIpAddressName, parameters, context).getSyncPoller();
@@ -1817,7 +1817,7 @@ public final class PublicIpAddressesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update public IP address tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1825,7 +1825,7 @@ public final class PublicIpAddressesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PublicIpAddressInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String publicIpAddressName, Map<String, String> tags) {
+        String resourceGroupName, String publicIpAddressName, TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1846,10 +1846,13 @@ public final class PublicIpAddressesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
         return FluxUtil
             .withContext(
                 context ->
@@ -1871,7 +1874,7 @@ public final class PublicIpAddressesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update public IP address tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1880,7 +1883,7 @@ public final class PublicIpAddressesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PublicIpAddressInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String publicIpAddressName, Map<String, String> tags, Context context) {
+        String resourceGroupName, String publicIpAddressName, TagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1901,10 +1904,13 @@ public final class PublicIpAddressesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
         context = this.client.mergeContext(context);
         return service
             .updateTags(
@@ -1923,7 +1929,7 @@ public final class PublicIpAddressesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update public IP address tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1931,8 +1937,8 @@ public final class PublicIpAddressesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PublicIpAddressInner> updateTagsAsync(
-        String resourceGroupName, String publicIpAddressName, Map<String, String> tags) {
-        return updateTagsWithResponseAsync(resourceGroupName, publicIpAddressName, tags)
+        String resourceGroupName, String publicIpAddressName, TagsObject parameters) {
+        return updateTagsWithResponseAsync(resourceGroupName, publicIpAddressName, parameters)
             .flatMap(
                 (Response<PublicIpAddressInner> res) -> {
                     if (res.getValue() != null) {
@@ -1948,23 +1954,16 @@ public final class PublicIpAddressesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameters supplied to update public IP address tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return public IP address resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PublicIpAddressInner> updateTagsAsync(String resourceGroupName, String publicIpAddressName) {
-        final Map<String, String> tags = null;
-        return updateTagsWithResponseAsync(resourceGroupName, publicIpAddressName, tags)
-            .flatMap(
-                (Response<PublicIpAddressInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public PublicIpAddressInner updateTags(
+        String resourceGroupName, String publicIpAddressName, TagsObject parameters) {
+        return updateTagsAsync(resourceGroupName, publicIpAddressName, parameters).block();
     }
 
     /**
@@ -1972,23 +1971,7 @@ public final class PublicIpAddressesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public IP address resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PublicIpAddressInner updateTags(String resourceGroupName, String publicIpAddressName) {
-        final Map<String, String> tags = null;
-        return updateTagsAsync(resourceGroupName, publicIpAddressName, tags).block();
-    }
-
-    /**
-     * Updates public IP address tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update public IP address tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1997,8 +1980,8 @@ public final class PublicIpAddressesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PublicIpAddressInner> updateTagsWithResponse(
-        String resourceGroupName, String publicIpAddressName, Map<String, String> tags, Context context) {
-        return updateTagsWithResponseAsync(resourceGroupName, publicIpAddressName, tags, context).block();
+        String resourceGroupName, String publicIpAddressName, TagsObject parameters, Context context) {
+        return updateTagsWithResponseAsync(resourceGroupName, publicIpAddressName, parameters, context).block();
     }
 
     /**
@@ -2022,7 +2005,7 @@ public final class PublicIpAddressesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2064,7 +2047,7 @@ public final class PublicIpAddressesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2160,7 +2143,7 @@ public final class PublicIpAddressesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2214,7 +2197,7 @@ public final class PublicIpAddressesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

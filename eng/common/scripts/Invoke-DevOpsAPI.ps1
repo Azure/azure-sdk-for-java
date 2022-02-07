@@ -13,7 +13,6 @@ function Start-DevOpsBuild {
   param (
     $Organization="azure-sdk",
     $Project="internal",
-    [Parameter(Mandatory = $true)]
     $SourceBranch,
     [Parameter(Mandatory = $true)]
     $DefinitionId,
@@ -138,7 +137,7 @@ function Add-RetentionLease {
     $RunId,
     $OwnerId,
     $DaysValid,
-    $Base64AuthToken
+    $Base64EncodedAuthToken
   )
 
   $parameter = @{}

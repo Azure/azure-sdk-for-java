@@ -10,7 +10,34 @@ trigger:
     include:
       - sdk/resourcemanager/
     exclude:
-      - sdk/resourcemanager/tools/
+      - sdk/resourcemanager/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-appplatform/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-appservice/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-authorization/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-cdn/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-compute/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-containerinstance/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-containerregistry/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-containerservice/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-cosmos/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-dns/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-eventhubs/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-keyvault/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-monitor/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-msi/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-network/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-perf/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-privatedns/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-redis/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-resources/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-samples/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-search/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-servicebus/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-sql/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-storage/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-test/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-trafficmanager/pom.xml
 
 pr:
   branches:
@@ -23,7 +50,34 @@ pr:
     include:
       - sdk/resourcemanager/
     exclude:
-      - sdk/resourcemanager/tools/
+      - sdk/resourcemanager/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-appplatform/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-appservice/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-authorization/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-cdn/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-compute/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-containerinstance/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-containerregistry/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-containerservice/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-cosmos/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-dns/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-eventhubs/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-keyvault/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-monitor/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-msi/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-network/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-perf/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-privatedns/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-redis/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-resources/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-samples/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-search/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-servicebus/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-sql/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-storage/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-test/pom.xml
+      - sdk/resourcemanager/azure-resourcemanager-trafficmanager/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

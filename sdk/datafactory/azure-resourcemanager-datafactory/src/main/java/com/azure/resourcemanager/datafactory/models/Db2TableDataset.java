@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.Db2TableDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,93 +17,23 @@ import java.util.Map;
 /** The Db2 table dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Db2Table")
-@JsonFlatten
 @Fluent
-public class Db2TableDataset extends Dataset {
+public final class Db2TableDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Db2TableDataset.class);
 
     /*
-     * This property will be retired. Please consider using schema + table
-     * properties instead.
+     * Db2 table dataset properties.
      */
-    @JsonProperty(value = "typeProperties.tableName")
-    private Object tableName;
-
-    /*
-     * The Db2 schema name. Type: string (or Expression with resultType
-     * string).
-     */
-    @JsonProperty(value = "typeProperties.schema")
-    private Object schemaTypePropertiesSchema;
-
-    /*
-     * The Db2 table name. Type: string (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.table")
-    private Object table;
+    @JsonProperty(value = "typeProperties")
+    private Db2TableDatasetTypeProperties innerTypeProperties;
 
     /**
-     * Get the tableName property: This property will be retired. Please consider using schema + table properties
-     * instead.
+     * Get the innerTypeProperties property: Db2 table dataset properties.
      *
-     * @return the tableName value.
+     * @return the innerTypeProperties value.
      */
-    public Object tableName() {
-        return this.tableName;
-    }
-
-    /**
-     * Set the tableName property: This property will be retired. Please consider using schema + table properties
-     * instead.
-     *
-     * @param tableName the tableName value to set.
-     * @return the Db2TableDataset object itself.
-     */
-    public Db2TableDataset withTableName(Object tableName) {
-        this.tableName = tableName;
-        return this;
-    }
-
-    /**
-     * Get the schemaTypePropertiesSchema property: The Db2 schema name. Type: string (or Expression with resultType
-     * string).
-     *
-     * @return the schemaTypePropertiesSchema value.
-     */
-    public Object schemaTypePropertiesSchema() {
-        return this.schemaTypePropertiesSchema;
-    }
-
-    /**
-     * Set the schemaTypePropertiesSchema property: The Db2 schema name. Type: string (or Expression with resultType
-     * string).
-     *
-     * @param schemaTypePropertiesSchema the schemaTypePropertiesSchema value to set.
-     * @return the Db2TableDataset object itself.
-     */
-    public Db2TableDataset withSchemaTypePropertiesSchema(Object schemaTypePropertiesSchema) {
-        this.schemaTypePropertiesSchema = schemaTypePropertiesSchema;
-        return this;
-    }
-
-    /**
-     * Get the table property: The Db2 table name. Type: string (or Expression with resultType string).
-     *
-     * @return the table value.
-     */
-    public Object table() {
-        return this.table;
-    }
-
-    /**
-     * Set the table property: The Db2 table name. Type: string (or Expression with resultType string).
-     *
-     * @param table the table value to set.
-     * @return the Db2TableDataset object itself.
-     */
-    public Db2TableDataset withTable(Object table) {
-        this.table = table;
-        return this;
+    private Db2TableDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -156,6 +86,77 @@ public class Db2TableDataset extends Dataset {
     }
 
     /**
+     * Get the tableName property: This property will be retired. Please consider using schema + table properties
+     * instead.
+     *
+     * @return the tableName value.
+     */
+    public Object tableName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().tableName();
+    }
+
+    /**
+     * Set the tableName property: This property will be retired. Please consider using schema + table properties
+     * instead.
+     *
+     * @param tableName the tableName value to set.
+     * @return the Db2TableDataset object itself.
+     */
+    public Db2TableDataset withTableName(Object tableName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new Db2TableDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withTableName(tableName);
+        return this;
+    }
+
+    /**
+     * Get the schema property: The Db2 schema name. Type: string (or Expression with resultType string).
+     *
+     * @return the schema value.
+     */
+    public Object schemaTypePropertiesSchema() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().schema();
+    }
+
+    /**
+     * Set the schema property: The Db2 schema name. Type: string (or Expression with resultType string).
+     *
+     * @param schema the schema value to set.
+     * @return the Db2TableDataset object itself.
+     */
+    public Db2TableDataset withSchemaTypePropertiesSchema(Object schema) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new Db2TableDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withSchema(schema);
+        return this;
+    }
+
+    /**
+     * Get the table property: The Db2 table name. Type: string (or Expression with resultType string).
+     *
+     * @return the table value.
+     */
+    public Object table() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().table();
+    }
+
+    /**
+     * Set the table property: The Db2 table name. Type: string (or Expression with resultType string).
+     *
+     * @param table the table value to set.
+     * @return the Db2TableDataset object itself.
+     */
+    public Db2TableDataset withTable(Object table) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new Db2TableDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withTable(table);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -163,5 +164,8 @@ public class Db2TableDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
+        if (innerTypeProperties() != null) {
+            innerTypeProperties().validate();
+        }
     }
 }

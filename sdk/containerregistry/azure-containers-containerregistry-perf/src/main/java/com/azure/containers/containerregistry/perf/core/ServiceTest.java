@@ -6,6 +6,7 @@ package com.azure.containers.containerregistry.perf.core;
 import com.azure.containers.containerregistry.ContainerRegistryAsyncClient;
 import com.azure.containers.containerregistry.ContainerRegistryClient;
 import com.azure.containers.containerregistry.ContainerRegistryClientBuilder;
+import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
@@ -43,10 +44,15 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
     final String subscriptionId;
     final TokenCredential tokenCredential;
 
+    /**
+     * The ContainerRegistryClient used in a performance test.
+     */
     protected ContainerRegistryClient containerRegistryClient;
+
+    /**
+     * The ContainerRegistryAsyncClient used in an asynchronous performance test.
+     */
     protected ContainerRegistryAsyncClient containerRegistryAsyncClient;
-
-
 
     /**
      * The base class for Azure Container Registry performance tests.
@@ -72,6 +78,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         tokenCredential = new DefaultAzureCredentialBuilder().build();
         ContainerRegistryClientBuilder builder = new ContainerRegistryClientBuilder()
             .endpoint(registryEndpoint)
+            .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .credential(tokenCredential);
 
         this.containerRegistryClient = builder.buildClient();
@@ -88,6 +95,13 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         return configurationValue;
     }
 
+    /**
+     * Imports an image into a Container Registry.
+     *
+     * @param repositoryName The Container Registry repository name.
+     * @param tags Tags to associate with the image.
+     * @return An asynchronous response that only indicates completion.
+     */
     protected Mono<Void> importImageAsync(String repositoryName, List<String> tags) {
         tags = tags.stream().map(tag -> String.format("%1$s:%2$s", repositoryName, tag)).collect(Collectors.toList());
 

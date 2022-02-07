@@ -5,56 +5,36 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.ApiEntityReference;
 import com.azure.resourcemanager.compute.models.ConsistencyModeTypes;
-import com.azure.resourcemanager.compute.models.RestorePointProvisioningDetails;
+import com.azure.resourcemanager.compute.models.RestorePointInstanceView;
 import com.azure.resourcemanager.compute.models.RestorePointSourceMetadata;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 /** Restore Point details. */
-@JsonFlatten
 @Fluent
-public class RestorePointInner extends ProxyResource {
+public final class RestorePointInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorePointInner.class);
 
     /*
-     * List of disk resource ids that the customer wishes to exclude from the
-     * restore point. If no disks are specified, all disks will be included.
+     * The restore point properties.
      */
-    @JsonProperty(value = "properties.excludeDisks")
-    private List<ApiEntityReference> excludeDisks;
+    @JsonProperty(value = "properties")
+    private RestorePointProperties innerProperties;
 
-    /*
-     * Gets the details of the VM captured at the time of the restore point
-     * creation.
+    /**
+     * Get the innerProperties property: The restore point properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.sourceMetadata", access = JsonProperty.Access.WRITE_ONLY)
-    private RestorePointSourceMetadata sourceMetadata;
-
-    /*
-     * Gets the provisioning state of the restore point.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * Gets the consistency mode for the restore point. Please refer to
-     * https://aka.ms/RestorePoints for more details.
-     */
-    @JsonProperty(value = "properties.consistencyMode", access = JsonProperty.Access.WRITE_ONLY)
-    private ConsistencyModeTypes consistencyMode;
-
-    /*
-     * Gets the provisioning details set by the server during Create restore
-     * point operation.
-     */
-    @JsonProperty(value = "properties.provisioningDetails", access = JsonProperty.Access.WRITE_ONLY)
-    private RestorePointProvisioningDetails provisioningDetails;
+    private RestorePointProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the excludeDisks property: List of disk resource ids that the customer wishes to exclude from the restore
@@ -63,7 +43,7 @@ public class RestorePointInner extends ProxyResource {
      * @return the excludeDisks value.
      */
     public List<ApiEntityReference> excludeDisks() {
-        return this.excludeDisks;
+        return this.innerProperties() == null ? null : this.innerProperties().excludeDisks();
     }
 
     /**
@@ -74,7 +54,10 @@ public class RestorePointInner extends ProxyResource {
      * @return the RestorePointInner object itself.
      */
     public RestorePointInner withExcludeDisks(List<ApiEntityReference> excludeDisks) {
-        this.excludeDisks = excludeDisks;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestorePointProperties();
+        }
+        this.innerProperties().withExcludeDisks(excludeDisks);
         return this;
     }
 
@@ -84,7 +67,7 @@ public class RestorePointInner extends ProxyResource {
      * @return the sourceMetadata value.
      */
     public RestorePointSourceMetadata sourceMetadata() {
-        return this.sourceMetadata;
+        return this.innerProperties() == null ? null : this.innerProperties().sourceMetadata();
     }
 
     /**
@@ -93,7 +76,7 @@ public class RestorePointInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -103,17 +86,64 @@ public class RestorePointInner extends ProxyResource {
      * @return the consistencyMode value.
      */
     public ConsistencyModeTypes consistencyMode() {
-        return this.consistencyMode;
+        return this.innerProperties() == null ? null : this.innerProperties().consistencyMode();
     }
 
     /**
-     * Get the provisioningDetails property: Gets the provisioning details set by the server during Create restore point
-     * operation.
+     * Get the timeCreated property: Gets the creation time of the restore point.
      *
-     * @return the provisioningDetails value.
+     * @return the timeCreated value.
      */
-    public RestorePointProvisioningDetails provisioningDetails() {
-        return this.provisioningDetails;
+    public OffsetDateTime timeCreated() {
+        return this.innerProperties() == null ? null : this.innerProperties().timeCreated();
+    }
+
+    /**
+     * Set the timeCreated property: Gets the creation time of the restore point.
+     *
+     * @param timeCreated the timeCreated value to set.
+     * @return the RestorePointInner object itself.
+     */
+    public RestorePointInner withTimeCreated(OffsetDateTime timeCreated) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestorePointProperties();
+        }
+        this.innerProperties().withTimeCreated(timeCreated);
+        return this;
+    }
+
+    /**
+     * Get the sourceRestorePoint property: Resource Id of the source restore point from which a copy needs to be
+     * created.
+     *
+     * @return the sourceRestorePoint value.
+     */
+    public ApiEntityReference sourceRestorePoint() {
+        return this.innerProperties() == null ? null : this.innerProperties().sourceRestorePoint();
+    }
+
+    /**
+     * Set the sourceRestorePoint property: Resource Id of the source restore point from which a copy needs to be
+     * created.
+     *
+     * @param sourceRestorePoint the sourceRestorePoint value to set.
+     * @return the RestorePointInner object itself.
+     */
+    public RestorePointInner withSourceRestorePoint(ApiEntityReference sourceRestorePoint) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestorePointProperties();
+        }
+        this.innerProperties().withSourceRestorePoint(sourceRestorePoint);
+        return this;
+    }
+
+    /**
+     * Get the instanceView property: The restore point instance view.
+     *
+     * @return the instanceView value.
+     */
+    public RestorePointInstanceView instanceView() {
+        return this.innerProperties() == null ? null : this.innerProperties().instanceView();
     }
 
     /**
@@ -122,14 +152,8 @@ public class RestorePointInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (excludeDisks() != null) {
-            excludeDisks().forEach(e -> e.validate());
-        }
-        if (sourceMetadata() != null) {
-            sourceMetadata().validate();
-        }
-        if (provisioningDetails() != null) {
-            provisioningDetails().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

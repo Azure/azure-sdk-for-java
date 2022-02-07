@@ -8,32 +8,29 @@ import com.azure.spring.servicebus.stream.binder.properties.ServiceBusConsumerPr
 import com.azure.spring.servicebus.stream.binder.properties.ServiceBusProducerProperties;
 import com.azure.spring.servicebus.stream.binder.support.ServiceBusQueueTestOperation;
 import com.azure.spring.servicebus.stream.binder.test.AzurePartitionBinderTests;
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
 import org.springframework.cloud.stream.binder.ExtendedProducerProperties;
 import org.springframework.cloud.stream.binder.HeaderMode;
 
 /**
- * Test cases are defined in super class
- *
- * @author Warren Zhu
+ * Azure ServiceBus Queue Binder Tests.
  */
-@RunWith(MockitoJUnitRunner.class)
 public class ServiceBusQueuePartitionBinderTests
     extends AzurePartitionBinderTests<ServiceBusQueueTestBinder,
-                                         ExtendedConsumerProperties<ServiceBusConsumerProperties>,
-                                         ExtendedProducerProperties<ServiceBusProducerProperties>> {
-    //TODO (Xiaobing Zhu): It is currently impossible to upgrade JUnit 4 to JUnit 5 due to the inheritance of Spring unit tests.
+    ExtendedConsumerProperties<ServiceBusConsumerProperties>,
+    ExtendedProducerProperties<ServiceBusProducerProperties>> {
+    //TODO (Xiaobing Zhu): It is currently impossible to upgrade JUnit 4 to JUnit 5 due to the inheritance of Spring
+    // unit tests.
 
     @Mock
     ServiceBusQueueClientFactory clientFactory;
 
     private ServiceBusQueueTestBinder binder;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         this.binder = new ServiceBusQueueTestBinder(new ServiceBusQueueTestOperation(this.clientFactory));
     }
@@ -57,7 +54,7 @@ public class ServiceBusQueuePartitionBinderTests
     }
 
     @Override
-    protected ExtendedProducerProperties<ServiceBusProducerProperties> createProducerProperties() {
+    protected ExtendedProducerProperties<ServiceBusProducerProperties> createProducerProperties(TestInfo testInfo) {
         ExtendedProducerProperties<ServiceBusProducerProperties> properties = new ExtendedProducerProperties<>(
             new ServiceBusProducerProperties());
         properties.setHeaderMode(HeaderMode.embeddedHeaders);
@@ -65,12 +62,12 @@ public class ServiceBusQueuePartitionBinderTests
     }
 
     @Override
-    public void testOneRequiredGroup() {
+    public void testOneRequiredGroup(TestInfo testInfo) throws Exception {
         // Required group test rely on unsupported start position of consumer properties
     }
 
     @Override
-    public void testTwoRequiredGroups() {
+    public void testTwoRequiredGroups(TestInfo testInfo) throws Exception {
         // Required group test rely on unsupported start position of consumer properties
     }
 }

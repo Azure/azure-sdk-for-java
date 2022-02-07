@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -13,10 +12,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Virtual Router Peering resource. */
-@JsonFlatten
 @Fluent
-public class VirtualRouterPeeringInner extends SubResource {
+public final class VirtualRouterPeeringInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualRouterPeeringInner.class);
+
+    /*
+     * The properties of the Virtual Router Peering.
+     */
+    @JsonProperty(value = "properties")
+    private VirtualRouterPeeringProperties innerProperties;
 
     /*
      * Name of the virtual router peering that is unique within a virtual
@@ -37,23 +41,14 @@ public class VirtualRouterPeeringInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * Peer ASN.
+    /**
+     * Get the innerProperties property: The properties of the Virtual Router Peering.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.peerAsn")
-    private Long peerAsn;
-
-    /*
-     * Peer IP.
-     */
-    @JsonProperty(value = "properties.peerIp")
-    private String peerIp;
-
-    /*
-     * The provisioning state of the resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private VirtualRouterPeeringProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Name of the virtual router peering that is unique within a virtual router.
@@ -93,13 +88,20 @@ public class VirtualRouterPeeringInner extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public VirtualRouterPeeringInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the peerAsn property: Peer ASN.
      *
      * @return the peerAsn value.
      */
     public Long peerAsn() {
-        return this.peerAsn;
+        return this.innerProperties() == null ? null : this.innerProperties().peerAsn();
     }
 
     /**
@@ -109,7 +111,10 @@ public class VirtualRouterPeeringInner extends SubResource {
      * @return the VirtualRouterPeeringInner object itself.
      */
     public VirtualRouterPeeringInner withPeerAsn(Long peerAsn) {
-        this.peerAsn = peerAsn;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualRouterPeeringProperties();
+        }
+        this.innerProperties().withPeerAsn(peerAsn);
         return this;
     }
 
@@ -119,7 +124,7 @@ public class VirtualRouterPeeringInner extends SubResource {
      * @return the peerIp value.
      */
     public String peerIp() {
-        return this.peerIp;
+        return this.innerProperties() == null ? null : this.innerProperties().peerIp();
     }
 
     /**
@@ -129,7 +134,10 @@ public class VirtualRouterPeeringInner extends SubResource {
      * @return the VirtualRouterPeeringInner object itself.
      */
     public VirtualRouterPeeringInner withPeerIp(String peerIp) {
-        this.peerIp = peerIp;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualRouterPeeringProperties();
+        }
+        this.innerProperties().withPeerIp(peerIp);
         return this;
     }
 
@@ -139,14 +147,7 @@ public class VirtualRouterPeeringInner extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public VirtualRouterPeeringInner withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -155,5 +156,8 @@ public class VirtualRouterPeeringInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

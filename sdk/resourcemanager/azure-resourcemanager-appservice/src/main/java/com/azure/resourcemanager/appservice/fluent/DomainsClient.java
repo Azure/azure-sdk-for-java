@@ -33,7 +33,7 @@ public interface DomainsClient
     /**
      * Description for Check if a domain is available for registration.
      *
-     * @param name Name of the object.
+     * @param identifier Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -41,12 +41,13 @@ public interface DomainsClient
      * @return domain availability check result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DomainAvailabilityCheckResultInner>> checkAvailabilityWithResponseAsync(String name);
+    Mono<Response<DomainAvailabilityCheckResultInner>> checkAvailabilityWithResponseAsync(
+        NameIdentifierInner identifier);
 
     /**
      * Description for Check if a domain is available for registration.
      *
-     * @param name Name of the object.
+     * @param identifier Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -54,34 +55,25 @@ public interface DomainsClient
      * @return domain availability check result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DomainAvailabilityCheckResultInner> checkAvailabilityAsync(String name);
+    Mono<DomainAvailabilityCheckResultInner> checkAvailabilityAsync(NameIdentifierInner identifier);
 
     /**
      * Description for Check if a domain is available for registration.
      *
+     * @param identifier Name of the domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain availability check result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DomainAvailabilityCheckResultInner> checkAvailabilityAsync();
+    DomainAvailabilityCheckResultInner checkAvailability(NameIdentifierInner identifier);
 
     /**
      * Description for Check if a domain is available for registration.
      *
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return domain availability check result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DomainAvailabilityCheckResultInner checkAvailability();
-
-    /**
-     * Description for Check if a domain is available for registration.
-     *
-     * @param name Name of the object.
+     * @param identifier Name of the domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -90,7 +82,8 @@ public interface DomainsClient
      * @return domain availability check result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DomainAvailabilityCheckResultInner> checkAvailabilityWithResponse(String name, Context context);
+    Response<DomainAvailabilityCheckResultInner> checkAvailabilityWithResponse(
+        NameIdentifierInner identifier, Context context);
 
     /**
      * Description for Get all domains in a subscription.
@@ -339,7 +332,7 @@ public interface DomainsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<DomainInner>, DomainInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String domainName, DomainInner domain);
 
@@ -355,7 +348,7 @@ public interface DomainsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DomainInner>, DomainInner> beginCreateOrUpdate(
         String resourceGroupName, String domainName, DomainInner domain);
 
@@ -372,7 +365,7 @@ public interface DomainsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DomainInner>, DomainInner> beginCreateOrUpdate(
         String resourceGroupName, String domainName, DomainInner domain, Context context);
 
@@ -961,4 +954,57 @@ public interface DomainsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> renewWithResponse(String resourceGroupName, String domainName, Context context);
+
+    /**
+     * Transfer out domain to another registrar.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<DomainInner>> transferOutWithResponseAsync(String resourceGroupName, String domainName);
+
+    /**
+     * Transfer out domain to another registrar.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<DomainInner> transferOutAsync(String resourceGroupName, String domainName);
+
+    /**
+     * Transfer out domain to another registrar.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DomainInner transferOut(String resourceGroupName, String domainName);
+
+    /**
+     * Transfer out domain to another registrar.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of domain.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DomainInner> transferOutWithResponse(String resourceGroupName, String domainName, Context context);
 }

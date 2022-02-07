@@ -154,7 +154,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection.
+     * @return a private endpoint connection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
@@ -184,6 +184,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -191,7 +192,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -211,7 +212,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection.
+     * @return a private endpoint connection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
@@ -241,12 +242,13 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -264,7 +266,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection.
+     * @return a private endpoint connection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PrivateEndpointConnectionInner> getAsync(
@@ -307,7 +309,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection.
+     * @return a private endpoint connection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionInner> getWithResponse(
@@ -325,7 +327,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection.
+     * @return a private endpoint connection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -363,6 +365,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         } else {
             request.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -370,7 +373,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     service
                         .create(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -392,7 +395,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection.
+     * @return a private endpoint connection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -431,12 +434,13 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         } else {
             request.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .create(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -456,9 +460,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection.
+     * @return a private endpoint connection along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateAsync(
         String resourceGroupName,
         String workspaceName,
@@ -473,7 +477,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 this.client.getHttpPipeline(),
                 PrivateEndpointConnectionInner.class,
                 PrivateEndpointConnectionInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -487,9 +491,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection.
+     * @return a private endpoint connection along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateAsync(
         String resourceGroupName,
         String workspaceName,
@@ -519,9 +523,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection.
+     * @return a private endpoint connection along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreate(
         String resourceGroupName,
         String workspaceName,
@@ -542,9 +546,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection.
+     * @return a private endpoint connection along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreate(
         String resourceGroupName,
         String workspaceName,
@@ -565,7 +569,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection.
+     * @return a private endpoint connection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PrivateEndpointConnectionInner> createAsync(
@@ -589,7 +593,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection.
+     * @return a private endpoint connection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PrivateEndpointConnectionInner> createAsync(
@@ -656,7 +660,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -686,6 +690,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -693,7 +698,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     service
                         .delete(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -713,7 +718,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -743,12 +748,13 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -766,9 +772,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationResourceInner>, OperationResourceInner> beginDeleteAsync(
         String resourceGroupName, String workspaceName, String privateEndpointConnectionName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -780,7 +786,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 this.client.getHttpPipeline(),
                 OperationResourceInner.class,
                 OperationResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -793,9 +799,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationResourceInner>, OperationResourceInner> beginDeleteAsync(
         String resourceGroupName, String workspaceName, String privateEndpointConnectionName, Context context) {
         context = this.client.mergeContext(context);
@@ -820,9 +826,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationResourceInner>, OperationResourceInner> beginDelete(
         String resourceGroupName, String workspaceName, String privateEndpointConnectionName) {
         return beginDeleteAsync(resourceGroupName, workspaceName, privateEndpointConnectionName).getSyncPoller();
@@ -838,9 +844,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationResourceInner>, OperationResourceInner> beginDelete(
         String resourceGroupName, String workspaceName, String privateEndpointConnectionName, Context context) {
         return beginDeleteAsync(resourceGroupName, workspaceName, privateEndpointConnectionName, context)
@@ -856,7 +862,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationResourceInner> deleteAsync(
@@ -876,7 +882,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationResourceInner> deleteAsync(
@@ -929,7 +935,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private endpoint connections.
+     * @return a list of private endpoint connections along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionInner>> listSinglePageAsync(
@@ -953,6 +960,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -960,7 +968,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                     service
                         .list(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -987,7 +995,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private endpoint connections.
+     * @return a list of private endpoint connections along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionInner>> listSinglePageAsync(
@@ -1011,12 +1020,13 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -1107,7 +1117,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private endpoint connections.
+     * @return a list of private endpoint connections along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionInner>> listNextSinglePageAsync(String nextLink) {
@@ -1143,7 +1154,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private endpoint connections.
+     * @return a list of private endpoint connections along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionInner>> listNextSinglePageAsync(

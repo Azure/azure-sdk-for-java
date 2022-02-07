@@ -5,6 +5,7 @@ package com.azure.core.http.netty.implementation;
 
 import io.netty.buffer.ByteBuf;
 import reactor.netty.Connection;
+import reactor.netty.channel.ChannelOperations;
 
 import java.nio.ByteBuffer;
 
@@ -34,7 +35,20 @@ public final class Utility {
      * @param reactorNettyConnection The connection to close.
      */
     public static void closeConnection(Connection reactorNettyConnection) {
-        if (!reactorNettyConnection.isDisposed()) {
+        // ChannelOperations is generally the default implementation of Connection used.
+        //
+        // Using the specific subclass allows for a finer grain handling.
+        if (reactorNettyConnection instanceof ChannelOperations) {
+            ChannelOperations<?, ?> channelOperations = (ChannelOperations<?, ?>) reactorNettyConnection;
+
+            // Given that this is an HttpResponse the only time this will be called is when the outbound has completed.
+            //
+            // From there the only thing that needs to be checked is whether the inbound has been disposed (completed),
+            // and if not dispose it (aka drain it).
+            if (!channelOperations.isInboundDisposed()) {
+                channelOperations.channel().eventLoop().execute(channelOperations::discard);
+            }
+        } else if (!reactorNettyConnection.isDisposed()) {
             reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
         }
     }

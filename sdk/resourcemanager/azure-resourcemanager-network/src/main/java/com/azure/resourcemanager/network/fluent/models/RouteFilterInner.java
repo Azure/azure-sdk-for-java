@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -15,10 +14,15 @@ import java.util.List;
 import java.util.Map;
 
 /** Route Filter Resource. */
-@JsonFlatten
 @Fluent
-public class RouteFilterInner extends Resource {
+public final class RouteFilterInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RouteFilterInner.class);
+
+    /*
+     * Properties of the route filter.
+     */
+    @JsonProperty(value = "properties")
+    private RouteFilterPropertiesFormat innerProperties;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
@@ -27,34 +31,19 @@ public class RouteFilterInner extends Resource {
     private String etag;
 
     /*
-     * Collection of RouteFilterRules contained within a route filter.
-     */
-    @JsonProperty(value = "properties.rules")
-    private List<RouteFilterRuleInner> rules;
-
-    /*
-     * A collection of references to express route circuit peerings.
-     */
-    @JsonProperty(value = "properties.peerings", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ExpressRouteCircuitPeeringInner> peerings;
-
-    /*
-     * A collection of references to express route circuit ipv6 peerings.
-     */
-    @JsonProperty(value = "properties.ipv6Peerings", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ExpressRouteCircuitPeeringInner> ipv6Peerings;
-
-    /*
-     * The provisioning state of the route filter resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
      * Resource ID.
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /**
+     * Get the innerProperties property: Properties of the route filter.
+     *
+     * @return the innerProperties value.
+     */
+    private RouteFilterPropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
@@ -63,53 +52,6 @@ public class RouteFilterInner extends Resource {
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Get the rules property: Collection of RouteFilterRules contained within a route filter.
-     *
-     * @return the rules value.
-     */
-    public List<RouteFilterRuleInner> rules() {
-        return this.rules;
-    }
-
-    /**
-     * Set the rules property: Collection of RouteFilterRules contained within a route filter.
-     *
-     * @param rules the rules value to set.
-     * @return the RouteFilterInner object itself.
-     */
-    public RouteFilterInner withRules(List<RouteFilterRuleInner> rules) {
-        this.rules = rules;
-        return this;
-    }
-
-    /**
-     * Get the peerings property: A collection of references to express route circuit peerings.
-     *
-     * @return the peerings value.
-     */
-    public List<ExpressRouteCircuitPeeringInner> peerings() {
-        return this.peerings;
-    }
-
-    /**
-     * Get the ipv6Peerings property: A collection of references to express route circuit ipv6 peerings.
-     *
-     * @return the ipv6Peerings value.
-     */
-    public List<ExpressRouteCircuitPeeringInner> ipv6Peerings() {
-        return this.ipv6Peerings;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the route filter resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -147,19 +89,63 @@ public class RouteFilterInner extends Resource {
     }
 
     /**
+     * Get the rules property: Collection of RouteFilterRules contained within a route filter.
+     *
+     * @return the rules value.
+     */
+    public List<RouteFilterRuleInner> rules() {
+        return this.innerProperties() == null ? null : this.innerProperties().rules();
+    }
+
+    /**
+     * Set the rules property: Collection of RouteFilterRules contained within a route filter.
+     *
+     * @param rules the rules value to set.
+     * @return the RouteFilterInner object itself.
+     */
+    public RouteFilterInner withRules(List<RouteFilterRuleInner> rules) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RouteFilterPropertiesFormat();
+        }
+        this.innerProperties().withRules(rules);
+        return this;
+    }
+
+    /**
+     * Get the peerings property: A collection of references to express route circuit peerings.
+     *
+     * @return the peerings value.
+     */
+    public List<ExpressRouteCircuitPeeringInner> peerings() {
+        return this.innerProperties() == null ? null : this.innerProperties().peerings();
+    }
+
+    /**
+     * Get the ipv6Peerings property: A collection of references to express route circuit ipv6 peerings.
+     *
+     * @return the ipv6Peerings value.
+     */
+    public List<ExpressRouteCircuitPeeringInner> ipv6Peerings() {
+        return this.innerProperties() == null ? null : this.innerProperties().ipv6Peerings();
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the route filter resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (rules() != null) {
-            rules().forEach(e -> e.validate());
-        }
-        if (peerings() != null) {
-            peerings().forEach(e -> e.validate());
-        }
-        if (ipv6Peerings() != null) {
-            ipv6Peerings().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

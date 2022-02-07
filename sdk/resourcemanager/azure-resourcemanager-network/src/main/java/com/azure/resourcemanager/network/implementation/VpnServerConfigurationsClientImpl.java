@@ -41,7 +41,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -221,7 +220,7 @@ public final class VpnServerConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -274,7 +273,7 @@ public final class VpnServerConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -390,7 +389,7 @@ public final class VpnServerConfigurationsClientImpl
         } else {
             vpnServerConfigurationParameters.validate();
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -456,7 +455,7 @@ public final class VpnServerConfigurationsClientImpl
         } else {
             vpnServerConfigurationParameters.validate();
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -482,7 +481,7 @@ public final class VpnServerConfigurationsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnServerConfiguration Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VpnServerConfigurationInner>, VpnServerConfigurationInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String vpnServerConfigurationName,
@@ -497,7 +496,7 @@ public final class VpnServerConfigurationsClientImpl
                 this.client.getHttpPipeline(),
                 VpnServerConfigurationInner.class,
                 VpnServerConfigurationInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -512,7 +511,7 @@ public final class VpnServerConfigurationsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnServerConfiguration Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VpnServerConfigurationInner>, VpnServerConfigurationInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String vpnServerConfigurationName,
@@ -543,7 +542,7 @@ public final class VpnServerConfigurationsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnServerConfiguration Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnServerConfigurationInner>, VpnServerConfigurationInner> beginCreateOrUpdate(
         String resourceGroupName,
         String vpnServerConfigurationName,
@@ -564,7 +563,7 @@ public final class VpnServerConfigurationsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnServerConfiguration Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnServerConfigurationInner>, VpnServerConfigurationInner> beginCreateOrUpdate(
         String resourceGroupName,
         String vpnServerConfigurationName,
@@ -668,7 +667,7 @@ public final class VpnServerConfigurationsClientImpl
      *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being updated.
-     * @param tags Resource tags.
+     * @param vpnServerConfigurationParameters Parameters supplied to update VpnServerConfiguration tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -676,7 +675,7 @@ public final class VpnServerConfigurationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VpnServerConfigurationInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String vpnServerConfigurationName, Map<String, String> tags) {
+        String resourceGroupName, String vpnServerConfigurationName, TagsObject vpnServerConfigurationParameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -699,10 +698,16 @@ public final class VpnServerConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        if (vpnServerConfigurationParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter vpnServerConfigurationParameters is required and cannot be null."));
+        } else {
+            vpnServerConfigurationParameters.validate();
+        }
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
-        TagsObject vpnServerConfigurationParameters = new TagsObject();
-        vpnServerConfigurationParameters.withTags(tags);
         return FluxUtil
             .withContext(
                 context ->
@@ -724,7 +729,7 @@ public final class VpnServerConfigurationsClientImpl
      *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being updated.
-     * @param tags Resource tags.
+     * @param vpnServerConfigurationParameters Parameters supplied to update VpnServerConfiguration tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -733,7 +738,10 @@ public final class VpnServerConfigurationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VpnServerConfigurationInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String vpnServerConfigurationName, Map<String, String> tags, Context context) {
+        String resourceGroupName,
+        String vpnServerConfigurationName,
+        TagsObject vpnServerConfigurationParameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -756,10 +764,16 @@ public final class VpnServerConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        if (vpnServerConfigurationParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter vpnServerConfigurationParameters is required and cannot be null."));
+        } else {
+            vpnServerConfigurationParameters.validate();
+        }
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
-        TagsObject vpnServerConfigurationParameters = new TagsObject();
-        vpnServerConfigurationParameters.withTags(tags);
         context = this.client.mergeContext(context);
         return service
             .updateTags(
@@ -778,7 +792,7 @@ public final class VpnServerConfigurationsClientImpl
      *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being updated.
-     * @param tags Resource tags.
+     * @param vpnServerConfigurationParameters Parameters supplied to update VpnServerConfiguration tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -786,8 +800,9 @@ public final class VpnServerConfigurationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VpnServerConfigurationInner> updateTagsAsync(
-        String resourceGroupName, String vpnServerConfigurationName, Map<String, String> tags) {
-        return updateTagsWithResponseAsync(resourceGroupName, vpnServerConfigurationName, tags)
+        String resourceGroupName, String vpnServerConfigurationName, TagsObject vpnServerConfigurationParameters) {
+        return updateTagsWithResponseAsync(
+                resourceGroupName, vpnServerConfigurationName, vpnServerConfigurationParameters)
             .flatMap(
                 (Response<VpnServerConfigurationInner> res) -> {
                     if (res.getValue() != null) {
@@ -803,24 +818,16 @@ public final class VpnServerConfigurationsClientImpl
      *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being updated.
+     * @param vpnServerConfigurationParameters Parameters supplied to update VpnServerConfiguration tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnServerConfiguration Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VpnServerConfigurationInner> updateTagsAsync(
-        String resourceGroupName, String vpnServerConfigurationName) {
-        final Map<String, String> tags = null;
-        return updateTagsWithResponseAsync(resourceGroupName, vpnServerConfigurationName, tags)
-            .flatMap(
-                (Response<VpnServerConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public VpnServerConfigurationInner updateTags(
+        String resourceGroupName, String vpnServerConfigurationName, TagsObject vpnServerConfigurationParameters) {
+        return updateTagsAsync(resourceGroupName, vpnServerConfigurationName, vpnServerConfigurationParameters).block();
     }
 
     /**
@@ -828,23 +835,7 @@ public final class VpnServerConfigurationsClientImpl
      *
      * @param resourceGroupName The resource group name of the VpnServerConfiguration.
      * @param vpnServerConfigurationName The name of the VpnServerConfiguration being updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnServerConfiguration Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VpnServerConfigurationInner updateTags(String resourceGroupName, String vpnServerConfigurationName) {
-        final Map<String, String> tags = null;
-        return updateTagsAsync(resourceGroupName, vpnServerConfigurationName, tags).block();
-    }
-
-    /**
-     * Updates VpnServerConfiguration tags.
-     *
-     * @param resourceGroupName The resource group name of the VpnServerConfiguration.
-     * @param vpnServerConfigurationName The name of the VpnServerConfiguration being updated.
-     * @param tags Resource tags.
+     * @param vpnServerConfigurationParameters Parameters supplied to update VpnServerConfiguration tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -853,8 +844,13 @@ public final class VpnServerConfigurationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VpnServerConfigurationInner> updateTagsWithResponse(
-        String resourceGroupName, String vpnServerConfigurationName, Map<String, String> tags, Context context) {
-        return updateTagsWithResponseAsync(resourceGroupName, vpnServerConfigurationName, tags, context).block();
+        String resourceGroupName,
+        String vpnServerConfigurationName,
+        TagsObject vpnServerConfigurationParameters,
+        Context context) {
+        return updateTagsWithResponseAsync(
+                resourceGroupName, vpnServerConfigurationName, vpnServerConfigurationParameters, context)
+            .block();
     }
 
     /**
@@ -892,7 +888,7 @@ public final class VpnServerConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -945,7 +941,7 @@ public final class VpnServerConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter vpnServerConfigurationName is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -969,13 +965,14 @@ public final class VpnServerConfigurationsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String vpnServerConfigurationName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, vpnServerConfigurationName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -989,7 +986,7 @@ public final class VpnServerConfigurationsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String vpnServerConfigurationName, Context context) {
         context = this.client.mergeContext(context);
@@ -1010,7 +1007,7 @@ public final class VpnServerConfigurationsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vpnServerConfigurationName) {
         return beginDeleteAsync(resourceGroupName, vpnServerConfigurationName).getSyncPoller();
     }
@@ -1026,7 +1023,7 @@ public final class VpnServerConfigurationsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String vpnServerConfigurationName, Context context) {
         return beginDeleteAsync(resourceGroupName, vpnServerConfigurationName, context).getSyncPoller();
@@ -1124,7 +1121,7 @@ public final class VpnServerConfigurationsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1178,7 +1175,7 @@ public final class VpnServerConfigurationsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1283,7 +1280,7 @@ public final class VpnServerConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1325,7 +1322,7 @@ public final class VpnServerConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

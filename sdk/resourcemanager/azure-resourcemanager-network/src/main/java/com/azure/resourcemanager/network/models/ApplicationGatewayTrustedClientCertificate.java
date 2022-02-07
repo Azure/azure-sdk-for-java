@@ -5,17 +5,22 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayTrustedClientCertificatePropertiesFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Trusted client certificates of an application gateway. */
-@JsonFlatten
 @Fluent
-public class ApplicationGatewayTrustedClientCertificate extends SubResource {
+public final class ApplicationGatewayTrustedClientCertificate extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayTrustedClientCertificate.class);
+
+    /*
+     * Properties of the application gateway trusted client certificate.
+     */
+    @JsonProperty(value = "properties")
+    private ApplicationGatewayTrustedClientCertificatePropertiesFormat innerProperties;
 
     /*
      * Name of the trusted client certificate that is unique within an
@@ -36,29 +41,14 @@ public class ApplicationGatewayTrustedClientCertificate extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * Certificate public data.
+    /**
+     * Get the innerProperties property: Properties of the application gateway trusted client certificate.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.data")
-    private String data;
-
-    /*
-     * Validated certificate data.
-     */
-    @JsonProperty(value = "properties.validatedCertData", access = JsonProperty.Access.WRITE_ONLY)
-    private String validatedCertData;
-
-    /*
-     * Distinguished name of client certificate issuer.
-     */
-    @JsonProperty(value = "properties.clientCertIssuerDN", access = JsonProperty.Access.WRITE_ONLY)
-    private String clientCertIssuerDN;
-
-    /*
-     * The provisioning state of the trusted client certificate resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private ApplicationGatewayTrustedClientCertificatePropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Name of the trusted client certificate that is unique within an Application Gateway.
@@ -98,13 +88,20 @@ public class ApplicationGatewayTrustedClientCertificate extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayTrustedClientCertificate withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the data property: Certificate public data.
      *
      * @return the data value.
      */
     public String data() {
-        return this.data;
+        return this.innerProperties() == null ? null : this.innerProperties().data();
     }
 
     /**
@@ -114,7 +111,10 @@ public class ApplicationGatewayTrustedClientCertificate extends SubResource {
      * @return the ApplicationGatewayTrustedClientCertificate object itself.
      */
     public ApplicationGatewayTrustedClientCertificate withData(String data) {
-        this.data = data;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayTrustedClientCertificatePropertiesFormat();
+        }
+        this.innerProperties().withData(data);
         return this;
     }
 
@@ -124,7 +124,7 @@ public class ApplicationGatewayTrustedClientCertificate extends SubResource {
      * @return the validatedCertData value.
      */
     public String validatedCertData() {
-        return this.validatedCertData;
+        return this.innerProperties() == null ? null : this.innerProperties().validatedCertData();
     }
 
     /**
@@ -133,7 +133,7 @@ public class ApplicationGatewayTrustedClientCertificate extends SubResource {
      * @return the clientCertIssuerDN value.
      */
     public String clientCertIssuerDN() {
-        return this.clientCertIssuerDN;
+        return this.innerProperties() == null ? null : this.innerProperties().clientCertIssuerDN();
     }
 
     /**
@@ -142,14 +142,7 @@ public class ApplicationGatewayTrustedClientCertificate extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ApplicationGatewayTrustedClientCertificate withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -158,5 +151,8 @@ public class ApplicationGatewayTrustedClientCertificate extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

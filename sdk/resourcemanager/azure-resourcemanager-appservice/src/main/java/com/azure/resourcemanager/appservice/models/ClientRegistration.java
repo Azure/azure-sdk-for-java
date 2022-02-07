@@ -5,31 +5,29 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ClientRegistration model. */
-@JsonFlatten
+/** The configuration settings of the app registration for providers that have client ids and client secrets. */
 @Fluent
-public class ClientRegistration extends ProxyOnlyResource {
+public final class ClientRegistration {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ClientRegistration.class);
 
     /*
-     * The clientId property.
+     * The Client ID of the app used for login.
      */
-    @JsonProperty(value = "properties.clientId")
+    @JsonProperty(value = "clientId")
     private String clientId;
 
     /*
-     * The clientSecretSettingName property.
+     * The app setting name that contains the client secret.
      */
-    @JsonProperty(value = "properties.clientSecretSettingName")
+    @JsonProperty(value = "clientSecretSettingName")
     private String clientSecretSettingName;
 
     /**
-     * Get the clientId property: The clientId property.
+     * Get the clientId property: The Client ID of the app used for login.
      *
      * @return the clientId value.
      */
@@ -38,7 +36,7 @@ public class ClientRegistration extends ProxyOnlyResource {
     }
 
     /**
-     * Set the clientId property: The clientId property.
+     * Set the clientId property: The Client ID of the app used for login.
      *
      * @param clientId the clientId value to set.
      * @return the ClientRegistration object itself.
@@ -49,7 +47,7 @@ public class ClientRegistration extends ProxyOnlyResource {
     }
 
     /**
-     * Get the clientSecretSettingName property: The clientSecretSettingName property.
+     * Get the clientSecretSettingName property: The app setting name that contains the client secret.
      *
      * @return the clientSecretSettingName value.
      */
@@ -58,7 +56,7 @@ public class ClientRegistration extends ProxyOnlyResource {
     }
 
     /**
-     * Set the clientSecretSettingName property: The clientSecretSettingName property.
+     * Set the clientSecretSettingName property: The app setting name that contains the client secret.
      *
      * @param clientSecretSettingName the clientSecretSettingName value to set.
      * @return the ClientRegistration object itself.
@@ -68,20 +66,11 @@ public class ClientRegistration extends ProxyOnlyResource {
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public ClientRegistration withKind(String kind) {
-        super.withKind(kind);
-        return this;
-    }
-
     /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
     }
 }

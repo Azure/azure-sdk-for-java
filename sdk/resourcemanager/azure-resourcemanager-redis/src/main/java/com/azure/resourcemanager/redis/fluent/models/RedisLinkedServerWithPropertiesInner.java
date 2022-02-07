@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.redis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.models.ReplicationRole;
@@ -13,34 +12,33 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Response to put/get linked server (with properties) for Redis cache. */
-@JsonFlatten
 @Fluent
-public class RedisLinkedServerWithPropertiesInner extends ProxyResource {
+public final class RedisLinkedServerWithPropertiesInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RedisLinkedServerWithPropertiesInner.class);
 
     /*
-     * Fully qualified resourceId of the linked redis cache.
+     * Properties of the linked server.
      */
-    @JsonProperty(value = "properties.linkedRedisCacheId")
-    private String linkedRedisCacheId;
+    @JsonProperty(value = "properties")
+    private RedisLinkedServerProperties innerProperties;
 
-    /*
-     * Location of the linked redis cache.
+    /**
+     * Get the innerProperties property: Properties of the linked server.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.linkedRedisCacheLocation")
-    private String linkedRedisCacheLocation;
+    private RedisLinkedServerProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Role of the linked server.
+    /**
+     * Get the provisioningState property: Terminal state of the link between primary and secondary redis cache.
+     *
+     * @return the provisioningState value.
      */
-    @JsonProperty(value = "properties.serverRole")
-    private ReplicationRole serverRole;
-
-    /*
-     * Terminal state of the link between primary and secondary redis cache.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
 
     /**
      * Get the linkedRedisCacheId property: Fully qualified resourceId of the linked redis cache.
@@ -48,7 +46,7 @@ public class RedisLinkedServerWithPropertiesInner extends ProxyResource {
      * @return the linkedRedisCacheId value.
      */
     public String linkedRedisCacheId() {
-        return this.linkedRedisCacheId;
+        return this.innerProperties() == null ? null : this.innerProperties().linkedRedisCacheId();
     }
 
     /**
@@ -58,7 +56,10 @@ public class RedisLinkedServerWithPropertiesInner extends ProxyResource {
      * @return the RedisLinkedServerWithPropertiesInner object itself.
      */
     public RedisLinkedServerWithPropertiesInner withLinkedRedisCacheId(String linkedRedisCacheId) {
-        this.linkedRedisCacheId = linkedRedisCacheId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RedisLinkedServerProperties();
+        }
+        this.innerProperties().withLinkedRedisCacheId(linkedRedisCacheId);
         return this;
     }
 
@@ -68,7 +69,7 @@ public class RedisLinkedServerWithPropertiesInner extends ProxyResource {
      * @return the linkedRedisCacheLocation value.
      */
     public String linkedRedisCacheLocation() {
-        return this.linkedRedisCacheLocation;
+        return this.innerProperties() == null ? null : this.innerProperties().linkedRedisCacheLocation();
     }
 
     /**
@@ -78,7 +79,10 @@ public class RedisLinkedServerWithPropertiesInner extends ProxyResource {
      * @return the RedisLinkedServerWithPropertiesInner object itself.
      */
     public RedisLinkedServerWithPropertiesInner withLinkedRedisCacheLocation(String linkedRedisCacheLocation) {
-        this.linkedRedisCacheLocation = linkedRedisCacheLocation;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RedisLinkedServerProperties();
+        }
+        this.innerProperties().withLinkedRedisCacheLocation(linkedRedisCacheLocation);
         return this;
     }
 
@@ -88,7 +92,7 @@ public class RedisLinkedServerWithPropertiesInner extends ProxyResource {
      * @return the serverRole value.
      */
     public ReplicationRole serverRole() {
-        return this.serverRole;
+        return this.innerProperties() == null ? null : this.innerProperties().serverRole();
     }
 
     /**
@@ -98,17 +102,11 @@ public class RedisLinkedServerWithPropertiesInner extends ProxyResource {
      * @return the RedisLinkedServerWithPropertiesInner object itself.
      */
     public RedisLinkedServerWithPropertiesInner withServerRole(ReplicationRole serverRole) {
-        this.serverRole = serverRole;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RedisLinkedServerProperties();
+        }
+        this.innerProperties().withServerRole(serverRole);
         return this;
-    }
-
-    /**
-     * Get the provisioningState property: Terminal state of the link between primary and secondary redis cache.
-     *
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -117,5 +115,8 @@ public class RedisLinkedServerWithPropertiesInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

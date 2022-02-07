@@ -1,0 +1,136 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.githubusercontent.com/Azure/iot-plugandplay-models/main/%2FAzure%2Fiot-plugandplay-models%2Fmain%2Fmetadata.json",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-iot-modelsrepository/1.0.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "373d3fb2-3224-4231-82b9-88317026322b"
+    },
+    "Response" : {
+      "X-Cache" : "HIT",
+      "content-length" : "117",
+      "Access-Control-Allow-Origin" : "*",
+      "Connection" : "keep-alive",
+      "retry-after" : "0",
+      "StatusCode" : "301",
+      "Source-Age" : "3152",
+      "Date" : "Wed, 06 Oct 2021 20:20:38 GMT",
+      "Via" : "1.1 varnish",
+      "X-Timer" : "S1633551639.640685,VS0,VE1",
+      "Accept-Ranges" : "bytes",
+      "X-Served-By" : "cache-sea4467-SEA",
+      "Vary" : "Authorization,Accept-Encoding",
+      "Expires" : "Wed, 06 Oct 2021 20:25:38 GMT",
+      "X-Cache-Hits" : "1",
+      "Body" : "<a href=\"/Azure/iot-plugandplay-models/main/Azure/iot-plugandplay-models/main/metadata.json\">Moved Permanently</a>.\n\n",
+      "X-Fastly-Request-ID" : "d4b04e5c26caad09bfafe6fc4a34fbb2f9bbd722",
+      "Content-Type" : "text/html; charset=utf-8",
+      "Location" : "/Azure/iot-plugandplay-models/main/Azure/iot-plugandplay-models/main/metadata.json",
+      "X-GitHub-Request-Id" : "3658:1B57:376C8:48218:615DF8C6"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.githubusercontent.com/Azure/iot-plugandplay-models/main/dtmi%2Fazure%2Fdevicemanagement%2Fdeviceinformation-1.json",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-iot-modelsrepository/1.0.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "fd2bb724-ce53-4876-82d5-dfa44781e212"
+    },
+    "Response" : {
+      "content-length" : "2212",
+      "Access-Control-Allow-Origin" : "*",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Source-Age" : "16",
+      "X-Timer" : "S1633551639.657189,VS0,VE1",
+      "X-Frame-Options" : "deny",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "X-Served-By" : "cache-sea4481-SEA",
+      "Content-Security-Policy" : "default-src 'none'; style-src 'unsafe-inline'; sandbox",
+      "X-XSS-Protection" : "1; mode=block",
+      "Body" : "{\n    \"@context\": \"dtmi:dtdl:context;2\",\n    \"@id\": \"dtmi:azure:DeviceManagement:DeviceInformation;1\",\n    \"@type\": \"Interface\",\n    \"displayName\": \"Device Information\",\n    \"contents\": [\n      {\n        \"@type\": \"Property\",\n        \"name\": \"manufacturer\",\n        \"displayName\": \"Manufacturer\",\n        \"schema\": \"string\",\n        \"description\": \"Company name of the device manufacturer. This could be the same as the name of the original equipment manufacturer (OEM). Ex. Contoso.\"\n      },\n      {\n        \"@type\": \"Property\",\n        \"name\": \"model\",\n        \"displayName\": \"Device model\",\n        \"schema\": \"string\",\n        \"description\": \"Device model name or ID. Ex. Surface Book 2.\"\n      },\n      {\n        \"@type\": \"Property\",\n        \"name\": \"swVersion\",\n        \"displayName\": \"Software version\",\n        \"schema\": \"string\",\n        \"description\": \"Version of the software on your device. This could be the version of your firmware. Ex. 1.3.45\"\n      },\n      {\n        \"@type\": \"Property\",\n        \"name\": \"osName\",\n        \"displayName\": \"Operating system name\",\n        \"schema\": \"string\",\n        \"description\": \"Name of the operating system on the device. Ex. Windows 10 IoT Core.\"\n      },\n      {\n        \"@type\": \"Property\",\n        \"name\": \"processorArchitecture\",\n        \"displayName\": \"Processor architecture\",\n        \"schema\": \"string\",\n        \"description\": \"Architecture of the processor on the device. Ex. x64 or ARM.\"\n      },\n      {\n        \"@type\": \"Property\",\n        \"name\": \"processorManufacturer\",\n        \"displayName\": \"Processor manufacturer\",\n        \"schema\": \"string\",\n        \"description\": \"Name of the manufacturer of the processor on the device. Ex. Intel.\"\n      },\n      {\n        \"@type\": \"Property\",\n        \"name\": \"totalStorage\",\n        \"displayName\": \"Total storage\",\n        \"schema\": \"double\",\n        \"description\": \"Total available storage on the device in kilobytes. Ex. 2048000 kilobytes.\"\n      },\n      {\n        \"@type\": \"Property\",\n        \"name\": \"totalMemory\",\n        \"displayName\": \"Total memory\",\n        \"schema\": \"double\",\n        \"description\": \"Total available memory on the device in kilobytes. Ex. 256000 kilobytes.\"\n      }\n    ]\n  }",
+      "Content-Type" : "text/plain; charset=utf-8",
+      "X-GitHub-Request-Id" : "956E:278C:249C9:34469:615DF8C6",
+      "X-Cache" : "HIT",
+      "X-Content-Type-Options" : "nosniff",
+      "Connection" : "keep-alive",
+      "Date" : "Wed, 06 Oct 2021 20:20:38 GMT",
+      "Via" : "1.1 varnish",
+      "Accept-Ranges" : "bytes",
+      "Cache-Control" : "max-age=300",
+      "ETag" : "\"7952e5f1274fe59fa4aa27c6ba55a1aebec0d5b2ac12f5c8124bbfb08eae4eee\"",
+      "Vary" : "Authorization,Accept-Encoding,Origin",
+      "Expires" : "Wed, 06 Oct 2021 20:25:38 GMT",
+      "X-Cache-Hits" : "1",
+      "X-Fastly-Request-ID" : "5df4bd0e445a001660fc9bbc87a07e197269cd3b"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.githubusercontent.com/Azure/iot-plugandplay-models/main/%2FAzure%2Fiot-plugandplay-models%2Fmain%2Fmetadata.json",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-iot-modelsrepository/1.0.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7d8e24f6-1a2f-497e-a2b4-8476009e83b0"
+    },
+    "Response" : {
+      "X-Cache" : "HIT",
+      "content-length" : "117",
+      "Access-Control-Allow-Origin" : "*",
+      "Connection" : "keep-alive",
+      "retry-after" : "0",
+      "StatusCode" : "301",
+      "Source-Age" : "3152",
+      "Date" : "Wed, 06 Oct 2021 20:20:38 GMT",
+      "Via" : "1.1 varnish",
+      "X-Timer" : "S1633551639.680088,VS0,VE0",
+      "Accept-Ranges" : "bytes",
+      "X-Served-By" : "cache-sea4476-SEA",
+      "Vary" : "Authorization,Accept-Encoding",
+      "Expires" : "Wed, 06 Oct 2021 20:25:38 GMT",
+      "X-Cache-Hits" : "3",
+      "Body" : "<a href=\"/Azure/iot-plugandplay-models/main/Azure/iot-plugandplay-models/main/metadata.json\">Moved Permanently</a>.\n\n",
+      "X-Fastly-Request-ID" : "6e6bca3cad481da68ff97ac490b38c49e575b967",
+      "Content-Type" : "text/html; charset=utf-8",
+      "Location" : "/Azure/iot-plugandplay-models/main/Azure/iot-plugandplay-models/main/metadata.json",
+      "X-GitHub-Request-Id" : "3658:1B57:376C8:48218:615DF8C6"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.githubusercontent.com/Azure/iot-plugandplay-models/main/dtmi%2Fazure%2Fdevicemanagement%2Fdeviceinformation-1.json",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-iot-modelsrepository/1.0.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0d61b93e-98bd-4a7a-9091-d05701c8a0f8"
+    },
+    "Response" : {
+      "content-length" : "2212",
+      "Access-Control-Allow-Origin" : "*",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Source-Age" : "16",
+      "X-Timer" : "S1633551639.692640,VS0,VE1",
+      "X-Frame-Options" : "deny",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "X-Served-By" : "cache-sea4479-SEA",
+      "Content-Security-Policy" : "default-src 'none'; style-src 'unsafe-inline'; sandbox",
+      "X-XSS-Protection" : "1; mode=block",
+      "Body" : "{\n    \"@context\": \"dtmi:dtdl:context;2\",\n    \"@id\": \"dtmi:azure:DeviceManagement:DeviceInformation;1\",\n    \"@type\": \"Interface\",\n    \"displayName\": \"Device Information\",\n    \"contents\": [\n      {\n        \"@type\": \"Property\",\n        \"name\": \"manufacturer\",\n        \"displayName\": \"Manufacturer\",\n        \"schema\": \"string\",\n        \"description\": \"Company name of the device manufacturer. This could be the same as the name of the original equipment manufacturer (OEM). Ex. Contoso.\"\n      },\n      {\n        \"@type\": \"Property\",\n        \"name\": \"model\",\n        \"displayName\": \"Device model\",\n        \"schema\": \"string\",\n        \"description\": \"Device model name or ID. Ex. Surface Book 2.\"\n      },\n      {\n        \"@type\": \"Property\",\n        \"name\": \"swVersion\",\n        \"displayName\": \"Software version\",\n        \"schema\": \"string\",\n        \"description\": \"Version of the software on your device. This could be the version of your firmware. Ex. 1.3.45\"\n      },\n      {\n        \"@type\": \"Property\",\n        \"name\": \"osName\",\n        \"displayName\": \"Operating system name\",\n        \"schema\": \"string\",\n        \"description\": \"Name of the operating system on the device. Ex. Windows 10 IoT Core.\"\n      },\n      {\n        \"@type\": \"Property\",\n        \"name\": \"processorArchitecture\",\n        \"displayName\": \"Processor architecture\",\n        \"schema\": \"string\",\n        \"description\": \"Architecture of the processor on the device. Ex. x64 or ARM.\"\n      },\n      {\n        \"@type\": \"Property\",\n        \"name\": \"processorManufacturer\",\n        \"displayName\": \"Processor manufacturer\",\n        \"schema\": \"string\",\n        \"description\": \"Name of the manufacturer of the processor on the device. Ex. Intel.\"\n      },\n      {\n        \"@type\": \"Property\",\n        \"name\": \"totalStorage\",\n        \"displayName\": \"Total storage\",\n        \"schema\": \"double\",\n        \"description\": \"Total available storage on the device in kilobytes. Ex. 2048000 kilobytes.\"\n      },\n      {\n        \"@type\": \"Property\",\n        \"name\": \"totalMemory\",\n        \"displayName\": \"Total memory\",\n        \"schema\": \"double\",\n        \"description\": \"Total available memory on the device in kilobytes. Ex. 256000 kilobytes.\"\n      }\n    ]\n  }",
+      "Content-Type" : "text/plain; charset=utf-8",
+      "X-GitHub-Request-Id" : "956E:278C:249C9:34469:615DF8C6",
+      "X-Cache" : "HIT",
+      "X-Content-Type-Options" : "nosniff",
+      "Connection" : "keep-alive",
+      "Date" : "Wed, 06 Oct 2021 20:20:38 GMT",
+      "Via" : "1.1 varnish",
+      "Accept-Ranges" : "bytes",
+      "Cache-Control" : "max-age=300",
+      "ETag" : "\"7952e5f1274fe59fa4aa27c6ba55a1aebec0d5b2ac12f5c8124bbfb08eae4eee\"",
+      "Vary" : "Authorization,Accept-Encoding,Origin",
+      "Expires" : "Wed, 06 Oct 2021 20:25:38 GMT",
+      "X-Cache-Hits" : "1",
+      "X-Fastly-Request-ID" : "fab5c72ec9b38e981c9a9405ccd9db4ef5f0b69e"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

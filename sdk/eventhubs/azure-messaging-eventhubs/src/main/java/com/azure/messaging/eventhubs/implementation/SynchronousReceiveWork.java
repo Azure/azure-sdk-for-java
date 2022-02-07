@@ -11,6 +11,8 @@ import reactor.core.publisher.FluxSink;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.WORK_ID_KEY;
+
 /**
  * Represents a synchronous receive request.
  *
@@ -100,7 +102,9 @@ public class SynchronousReceiveWork {
      */
     public synchronized void complete() {
         if (!isTerminal || emitter.isCancelled()) {
-            logger.info("Id: {}. Completing task.", id);
+            logger.atInfo()
+                .addKeyValue(WORK_ID_KEY, id)
+                .log("Completing task.");
             isTerminal = true;
             emitter.complete();
         }

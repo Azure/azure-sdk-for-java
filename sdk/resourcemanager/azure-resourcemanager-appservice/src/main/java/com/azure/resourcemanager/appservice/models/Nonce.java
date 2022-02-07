@@ -5,31 +5,31 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Nonce model. */
-@JsonFlatten
+/** The configuration settings of the nonce used in the login flow. */
 @Fluent
-public class Nonce extends ProxyOnlyResource {
+public final class Nonce {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Nonce.class);
 
     /*
-     * The validateNonce property.
+     * <code>false</code> if the nonce should not be validated while completing
+     * the login flow; otherwise, <code>true</code>.
      */
-    @JsonProperty(value = "properties.validateNonce")
+    @JsonProperty(value = "validateNonce")
     private Boolean validateNonce;
 
     /*
-     * The nonceExpirationInterval property.
+     * The time after the request is made when the nonce should expire.
      */
-    @JsonProperty(value = "properties.nonceExpirationInterval")
+    @JsonProperty(value = "nonceExpirationInterval")
     private String nonceExpirationInterval;
 
     /**
-     * Get the validateNonce property: The validateNonce property.
+     * Get the validateNonce property: &lt;code&gt;false&lt;/code&gt; if the nonce should not be validated while
+     * completing the login flow; otherwise, &lt;code&gt;true&lt;/code&gt;.
      *
      * @return the validateNonce value.
      */
@@ -38,7 +38,8 @@ public class Nonce extends ProxyOnlyResource {
     }
 
     /**
-     * Set the validateNonce property: The validateNonce property.
+     * Set the validateNonce property: &lt;code&gt;false&lt;/code&gt; if the nonce should not be validated while
+     * completing the login flow; otherwise, &lt;code&gt;true&lt;/code&gt;.
      *
      * @param validateNonce the validateNonce value to set.
      * @return the Nonce object itself.
@@ -49,7 +50,7 @@ public class Nonce extends ProxyOnlyResource {
     }
 
     /**
-     * Get the nonceExpirationInterval property: The nonceExpirationInterval property.
+     * Get the nonceExpirationInterval property: The time after the request is made when the nonce should expire.
      *
      * @return the nonceExpirationInterval value.
      */
@@ -58,7 +59,7 @@ public class Nonce extends ProxyOnlyResource {
     }
 
     /**
-     * Set the nonceExpirationInterval property: The nonceExpirationInterval property.
+     * Set the nonceExpirationInterval property: The time after the request is made when the nonce should expire.
      *
      * @param nonceExpirationInterval the nonceExpirationInterval value to set.
      * @return the Nonce object itself.
@@ -68,20 +69,11 @@ public class Nonce extends ProxyOnlyResource {
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public Nonce withKind(String kind) {
-        super.withKind(kind);
-        return this;
-    }
-
     /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
     }
 }

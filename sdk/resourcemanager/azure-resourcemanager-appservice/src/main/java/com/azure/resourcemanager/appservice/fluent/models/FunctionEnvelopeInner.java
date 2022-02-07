@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,88 +12,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Function information. */
-@JsonFlatten
 @Fluent
-public class FunctionEnvelopeInner extends ProxyOnlyResource {
+public final class FunctionEnvelopeInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FunctionEnvelopeInner.class);
 
     /*
-     * Function App ID.
+     * FunctionEnvelope resource specific properties
      */
-    @JsonProperty(value = "properties.function_app_id")
-    private String functionAppId;
+    @JsonProperty(value = "properties")
+    private FunctionEnvelopeProperties innerProperties;
 
-    /*
-     * Script root path URI.
+    /**
+     * Get the innerProperties property: FunctionEnvelope resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.script_root_path_href")
-    private String scriptRootPathHref;
+    private FunctionEnvelopeProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Script URI.
-     */
-    @JsonProperty(value = "properties.script_href")
-    private String scriptHref;
-
-    /*
-     * Config URI.
-     */
-    @JsonProperty(value = "properties.config_href")
-    private String configHref;
-
-    /*
-     * Test data URI.
-     */
-    @JsonProperty(value = "properties.test_data_href")
-    private String testDataHref;
-
-    /*
-     * Secrets file URI.
-     */
-    @JsonProperty(value = "properties.secrets_file_href")
-    private String secretsFileHref;
-
-    /*
-     * Function URI.
-     */
-    @JsonProperty(value = "properties.href")
-    private String href;
-
-    /*
-     * Config information.
-     */
-    @JsonProperty(value = "properties.config")
-    private Object config;
-
-    /*
-     * File list.
-     */
-    @JsonProperty(value = "properties.files")
-    private Map<String, String> files;
-
-    /*
-     * Test data used when testing via the Azure Portal.
-     */
-    @JsonProperty(value = "properties.test_data")
-    private String testData;
-
-    /*
-     * The invocation URL
-     */
-    @JsonProperty(value = "properties.invoke_url_template")
-    private String invokeUrlTemplate;
-
-    /*
-     * The function language
-     */
-    @JsonProperty(value = "properties.language")
-    private String language;
-
-    /*
-     * Gets or sets a value indicating whether the function is disabled
-     */
-    @JsonProperty(value = "properties.isDisabled")
-    private Boolean isDisabled;
+    /** {@inheritDoc} */
+    @Override
+    public FunctionEnvelopeInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the functionAppId property: Function App ID.
@@ -102,7 +44,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
      * @return the functionAppId value.
      */
     public String functionAppId() {
-        return this.functionAppId;
+        return this.innerProperties() == null ? null : this.innerProperties().functionAppId();
     }
 
     /**
@@ -112,7 +54,10 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
      * @return the FunctionEnvelopeInner object itself.
      */
     public FunctionEnvelopeInner withFunctionAppId(String functionAppId) {
-        this.functionAppId = functionAppId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FunctionEnvelopeProperties();
+        }
+        this.innerProperties().withFunctionAppId(functionAppId);
         return this;
     }
 
@@ -122,7 +67,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
      * @return the scriptRootPathHref value.
      */
     public String scriptRootPathHref() {
-        return this.scriptRootPathHref;
+        return this.innerProperties() == null ? null : this.innerProperties().scriptRootPathHref();
     }
 
     /**
@@ -132,7 +77,10 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
      * @return the FunctionEnvelopeInner object itself.
      */
     public FunctionEnvelopeInner withScriptRootPathHref(String scriptRootPathHref) {
-        this.scriptRootPathHref = scriptRootPathHref;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FunctionEnvelopeProperties();
+        }
+        this.innerProperties().withScriptRootPathHref(scriptRootPathHref);
         return this;
     }
 
@@ -142,7 +90,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
      * @return the scriptHref value.
      */
     public String scriptHref() {
-        return this.scriptHref;
+        return this.innerProperties() == null ? null : this.innerProperties().scriptHref();
     }
 
     /**
@@ -152,7 +100,10 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
      * @return the FunctionEnvelopeInner object itself.
      */
     public FunctionEnvelopeInner withScriptHref(String scriptHref) {
-        this.scriptHref = scriptHref;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FunctionEnvelopeProperties();
+        }
+        this.innerProperties().withScriptHref(scriptHref);
         return this;
     }
 
@@ -162,7 +113,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
      * @return the configHref value.
      */
     public String configHref() {
-        return this.configHref;
+        return this.innerProperties() == null ? null : this.innerProperties().configHref();
     }
 
     /**
@@ -172,7 +123,10 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
      * @return the FunctionEnvelopeInner object itself.
      */
     public FunctionEnvelopeInner withConfigHref(String configHref) {
-        this.configHref = configHref;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FunctionEnvelopeProperties();
+        }
+        this.innerProperties().withConfigHref(configHref);
         return this;
     }
 
@@ -182,7 +136,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
      * @return the testDataHref value.
      */
     public String testDataHref() {
-        return this.testDataHref;
+        return this.innerProperties() == null ? null : this.innerProperties().testDataHref();
     }
 
     /**
@@ -192,7 +146,10 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
      * @return the FunctionEnvelopeInner object itself.
      */
     public FunctionEnvelopeInner withTestDataHref(String testDataHref) {
-        this.testDataHref = testDataHref;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FunctionEnvelopeProperties();
+        }
+        this.innerProperties().withTestDataHref(testDataHref);
         return this;
     }
 
@@ -202,7 +159,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
      * @return the secretsFileHref value.
      */
     public String secretsFileHref() {
-        return this.secretsFileHref;
+        return this.innerProperties() == null ? null : this.innerProperties().secretsFileHref();
     }
 
     /**
@@ -212,7 +169,10 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
      * @return the FunctionEnvelopeInner object itself.
      */
     public FunctionEnvelopeInner withSecretsFileHref(String secretsFileHref) {
-        this.secretsFileHref = secretsFileHref;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FunctionEnvelopeProperties();
+        }
+        this.innerProperties().withSecretsFileHref(secretsFileHref);
         return this;
     }
 
@@ -222,7 +182,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
      * @return the href value.
      */
     public String href() {
-        return this.href;
+        return this.innerProperties() == null ? null : this.innerProperties().href();
     }
 
     /**
@@ -232,7 +192,10 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
      * @return the FunctionEnvelopeInner object itself.
      */
     public FunctionEnvelopeInner withHref(String href) {
-        this.href = href;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FunctionEnvelopeProperties();
+        }
+        this.innerProperties().withHref(href);
         return this;
     }
 
@@ -242,7 +205,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
      * @return the config value.
      */
     public Object config() {
-        return this.config;
+        return this.innerProperties() == null ? null : this.innerProperties().config();
     }
 
     /**
@@ -252,7 +215,10 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
      * @return the FunctionEnvelopeInner object itself.
      */
     public FunctionEnvelopeInner withConfig(Object config) {
-        this.config = config;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FunctionEnvelopeProperties();
+        }
+        this.innerProperties().withConfig(config);
         return this;
     }
 
@@ -262,7 +228,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
      * @return the files value.
      */
     public Map<String, String> files() {
-        return this.files;
+        return this.innerProperties() == null ? null : this.innerProperties().files();
     }
 
     /**
@@ -272,7 +238,10 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
      * @return the FunctionEnvelopeInner object itself.
      */
     public FunctionEnvelopeInner withFiles(Map<String, String> files) {
-        this.files = files;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FunctionEnvelopeProperties();
+        }
+        this.innerProperties().withFiles(files);
         return this;
     }
 
@@ -282,7 +251,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
      * @return the testData value.
      */
     public String testData() {
-        return this.testData;
+        return this.innerProperties() == null ? null : this.innerProperties().testData();
     }
 
     /**
@@ -292,7 +261,10 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
      * @return the FunctionEnvelopeInner object itself.
      */
     public FunctionEnvelopeInner withTestData(String testData) {
-        this.testData = testData;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FunctionEnvelopeProperties();
+        }
+        this.innerProperties().withTestData(testData);
         return this;
     }
 
@@ -302,7 +274,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
      * @return the invokeUrlTemplate value.
      */
     public String invokeUrlTemplate() {
-        return this.invokeUrlTemplate;
+        return this.innerProperties() == null ? null : this.innerProperties().invokeUrlTemplate();
     }
 
     /**
@@ -312,7 +284,10 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
      * @return the FunctionEnvelopeInner object itself.
      */
     public FunctionEnvelopeInner withInvokeUrlTemplate(String invokeUrlTemplate) {
-        this.invokeUrlTemplate = invokeUrlTemplate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FunctionEnvelopeProperties();
+        }
+        this.innerProperties().withInvokeUrlTemplate(invokeUrlTemplate);
         return this;
     }
 
@@ -322,7 +297,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
      * @return the language value.
      */
     public String language() {
-        return this.language;
+        return this.innerProperties() == null ? null : this.innerProperties().language();
     }
 
     /**
@@ -332,7 +307,10 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
      * @return the FunctionEnvelopeInner object itself.
      */
     public FunctionEnvelopeInner withLanguage(String language) {
-        this.language = language;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FunctionEnvelopeProperties();
+        }
+        this.innerProperties().withLanguage(language);
         return this;
     }
 
@@ -342,7 +320,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
      * @return the isDisabled value.
      */
     public Boolean isDisabled() {
-        return this.isDisabled;
+        return this.innerProperties() == null ? null : this.innerProperties().isDisabled();
     }
 
     /**
@@ -352,14 +330,10 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
      * @return the FunctionEnvelopeInner object itself.
      */
     public FunctionEnvelopeInner withIsDisabled(Boolean isDisabled) {
-        this.isDisabled = isDisabled;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public FunctionEnvelopeInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FunctionEnvelopeProperties();
+        }
+        this.innerProperties().withIsDisabled(isDisabled);
         return this;
     }
 
@@ -371,5 +345,8 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

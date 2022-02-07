@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.DetectorAbnormalTimePeriod;
 import com.azure.resourcemanager.appservice.models.DiagnosticMetricSet;
@@ -18,58 +17,31 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 /** Class representing Response from Diagnostic Detectors. */
-@JsonFlatten
 @Fluent
-public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
+public final class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DiagnosticDetectorResponseInner.class);
 
     /*
-     * Start time of the period
+     * DiagnosticDetectorResponse resource specific properties
      */
-    @JsonProperty(value = "properties.startTime")
-    private OffsetDateTime startTime;
+    @JsonProperty(value = "properties")
+    private DiagnosticDetectorResponseProperties innerProperties;
 
-    /*
-     * End time of the period
+    /**
+     * Get the innerProperties property: DiagnosticDetectorResponse resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.endTime")
-    private OffsetDateTime endTime;
+    private DiagnosticDetectorResponseProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Flag representing Issue was detected.
-     */
-    @JsonProperty(value = "properties.issueDetected")
-    private Boolean issueDetected;
-
-    /*
-     * Detector's definition
-     */
-    @JsonProperty(value = "properties.detectorDefinition")
-    private DetectorDefinitionInner detectorDefinition;
-
-    /*
-     * Metrics provided by the detector
-     */
-    @JsonProperty(value = "properties.metrics")
-    private List<DiagnosticMetricSet> metrics;
-
-    /*
-     * List of Correlated events found by the detector
-     */
-    @JsonProperty(value = "properties.abnormalTimePeriods")
-    private List<DetectorAbnormalTimePeriod> abnormalTimePeriods;
-
-    /*
-     * Additional Data that detector wants to send.
-     */
-    @JsonProperty(value = "properties.data")
-    private List<List<NameValuePair>> data;
-
-    /*
-     * Meta Data
-     */
-    @JsonProperty(value = "properties.responseMetaData")
-    private ResponseMetadata responseMetadata;
+    /** {@inheritDoc} */
+    @Override
+    public DiagnosticDetectorResponseInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the startTime property: Start time of the period.
@@ -77,7 +49,7 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
-        return this.startTime;
+        return this.innerProperties() == null ? null : this.innerProperties().startTime();
     }
 
     /**
@@ -87,7 +59,10 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
      * @return the DiagnosticDetectorResponseInner object itself.
      */
     public DiagnosticDetectorResponseInner withStartTime(OffsetDateTime startTime) {
-        this.startTime = startTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiagnosticDetectorResponseProperties();
+        }
+        this.innerProperties().withStartTime(startTime);
         return this;
     }
 
@@ -97,7 +72,7 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
-        return this.endTime;
+        return this.innerProperties() == null ? null : this.innerProperties().endTime();
     }
 
     /**
@@ -107,7 +82,10 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
      * @return the DiagnosticDetectorResponseInner object itself.
      */
     public DiagnosticDetectorResponseInner withEndTime(OffsetDateTime endTime) {
-        this.endTime = endTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiagnosticDetectorResponseProperties();
+        }
+        this.innerProperties().withEndTime(endTime);
         return this;
     }
 
@@ -117,7 +95,7 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
      * @return the issueDetected value.
      */
     public Boolean issueDetected() {
-        return this.issueDetected;
+        return this.innerProperties() == null ? null : this.innerProperties().issueDetected();
     }
 
     /**
@@ -127,7 +105,10 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
      * @return the DiagnosticDetectorResponseInner object itself.
      */
     public DiagnosticDetectorResponseInner withIssueDetected(Boolean issueDetected) {
-        this.issueDetected = issueDetected;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiagnosticDetectorResponseProperties();
+        }
+        this.innerProperties().withIssueDetected(issueDetected);
         return this;
     }
 
@@ -136,8 +117,8 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
      *
      * @return the detectorDefinition value.
      */
-    public DetectorDefinitionInner detectorDefinition() {
-        return this.detectorDefinition;
+    public DetectorDefinition detectorDefinition() {
+        return this.innerProperties() == null ? null : this.innerProperties().detectorDefinition();
     }
 
     /**
@@ -146,8 +127,11 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
      * @param detectorDefinition the detectorDefinition value to set.
      * @return the DiagnosticDetectorResponseInner object itself.
      */
-    public DiagnosticDetectorResponseInner withDetectorDefinition(DetectorDefinitionInner detectorDefinition) {
-        this.detectorDefinition = detectorDefinition;
+    public DiagnosticDetectorResponseInner withDetectorDefinition(DetectorDefinition detectorDefinition) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiagnosticDetectorResponseProperties();
+        }
+        this.innerProperties().withDetectorDefinition(detectorDefinition);
         return this;
     }
 
@@ -157,7 +141,7 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
      * @return the metrics value.
      */
     public List<DiagnosticMetricSet> metrics() {
-        return this.metrics;
+        return this.innerProperties() == null ? null : this.innerProperties().metrics();
     }
 
     /**
@@ -167,7 +151,10 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
      * @return the DiagnosticDetectorResponseInner object itself.
      */
     public DiagnosticDetectorResponseInner withMetrics(List<DiagnosticMetricSet> metrics) {
-        this.metrics = metrics;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiagnosticDetectorResponseProperties();
+        }
+        this.innerProperties().withMetrics(metrics);
         return this;
     }
 
@@ -177,7 +164,7 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
      * @return the abnormalTimePeriods value.
      */
     public List<DetectorAbnormalTimePeriod> abnormalTimePeriods() {
-        return this.abnormalTimePeriods;
+        return this.innerProperties() == null ? null : this.innerProperties().abnormalTimePeriods();
     }
 
     /**
@@ -188,7 +175,10 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
      */
     public DiagnosticDetectorResponseInner withAbnormalTimePeriods(
         List<DetectorAbnormalTimePeriod> abnormalTimePeriods) {
-        this.abnormalTimePeriods = abnormalTimePeriods;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiagnosticDetectorResponseProperties();
+        }
+        this.innerProperties().withAbnormalTimePeriods(abnormalTimePeriods);
         return this;
     }
 
@@ -198,7 +188,7 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
      * @return the data value.
      */
     public List<List<NameValuePair>> data() {
-        return this.data;
+        return this.innerProperties() == null ? null : this.innerProperties().data();
     }
 
     /**
@@ -208,7 +198,10 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
      * @return the DiagnosticDetectorResponseInner object itself.
      */
     public DiagnosticDetectorResponseInner withData(List<List<NameValuePair>> data) {
-        this.data = data;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiagnosticDetectorResponseProperties();
+        }
+        this.innerProperties().withData(data);
         return this;
     }
 
@@ -218,7 +211,7 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
      * @return the responseMetadata value.
      */
     public ResponseMetadata responseMetadata() {
-        return this.responseMetadata;
+        return this.innerProperties() == null ? null : this.innerProperties().responseMetadata();
     }
 
     /**
@@ -228,14 +221,10 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
      * @return the DiagnosticDetectorResponseInner object itself.
      */
     public DiagnosticDetectorResponseInner withResponseMetadata(ResponseMetadata responseMetadata) {
-        this.responseMetadata = responseMetadata;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public DiagnosticDetectorResponseInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiagnosticDetectorResponseProperties();
+        }
+        this.innerProperties().withResponseMetadata(responseMetadata);
         return this;
     }
 
@@ -247,20 +236,8 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (detectorDefinition() != null) {
-            detectorDefinition().validate();
-        }
-        if (metrics() != null) {
-            metrics().forEach(e -> e.validate());
-        }
-        if (abnormalTimePeriods() != null) {
-            abnormalTimePeriods().forEach(e -> e.validate());
-        }
-        if (data() != null) {
-            data().forEach(e -> e.forEach(e1 -> e1.validate()));
-        }
-        if (responseMetadata() != null) {
-            responseMetadata().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

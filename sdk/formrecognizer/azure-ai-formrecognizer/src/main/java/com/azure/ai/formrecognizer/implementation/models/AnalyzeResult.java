@@ -8,136 +8,267 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Analyze operation result. */
+/** Document analysis result. */
 @Fluent
 public final class AnalyzeResult {
     /*
-     * Version of schema used for this result.
+     * API version used to produce this result.
      */
-    @JsonProperty(value = "version", required = true)
-    private String version;
+    @JsonProperty(value = "apiVersion", required = true)
+    private ApiVersion apiVersion;
 
     /*
-     * Text extracted from the input.
+     * Model ID used to produce this result.
      */
-    @JsonProperty(value = "readResults", required = true)
-    private List<ReadResult> readResults;
+    @JsonProperty(value = "modelId", required = true)
+    private String modelId;
 
     /*
-     * Page-level information extracted from the input.
+     * Method used to compute string offset and length.
      */
-    @JsonProperty(value = "pageResults")
-    private List<PageResult> pageResults;
+    @JsonProperty(value = "stringIndexType", required = true)
+    private StringIndexType stringIndexType;
 
     /*
-     * Document-level information extracted from the input.
+     * Concatenate string representation of all textual and visual elements in
+     * reading order.
      */
-    @JsonProperty(value = "documentResults")
-    private List<DocumentResult> documentResults;
+    @JsonProperty(value = "content", required = true)
+    private String content;
 
     /*
-     * List of errors reported during the analyze operation.
+     * Analyzed pages.
      */
-    @JsonProperty(value = "errors")
-    private List<ErrorInformation> errors;
+    @JsonProperty(value = "pages", required = true)
+    private List<DocumentPage> pages;
+
+    /*
+     * Extracted tables.
+     */
+    @JsonProperty(value = "tables")
+    private List<DocumentTable> tables;
+
+    /*
+     * Extracted key-value pairs.
+     */
+    @JsonProperty(value = "keyValuePairs")
+    private List<DocumentKeyValuePair> keyValuePairs;
+
+    /*
+     * Extracted entities.
+     */
+    @JsonProperty(value = "entities")
+    private List<DocumentEntity> entities;
+
+    /*
+     * Extracted font styles.
+     */
+    @JsonProperty(value = "styles")
+    private List<DocumentStyle> styles;
+
+    /*
+     * Extracted documents.
+     */
+    @JsonProperty(value = "documents")
+    private List<Document> documents;
 
     /**
-     * Get the version property: Version of schema used for this result.
+     * Get the apiVersion property: API version used to produce this result.
      *
-     * @return the version value.
+     * @return the apiVersion value.
      */
-    public String getVersion() {
-        return this.version;
+    public ApiVersion getApiVersion() {
+        return this.apiVersion;
     }
 
     /**
-     * Set the version property: Version of schema used for this result.
+     * Set the apiVersion property: API version used to produce this result.
      *
-     * @param version the version value to set.
+     * @param apiVersion the apiVersion value to set.
      * @return the AnalyzeResult object itself.
      */
-    public AnalyzeResult setVersion(String version) {
-        this.version = version;
+    public AnalyzeResult setApiVersion(ApiVersion apiVersion) {
+        this.apiVersion = apiVersion;
         return this;
     }
 
     /**
-     * Get the readResults property: Text extracted from the input.
+     * Get the modelId property: Model ID used to produce this result.
      *
-     * @return the readResults value.
+     * @return the modelId value.
      */
-    public List<ReadResult> getReadResults() {
-        return this.readResults;
+    public String getModelId() {
+        return this.modelId;
     }
 
     /**
-     * Set the readResults property: Text extracted from the input.
+     * Set the modelId property: Model ID used to produce this result.
      *
-     * @param readResults the readResults value to set.
+     * @param modelId the modelId value to set.
      * @return the AnalyzeResult object itself.
      */
-    public AnalyzeResult setReadResults(List<ReadResult> readResults) {
-        this.readResults = readResults;
+    public AnalyzeResult setModelId(String modelId) {
+        this.modelId = modelId;
         return this;
     }
 
     /**
-     * Get the pageResults property: Page-level information extracted from the input.
+     * Get the stringIndexType property: Method used to compute string offset and length.
      *
-     * @return the pageResults value.
+     * @return the stringIndexType value.
      */
-    public List<PageResult> getPageResults() {
-        return this.pageResults;
+    public StringIndexType getStringIndexType() {
+        return this.stringIndexType;
     }
 
     /**
-     * Set the pageResults property: Page-level information extracted from the input.
+     * Set the stringIndexType property: Method used to compute string offset and length.
      *
-     * @param pageResults the pageResults value to set.
+     * @param stringIndexType the stringIndexType value to set.
      * @return the AnalyzeResult object itself.
      */
-    public AnalyzeResult setPageResults(List<PageResult> pageResults) {
-        this.pageResults = pageResults;
+    public AnalyzeResult setStringIndexType(StringIndexType stringIndexType) {
+        this.stringIndexType = stringIndexType;
         return this;
     }
 
     /**
-     * Get the documentResults property: Document-level information extracted from the input.
+     * Get the content property: Concatenate string representation of all textual and visual elements in reading order.
      *
-     * @return the documentResults value.
+     * @return the content value.
      */
-    public List<DocumentResult> getDocumentResults() {
-        return this.documentResults;
+    public String getContent() {
+        return this.content;
     }
 
     /**
-     * Set the documentResults property: Document-level information extracted from the input.
+     * Set the content property: Concatenate string representation of all textual and visual elements in reading order.
      *
-     * @param documentResults the documentResults value to set.
+     * @param content the content value to set.
      * @return the AnalyzeResult object itself.
      */
-    public AnalyzeResult setDocumentResults(List<DocumentResult> documentResults) {
-        this.documentResults = documentResults;
+    public AnalyzeResult setContent(String content) {
+        this.content = content;
         return this;
     }
 
     /**
-     * Get the errors property: List of errors reported during the analyze operation.
+     * Get the pages property: Analyzed pages.
      *
-     * @return the errors value.
+     * @return the pages value.
      */
-    public List<ErrorInformation> getErrors() {
-        return this.errors;
+    public List<DocumentPage> getPages() {
+        return this.pages;
     }
 
     /**
-     * Set the errors property: List of errors reported during the analyze operation.
+     * Set the pages property: Analyzed pages.
      *
-     * @param errors the errors value to set.
+     * @param pages the pages value to set.
      * @return the AnalyzeResult object itself.
      */
-    public AnalyzeResult setErrors(List<ErrorInformation> errors) {
-        this.errors = errors;
+    public AnalyzeResult setPages(List<DocumentPage> pages) {
+        this.pages = pages;
+        return this;
+    }
+
+    /**
+     * Get the tables property: Extracted tables.
+     *
+     * @return the tables value.
+     */
+    public List<DocumentTable> getTables() {
+        return this.tables;
+    }
+
+    /**
+     * Set the tables property: Extracted tables.
+     *
+     * @param tables the tables value to set.
+     * @return the AnalyzeResult object itself.
+     */
+    public AnalyzeResult setTables(List<DocumentTable> tables) {
+        this.tables = tables;
+        return this;
+    }
+
+    /**
+     * Get the keyValuePairs property: Extracted key-value pairs.
+     *
+     * @return the keyValuePairs value.
+     */
+    public List<DocumentKeyValuePair> getKeyValuePairs() {
+        return this.keyValuePairs;
+    }
+
+    /**
+     * Set the keyValuePairs property: Extracted key-value pairs.
+     *
+     * @param keyValuePairs the keyValuePairs value to set.
+     * @return the AnalyzeResult object itself.
+     */
+    public AnalyzeResult setKeyValuePairs(List<DocumentKeyValuePair> keyValuePairs) {
+        this.keyValuePairs = keyValuePairs;
+        return this;
+    }
+
+    /**
+     * Get the entities property: Extracted entities.
+     *
+     * @return the entities value.
+     */
+    public List<DocumentEntity> getEntities() {
+        return this.entities;
+    }
+
+    /**
+     * Set the entities property: Extracted entities.
+     *
+     * @param entities the entities value to set.
+     * @return the AnalyzeResult object itself.
+     */
+    public AnalyzeResult setEntities(List<DocumentEntity> entities) {
+        this.entities = entities;
+        return this;
+    }
+
+    /**
+     * Get the styles property: Extracted font styles.
+     *
+     * @return the styles value.
+     */
+    public List<DocumentStyle> getStyles() {
+        return this.styles;
+    }
+
+    /**
+     * Set the styles property: Extracted font styles.
+     *
+     * @param styles the styles value to set.
+     * @return the AnalyzeResult object itself.
+     */
+    public AnalyzeResult setStyles(List<DocumentStyle> styles) {
+        this.styles = styles;
+        return this;
+    }
+
+    /**
+     * Get the documents property: Extracted documents.
+     *
+     * @return the documents value.
+     */
+    public List<Document> getDocuments() {
+        return this.documents;
+    }
+
+    /**
+     * Set the documents property: Extracted documents.
+     *
+     * @param documents the documents value to set.
+     * @return the AnalyzeResult object itself.
+     */
+    public AnalyzeResult setDocuments(List<Document> documents) {
+        this.documents = documents;
         return this;
     }
 }

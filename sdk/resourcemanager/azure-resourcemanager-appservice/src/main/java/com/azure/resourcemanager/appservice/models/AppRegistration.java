@@ -5,31 +5,29 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AppRegistration model. */
-@JsonFlatten
+/** The configuration settings of the app registration for providers that have app ids and app secrets. */
 @Fluent
-public class AppRegistration extends ProxyOnlyResource {
+public final class AppRegistration {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AppRegistration.class);
 
     /*
-     * The appId property.
+     * The App ID of the app used for login.
      */
-    @JsonProperty(value = "properties.appId")
+    @JsonProperty(value = "appId")
     private String appId;
 
     /*
-     * The appSecretSettingName property.
+     * The app setting name that contains the app secret.
      */
-    @JsonProperty(value = "properties.appSecretSettingName")
+    @JsonProperty(value = "appSecretSettingName")
     private String appSecretSettingName;
 
     /**
-     * Get the appId property: The appId property.
+     * Get the appId property: The App ID of the app used for login.
      *
      * @return the appId value.
      */
@@ -38,7 +36,7 @@ public class AppRegistration extends ProxyOnlyResource {
     }
 
     /**
-     * Set the appId property: The appId property.
+     * Set the appId property: The App ID of the app used for login.
      *
      * @param appId the appId value to set.
      * @return the AppRegistration object itself.
@@ -49,7 +47,7 @@ public class AppRegistration extends ProxyOnlyResource {
     }
 
     /**
-     * Get the appSecretSettingName property: The appSecretSettingName property.
+     * Get the appSecretSettingName property: The app setting name that contains the app secret.
      *
      * @return the appSecretSettingName value.
      */
@@ -58,7 +56,7 @@ public class AppRegistration extends ProxyOnlyResource {
     }
 
     /**
-     * Set the appSecretSettingName property: The appSecretSettingName property.
+     * Set the appSecretSettingName property: The app setting name that contains the app secret.
      *
      * @param appSecretSettingName the appSecretSettingName value to set.
      * @return the AppRegistration object itself.
@@ -68,20 +66,11 @@ public class AppRegistration extends ProxyOnlyResource {
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public AppRegistration withKind(String kind) {
-        super.withKind(kind);
-        return this;
-    }
-
     /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
     }
 }

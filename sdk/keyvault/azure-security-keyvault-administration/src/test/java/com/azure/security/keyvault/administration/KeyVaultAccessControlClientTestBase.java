@@ -2,11 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.administration;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.administration.models.KeyVaultPermission;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignment;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignmentProperties;
@@ -21,8 +24,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class KeyVaultAccessControlClientTestBase extends KeyVaultAdministrationClientTestBase {
-    protected static final String ROLE_NAME = "Managed HSM Crypto Officer";
-    protected final String servicePrincipalId = "49acc88b-8f9e-4619-9856-16691db66767";
+    protected final String servicePrincipalId =
+        Configuration.getGlobalConfiguration().get("CLIENT_OBJECTID", "49acc88b-8f9e-4619-9856-16691db66767");
+    private static final ClientLogger LOGGER = new ClientLogger(KeyVaultAccessControlClientTestBase.class);
 
     protected KeyVaultAccessControlClientBuilder getClientBuilder(HttpClient httpClient, boolean forCleanup) {
         List<HttpPipelinePolicy> policies = getPolicies();
@@ -127,5 +131,28 @@ public abstract class KeyVaultAccessControlClientTestBase extends KeyVaultAdmini
         assertNotNull(permissions2);
 
         assertEquals(permissions1.size(), permissions2.size());
+    }
+
+    static void cleanUpResources(KeyVaultAccessControlClient cleanupClient, String roleDefinitionName,
+                                 String roleAssignmentName) {
+        if (roleDefinitionName != null) {
+            try {
+                cleanupClient.deleteRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName);
+            } catch (HttpResponseException e) {
+                if (e.getResponse().getStatusCode() == 404) {
+                    LOGGER.info("Ignored 404 produced when trying to delete role definition.");
+                }
+            }
+        }
+
+        if (roleAssignmentName != null) {
+            try {
+                cleanupClient.deleteRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignmentName);
+            } catch (HttpResponseException e) {
+                if (e.getResponse().getStatusCode() == 404) {
+                    LOGGER.info("Ignored 404 produced when trying to delete role assignment.");
+                }
+            }
+        }
     }
 }

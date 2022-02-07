@@ -5,25 +5,23 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The LoginRoutes model. */
-@JsonFlatten
+/** The routes that specify the endpoints used for login and logout requests. */
 @Fluent
-public class LoginRoutes extends ProxyOnlyResource {
+public final class LoginRoutes {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LoginRoutes.class);
 
     /*
-     * The logoutEndpoint property.
+     * The endpoint at which a logout request should be made.
      */
-    @JsonProperty(value = "properties.logoutEndpoint")
+    @JsonProperty(value = "logoutEndpoint")
     private String logoutEndpoint;
 
     /**
-     * Get the logoutEndpoint property: The logoutEndpoint property.
+     * Get the logoutEndpoint property: The endpoint at which a logout request should be made.
      *
      * @return the logoutEndpoint value.
      */
@@ -32,7 +30,7 @@ public class LoginRoutes extends ProxyOnlyResource {
     }
 
     /**
-     * Set the logoutEndpoint property: The logoutEndpoint property.
+     * Set the logoutEndpoint property: The endpoint at which a logout request should be made.
      *
      * @param logoutEndpoint the logoutEndpoint value to set.
      * @return the LoginRoutes object itself.
@@ -42,20 +40,11 @@ public class LoginRoutes extends ProxyOnlyResource {
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public LoginRoutes withKind(String kind) {
-        super.withKind(kind);
-        return this;
-    }
-
     /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
     }
 }

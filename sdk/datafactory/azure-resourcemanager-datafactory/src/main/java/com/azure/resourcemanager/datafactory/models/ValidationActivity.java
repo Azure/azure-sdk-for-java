@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.ValidationActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -16,158 +16,23 @@ import java.util.List;
 /** This activity verifies that an external resource exists. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Validation")
-@JsonFlatten
 @Fluent
-public class ValidationActivity extends ControlActivity {
+public final class ValidationActivity extends ControlActivity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ValidationActivity.class);
 
     /*
-     * Specifies the timeout for the activity to run. If there is no value
-     * specified, it takes the value of TimeSpan.FromDays(7) which is 1 week as
-     * default. Type: string (or Expression with resultType string), pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Validation activity properties.
      */
-    @JsonProperty(value = "typeProperties.timeout")
-    private Object timeout;
-
-    /*
-     * A delay in seconds between validation attempts. If no value is
-     * specified, 10 seconds will be used as the default. Type: integer (or
-     * Expression with resultType integer).
-     */
-    @JsonProperty(value = "typeProperties.sleep")
-    private Object sleep;
-
-    /*
-     * Can be used if dataset points to a file. The file must be greater than
-     * or equal in size to the value specified. Type: integer (or Expression
-     * with resultType integer).
-     */
-    @JsonProperty(value = "typeProperties.minimumSize")
-    private Object minimumSize;
-
-    /*
-     * Can be used if dataset points to a folder. If set to true, the folder
-     * must have at least one file. If set to false, the folder must be empty.
-     * Type: boolean (or Expression with resultType boolean).
-     */
-    @JsonProperty(value = "typeProperties.childItems")
-    private Object childItems;
-
-    /*
-     * Validation activity dataset reference.
-     */
-    @JsonProperty(value = "typeProperties.dataset", required = true)
-    private DatasetReference dataset;
+    @JsonProperty(value = "typeProperties", required = true)
+    private ValidationActivityTypeProperties innerTypeProperties = new ValidationActivityTypeProperties();
 
     /**
-     * Get the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it takes
-     * the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
-     * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Get the innerTypeProperties property: Validation activity properties.
      *
-     * @return the timeout value.
+     * @return the innerTypeProperties value.
      */
-    public Object timeout() {
-        return this.timeout;
-    }
-
-    /**
-     * Set the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it takes
-     * the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
-     * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
-     * @param timeout the timeout value to set.
-     * @return the ValidationActivity object itself.
-     */
-    public ValidationActivity withTimeout(Object timeout) {
-        this.timeout = timeout;
-        return this;
-    }
-
-    /**
-     * Get the sleep property: A delay in seconds between validation attempts. If no value is specified, 10 seconds will
-     * be used as the default. Type: integer (or Expression with resultType integer).
-     *
-     * @return the sleep value.
-     */
-    public Object sleep() {
-        return this.sleep;
-    }
-
-    /**
-     * Set the sleep property: A delay in seconds between validation attempts. If no value is specified, 10 seconds will
-     * be used as the default. Type: integer (or Expression with resultType integer).
-     *
-     * @param sleep the sleep value to set.
-     * @return the ValidationActivity object itself.
-     */
-    public ValidationActivity withSleep(Object sleep) {
-        this.sleep = sleep;
-        return this;
-    }
-
-    /**
-     * Get the minimumSize property: Can be used if dataset points to a file. The file must be greater than or equal in
-     * size to the value specified. Type: integer (or Expression with resultType integer).
-     *
-     * @return the minimumSize value.
-     */
-    public Object minimumSize() {
-        return this.minimumSize;
-    }
-
-    /**
-     * Set the minimumSize property: Can be used if dataset points to a file. The file must be greater than or equal in
-     * size to the value specified. Type: integer (or Expression with resultType integer).
-     *
-     * @param minimumSize the minimumSize value to set.
-     * @return the ValidationActivity object itself.
-     */
-    public ValidationActivity withMinimumSize(Object minimumSize) {
-        this.minimumSize = minimumSize;
-        return this;
-    }
-
-    /**
-     * Get the childItems property: Can be used if dataset points to a folder. If set to true, the folder must have at
-     * least one file. If set to false, the folder must be empty. Type: boolean (or Expression with resultType boolean).
-     *
-     * @return the childItems value.
-     */
-    public Object childItems() {
-        return this.childItems;
-    }
-
-    /**
-     * Set the childItems property: Can be used if dataset points to a folder. If set to true, the folder must have at
-     * least one file. If set to false, the folder must be empty. Type: boolean (or Expression with resultType boolean).
-     *
-     * @param childItems the childItems value to set.
-     * @return the ValidationActivity object itself.
-     */
-    public ValidationActivity withChildItems(Object childItems) {
-        this.childItems = childItems;
-        return this;
-    }
-
-    /**
-     * Get the dataset property: Validation activity dataset reference.
-     *
-     * @return the dataset value.
-     */
-    public DatasetReference dataset() {
-        return this.dataset;
-    }
-
-    /**
-     * Set the dataset property: Validation activity dataset reference.
-     *
-     * @param dataset the dataset value to set.
-     * @return the ValidationActivity object itself.
-     */
-    public ValidationActivity withDataset(DatasetReference dataset) {
-        this.dataset = dataset;
-        return this;
+    private ValidationActivityTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -199,6 +64,131 @@ public class ValidationActivity extends ControlActivity {
     }
 
     /**
+     * Get the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it takes
+     * the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
+     * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     *
+     * @return the timeout value.
+     */
+    public Object timeout() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().timeout();
+    }
+
+    /**
+     * Set the timeout property: Specifies the timeout for the activity to run. If there is no value specified, it takes
+     * the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
+     * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     *
+     * @param timeout the timeout value to set.
+     * @return the ValidationActivity object itself.
+     */
+    public ValidationActivity withTimeout(Object timeout) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new ValidationActivityTypeProperties();
+        }
+        this.innerTypeProperties().withTimeout(timeout);
+        return this;
+    }
+
+    /**
+     * Get the sleep property: A delay in seconds between validation attempts. If no value is specified, 10 seconds will
+     * be used as the default. Type: integer (or Expression with resultType integer).
+     *
+     * @return the sleep value.
+     */
+    public Object sleep() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sleep();
+    }
+
+    /**
+     * Set the sleep property: A delay in seconds between validation attempts. If no value is specified, 10 seconds will
+     * be used as the default. Type: integer (or Expression with resultType integer).
+     *
+     * @param sleep the sleep value to set.
+     * @return the ValidationActivity object itself.
+     */
+    public ValidationActivity withSleep(Object sleep) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new ValidationActivityTypeProperties();
+        }
+        this.innerTypeProperties().withSleep(sleep);
+        return this;
+    }
+
+    /**
+     * Get the minimumSize property: Can be used if dataset points to a file. The file must be greater than or equal in
+     * size to the value specified. Type: integer (or Expression with resultType integer).
+     *
+     * @return the minimumSize value.
+     */
+    public Object minimumSize() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().minimumSize();
+    }
+
+    /**
+     * Set the minimumSize property: Can be used if dataset points to a file. The file must be greater than or equal in
+     * size to the value specified. Type: integer (or Expression with resultType integer).
+     *
+     * @param minimumSize the minimumSize value to set.
+     * @return the ValidationActivity object itself.
+     */
+    public ValidationActivity withMinimumSize(Object minimumSize) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new ValidationActivityTypeProperties();
+        }
+        this.innerTypeProperties().withMinimumSize(minimumSize);
+        return this;
+    }
+
+    /**
+     * Get the childItems property: Can be used if dataset points to a folder. If set to true, the folder must have at
+     * least one file. If set to false, the folder must be empty. Type: boolean (or Expression with resultType boolean).
+     *
+     * @return the childItems value.
+     */
+    public Object childItems() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().childItems();
+    }
+
+    /**
+     * Set the childItems property: Can be used if dataset points to a folder. If set to true, the folder must have at
+     * least one file. If set to false, the folder must be empty. Type: boolean (or Expression with resultType boolean).
+     *
+     * @param childItems the childItems value to set.
+     * @return the ValidationActivity object itself.
+     */
+    public ValidationActivity withChildItems(Object childItems) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new ValidationActivityTypeProperties();
+        }
+        this.innerTypeProperties().withChildItems(childItems);
+        return this;
+    }
+
+    /**
+     * Get the dataset property: Validation activity dataset reference.
+     *
+     * @return the dataset value.
+     */
+    public DatasetReference dataset() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().dataset();
+    }
+
+    /**
+     * Set the dataset property: Validation activity dataset reference.
+     *
+     * @param dataset the dataset value to set.
+     * @return the ValidationActivity object itself.
+     */
+    public ValidationActivity withDataset(DatasetReference dataset) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new ValidationActivityTypeProperties();
+        }
+        this.innerTypeProperties().withDataset(dataset);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -206,12 +196,13 @@ public class ValidationActivity extends ControlActivity {
     @Override
     public void validate() {
         super.validate();
-        if (dataset() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property dataset in model ValidationActivity"));
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model ValidationActivity"));
         } else {
-            dataset().validate();
+            innerTypeProperties().validate();
         }
     }
 }

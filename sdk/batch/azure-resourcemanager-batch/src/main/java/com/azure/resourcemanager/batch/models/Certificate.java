@@ -33,26 +33,11 @@ public interface Certificate {
     String type();
 
     /**
-     * Gets the thumbprintAlgorithm property: This must match the first portion of the certificate name. Currently
-     * required to be 'SHA1'.
+     * Gets the etag property: The ETag of the resource, used for concurrency statements.
      *
-     * @return the thumbprintAlgorithm value.
+     * @return the etag value.
      */
-    String thumbprintAlgorithm();
-
-    /**
-     * Gets the thumbprint property: This must match the thumbprint from the name.
-     *
-     * @return the thumbprint value.
-     */
-    String thumbprint();
-
-    /**
-     * Gets the format property: The format of the certificate - either Pfx or Cer. If omitted, the default is Pfx.
-     *
-     * @return the format value.
-     */
-    CertificateFormat format();
+    String etag();
 
     /**
      * Gets the provisioningState property: The provisioningState property.
@@ -99,11 +84,26 @@ public interface Certificate {
     DeleteCertificateError deleteCertificateError();
 
     /**
-     * Gets the etag property: The ETag of the resource, used for concurrency statements.
+     * Gets the thumbprintAlgorithm property: The algorithm of the certificate thumbprint. This must match the first
+     * portion of the certificate name. Currently required to be 'SHA1'.
      *
-     * @return the etag value.
+     * @return the thumbprintAlgorithm value.
      */
-    String etag();
+    String thumbprintAlgorithm();
+
+    /**
+     * Gets the thumbprint property: The thumbprint of the certificate. This must match the thumbprint from the name.
+     *
+     * @return the thumbprint value.
+     */
+    String thumbprint();
+
+    /**
+     * Gets the format property: The format of the certificate - either Pfx or Cer. If omitted, the default is Pfx.
+     *
+     * @return the format value.
+     */
+    CertificateFormat format();
 
     /**
      * Gets the inner com.azure.resourcemanager.batch.fluent.models.CertificateInner object.
@@ -137,11 +137,11 @@ public interface Certificate {
          * to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithThumbprintAlgorithm,
+            extends DefinitionStages.WithData,
+                DefinitionStages.WithPassword,
+                DefinitionStages.WithThumbprintAlgorithm,
                 DefinitionStages.WithThumbprint,
                 DefinitionStages.WithFormat,
-                DefinitionStages.WithData,
-                DefinitionStages.WithPassword,
                 DefinitionStages.WithIfMatch,
                 DefinitionStages.WithIfNoneMatch {
             /**
@@ -159,14 +159,36 @@ public interface Certificate {
              */
             Certificate create(Context context);
         }
+        /** The stage of the Certificate definition allowing to specify data. */
+        interface WithData {
+            /**
+             * Specifies the data property: The base64-encoded contents of the certificate. The maximum size is 10KB..
+             *
+             * @param data The base64-encoded contents of the certificate. The maximum size is 10KB.
+             * @return the next definition stage.
+             */
+            WithCreate withData(String data);
+        }
+        /** The stage of the Certificate definition allowing to specify password. */
+        interface WithPassword {
+            /**
+             * Specifies the password property: The password to access the certificate's private key. This must not be
+             * specified if the certificate format is Cer..
+             *
+             * @param password The password to access the certificate's private key. This must not be specified if the
+             *     certificate format is Cer.
+             * @return the next definition stage.
+             */
+            WithCreate withPassword(String password);
+        }
         /** The stage of the Certificate definition allowing to specify thumbprintAlgorithm. */
         interface WithThumbprintAlgorithm {
             /**
-             * Specifies the thumbprintAlgorithm property: This must match the first portion of the certificate name.
-             * Currently required to be 'SHA1'..
+             * Specifies the thumbprintAlgorithm property: The algorithm of the certificate thumbprint. This must match
+             * the first portion of the certificate name. Currently required to be 'SHA1'..
              *
-             * @param thumbprintAlgorithm This must match the first portion of the certificate name. Currently required
-             *     to be 'SHA1'.
+             * @param thumbprintAlgorithm The algorithm of the certificate thumbprint. This must match the first portion
+             *     of the certificate name. Currently required to be 'SHA1'.
              * @return the next definition stage.
              */
             WithCreate withThumbprintAlgorithm(String thumbprintAlgorithm);
@@ -174,9 +196,10 @@ public interface Certificate {
         /** The stage of the Certificate definition allowing to specify thumbprint. */
         interface WithThumbprint {
             /**
-             * Specifies the thumbprint property: This must match the thumbprint from the name..
+             * Specifies the thumbprint property: The thumbprint of the certificate. This must match the thumbprint from
+             * the name..
              *
-             * @param thumbprint This must match the thumbprint from the name.
+             * @param thumbprint The thumbprint of the certificate. This must match the thumbprint from the name.
              * @return the next definition stage.
              */
             WithCreate withThumbprint(String thumbprint);
@@ -191,26 +214,6 @@ public interface Certificate {
              * @return the next definition stage.
              */
             WithCreate withFormat(CertificateFormat format);
-        }
-        /** The stage of the Certificate definition allowing to specify data. */
-        interface WithData {
-            /**
-             * Specifies the data property: The maximum size is 10KB..
-             *
-             * @param data The maximum size is 10KB.
-             * @return the next definition stage.
-             */
-            WithCreate withData(String data);
-        }
-        /** The stage of the Certificate definition allowing to specify password. */
-        interface WithPassword {
-            /**
-             * Specifies the password property: This must not be specified if the certificate format is Cer..
-             *
-             * @param password This must not be specified if the certificate format is Cer.
-             * @return the next definition stage.
-             */
-            WithCreate withPassword(String password);
         }
         /** The stage of the Certificate definition allowing to specify ifMatch. */
         interface WithIfMatch {
@@ -248,12 +251,12 @@ public interface Certificate {
 
     /** The template for Certificate update. */
     interface Update
-        extends UpdateStages.WithThumbprintAlgorithm,
+        extends UpdateStages.WithData,
+            UpdateStages.WithPassword,
+            UpdateStages.WithThumbprintAlgorithm,
             UpdateStages.WithThumbprint,
             UpdateStages.WithFormat,
-            UpdateStages.WithData,
-            UpdateStages.WithPassword,
-            UpdateStages.WithifMatch {
+            UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *
@@ -271,14 +274,36 @@ public interface Certificate {
     }
     /** The Certificate update stages. */
     interface UpdateStages {
+        /** The stage of the Certificate update allowing to specify data. */
+        interface WithData {
+            /**
+             * Specifies the data property: The base64-encoded contents of the certificate. The maximum size is 10KB..
+             *
+             * @param data The base64-encoded contents of the certificate. The maximum size is 10KB.
+             * @return the next definition stage.
+             */
+            Update withData(String data);
+        }
+        /** The stage of the Certificate update allowing to specify password. */
+        interface WithPassword {
+            /**
+             * Specifies the password property: The password to access the certificate's private key. This must not be
+             * specified if the certificate format is Cer..
+             *
+             * @param password The password to access the certificate's private key. This must not be specified if the
+             *     certificate format is Cer.
+             * @return the next definition stage.
+             */
+            Update withPassword(String password);
+        }
         /** The stage of the Certificate update allowing to specify thumbprintAlgorithm. */
         interface WithThumbprintAlgorithm {
             /**
-             * Specifies the thumbprintAlgorithm property: This must match the first portion of the certificate name.
-             * Currently required to be 'SHA1'..
+             * Specifies the thumbprintAlgorithm property: The algorithm of the certificate thumbprint. This must match
+             * the first portion of the certificate name. Currently required to be 'SHA1'..
              *
-             * @param thumbprintAlgorithm This must match the first portion of the certificate name. Currently required
-             *     to be 'SHA1'.
+             * @param thumbprintAlgorithm The algorithm of the certificate thumbprint. This must match the first portion
+             *     of the certificate name. Currently required to be 'SHA1'.
              * @return the next definition stage.
              */
             Update withThumbprintAlgorithm(String thumbprintAlgorithm);
@@ -286,9 +311,10 @@ public interface Certificate {
         /** The stage of the Certificate update allowing to specify thumbprint. */
         interface WithThumbprint {
             /**
-             * Specifies the thumbprint property: This must match the thumbprint from the name..
+             * Specifies the thumbprint property: The thumbprint of the certificate. This must match the thumbprint from
+             * the name..
              *
-             * @param thumbprint This must match the thumbprint from the name.
+             * @param thumbprint The thumbprint of the certificate. This must match the thumbprint from the name.
              * @return the next definition stage.
              */
             Update withThumbprint(String thumbprint);
@@ -304,28 +330,8 @@ public interface Certificate {
              */
             Update withFormat(CertificateFormat format);
         }
-        /** The stage of the Certificate update allowing to specify data. */
-        interface WithData {
-            /**
-             * Specifies the data property: The maximum size is 10KB..
-             *
-             * @param data The maximum size is 10KB.
-             * @return the next definition stage.
-             */
-            Update withData(String data);
-        }
-        /** The stage of the Certificate update allowing to specify password. */
-        interface WithPassword {
-            /**
-             * Specifies the password property: This must not be specified if the certificate format is Cer..
-             *
-             * @param password This must not be specified if the certificate format is Cer.
-             * @return the next definition stage.
-             */
-            Update withPassword(String password);
-        }
         /** The stage of the Certificate update allowing to specify ifMatch. */
-        interface WithifMatch {
+        interface WithIfMatch {
             /**
              * Specifies the ifMatch property: The entity state (ETag) version of the certificate to update. This value
              * can be omitted or set to "*" to apply the operation unconditionally..
@@ -334,7 +340,7 @@ public interface Certificate {
              *     set to "*" to apply the operation unconditionally.
              * @return the next definition stage.
              */
-            Update ifMatch(String ifMatch);
+            Update withIfMatch(String ifMatch);
         }
     }
     /**

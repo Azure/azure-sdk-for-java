@@ -3,7 +3,9 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.guava27.Strings;
 import org.testng.ITest;
 import org.testng.annotations.AfterMethod;
@@ -48,7 +50,11 @@ public abstract class CosmosAsyncClientTest implements ITest {
                     ? "Direct " + this.clientBuilder.configs().getProtocol()
                     : "Gateway";
 
-            this.testName = Strings.lenientFormat("%s[%s with %s consistency]",
+            String template = clientBuilder.isContentResponseOnWriteEnabled() ?
+                "%s[%s with %s consistency]" :
+                "%s[%s with %s consistency ContentOnWriteDisabled]";
+
+            this.testName = Strings.lenientFormat(template,
                     testClassAndMethodName,
                     connectionMode,
                     clientBuilder.getConsistencyLevel());

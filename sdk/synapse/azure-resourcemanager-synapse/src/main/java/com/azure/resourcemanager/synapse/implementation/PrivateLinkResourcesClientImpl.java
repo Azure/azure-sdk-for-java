@@ -110,7 +110,8 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private link resources for a workspaces.
+     * @return all private link resources for a workspaces along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listSinglePageAsync(
@@ -134,6 +135,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -141,7 +143,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
                     service
                         .list(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -168,7 +170,8 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private link resources for a workspaces.
+     * @return all private link resources for a workspaces along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listSinglePageAsync(
@@ -192,12 +195,13 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -290,7 +294,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private link resource in workspace.
+     * @return private link resource in workspace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateLinkResourceInner>> getWithResponseAsync(
@@ -319,6 +323,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
                 .error(
                     new IllegalArgumentException("Parameter privateLinkResourceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -326,7 +331,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -346,7 +351,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private link resource in workspace.
+     * @return private link resource in workspace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateLinkResourceInner>> getWithResponseAsync(
@@ -375,12 +380,13 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
                 .error(
                     new IllegalArgumentException("Parameter privateLinkResourceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -398,7 +404,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private link resource in workspace.
+     * @return private link resource in workspace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PrivateLinkResourceInner> getAsync(
@@ -441,7 +447,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private link resource in workspace.
+     * @return private link resource in workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateLinkResourceInner> getWithResponse(
@@ -456,7 +462,8 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources.
+     * @return a list of private link resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -492,7 +499,8 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources.
+     * @return a list of private link resources along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {

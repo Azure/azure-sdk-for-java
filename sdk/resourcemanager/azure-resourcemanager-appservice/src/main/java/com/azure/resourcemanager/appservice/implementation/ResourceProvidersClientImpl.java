@@ -29,8 +29,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.ResourceProvidersClient;
-import com.azure.resourcemanager.appservice.fluent.models.AppserviceGithubTokenInner;
 import com.azure.resourcemanager.appservice.fluent.models.BillingMeterInner;
+import com.azure.resourcemanager.appservice.fluent.models.CustomHostnameSitesInner;
 import com.azure.resourcemanager.appservice.fluent.models.DeploymentLocationsInner;
 import com.azure.resourcemanager.appservice.fluent.models.GeoRegionInner;
 import com.azure.resourcemanager.appservice.fluent.models.IdentifierInner;
@@ -42,10 +42,9 @@ import com.azure.resourcemanager.appservice.fluent.models.SourceControlInner;
 import com.azure.resourcemanager.appservice.fluent.models.UserInner;
 import com.azure.resourcemanager.appservice.fluent.models.ValidateResponseInner;
 import com.azure.resourcemanager.appservice.fluent.models.VnetValidationFailureDetailsInner;
-import com.azure.resourcemanager.appservice.models.AppserviceGithubTokenRequest;
 import com.azure.resourcemanager.appservice.models.BillingMeterCollection;
-import com.azure.resourcemanager.appservice.models.CheckNameResourceTypes;
 import com.azure.resourcemanager.appservice.models.CsmMoveResourceEnvelope;
+import com.azure.resourcemanager.appservice.models.CustomHostnameSitesCollection;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
 import com.azure.resourcemanager.appservice.models.GeoRegionCollection;
 import com.azure.resourcemanager.appservice.models.IdentifierCollection;
@@ -85,17 +84,6 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
     private interface ResourceProvidersService {
-        @Headers({"Content-Type: application/json"})
-        @Post("/providers/Microsoft.Web/generateGithubAccessTokenForAppserviceCLI")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<AppserviceGithubTokenInner>> generateGithubAccessTokenForAppserviceCliAsync(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") AppserviceGithubTokenRequest request,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.Web/publishingUsers/web")
         @ExpectedResponses({200})
@@ -172,6 +160,17 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ResourceNameAvailabilityRequest request,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/customhostnameSites")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Mono<Response<CustomHostnameSitesCollection>> listCustomHostnameSites(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -310,6 +309,16 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Mono<Response<CustomHostnameSitesCollection>> listCustomHostnameSitesNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<GeoRegionCollection>> listGeoRegionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
@@ -335,136 +344,6 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
             Context context);
-    }
-
-    /**
-     * Description for Exchange code for GitHub access token for AppService CLI.
-     *
-     * @param code Code string to exchange for Github Access token.
-     * @param state State string used for verification.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return github access token for Appservice CLI github integration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AppserviceGithubTokenInner>> generateGithubAccessTokenForAppserviceCliAsyncWithResponseAsync(
-        String code, String state) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (code == null) {
-            return Mono.error(new IllegalArgumentException("Parameter code is required and cannot be null."));
-        }
-        if (state == null) {
-            return Mono.error(new IllegalArgumentException("Parameter state is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        AppserviceGithubTokenRequest request = new AppserviceGithubTokenRequest();
-        request.withCode(code);
-        request.withState(state);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .generateGithubAccessTokenForAppserviceCliAsync(
-                            this.client.getEndpoint(), this.client.getApiVersion(), request, accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Description for Exchange code for GitHub access token for AppService CLI.
-     *
-     * @param code Code string to exchange for Github Access token.
-     * @param state State string used for verification.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return github access token for Appservice CLI github integration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AppserviceGithubTokenInner>> generateGithubAccessTokenForAppserviceCliAsyncWithResponseAsync(
-        String code, String state, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (code == null) {
-            return Mono.error(new IllegalArgumentException("Parameter code is required and cannot be null."));
-        }
-        if (state == null) {
-            return Mono.error(new IllegalArgumentException("Parameter state is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        AppserviceGithubTokenRequest request = new AppserviceGithubTokenRequest();
-        request.withCode(code);
-        request.withState(state);
-        context = this.client.mergeContext(context);
-        return service
-            .generateGithubAccessTokenForAppserviceCliAsync(
-                this.client.getEndpoint(), this.client.getApiVersion(), request, accept, context);
-    }
-
-    /**
-     * Description for Exchange code for GitHub access token for AppService CLI.
-     *
-     * @param code Code string to exchange for Github Access token.
-     * @param state State string used for verification.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return github access token for Appservice CLI github integration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AppserviceGithubTokenInner> generateGithubAccessTokenForAppserviceCliAsyncAsync(
-        String code, String state) {
-        return generateGithubAccessTokenForAppserviceCliAsyncWithResponseAsync(code, state)
-            .flatMap(
-                (Response<AppserviceGithubTokenInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Description for Exchange code for GitHub access token for AppService CLI.
-     *
-     * @param code Code string to exchange for Github Access token.
-     * @param state State string used for verification.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return github access token for Appservice CLI github integration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AppserviceGithubTokenInner generateGithubAccessTokenForAppserviceCliAsync(String code, String state) {
-        return generateGithubAccessTokenForAppserviceCliAsyncAsync(code, state).block();
-    }
-
-    /**
-     * Description for Exchange code for GitHub access token for AppService CLI.
-     *
-     * @param code Code string to exchange for Github Access token.
-     * @param state State string used for verification.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return github access token for Appservice CLI github integration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AppserviceGithubTokenInner> generateGithubAccessTokenForAppserviceCliAsyncWithResponse(
-        String code, String state, Context context) {
-        return generateGithubAccessTokenForAppserviceCliAsyncWithResponseAsync(code, state, context).block();
     }
 
     /**
@@ -1222,9 +1101,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Description for Check if a resource name is available.
      *
-     * @param name Resource name to verify.
-     * @param type Resource type used for verification.
-     * @param isFqdn Is fully qualified domain name.
+     * @param request Name availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1232,7 +1109,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ResourceNameAvailabilityInner>> checkNameAvailabilityWithResponseAsync(
-        String name, CheckNameResourceTypes type, Boolean isFqdn) {
+        ResourceNameAvailabilityRequest request) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1245,17 +1122,12 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (type == null) {
-            return Mono.error(new IllegalArgumentException("Parameter type is required and cannot be null."));
+        if (request == null) {
+            return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));
+        } else {
+            request.validate();
         }
         final String accept = "application/json";
-        ResourceNameAvailabilityRequest request = new ResourceNameAvailabilityRequest();
-        request.withName(name);
-        request.withType(type);
-        request.withIsFqdn(isFqdn);
         return FluxUtil
             .withContext(
                 context ->
@@ -1273,9 +1145,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Description for Check if a resource name is available.
      *
-     * @param name Resource name to verify.
-     * @param type Resource type used for verification.
-     * @param isFqdn Is fully qualified domain name.
+     * @param request Name availability request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1284,7 +1154,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ResourceNameAvailabilityInner>> checkNameAvailabilityWithResponseAsync(
-        String name, CheckNameResourceTypes type, Boolean isFqdn, Context context) {
+        ResourceNameAvailabilityRequest request, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1297,17 +1167,12 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (type == null) {
-            return Mono.error(new IllegalArgumentException("Parameter type is required and cannot be null."));
+        if (request == null) {
+            return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));
+        } else {
+            request.validate();
         }
         final String accept = "application/json";
-        ResourceNameAvailabilityRequest request = new ResourceNameAvailabilityRequest();
-        request.withName(name);
-        request.withType(type);
-        request.withIsFqdn(isFqdn);
         context = this.client.mergeContext(context);
         return service
             .checkNameAvailability(
@@ -1322,18 +1187,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Description for Check if a resource name is available.
      *
-     * @param name Resource name to verify.
-     * @param type Resource type used for verification.
-     * @param isFqdn Is fully qualified domain name.
+     * @param request Name availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information regarding availability of a resource name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResourceNameAvailabilityInner> checkNameAvailabilityAsync(
-        String name, CheckNameResourceTypes type, Boolean isFqdn) {
-        return checkNameAvailabilityWithResponseAsync(name, type, isFqdn)
+    public Mono<ResourceNameAvailabilityInner> checkNameAvailabilityAsync(ResourceNameAvailabilityRequest request) {
+        return checkNameAvailabilityWithResponseAsync(request)
             .flatMap(
                 (Response<ResourceNameAvailabilityInner> res) -> {
                     if (res.getValue() != null) {
@@ -1347,49 +1209,21 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Description for Check if a resource name is available.
      *
-     * @param name Resource name to verify.
-     * @param type Resource type used for verification.
+     * @param request Name availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information regarding availability of a resource name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResourceNameAvailabilityInner> checkNameAvailabilityAsync(String name, CheckNameResourceTypes type) {
-        final Boolean isFqdn = null;
-        return checkNameAvailabilityWithResponseAsync(name, type, isFqdn)
-            .flatMap(
-                (Response<ResourceNameAvailabilityInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public ResourceNameAvailabilityInner checkNameAvailability(ResourceNameAvailabilityRequest request) {
+        return checkNameAvailabilityAsync(request).block();
     }
 
     /**
      * Description for Check if a resource name is available.
      *
-     * @param name Resource name to verify.
-     * @param type Resource type used for verification.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information regarding availability of a resource name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceNameAvailabilityInner checkNameAvailability(String name, CheckNameResourceTypes type) {
-        final Boolean isFqdn = null;
-        return checkNameAvailabilityAsync(name, type, isFqdn).block();
-    }
-
-    /**
-     * Description for Check if a resource name is available.
-     *
-     * @param name Resource name to verify.
-     * @param type Resource type used for verification.
-     * @param isFqdn Is fully qualified domain name.
+     * @param request Name availability request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1398,8 +1232,151 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceNameAvailabilityInner> checkNameAvailabilityWithResponse(
-        String name, CheckNameResourceTypes type, Boolean isFqdn, Context context) {
-        return checkNameAvailabilityWithResponseAsync(name, type, isFqdn, context).block();
+        ResourceNameAvailabilityRequest request, Context context) {
+        return checkNameAvailabilityWithResponseAsync(request, context).block();
+    }
+
+    /**
+     * Get custom hostnames under this subscription.
+     *
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom hostnames under this subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<CustomHostnameSitesInner>> listCustomHostnameSitesSinglePageAsync() {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listCustomHostnameSites(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .<PagedResponse<CustomHostnameSitesInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get custom hostnames under this subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom hostnames under this subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<CustomHostnameSitesInner>> listCustomHostnameSitesSinglePageAsync(Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listCustomHostnameSites(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get custom hostnames under this subscription.
+     *
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom hostnames under this subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<CustomHostnameSitesInner> listCustomHostnameSitesAsync() {
+        return new PagedFlux<>(
+            () -> listCustomHostnameSitesSinglePageAsync(),
+            nextLink -> listCustomHostnameSitesNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Get custom hostnames under this subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom hostnames under this subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<CustomHostnameSitesInner> listCustomHostnameSitesAsync(Context context) {
+        return new PagedFlux<>(
+            () -> listCustomHostnameSitesSinglePageAsync(context),
+            nextLink -> listCustomHostnameSitesNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Get custom hostnames under this subscription.
+     *
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom hostnames under this subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<CustomHostnameSitesInner> listCustomHostnameSites() {
+        return new PagedIterable<>(listCustomHostnameSitesAsync());
+    }
+
+    /**
+     * Get custom hostnames under this subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom hostnames under this subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<CustomHostnameSitesInner> listCustomHostnameSites(Context context) {
+        return new PagedIterable<>(listCustomHostnameSitesAsync(context));
     }
 
     /**
@@ -1761,14 +1738,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Description for List all apps that are assigned to a hostname.
      *
-     * @param name Name of the object.
+     * @param nameIdentifier Hostname information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of identifiers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<IdentifierInner>> listSiteIdentifiersAssignedToHostnameSinglePageAsync(String name) {
+    private Mono<PagedResponse<IdentifierInner>> listSiteIdentifiersAssignedToHostnameSinglePageAsync(
+        NameIdentifierInner nameIdentifier) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1781,9 +1759,12 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (nameIdentifier == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nameIdentifier is required and cannot be null."));
+        } else {
+            nameIdentifier.validate();
+        }
         final String accept = "application/json";
-        NameIdentifierInner nameIdentifier = new NameIdentifierInner();
-        nameIdentifier.withName(name);
         return FluxUtil
             .withContext(
                 context ->
@@ -1810,7 +1791,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Description for List all apps that are assigned to a hostname.
      *
-     * @param name Name of the object.
+     * @param nameIdentifier Hostname information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1819,7 +1800,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IdentifierInner>> listSiteIdentifiersAssignedToHostnameSinglePageAsync(
-        String name, Context context) {
+        NameIdentifierInner nameIdentifier, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1832,9 +1813,12 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (nameIdentifier == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nameIdentifier is required and cannot be null."));
+        } else {
+            nameIdentifier.validate();
+        }
         final String accept = "application/json";
-        NameIdentifierInner nameIdentifier = new NameIdentifierInner();
-        nameIdentifier.withName(name);
         context = this.client.mergeContext(context);
         return service
             .listSiteIdentifiersAssignedToHostname(
@@ -1858,38 +1842,23 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Description for List all apps that are assigned to a hostname.
      *
-     * @param name Name of the object.
+     * @param nameIdentifier Hostname information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of identifiers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<IdentifierInner> listSiteIdentifiersAssignedToHostnameAsync(String name) {
+    public PagedFlux<IdentifierInner> listSiteIdentifiersAssignedToHostnameAsync(NameIdentifierInner nameIdentifier) {
         return new PagedFlux<>(
-            () -> listSiteIdentifiersAssignedToHostnameSinglePageAsync(name),
-            nextLink -> listSiteIdentifiersAssignedToHostnameNextSinglePageAsync(nextLink, name));
+            () -> listSiteIdentifiersAssignedToHostnameSinglePageAsync(nameIdentifier),
+            nextLink -> listSiteIdentifiersAssignedToHostnameNextSinglePageAsync(nextLink));
     }
 
     /**
      * Description for List all apps that are assigned to a hostname.
      *
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of identifiers.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<IdentifierInner> listSiteIdentifiersAssignedToHostnameAsync() {
-        final String name = null;
-        return new PagedFlux<>(
-            () -> listSiteIdentifiersAssignedToHostnameSinglePageAsync(name),
-            nextLink -> listSiteIdentifiersAssignedToHostnameNextSinglePageAsync(nextLink, name));
-    }
-
-    /**
-     * Description for List all apps that are assigned to a hostname.
-     *
-     * @param name Name of the object.
+     * @param nameIdentifier Hostname information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1897,29 +1866,31 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return collection of identifiers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<IdentifierInner> listSiteIdentifiersAssignedToHostnameAsync(String name, Context context) {
+    private PagedFlux<IdentifierInner> listSiteIdentifiersAssignedToHostnameAsync(
+        NameIdentifierInner nameIdentifier, Context context) {
         return new PagedFlux<>(
-            () -> listSiteIdentifiersAssignedToHostnameSinglePageAsync(name, context),
-            nextLink -> listSiteIdentifiersAssignedToHostnameNextSinglePageAsync(nextLink, name, context));
+            () -> listSiteIdentifiersAssignedToHostnameSinglePageAsync(nameIdentifier, context),
+            nextLink -> listSiteIdentifiersAssignedToHostnameNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Description for List all apps that are assigned to a hostname.
      *
+     * @param nameIdentifier Hostname information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of identifiers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostname() {
-        final String name = null;
-        return new PagedIterable<>(listSiteIdentifiersAssignedToHostnameAsync(name));
+    public PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostname(NameIdentifierInner nameIdentifier) {
+        return new PagedIterable<>(listSiteIdentifiersAssignedToHostnameAsync(nameIdentifier));
     }
 
     /**
      * Description for List all apps that are assigned to a hostname.
      *
-     * @param name Name of the object.
+     * @param nameIdentifier Hostname information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1927,8 +1898,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return collection of identifiers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostname(String name, Context context) {
-        return new PagedIterable<>(listSiteIdentifiersAssignedToHostnameAsync(name, context));
+    public PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostname(
+        NameIdentifierInner nameIdentifier, Context context) {
+        return new PagedIterable<>(listSiteIdentifiersAssignedToHostnameAsync(nameIdentifier, context));
     }
 
     /**
@@ -2933,6 +2905,79 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of custom hostname sites.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<CustomHostnameSitesInner>> listCustomHostnameSitesNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.listCustomHostnameSitesNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<CustomHostnameSitesInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of custom hostname sites.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<CustomHostnameSitesInner>> listCustomHostnameSitesNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listCustomHostnameSitesNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of geographical regions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3001,7 +3046,6 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
-     * @param name Name of the object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3009,7 +3053,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IdentifierInner>> listSiteIdentifiersAssignedToHostnameNextSinglePageAsync(
-        String nextLink, String name) {
+        String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -3020,8 +3064,6 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        NameIdentifierInner nameIdentifier = new NameIdentifierInner();
-        nameIdentifier.withName(name);
         return FluxUtil
             .withContext(
                 context ->
@@ -3044,7 +3086,6 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
-     * @param name Name of the object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -3053,7 +3094,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IdentifierInner>> listSiteIdentifiersAssignedToHostnameNextSinglePageAsync(
-        String nextLink, String name, Context context) {
+        String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -3064,8 +3105,6 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        NameIdentifierInner nameIdentifier = new NameIdentifierInner();
-        nameIdentifier.withName(name);
         context = this.client.mergeContext(context);
         return service
             .listSiteIdentifiersAssignedToHostnameNext(nextLink, this.client.getEndpoint(), accept, context)

@@ -4,49 +4,31 @@
 
 package com.azure.resourcemanager.storage.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Deleted storage account. */
-@JsonFlatten
-@Immutable
-public class DeletedAccountInner extends ProxyResource {
+@Fluent
+public final class DeletedAccountInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DeletedAccountInner.class);
 
     /*
-     * Full resource id of the original storage account.
+     * Properties of the deleted account.
      */
-    @JsonProperty(value = "properties.storageAccountResourceId", access = JsonProperty.Access.WRITE_ONLY)
-    private String storageAccountResourceId;
+    @JsonProperty(value = "properties")
+    private DeletedAccountProperties innerProperties;
 
-    /*
-     * Location of the deleted account.
+    /**
+     * Get the innerProperties property: Properties of the deleted account.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.location", access = JsonProperty.Access.WRITE_ONLY)
-    private String location;
-
-    /*
-     * Can be used to attempt recovering this deleted account via
-     * PutStorageAccount API.
-     */
-    @JsonProperty(value = "properties.restoreReference", access = JsonProperty.Access.WRITE_ONLY)
-    private String restoreReference;
-
-    /*
-     * Creation time of the deleted account.
-     */
-    @JsonProperty(value = "properties.creationTime", access = JsonProperty.Access.WRITE_ONLY)
-    private String creationTime;
-
-    /*
-     * Deletion time of the deleted account.
-     */
-    @JsonProperty(value = "properties.deletionTime", access = JsonProperty.Access.WRITE_ONLY)
-    private String deletionTime;
+    private DeletedAccountProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the storageAccountResourceId property: Full resource id of the original storage account.
@@ -54,7 +36,7 @@ public class DeletedAccountInner extends ProxyResource {
      * @return the storageAccountResourceId value.
      */
     public String storageAccountResourceId() {
-        return this.storageAccountResourceId;
+        return this.innerProperties() == null ? null : this.innerProperties().storageAccountResourceId();
     }
 
     /**
@@ -63,7 +45,7 @@ public class DeletedAccountInner extends ProxyResource {
      * @return the location value.
      */
     public String location() {
-        return this.location;
+        return this.innerProperties() == null ? null : this.innerProperties().location();
     }
 
     /**
@@ -73,7 +55,7 @@ public class DeletedAccountInner extends ProxyResource {
      * @return the restoreReference value.
      */
     public String restoreReference() {
-        return this.restoreReference;
+        return this.innerProperties() == null ? null : this.innerProperties().restoreReference();
     }
 
     /**
@@ -82,7 +64,7 @@ public class DeletedAccountInner extends ProxyResource {
      * @return the creationTime value.
      */
     public String creationTime() {
-        return this.creationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().creationTime();
     }
 
     /**
@@ -91,7 +73,7 @@ public class DeletedAccountInner extends ProxyResource {
      * @return the deletionTime value.
      */
     public String deletionTime() {
-        return this.deletionTime;
+        return this.innerProperties() == null ? null : this.innerProperties().deletionTime();
     }
 
     /**
@@ -100,5 +82,8 @@ public class DeletedAccountInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

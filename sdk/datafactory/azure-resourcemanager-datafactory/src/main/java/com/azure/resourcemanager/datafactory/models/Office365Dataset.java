@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.Office365DatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,68 +17,23 @@ import java.util.Map;
 /** The Office365 account. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Office365Table")
-@JsonFlatten
 @Fluent
-public class Office365Dataset extends Dataset {
+public final class Office365Dataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Office365Dataset.class);
 
     /*
-     * Name of the dataset to extract from Office 365. Type: string (or
-     * Expression with resultType string).
+     * Office365 dataset properties.
      */
-    @JsonProperty(value = "typeProperties.tableName", required = true)
-    private Object tableName;
-
-    /*
-     * A predicate expression that can be used to filter the specific rows to
-     * extract from Office 365. Type: string (or Expression with resultType
-     * string).
-     */
-    @JsonProperty(value = "typeProperties.predicate")
-    private Object predicate;
+    @JsonProperty(value = "typeProperties", required = true)
+    private Office365DatasetTypeProperties innerTypeProperties = new Office365DatasetTypeProperties();
 
     /**
-     * Get the tableName property: Name of the dataset to extract from Office 365. Type: string (or Expression with
-     * resultType string).
+     * Get the innerTypeProperties property: Office365 dataset properties.
      *
-     * @return the tableName value.
+     * @return the innerTypeProperties value.
      */
-    public Object tableName() {
-        return this.tableName;
-    }
-
-    /**
-     * Set the tableName property: Name of the dataset to extract from Office 365. Type: string (or Expression with
-     * resultType string).
-     *
-     * @param tableName the tableName value to set.
-     * @return the Office365Dataset object itself.
-     */
-    public Office365Dataset withTableName(Object tableName) {
-        this.tableName = tableName;
-        return this;
-    }
-
-    /**
-     * Get the predicate property: A predicate expression that can be used to filter the specific rows to extract from
-     * Office 365. Type: string (or Expression with resultType string).
-     *
-     * @return the predicate value.
-     */
-    public Object predicate() {
-        return this.predicate;
-    }
-
-    /**
-     * Set the predicate property: A predicate expression that can be used to filter the specific rows to extract from
-     * Office 365. Type: string (or Expression with resultType string).
-     *
-     * @param predicate the predicate value to set.
-     * @return the Office365Dataset object itself.
-     */
-    public Office365Dataset withPredicate(Object predicate) {
-        this.predicate = predicate;
-        return this;
+    private Office365DatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -131,6 +86,56 @@ public class Office365Dataset extends Dataset {
     }
 
     /**
+     * Get the tableName property: Name of the dataset to extract from Office 365. Type: string (or Expression with
+     * resultType string).
+     *
+     * @return the tableName value.
+     */
+    public Object tableName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().tableName();
+    }
+
+    /**
+     * Set the tableName property: Name of the dataset to extract from Office 365. Type: string (or Expression with
+     * resultType string).
+     *
+     * @param tableName the tableName value to set.
+     * @return the Office365Dataset object itself.
+     */
+    public Office365Dataset withTableName(Object tableName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new Office365DatasetTypeProperties();
+        }
+        this.innerTypeProperties().withTableName(tableName);
+        return this;
+    }
+
+    /**
+     * Get the predicate property: A predicate expression that can be used to filter the specific rows to extract from
+     * Office 365. Type: string (or Expression with resultType string).
+     *
+     * @return the predicate value.
+     */
+    public Object predicate() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().predicate();
+    }
+
+    /**
+     * Set the predicate property: A predicate expression that can be used to filter the specific rows to extract from
+     * Office 365. Type: string (or Expression with resultType string).
+     *
+     * @param predicate the predicate value to set.
+     * @return the Office365Dataset object itself.
+     */
+    public Office365Dataset withPredicate(Object predicate) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new Office365DatasetTypeProperties();
+        }
+        this.innerTypeProperties().withPredicate(predicate);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -138,10 +143,13 @@ public class Office365Dataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
-        if (tableName() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property tableName in model Office365Dataset"));
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model Office365Dataset"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

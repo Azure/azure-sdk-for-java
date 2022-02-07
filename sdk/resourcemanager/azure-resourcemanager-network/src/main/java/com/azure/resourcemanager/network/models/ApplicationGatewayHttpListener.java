@@ -5,18 +5,23 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayHttpListenerPropertiesFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Http listener of an application gateway. */
-@JsonFlatten
 @Fluent
-public class ApplicationGatewayHttpListener extends SubResource {
+public final class ApplicationGatewayHttpListener extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayHttpListener.class);
+
+    /*
+     * Properties of the application gateway HTTP listener.
+     */
+    @JsonProperty(value = "properties")
+    private ApplicationGatewayHttpListenerPropertiesFormat innerProperties;
 
     /*
      * Name of the HTTP listener that is unique within an Application Gateway.
@@ -36,72 +41,14 @@ public class ApplicationGatewayHttpListener extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * Frontend IP configuration resource of an application gateway.
+    /**
+     * Get the innerProperties property: Properties of the application gateway HTTP listener.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.frontendIPConfiguration")
-    private SubResource frontendIpConfiguration;
-
-    /*
-     * Frontend port resource of an application gateway.
-     */
-    @JsonProperty(value = "properties.frontendPort")
-    private SubResource frontendPort;
-
-    /*
-     * Protocol of the HTTP listener.
-     */
-    @JsonProperty(value = "properties.protocol")
-    private ApplicationGatewayProtocol protocol;
-
-    /*
-     * Host name of HTTP listener.
-     */
-    @JsonProperty(value = "properties.hostName")
-    private String hostname;
-
-    /*
-     * SSL certificate resource of an application gateway.
-     */
-    @JsonProperty(value = "properties.sslCertificate")
-    private SubResource sslCertificate;
-
-    /*
-     * SSL profile resource of the application gateway.
-     */
-    @JsonProperty(value = "properties.sslProfile")
-    private SubResource sslProfile;
-
-    /*
-     * Applicable only if protocol is https. Enables SNI for multi-hosting.
-     */
-    @JsonProperty(value = "properties.requireServerNameIndication")
-    private Boolean requireServerNameIndication;
-
-    /*
-     * The provisioning state of the HTTP listener resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * Custom error configurations of the HTTP listener.
-     */
-    @JsonProperty(value = "properties.customErrorConfigurations")
-    private List<ApplicationGatewayCustomError> customErrorConfigurations;
-
-    /*
-     * Reference to the FirewallPolicy resource.
-     */
-    @JsonProperty(value = "properties.firewallPolicy")
-    private SubResource firewallPolicy;
-
-    /*
-     * List of Host names for HTTP Listener that allows special wildcard
-     * characters as well.
-     */
-    @JsonProperty(value = "properties.hostNames")
-    private List<String> hostNames;
+    private ApplicationGatewayHttpListenerPropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Name of the HTTP listener that is unique within an Application Gateway.
@@ -141,13 +88,20 @@ public class ApplicationGatewayHttpListener extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayHttpListener withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the frontendIpConfiguration property: Frontend IP configuration resource of an application gateway.
      *
      * @return the frontendIpConfiguration value.
      */
     public SubResource frontendIpConfiguration() {
-        return this.frontendIpConfiguration;
+        return this.innerProperties() == null ? null : this.innerProperties().frontendIpConfiguration();
     }
 
     /**
@@ -157,7 +111,10 @@ public class ApplicationGatewayHttpListener extends SubResource {
      * @return the ApplicationGatewayHttpListener object itself.
      */
     public ApplicationGatewayHttpListener withFrontendIpConfiguration(SubResource frontendIpConfiguration) {
-        this.frontendIpConfiguration = frontendIpConfiguration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayHttpListenerPropertiesFormat();
+        }
+        this.innerProperties().withFrontendIpConfiguration(frontendIpConfiguration);
         return this;
     }
 
@@ -167,7 +124,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
      * @return the frontendPort value.
      */
     public SubResource frontendPort() {
-        return this.frontendPort;
+        return this.innerProperties() == null ? null : this.innerProperties().frontendPort();
     }
 
     /**
@@ -177,7 +134,10 @@ public class ApplicationGatewayHttpListener extends SubResource {
      * @return the ApplicationGatewayHttpListener object itself.
      */
     public ApplicationGatewayHttpListener withFrontendPort(SubResource frontendPort) {
-        this.frontendPort = frontendPort;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayHttpListenerPropertiesFormat();
+        }
+        this.innerProperties().withFrontendPort(frontendPort);
         return this;
     }
 
@@ -187,7 +147,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
      * @return the protocol value.
      */
     public ApplicationGatewayProtocol protocol() {
-        return this.protocol;
+        return this.innerProperties() == null ? null : this.innerProperties().protocol();
     }
 
     /**
@@ -197,7 +157,10 @@ public class ApplicationGatewayHttpListener extends SubResource {
      * @return the ApplicationGatewayHttpListener object itself.
      */
     public ApplicationGatewayHttpListener withProtocol(ApplicationGatewayProtocol protocol) {
-        this.protocol = protocol;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayHttpListenerPropertiesFormat();
+        }
+        this.innerProperties().withProtocol(protocol);
         return this;
     }
 
@@ -207,7 +170,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
      * @return the hostname value.
      */
     public String hostname() {
-        return this.hostname;
+        return this.innerProperties() == null ? null : this.innerProperties().hostname();
     }
 
     /**
@@ -217,7 +180,10 @@ public class ApplicationGatewayHttpListener extends SubResource {
      * @return the ApplicationGatewayHttpListener object itself.
      */
     public ApplicationGatewayHttpListener withHostname(String hostname) {
-        this.hostname = hostname;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayHttpListenerPropertiesFormat();
+        }
+        this.innerProperties().withHostname(hostname);
         return this;
     }
 
@@ -227,7 +193,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
      * @return the sslCertificate value.
      */
     public SubResource sslCertificate() {
-        return this.sslCertificate;
+        return this.innerProperties() == null ? null : this.innerProperties().sslCertificate();
     }
 
     /**
@@ -237,7 +203,10 @@ public class ApplicationGatewayHttpListener extends SubResource {
      * @return the ApplicationGatewayHttpListener object itself.
      */
     public ApplicationGatewayHttpListener withSslCertificate(SubResource sslCertificate) {
-        this.sslCertificate = sslCertificate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayHttpListenerPropertiesFormat();
+        }
+        this.innerProperties().withSslCertificate(sslCertificate);
         return this;
     }
 
@@ -247,7 +216,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
      * @return the sslProfile value.
      */
     public SubResource sslProfile() {
-        return this.sslProfile;
+        return this.innerProperties() == null ? null : this.innerProperties().sslProfile();
     }
 
     /**
@@ -257,7 +226,10 @@ public class ApplicationGatewayHttpListener extends SubResource {
      * @return the ApplicationGatewayHttpListener object itself.
      */
     public ApplicationGatewayHttpListener withSslProfile(SubResource sslProfile) {
-        this.sslProfile = sslProfile;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayHttpListenerPropertiesFormat();
+        }
+        this.innerProperties().withSslProfile(sslProfile);
         return this;
     }
 
@@ -268,7 +240,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
      * @return the requireServerNameIndication value.
      */
     public Boolean requireServerNameIndication() {
-        return this.requireServerNameIndication;
+        return this.innerProperties() == null ? null : this.innerProperties().requireServerNameIndication();
     }
 
     /**
@@ -279,7 +251,10 @@ public class ApplicationGatewayHttpListener extends SubResource {
      * @return the ApplicationGatewayHttpListener object itself.
      */
     public ApplicationGatewayHttpListener withRequireServerNameIndication(Boolean requireServerNameIndication) {
-        this.requireServerNameIndication = requireServerNameIndication;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayHttpListenerPropertiesFormat();
+        }
+        this.innerProperties().withRequireServerNameIndication(requireServerNameIndication);
         return this;
     }
 
@@ -289,7 +264,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -298,7 +273,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
      * @return the customErrorConfigurations value.
      */
     public List<ApplicationGatewayCustomError> customErrorConfigurations() {
-        return this.customErrorConfigurations;
+        return this.innerProperties() == null ? null : this.innerProperties().customErrorConfigurations();
     }
 
     /**
@@ -309,7 +284,10 @@ public class ApplicationGatewayHttpListener extends SubResource {
      */
     public ApplicationGatewayHttpListener withCustomErrorConfigurations(
         List<ApplicationGatewayCustomError> customErrorConfigurations) {
-        this.customErrorConfigurations = customErrorConfigurations;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayHttpListenerPropertiesFormat();
+        }
+        this.innerProperties().withCustomErrorConfigurations(customErrorConfigurations);
         return this;
     }
 
@@ -319,7 +297,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
      * @return the firewallPolicy value.
      */
     public SubResource firewallPolicy() {
-        return this.firewallPolicy;
+        return this.innerProperties() == null ? null : this.innerProperties().firewallPolicy();
     }
 
     /**
@@ -329,7 +307,10 @@ public class ApplicationGatewayHttpListener extends SubResource {
      * @return the ApplicationGatewayHttpListener object itself.
      */
     public ApplicationGatewayHttpListener withFirewallPolicy(SubResource firewallPolicy) {
-        this.firewallPolicy = firewallPolicy;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayHttpListenerPropertiesFormat();
+        }
+        this.innerProperties().withFirewallPolicy(firewallPolicy);
         return this;
     }
 
@@ -339,7 +320,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
      * @return the hostNames value.
      */
     public List<String> hostNames() {
-        return this.hostNames;
+        return this.innerProperties() == null ? null : this.innerProperties().hostNames();
     }
 
     /**
@@ -349,14 +330,10 @@ public class ApplicationGatewayHttpListener extends SubResource {
      * @return the ApplicationGatewayHttpListener object itself.
      */
     public ApplicationGatewayHttpListener withHostNames(List<String> hostNames) {
-        this.hostNames = hostNames;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ApplicationGatewayHttpListener withId(String id) {
-        super.withId(id);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayHttpListenerPropertiesFormat();
+        }
+        this.innerProperties().withHostNames(hostNames);
         return this;
     }
 
@@ -366,8 +343,8 @@ public class ApplicationGatewayHttpListener extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (customErrorConfigurations() != null) {
-            customErrorConfigurations().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

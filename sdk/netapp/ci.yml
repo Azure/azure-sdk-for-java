@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/netapp/
+      - sdk/netapp/ci.yml
+      - sdk/netapp/azure-resourcemanager-netapp/
+    exclude:
+      - sdk/netapp/pom.xml
+      - sdk/netapp/azure-resourcemanager-netapp/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/netapp/
+      - sdk/netapp/ci.yml
+      - sdk/netapp/azure-resourcemanager-netapp/
+    exclude:
+      - sdk/netapp/pom.xml
+      - sdk/netapp/azure-resourcemanager-netapp/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

@@ -99,6 +99,12 @@ class ChangeFeedQueryImpl<T extends Resource> {
     private RxDocumentServiceRequest createDocumentServiceRequest() {
         Map<String, String> headers = new HashMap<>();
 
+        Map<String, String> customOptions =
+            ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor().getHeader(this.options);
+        if (customOptions != null) {
+            headers.putAll(customOptions);
+        }
+
         if (options.isQuotaInfoEnabled()) {
             headers.put(HttpConstants.HttpHeaders.POPULATE_QUOTA_INFO, String.valueOf(true));
         }

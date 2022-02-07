@@ -131,8 +131,6 @@ public interface PublicIpAddress
             /**
              * Specifies the reverse FQDN to assign to this public IP address.
              *
-             * <p>
-             *
              * @param reverseFQDN the reverse FQDN to assign
              * @return the next stage of the definition
              */

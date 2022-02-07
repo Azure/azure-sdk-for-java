@@ -37,6 +37,10 @@ public final class ViewImpl implements View, View.Definition, View.Update {
         return this.innerModel().type();
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
     public String displayName() {
         return this.innerModel().displayName();
     }
@@ -91,8 +95,8 @@ public final class ViewImpl implements View, View.Definition, View.Update {
         }
     }
 
-    public ReportType typePropertiesQueryType() {
-        return this.innerModel().typePropertiesQueryType();
+    public ReportType typePropertiesType() {
+        return this.innerModel().typePropertiesType();
     }
 
     public ReportTimeframeType timeframe() {
@@ -109,10 +113,6 @@ public final class ViewImpl implements View, View.Definition, View.Update {
 
     public Boolean includeMonetaryCommitment() {
         return this.innerModel().includeMonetaryCommitment();
-    }
-
-    public String etag() {
-        return this.innerModel().etag();
     }
 
     public ViewInner innerModel() {
@@ -207,6 +207,11 @@ public final class ViewImpl implements View, View.Definition, View.Update {
         return this;
     }
 
+    public ViewImpl withEtag(String etag) {
+        this.innerModel().withEtag(etag);
+        return this;
+    }
+
     public ViewImpl withDisplayName(String displayName) {
         this.innerModel().withDisplayName(displayName);
         return this;
@@ -242,8 +247,8 @@ public final class ViewImpl implements View, View.Definition, View.Update {
         return this;
     }
 
-    public ViewImpl withTypePropertiesQueryType(ReportType typePropertiesQueryType) {
-        this.innerModel().withTypePropertiesQueryType(typePropertiesQueryType);
+    public ViewImpl withTypePropertiesType(ReportType typePropertiesType) {
+        this.innerModel().withTypePropertiesType(typePropertiesType);
         return this;
     }
 
@@ -259,11 +264,6 @@ public final class ViewImpl implements View, View.Definition, View.Update {
 
     public ViewImpl withDataSet(ReportConfigDataset dataSet) {
         this.innerModel().withDataSet(dataSet);
-        return this;
-    }
-
-    public ViewImpl withEtag(String etag) {
-        this.innerModel().withEtag(etag);
         return this;
     }
 }

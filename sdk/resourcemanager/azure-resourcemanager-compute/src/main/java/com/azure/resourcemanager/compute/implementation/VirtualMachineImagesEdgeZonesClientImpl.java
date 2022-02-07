@@ -161,7 +161,8 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine image in an edge zone.
+     * @return a virtual machine image in an edge zone along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VirtualMachineImageInner>> getWithResponseAsync(
@@ -196,7 +197,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -230,7 +231,8 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine image in an edge zone.
+     * @return a virtual machine image in an edge zone along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VirtualMachineImageInner>> getWithResponseAsync(
@@ -271,7 +273,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -301,7 +303,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine image in an edge zone.
+     * @return a virtual machine image in an edge zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineImageInner> getAsync(
@@ -350,7 +352,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine image in an edge zone.
+     * @return a virtual machine image in an edge zone along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualMachineImageInner> getWithResponse(
@@ -380,7 +382,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
-     *     SKU.
+     *     SKU along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<VirtualMachineImageResourceInner>>> listWithResponseAsync(
@@ -419,7 +421,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -459,7 +461,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
-     *     SKU.
+     *     SKU along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<VirtualMachineImageResourceInner>>> listWithResponseAsync(
@@ -499,7 +501,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -535,7 +537,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
-     *     SKU.
+     *     SKU on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<VirtualMachineImageResourceInner>> listAsync(
@@ -571,7 +573,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
-     *     SKU.
+     *     SKU on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<VirtualMachineImageResourceInner>> listAsync(
@@ -631,7 +633,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all virtual machine image versions for the specified location, edge zone, publisher, offer, and
-     *     SKU.
+     *     SKU along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<VirtualMachineImageResourceInner>> listWithResponse(
@@ -657,7 +659,8 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine image offers for the specified location, edge zone and publisher.
+     * @return a list of virtual machine image offers for the specified location, edge zone and publisher along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<VirtualMachineImageResourceInner>>> listOffersWithResponseAsync(
@@ -683,7 +686,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -711,7 +714,8 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine image offers for the specified location, edge zone and publisher.
+     * @return a list of virtual machine image offers for the specified location, edge zone and publisher along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<VirtualMachineImageResourceInner>>> listOffersWithResponseAsync(
@@ -737,7 +741,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -761,7 +765,8 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine image offers for the specified location, edge zone and publisher.
+     * @return a list of virtual machine image offers for the specified location, edge zone and publisher on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<VirtualMachineImageResourceInner>> listOffersAsync(
@@ -803,7 +808,8 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine image offers for the specified location, edge zone and publisher.
+     * @return a list of virtual machine image offers for the specified location, edge zone and publisher along with
+     *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<VirtualMachineImageResourceInner>> listOffersWithResponse(
@@ -819,7 +825,8 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine image publishers for the specified Azure location and edge zone.
+     * @return a list of virtual machine image publishers for the specified Azure location and edge zone along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<VirtualMachineImageResourceInner>>> listPublishersWithResponseAsync(
@@ -842,7 +849,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -868,7 +875,8 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine image publishers for the specified Azure location and edge zone.
+     * @return a list of virtual machine image publishers for the specified Azure location and edge zone along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<VirtualMachineImageResourceInner>>> listPublishersWithResponseAsync(
@@ -891,7 +899,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -913,7 +921,8 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine image publishers for the specified Azure location and edge zone.
+     * @return a list of virtual machine image publishers for the specified Azure location and edge zone on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<VirtualMachineImageResourceInner>> listPublishersAsync(String location, String edgeZone) {
@@ -952,7 +961,8 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine image publishers for the specified Azure location and edge zone.
+     * @return a list of virtual machine image publishers for the specified Azure location and edge zone along with
+     *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<VirtualMachineImageResourceInner>> listPublishersWithResponse(
@@ -970,7 +980,8 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
+     * @return a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<VirtualMachineImageResourceInner>>> listSkusWithResponseAsync(
@@ -999,7 +1010,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1029,7 +1040,8 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
+     * @return a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<VirtualMachineImageResourceInner>>> listSkusWithResponseAsync(
@@ -1058,7 +1070,7 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1084,7 +1096,8 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
+     * @return a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<VirtualMachineImageResourceInner>> listSkusAsync(
@@ -1129,7 +1142,8 @@ public final class VirtualMachineImagesEdgeZonesClientImpl implements VirtualMac
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer.
+     * @return a list of virtual machine image SKUs for the specified location, edge zone, publisher, and offer along
+     *     with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<VirtualMachineImageResourceInner>> listSkusWithResponse(

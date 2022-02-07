@@ -166,7 +166,6 @@ public final class TransformationsClientImpl implements TransformationsClient {
         } else {
             transformation.validate();
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -176,7 +175,7 @@ public final class TransformationsClientImpl implements TransformationsClient {
                             this.client.getEndpoint(),
                             ifMatch,
                             ifNoneMatch,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             jobName,
@@ -242,7 +241,6 @@ public final class TransformationsClientImpl implements TransformationsClient {
         } else {
             transformation.validate();
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -250,7 +248,7 @@ public final class TransformationsClientImpl implements TransformationsClient {
                 this.client.getEndpoint(),
                 ifMatch,
                 ifNoneMatch,
-                apiVersion,
+                this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 jobName,
@@ -435,7 +433,6 @@ public final class TransformationsClientImpl implements TransformationsClient {
         } else {
             transformation.validate();
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -444,7 +441,7 @@ public final class TransformationsClientImpl implements TransformationsClient {
                         .update(
                             this.client.getEndpoint(),
                             ifMatch,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             jobName,
@@ -510,14 +507,13 @@ public final class TransformationsClientImpl implements TransformationsClient {
         } else {
             transformation.validate();
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
                 ifMatch,
-                apiVersion,
+                this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 jobName,
@@ -685,7 +681,6 @@ public final class TransformationsClientImpl implements TransformationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter transformationName is required and cannot be null."));
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -693,7 +688,7 @@ public final class TransformationsClientImpl implements TransformationsClient {
                     service
                         .get(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             jobName,
@@ -741,13 +736,12 @@ public final class TransformationsClientImpl implements TransformationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter transformationName is required and cannot be null."));
         }
-        final String apiVersion = "2017-04-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 jobName,

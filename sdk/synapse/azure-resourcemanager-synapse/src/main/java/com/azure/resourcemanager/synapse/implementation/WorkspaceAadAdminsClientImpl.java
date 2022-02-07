@@ -117,7 +117,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace active directory admin.
+     * @return a workspace active directory admin along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkspaceAadAdminInfoInner>> getWithResponseAsync(
@@ -141,6 +141,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -148,7 +149,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -166,7 +167,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace active directory admin.
+     * @return a workspace active directory admin along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkspaceAadAdminInfoInner>> getWithResponseAsync(
@@ -190,12 +191,13 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -211,7 +213,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace active directory admin.
+     * @return a workspace active directory admin on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkspaceAadAdminInfoInner> getAsync(String resourceGroupName, String workspaceName) {
@@ -250,7 +252,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace active directory admin.
+     * @return a workspace active directory admin along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkspaceAadAdminInfoInner> getWithResponse(
@@ -267,7 +269,8 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace active directory administrator.
+     * @return workspace active directory administrator along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -296,6 +299,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
         } else {
             aadAdminInfo.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -303,7 +307,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
                     service
                         .createOrUpdate(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -323,7 +327,8 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace active directory administrator.
+     * @return workspace active directory administrator along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -352,12 +357,13 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
         } else {
             aadAdminInfo.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -375,9 +381,10 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace active directory administrator.
+     * @return workspace active directory administrator along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkspaceAadAdminInfoInner>, WorkspaceAadAdminInfoInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -389,7 +396,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
                 this.client.getHttpPipeline(),
                 WorkspaceAadAdminInfoInner.class,
                 WorkspaceAadAdminInfoInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -402,9 +409,10 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace active directory administrator.
+     * @return workspace active directory administrator along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkspaceAadAdminInfoInner>, WorkspaceAadAdminInfoInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo, Context context) {
         context = this.client.mergeContext(context);
@@ -429,9 +437,10 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace active directory administrator.
+     * @return workspace active directory administrator along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkspaceAadAdminInfoInner>, WorkspaceAadAdminInfoInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, aadAdminInfo).getSyncPoller();
@@ -447,9 +456,10 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace active directory administrator.
+     * @return workspace active directory administrator along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkspaceAadAdminInfoInner>, WorkspaceAadAdminInfoInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, aadAdminInfo, context).getSyncPoller();
@@ -464,7 +474,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace active directory administrator.
+     * @return workspace active directory administrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkspaceAadAdminInfoInner> createOrUpdateAsync(
@@ -484,7 +494,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace active directory administrator.
+     * @return workspace active directory administrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkspaceAadAdminInfoInner> createOrUpdateAsync(
@@ -537,7 +547,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String workspaceName) {
@@ -560,6 +570,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -567,7 +578,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
                     service
                         .delete(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -585,7 +596,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -609,12 +620,13 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -630,14 +642,15 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String workspaceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, workspaceName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -649,9 +662,9 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String workspaceName, Context context) {
         context = this.client.mergeContext(context);
@@ -669,9 +682,9 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName) {
         return beginDeleteAsync(resourceGroupName, workspaceName).getSyncPoller();
     }
@@ -685,9 +698,9 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String workspaceName, Context context) {
         return beginDeleteAsync(resourceGroupName, workspaceName, context).getSyncPoller();
@@ -701,7 +714,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName) {
@@ -717,7 +730,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, Context context) {

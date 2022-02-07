@@ -145,16 +145,15 @@ public final class ConfigurationSettingJsonSerializer extends JsonSerializer<Con
 
         gen.writeObjectFieldStart(CONDITIONS);
         gen.writeArrayFieldStart(CLIENT_FILTERS);
-        if (setting.getClientFilters() != null) {
-            for (FeatureFlagFilter filter : setting.getClientFilters()) {
-                gen.writeStartObject();
-                gen.writeStringField(NAME, filter.getName());
-                gen.writeObjectFieldStart(PARAMETERS);
-                writeMapProperties(filter.getParameters(), gen);
-                gen.writeEndObject(); // parameters object
-                gen.writeEndObject(); // each filter object
-            }
+        for (FeatureFlagFilter filter : setting.getClientFilters()) {
+            gen.writeStartObject();
+            gen.writeStringField(NAME, filter.getName());
+            gen.writeObjectFieldStart(PARAMETERS);
+            writeMapProperties(filter.getParameters(), gen);
+            gen.writeEndObject(); // parameters object
+            gen.writeEndObject(); // each filter object
         }
+
         gen.writeEndArray();
         gen.writeEndObject();
 

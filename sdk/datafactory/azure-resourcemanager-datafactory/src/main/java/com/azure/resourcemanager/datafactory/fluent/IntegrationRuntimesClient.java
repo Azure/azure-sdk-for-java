@@ -14,12 +14,14 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.datafactory.fluent.models.IntegrationRuntimeAuthKeysInner;
 import com.azure.resourcemanager.datafactory.fluent.models.IntegrationRuntimeConnectionInfoInner;
 import com.azure.resourcemanager.datafactory.fluent.models.IntegrationRuntimeMonitoringDataInner;
+import com.azure.resourcemanager.datafactory.fluent.models.IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner;
 import com.azure.resourcemanager.datafactory.fluent.models.IntegrationRuntimeResourceInner;
 import com.azure.resourcemanager.datafactory.fluent.models.IntegrationRuntimeStatusResponseInner;
 import com.azure.resourcemanager.datafactory.models.CreateLinkedIntegrationRuntimeRequest;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeRegenerateKeyParameters;
 import com.azure.resourcemanager.datafactory.models.LinkedIntegrationRuntimeRequest;
 import com.azure.resourcemanager.datafactory.models.UpdateIntegrationRuntimeRequest;
+import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in IntegrationRuntimesClient. */
 public interface IntegrationRuntimesClient {
@@ -83,7 +85,7 @@ public interface IntegrationRuntimesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime resource type.
+     * @return integration runtime resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IntegrationRuntimeResourceInner> createOrUpdateWithResponse(
@@ -120,7 +122,7 @@ public interface IntegrationRuntimesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration runtime.
+     * @return an integration runtime along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IntegrationRuntimeResourceInner> getWithResponse(
@@ -160,7 +162,7 @@ public interface IntegrationRuntimesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime resource type.
+     * @return integration runtime resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IntegrationRuntimeResourceInner> updateWithResponse(
@@ -193,7 +195,7 @@ public interface IntegrationRuntimesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
@@ -224,11 +226,44 @@ public interface IntegrationRuntimesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed status information for an integration runtime.
+     * @return detailed status information for an integration runtime along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IntegrationRuntimeStatusResponseInner> getStatusWithResponse(
         String resourceGroupName, String factoryName, String integrationRuntimeName, Context context);
+
+    /**
+     * Gets the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner listOutboundNetworkDependenciesEndpoints(
+        String resourceGroupName, String factoryName, String integrationRuntimeName);
+
+    /**
+     * Gets the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime along with {@link
+     *     Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner>
+        listOutboundNetworkDependenciesEndpointsWithResponse(
+            String resourceGroupName, String factoryName, String integrationRuntimeName, Context context);
 
     /**
      * Gets the on-premises integration runtime connection information for encrypting the on-premises data source
@@ -259,7 +294,7 @@ public interface IntegrationRuntimesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the on-premises integration runtime connection information for encrypting the on-premises data source
-     *     credentials.
+     *     credentials along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IntegrationRuntimeConnectionInfoInner> getConnectionInfoWithResponse(
@@ -295,7 +330,7 @@ public interface IntegrationRuntimesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration runtime authentication keys.
+     * @return the integration runtime authentication keys along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IntegrationRuntimeAuthKeysInner> regenerateAuthKeyWithResponse(
@@ -330,7 +365,7 @@ public interface IntegrationRuntimesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration runtime authentication keys.
+     * @return the integration runtime authentication keys along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IntegrationRuntimeAuthKeysInner> listAuthKeysWithResponse(
@@ -345,9 +380,9 @@ public interface IntegrationRuntimesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime status response.
+     * @return integration runtime status response along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner> beginStart(
         String resourceGroupName, String factoryName, String integrationRuntimeName);
 
@@ -361,9 +396,9 @@ public interface IntegrationRuntimesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime status response.
+     * @return integration runtime status response along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner> beginStart(
         String resourceGroupName, String factoryName, String integrationRuntimeName, Context context);
 
@@ -407,9 +442,9 @@ public interface IntegrationRuntimesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String factoryName, String integrationRuntimeName);
 
@@ -423,9 +458,9 @@ public interface IntegrationRuntimesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String factoryName, String integrationRuntimeName, Context context);
 
@@ -485,7 +520,7 @@ public interface IntegrationRuntimesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> syncCredentialsWithResponse(
@@ -520,7 +555,7 @@ public interface IntegrationRuntimesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the integration runtime monitoring data, which includes the monitor data for all the nodes under this
-     *     integration runtime.
+     *     integration runtime along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IntegrationRuntimeMonitoringDataInner> getMonitoringDataWithResponse(
@@ -549,7 +584,7 @@ public interface IntegrationRuntimesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> upgradeWithResponse(
@@ -584,7 +619,7 @@ public interface IntegrationRuntimesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> removeLinksWithResponse(
@@ -624,7 +659,7 @@ public interface IntegrationRuntimesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime status response.
+     * @return integration runtime status response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IntegrationRuntimeStatusResponseInner> createLinkedIntegrationRuntimeWithResponse(

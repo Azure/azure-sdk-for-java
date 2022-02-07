@@ -10,6 +10,9 @@ trigger:
   paths:
     include:
       - sdk/elastic/
+    exclude:
+      - sdk/elastic/pom.xml
+      - sdk/elastic/azure-resourcemanager-elastic/pom.xml
 
 pr:
   branches:
@@ -22,6 +25,9 @@ pr:
   paths:
     include:
       - sdk/elastic/
+    exclude:
+      - sdk/elastic/pom.xml
+      - sdk/elastic/azure-resourcemanager-elastic/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

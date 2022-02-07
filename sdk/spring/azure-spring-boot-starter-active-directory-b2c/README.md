@@ -125,7 +125,6 @@ This scenario uses the [The OAuth 2.0 authorization code grant] flow to login in
 1. Write your Java code.
     
     Controller code can refer to the following:
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc/src/main/java/com/azure/spring/sample/aad/b2c/controller/WebController.java#L12-L30 -->
     ```java
     @Controller
     public class WebController {
@@ -149,7 +148,6 @@ This scenario uses the [The OAuth 2.0 authorization code grant] flow to login in
     ```
     
     Security configuration code can refer to the following:
-    <!-- embedme ../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc/src/main/java/com/azure/spring/sample/aad/b2c/security/WebSecurityConfiguration.java#L11-L29 -->
     ```java
     @EnableWebSecurity
     public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -250,8 +248,7 @@ This scenario is based on **Accessing a web application** scenario to allow appl
 1. Write your `Webapp` Java code.
 
    Controller code can refer to the following:
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/autoconfigure/b2c/WebappAccessResourceController.java#L25-L43 -->
-    ```java
+    ```java readme-sample-callWebApiA
     /**
      * Access to protected data from Webapp to WebApiA through client credential flow. The access token is obtained by webclient, or
      * <p>@RegisteredOAuth2AuthorizedClient("webApiA")</p>. In the end, these two approaches will be executed to
@@ -274,8 +271,7 @@ This scenario is based on **Accessing a web application** scenario to allow appl
     ```
 
    Security configuration code is the same with **Accessing a web application** scenario, another bean `webClient`is added as follows:
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/autoconfigure/b2c/WebappAccessResourceConfiguration.java#33-L40 -->
-    ```java
+    ```java readme-sample-webClient
     @Bean
     public WebClient webClient(OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager) {
         ServletOAuth2AuthorizedClientExchangeFilterFunction function =
@@ -330,8 +326,7 @@ This scenario not support login. Just protect the server by validating the acces
 1. Write your Java code.
 
    Controller code can refer to the following:
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/autoconfigure/b2c/ResourceServerController.java#L25-L34 -->
-    ```java
+    ```java readme-sample-webApiASample
     /**
      * webApiA resource api for web app
      * @return test content
@@ -345,18 +340,17 @@ This scenario not support login. Just protect the server by validating the acces
     ```
 
    Security configuration code can refer to the following:
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/autoconfigure/b2c/ResourceServerConfiguration.java#L11-L22 -->
-    ```java
+    ```java readme-sample-ResourceServerConfiguration
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
     public class ResourceServerConfiguration extends WebSecurityConfigurerAdapter {
-    
+
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.authorizeRequests((requests) -> requests.anyRequest().authenticated())
                 .oauth2ResourceServer()
                 .jwt()
-                .jwtAuthenticationConverter(new AADB2CJwtBearerTokenAuthenticationConverter());
+                .jwtAuthenticationConverter(new AADJwtBearerTokenAuthenticationConverter());
         }
     }
     ```
@@ -418,8 +412,7 @@ This scenario is an upgrade of **Accessing a resource server**, supports access 
 1. Write your Java code.
 
    WebApiA controller code can refer to the following:
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/autoconfigure/b2c/ResourceServerController.java#L47-L66 -->
-    ```java
+    ```java readme-sample-callWebApiB
     /**
      * Access to protected data from WebApiA to WebApiB through client credential flow. The access token is obtained by webclient, or
      * <p>@RegisteredOAuth2AuthorizedClient("webApiA")</p>. In the end, these two approaches will be executed to
@@ -443,8 +436,7 @@ This scenario is an upgrade of **Accessing a resource server**, supports access 
     ```
    
    WebApiB controller code can refer to the following:
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/autoconfigure/b2c/ResourceServerController.java#L36-L45 -->
-    ```java
+    ```java readme-sample-webApiBSample
     /**
      * webApiB resource api for other web application
      * @return test content
@@ -474,26 +466,18 @@ Please refer to [azure-spring-boot-sample-active-directory-b2c-oidc].
 Please refer to [azure-spring-boot-sample-active-directory-b2c-resource-server].
 
 ## Troubleshooting
-### Enable client logging
-Azure SDKs for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
+### Logging setting
+Please refer to [spring logging document] to get more information about logging.
 
-### Enable Spring logging
-Spring allow all the supported logging systems to set logger levels set in the Spring Environment (for example, in application.properties) by using `logging.level.<logger-name>=<level>` where level is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. The root logger can be configured by using logging.level.root.
-
-The following example shows potential logging settings in `application.properties`:
-
+#### Logging setting examples
+- Example 1: Setting logging level of hibernate
 ```properties
 logging.level.root=WARN
 logging.level.org.springframework.web=DEBUG
 logging.level.org.hibernate=ERROR
 ```
 
-For more information about setting logging in spring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging).
-
-### Enable authority logging.
-
-Add the following logging settings:
-
+- Example 2: Setting logging level of AADJwtGrantedAuthoritiesConverter
 ```properties
 # logging settings for resource server scenario.
 logging.level.com.azure.spring.aad.AADJwtGrantedAuthoritiesConverter=DEBUG
@@ -519,7 +503,7 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
 [package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-boot-starter-active-directory-b2c
 [sample]: https://github.com/Azure-Samples/azure-spring-boot-samples
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
+[spring logging document]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [Add azure-spring-boot-bom]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-boot-bom
 [tutorial_create_tenant]: https://docs.microsoft.com/azure/active-directory-b2c/tutorial-create-tenant

@@ -18,6 +18,11 @@ public class AADB2CLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
 
     private final AADB2CProperties properties;
 
+    /**
+     * Creates a new instance of {@link AADB2CLogoutSuccessHandler}.
+     *
+     * @param properties the AAD B2C properties
+     */
     public AADB2CLogoutSuccessHandler(@NonNull AADB2CProperties properties) {
         this.properties = properties;
 

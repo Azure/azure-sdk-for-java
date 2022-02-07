@@ -11,10 +11,14 @@ import java.util.function.Supplier;
 
 /**
  * Azure implementation for check point callback.
+ *
+ * @deprecated {@link CompletableFuture} API will be dropped in version 4.x, please migrate to reactor API in 4.x.
+ * The reactor API support will be moved to com.azure.spring.messaging.checkpoint.AzureCheckpointer.
  */
+@Deprecated
 public class AzureCheckpointer implements Checkpointer {
-    private final Supplier<CompletableFuture<Void>> success;
-    private final Supplier<CompletableFuture<Void>> fail;
+    private Supplier<CompletableFuture<Void>> success;
+    private Supplier<CompletableFuture<Void>> fail;
 
     public AzureCheckpointer(@NonNull Supplier<CompletableFuture<Void>> success) {
         this(success, null);
@@ -37,5 +41,21 @@ public class AzureCheckpointer implements Checkpointer {
             throw new UnsupportedOperationException("Fail current message unsupported");
         }
         return this.fail.get();
+    }
+
+    public Supplier<CompletableFuture<Void>> getSuccess() {
+        return success;
+    }
+
+    public void setSuccess(Supplier<CompletableFuture<Void>> success) {
+        this.success = success;
+    }
+
+    public Supplier<CompletableFuture<Void>> getFail() {
+        return fail;
+    }
+
+    public void setFail(Supplier<CompletableFuture<Void>> fail) {
+        this.fail = fail;
     }
 }

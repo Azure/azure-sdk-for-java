@@ -100,12 +100,22 @@ public class AADWebAppAndWebApiInOneAppIT {
             aadWebApiITHelper.httpGetStringByAccessToken("/api/call-graph"));
     }
 
+    @Test
+    public void testSelfDefinedAuthorizationGrantTypeCanBeSavedAndLoaded() {
+        AADWebApiITHelper aadWebApiITHelper = new AADWebApiITHelper(
+            DumbApp.class,
+            properties,
+            AAD_MULTI_TENANT_CLIENT_ID,
+            AAD_MULTI_TENANT_CLIENT_SECRET,
+            Collections.singletonList(MULTI_TENANT_SCOPE_GRAPH_READ));
+        assertEquals("Graph response success.",
+            aadWebApiITHelper.getCookieAndAccessByCookie("/api/call-graph", "/api/call-graph"));
+    }
+
     @SpringBootApplication
     @ImportAutoConfiguration(AADWebApplicationAndResourceServerITConfig.class)
     public static class DumbApp {
 
-        @Autowired
-        private WebClient webClient;
 
         @Bean
         public WebClient webClient(OAuth2AuthorizedClientManager authorizedClientManager) {
@@ -129,6 +139,9 @@ public class AADWebAppAndWebApiInOneAppIT {
         @RestController
         @RequestMapping("/api")
         class ResourceServerController {
+
+            @Autowired
+            private WebClient webClient;
 
             /**
              * Call the graph resource only with annotation, return user information

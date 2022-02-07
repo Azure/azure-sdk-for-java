@@ -59,7 +59,7 @@ public class NettyAsyncHttpClientBuilderTests {
     private static final String COOKIE_NAME = "test";
     private static final String COOKIE_VALUE = "success";
 
-    private static final String JAVA_PROXY_PREREQUISITE = "java.net.useSystemProxies";
+    private static final String JAVA_SYSTEM_PROXY_PREREQUISITE = "java.net.useSystemProxies";
     private static final String JAVA_NON_PROXY_HOSTS = "http.nonProxyHosts";
 
     private static final String JAVA_HTTP_PROXY_HOST = "http.proxyHost";
@@ -256,7 +256,6 @@ public class NettyAsyncHttpClientBuilderTests {
 
     private static Stream<Arguments> buildWithConfigurationProxySupplier() {
         Supplier<Configuration> baseJavaProxyConfigurationSupplier = () -> new Configuration()
-            .put(JAVA_PROXY_PREREQUISITE, "true")
             .put(JAVA_HTTP_PROXY_HOST, "localhost")
             .put(JAVA_HTTP_PROXY_PORT, "12345");
 
@@ -268,7 +267,8 @@ public class NettyAsyncHttpClientBuilderTests {
         arguments.add(Arguments.of(true, false, baseJavaProxyConfigurationSupplier.get(), defaultUrl));
 
         Configuration simpleEnvProxy = new Configuration()
-            .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345");
+            .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345")
+            .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
         arguments.add(Arguments.of(true, false, simpleEnvProxy, defaultUrl));
 
         /*
@@ -280,7 +280,8 @@ public class NettyAsyncHttpClientBuilderTests {
         arguments.add(Arguments.of(true, true, javaProxyWithAuthentication, defaultUrl));
 
         Configuration envProxyWithAuthentication = new Configuration()
-            .put(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:12345");
+            .put(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:12345")
+            .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
         arguments.add(Arguments.of(true, true, envProxyWithAuthentication, defaultUrl));
 
         /*
@@ -304,7 +305,8 @@ public class NettyAsyncHttpClientBuilderTests {
             .put(JAVA_NON_PROXY_HOSTS, rawJavaNonProxyHosts);
         Supplier<Configuration> envNonProxyHostsSupplier = () -> new Configuration()
             .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345")
-            .put(Configuration.PROPERTY_NO_PROXY, rawEnvNonProxyHosts);
+            .put(Configuration.PROPERTY_NO_PROXY, rawEnvNonProxyHosts)
+            .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
 
         List<Supplier<Configuration>> nonProxyHostsSuppliers = Arrays.asList(javaNonProxyHostsSupplier,
             envNonProxyHostsSupplier);
@@ -327,7 +329,8 @@ public class NettyAsyncHttpClientBuilderTests {
             .put(JAVA_HTTP_PROXY_PASSWORD, "1");
         Supplier<Configuration> authenticatedEnvNonProxyHostsSupplier = () -> new Configuration()
             .put(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:12345")
-            .put(Configuration.PROPERTY_NO_PROXY, rawEnvNonProxyHosts);
+            .put(Configuration.PROPERTY_NO_PROXY, rawEnvNonProxyHosts)
+            .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
 
         List<Supplier<Configuration>> authenticatedNonProxyHostsSuppliers = Arrays.asList(
             authenticatedJavaNonProxyHostsSupplier, authenticatedEnvNonProxyHostsSupplier);
@@ -469,7 +472,7 @@ public class NettyAsyncHttpClientBuilderTests {
     @ParameterizedTest
     @MethodSource("getTimeoutMillisSupplier")
     public void getTimeoutMillis(Duration timeout, long expected) {
-        assertEquals(expected, NettyAsyncHttpClientBuilder.getTimeoutMillis(timeout));
+        assertEquals(expected, NettyAsyncHttpClientBuilder.getTimeoutMillis(timeout, 60000));
     }
 
     private static Stream<Arguments> getTimeoutMillisSupplier() {

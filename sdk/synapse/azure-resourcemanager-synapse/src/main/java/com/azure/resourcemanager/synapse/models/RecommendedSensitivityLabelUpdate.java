@@ -5,41 +5,31 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.synapse.fluent.models.RecommendedSensitivityLabelUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A recommended sensitivity label update operation. */
-@JsonFlatten
 @Fluent
-public class RecommendedSensitivityLabelUpdate extends ProxyResource {
+public final class RecommendedSensitivityLabelUpdate extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RecommendedSensitivityLabelUpdate.class);
 
     /*
-     * The op property.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.op")
-    private RecommendedSensitivityLabelUpdateKind op;
+    @JsonProperty(value = "properties")
+    private RecommendedSensitivityLabelUpdateProperties innerProperties;
 
-    /*
-     * Schema name of the column to update.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.schema")
-    private String schema;
-
-    /*
-     * Table name of the column to update.
-     */
-    @JsonProperty(value = "properties.table")
-    private String table;
-
-    /*
-     * Column name to update.
-     */
-    @JsonProperty(value = "properties.column")
-    private String column;
+    private RecommendedSensitivityLabelUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the op property: The op property.
@@ -47,7 +37,7 @@ public class RecommendedSensitivityLabelUpdate extends ProxyResource {
      * @return the op value.
      */
     public RecommendedSensitivityLabelUpdateKind op() {
-        return this.op;
+        return this.innerProperties() == null ? null : this.innerProperties().op();
     }
 
     /**
@@ -57,7 +47,10 @@ public class RecommendedSensitivityLabelUpdate extends ProxyResource {
      * @return the RecommendedSensitivityLabelUpdate object itself.
      */
     public RecommendedSensitivityLabelUpdate withOp(RecommendedSensitivityLabelUpdateKind op) {
-        this.op = op;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendedSensitivityLabelUpdateProperties();
+        }
+        this.innerProperties().withOp(op);
         return this;
     }
 
@@ -67,7 +60,7 @@ public class RecommendedSensitivityLabelUpdate extends ProxyResource {
      * @return the schema value.
      */
     public String schema() {
-        return this.schema;
+        return this.innerProperties() == null ? null : this.innerProperties().schema();
     }
 
     /**
@@ -77,7 +70,10 @@ public class RecommendedSensitivityLabelUpdate extends ProxyResource {
      * @return the RecommendedSensitivityLabelUpdate object itself.
      */
     public RecommendedSensitivityLabelUpdate withSchema(String schema) {
-        this.schema = schema;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendedSensitivityLabelUpdateProperties();
+        }
+        this.innerProperties().withSchema(schema);
         return this;
     }
 
@@ -87,7 +83,7 @@ public class RecommendedSensitivityLabelUpdate extends ProxyResource {
      * @return the table value.
      */
     public String table() {
-        return this.table;
+        return this.innerProperties() == null ? null : this.innerProperties().table();
     }
 
     /**
@@ -97,7 +93,10 @@ public class RecommendedSensitivityLabelUpdate extends ProxyResource {
      * @return the RecommendedSensitivityLabelUpdate object itself.
      */
     public RecommendedSensitivityLabelUpdate withTable(String table) {
-        this.table = table;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendedSensitivityLabelUpdateProperties();
+        }
+        this.innerProperties().withTable(table);
         return this;
     }
 
@@ -107,7 +106,7 @@ public class RecommendedSensitivityLabelUpdate extends ProxyResource {
      * @return the column value.
      */
     public String column() {
-        return this.column;
+        return this.innerProperties() == null ? null : this.innerProperties().column();
     }
 
     /**
@@ -117,7 +116,10 @@ public class RecommendedSensitivityLabelUpdate extends ProxyResource {
      * @return the RecommendedSensitivityLabelUpdate object itself.
      */
     public RecommendedSensitivityLabelUpdate withColumn(String column) {
-        this.column = column;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendedSensitivityLabelUpdateProperties();
+        }
+        this.innerProperties().withColumn(column);
         return this;
     }
 
@@ -127,5 +129,8 @@ public class RecommendedSensitivityLabelUpdate extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

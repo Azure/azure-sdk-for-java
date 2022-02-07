@@ -10,26 +10,27 @@ import com.azure.resourcemanager.msi.models.OperationDisplay;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Operation supported by the Microsoft.ManagedIdentity REST API. */
+/** Microsoft.ManagedIdentity Operation. Operation supported by the Microsoft.ManagedIdentity REST API. */
 @Fluent
 public final class OperationInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);
 
     /*
-     * The name of the REST Operation. This is of the format
+     * Operation Name. The name of the REST Operation. This is of the format
      * {provider}/{resource}/{operation}.
      */
     @JsonProperty(value = "name")
     private String name;
 
     /*
-     * The object that describes the operation.
+     * Operation Display. The object that describes the operation.
      */
     @JsonProperty(value = "display")
     private OperationDisplay display;
 
     /**
-     * Get the name property: The name of the REST Operation. This is of the format {provider}/{resource}/{operation}.
+     * Get the name property: Operation Name. The name of the REST Operation. This is of the format
+     * {provider}/{resource}/{operation}.
      *
      * @return the name value.
      */
@@ -38,7 +39,8 @@ public final class OperationInner {
     }
 
     /**
-     * Set the name property: The name of the REST Operation. This is of the format {provider}/{resource}/{operation}.
+     * Set the name property: Operation Name. The name of the REST Operation. This is of the format
+     * {provider}/{resource}/{operation}.
      *
      * @param name the name value to set.
      * @return the OperationInner object itself.
@@ -49,7 +51,7 @@ public final class OperationInner {
     }
 
     /**
-     * Get the display property: The object that describes the operation.
+     * Get the display property: Operation Display. The object that describes the operation.
      *
      * @return the display value.
      */
@@ -58,7 +60,7 @@ public final class OperationInner {
     }
 
     /**
-     * Set the display property: The object that describes the operation.
+     * Set the display property: Operation Display. The object that describes the operation.
      *
      * @param display the display value to set.
      * @return the OperationInner object itself.

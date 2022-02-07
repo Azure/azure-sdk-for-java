@@ -33,7 +33,6 @@ import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues
 import spock.lang.Ignore
 import spock.lang.Unroll
 
-import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.nio.file.FileAlreadyExistsException
 import java.nio.file.NoSuchFileException
@@ -75,7 +74,7 @@ class FileAPITests extends APISpec {
 
     def "Get file URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, filePath)
 
         when:
@@ -87,7 +86,7 @@ class FileAPITests extends APISpec {
 
     def "Get share snapshot URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, filePath)
 
         when:
@@ -102,7 +101,7 @@ class FileAPITests extends APISpec {
 
         when:
         def snapshotEndpoint = String.format("https://%s.file.core.windows.net/%s/%s?sharesnapshot=%s", accountName, shareName, filePath, shareSnapshotInfo.getSnapshot())
-        ShareFileClient client = getFileClient(StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString), snapshotEndpoint)
+        ShareFileClient client = getFileClient(StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString), snapshotEndpoint)
 
         then:
         client.getFileUrl() == snapshotEndpoint
@@ -339,7 +338,7 @@ class FileAPITests extends APISpec {
         given:
         primaryFileClient.create(data.defaultDataSize)
         def clientWithFailure = getFileClient(
-            env.primaryAccount.credential,
+            environment.primaryAccount.credential,
             primaryFileClient.getFileUrl(),
             new TransientFailureInjectingHttpPipelinePolicy())
 
@@ -415,7 +414,6 @@ class FileAPITests extends APISpec {
         CoreUtils.isNullOrEmpty(headers.getMetadata())
         headers.getContentLength() != null
         headers.getContentType() != null
-        headers.getContentRange() != null
         headers.getContentMd5() == null
         headers.getContentEncoding() == null
         headers.getCacheControl() == null
@@ -423,9 +421,10 @@ class FileAPITests extends APISpec {
         headers.getContentLanguage() == null
     }
 
+    @Unroll
     def "Download empty file"() {
         setup:
-        primaryFileClient.create(1)
+        primaryFileClient.create(fileSize)
 
         when:
         def outStream = new ByteArrayOutputStream()
@@ -434,8 +433,15 @@ class FileAPITests extends APISpec {
 
         then:
         notThrown(ShareStorageException)
-        result.length == 1
-        !result[0]
+        result.length == fileSize
+        if (fileSize > 0) {
+            assert !result[0]
+        }
+
+        where:
+        fileSize | _
+        0        | _
+        1        | _
     }
 
     /*
@@ -455,7 +461,7 @@ class FileAPITests extends APISpec {
         setup:
         primaryFileClient.create(data.defaultDataSizeLong)
         primaryFileClient.upload(data.defaultInputStream, data.defaultDataSizeLong)
-        def fc2 = getFileClient(env.primaryAccount.credential, primaryFileClient.getFileUrl(), new MockRetryRangeResponsePolicy("bytes=2-6"))
+        def fc2 = getFileClient(environment.primaryAccount.credential, primaryFileClient.getFileUrl(), new MockRetryRangeResponsePolicy("bytes=2-6"))
 
         when:
         def range = new ShareFileRange(2, 6L)
@@ -475,7 +481,7 @@ class FileAPITests extends APISpec {
         setup:
         primaryFileClient.create(data.defaultDataSizeLong)
         primaryFileClient.upload(data.defaultInputStream, data.defaultDataSizeLong)
-        def failureClient = getFileClient(env.primaryAccount.credential, primaryFileClient.getFileUrl(), new MockFailureResponsePolicy(5))
+        def failureClient = getFileClient(environment.primaryAccount.credential, primaryFileClient.getFileUrl(), new MockFailureResponsePolicy(5))
 
         when:
         def outStream = new ByteArrayOutputStream()
@@ -594,7 +600,7 @@ class FileAPITests extends APISpec {
     def "Upload data retry on transient failure"() {
         setup:
         def clientWithFailure = getFileClient(
-            env.primaryAccount.credential,
+            environment.primaryAccount.credential,
             primaryFileClient.getFileUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         )
@@ -767,7 +773,7 @@ class FileAPITests extends APISpec {
     def "Download file buffer copy"() {
         setup:
         def shareServiceClient = new ShareServiceClientBuilder()
-            .connectionString(env.primaryAccount.connectionString)
+            .connectionString(environment.primaryAccount.connectionString)
             .buildClient()
 
         def fileClient = shareServiceClient.getShareClient(shareName)
@@ -858,7 +864,7 @@ class FileAPITests extends APISpec {
         def destinationOffset = 0
 
         primaryFileClient.upload(getInputStream(data.getBytes()), data.length())
-        def credential = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString)
+        def credential = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString)
         def sasToken = new ShareServiceSasSignatureValues()
             .setExpiryTime(namer.getUtcNow().plusDays(1))
             .setPermissions(new ShareFileSasPermission().setReadPermission(true))

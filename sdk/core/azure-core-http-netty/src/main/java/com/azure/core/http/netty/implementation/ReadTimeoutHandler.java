@@ -37,6 +37,10 @@ public final class ReadTimeoutHandler extends ChannelInboundHandlerAdapter {
         this.timeoutMillis = timeoutMillis;
     }
 
+    ScheduledFuture<?> getReadTimeoutWatcher() {
+        return readTimeoutWatcher;
+    }
+
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
         this.lastReadMillis = System.currentTimeMillis();
@@ -56,7 +60,7 @@ public final class ReadTimeoutHandler extends ChannelInboundHandlerAdapter {
         disposeWatcher();
     }
 
-    private void readTimeoutRunnable(ChannelHandlerContext ctx) {
+    void readTimeoutRunnable(ChannelHandlerContext ctx) {
         // Channel has completed a read operation since the last time the timeout event fired.
         if ((timeoutMillis - (System.currentTimeMillis() - lastReadMillis)) > 0) {
             return;

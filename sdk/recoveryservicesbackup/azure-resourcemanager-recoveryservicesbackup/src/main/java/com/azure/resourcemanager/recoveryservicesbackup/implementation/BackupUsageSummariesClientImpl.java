@@ -112,7 +112,6 @@ public final class BackupUsageSummariesClientImpl implements BackupUsageSummarie
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -120,7 +119,7 @@ public final class BackupUsageSummariesClientImpl implements BackupUsageSummarie
                     service
                         .list(
                             this.client.getEndpoint(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             vaultName,
                             resourceGroupName,
                             this.client.getSubscriptionId(),
@@ -170,13 +169,12 @@ public final class BackupUsageSummariesClientImpl implements BackupUsageSummarie
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
-                apiVersion,
+                this.client.getApiVersion(),
                 vaultName,
                 resourceGroupName,
                 this.client.getSubscriptionId(),

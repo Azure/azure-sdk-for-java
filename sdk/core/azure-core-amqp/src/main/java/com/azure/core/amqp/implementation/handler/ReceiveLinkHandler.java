@@ -3,35 +3,57 @@
 
 package com.azure.core.amqp.implementation.handler;
 
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LoggingEventBuilder;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Modified;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
+import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.Extendable;
+import org.apache.qpid.proton.engine.Handler;
 import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Receiver;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
 
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addErrorCondition;
+import static com.azure.core.amqp.implementation.ClientConstants.EMIT_RESULT_KEY;
+import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
+import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
+
+
+/**
+ * Handler that receives events from its corresponding {@link Receiver}. Handlers must be associated to a
+ * {@link Receiver} to receive its events.
+ *
+ * @see BaseHandler#setHandler(Extendable, Handler)
+ * @see Receiver
+ */
 public class ReceiveLinkHandler extends LinkHandler {
     private final String linkName;
-    private final AtomicBoolean isFirstResponse = new AtomicBoolean(true);
+
+    /**
+     * Indicates whether or not the link has ever been remotely active (ie. the service has acknowledged that we have
+     * opened a send link to the given entityPath.)
+     */
+    private final AtomicBoolean isRemoteActive = new AtomicBoolean();
     private final AtomicBoolean isTerminated = new AtomicBoolean();
     private final Sinks.Many<Delivery> deliveries = Sinks.many().multicast().onBackpressureBuffer();
     private final Set<Delivery> queuedDeliveries = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private final String entityPath;
 
     public ReceiveLinkHandler(String connectionId, String hostname, String linkName, String entityPath) {
-        super(connectionId, hostname, entityPath, new ClientLogger(ReceiveLinkHandler.class));
-        this.linkName = linkName;
-        this.entityPath = entityPath;
+        super(connectionId, hostname, entityPath);
+        this.linkName = Objects.requireNonNull(linkName, "'linkName' cannot be null.");
+        this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
     }
 
     public String getLinkName() {
@@ -42,34 +64,31 @@ public class ReceiveLinkHandler extends LinkHandler {
         return deliveries.asFlux().doOnNext(queuedDeliveries::remove);
     }
 
+    /**
+     * Closes the handler by completing the completing the queued deliveries and deliveries then publishes {@link
+     * EndpointState#CLOSED}. {@link #getEndpointStates()} is completely closed when {@link #onLinkRemoteClose(Event)},
+     * {@link #onLinkRemoteDetach(Event)}, or {@link #onLinkFinal(Event)} is called.
+     */
     @Override
     public void close() {
         if (isTerminated.getAndSet(true)) {
             return;
         }
 
-        deliveries.emitComplete((signalType, emitResult) -> {
-            logger.verbose("connectionId[{}], entityPath[{}], linkName[{}] Could not emit complete.",
-                getConnectionId(), entityPath, linkName);
-            return false;
-        });
+        clearAndCompleteDeliveries("Could not emit deliveries.close when closing handler.");
 
-        super.close();
-
-        queuedDeliveries.forEach(delivery -> {
-            // abandon the queued deliveries as the receive link handler is closed
-            delivery.disposition(new Modified());
-            delivery.settle();
-        });
-        queuedDeliveries.clear();
+        onNext(EndpointState.CLOSED);
     }
 
     @Override
     public void onLinkLocalOpen(Event event) {
         final Link link = event.getLink();
         if (link instanceof Receiver) {
-            logger.verbose("onLinkLocalOpen connectionId[{}], entityPath[{}], linkName[{}], localSource[{}]",
-                getConnectionId(), entityPath, link.getName(), link.getSource());
+            logger.atVerbose()
+                .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                .addKeyValue(LINK_NAME_KEY, link.getName())
+                .addKeyValue("localSource", link.getSource())
+                .log("onLinkLocalOpen");
         }
     }
 
@@ -80,22 +99,27 @@ public class ReceiveLinkHandler extends LinkHandler {
             return;
         }
 
-        if (link.getRemoteSource() != null) {
-            logger.info("onLinkRemoteOpen connectionId[{}], entityPath[{}], linkName[{}], remoteSource[{}]",
-                getConnectionId(), entityPath, link.getName(), link.getRemoteSource());
+        LoggingEventBuilder logBuilder =  logger.atInfo()
+            .addKeyValue(ENTITY_PATH_KEY, entityPath)
+            .addKeyValue(LINK_NAME_KEY, link.getName());
 
-            if (isFirstResponse.getAndSet(false)) {
+        if (link.getRemoteSource() != null) {
+            logBuilder.addKeyValue("remoteSource", link.getRemoteSource());
+
+            if (!isRemoteActive.getAndSet(true)) {
                 onNext(EndpointState.ACTIVE);
             }
         } else {
-            logger.info("onLinkRemoteOpen connectionId[{}], entityPath[{}], linkName[{}], action[waitingForError]",
-                getConnectionId(), entityPath, link.getName());
+            logBuilder
+                .addKeyValue("action", "waitingForError");
         }
+
+        logBuilder.log("onLinkRemoteOpen");
     }
 
     @Override
     public void onDelivery(Event event) {
-        if (isFirstResponse.getAndSet(false)) {
+        if (!isRemoteActive.getAndSet(true)) {
             onNext(EndpointState.ACTIVE);
         }
 
@@ -113,14 +137,18 @@ public class ReceiveLinkHandler extends LinkHandler {
             // before we fix proton-j - this work around ensures that we ignore the duplicate Delivery event
             if (wasSettled) {
                 if (link != null) {
-                    logger.info("onDelivery connectionId[{}], entityPath[{}], linkName[{}], updatedLinkCredit[{}],"
-                            + " remoteCredit[{}], remoteCondition[{}], delivery.isSettled[{}] Was already settled.",
-                        getConnectionId(), entityPath, link.getName(), link.getCredit(), link.getRemoteCredit(),
-                        link.getRemoteCondition(), delivery.isSettled());
+                    addErrorCondition(logger.atInfo(), link.getRemoteCondition())
+                        .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                        .addKeyValue(LINK_NAME_KEY, linkName)
+                        .addKeyValue("updatedLinkCredit", link.getCredit())
+                        .addKeyValue("remoteCredit", link.getRemoteCredit())
+                        .addKeyValue("delivery.isSettled", delivery.isSettled())
+                        .log("onDelivery. Was already settled.");
                 } else {
-                    logger.warning("connectionId[{}], entityPath[{}] delivery.isSettled[{}] Settled delivery with no "
-                            + " link.",
-                        getConnectionId(), entityPath, delivery.isSettled());
+                    logger.atWarning()
+                        .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                        .addKeyValue("delivery.isSettled", delivery.isSettled())
+                        .log("Settled delivery with no link.");
                 }
             } else {
                 if (link.getLocalState() == EndpointState.CLOSED) {
@@ -134,9 +162,12 @@ public class ReceiveLinkHandler extends LinkHandler {
                 } else {
                     queuedDeliveries.add(delivery);
                     deliveries.emitNext(delivery, (signalType, emitResult) -> {
-                        logger.warning("connectionId[{}], entityPath[{}], linkName[{}], emitResult[{}] "
-                                + "Could not emit delivery. {}",
-                            getConnectionId(), entityPath, linkName, emitResult, delivery);
+                        logger.atWarning()
+                            .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                            .addKeyValue(LINK_NAME_KEY, linkName)
+                            .addKeyValue(EMIT_RESULT_KEY, emitResult)
+                            .log("Could not emit delivery. {}", delivery);
+
                         if (emitResult == Sinks.EmitResult.FAIL_OVERFLOW
                             && link.getLocalState() != EndpointState.CLOSED) {
                             link.setCondition(new ErrorCondition(Symbol.getSymbol("delivery-buffer-overflow"),
@@ -154,26 +185,68 @@ public class ReceiveLinkHandler extends LinkHandler {
 
         if (link != null) {
             final ErrorCondition condition = link.getRemoteCondition();
-            logger.verbose("onDelivery connectionId[{}], linkName[{}], updatedLinkCredit[{}],"
-                    + "remoteCredit[{}], remoteCondition[{}], delivery.isPartial[{}], delivery.isSettled[{}]",
-                getConnectionId(), link.getName(), link.getCredit(), link.getRemoteCredit(),
-                condition != null && condition.getCondition() != null ? condition : "N/A",
-                delivery.isPartial(), wasSettled);
+            addErrorCondition(logger.atVerbose(), condition)
+                .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                .addKeyValue(LINK_NAME_KEY, linkName)
+                .addKeyValue("updatedLinkCredit", link.getCredit())
+                .addKeyValue("remoteCredit", link.getRemoteCredit())
+                .addKeyValue("delivery.isPartial", delivery.isPartial())
+                .addKeyValue("delivery.isSettled", wasSettled)
+                .log("onDelivery.");
+        }
+    }
+
+    @Override
+    public void onLinkLocalClose(Event event) {
+        super.onLinkLocalClose(event);
+
+        // Someone called receiver.close() to set the local link state to close. Since the link was never remotely
+        // active, we complete getEndpointStates() ourselves.
+        if (!isRemoteActive.get()) {
+            logger.atInfo()
+                .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                .addKeyValue(LINK_NAME_KEY, linkName)
+                .log("Receiver link was never active. Closing endpoint states");
+
+            super.close();
         }
     }
 
     @Override
     public void onLinkRemoteClose(Event event) {
-        if (isTerminated.get()) {
-            return;
-        }
+        clearAndCompleteDeliveries("Could not complete 'deliveries' when remotely closed.");
 
+        super.onLinkRemoteClose(event);
+    }
+
+    @Override
+    public void onLinkFinal(Event event) {
+        // Unlikely though, because RemoteClose() or close() would have been called first.
+        // In the case that we haven't cleared the pending deliveries.
+        close();
+
+        super.onLinkFinal(event);
+    }
+
+    /**
+     * Clears all pending deliveries and completes the delivery flux.
+     *
+     * @param errorMessage Message to output if the close operation fails.
+     */
+    private void clearAndCompleteDeliveries(String errorMessage) {
         deliveries.emitComplete((signalType, emitResult) -> {
-            logger.info("connectionId[{}] linkName[{}] signalType[{}] emitResult[{}] Could not complete 'deliveries'.",
-                getConnectionId(), linkName, signalType, emitResult);
+            logger.atVerbose()
+                .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                .addKeyValue(LINK_NAME_KEY, linkName)
+                .log(errorMessage);
             return false;
         });
 
-        super.onLinkRemoteClose(event);
+        queuedDeliveries.forEach(delivery -> {
+            // abandon the queued deliveries as the receive link handler is closed
+            delivery.disposition(new Modified());
+            delivery.settle();
+        });
+        queuedDeliveries.clear();
     }
 }

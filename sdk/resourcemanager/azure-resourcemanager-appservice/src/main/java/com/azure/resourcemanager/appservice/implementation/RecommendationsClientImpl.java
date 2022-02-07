@@ -68,9 +68,9 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
         Mono<Response<RecommendationCollection>> list(
             @HostParam("$host") String endpoint,
             @QueryParam("featured") Boolean featured,
-            @QueryParam(value = "$filter", encoded = true) String filter,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @QueryParam(value = "$filter", encoded = true) String filter,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -108,9 +108,9 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("hostingEnvironmentName") String hostingEnvironmentName,
             @QueryParam("expiredOnly") Boolean expiredOnly,
-            @QueryParam(value = "$filter", encoded = true) String filter,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @QueryParam(value = "$filter", encoded = true) String filter,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -125,9 +125,9 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("hostingEnvironmentName") String hostingEnvironmentName,
             @QueryParam("featured") Boolean featured,
-            @QueryParam(value = "$filter", encoded = true) String filter,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @QueryParam(value = "$filter", encoded = true) String filter,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -209,9 +209,9 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("siteName") String siteName,
             @QueryParam("expiredOnly") Boolean expiredOnly,
-            @QueryParam(value = "$filter", encoded = true) String filter,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @QueryParam(value = "$filter", encoded = true) String filter,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -226,9 +226,9 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("siteName") String siteName,
             @QueryParam("featured") Boolean featured,
-            @QueryParam(value = "$filter", encoded = true) String filter,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @QueryParam(value = "$filter", encoded = true) String filter,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -382,9 +382,9 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                         .list(
                             this.client.getEndpoint(),
                             featured,
-                            filter,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            filter,
                             accept,
                             context))
             .<PagedResponse<RecommendationInner>>map(
@@ -434,9 +434,9 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             .list(
                 this.client.getEndpoint(),
                 featured,
-                filter,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                filter,
                 accept,
                 context)
             .map(
@@ -816,9 +816,9 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                             resourceGroupName,
                             hostingEnvironmentName,
                             expiredOnly,
-                            filter,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            filter,
                             accept,
                             context))
             .<PagedResponse<RecommendationInner>>map(
@@ -881,9 +881,9 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                 resourceGroupName,
                 hostingEnvironmentName,
                 expiredOnly,
-                filter,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                filter,
                 accept,
                 context)
             .map(
@@ -1061,9 +1061,9 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                             resourceGroupName,
                             hostingEnvironmentName,
                             featured,
-                            filter,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            filter,
                             accept,
                             context))
             .<PagedResponse<RecommendationInner>>map(
@@ -1125,9 +1125,9 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                 resourceGroupName,
                 hostingEnvironmentName,
                 featured,
-                filter,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                filter,
                 accept,
                 context)
             .map(
@@ -2053,9 +2053,9 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                             resourceGroupName,
                             siteName,
                             expiredOnly,
-                            filter,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            filter,
                             accept,
                             context))
             .<PagedResponse<RecommendationInner>>map(
@@ -2116,9 +2116,9 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                 resourceGroupName,
                 siteName,
                 expiredOnly,
-                filter,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                filter,
                 accept,
                 context)
             .map(
@@ -2284,9 +2284,9 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                             resourceGroupName,
                             siteName,
                             featured,
-                            filter,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            filter,
                             accept,
                             context))
             .<PagedResponse<RecommendationInner>>map(
@@ -2346,9 +2346,9 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
                 resourceGroupName,
                 siteName,
                 featured,
-                filter,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                filter,
                 accept,
                 context)
             .map(

@@ -8,8 +8,8 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -17,6 +17,7 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -28,16 +29,19 @@ import com.azure.resourcemanager.applicationinsights.implementation.ApplicationI
 import com.azure.resourcemanager.applicationinsights.implementation.ComponentAvailableFeaturesImpl;
 import com.azure.resourcemanager.applicationinsights.implementation.ComponentCurrentBillingFeaturesImpl;
 import com.azure.resourcemanager.applicationinsights.implementation.ComponentFeatureCapabilitiesImpl;
+import com.azure.resourcemanager.applicationinsights.implementation.ComponentLinkedStorageAccountsOperationsImpl;
 import com.azure.resourcemanager.applicationinsights.implementation.ComponentQuotaStatusImpl;
 import com.azure.resourcemanager.applicationinsights.implementation.ComponentsImpl;
 import com.azure.resourcemanager.applicationinsights.implementation.ExportConfigurationsImpl;
 import com.azure.resourcemanager.applicationinsights.implementation.FavoritesImpl;
+import com.azure.resourcemanager.applicationinsights.implementation.LiveTokensImpl;
 import com.azure.resourcemanager.applicationinsights.implementation.MyWorkbooksImpl;
 import com.azure.resourcemanager.applicationinsights.implementation.OperationsImpl;
 import com.azure.resourcemanager.applicationinsights.implementation.ProactiveDetectionConfigurationsImpl;
 import com.azure.resourcemanager.applicationinsights.implementation.WebTestLocationsImpl;
 import com.azure.resourcemanager.applicationinsights.implementation.WebTestsImpl;
 import com.azure.resourcemanager.applicationinsights.implementation.WorkItemConfigurationsImpl;
+import com.azure.resourcemanager.applicationinsights.implementation.WorkbookTemplatesImpl;
 import com.azure.resourcemanager.applicationinsights.implementation.WorkbooksImpl;
 import com.azure.resourcemanager.applicationinsights.models.AnalyticsItems;
 import com.azure.resourcemanager.applicationinsights.models.Annotations;
@@ -45,26 +49,30 @@ import com.azure.resourcemanager.applicationinsights.models.ApiKeys;
 import com.azure.resourcemanager.applicationinsights.models.ComponentAvailableFeatures;
 import com.azure.resourcemanager.applicationinsights.models.ComponentCurrentBillingFeatures;
 import com.azure.resourcemanager.applicationinsights.models.ComponentFeatureCapabilities;
+import com.azure.resourcemanager.applicationinsights.models.ComponentLinkedStorageAccountsOperations;
 import com.azure.resourcemanager.applicationinsights.models.ComponentQuotaStatus;
 import com.azure.resourcemanager.applicationinsights.models.Components;
 import com.azure.resourcemanager.applicationinsights.models.ExportConfigurations;
 import com.azure.resourcemanager.applicationinsights.models.Favorites;
+import com.azure.resourcemanager.applicationinsights.models.LiveTokens;
 import com.azure.resourcemanager.applicationinsights.models.MyWorkbooks;
 import com.azure.resourcemanager.applicationinsights.models.Operations;
 import com.azure.resourcemanager.applicationinsights.models.ProactiveDetectionConfigurations;
 import com.azure.resourcemanager.applicationinsights.models.WebTestLocations;
 import com.azure.resourcemanager.applicationinsights.models.WebTests;
 import com.azure.resourcemanager.applicationinsights.models.WorkItemConfigurations;
+import com.azure.resourcemanager.applicationinsights.models.WorkbookTemplates;
 import com.azure.resourcemanager.applicationinsights.models.Workbooks;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /** Entry point to ApplicationInsightsManager. Composite Swagger for Application Insights Management Client. */
 public final class ApplicationInsightsManager {
-    private AnalyticsItems analyticsItems;
+    private Operations operations;
 
     private Annotations annotations;
 
@@ -82,8 +90,6 @@ public final class ApplicationInsightsManager {
 
     private ProactiveDetectionConfigurations proactiveDetectionConfigurations;
 
-    private Components components;
-
     private WorkItemConfigurations workItemConfigurations;
 
     private Favorites favorites;
@@ -92,11 +98,19 @@ public final class ApplicationInsightsManager {
 
     private WebTests webTests;
 
+    private AnalyticsItems analyticsItems;
+
+    private WorkbookTemplates workbookTemplates;
+
     private MyWorkbooks myWorkbooks;
 
     private Workbooks workbooks;
 
-    private Operations operations;
+    private Components components;
+
+    private ComponentLinkedStorageAccountsOperations componentLinkedStorageAccountsOperations;
+
+    private LiveTokens liveTokens;
 
     private final ApplicationInsightsManagementClient clientObject;
 
@@ -141,6 +155,7 @@ public final class ApplicationInsightsManager {
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
         private Duration defaultPollInterval;
 
@@ -177,6 +192,17 @@ public final class ApplicationInsightsManager {
          */
         public Configurable withPolicy(HttpPipelinePolicy policy) {
             this.policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
+            return this;
+        }
+
+        /**
+         * Adds the scope to permission sets.
+         *
+         * @param scope the scope.
+         * @return the configurable object itself.
+         */
+        public Configurable withScope(String scope) {
+            this.scopes.add(Objects.requireNonNull(scope, "'scope' cannot be null."));
             return this;
         }
 
@@ -222,7 +248,7 @@ public final class ApplicationInsightsManager {
                 .append("-")
                 .append("com.azure.resourcemanager.applicationinsights")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -236,20 +262,33 @@ public final class ApplicationInsightsManager {
                 userAgentBuilder.append(" (auto-generated)");
             }
 
+            if (scopes.isEmpty()) {
+                scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
+            }
             if (retryPolicy == null) {
                 retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new RequestIdPolicy());
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
+            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies
-                .add(
-                    new BearerTokenAuthenticationPolicy(
-                        credential, profile.getEnvironment().getManagementEndpoint() + "/.default"));
-            policies.addAll(this.policies);
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline =
@@ -261,12 +300,12 @@ public final class ApplicationInsightsManager {
         }
     }
 
-    /** @return Resource collection API of AnalyticsItems. */
-    public AnalyticsItems analyticsItems() {
-        if (this.analyticsItems == null) {
-            this.analyticsItems = new AnalyticsItemsImpl(clientObject.getAnalyticsItems(), this);
+    /** @return Resource collection API of Operations. */
+    public Operations operations() {
+        if (this.operations == null) {
+            this.operations = new OperationsImpl(clientObject.getOperations(), this);
         }
-        return analyticsItems;
+        return operations;
     }
 
     /** @return Resource collection API of Annotations. */
@@ -337,14 +376,6 @@ public final class ApplicationInsightsManager {
         return proactiveDetectionConfigurations;
     }
 
-    /** @return Resource collection API of Components. */
-    public Components components() {
-        if (this.components == null) {
-            this.components = new ComponentsImpl(clientObject.getComponents(), this);
-        }
-        return components;
-    }
-
     /** @return Resource collection API of WorkItemConfigurations. */
     public WorkItemConfigurations workItemConfigurations() {
         if (this.workItemConfigurations == null) {
@@ -378,6 +409,22 @@ public final class ApplicationInsightsManager {
         return webTests;
     }
 
+    /** @return Resource collection API of AnalyticsItems. */
+    public AnalyticsItems analyticsItems() {
+        if (this.analyticsItems == null) {
+            this.analyticsItems = new AnalyticsItemsImpl(clientObject.getAnalyticsItems(), this);
+        }
+        return analyticsItems;
+    }
+
+    /** @return Resource collection API of WorkbookTemplates. */
+    public WorkbookTemplates workbookTemplates() {
+        if (this.workbookTemplates == null) {
+            this.workbookTemplates = new WorkbookTemplatesImpl(clientObject.getWorkbookTemplates(), this);
+        }
+        return workbookTemplates;
+    }
+
     /** @return Resource collection API of MyWorkbooks. */
     public MyWorkbooks myWorkbooks() {
         if (this.myWorkbooks == null) {
@@ -394,12 +441,30 @@ public final class ApplicationInsightsManager {
         return workbooks;
     }
 
-    /** @return Resource collection API of Operations. */
-    public Operations operations() {
-        if (this.operations == null) {
-            this.operations = new OperationsImpl(clientObject.getOperations(), this);
+    /** @return Resource collection API of Components. */
+    public Components components() {
+        if (this.components == null) {
+            this.components = new ComponentsImpl(clientObject.getComponents(), this);
         }
-        return operations;
+        return components;
+    }
+
+    /** @return Resource collection API of ComponentLinkedStorageAccountsOperations. */
+    public ComponentLinkedStorageAccountsOperations componentLinkedStorageAccountsOperations() {
+        if (this.componentLinkedStorageAccountsOperations == null) {
+            this.componentLinkedStorageAccountsOperations =
+                new ComponentLinkedStorageAccountsOperationsImpl(
+                    clientObject.getComponentLinkedStorageAccountsOperations(), this);
+        }
+        return componentLinkedStorageAccountsOperations;
+    }
+
+    /** @return Resource collection API of LiveTokens. */
+    public LiveTokens liveTokens() {
+        if (this.liveTokens == null) {
+            this.liveTokens = new LiveTokensImpl(clientObject.getLiveTokens(), this);
+        }
+        return liveTokens;
     }
 
     /**

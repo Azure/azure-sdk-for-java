@@ -48,7 +48,7 @@ public final class ManageVirtualMachineWithDisk {
         final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOMV", 15);
         final String publicIPDnsLabel = Utils.randomResourceName(azureResourceManager, "pip", 15);
         final String userName = "tirekicker";
-        final String password = Utils.password();
+        final String sshPublicKey = Utils.sshPublicKey();
         final Region region = Region.US_WEST;
 
         try {
@@ -95,7 +95,7 @@ public final class ManageVirtualMachineWithDisk {
                     .withNewPrimaryPublicIPAddress(publicIPDnsLabel)
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
-                    .withRootPassword(password)
+                    .withSsh(sshPublicKey)
 
                     // Begin: Managed data disks
                     .withNewDataDisk(100)

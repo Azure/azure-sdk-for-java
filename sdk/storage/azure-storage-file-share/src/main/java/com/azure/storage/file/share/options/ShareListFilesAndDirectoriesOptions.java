@@ -8,7 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 /**
  * Extended options for a directory listing operation.
  */
-public class ShareListFilesAndDirectoriesOptions {
+public final class ShareListFilesAndDirectoriesOptions {
     private final ClientLogger logger = new ClientLogger(ShareListFilesAndDirectoriesOptions.class);
 
     private String prefix;

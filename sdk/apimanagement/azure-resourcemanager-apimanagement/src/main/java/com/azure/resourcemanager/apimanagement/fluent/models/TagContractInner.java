@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Tag Contract details. */
-@JsonFlatten
 @Fluent
-public class TagContractInner extends ProxyResource {
+public final class TagContractInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TagContractInner.class);
 
     /*
-     * Tag name.
+     * Tag entity contract properties.
      */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
+    @JsonProperty(value = "properties")
+    private TagContractProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: Tag entity contract properties.
+     *
+     * @return the innerProperties value.
+     */
+    private TagContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the displayName property: Tag name.
@@ -29,7 +36,7 @@ public class TagContractInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -39,7 +46,10 @@ public class TagContractInner extends ProxyResource {
      * @return the TagContractInner object itself.
      */
     public TagContractInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TagContractProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -49,5 +59,8 @@ public class TagContractInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

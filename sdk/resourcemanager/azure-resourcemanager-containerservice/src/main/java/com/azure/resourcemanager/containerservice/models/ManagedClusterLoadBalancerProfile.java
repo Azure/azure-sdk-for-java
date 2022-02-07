@@ -40,7 +40,7 @@ public final class ManagedClusterLoadBalancerProfile {
     private List<ResourceReference> effectiveOutboundIPs;
 
     /*
-     * Desired number of allocated SNAT ports per VM. Allowed values must be in
+     * The desired number of allocated SNAT ports per VM. Allowed values are in
      * the range of 0 to 64000 (inclusive). The default value is 0 which
      * results in Azure dynamically allocating ports.
      */
@@ -48,11 +48,17 @@ public final class ManagedClusterLoadBalancerProfile {
     private Integer allocatedOutboundPorts;
 
     /*
-     * Desired outbound flow idle timeout in minutes. Allowed values must be in
-     * the range of 4 to 120 (inclusive). The default value is 30 minutes.
+     * Desired outbound flow idle timeout in minutes. Allowed values are in the
+     * range of 4 to 120 (inclusive). The default value is 30 minutes.
      */
     @JsonProperty(value = "idleTimeoutInMinutes")
     private Integer idleTimeoutInMinutes;
+
+    /*
+     * Enable multiple standard load balancers per AKS cluster or not.
+     */
+    @JsonProperty(value = "enableMultipleStandardLoadBalancers")
+    private Boolean enableMultipleStandardLoadBalancers;
 
     /**
      * Get the managedOutboundIPs property: Desired managed outbound IPs for the cluster load balancer.
@@ -137,7 +143,7 @@ public final class ManagedClusterLoadBalancerProfile {
     }
 
     /**
-     * Get the allocatedOutboundPorts property: Desired number of allocated SNAT ports per VM. Allowed values must be in
+     * Get the allocatedOutboundPorts property: The desired number of allocated SNAT ports per VM. Allowed values are in
      * the range of 0 to 64000 (inclusive). The default value is 0 which results in Azure dynamically allocating ports.
      *
      * @return the allocatedOutboundPorts value.
@@ -147,7 +153,7 @@ public final class ManagedClusterLoadBalancerProfile {
     }
 
     /**
-     * Set the allocatedOutboundPorts property: Desired number of allocated SNAT ports per VM. Allowed values must be in
+     * Set the allocatedOutboundPorts property: The desired number of allocated SNAT ports per VM. Allowed values are in
      * the range of 0 to 64000 (inclusive). The default value is 0 which results in Azure dynamically allocating ports.
      *
      * @param allocatedOutboundPorts the allocatedOutboundPorts value to set.
@@ -159,8 +165,8 @@ public final class ManagedClusterLoadBalancerProfile {
     }
 
     /**
-     * Get the idleTimeoutInMinutes property: Desired outbound flow idle timeout in minutes. Allowed values must be in
-     * the range of 4 to 120 (inclusive). The default value is 30 minutes.
+     * Get the idleTimeoutInMinutes property: Desired outbound flow idle timeout in minutes. Allowed values are in the
+     * range of 4 to 120 (inclusive). The default value is 30 minutes.
      *
      * @return the idleTimeoutInMinutes value.
      */
@@ -169,14 +175,37 @@ public final class ManagedClusterLoadBalancerProfile {
     }
 
     /**
-     * Set the idleTimeoutInMinutes property: Desired outbound flow idle timeout in minutes. Allowed values must be in
-     * the range of 4 to 120 (inclusive). The default value is 30 minutes.
+     * Set the idleTimeoutInMinutes property: Desired outbound flow idle timeout in minutes. Allowed values are in the
+     * range of 4 to 120 (inclusive). The default value is 30 minutes.
      *
      * @param idleTimeoutInMinutes the idleTimeoutInMinutes value to set.
      * @return the ManagedClusterLoadBalancerProfile object itself.
      */
     public ManagedClusterLoadBalancerProfile withIdleTimeoutInMinutes(Integer idleTimeoutInMinutes) {
         this.idleTimeoutInMinutes = idleTimeoutInMinutes;
+        return this;
+    }
+
+    /**
+     * Get the enableMultipleStandardLoadBalancers property: Enable multiple standard load balancers per AKS cluster or
+     * not.
+     *
+     * @return the enableMultipleStandardLoadBalancers value.
+     */
+    public Boolean enableMultipleStandardLoadBalancers() {
+        return this.enableMultipleStandardLoadBalancers;
+    }
+
+    /**
+     * Set the enableMultipleStandardLoadBalancers property: Enable multiple standard load balancers per AKS cluster or
+     * not.
+     *
+     * @param enableMultipleStandardLoadBalancers the enableMultipleStandardLoadBalancers value to set.
+     * @return the ManagedClusterLoadBalancerProfile object itself.
+     */
+    public ManagedClusterLoadBalancerProfile withEnableMultipleStandardLoadBalancers(
+        Boolean enableMultipleStandardLoadBalancers) {
+        this.enableMultipleStandardLoadBalancers = enableMultipleStandardLoadBalancers;
         return this;
     }
 

@@ -5,113 +5,40 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.AzureEntityResource;
 import com.azure.resourcemanager.storage.models.EnabledProtocols;
+import com.azure.resourcemanager.storage.models.LeaseDuration;
+import com.azure.resourcemanager.storage.models.LeaseState;
+import com.azure.resourcemanager.storage.models.LeaseStatus;
 import com.azure.resourcemanager.storage.models.RootSquashType;
 import com.azure.resourcemanager.storage.models.ShareAccessTier;
+import com.azure.resourcemanager.storage.models.SignedIdentifier;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Map;
 
 /** Properties of the file share, including Id, resource name, resource type, Etag. */
-@JsonFlatten
 @Fluent
-public class FileShareInner extends AzureEntityResource {
+public final class FileShareInner extends AzureEntityResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FileShareInner.class);
 
     /*
-     * Returns the date and time the share was last modified.
+     * Properties of the file share.
      */
-    @JsonProperty(value = "properties.lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastModifiedTime;
+    @JsonProperty(value = "properties")
+    private FileShareProperties innerFileShareProperties;
 
-    /*
-     * A name-value pair to associate with the share as metadata.
+    /**
+     * Get the innerFileShareProperties property: Properties of the file share.
+     *
+     * @return the innerFileShareProperties value.
      */
-    @JsonProperty(value = "properties.metadata")
-    private Map<String, String> metadata;
-
-    /*
-     * The maximum size of the share, in gigabytes. Must be greater than 0, and
-     * less than or equal to 5TB (5120). For Large File Shares, the maximum
-     * size is 102400.
-     */
-    @JsonProperty(value = "properties.shareQuota")
-    private Integer shareQuota;
-
-    /*
-     * The authentication protocol that is used for the file share. Can only be
-     * specified when creating a share.
-     */
-    @JsonProperty(value = "properties.enabledProtocols")
-    private EnabledProtocols enabledProtocols;
-
-    /*
-     * The property is for NFS share only. The default is NoRootSquash.
-     */
-    @JsonProperty(value = "properties.rootSquash")
-    private RootSquashType rootSquash;
-
-    /*
-     * The version of the share.
-     */
-    @JsonProperty(value = "properties.version", access = JsonProperty.Access.WRITE_ONLY)
-    private String version;
-
-    /*
-     * Indicates whether the share was deleted.
-     */
-    @JsonProperty(value = "properties.deleted", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean deleted;
-
-    /*
-     * The deleted time if the share was deleted.
-     */
-    @JsonProperty(value = "properties.deletedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime deletedTime;
-
-    /*
-     * Remaining retention days for share that was soft deleted.
-     */
-    @JsonProperty(value = "properties.remainingRetentionDays", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer remainingRetentionDays;
-
-    /*
-     * Access tier for specific share. GpV2 account can choose between
-     * TransactionOptimized (default), Hot, and Cool. FileStorage account can
-     * choose Premium.
-     */
-    @JsonProperty(value = "properties.accessTier")
-    private ShareAccessTier accessTier;
-
-    /*
-     * Indicates the last modification time for share access tier.
-     */
-    @JsonProperty(value = "properties.accessTierChangeTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime accessTierChangeTime;
-
-    /*
-     * Indicates if there is a pending transition for access tier.
-     */
-    @JsonProperty(value = "properties.accessTierStatus", access = JsonProperty.Access.WRITE_ONLY)
-    private String accessTierStatus;
-
-    /*
-     * The approximate size of the data stored on the share. Note that this
-     * value may not include all recently created or recently resized files.
-     */
-    @JsonProperty(value = "properties.shareUsageBytes", access = JsonProperty.Access.WRITE_ONLY)
-    private Long shareUsageBytes;
-
-    /*
-     * Creation time of share snapshot returned in the response of list shares
-     * with expand param "snapshots".
-     */
-    @JsonProperty(value = "properties.snapshotTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime snapshotTime;
+    private FileShareProperties innerFileShareProperties() {
+        return this.innerFileShareProperties;
+    }
 
     /**
      * Get the lastModifiedTime property: Returns the date and time the share was last modified.
@@ -119,7 +46,7 @@ public class FileShareInner extends AzureEntityResource {
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
-        return this.lastModifiedTime;
+        return this.innerFileShareProperties() == null ? null : this.innerFileShareProperties().lastModifiedTime();
     }
 
     /**
@@ -128,7 +55,7 @@ public class FileShareInner extends AzureEntityResource {
      * @return the metadata value.
      */
     public Map<String, String> metadata() {
-        return this.metadata;
+        return this.innerFileShareProperties() == null ? null : this.innerFileShareProperties().metadata();
     }
 
     /**
@@ -138,7 +65,10 @@ public class FileShareInner extends AzureEntityResource {
      * @return the FileShareInner object itself.
      */
     public FileShareInner withMetadata(Map<String, String> metadata) {
-        this.metadata = metadata;
+        if (this.innerFileShareProperties() == null) {
+            this.innerFileShareProperties = new FileShareProperties();
+        }
+        this.innerFileShareProperties().withMetadata(metadata);
         return this;
     }
 
@@ -149,7 +79,7 @@ public class FileShareInner extends AzureEntityResource {
      * @return the shareQuota value.
      */
     public Integer shareQuota() {
-        return this.shareQuota;
+        return this.innerFileShareProperties() == null ? null : this.innerFileShareProperties().shareQuota();
     }
 
     /**
@@ -160,7 +90,10 @@ public class FileShareInner extends AzureEntityResource {
      * @return the FileShareInner object itself.
      */
     public FileShareInner withShareQuota(Integer shareQuota) {
-        this.shareQuota = shareQuota;
+        if (this.innerFileShareProperties() == null) {
+            this.innerFileShareProperties = new FileShareProperties();
+        }
+        this.innerFileShareProperties().withShareQuota(shareQuota);
         return this;
     }
 
@@ -171,7 +104,7 @@ public class FileShareInner extends AzureEntityResource {
      * @return the enabledProtocols value.
      */
     public EnabledProtocols enabledProtocols() {
-        return this.enabledProtocols;
+        return this.innerFileShareProperties() == null ? null : this.innerFileShareProperties().enabledProtocols();
     }
 
     /**
@@ -182,7 +115,10 @@ public class FileShareInner extends AzureEntityResource {
      * @return the FileShareInner object itself.
      */
     public FileShareInner withEnabledProtocols(EnabledProtocols enabledProtocols) {
-        this.enabledProtocols = enabledProtocols;
+        if (this.innerFileShareProperties() == null) {
+            this.innerFileShareProperties = new FileShareProperties();
+        }
+        this.innerFileShareProperties().withEnabledProtocols(enabledProtocols);
         return this;
     }
 
@@ -192,7 +128,7 @@ public class FileShareInner extends AzureEntityResource {
      * @return the rootSquash value.
      */
     public RootSquashType rootSquash() {
-        return this.rootSquash;
+        return this.innerFileShareProperties() == null ? null : this.innerFileShareProperties().rootSquash();
     }
 
     /**
@@ -202,7 +138,10 @@ public class FileShareInner extends AzureEntityResource {
      * @return the FileShareInner object itself.
      */
     public FileShareInner withRootSquash(RootSquashType rootSquash) {
-        this.rootSquash = rootSquash;
+        if (this.innerFileShareProperties() == null) {
+            this.innerFileShareProperties = new FileShareProperties();
+        }
+        this.innerFileShareProperties().withRootSquash(rootSquash);
         return this;
     }
 
@@ -212,7 +151,7 @@ public class FileShareInner extends AzureEntityResource {
      * @return the version value.
      */
     public String version() {
-        return this.version;
+        return this.innerFileShareProperties() == null ? null : this.innerFileShareProperties().version();
     }
 
     /**
@@ -221,7 +160,7 @@ public class FileShareInner extends AzureEntityResource {
      * @return the deleted value.
      */
     public Boolean deleted() {
-        return this.deleted;
+        return this.innerFileShareProperties() == null ? null : this.innerFileShareProperties().deleted();
     }
 
     /**
@@ -230,7 +169,7 @@ public class FileShareInner extends AzureEntityResource {
      * @return the deletedTime value.
      */
     public OffsetDateTime deletedTime() {
-        return this.deletedTime;
+        return this.innerFileShareProperties() == null ? null : this.innerFileShareProperties().deletedTime();
     }
 
     /**
@@ -239,7 +178,9 @@ public class FileShareInner extends AzureEntityResource {
      * @return the remainingRetentionDays value.
      */
     public Integer remainingRetentionDays() {
-        return this.remainingRetentionDays;
+        return this.innerFileShareProperties() == null
+            ? null
+            : this.innerFileShareProperties().remainingRetentionDays();
     }
 
     /**
@@ -249,7 +190,7 @@ public class FileShareInner extends AzureEntityResource {
      * @return the accessTier value.
      */
     public ShareAccessTier accessTier() {
-        return this.accessTier;
+        return this.innerFileShareProperties() == null ? null : this.innerFileShareProperties().accessTier();
     }
 
     /**
@@ -260,7 +201,10 @@ public class FileShareInner extends AzureEntityResource {
      * @return the FileShareInner object itself.
      */
     public FileShareInner withAccessTier(ShareAccessTier accessTier) {
-        this.accessTier = accessTier;
+        if (this.innerFileShareProperties() == null) {
+            this.innerFileShareProperties = new FileShareProperties();
+        }
+        this.innerFileShareProperties().withAccessTier(accessTier);
         return this;
     }
 
@@ -270,7 +214,7 @@ public class FileShareInner extends AzureEntityResource {
      * @return the accessTierChangeTime value.
      */
     public OffsetDateTime accessTierChangeTime() {
-        return this.accessTierChangeTime;
+        return this.innerFileShareProperties() == null ? null : this.innerFileShareProperties().accessTierChangeTime();
     }
 
     /**
@@ -279,7 +223,7 @@ public class FileShareInner extends AzureEntityResource {
      * @return the accessTierStatus value.
      */
     public String accessTierStatus() {
-        return this.accessTierStatus;
+        return this.innerFileShareProperties() == null ? null : this.innerFileShareProperties().accessTierStatus();
     }
 
     /**
@@ -289,7 +233,58 @@ public class FileShareInner extends AzureEntityResource {
      * @return the shareUsageBytes value.
      */
     public Long shareUsageBytes() {
-        return this.shareUsageBytes;
+        return this.innerFileShareProperties() == null ? null : this.innerFileShareProperties().shareUsageBytes();
+    }
+
+    /**
+     * Get the leaseStatus property: The lease status of the share.
+     *
+     * @return the leaseStatus value.
+     */
+    public LeaseStatus leaseStatus() {
+        return this.innerFileShareProperties() == null ? null : this.innerFileShareProperties().leaseStatus();
+    }
+
+    /**
+     * Get the leaseState property: Lease state of the share.
+     *
+     * @return the leaseState value.
+     */
+    public LeaseState leaseState() {
+        return this.innerFileShareProperties() == null ? null : this.innerFileShareProperties().leaseState();
+    }
+
+    /**
+     * Get the leaseDuration property: Specifies whether the lease on a share is of infinite or fixed duration, only
+     * when the share is leased.
+     *
+     * @return the leaseDuration value.
+     */
+    public LeaseDuration leaseDuration() {
+        return this.innerFileShareProperties() == null ? null : this.innerFileShareProperties().leaseDuration();
+    }
+
+    /**
+     * Get the signedIdentifiers property: List of stored access policies specified on the share.
+     *
+     * @return the signedIdentifiers value.
+     */
+    public List<SignedIdentifier> signedIdentifiers() {
+        return this.innerFileShareProperties() == null ? null : this.innerFileShareProperties().signedIdentifiers();
+    }
+
+    /**
+     * Set the signedIdentifiers property: List of stored access policies specified on the share.
+     *
+     * @param signedIdentifiers the signedIdentifiers value to set.
+     * @return the FileShareInner object itself.
+     */
+    public FileShareInner withSignedIdentifiers(List<SignedIdentifier> signedIdentifiers) {
+        if (this.innerFileShareProperties() == null) {
+            this.innerFileShareProperties = new FileShareProperties();
+        }
+        this.innerFileShareProperties().withSignedIdentifiers(signedIdentifiers);
+        return this;
     }
 
     /**
@@ -299,7 +294,7 @@ public class FileShareInner extends AzureEntityResource {
      * @return the snapshotTime value.
      */
     public OffsetDateTime snapshotTime() {
-        return this.snapshotTime;
+        return this.innerFileShareProperties() == null ? null : this.innerFileShareProperties().snapshotTime();
     }
 
     /**
@@ -310,5 +305,8 @@ public class FileShareInner extends AzureEntityResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerFileShareProperties() != null) {
+            innerFileShareProperties().validate();
+        }
     }
 }

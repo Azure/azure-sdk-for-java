@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.AbnormalTimePeriod;
+import com.azure.resourcemanager.appservice.models.AnalysisData;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,40 +15,31 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 /** Class representing a diagnostic analysis done on an application. */
-@JsonFlatten
 @Fluent
-public class DiagnosticAnalysisInner extends ProxyOnlyResource {
+public final class DiagnosticAnalysisInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DiagnosticAnalysisInner.class);
 
     /*
-     * Start time of the period
+     * DiagnosticAnalysis resource specific properties
      */
-    @JsonProperty(value = "properties.startTime")
-    private OffsetDateTime startTime;
+    @JsonProperty(value = "properties")
+    private DiagnosticAnalysisProperties innerProperties;
 
-    /*
-     * End time of the period
+    /**
+     * Get the innerProperties property: DiagnosticAnalysis resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.endTime")
-    private OffsetDateTime endTime;
+    private DiagnosticAnalysisProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * List of time periods.
-     */
-    @JsonProperty(value = "properties.abnormalTimePeriods")
-    private List<AbnormalTimePeriod> abnormalTimePeriods;
-
-    /*
-     * Data by each detector
-     */
-    @JsonProperty(value = "properties.payload")
-    private List<AnalysisDataInner> payload;
-
-    /*
-     * Data by each detector for detectors that did not corelate
-     */
-    @JsonProperty(value = "properties.nonCorrelatedDetectors")
-    private List<DetectorDefinitionInner> nonCorrelatedDetectors;
+    /** {@inheritDoc} */
+    @Override
+    public DiagnosticAnalysisInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the startTime property: Start time of the period.
@@ -56,7 +47,7 @@ public class DiagnosticAnalysisInner extends ProxyOnlyResource {
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
-        return this.startTime;
+        return this.innerProperties() == null ? null : this.innerProperties().startTime();
     }
 
     /**
@@ -66,7 +57,10 @@ public class DiagnosticAnalysisInner extends ProxyOnlyResource {
      * @return the DiagnosticAnalysisInner object itself.
      */
     public DiagnosticAnalysisInner withStartTime(OffsetDateTime startTime) {
-        this.startTime = startTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiagnosticAnalysisProperties();
+        }
+        this.innerProperties().withStartTime(startTime);
         return this;
     }
 
@@ -76,7 +70,7 @@ public class DiagnosticAnalysisInner extends ProxyOnlyResource {
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
-        return this.endTime;
+        return this.innerProperties() == null ? null : this.innerProperties().endTime();
     }
 
     /**
@@ -86,7 +80,10 @@ public class DiagnosticAnalysisInner extends ProxyOnlyResource {
      * @return the DiagnosticAnalysisInner object itself.
      */
     public DiagnosticAnalysisInner withEndTime(OffsetDateTime endTime) {
-        this.endTime = endTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiagnosticAnalysisProperties();
+        }
+        this.innerProperties().withEndTime(endTime);
         return this;
     }
 
@@ -96,7 +93,7 @@ public class DiagnosticAnalysisInner extends ProxyOnlyResource {
      * @return the abnormalTimePeriods value.
      */
     public List<AbnormalTimePeriod> abnormalTimePeriods() {
-        return this.abnormalTimePeriods;
+        return this.innerProperties() == null ? null : this.innerProperties().abnormalTimePeriods();
     }
 
     /**
@@ -106,7 +103,10 @@ public class DiagnosticAnalysisInner extends ProxyOnlyResource {
      * @return the DiagnosticAnalysisInner object itself.
      */
     public DiagnosticAnalysisInner withAbnormalTimePeriods(List<AbnormalTimePeriod> abnormalTimePeriods) {
-        this.abnormalTimePeriods = abnormalTimePeriods;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiagnosticAnalysisProperties();
+        }
+        this.innerProperties().withAbnormalTimePeriods(abnormalTimePeriods);
         return this;
     }
 
@@ -115,8 +115,8 @@ public class DiagnosticAnalysisInner extends ProxyOnlyResource {
      *
      * @return the payload value.
      */
-    public List<AnalysisDataInner> payload() {
-        return this.payload;
+    public List<AnalysisData> payload() {
+        return this.innerProperties() == null ? null : this.innerProperties().payload();
     }
 
     /**
@@ -125,8 +125,11 @@ public class DiagnosticAnalysisInner extends ProxyOnlyResource {
      * @param payload the payload value to set.
      * @return the DiagnosticAnalysisInner object itself.
      */
-    public DiagnosticAnalysisInner withPayload(List<AnalysisDataInner> payload) {
-        this.payload = payload;
+    public DiagnosticAnalysisInner withPayload(List<AnalysisData> payload) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiagnosticAnalysisProperties();
+        }
+        this.innerProperties().withPayload(payload);
         return this;
     }
 
@@ -135,8 +138,8 @@ public class DiagnosticAnalysisInner extends ProxyOnlyResource {
      *
      * @return the nonCorrelatedDetectors value.
      */
-    public List<DetectorDefinitionInner> nonCorrelatedDetectors() {
-        return this.nonCorrelatedDetectors;
+    public List<DetectorDefinition> nonCorrelatedDetectors() {
+        return this.innerProperties() == null ? null : this.innerProperties().nonCorrelatedDetectors();
     }
 
     /**
@@ -145,15 +148,11 @@ public class DiagnosticAnalysisInner extends ProxyOnlyResource {
      * @param nonCorrelatedDetectors the nonCorrelatedDetectors value to set.
      * @return the DiagnosticAnalysisInner object itself.
      */
-    public DiagnosticAnalysisInner withNonCorrelatedDetectors(List<DetectorDefinitionInner> nonCorrelatedDetectors) {
-        this.nonCorrelatedDetectors = nonCorrelatedDetectors;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public DiagnosticAnalysisInner withKind(String kind) {
-        super.withKind(kind);
+    public DiagnosticAnalysisInner withNonCorrelatedDetectors(List<DetectorDefinition> nonCorrelatedDetectors) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiagnosticAnalysisProperties();
+        }
+        this.innerProperties().withNonCorrelatedDetectors(nonCorrelatedDetectors);
         return this;
     }
 
@@ -165,14 +164,8 @@ public class DiagnosticAnalysisInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (abnormalTimePeriods() != null) {
-            abnormalTimePeriods().forEach(e -> e.validate());
-        }
-        if (payload() != null) {
-            payload().forEach(e -> e.validate());
-        }
-        if (nonCorrelatedDetectors() != null) {
-            nonCorrelatedDetectors().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

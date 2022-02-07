@@ -15,13 +15,15 @@ public final class WindowsConfiguration {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WindowsConfiguration.class);
 
     /*
-     * If omitted, the default value is true.
+     * Whether automatic updates are enabled on the virtual machine. If
+     * omitted, the default value is true.
      */
     @JsonProperty(value = "enableAutomaticUpdates")
     private Boolean enableAutomaticUpdates;
 
     /**
-     * Get the enableAutomaticUpdates property: If omitted, the default value is true.
+     * Get the enableAutomaticUpdates property: Whether automatic updates are enabled on the virtual machine. If
+     * omitted, the default value is true.
      *
      * @return the enableAutomaticUpdates value.
      */
@@ -30,7 +32,8 @@ public final class WindowsConfiguration {
     }
 
     /**
-     * Set the enableAutomaticUpdates property: If omitted, the default value is true.
+     * Set the enableAutomaticUpdates property: Whether automatic updates are enabled on the virtual machine. If
+     * omitted, the default value is true.
      *
      * @param enableAutomaticUpdates the enableAutomaticUpdates value to set.
      * @return the WindowsConfiguration object itself.

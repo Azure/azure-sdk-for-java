@@ -5,16 +5,16 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.storage.fluent.models.StorageAccountPropertiesUpdateParameters;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The parameters that can be provided when updating the storage account properties. */
-@JsonFlatten
 @Fluent
-public class StorageAccountUpdateParameters {
+public final class StorageAccountUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountUpdateParameters.class);
 
     /*
@@ -33,6 +33,7 @@ public class StorageAccountUpdateParameters {
      * greater in length than 256 characters.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
@@ -42,102 +43,17 @@ public class StorageAccountUpdateParameters {
     private Identity identity;
 
     /*
+     * The parameters used when updating a storage account.
+     */
+    @JsonProperty(value = "properties")
+    private StorageAccountPropertiesUpdateParameters innerProperties;
+
+    /*
      * Optional. Indicates the type of storage account. Currently only
      * StorageV2 value supported by server.
      */
     @JsonProperty(value = "kind")
     private Kind kind;
-
-    /*
-     * Custom domain assigned to the storage account by the user. Name is the
-     * CNAME source. Only one custom domain is supported per storage account at
-     * this time. To clear the existing custom domain, use an empty string for
-     * the custom domain name property.
-     */
-    @JsonProperty(value = "properties.customDomain")
-    private CustomDomain customDomain;
-
-    /*
-     * Provides the encryption settings on the account. The default setting is
-     * unencrypted.
-     */
-    @JsonProperty(value = "properties.encryption")
-    private Encryption encryption;
-
-    /*
-     * SasPolicy assigned to the storage account.
-     */
-    @JsonProperty(value = "properties.sasPolicy")
-    private SasPolicy sasPolicy;
-
-    /*
-     * KeyPolicy assigned to the storage account.
-     */
-    @JsonProperty(value = "properties.keyPolicy")
-    private KeyPolicy keyPolicy;
-
-    /*
-     * Required for storage accounts where kind = BlobStorage. The access tier
-     * used for billing.
-     */
-    @JsonProperty(value = "properties.accessTier")
-    private AccessTier accessTier;
-
-    /*
-     * Provides the identity based authentication settings for Azure Files.
-     */
-    @JsonProperty(value = "properties.azureFilesIdentityBasedAuthentication")
-    private AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication;
-
-    /*
-     * Allows https traffic only to storage service if sets to true.
-     */
-    @JsonProperty(value = "properties.supportsHttpsTrafficOnly")
-    private Boolean enableHttpsTrafficOnly;
-
-    /*
-     * Network rule set
-     */
-    @JsonProperty(value = "properties.networkAcls")
-    private NetworkRuleSet networkRuleSet;
-
-    /*
-     * Allow large file shares if sets to Enabled. It cannot be disabled once
-     * it is enabled.
-     */
-    @JsonProperty(value = "properties.largeFileSharesState")
-    private LargeFileSharesState largeFileSharesState;
-
-    /*
-     * Maintains information about the network routing choice opted by the user
-     * for data transfer
-     */
-    @JsonProperty(value = "properties.routingPreference")
-    private RoutingPreference routingPreference;
-
-    /*
-     * Allow or disallow public access to all blobs or containers in the
-     * storage account. The default interpretation is true for this property.
-     */
-    @JsonProperty(value = "properties.allowBlobPublicAccess")
-    private Boolean allowBlobPublicAccess;
-
-    /*
-     * Set the minimum TLS version to be permitted on requests to storage. The
-     * default interpretation is TLS 1.0 for this property.
-     */
-    @JsonProperty(value = "properties.minimumTlsVersion")
-    private MinimumTlsVersion minimumTlsVersion;
-
-    /*
-     * Indicates whether the storage account permits requests to be authorized
-     * with the account access key via Shared Key. If false, then all requests,
-     * including shared access signatures, must be authorized with Azure Active
-     * Directory (Azure AD). The default value is null, which is equivalent to
-     * true.
-     */
-    @JsonProperty(value = "properties.allowSharedKeyAccess")
-    private Boolean allowSharedKeyAccess;
 
     /**
      * Get the sku property: Gets or sets the SKU name. Note that the SKU name cannot be updated to Standard_ZRS,
@@ -208,6 +124,15 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: The parameters used when updating a storage account.
+     *
+     * @return the innerProperties value.
+     */
+    private StorageAccountPropertiesUpdateParameters innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the kind property: Optional. Indicates the type of storage account. Currently only StorageV2 value supported
      * by server.
      *
@@ -237,7 +162,7 @@ public class StorageAccountUpdateParameters {
      * @return the customDomain value.
      */
     public CustomDomain customDomain() {
-        return this.customDomain;
+        return this.innerProperties() == null ? null : this.innerProperties().customDomain();
     }
 
     /**
@@ -249,7 +174,10 @@ public class StorageAccountUpdateParameters {
      * @return the StorageAccountUpdateParameters object itself.
      */
     public StorageAccountUpdateParameters withCustomDomain(CustomDomain customDomain) {
-        this.customDomain = customDomain;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesUpdateParameters();
+        }
+        this.innerProperties().withCustomDomain(customDomain);
         return this;
     }
 
@@ -259,7 +187,7 @@ public class StorageAccountUpdateParameters {
      * @return the encryption value.
      */
     public Encryption encryption() {
-        return this.encryption;
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
     }
 
     /**
@@ -269,7 +197,10 @@ public class StorageAccountUpdateParameters {
      * @return the StorageAccountUpdateParameters object itself.
      */
     public StorageAccountUpdateParameters withEncryption(Encryption encryption) {
-        this.encryption = encryption;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesUpdateParameters();
+        }
+        this.innerProperties().withEncryption(encryption);
         return this;
     }
 
@@ -279,7 +210,7 @@ public class StorageAccountUpdateParameters {
      * @return the sasPolicy value.
      */
     public SasPolicy sasPolicy() {
-        return this.sasPolicy;
+        return this.innerProperties() == null ? null : this.innerProperties().sasPolicy();
     }
 
     /**
@@ -289,7 +220,10 @@ public class StorageAccountUpdateParameters {
      * @return the StorageAccountUpdateParameters object itself.
      */
     public StorageAccountUpdateParameters withSasPolicy(SasPolicy sasPolicy) {
-        this.sasPolicy = sasPolicy;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesUpdateParameters();
+        }
+        this.innerProperties().withSasPolicy(sasPolicy);
         return this;
     }
 
@@ -299,7 +233,7 @@ public class StorageAccountUpdateParameters {
      * @return the keyPolicy value.
      */
     public KeyPolicy keyPolicy() {
-        return this.keyPolicy;
+        return this.innerProperties() == null ? null : this.innerProperties().keyPolicy();
     }
 
     /**
@@ -309,7 +243,10 @@ public class StorageAccountUpdateParameters {
      * @return the StorageAccountUpdateParameters object itself.
      */
     public StorageAccountUpdateParameters withKeyPolicy(KeyPolicy keyPolicy) {
-        this.keyPolicy = keyPolicy;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesUpdateParameters();
+        }
+        this.innerProperties().withKeyPolicy(keyPolicy);
         return this;
     }
 
@@ -320,7 +257,7 @@ public class StorageAccountUpdateParameters {
      * @return the accessTier value.
      */
     public AccessTier accessTier() {
-        return this.accessTier;
+        return this.innerProperties() == null ? null : this.innerProperties().accessTier();
     }
 
     /**
@@ -331,7 +268,10 @@ public class StorageAccountUpdateParameters {
      * @return the StorageAccountUpdateParameters object itself.
      */
     public StorageAccountUpdateParameters withAccessTier(AccessTier accessTier) {
-        this.accessTier = accessTier;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesUpdateParameters();
+        }
+        this.innerProperties().withAccessTier(accessTier);
         return this;
     }
 
@@ -342,7 +282,7 @@ public class StorageAccountUpdateParameters {
      * @return the azureFilesIdentityBasedAuthentication value.
      */
     public AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication() {
-        return this.azureFilesIdentityBasedAuthentication;
+        return this.innerProperties() == null ? null : this.innerProperties().azureFilesIdentityBasedAuthentication();
     }
 
     /**
@@ -354,7 +294,10 @@ public class StorageAccountUpdateParameters {
      */
     public StorageAccountUpdateParameters withAzureFilesIdentityBasedAuthentication(
         AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication) {
-        this.azureFilesIdentityBasedAuthentication = azureFilesIdentityBasedAuthentication;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesUpdateParameters();
+        }
+        this.innerProperties().withAzureFilesIdentityBasedAuthentication(azureFilesIdentityBasedAuthentication);
         return this;
     }
 
@@ -364,7 +307,7 @@ public class StorageAccountUpdateParameters {
      * @return the enableHttpsTrafficOnly value.
      */
     public Boolean enableHttpsTrafficOnly() {
-        return this.enableHttpsTrafficOnly;
+        return this.innerProperties() == null ? null : this.innerProperties().enableHttpsTrafficOnly();
     }
 
     /**
@@ -374,7 +317,10 @@ public class StorageAccountUpdateParameters {
      * @return the StorageAccountUpdateParameters object itself.
      */
     public StorageAccountUpdateParameters withEnableHttpsTrafficOnly(Boolean enableHttpsTrafficOnly) {
-        this.enableHttpsTrafficOnly = enableHttpsTrafficOnly;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesUpdateParameters();
+        }
+        this.innerProperties().withEnableHttpsTrafficOnly(enableHttpsTrafficOnly);
         return this;
     }
 
@@ -384,7 +330,7 @@ public class StorageAccountUpdateParameters {
      * @return the networkRuleSet value.
      */
     public NetworkRuleSet networkRuleSet() {
-        return this.networkRuleSet;
+        return this.innerProperties() == null ? null : this.innerProperties().networkRuleSet();
     }
 
     /**
@@ -394,7 +340,10 @@ public class StorageAccountUpdateParameters {
      * @return the StorageAccountUpdateParameters object itself.
      */
     public StorageAccountUpdateParameters withNetworkRuleSet(NetworkRuleSet networkRuleSet) {
-        this.networkRuleSet = networkRuleSet;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesUpdateParameters();
+        }
+        this.innerProperties().withNetworkRuleSet(networkRuleSet);
         return this;
     }
 
@@ -405,7 +354,7 @@ public class StorageAccountUpdateParameters {
      * @return the largeFileSharesState value.
      */
     public LargeFileSharesState largeFileSharesState() {
-        return this.largeFileSharesState;
+        return this.innerProperties() == null ? null : this.innerProperties().largeFileSharesState();
     }
 
     /**
@@ -416,7 +365,10 @@ public class StorageAccountUpdateParameters {
      * @return the StorageAccountUpdateParameters object itself.
      */
     public StorageAccountUpdateParameters withLargeFileSharesState(LargeFileSharesState largeFileSharesState) {
-        this.largeFileSharesState = largeFileSharesState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesUpdateParameters();
+        }
+        this.innerProperties().withLargeFileSharesState(largeFileSharesState);
         return this;
     }
 
@@ -427,7 +379,7 @@ public class StorageAccountUpdateParameters {
      * @return the routingPreference value.
      */
     public RoutingPreference routingPreference() {
-        return this.routingPreference;
+        return this.innerProperties() == null ? null : this.innerProperties().routingPreference();
     }
 
     /**
@@ -438,7 +390,10 @@ public class StorageAccountUpdateParameters {
      * @return the StorageAccountUpdateParameters object itself.
      */
     public StorageAccountUpdateParameters withRoutingPreference(RoutingPreference routingPreference) {
-        this.routingPreference = routingPreference;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesUpdateParameters();
+        }
+        this.innerProperties().withRoutingPreference(routingPreference);
         return this;
     }
 
@@ -449,7 +404,7 @@ public class StorageAccountUpdateParameters {
      * @return the allowBlobPublicAccess value.
      */
     public Boolean allowBlobPublicAccess() {
-        return this.allowBlobPublicAccess;
+        return this.innerProperties() == null ? null : this.innerProperties().allowBlobPublicAccess();
     }
 
     /**
@@ -460,7 +415,10 @@ public class StorageAccountUpdateParameters {
      * @return the StorageAccountUpdateParameters object itself.
      */
     public StorageAccountUpdateParameters withAllowBlobPublicAccess(Boolean allowBlobPublicAccess) {
-        this.allowBlobPublicAccess = allowBlobPublicAccess;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesUpdateParameters();
+        }
+        this.innerProperties().withAllowBlobPublicAccess(allowBlobPublicAccess);
         return this;
     }
 
@@ -471,7 +429,7 @@ public class StorageAccountUpdateParameters {
      * @return the minimumTlsVersion value.
      */
     public MinimumTlsVersion minimumTlsVersion() {
-        return this.minimumTlsVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().minimumTlsVersion();
     }
 
     /**
@@ -482,7 +440,10 @@ public class StorageAccountUpdateParameters {
      * @return the StorageAccountUpdateParameters object itself.
      */
     public StorageAccountUpdateParameters withMinimumTlsVersion(MinimumTlsVersion minimumTlsVersion) {
-        this.minimumTlsVersion = minimumTlsVersion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesUpdateParameters();
+        }
+        this.innerProperties().withMinimumTlsVersion(minimumTlsVersion);
         return this;
     }
 
@@ -494,7 +455,7 @@ public class StorageAccountUpdateParameters {
      * @return the allowSharedKeyAccess value.
      */
     public Boolean allowSharedKeyAccess() {
-        return this.allowSharedKeyAccess;
+        return this.innerProperties() == null ? null : this.innerProperties().allowSharedKeyAccess();
     }
 
     /**
@@ -506,7 +467,35 @@ public class StorageAccountUpdateParameters {
      * @return the StorageAccountUpdateParameters object itself.
      */
     public StorageAccountUpdateParameters withAllowSharedKeyAccess(Boolean allowSharedKeyAccess) {
-        this.allowSharedKeyAccess = allowSharedKeyAccess;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesUpdateParameters();
+        }
+        this.innerProperties().withAllowSharedKeyAccess(allowSharedKeyAccess);
+        return this;
+    }
+
+    /**
+     * Get the allowCrossTenantReplication property: Allow or disallow cross AAD tenant object replication. The default
+     * interpretation is true for this property.
+     *
+     * @return the allowCrossTenantReplication value.
+     */
+    public Boolean allowCrossTenantReplication() {
+        return this.innerProperties() == null ? null : this.innerProperties().allowCrossTenantReplication();
+    }
+
+    /**
+     * Set the allowCrossTenantReplication property: Allow or disallow cross AAD tenant object replication. The default
+     * interpretation is true for this property.
+     *
+     * @param allowCrossTenantReplication the allowCrossTenantReplication value to set.
+     * @return the StorageAccountUpdateParameters object itself.
+     */
+    public StorageAccountUpdateParameters withAllowCrossTenantReplication(Boolean allowCrossTenantReplication) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesUpdateParameters();
+        }
+        this.innerProperties().withAllowCrossTenantReplication(allowCrossTenantReplication);
         return this;
     }
 
@@ -522,26 +511,8 @@ public class StorageAccountUpdateParameters {
         if (identity() != null) {
             identity().validate();
         }
-        if (customDomain() != null) {
-            customDomain().validate();
-        }
-        if (encryption() != null) {
-            encryption().validate();
-        }
-        if (sasPolicy() != null) {
-            sasPolicy().validate();
-        }
-        if (keyPolicy() != null) {
-            keyPolicy().validate();
-        }
-        if (azureFilesIdentityBasedAuthentication() != null) {
-            azureFilesIdentityBasedAuthentication().validate();
-        }
-        if (networkRuleSet() != null) {
-            networkRuleSet().validate();
-        }
-        if (routingPreference() != null) {
-            routingPreference().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

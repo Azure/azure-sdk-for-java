@@ -11,19 +11,19 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List Compute Operation operation response. */
+/** The List Operation response. */
 @Immutable
 public final class OperationListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationListResult.class);
 
     /*
-     * The list of compute operations
+     * The list of operations
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<OperationValueInner> value;
 
     /**
-     * Get the value property: The list of compute operations.
+     * Get the value property: The list of operations.
      *
      * @return the value value.
      */

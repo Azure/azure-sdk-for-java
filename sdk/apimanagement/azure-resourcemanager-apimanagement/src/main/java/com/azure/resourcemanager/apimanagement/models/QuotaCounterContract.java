@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.resourcemanager.apimanagement.fluent.models.QuotaCounterContractInner;
+import com.azure.resourcemanager.apimanagement.fluent.models.QuotaCounterValueContractProperties;
 import java.time.OffsetDateTime;
 
 /** An immutable client-side representation of QuotaCounterContract. */

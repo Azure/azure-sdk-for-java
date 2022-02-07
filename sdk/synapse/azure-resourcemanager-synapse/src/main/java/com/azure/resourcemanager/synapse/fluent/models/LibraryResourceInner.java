@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.EntityResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,70 +12,47 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Library response details. */
-@JsonFlatten
 @Fluent
-public class LibraryResourceInner extends EntityResource {
+public final class LibraryResourceInner extends EntityResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LibraryResourceInner.class);
 
     /*
-     * Name of the library.
+     * Information about a library/package created at the workspace level.
+     * Library/package properties.
      */
-    @JsonProperty(value = "properties.name")
-    private String namePropertiesName;
-
-    /*
-     * Storage blob path of library.
-     */
-    @JsonProperty(value = "properties.path")
-    private String path;
-
-    /*
-     * Storage blob container name.
-     */
-    @JsonProperty(value = "properties.containerName")
-    private String containerName;
-
-    /*
-     * The last update time of the library.
-     */
-    @JsonProperty(value = "properties.uploadedTimestamp", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime uploadedTimestamp;
-
-    /*
-     * Type of the library.
-     */
-    @JsonProperty(value = "properties.type")
-    private String typePropertiesType;
-
-    /*
-     * Provisioning status of the library/package.
-     */
-    @JsonProperty(value = "properties.provisioningStatus", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningStatus;
-
-    /*
-     * Creator Id of the library/package.
-     */
-    @JsonProperty(value = "properties.creatorId", access = JsonProperty.Access.WRITE_ONLY)
-    private String creatorId;
+    @JsonProperty(value = "properties", required = true)
+    private LibraryInfo innerProperties = new LibraryInfo();
 
     /**
-     * Get the namePropertiesName property: Name of the library.
+     * Get the innerProperties property: Information about a library/package created at the workspace level.
+     * Library/package properties.
      *
-     * @return the namePropertiesName value.
+     * @return the innerProperties value.
      */
-    public String namePropertiesName() {
-        return this.namePropertiesName;
+    private LibraryInfo innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Set the namePropertiesName property: Name of the library.
+     * Get the name property: Name of the library.
      *
-     * @param namePropertiesName the namePropertiesName value to set.
+     * @return the name value.
+     */
+    public String namePropertiesName() {
+        return this.innerProperties() == null ? null : this.innerProperties().name();
+    }
+
+    /**
+     * Set the name property: Name of the library.
+     *
+     * @param name the name value to set.
      * @return the LibraryResourceInner object itself.
      */
-    public LibraryResourceInner withNamePropertiesName(String namePropertiesName) {
-        this.namePropertiesName = namePropertiesName;
+    public LibraryResourceInner withNamePropertiesName(String name) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LibraryInfo();
+        }
+        this.innerProperties().withName(name);
         return this;
     }
 
@@ -86,7 +62,7 @@ public class LibraryResourceInner extends EntityResource {
      * @return the path value.
      */
     public String path() {
-        return this.path;
+        return this.innerProperties() == null ? null : this.innerProperties().path();
     }
 
     /**
@@ -96,7 +72,10 @@ public class LibraryResourceInner extends EntityResource {
      * @return the LibraryResourceInner object itself.
      */
     public LibraryResourceInner withPath(String path) {
-        this.path = path;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LibraryInfo();
+        }
+        this.innerProperties().withPath(path);
         return this;
     }
 
@@ -106,7 +85,7 @@ public class LibraryResourceInner extends EntityResource {
      * @return the containerName value.
      */
     public String containerName() {
-        return this.containerName;
+        return this.innerProperties() == null ? null : this.innerProperties().containerName();
     }
 
     /**
@@ -116,7 +95,10 @@ public class LibraryResourceInner extends EntityResource {
      * @return the LibraryResourceInner object itself.
      */
     public LibraryResourceInner withContainerName(String containerName) {
-        this.containerName = containerName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LibraryInfo();
+        }
+        this.innerProperties().withContainerName(containerName);
         return this;
     }
 
@@ -126,26 +108,43 @@ public class LibraryResourceInner extends EntityResource {
      * @return the uploadedTimestamp value.
      */
     public OffsetDateTime uploadedTimestamp() {
-        return this.uploadedTimestamp;
+        return this.innerProperties() == null ? null : this.innerProperties().uploadedTimestamp();
     }
 
     /**
-     * Get the typePropertiesType property: Type of the library.
+     * Set the uploadedTimestamp property: The last update time of the library.
      *
-     * @return the typePropertiesType value.
-     */
-    public String typePropertiesType() {
-        return this.typePropertiesType;
-    }
-
-    /**
-     * Set the typePropertiesType property: Type of the library.
-     *
-     * @param typePropertiesType the typePropertiesType value to set.
+     * @param uploadedTimestamp the uploadedTimestamp value to set.
      * @return the LibraryResourceInner object itself.
      */
-    public LibraryResourceInner withTypePropertiesType(String typePropertiesType) {
-        this.typePropertiesType = typePropertiesType;
+    public LibraryResourceInner withUploadedTimestamp(OffsetDateTime uploadedTimestamp) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LibraryInfo();
+        }
+        this.innerProperties().withUploadedTimestamp(uploadedTimestamp);
+        return this;
+    }
+
+    /**
+     * Get the type property: Type of the library.
+     *
+     * @return the type value.
+     */
+    public String typePropertiesType() {
+        return this.innerProperties() == null ? null : this.innerProperties().type();
+    }
+
+    /**
+     * Set the type property: Type of the library.
+     *
+     * @param type the type value to set.
+     * @return the LibraryResourceInner object itself.
+     */
+    public LibraryResourceInner withTypePropertiesType(String type) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LibraryInfo();
+        }
+        this.innerProperties().withType(type);
         return this;
     }
 
@@ -155,7 +154,7 @@ public class LibraryResourceInner extends EntityResource {
      * @return the provisioningStatus value.
      */
     public String provisioningStatus() {
-        return this.provisioningStatus;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningStatus();
     }
 
     /**
@@ -164,7 +163,7 @@ public class LibraryResourceInner extends EntityResource {
      * @return the creatorId value.
      */
     public String creatorId() {
-        return this.creatorId;
+        return this.innerProperties() == null ? null : this.innerProperties().creatorId();
     }
 
     /**
@@ -175,5 +174,13 @@ public class LibraryResourceInner extends EntityResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model LibraryResourceInner"));
+        } else {
+            innerProperties().validate();
+        }
     }
 }

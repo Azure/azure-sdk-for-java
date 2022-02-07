@@ -116,16 +116,16 @@ public interface BatchAccount {
     EncryptionProperties encryption();
 
     /**
-     * Gets the dedicatedCoreQuota property: For accounts with PoolAllocationMode set to UserSubscription, quota is
-     * managed on the subscription so this value is not returned.
+     * Gets the dedicatedCoreQuota property: The dedicated core quota for the Batch account. For accounts with
+     * PoolAllocationMode set to UserSubscription, quota is managed on the subscription so this value is not returned.
      *
      * @return the dedicatedCoreQuota value.
      */
     Integer dedicatedCoreQuota();
 
     /**
-     * Gets the lowPriorityCoreQuota property: For accounts with PoolAllocationMode set to UserSubscription, quota is
-     * managed on the subscription so this value is not returned.
+     * Gets the lowPriorityCoreQuota property: The low-priority core quota for the Batch account. For accounts with
+     * PoolAllocationMode set to UserSubscription, quota is managed on the subscription so this value is not returned.
      *
      * @return the lowPriorityCoreQuota value.
      */
@@ -141,12 +141,13 @@ public interface BatchAccount {
     List<VirtualMachineFamilyCoreQuota> dedicatedCoreQuotaPerVMFamily();
 
     /**
-     * Gets the dedicatedCoreQuotaPerVMFamilyEnforced property: Batch is transitioning its core quota system for
-     * dedicated cores to be enforced per Virtual Machine family. During this transitional phase, the dedicated core
-     * quota per Virtual Machine family may not yet be enforced. If this flag is false, dedicated core quota is enforced
-     * via the old dedicatedCoreQuota property on the account and does not consider Virtual Machine family. If this flag
-     * is true, dedicated core quota is enforced via the dedicatedCoreQuotaPerVMFamily property on the account, and the
-     * old dedicatedCoreQuota does not apply.
+     * Gets the dedicatedCoreQuotaPerVMFamilyEnforced property: A value indicating whether core quotas per Virtual
+     * Machine family are enforced for this account Batch is transitioning its core quota system for dedicated cores to
+     * be enforced per Virtual Machine family. During this transitional phase, the dedicated core quota per Virtual
+     * Machine family may not yet be enforced. If this flag is false, dedicated core quota is enforced via the old
+     * dedicatedCoreQuota property on the account and does not consider Virtual Machine family. If this flag is true,
+     * dedicated core quota is enforced via the dedicatedCoreQuotaPerVMFamily property on the account, and the old
+     * dedicatedCoreQuota does not apply.
      *
      * @return the dedicatedCoreQuotaPerVMFamilyEnforced value.
      */
@@ -165,6 +166,14 @@ public interface BatchAccount {
      * @return the activeJobAndJobScheduleQuota value.
      */
     Integer activeJobAndJobScheduleQuota();
+
+    /**
+     * Gets the allowedAuthenticationModes property: List of allowed authentication modes for the Batch account that can
+     * be used to authenticate with the data plane. This does not affect authentication with the control plane.
+     *
+     * @return the allowedAuthenticationModes value.
+     */
+    List<AuthenticationMode> allowedAuthenticationModes();
 
     /**
      * Gets the region of the resource.
@@ -238,7 +247,8 @@ public interface BatchAccount {
                 DefinitionStages.WithPoolAllocationMode,
                 DefinitionStages.WithKeyVaultReference,
                 DefinitionStages.WithPublicNetworkAccess,
-                DefinitionStages.WithEncryption {
+                DefinitionStages.WithEncryption,
+                DefinitionStages.WithAllowedAuthenticationModes {
             /**
              * Executes the create request.
              *
@@ -335,6 +345,19 @@ public interface BatchAccount {
              */
             WithCreate withEncryption(EncryptionProperties encryption);
         }
+        /** The stage of the BatchAccount definition allowing to specify allowedAuthenticationModes. */
+        interface WithAllowedAuthenticationModes {
+            /**
+             * Specifies the allowedAuthenticationModes property: List of allowed authentication modes for the Batch
+             * account that can be used to authenticate with the data plane. This does not affect authentication with
+             * the control plane..
+             *
+             * @param allowedAuthenticationModes List of allowed authentication modes for the Batch account that can be
+             *     used to authenticate with the data plane. This does not affect authentication with the control plane.
+             * @return the next definition stage.
+             */
+            WithCreate withAllowedAuthenticationModes(List<AuthenticationMode> allowedAuthenticationModes);
+        }
     }
     /**
      * Begins update for the BatchAccount resource.
@@ -348,7 +371,8 @@ public interface BatchAccount {
         extends UpdateStages.WithTags,
             UpdateStages.WithIdentity,
             UpdateStages.WithAutoStorage,
-            UpdateStages.WithEncryption {
+            UpdateStages.WithEncryption,
+            UpdateStages.WithAllowedAuthenticationModes {
         /**
          * Executes the update request.
          *
@@ -410,6 +434,19 @@ public interface BatchAccount {
              */
             Update withEncryption(EncryptionProperties encryption);
         }
+        /** The stage of the BatchAccount update allowing to specify allowedAuthenticationModes. */
+        interface WithAllowedAuthenticationModes {
+            /**
+             * Specifies the allowedAuthenticationModes property: List of allowed authentication modes for the Batch
+             * account that can be used to authenticate with the data plane. This does not affect authentication with
+             * the control plane..
+             *
+             * @param allowedAuthenticationModes List of allowed authentication modes for the Batch account that can be
+             *     used to authenticate with the data plane. This does not affect authentication with the control plane.
+             * @return the next definition stage.
+             */
+            Update withAllowedAuthenticationModes(List<AuthenticationMode> allowedAuthenticationModes);
+        }
     }
     /**
      * Refreshes the resource to sync with Azure.
@@ -427,7 +464,8 @@ public interface BatchAccount {
     BatchAccount refresh(Context context);
 
     /**
-     * Synchronizes access keys for the auto-storage account configured for the specified Batch account.
+     * Synchronizes access keys for the auto-storage account configured for the specified Batch account, only if storage
+     * key authentication is being used.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -435,7 +473,8 @@ public interface BatchAccount {
     void synchronizeAutoStorageKeys();
 
     /**
-     * Synchronizes access keys for the auto-storage account configured for the specified Batch account.
+     * Synchronizes access keys for the auto-storage account configured for the specified Batch account, only if storage
+     * key authentication is being used.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -446,7 +485,10 @@ public interface BatchAccount {
     Response<Void> synchronizeAutoStorageKeysWithResponse(Context context);
 
     /**
-     * Regenerates the specified account key for the Batch account.
+     * This operation applies only to Batch accounts with allowedAuthenticationModes containing 'SharedKey'. If the
+     * Batch account doesn't contain 'SharedKey' in its allowedAuthenticationMode, clients cannot use shared keys to
+     * authenticate, and must use another allowedAuthenticationModes instead. In this case, regenerating the keys will
+     * fail.
      *
      * @param parameters The type of key to regenerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -457,7 +499,10 @@ public interface BatchAccount {
     BatchAccountKeys regenerateKey(BatchAccountRegenerateKeyParameters parameters);
 
     /**
-     * Regenerates the specified account key for the Batch account.
+     * This operation applies only to Batch accounts with allowedAuthenticationModes containing 'SharedKey'. If the
+     * Batch account doesn't contain 'SharedKey' in its allowedAuthenticationMode, clients cannot use shared keys to
+     * authenticate, and must use another allowedAuthenticationModes instead. In this case, regenerating the keys will
+     * fail.
      *
      * @param parameters The type of key to regenerate.
      * @param context The context to associate with this operation.
@@ -470,9 +515,9 @@ public interface BatchAccount {
         BatchAccountRegenerateKeyParameters parameters, Context context);
 
     /**
-     * This operation applies only to Batch accounts created with a poolAllocationMode of 'BatchService'. If the Batch
-     * account was created with a poolAllocationMode of 'UserSubscription', clients cannot use access to keys to
-     * authenticate, and must use Azure Active Directory instead. In this case, getting the keys will fail.
+     * This operation applies only to Batch accounts with allowedAuthenticationModes containing 'SharedKey'. If the
+     * Batch account doesn't contain 'SharedKey' in its allowedAuthenticationMode, clients cannot use shared keys to
+     * authenticate, and must use another allowedAuthenticationModes instead. In this case, getting the keys will fail.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -481,9 +526,9 @@ public interface BatchAccount {
     BatchAccountKeys getKeys();
 
     /**
-     * This operation applies only to Batch accounts created with a poolAllocationMode of 'BatchService'. If the Batch
-     * account was created with a poolAllocationMode of 'UserSubscription', clients cannot use access to keys to
-     * authenticate, and must use Azure Active Directory instead. In this case, getting the keys will fail.
+     * This operation applies only to Batch accounts with allowedAuthenticationModes containing 'SharedKey'. If the
+     * Batch account doesn't contain 'SharedKey' in its allowedAuthenticationMode, clients cannot use shared keys to
+     * authenticate, and must use another allowedAuthenticationModes instead. In this case, getting the keys will fail.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

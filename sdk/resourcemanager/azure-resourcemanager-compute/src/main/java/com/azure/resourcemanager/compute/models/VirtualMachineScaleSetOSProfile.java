@@ -84,10 +84,23 @@ public final class VirtualMachineScaleSetOSProfile {
 
     /*
      * Specifies set of certificates that should be installed onto the virtual
-     * machines in the scale set.
+     * machines in the scale set. To install certificates on a virtual machine
+     * it is recommended to use the [Azure Key Vault virtual machine extension
+     * for
+     * Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux)
+     * or the [Azure Key Vault virtual machine extension for
+     * Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
      */
     @JsonProperty(value = "secrets")
     private List<VaultSecretGroup> secrets;
+
+    /*
+     * Specifies whether extension operations should be allowed on the virtual
+     * machine scale set. <br><br>This may only be set to False when no
+     * extensions are present on the virtual machine scale set.
+     */
+    @JsonProperty(value = "allowExtensionOperations")
+    private Boolean allowExtensionOperations;
 
     /**
      * Get the computerNamePrefix property: Specifies the computer name prefix for all of the virtual machines in the
@@ -255,7 +268,10 @@ public final class VirtualMachineScaleSetOSProfile {
 
     /**
      * Get the secrets property: Specifies set of certificates that should be installed onto the virtual machines in the
-     * scale set.
+     * scale set. To install certificates on a virtual machine it is recommended to use the [Azure Key Vault virtual
+     * machine extension for Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux) or the
+     * [Azure Key Vault virtual machine extension for
+     * Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
      *
      * @return the secrets value.
      */
@@ -265,13 +281,40 @@ public final class VirtualMachineScaleSetOSProfile {
 
     /**
      * Set the secrets property: Specifies set of certificates that should be installed onto the virtual machines in the
-     * scale set.
+     * scale set. To install certificates on a virtual machine it is recommended to use the [Azure Key Vault virtual
+     * machine extension for Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux) or the
+     * [Azure Key Vault virtual machine extension for
+     * Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
      *
      * @param secrets the secrets value to set.
      * @return the VirtualMachineScaleSetOSProfile object itself.
      */
     public VirtualMachineScaleSetOSProfile withSecrets(List<VaultSecretGroup> secrets) {
         this.secrets = secrets;
+        return this;
+    }
+
+    /**
+     * Get the allowExtensionOperations property: Specifies whether extension operations should be allowed on the
+     * virtual machine scale set. &lt;br&gt;&lt;br&gt;This may only be set to False when no extensions are present on
+     * the virtual machine scale set.
+     *
+     * @return the allowExtensionOperations value.
+     */
+    public Boolean allowExtensionOperations() {
+        return this.allowExtensionOperations;
+    }
+
+    /**
+     * Set the allowExtensionOperations property: Specifies whether extension operations should be allowed on the
+     * virtual machine scale set. &lt;br&gt;&lt;br&gt;This may only be set to False when no extensions are present on
+     * the virtual machine scale set.
+     *
+     * @param allowExtensionOperations the allowExtensionOperations value to set.
+     * @return the VirtualMachineScaleSetOSProfile object itself.
+     */
+    public VirtualMachineScaleSetOSProfile withAllowExtensionOperations(Boolean allowExtensionOperations) {
+        this.allowExtensionOperations = allowExtensionOperations;
         return this;
     }
 

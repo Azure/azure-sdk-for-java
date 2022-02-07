@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.fluent.models.DataConnectionInner;
+import com.azure.resourcemanager.kusto.fluent.models.IotHubConnectionProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,215 +17,23 @@ import java.util.List;
 /** Class representing an iot hub data connection. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("IotHub")
-@JsonFlatten
 @Fluent
-public class IotHubDataConnection extends DataConnectionInner {
+public final class IotHubDataConnection extends DataConnectionInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(IotHubDataConnection.class);
 
     /*
-     * The resource ID of the Iot hub to be used to create a data connection.
+     * The Iot Hub data connection properties.
      */
-    @JsonProperty(value = "properties.iotHubResourceId")
-    private String iotHubResourceId;
-
-    /*
-     * The iot hub consumer group.
-     */
-    @JsonProperty(value = "properties.consumerGroup")
-    private String consumerGroup;
-
-    /*
-     * The table where the data should be ingested. Optionally the table
-     * information can be added to each message.
-     */
-    @JsonProperty(value = "properties.tableName")
-    private String tableName;
-
-    /*
-     * The mapping rule to be used to ingest the data. Optionally the mapping
-     * information can be added to each message.
-     */
-    @JsonProperty(value = "properties.mappingRuleName")
-    private String mappingRuleName;
-
-    /*
-     * The data format of the message. Optionally the data format can be added
-     * to each message.
-     */
-    @JsonProperty(value = "properties.dataFormat")
-    private IotHubDataFormat dataFormat;
-
-    /*
-     * System properties of the iot hub
-     */
-    @JsonProperty(value = "properties.eventSystemProperties")
-    private List<String> eventSystemProperties;
-
-    /*
-     * The name of the share access policy
-     */
-    @JsonProperty(value = "properties.sharedAccessPolicyName")
-    private String sharedAccessPolicyName;
-
-    /*
-     * The provisioned state of the resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "properties")
+    private IotHubConnectionProperties innerProperties;
 
     /**
-     * Get the iotHubResourceId property: The resource ID of the Iot hub to be used to create a data connection.
+     * Get the innerProperties property: The Iot Hub data connection properties.
      *
-     * @return the iotHubResourceId value.
+     * @return the innerProperties value.
      */
-    public String iotHubResourceId() {
-        return this.iotHubResourceId;
-    }
-
-    /**
-     * Set the iotHubResourceId property: The resource ID of the Iot hub to be used to create a data connection.
-     *
-     * @param iotHubResourceId the iotHubResourceId value to set.
-     * @return the IotHubDataConnection object itself.
-     */
-    public IotHubDataConnection withIotHubResourceId(String iotHubResourceId) {
-        this.iotHubResourceId = iotHubResourceId;
-        return this;
-    }
-
-    /**
-     * Get the consumerGroup property: The iot hub consumer group.
-     *
-     * @return the consumerGroup value.
-     */
-    public String consumerGroup() {
-        return this.consumerGroup;
-    }
-
-    /**
-     * Set the consumerGroup property: The iot hub consumer group.
-     *
-     * @param consumerGroup the consumerGroup value to set.
-     * @return the IotHubDataConnection object itself.
-     */
-    public IotHubDataConnection withConsumerGroup(String consumerGroup) {
-        this.consumerGroup = consumerGroup;
-        return this;
-    }
-
-    /**
-     * Get the tableName property: The table where the data should be ingested. Optionally the table information can be
-     * added to each message.
-     *
-     * @return the tableName value.
-     */
-    public String tableName() {
-        return this.tableName;
-    }
-
-    /**
-     * Set the tableName property: The table where the data should be ingested. Optionally the table information can be
-     * added to each message.
-     *
-     * @param tableName the tableName value to set.
-     * @return the IotHubDataConnection object itself.
-     */
-    public IotHubDataConnection withTableName(String tableName) {
-        this.tableName = tableName;
-        return this;
-    }
-
-    /**
-     * Get the mappingRuleName property: The mapping rule to be used to ingest the data. Optionally the mapping
-     * information can be added to each message.
-     *
-     * @return the mappingRuleName value.
-     */
-    public String mappingRuleName() {
-        return this.mappingRuleName;
-    }
-
-    /**
-     * Set the mappingRuleName property: The mapping rule to be used to ingest the data. Optionally the mapping
-     * information can be added to each message.
-     *
-     * @param mappingRuleName the mappingRuleName value to set.
-     * @return the IotHubDataConnection object itself.
-     */
-    public IotHubDataConnection withMappingRuleName(String mappingRuleName) {
-        this.mappingRuleName = mappingRuleName;
-        return this;
-    }
-
-    /**
-     * Get the dataFormat property: The data format of the message. Optionally the data format can be added to each
-     * message.
-     *
-     * @return the dataFormat value.
-     */
-    public IotHubDataFormat dataFormat() {
-        return this.dataFormat;
-    }
-
-    /**
-     * Set the dataFormat property: The data format of the message. Optionally the data format can be added to each
-     * message.
-     *
-     * @param dataFormat the dataFormat value to set.
-     * @return the IotHubDataConnection object itself.
-     */
-    public IotHubDataConnection withDataFormat(IotHubDataFormat dataFormat) {
-        this.dataFormat = dataFormat;
-        return this;
-    }
-
-    /**
-     * Get the eventSystemProperties property: System properties of the iot hub.
-     *
-     * @return the eventSystemProperties value.
-     */
-    public List<String> eventSystemProperties() {
-        return this.eventSystemProperties;
-    }
-
-    /**
-     * Set the eventSystemProperties property: System properties of the iot hub.
-     *
-     * @param eventSystemProperties the eventSystemProperties value to set.
-     * @return the IotHubDataConnection object itself.
-     */
-    public IotHubDataConnection withEventSystemProperties(List<String> eventSystemProperties) {
-        this.eventSystemProperties = eventSystemProperties;
-        return this;
-    }
-
-    /**
-     * Get the sharedAccessPolicyName property: The name of the share access policy.
-     *
-     * @return the sharedAccessPolicyName value.
-     */
-    public String sharedAccessPolicyName() {
-        return this.sharedAccessPolicyName;
-    }
-
-    /**
-     * Set the sharedAccessPolicyName property: The name of the share access policy.
-     *
-     * @param sharedAccessPolicyName the sharedAccessPolicyName value to set.
-     * @return the IotHubDataConnection object itself.
-     */
-    public IotHubDataConnection withSharedAccessPolicyName(String sharedAccessPolicyName) {
-        this.sharedAccessPolicyName = sharedAccessPolicyName;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioned state of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
+    private IotHubConnectionProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -236,6 +44,182 @@ public class IotHubDataConnection extends DataConnectionInner {
     }
 
     /**
+     * Get the iotHubResourceId property: The resource ID of the Iot hub to be used to create a data connection.
+     *
+     * @return the iotHubResourceId value.
+     */
+    public String iotHubResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().iotHubResourceId();
+    }
+
+    /**
+     * Set the iotHubResourceId property: The resource ID of the Iot hub to be used to create a data connection.
+     *
+     * @param iotHubResourceId the iotHubResourceId value to set.
+     * @return the IotHubDataConnection object itself.
+     */
+    public IotHubDataConnection withIotHubResourceId(String iotHubResourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IotHubConnectionProperties();
+        }
+        this.innerProperties().withIotHubResourceId(iotHubResourceId);
+        return this;
+    }
+
+    /**
+     * Get the consumerGroup property: The iot hub consumer group.
+     *
+     * @return the consumerGroup value.
+     */
+    public String consumerGroup() {
+        return this.innerProperties() == null ? null : this.innerProperties().consumerGroup();
+    }
+
+    /**
+     * Set the consumerGroup property: The iot hub consumer group.
+     *
+     * @param consumerGroup the consumerGroup value to set.
+     * @return the IotHubDataConnection object itself.
+     */
+    public IotHubDataConnection withConsumerGroup(String consumerGroup) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IotHubConnectionProperties();
+        }
+        this.innerProperties().withConsumerGroup(consumerGroup);
+        return this;
+    }
+
+    /**
+     * Get the tableName property: The table where the data should be ingested. Optionally the table information can be
+     * added to each message.
+     *
+     * @return the tableName value.
+     */
+    public String tableName() {
+        return this.innerProperties() == null ? null : this.innerProperties().tableName();
+    }
+
+    /**
+     * Set the tableName property: The table where the data should be ingested. Optionally the table information can be
+     * added to each message.
+     *
+     * @param tableName the tableName value to set.
+     * @return the IotHubDataConnection object itself.
+     */
+    public IotHubDataConnection withTableName(String tableName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IotHubConnectionProperties();
+        }
+        this.innerProperties().withTableName(tableName);
+        return this;
+    }
+
+    /**
+     * Get the mappingRuleName property: The mapping rule to be used to ingest the data. Optionally the mapping
+     * information can be added to each message.
+     *
+     * @return the mappingRuleName value.
+     */
+    public String mappingRuleName() {
+        return this.innerProperties() == null ? null : this.innerProperties().mappingRuleName();
+    }
+
+    /**
+     * Set the mappingRuleName property: The mapping rule to be used to ingest the data. Optionally the mapping
+     * information can be added to each message.
+     *
+     * @param mappingRuleName the mappingRuleName value to set.
+     * @return the IotHubDataConnection object itself.
+     */
+    public IotHubDataConnection withMappingRuleName(String mappingRuleName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IotHubConnectionProperties();
+        }
+        this.innerProperties().withMappingRuleName(mappingRuleName);
+        return this;
+    }
+
+    /**
+     * Get the dataFormat property: The data format of the message. Optionally the data format can be added to each
+     * message.
+     *
+     * @return the dataFormat value.
+     */
+    public IotHubDataFormat dataFormat() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataFormat();
+    }
+
+    /**
+     * Set the dataFormat property: The data format of the message. Optionally the data format can be added to each
+     * message.
+     *
+     * @param dataFormat the dataFormat value to set.
+     * @return the IotHubDataConnection object itself.
+     */
+    public IotHubDataConnection withDataFormat(IotHubDataFormat dataFormat) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IotHubConnectionProperties();
+        }
+        this.innerProperties().withDataFormat(dataFormat);
+        return this;
+    }
+
+    /**
+     * Get the eventSystemProperties property: System properties of the iot hub.
+     *
+     * @return the eventSystemProperties value.
+     */
+    public List<String> eventSystemProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().eventSystemProperties();
+    }
+
+    /**
+     * Set the eventSystemProperties property: System properties of the iot hub.
+     *
+     * @param eventSystemProperties the eventSystemProperties value to set.
+     * @return the IotHubDataConnection object itself.
+     */
+    public IotHubDataConnection withEventSystemProperties(List<String> eventSystemProperties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IotHubConnectionProperties();
+        }
+        this.innerProperties().withEventSystemProperties(eventSystemProperties);
+        return this;
+    }
+
+    /**
+     * Get the sharedAccessPolicyName property: The name of the share access policy.
+     *
+     * @return the sharedAccessPolicyName value.
+     */
+    public String sharedAccessPolicyName() {
+        return this.innerProperties() == null ? null : this.innerProperties().sharedAccessPolicyName();
+    }
+
+    /**
+     * Set the sharedAccessPolicyName property: The name of the share access policy.
+     *
+     * @param sharedAccessPolicyName the sharedAccessPolicyName value to set.
+     * @return the IotHubDataConnection object itself.
+     */
+    public IotHubDataConnection withSharedAccessPolicyName(String sharedAccessPolicyName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IotHubConnectionProperties();
+        }
+        this.innerProperties().withSharedAccessPolicyName(sharedAccessPolicyName);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioned state of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -243,5 +227,8 @@ public class IotHubDataConnection extends DataConnectionInner {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

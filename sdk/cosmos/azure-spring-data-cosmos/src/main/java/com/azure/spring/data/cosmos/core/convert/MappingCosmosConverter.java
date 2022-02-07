@@ -37,8 +37,14 @@ public class MappingCosmosConverter
     JsonNode>,
     ApplicationContextAware {
 
-    protected final MappingContext<? extends CosmosPersistentEntity<?>,
-        CosmosPersistentProperty> mappingContext;
+    /**
+     * Mapping context
+     */
+    protected final MappingContext<? extends CosmosPersistentEntity<?>, CosmosPersistentProperty> mappingContext;
+
+    /**
+     * Generic conversion service
+     */
     protected GenericConversionService conversionService;
     private ApplicationContext applicationContext;
     private final ObjectMapper objectMapper;
@@ -60,9 +66,7 @@ public class MappingCosmosConverter
 
     @Override
     public <R> R read(Class<R> type, JsonNode jsonNode) {
-
         final CosmosPersistentEntity<?> entity = mappingContext.getPersistentEntity(type);
-
         return readInternal(entity, type, jsonNode);
     }
 
@@ -231,4 +235,5 @@ public class MappingCosmosConverter
 
         return fromPropertyValue;
     }
+
 }

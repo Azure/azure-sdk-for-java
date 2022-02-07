@@ -10,6 +10,9 @@ trigger:
   paths:
     include:
       - sdk/modelsrepository/
+    exclude:
+      - sdk/modelsrepository/pom.xml
+      - sdk/modelsrepository/azure-iot-modelsrepository/pom.xml
 
 pr:
   branches:
@@ -21,6 +24,9 @@ pr:
   paths:
     include:
       - sdk/modelsrepository/
+    exclude:
+      - sdk/modelsrepository/pom.xml
+      - sdk/modelsrepository/azure-iot-modelsrepository/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

@@ -8,6 +8,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.streamanalytics.fluent.models.InputInner;
 import com.azure.resourcemanager.streamanalytics.models.Input;
 import com.azure.resourcemanager.streamanalytics.models.InputProperties;
+import com.azure.resourcemanager.streamanalytics.models.ResourceTestStatus;
 
 public final class InputImpl implements Input, Input.Definition, Input.Update {
     private InputInner innerObject;
@@ -146,6 +147,18 @@ public final class InputImpl implements Input, Input.Definition, Input.Update {
         return this;
     }
 
+    public ResourceTestStatus test(InputInner input) {
+        return serviceManager.inputs().test(resourceGroupName, jobName, inputName, input);
+    }
+
+    public ResourceTestStatus test() {
+        return serviceManager.inputs().test(resourceGroupName, jobName, inputName);
+    }
+
+    public ResourceTestStatus test(InputInner input, Context context) {
+        return serviceManager.inputs().test(resourceGroupName, jobName, inputName, input, context);
+    }
+
     public InputImpl withProperties(InputProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
@@ -157,8 +170,13 @@ public final class InputImpl implements Input, Input.Definition, Input.Update {
     }
 
     public InputImpl withIfMatch(String ifMatch) {
-        this.createIfMatch = ifMatch;
-        return this;
+        if (isInCreateMode()) {
+            this.createIfMatch = ifMatch;
+            return this;
+        } else {
+            this.updateIfMatch = ifMatch;
+            return this;
+        }
     }
 
     public InputImpl withIfNoneMatch(String ifNoneMatch) {
@@ -166,8 +184,7 @@ public final class InputImpl implements Input, Input.Definition, Input.Update {
         return this;
     }
 
-    public InputImpl ifMatch(String ifMatch) {
-        this.updateIfMatch = ifMatch;
-        return this;
+    private boolean isInCreateMode() {
+        return this.innerModel().id() == null;
     }
 }

@@ -104,6 +104,40 @@ public interface Clusters {
     Response<ClusterListResult> listWithResponse(Context context);
 
     /**
+     * If a target is not provided, it will get the minimum and maximum versions available from the current cluster
+     * version. If a target is given, it will provide the required path to get from the current cluster version to the
+     * target version.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of intermediate cluster code versions for an upgrade or downgrade.
+     */
+    UpgradableVersionPathResult listUpgradableVersions(String resourceGroupName, String clusterName);
+
+    /**
+     * If a target is not provided, it will get the minimum and maximum versions available from the current cluster
+     * version. If a target is given, it will provide the required path to get from the current cluster version to the
+     * target version.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster resource.
+     * @param versionsDescription The upgrade path description with target version.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of intermediate cluster code versions for an upgrade or downgrade.
+     */
+    Response<UpgradableVersionPathResult> listUpgradableVersionsWithResponse(
+        String resourceGroupName,
+        String clusterName,
+        UpgradableVersionsDescription versionsDescription,
+        Context context);
+
+    /**
      * Get a Service Fabric cluster resource created or in the process of being created in the specified resource group.
      *
      * @param id the resource ID.

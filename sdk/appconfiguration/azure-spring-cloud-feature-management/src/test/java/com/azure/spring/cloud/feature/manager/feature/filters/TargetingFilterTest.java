@@ -2,29 +2,29 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.manager.feature.filters;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import com.azure.spring.cloud.feature.manager.TargetingException;
+import com.azure.spring.cloud.feature.manager.TestConfiguration;
 import com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
-import com.azure.spring.cloud.feature.manager.feature.filters.TargetingFilter;
 import com.azure.spring.cloud.feature.manager.targeting.ITargetingContextAccessor;
 import com.azure.spring.cloud.feature.manager.targeting.TargetingContext;
 import com.azure.spring.cloud.feature.manager.targeting.TargetingEvaluationOptions;
 
 import reactor.core.publisher.Mono;
 
-@RunWith(MockitoJUnitRunner.class)
+@SpringBootTest(classes = {TestConfiguration.class, SpringBootTest.class})
 public class TargetingFilterTest {
 
     private static final String USERS = "users";

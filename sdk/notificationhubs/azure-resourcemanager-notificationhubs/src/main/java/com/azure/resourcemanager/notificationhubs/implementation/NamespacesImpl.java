@@ -13,7 +13,6 @@ import com.azure.resourcemanager.notificationhubs.fluent.NamespacesClient;
 import com.azure.resourcemanager.notificationhubs.fluent.models.CheckAvailabilityResultInner;
 import com.azure.resourcemanager.notificationhubs.fluent.models.NamespaceResourceInner;
 import com.azure.resourcemanager.notificationhubs.fluent.models.ResourceListKeysInner;
-import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleListResultInner;
 import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleResourceInner;
 import com.azure.resourcemanager.notificationhubs.models.CheckAvailabilityParameters;
 import com.azure.resourcemanager.notificationhubs.models.CheckAvailabilityResult;
@@ -21,7 +20,6 @@ import com.azure.resourcemanager.notificationhubs.models.NamespaceResource;
 import com.azure.resourcemanager.notificationhubs.models.Namespaces;
 import com.azure.resourcemanager.notificationhubs.models.PolicykeyResource;
 import com.azure.resourcemanager.notificationhubs.models.ResourceListKeys;
-import com.azure.resourcemanager.notificationhubs.models.SharedAccessAuthorizationRuleListResult;
 import com.azure.resourcemanager.notificationhubs.models.SharedAccessAuthorizationRuleResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -169,27 +167,26 @@ public final class NamespacesImpl implements Namespaces {
         return Utils.mapPage(inner, inner1 -> new SharedAccessAuthorizationRuleResourceImpl(inner1, this.manager()));
     }
 
-    public SharedAccessAuthorizationRuleListResult listKeys(
-        String resourceGroupName, String namespaceName, String authorizationRuleName) {
-        SharedAccessAuthorizationRuleListResultInner inner =
+    public ResourceListKeys listKeys(String resourceGroupName, String namespaceName, String authorizationRuleName) {
+        ResourceListKeysInner inner =
             this.serviceClient().listKeys(resourceGroupName, namespaceName, authorizationRuleName);
         if (inner != null) {
-            return new SharedAccessAuthorizationRuleListResultImpl(inner, this.manager());
+            return new ResourceListKeysImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public Response<SharedAccessAuthorizationRuleListResult> listKeysWithResponse(
+    public Response<ResourceListKeys> listKeysWithResponse(
         String resourceGroupName, String namespaceName, String authorizationRuleName, Context context) {
-        Response<SharedAccessAuthorizationRuleListResultInner> inner =
+        Response<ResourceListKeysInner> inner =
             this.serviceClient().listKeysWithResponse(resourceGroupName, namespaceName, authorizationRuleName, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
                 inner.getStatusCode(),
                 inner.getHeaders(),
-                new SharedAccessAuthorizationRuleListResultImpl(inner.getValue(), this.manager()));
+                new ResourceListKeysImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -388,9 +385,7 @@ public final class NamespacesImpl implements Namespaces {
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'AuthorizationRules'.", id)));
         }
-        this
-            .deleteAuthorizationRuleWithResponse(resourceGroupName, namespaceName, authorizationRuleName, Context.NONE)
-            .getValue();
+        this.deleteAuthorizationRuleWithResponse(resourceGroupName, namespaceName, authorizationRuleName, Context.NONE);
     }
 
     public Response<Void> deleteAuthorizationRuleByIdWithResponse(String id, Context context) {

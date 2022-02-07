@@ -20,7 +20,6 @@ import com.azure.resourcemanager.appservice.fluent.models.BackupItemInner;
 import com.azure.resourcemanager.appservice.fluent.models.BackupRequestInner;
 import com.azure.resourcemanager.appservice.fluent.models.ConnectionStringDictionaryInner;
 import com.azure.resourcemanager.appservice.fluent.models.ContinuousWebJobInner;
-import com.azure.resourcemanager.appservice.fluent.models.CsmPublishingCredentialsPoliciesCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.models.CsmPublishingCredentialsPoliciesEntityInner;
 import com.azure.resourcemanager.appservice.fluent.models.CsmUsageQuotaInner;
 import com.azure.resourcemanager.appservice.fluent.models.CustomHostnameAnalysisResultInner;
@@ -71,7 +70,7 @@ import com.azure.resourcemanager.appservice.fluent.models.TriggeredJobHistoryInn
 import com.azure.resourcemanager.appservice.fluent.models.TriggeredWebJobInner;
 import com.azure.resourcemanager.appservice.fluent.models.UserInner;
 import com.azure.resourcemanager.appservice.fluent.models.VnetGatewayInner;
-import com.azure.resourcemanager.appservice.fluent.models.VnetInfoInner;
+import com.azure.resourcemanager.appservice.fluent.models.VnetInfoResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.WebJobInner;
 import com.azure.resourcemanager.appservice.fluent.models.WebSiteInstanceStatusInner;
 import com.azure.resourcemanager.appservice.models.CsmPublishingProfileOptions;
@@ -193,8 +192,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a web app, a mobile app backend, or an API app.
      */
@@ -207,8 +205,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a web app, a mobile app backend, or an API app.
      */
@@ -221,8 +218,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a web app, a mobile app backend, or an API app.
      */
@@ -236,8 +232,7 @@ public interface WebAppsClient
      * @param name Name of the app.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a web app, a mobile app backend, or an API app.
      */
@@ -274,7 +269,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a web app, a mobile app backend, or an API app.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<SiteInner>, SiteInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String name, SiteInner siteEnvelope);
 
@@ -291,7 +286,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a web app, a mobile app backend, or an API app.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SiteInner>, SiteInner> beginCreateOrUpdate(
         String resourceGroupName, String name, SiteInner siteEnvelope);
 
@@ -309,7 +304,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a web app, a mobile app backend, or an API app.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SiteInner>, SiteInner> beginCreateOrUpdate(
         String resourceGroupName, String name, SiteInner siteEnvelope, Context context);
 
@@ -371,8 +366,7 @@ public interface WebAppsClient
      * @param deleteEmptyServerFarm Specify false if you want to keep empty App Service plan. By default, empty App
      *     Service plan is deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -389,8 +383,7 @@ public interface WebAppsClient
      * @param deleteEmptyServerFarm Specify false if you want to keep empty App Service plan. By default, empty App
      *     Service plan is deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -403,8 +396,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -417,8 +409,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -434,8 +425,7 @@ public interface WebAppsClient
      *     Service plan is deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -825,8 +815,7 @@ public interface WebAppsClient
      * @param name Name of the app.
      * @param backupId ID of the backup.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -840,8 +829,7 @@ public interface WebAppsClient
      * @param name Name of the app.
      * @param backupId ID of the backup.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -855,8 +843,7 @@ public interface WebAppsClient
      * @param name Name of the app.
      * @param backupId ID of the backup.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -870,8 +857,7 @@ public interface WebAppsClient
      * @param backupId ID of the backup.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -985,7 +971,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRestoreAsync(
         String resourceGroupName, String name, String backupId, RestoreRequestInner request);
 
@@ -1002,7 +988,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestore(
         String resourceGroupName, String name, String backupId, RestoreRequestInner request);
 
@@ -1020,7 +1006,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestore(
         String resourceGroupName, String name, String backupId, RestoreRequestInner request, Context context);
 
@@ -1080,25 +1066,10 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return publishing Credentials Policies collection.
+     * @return publishing Credentials Policies entity collection ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CsmPublishingCredentialsPoliciesCollectionInner>>
-        getBasicPublishingCredentialsPoliciesWithResponseAsync(String resourceGroupName, String name);
-
-    /**
-     * Description for Returns whether Scm basic auth is allowed and whether Ftp is allowed for a given site.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return publishing Credentials Policies collection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CsmPublishingCredentialsPoliciesCollectionInner> getBasicPublishingCredentialsPoliciesAsync(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<CsmPublishingCredentialsPoliciesEntityInner> listBasicPublishingCredentialsPoliciesAsync(
         String resourceGroupName, String name);
 
     /**
@@ -1110,10 +1081,10 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return publishing Credentials Policies collection.
+     * @return publishing Credentials Policies entity collection ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CsmPublishingCredentialsPoliciesCollectionInner getBasicPublishingCredentialsPolicies(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<CsmPublishingCredentialsPoliciesEntityInner> listBasicPublishingCredentialsPolicies(
         String resourceGroupName, String name);
 
     /**
@@ -1126,10 +1097,10 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return publishing Credentials Policies collection.
+     * @return publishing Credentials Policies entity collection ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CsmPublishingCredentialsPoliciesCollectionInner> getBasicPublishingCredentialsPoliciesWithResponse(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<CsmPublishingCredentialsPoliciesEntityInner> listBasicPublishingCredentialsPolicies(
         String resourceGroupName, String name, Context context);
 
     /**
@@ -1688,6 +1659,65 @@ public interface WebAppsClient
     Response<SiteAuthSettingsInner> getAuthSettingsWithResponse(String resourceGroupName, String name, Context context);
 
     /**
+     * Description for Gets site's Authentication / Authorization settings for apps via the V2 format.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configuration settings for the Azure App Service Authentication / Authorization V2 feature.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<SiteAuthSettingsV2Inner>> getAuthSettingsV2WithoutSecretsWithResponseAsync(
+        String resourceGroupName, String name);
+
+    /**
+     * Description for Gets site's Authentication / Authorization settings for apps via the V2 format.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configuration settings for the Azure App Service Authentication / Authorization V2 feature.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SiteAuthSettingsV2Inner> getAuthSettingsV2WithoutSecretsAsync(String resourceGroupName, String name);
+
+    /**
+     * Description for Gets site's Authentication / Authorization settings for apps via the V2 format.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configuration settings for the Azure App Service Authentication / Authorization V2 feature.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SiteAuthSettingsV2Inner getAuthSettingsV2WithoutSecrets(String resourceGroupName, String name);
+
+    /**
+     * Description for Gets site's Authentication / Authorization settings for apps via the V2 format.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configuration settings for the Azure App Service Authentication / Authorization V2 feature.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SiteAuthSettingsV2Inner> getAuthSettingsV2WithoutSecretsWithResponse(
+        String resourceGroupName, String name, Context context);
+
+    /**
      * Description for Updates site's Authentication / Authorization settings for apps via the V2 format.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -1697,7 +1727,7 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return configuration settings for the Azure App Service Authentication / Authorization V2 feature.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SiteAuthSettingsV2Inner>> updateAuthSettingsV2WithResponseAsync(
@@ -1713,7 +1743,7 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return configuration settings for the Azure App Service Authentication / Authorization V2 feature.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<SiteAuthSettingsV2Inner> updateAuthSettingsV2Async(
@@ -1729,7 +1759,7 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return configuration settings for the Azure App Service Authentication / Authorization V2 feature.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SiteAuthSettingsV2Inner updateAuthSettingsV2(
@@ -1746,7 +1776,7 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return configuration settings for the Azure App Service Authentication / Authorization V2 feature.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SiteAuthSettingsV2Inner> updateAuthSettingsV2WithResponse(
@@ -1761,7 +1791,7 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return configuration settings for the Azure App Service Authentication / Authorization V2 feature.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SiteAuthSettingsV2Inner>> getAuthSettingsV2WithResponseAsync(String resourceGroupName, String name);
@@ -1775,7 +1805,7 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return configuration settings for the Azure App Service Authentication / Authorization V2 feature.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<SiteAuthSettingsV2Inner> getAuthSettingsV2Async(String resourceGroupName, String name);
@@ -1789,7 +1819,7 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return configuration settings for the Azure App Service Authentication / Authorization V2 feature.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SiteAuthSettingsV2Inner getAuthSettingsV2(String resourceGroupName, String name);
@@ -1804,7 +1834,7 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return configuration settings for the Azure App Service Authentication / Authorization V2 feature.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SiteAuthSettingsV2Inner> getAuthSettingsV2WithResponse(
@@ -2732,7 +2762,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return user credentials used for publishing activity.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<UserInner>, UserInner> beginListPublishingCredentialsAsync(
         String resourceGroupName, String name);
 
@@ -2747,7 +2777,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return user credentials used for publishing activity.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<UserInner>, UserInner> beginListPublishingCredentials(String resourceGroupName, String name);
 
     /**
@@ -2762,7 +2792,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return user credentials used for publishing activity.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<UserInner>, UserInner> beginListPublishingCredentials(
         String resourceGroupName, String name, Context context);
 
@@ -3582,8 +3612,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param webJobName Name of Web Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return continuous Web Job Information.
      */
@@ -3598,8 +3627,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param webJobName Name of Web Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return continuous Web Job Information.
      */
@@ -3613,8 +3641,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param webJobName Name of Web Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return continuous Web Job Information.
      */
@@ -3629,8 +3656,7 @@ public interface WebAppsClient
      * @param webJobName Name of Web Job.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return continuous Web Job Information.
      */
@@ -3707,8 +3733,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param webJobName Name of Web Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -3723,8 +3748,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param webJobName Name of Web Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -3738,8 +3762,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param webJobName Name of Web Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3753,8 +3776,7 @@ public interface WebAppsClient
      * @param webJobName Name of Web Job.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3769,8 +3791,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param webJobName Name of Web Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -3785,8 +3806,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param webJobName Name of Web Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -3800,8 +3820,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param webJobName Name of Web Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3815,8 +3834,7 @@ public interface WebAppsClient
      * @param webJobName Name of Web Job.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -4591,8 +4609,7 @@ public interface WebAppsClient
      * @param name Name of web app.
      * @param mSDeploy Details of MSDeploy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
@@ -4607,12 +4624,11 @@ public interface WebAppsClient
      * @param name Name of web app.
      * @param mSDeploy Details of MSDeploy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<MSDeployStatusInner>, MSDeployStatusInner> beginCreateMSDeployOperationAsync(
         String resourceGroupName, String name, MSDeploy mSDeploy);
 
@@ -4623,12 +4639,11 @@ public interface WebAppsClient
      * @param name Name of web app.
      * @param mSDeploy Details of MSDeploy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MSDeployStatusInner>, MSDeployStatusInner> beginCreateMSDeployOperation(
         String resourceGroupName, String name, MSDeploy mSDeploy);
 
@@ -4640,12 +4655,11 @@ public interface WebAppsClient
      * @param mSDeploy Details of MSDeploy operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MSDeployStatusInner>, MSDeployStatusInner> beginCreateMSDeployOperation(
         String resourceGroupName, String name, MSDeploy mSDeploy, Context context);
 
@@ -4656,8 +4670,7 @@ public interface WebAppsClient
      * @param name Name of web app.
      * @param mSDeploy Details of MSDeploy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
@@ -4671,8 +4684,7 @@ public interface WebAppsClient
      * @param name Name of web app.
      * @param mSDeploy Details of MSDeploy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
@@ -4687,8 +4699,7 @@ public interface WebAppsClient
      * @param mSDeploy Details of MSDeploy operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
@@ -4702,8 +4713,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy log.
      */
@@ -4716,8 +4726,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy log.
      */
@@ -4730,8 +4739,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy log.
      */
@@ -4745,8 +4753,7 @@ public interface WebAppsClient
      * @param name Name of web app.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy log.
      */
@@ -4759,8 +4766,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu function information elements.
      */
@@ -4773,8 +4779,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu function information elements.
      */
@@ -4788,8 +4793,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu function information elements.
      */
@@ -4860,8 +4864,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param functionName Function name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return function information.
      */
@@ -4876,8 +4879,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param functionName Function name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return function information.
      */
@@ -4891,8 +4893,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param functionName Function name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return function information.
      */
@@ -4907,8 +4908,7 @@ public interface WebAppsClient
      * @param functionName Function name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return function information.
      */
@@ -4946,7 +4946,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return function information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<FunctionEnvelopeInner>, FunctionEnvelopeInner> beginCreateFunctionAsync(
         String resourceGroupName, String name, String functionName, FunctionEnvelopeInner functionEnvelope);
 
@@ -4963,7 +4963,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return function information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FunctionEnvelopeInner>, FunctionEnvelopeInner> beginCreateFunction(
         String resourceGroupName, String name, String functionName, FunctionEnvelopeInner functionEnvelope);
 
@@ -4981,7 +4981,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return function information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FunctionEnvelopeInner>, FunctionEnvelopeInner> beginCreateFunction(
         String resourceGroupName,
         String name,
@@ -5052,8 +5052,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param functionName Function name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -5067,8 +5066,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param functionName Function name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -5082,8 +5080,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param functionName Function name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5097,8 +5094,7 @@ public interface WebAppsClient
      * @param functionName Function name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -5187,8 +5183,7 @@ public interface WebAppsClient
      * @param functionName The name of the function.
      * @param keyName The name of the key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -5204,8 +5199,7 @@ public interface WebAppsClient
      * @param functionName The name of the function.
      * @param keyName The name of the key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -5220,8 +5214,7 @@ public interface WebAppsClient
      * @param functionName The name of the function.
      * @param keyName The name of the key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5236,8 +5229,7 @@ public interface WebAppsClient
      * @param keyName The name of the key.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -5621,8 +5613,7 @@ public interface WebAppsClient
      * @param keyType The type of host key.
      * @param keyName The name of the key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -5638,8 +5629,7 @@ public interface WebAppsClient
      * @param keyType The type of host key.
      * @param keyName The name of the key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -5654,8 +5644,7 @@ public interface WebAppsClient
      * @param keyType The type of host key.
      * @param keyName The name of the key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5670,8 +5659,7 @@ public interface WebAppsClient
      * @param keyName The name of the key.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6082,8 +6070,7 @@ public interface WebAppsClient
      * @param namespaceName The namespace for this hybrid connection.
      * @param relayName The relay name for this hybrid connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -6099,8 +6086,7 @@ public interface WebAppsClient
      * @param namespaceName The namespace for this hybrid connection.
      * @param relayName The relay name for this hybrid connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -6116,8 +6102,7 @@ public interface WebAppsClient
      * @param namespaceName The namespace for this hybrid connection.
      * @param relayName The relay name for this hybrid connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -6132,8 +6117,7 @@ public interface WebAppsClient
      * @param relayName The relay name for this hybrid connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6493,8 +6477,7 @@ public interface WebAppsClient
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -6509,8 +6492,7 @@ public interface WebAppsClient
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -6524,8 +6506,7 @@ public interface WebAppsClient
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -6539,8 +6520,7 @@ public interface WebAppsClient
      * @param entityName Name of the hybrid connection configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -6799,8 +6779,7 @@ public interface WebAppsClient
      * @param instanceId ID of web app instance.
      * @param mSDeploy Details of MSDeploy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
@@ -6816,12 +6795,11 @@ public interface WebAppsClient
      * @param instanceId ID of web app instance.
      * @param mSDeploy Details of MSDeploy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<MSDeployStatusInner>, MSDeployStatusInner> beginCreateInstanceMSDeployOperationAsync(
         String resourceGroupName, String name, String instanceId, MSDeploy mSDeploy);
 
@@ -6833,12 +6811,11 @@ public interface WebAppsClient
      * @param instanceId ID of web app instance.
      * @param mSDeploy Details of MSDeploy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MSDeployStatusInner>, MSDeployStatusInner> beginCreateInstanceMSDeployOperation(
         String resourceGroupName, String name, String instanceId, MSDeploy mSDeploy);
 
@@ -6851,12 +6828,11 @@ public interface WebAppsClient
      * @param mSDeploy Details of MSDeploy operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MSDeployStatusInner>, MSDeployStatusInner> beginCreateInstanceMSDeployOperation(
         String resourceGroupName, String name, String instanceId, MSDeploy mSDeploy, Context context);
 
@@ -6868,8 +6844,7 @@ public interface WebAppsClient
      * @param instanceId ID of web app instance.
      * @param mSDeploy Details of MSDeploy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
@@ -6885,8 +6860,7 @@ public interface WebAppsClient
      * @param instanceId ID of web app instance.
      * @param mSDeploy Details of MSDeploy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
@@ -6903,8 +6877,7 @@ public interface WebAppsClient
      * @param mSDeploy Details of MSDeploy operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
@@ -6919,8 +6892,7 @@ public interface WebAppsClient
      * @param name Name of web app.
      * @param instanceId ID of web app instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy log.
      */
@@ -6935,8 +6907,7 @@ public interface WebAppsClient
      * @param name Name of web app.
      * @param instanceId ID of web app instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy log.
      */
@@ -6950,8 +6921,7 @@ public interface WebAppsClient
      * @param name Name of web app.
      * @param instanceId ID of web app instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy log.
      */
@@ -6966,8 +6936,7 @@ public interface WebAppsClient
      * @param instanceId ID of web app instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy log.
      */
@@ -6984,8 +6953,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu process information elements.
      */
@@ -7001,8 +6969,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu process information elements.
      */
@@ -7019,8 +6986,7 @@ public interface WebAppsClient
      *     response from "GET api/sites/{siteName}/instances".
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu process information elements.
      */
@@ -7037,8 +7003,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return process Information.
      */
@@ -7055,8 +7020,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return process Information.
      */
@@ -7073,8 +7037,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return process Information.
      */
@@ -7091,8 +7054,7 @@ public interface WebAppsClient
      *     response from "GET api/sites/{siteName}/instances".
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return process Information.
      */
@@ -7110,8 +7072,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -7129,8 +7090,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -7147,8 +7107,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -7165,8 +7124,7 @@ public interface WebAppsClient
      *     response from "GET api/sites/{siteName}/instances".
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -7183,8 +7141,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -7201,8 +7158,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -7219,8 +7175,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -7237,8 +7192,7 @@ public interface WebAppsClient
      *     response from "GET api/sites/{siteName}/instances".
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -7255,8 +7209,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu thread information elements.
      */
@@ -7273,8 +7226,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu thread information elements.
      */
@@ -7292,8 +7244,7 @@ public interface WebAppsClient
      *     response from "GET api/sites/{siteName}/instances".
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu thread information elements.
      */
@@ -7311,8 +7262,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return process Module Information.
      */
@@ -7330,8 +7280,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return process Module Information.
      */
@@ -7349,8 +7298,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return process Module Information.
      */
@@ -7369,8 +7317,7 @@ public interface WebAppsClient
      *     response from "GET api/sites/{siteName}/instances".
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return process Module Information.
      */
@@ -7392,8 +7339,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu thread information elements.
      */
@@ -7410,8 +7356,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu thread information elements.
      */
@@ -7429,8 +7374,7 @@ public interface WebAppsClient
      *     response from "GET api/sites/{siteName}/instances".
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu thread information elements.
      */
@@ -7627,7 +7571,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for a migration of app content request.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<StorageMigrationResponseInner>, StorageMigrationResponseInner> beginMigrateStorageAsync(
         String subscriptionName, String resourceGroupName, String name, StorageMigrationOptions migrationOptions);
 
@@ -7644,7 +7588,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for a migration of app content request.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<StorageMigrationResponseInner>, StorageMigrationResponseInner> beginMigrateStorage(
         String subscriptionName, String resourceGroupName, String name, StorageMigrationOptions migrationOptions);
 
@@ -7662,7 +7606,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for a migration of app content request.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<StorageMigrationResponseInner>, StorageMigrationResponseInner> beginMigrateStorage(
         String subscriptionName,
         String resourceGroupName,
@@ -7754,7 +7698,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an operation on a resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<OperationInner>, OperationInner> beginMigrateMySqlAsync(
         String resourceGroupName, String name, MigrateMySqlRequest migrationRequestEnvelope);
 
@@ -7770,7 +7714,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an operation on a resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationInner>, OperationInner> beginMigrateMySql(
         String resourceGroupName, String name, MigrateMySqlRequest migrationRequestEnvelope);
 
@@ -7787,7 +7731,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an operation on a resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationInner>, OperationInner> beginMigrateMySql(
         String resourceGroupName, String name, MigrateMySqlRequest migrationRequestEnvelope, Context context);
 
@@ -7962,13 +7906,85 @@ public interface WebAppsClient
         String resourceGroupName, String name, Context context);
 
     /**
+     * Description for Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true
+     * when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not in
+     * use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return swift Virtual Network Contract.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<SwiftVirtualNetworkInner>> createOrUpdateSwiftVirtualNetworkConnectionWithCheckWithResponseAsync(
+        String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope);
+
+    /**
+     * Description for Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true
+     * when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not in
+     * use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return swift Virtual Network Contract.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SwiftVirtualNetworkInner> createOrUpdateSwiftVirtualNetworkConnectionWithCheckAsync(
+        String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope);
+
+    /**
+     * Description for Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true
+     * when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not in
+     * use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return swift Virtual Network Contract.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SwiftVirtualNetworkInner createOrUpdateSwiftVirtualNetworkConnectionWithCheck(
+        String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope);
+
+    /**
+     * Description for Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true
+     * when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not in
+     * use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return swift Virtual Network Contract.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SwiftVirtualNetworkInner> createOrUpdateSwiftVirtualNetworkConnectionWithCheckWithResponse(
+        String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope, Context context);
+
+    /**
      * Description for Deletes a Swift Virtual Network connection from an app (or deployment slot).
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -7981,8 +7997,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -7995,8 +8010,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -8009,13 +8023,85 @@ public interface WebAppsClient
      * @param name Name of the app.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteSwiftVirtualNetworkWithResponse(String resourceGroupName, String name, Context context);
+
+    /**
+     * Description for Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true
+     * when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not in
+     * use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return swift Virtual Network Contract.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<SwiftVirtualNetworkInner>> updateSwiftVirtualNetworkConnectionWithCheckWithResponseAsync(
+        String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope);
+
+    /**
+     * Description for Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true
+     * when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not in
+     * use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return swift Virtual Network Contract.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SwiftVirtualNetworkInner> updateSwiftVirtualNetworkConnectionWithCheckAsync(
+        String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope);
+
+    /**
+     * Description for Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true
+     * when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not in
+     * use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return swift Virtual Network Contract.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SwiftVirtualNetworkInner updateSwiftVirtualNetworkConnectionWithCheck(
+        String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope);
+
+    /**
+     * Description for Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true
+     * when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not in
+     * use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return swift Virtual Network Contract.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SwiftVirtualNetworkInner> updateSwiftVirtualNetworkConnectionWithCheckWithResponse(
+        String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope, Context context);
 
     /**
      * Description for Gets all network features used by the app (or deployment slot, if specified).
@@ -8024,8 +8110,7 @@ public interface WebAppsClient
      * @param name Name of the app.
      * @param view The type of view. Only "summary" is supported at this time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return full view of network features for an app (presently VNET integration and Hybrid Connections).
      */
@@ -8040,8 +8125,7 @@ public interface WebAppsClient
      * @param name Name of the app.
      * @param view The type of view. Only "summary" is supported at this time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return full view of network features for an app (presently VNET integration and Hybrid Connections).
      */
@@ -8055,8 +8139,7 @@ public interface WebAppsClient
      * @param name Name of the app.
      * @param view The type of view. Only "summary" is supported at this time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return full view of network features for an app (presently VNET integration and Hybrid Connections).
      */
@@ -8071,8 +8154,7 @@ public interface WebAppsClient
      * @param view The type of view. Only "summary" is supported at this time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return full view of network features for an app (presently VNET integration and Hybrid Connections).
      */
@@ -8263,7 +8345,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of NetworkTrace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Object>, Object> beginStartWebSiteNetworkTraceOperationAsync(
         String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl);
 
@@ -8281,7 +8363,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of NetworkTrace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginStartWebSiteNetworkTraceOperation(
         String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl);
 
@@ -8300,7 +8382,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of NetworkTrace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginStartWebSiteNetworkTraceOperation(
         String resourceGroupName,
         String name,
@@ -9423,7 +9505,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return remote Private Endpoint Connection ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<
             PollResult<RemotePrivateEndpointConnectionArmResourceInner>,
             RemotePrivateEndpointConnectionArmResourceInner>
@@ -9446,7 +9528,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return remote Private Endpoint Connection ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<
             PollResult<RemotePrivateEndpointConnectionArmResourceInner>,
             RemotePrivateEndpointConnectionArmResourceInner>
@@ -9470,7 +9552,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return remote Private Endpoint Connection ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<
             PollResult<RemotePrivateEndpointConnectionArmResourceInner>,
             RemotePrivateEndpointConnectionArmResourceInner>
@@ -9571,7 +9653,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Object>, Object> beginDeletePrivateEndpointConnectionAsync(
         String resourceGroupName, String name, String privateEndpointConnectionName);
 
@@ -9587,7 +9669,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginDeletePrivateEndpointConnection(
         String resourceGroupName, String name, String privateEndpointConnectionName);
 
@@ -9604,7 +9686,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginDeletePrivateEndpointConnection(
         String resourceGroupName, String name, String privateEndpointConnectionName, Context context);
 
@@ -9722,8 +9804,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu process information elements.
      */
@@ -9737,8 +9818,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu process information elements.
      */
@@ -9753,8 +9833,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu process information elements.
      */
@@ -9768,8 +9847,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param processId PID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return process Information.
      */
@@ -9784,8 +9862,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param processId PID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return process Information.
      */
@@ -9799,8 +9876,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param processId PID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return process Information.
      */
@@ -9815,8 +9891,7 @@ public interface WebAppsClient
      * @param processId PID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return process Information.
      */
@@ -9832,8 +9907,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param processId PID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -9848,8 +9922,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param processId PID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -9864,8 +9937,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param processId PID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -9880,8 +9952,7 @@ public interface WebAppsClient
      * @param processId PID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -9895,8 +9966,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param processId PID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -9910,8 +9980,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param processId PID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -9925,8 +9994,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param processId PID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -9941,8 +10009,7 @@ public interface WebAppsClient
      * @param processId PID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -9956,8 +10023,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param processId PID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu thread information elements.
      */
@@ -9971,8 +10037,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param processId PID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu thread information elements.
      */
@@ -9987,8 +10052,7 @@ public interface WebAppsClient
      * @param processId PID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu thread information elements.
      */
@@ -10004,8 +10068,7 @@ public interface WebAppsClient
      * @param processId PID.
      * @param baseAddress Module base address.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return process Module Information.
      */
@@ -10021,8 +10084,7 @@ public interface WebAppsClient
      * @param processId PID.
      * @param baseAddress Module base address.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return process Module Information.
      */
@@ -10038,8 +10100,7 @@ public interface WebAppsClient
      * @param processId PID.
      * @param baseAddress Module base address.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return process Module Information.
      */
@@ -10056,8 +10117,7 @@ public interface WebAppsClient
      * @param baseAddress Module base address.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return process Module Information.
      */
@@ -10072,8 +10132,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param processId PID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu thread information elements.
      */
@@ -10087,8 +10146,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param processId PID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu thread information elements.
      */
@@ -10103,8 +10161,7 @@ public interface WebAppsClient
      * @param processId PID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu thread information elements.
      */
@@ -10600,7 +10657,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRestoreFromBackupBlobAsync(
         String resourceGroupName, String name, RestoreRequestInner request);
 
@@ -10616,7 +10673,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestoreFromBackupBlob(
         String resourceGroupName, String name, RestoreRequestInner request);
 
@@ -10633,7 +10690,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestoreFromBackupBlob(
         String resourceGroupName, String name, RestoreRequestInner request, Context context);
 
@@ -10709,7 +10766,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRestoreFromDeletedAppAsync(
         String resourceGroupName, String name, DeletedAppRestoreRequest restoreRequest);
 
@@ -10725,7 +10782,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestoreFromDeletedApp(
         String resourceGroupName, String name, DeletedAppRestoreRequest restoreRequest);
 
@@ -10742,7 +10799,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestoreFromDeletedApp(
         String resourceGroupName, String name, DeletedAppRestoreRequest restoreRequest, Context context);
 
@@ -10822,7 +10879,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRestoreSnapshotAsync(
         String resourceGroupName, String name, SnapshotRestoreRequest restoreRequest);
 
@@ -10839,7 +10896,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestoreSnapshot(
         String resourceGroupName, String name, SnapshotRestoreRequest restoreRequest);
 
@@ -10857,7 +10914,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestoreSnapshot(
         String resourceGroupName, String name, SnapshotRestoreRequest restoreRequest, Context context);
 
@@ -10914,8 +10971,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu site extension information elements.
      */
@@ -10928,8 +10984,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu site extension information elements.
      */
@@ -10943,8 +10998,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu site extension information elements.
      */
@@ -10958,8 +11012,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param siteExtensionId Site extension name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return site Extension Information.
      */
@@ -10974,8 +11027,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param siteExtensionId Site extension name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return site Extension Information.
      */
@@ -10989,8 +11041,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param siteExtensionId Site extension name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return site Extension Information.
      */
@@ -11005,8 +11056,7 @@ public interface WebAppsClient
      * @param siteExtensionId Site extension name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return site Extension Information.
      */
@@ -11021,8 +11071,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param siteExtensionId Site extension name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return site Extension Information.
      */
@@ -11037,12 +11086,11 @@ public interface WebAppsClient
      * @param name Site name.
      * @param siteExtensionId Site extension name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return site Extension Information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<SiteExtensionInfoInner>, SiteExtensionInfoInner> beginInstallSiteExtensionAsync(
         String resourceGroupName, String name, String siteExtensionId);
 
@@ -11053,12 +11101,11 @@ public interface WebAppsClient
      * @param name Site name.
      * @param siteExtensionId Site extension name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return site Extension Information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SiteExtensionInfoInner>, SiteExtensionInfoInner> beginInstallSiteExtension(
         String resourceGroupName, String name, String siteExtensionId);
 
@@ -11070,12 +11117,11 @@ public interface WebAppsClient
      * @param siteExtensionId Site extension name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return site Extension Information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SiteExtensionInfoInner>, SiteExtensionInfoInner> beginInstallSiteExtension(
         String resourceGroupName, String name, String siteExtensionId, Context context);
 
@@ -11086,8 +11132,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param siteExtensionId Site extension name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return site Extension Information.
      */
@@ -11102,8 +11147,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param siteExtensionId Site extension name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return site Extension Information.
      */
@@ -11118,8 +11162,7 @@ public interface WebAppsClient
      * @param siteExtensionId Site extension name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return site Extension Information.
      */
@@ -11134,8 +11177,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param siteExtensionId Site extension name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -11150,8 +11192,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param siteExtensionId Site extension name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -11165,8 +11206,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param siteExtensionId Site extension name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -11180,8 +11220,7 @@ public interface WebAppsClient
      * @param siteExtensionId Site extension name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -11239,8 +11278,7 @@ public interface WebAppsClient
      * @param name Name of the app.
      * @param slot Name of the deployment slot. By default, this API returns the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a web app, a mobile app backend, or an API app.
      */
@@ -11254,8 +11292,7 @@ public interface WebAppsClient
      * @param name Name of the app.
      * @param slot Name of the deployment slot. By default, this API returns the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a web app, a mobile app backend, or an API app.
      */
@@ -11269,8 +11306,7 @@ public interface WebAppsClient
      * @param name Name of the app.
      * @param slot Name of the deployment slot. By default, this API returns the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a web app, a mobile app backend, or an API app.
      */
@@ -11285,8 +11321,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. By default, this API returns the production slot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a web app, a mobile app backend, or an API app.
      */
@@ -11327,7 +11362,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a web app, a mobile app backend, or an API app.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<SiteInner>, SiteInner> beginCreateOrUpdateSlotAsync(
         String resourceGroupName, String name, String slot, SiteInner siteEnvelope);
 
@@ -11346,7 +11381,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a web app, a mobile app backend, or an API app.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SiteInner>, SiteInner> beginCreateOrUpdateSlot(
         String resourceGroupName, String name, String slot, SiteInner siteEnvelope);
 
@@ -11366,7 +11401,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a web app, a mobile app backend, or an API app.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SiteInner>, SiteInner> beginCreateOrUpdateSlot(
         String resourceGroupName, String name, String slot, SiteInner siteEnvelope, Context context);
 
@@ -11436,8 +11471,7 @@ public interface WebAppsClient
      * @param deleteEmptyServerFarm Specify false if you want to keep empty App Service plan. By default, empty App
      *     Service plan is deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -11455,8 +11489,7 @@ public interface WebAppsClient
      * @param deleteEmptyServerFarm Specify false if you want to keep empty App Service plan. By default, empty App
      *     Service plan is deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -11471,8 +11504,7 @@ public interface WebAppsClient
      * @param name Name of the app to delete.
      * @param slot Name of the deployment slot to delete. By default, the API deletes the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -11486,8 +11518,7 @@ public interface WebAppsClient
      * @param name Name of the app to delete.
      * @param slot Name of the deployment slot to delete. By default, the API deletes the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -11504,8 +11535,7 @@ public interface WebAppsClient
      *     Service plan is deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -11945,8 +11975,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete a backup of the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -11963,8 +11992,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete a backup of the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -11980,8 +12008,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete a backup of the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -11997,8 +12024,7 @@ public interface WebAppsClient
      *     production slot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -12126,7 +12152,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRestoreSlotAsync(
         String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request);
 
@@ -12145,7 +12171,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestoreSlot(
         String resourceGroupName, String name, String backupId, String slot, RestoreRequestInner request);
 
@@ -12165,7 +12191,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestoreSlot(
         String resourceGroupName,
         String name,
@@ -12244,26 +12270,10 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return publishing Credentials Policies collection.
+     * @return publishing Credentials Policies entity collection ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CsmPublishingCredentialsPoliciesCollectionInner>>
-        getBasicPublishingCredentialsPoliciesSlotWithResponseAsync(String resourceGroupName, String name, String slot);
-
-    /**
-     * Description for Returns whether Scm basic auth is allowed and whether Ftp is allowed for a given site.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param slot The slot parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return publishing Credentials Policies collection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CsmPublishingCredentialsPoliciesCollectionInner> getBasicPublishingCredentialsPoliciesSlotAsync(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<CsmPublishingCredentialsPoliciesEntityInner> listBasicPublishingCredentialsPoliciesSlotAsync(
         String resourceGroupName, String name, String slot);
 
     /**
@@ -12276,10 +12286,10 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return publishing Credentials Policies collection.
+     * @return publishing Credentials Policies entity collection ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CsmPublishingCredentialsPoliciesCollectionInner getBasicPublishingCredentialsPoliciesSlot(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<CsmPublishingCredentialsPoliciesEntityInner> listBasicPublishingCredentialsPoliciesSlot(
         String resourceGroupName, String name, String slot);
 
     /**
@@ -12293,10 +12303,10 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return publishing Credentials Policies collection.
+     * @return publishing Credentials Policies entity collection ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CsmPublishingCredentialsPoliciesCollectionInner> getBasicPublishingCredentialsPoliciesSlotWithResponse(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<CsmPublishingCredentialsPoliciesEntityInner> listBasicPublishingCredentialsPoliciesSlot(
         String resourceGroupName, String name, String slot, Context context);
 
     /**
@@ -12928,7 +12938,7 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return configuration settings for the Azure App Service Authentication / Authorization V2 feature.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SiteAuthSettingsV2Inner>> updateAuthSettingsV2SlotWithResponseAsync(
@@ -12945,7 +12955,7 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return configuration settings for the Azure App Service Authentication / Authorization V2 feature.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<SiteAuthSettingsV2Inner> updateAuthSettingsV2SlotAsync(
@@ -12962,7 +12972,7 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return configuration settings for the Azure App Service Authentication / Authorization V2 feature.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SiteAuthSettingsV2Inner updateAuthSettingsV2Slot(
@@ -12980,7 +12990,7 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return configuration settings for the Azure App Service Authentication / Authorization V2 feature.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SiteAuthSettingsV2Inner> updateAuthSettingsV2SlotWithResponse(
@@ -13001,7 +13011,7 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return configuration settings for the Azure App Service Authentication / Authorization V2 feature.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SiteAuthSettingsV2Inner>> getAuthSettingsV2SlotWithResponseAsync(
@@ -13018,7 +13028,7 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return configuration settings for the Azure App Service Authentication / Authorization V2 feature.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<SiteAuthSettingsV2Inner> getAuthSettingsV2SlotAsync(String resourceGroupName, String name, String slot);
@@ -13034,7 +13044,7 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return configuration settings for the Azure App Service Authentication / Authorization V2 feature.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SiteAuthSettingsV2Inner getAuthSettingsV2Slot(String resourceGroupName, String name, String slot);
@@ -13051,7 +13061,7 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return configuration settings for the Azure App Service Authentication / Authorization V2 feature.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SiteAuthSettingsV2Inner> getAuthSettingsV2SlotWithResponse(
@@ -14114,7 +14124,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return user credentials used for publishing activity.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<UserInner>, UserInner> beginListPublishingCredentialsSlotAsync(
         String resourceGroupName, String name, String slot);
 
@@ -14131,7 +14141,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return user credentials used for publishing activity.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<UserInner>, UserInner> beginListPublishingCredentialsSlot(
         String resourceGroupName, String name, String slot);
 
@@ -14149,7 +14159,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return user credentials used for publishing activity.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<UserInner>, UserInner> beginListPublishingCredentialsSlot(
         String resourceGroupName, String name, String slot, Context context);
 
@@ -14926,8 +14936,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return continuous Web Job Information.
      */
@@ -14944,8 +14953,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return continuous Web Job Information.
      */
@@ -14962,8 +14970,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return continuous Web Job Information.
      */
@@ -14981,8 +14988,7 @@ public interface WebAppsClient
      *     production slot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return continuous Web Job Information.
      */
@@ -15069,8 +15075,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -15087,8 +15092,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -15104,8 +15108,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -15121,8 +15124,7 @@ public interface WebAppsClient
      *     production slot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -15139,8 +15141,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -15157,8 +15158,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -15174,8 +15174,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -15191,8 +15190,7 @@ public interface WebAppsClient
      *     production slot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -16076,8 +16074,7 @@ public interface WebAppsClient
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param mSDeploy Details of MSDeploy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
@@ -16093,12 +16090,11 @@ public interface WebAppsClient
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param mSDeploy Details of MSDeploy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<MSDeployStatusInner>, MSDeployStatusInner> beginCreateMSDeployOperationSlotAsync(
         String resourceGroupName, String name, String slot, MSDeploy mSDeploy);
 
@@ -16110,12 +16106,11 @@ public interface WebAppsClient
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param mSDeploy Details of MSDeploy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MSDeployStatusInner>, MSDeployStatusInner> beginCreateMSDeployOperationSlot(
         String resourceGroupName, String name, String slot, MSDeploy mSDeploy);
 
@@ -16128,12 +16123,11 @@ public interface WebAppsClient
      * @param mSDeploy Details of MSDeploy operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MSDeployStatusInner>, MSDeployStatusInner> beginCreateMSDeployOperationSlot(
         String resourceGroupName, String name, String slot, MSDeploy mSDeploy, Context context);
 
@@ -16145,8 +16139,7 @@ public interface WebAppsClient
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param mSDeploy Details of MSDeploy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
@@ -16162,8 +16155,7 @@ public interface WebAppsClient
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param mSDeploy Details of MSDeploy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
@@ -16180,8 +16172,7 @@ public interface WebAppsClient
      * @param mSDeploy Details of MSDeploy operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
@@ -16196,8 +16187,7 @@ public interface WebAppsClient
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy log.
      */
@@ -16212,8 +16202,7 @@ public interface WebAppsClient
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy log.
      */
@@ -16227,8 +16216,7 @@ public interface WebAppsClient
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy log.
      */
@@ -16243,8 +16231,7 @@ public interface WebAppsClient
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy log.
      */
@@ -16259,8 +16246,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param slot Name of the deployment slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu function information elements.
      */
@@ -16274,8 +16260,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param slot Name of the deployment slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu function information elements.
      */
@@ -16290,8 +16275,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu function information elements.
      */
@@ -16370,8 +16354,7 @@ public interface WebAppsClient
      * @param functionName Function name.
      * @param slot Name of the deployment slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return function information.
      */
@@ -16387,8 +16370,7 @@ public interface WebAppsClient
      * @param functionName Function name.
      * @param slot Name of the deployment slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return function information.
      */
@@ -16404,8 +16386,7 @@ public interface WebAppsClient
      * @param functionName Function name.
      * @param slot Name of the deployment slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return function information.
      */
@@ -16422,8 +16403,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return function information.
      */
@@ -16467,7 +16447,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return function information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<FunctionEnvelopeInner>, FunctionEnvelopeInner> beginCreateInstanceFunctionSlotAsync(
         String resourceGroupName,
         String name,
@@ -16489,7 +16469,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return function information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FunctionEnvelopeInner>, FunctionEnvelopeInner> beginCreateInstanceFunctionSlot(
         String resourceGroupName,
         String name,
@@ -16512,7 +16492,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return function information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FunctionEnvelopeInner>, FunctionEnvelopeInner> beginCreateInstanceFunctionSlot(
         String resourceGroupName,
         String name,
@@ -16597,8 +16577,7 @@ public interface WebAppsClient
      * @param functionName Function name.
      * @param slot Name of the deployment slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -16614,8 +16593,7 @@ public interface WebAppsClient
      * @param functionName Function name.
      * @param slot Name of the deployment slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -16630,8 +16608,7 @@ public interface WebAppsClient
      * @param functionName Function name.
      * @param slot Name of the deployment slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -16646,8 +16623,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -16747,8 +16723,7 @@ public interface WebAppsClient
      * @param keyName The name of the key.
      * @param slot Name of the deployment slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -16765,8 +16740,7 @@ public interface WebAppsClient
      * @param keyName The name of the key.
      * @param slot Name of the deployment slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -16783,8 +16757,7 @@ public interface WebAppsClient
      * @param keyName The name of the key.
      * @param slot Name of the deployment slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -16801,8 +16774,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -17221,8 +17193,7 @@ public interface WebAppsClient
      * @param keyName The name of the key.
      * @param slot Name of the deployment slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -17239,8 +17210,7 @@ public interface WebAppsClient
      * @param keyName The name of the key.
      * @param slot Name of the deployment slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -17257,8 +17227,7 @@ public interface WebAppsClient
      * @param keyName The name of the key.
      * @param slot Name of the deployment slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -17274,8 +17243,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -17737,8 +17705,7 @@ public interface WebAppsClient
      * @param relayName The relay name for this hybrid connection.
      * @param slot The name of the slot for the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -17755,8 +17722,7 @@ public interface WebAppsClient
      * @param relayName The relay name for this hybrid connection.
      * @param slot The name of the slot for the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -17773,8 +17739,7 @@ public interface WebAppsClient
      * @param relayName The relay name for this hybrid connection.
      * @param slot The name of the slot for the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -17791,8 +17756,7 @@ public interface WebAppsClient
      * @param slot The name of the slot for the web app.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -18206,8 +18170,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete a hybrid connection for
      *     the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -18224,8 +18187,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete a hybrid connection for
      *     the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -18242,8 +18204,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete a hybrid connection for
      *     the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -18259,8 +18220,7 @@ public interface WebAppsClient
      *     the production slot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -18558,8 +18518,7 @@ public interface WebAppsClient
      * @param instanceId ID of web app instance.
      * @param mSDeploy Details of MSDeploy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
@@ -18576,12 +18535,11 @@ public interface WebAppsClient
      * @param instanceId ID of web app instance.
      * @param mSDeploy Details of MSDeploy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<MSDeployStatusInner>, MSDeployStatusInner> beginCreateInstanceMSDeployOperationSlotAsync(
         String resourceGroupName, String name, String slot, String instanceId, MSDeploy mSDeploy);
 
@@ -18594,12 +18552,11 @@ public interface WebAppsClient
      * @param instanceId ID of web app instance.
      * @param mSDeploy Details of MSDeploy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MSDeployStatusInner>, MSDeployStatusInner> beginCreateInstanceMSDeployOperationSlot(
         String resourceGroupName, String name, String slot, String instanceId, MSDeploy mSDeploy);
 
@@ -18613,12 +18570,11 @@ public interface WebAppsClient
      * @param mSDeploy Details of MSDeploy operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<MSDeployStatusInner>, MSDeployStatusInner> beginCreateInstanceMSDeployOperationSlot(
         String resourceGroupName, String name, String slot, String instanceId, MSDeploy mSDeploy, Context context);
 
@@ -18631,8 +18587,7 @@ public interface WebAppsClient
      * @param instanceId ID of web app instance.
      * @param mSDeploy Details of MSDeploy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
@@ -18649,8 +18604,7 @@ public interface WebAppsClient
      * @param instanceId ID of web app instance.
      * @param mSDeploy Details of MSDeploy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
@@ -18668,8 +18622,7 @@ public interface WebAppsClient
      * @param mSDeploy Details of MSDeploy operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy ARM response.
      */
@@ -18685,8 +18638,7 @@ public interface WebAppsClient
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param instanceId ID of web app instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy log.
      */
@@ -18702,8 +18654,7 @@ public interface WebAppsClient
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param instanceId ID of web app instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy log.
      */
@@ -18719,8 +18670,7 @@ public interface WebAppsClient
      * @param slot Name of web app slot. If not specified then will default to production slot.
      * @param instanceId ID of web app instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy log.
      */
@@ -18736,8 +18686,7 @@ public interface WebAppsClient
      * @param instanceId ID of web app instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return mSDeploy log.
      */
@@ -18756,8 +18705,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu process information elements.
      */
@@ -18776,8 +18724,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu process information elements.
      */
@@ -18797,8 +18744,7 @@ public interface WebAppsClient
      *     response from "GET api/sites/{siteName}/instances".
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu process information elements.
      */
@@ -18817,8 +18763,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return process Information.
      */
@@ -18837,8 +18782,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return process Information.
      */
@@ -18857,8 +18801,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return process Information.
      */
@@ -18878,8 +18821,7 @@ public interface WebAppsClient
      *     response from "GET api/sites/{siteName}/instances".
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return process Information.
      */
@@ -18899,8 +18841,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -18920,8 +18861,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -18941,8 +18881,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -18962,8 +18901,7 @@ public interface WebAppsClient
      *     response from "GET api/sites/{siteName}/instances".
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -18982,8 +18920,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -19002,8 +18939,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -19022,8 +18958,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -19043,8 +18978,7 @@ public interface WebAppsClient
      *     response from "GET api/sites/{siteName}/instances".
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -19063,8 +18997,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu thread information elements.
      */
@@ -19083,8 +19016,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu thread information elements.
      */
@@ -19104,8 +19036,7 @@ public interface WebAppsClient
      *     response from "GET api/sites/{siteName}/instances".
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu thread information elements.
      */
@@ -19125,8 +19056,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return process Module Information.
      */
@@ -19146,8 +19076,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return process Module Information.
      */
@@ -19167,8 +19096,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return process Module Information.
      */
@@ -19189,8 +19117,7 @@ public interface WebAppsClient
      *     response from "GET api/sites/{siteName}/instances".
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return process Module Information.
      */
@@ -19215,8 +19142,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu thread information elements.
      */
@@ -19235,8 +19161,7 @@ public interface WebAppsClient
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
      *     response from "GET api/sites/{siteName}/instances".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu thread information elements.
      */
@@ -19256,8 +19181,7 @@ public interface WebAppsClient
      *     response from "GET api/sites/{siteName}/instances".
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu thread information elements.
      */
@@ -19577,6 +19501,91 @@ public interface WebAppsClient
         String resourceGroupName, String name, String slot, Context context);
 
     /**
+     * Description for Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true
+     * when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not in
+     * use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for
+     *     the production slot.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return swift Virtual Network Contract.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<SwiftVirtualNetworkInner>> createOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotWithResponseAsync(
+        String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope);
+
+    /**
+     * Description for Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true
+     * when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not in
+     * use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for
+     *     the production slot.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return swift Virtual Network Contract.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SwiftVirtualNetworkInner> createOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotAsync(
+        String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope);
+
+    /**
+     * Description for Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true
+     * when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not in
+     * use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for
+     *     the production slot.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return swift Virtual Network Contract.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SwiftVirtualNetworkInner createOrUpdateSwiftVirtualNetworkConnectionWithCheckSlot(
+        String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope);
+
+    /**
+     * Description for Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true
+     * when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not in
+     * use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for
+     *     the production slot.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return swift Virtual Network Contract.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SwiftVirtualNetworkInner> createOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotWithResponse(
+        String resourceGroupName,
+        String name,
+        String slot,
+        SwiftVirtualNetworkInner connectionEnvelope,
+        Context context);
+
+    /**
      * Description for Deletes a Swift Virtual Network connection from an app (or deployment slot).
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -19584,8 +19593,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the connection for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -19601,8 +19609,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the connection for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -19617,8 +19624,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the connection for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -19633,14 +19639,98 @@ public interface WebAppsClient
      *     production slot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteSwiftVirtualNetworkSlotWithResponse(
         String resourceGroupName, String name, String slot, Context context);
+
+    /**
+     * Description for Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true
+     * when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not in
+     * use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for
+     *     the production slot.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return swift Virtual Network Contract.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<SwiftVirtualNetworkInner>> updateSwiftVirtualNetworkConnectionWithCheckSlotWithResponseAsync(
+        String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope);
+
+    /**
+     * Description for Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true
+     * when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not in
+     * use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for
+     *     the production slot.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return swift Virtual Network Contract.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SwiftVirtualNetworkInner> updateSwiftVirtualNetworkConnectionWithCheckSlotAsync(
+        String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope);
+
+    /**
+     * Description for Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true
+     * when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not in
+     * use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for
+     *     the production slot.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return swift Virtual Network Contract.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SwiftVirtualNetworkInner updateSwiftVirtualNetworkConnectionWithCheckSlot(
+        String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope);
+
+    /**
+     * Description for Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true
+     * when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not in
+     * use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for
+     *     the production slot.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return swift Virtual Network Contract.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SwiftVirtualNetworkInner> updateSwiftVirtualNetworkConnectionWithCheckSlotWithResponse(
+        String resourceGroupName,
+        String name,
+        String slot,
+        SwiftVirtualNetworkInner connectionEnvelope,
+        Context context);
 
     /**
      * Description for Gets all network features used by the app (or deployment slot, if specified).
@@ -19651,8 +19741,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get network features for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return full view of network features for an app (presently VNET integration and Hybrid Connections).
      */
@@ -19669,8 +19758,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get network features for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return full view of network features for an app (presently VNET integration and Hybrid Connections).
      */
@@ -19687,8 +19775,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get network features for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return full view of network features for an app (presently VNET integration and Hybrid Connections).
      */
@@ -19705,8 +19792,7 @@ public interface WebAppsClient
      *     production slot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return full view of network features for an app (presently VNET integration and Hybrid Connections).
      */
@@ -19929,7 +20015,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of NetworkTrace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Object>, Object> beginStartWebSiteNetworkTraceOperationSlotAsync(
         String resourceGroupName,
         String name,
@@ -19953,7 +20039,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of NetworkTrace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginStartWebSiteNetworkTraceOperationSlot(
         String resourceGroupName,
         String name,
@@ -19978,7 +20064,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of NetworkTrace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginStartWebSiteNetworkTraceOperationSlot(
         String resourceGroupName,
         String name,
@@ -21249,7 +21335,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return remote Private Endpoint Connection ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<
             PollResult<RemotePrivateEndpointConnectionArmResourceInner>,
             RemotePrivateEndpointConnectionArmResourceInner>
@@ -21274,7 +21360,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return remote Private Endpoint Connection ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<
             PollResult<RemotePrivateEndpointConnectionArmResourceInner>,
             RemotePrivateEndpointConnectionArmResourceInner>
@@ -21300,7 +21386,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return remote Private Endpoint Connection ARM resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<
             PollResult<RemotePrivateEndpointConnectionArmResourceInner>,
             RemotePrivateEndpointConnectionArmResourceInner>
@@ -21410,7 +21496,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Object>, Object> beginDeletePrivateEndpointConnectionSlotAsync(
         String resourceGroupName, String name, String privateEndpointConnectionName, String slot);
 
@@ -21427,7 +21513,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginDeletePrivateEndpointConnectionSlot(
         String resourceGroupName, String name, String privateEndpointConnectionName, String slot);
 
@@ -21445,7 +21531,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginDeletePrivateEndpointConnectionSlot(
         String resourceGroupName, String name, String privateEndpointConnectionName, String slot, Context context);
 
@@ -21574,8 +21660,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu process information elements.
      */
@@ -21591,8 +21676,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu process information elements.
      */
@@ -21609,8 +21693,7 @@ public interface WebAppsClient
      *     production slot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu process information elements.
      */
@@ -21627,8 +21710,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return process Information.
      */
@@ -21645,8 +21727,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return process Information.
      */
@@ -21662,8 +21743,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return process Information.
      */
@@ -21680,8 +21760,7 @@ public interface WebAppsClient
      *     production slot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return process Information.
      */
@@ -21699,8 +21778,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -21718,8 +21796,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -21736,8 +21813,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -21754,8 +21830,7 @@ public interface WebAppsClient
      *     production slot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -21772,8 +21847,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -21790,8 +21864,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -21807,8 +21880,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -21825,8 +21897,7 @@ public interface WebAppsClient
      *     production slot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -21843,8 +21914,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu thread information elements.
      */
@@ -21861,8 +21931,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu thread information elements.
      */
@@ -21880,8 +21949,7 @@ public interface WebAppsClient
      *     production slot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu thread information elements.
      */
@@ -21899,8 +21967,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return process Module Information.
      */
@@ -21918,8 +21985,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return process Module Information.
      */
@@ -21937,8 +22003,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return process Module Information.
      */
@@ -21957,8 +22022,7 @@ public interface WebAppsClient
      *     production slot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return process Module Information.
      */
@@ -21975,8 +22039,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu thread information elements.
      */
@@ -21993,8 +22056,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu thread information elements.
      */
@@ -22012,8 +22074,7 @@ public interface WebAppsClient
      *     production slot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu thread information elements.
      */
@@ -22588,7 +22649,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRestoreFromBackupBlobSlotAsync(
         String resourceGroupName, String name, String slot, RestoreRequestInner request);
 
@@ -22606,7 +22667,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestoreFromBackupBlobSlot(
         String resourceGroupName, String name, String slot, RestoreRequestInner request);
 
@@ -22625,7 +22686,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestoreFromBackupBlobSlot(
         String resourceGroupName, String name, String slot, RestoreRequestInner request, Context context);
 
@@ -22711,7 +22772,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRestoreFromDeletedAppSlotAsync(
         String resourceGroupName, String name, String slot, DeletedAppRestoreRequest restoreRequest);
 
@@ -22728,7 +22789,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestoreFromDeletedAppSlot(
         String resourceGroupName, String name, String slot, DeletedAppRestoreRequest restoreRequest);
 
@@ -22746,7 +22807,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestoreFromDeletedAppSlot(
         String resourceGroupName, String name, String slot, DeletedAppRestoreRequest restoreRequest, Context context);
 
@@ -22832,7 +22893,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRestoreSnapshotSlotAsync(
         String resourceGroupName, String name, String slot, SnapshotRestoreRequest restoreRequest);
 
@@ -22850,7 +22911,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestoreSnapshotSlot(
         String resourceGroupName, String name, String slot, SnapshotRestoreRequest restoreRequest);
 
@@ -22869,7 +22930,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestoreSnapshotSlot(
         String resourceGroupName, String name, String slot, SnapshotRestoreRequest restoreRequest, Context context);
 
@@ -22932,8 +22993,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API uses the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu site extension information elements.
      */
@@ -22947,8 +23007,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API uses the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu site extension information elements.
      */
@@ -22963,8 +23022,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API uses the production slot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu site extension information elements.
      */
@@ -22980,8 +23038,7 @@ public interface WebAppsClient
      * @param siteExtensionId Site extension name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API uses the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return site Extension Information.
      */
@@ -22997,8 +23054,7 @@ public interface WebAppsClient
      * @param siteExtensionId Site extension name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API uses the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return site Extension Information.
      */
@@ -23014,8 +23070,7 @@ public interface WebAppsClient
      * @param siteExtensionId Site extension name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API uses the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return site Extension Information.
      */
@@ -23032,8 +23087,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API uses the production slot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return site Extension Information.
      */
@@ -23049,8 +23103,7 @@ public interface WebAppsClient
      * @param siteExtensionId Site extension name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API uses the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return site Extension Information.
      */
@@ -23066,12 +23119,11 @@ public interface WebAppsClient
      * @param siteExtensionId Site extension name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API uses the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return site Extension Information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<SiteExtensionInfoInner>, SiteExtensionInfoInner> beginInstallSiteExtensionSlotAsync(
         String resourceGroupName, String name, String siteExtensionId, String slot);
 
@@ -23083,12 +23135,11 @@ public interface WebAppsClient
      * @param siteExtensionId Site extension name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API uses the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return site Extension Information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SiteExtensionInfoInner>, SiteExtensionInfoInner> beginInstallSiteExtensionSlot(
         String resourceGroupName, String name, String siteExtensionId, String slot);
 
@@ -23101,12 +23152,11 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API uses the production slot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return site Extension Information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SiteExtensionInfoInner>, SiteExtensionInfoInner> beginInstallSiteExtensionSlot(
         String resourceGroupName, String name, String siteExtensionId, String slot, Context context);
 
@@ -23118,8 +23168,7 @@ public interface WebAppsClient
      * @param siteExtensionId Site extension name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API uses the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return site Extension Information.
      */
@@ -23135,8 +23184,7 @@ public interface WebAppsClient
      * @param siteExtensionId Site extension name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API uses the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return site Extension Information.
      */
@@ -23153,8 +23201,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API uses the production slot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return site Extension Information.
      */
@@ -23171,8 +23218,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -23189,8 +23235,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -23206,8 +23251,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -23223,8 +23267,7 @@ public interface WebAppsClient
      *     production slot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -23314,7 +23357,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginSwapSlotAsync(
         String resourceGroupName, String name, String slot, CsmSlotEntity slotSwapEntity);
 
@@ -23331,7 +23374,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginSwapSlot(
         String resourceGroupName, String name, String slot, CsmSlotEntity slotSwapEntity);
 
@@ -23349,7 +23392,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginSwapSlot(
         String resourceGroupName, String name, String slot, CsmSlotEntity slotSwapEntity, Context context);
 
@@ -23592,7 +23635,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return source control configuration for an app.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<SiteSourceControlInner>, SiteSourceControlInner> beginCreateOrUpdateSourceControlSlotAsync(
         String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl);
 
@@ -23610,7 +23653,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return source control configuration for an app.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SiteSourceControlInner>, SiteSourceControlInner> beginCreateOrUpdateSourceControlSlot(
         String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl);
 
@@ -23629,7 +23672,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return source control configuration for an app.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SiteSourceControlInner>, SiteSourceControlInner> beginCreateOrUpdateSourceControlSlot(
         String resourceGroupName, String name, String slot, SiteSourceControlInner siteSourceControl, Context context);
 
@@ -23697,8 +23740,7 @@ public interface WebAppsClient
      *     configuration for the production slot.
      * @param additionalFlags The additionalFlags parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -23715,8 +23757,7 @@ public interface WebAppsClient
      *     configuration for the production slot.
      * @param additionalFlags The additionalFlags parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -23731,8 +23772,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the source control
      *     configuration for the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -23747,8 +23787,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the source control
      *     configuration for the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -23764,8 +23803,7 @@ public interface WebAppsClient
      * @param additionalFlags The additionalFlags parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -23945,7 +23983,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of NetworkTrace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Object>, Object> beginStartNetworkTraceSlotAsync(
         String resourceGroupName,
         String name,
@@ -23969,7 +24007,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of NetworkTrace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginStartNetworkTraceSlot(
         String resourceGroupName,
         String name,
@@ -23994,7 +24032,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of NetworkTrace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginStartNetworkTraceSlot(
         String resourceGroupName,
         String name,
@@ -24408,8 +24446,7 @@ public interface WebAppsClient
      * @param webJobName Name of Web Job.
      * @param slot Name of the deployment slot. If a slot is not specified, the API uses the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return triggered Web Job Information.
      */
@@ -24425,8 +24462,7 @@ public interface WebAppsClient
      * @param webJobName Name of Web Job.
      * @param slot Name of the deployment slot. If a slot is not specified, the API uses the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return triggered Web Job Information.
      */
@@ -24442,8 +24478,7 @@ public interface WebAppsClient
      * @param webJobName Name of Web Job.
      * @param slot Name of the deployment slot. If a slot is not specified, the API uses the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return triggered Web Job Information.
      */
@@ -24459,8 +24494,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API uses the production slot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return triggered Web Job Information.
      */
@@ -24546,8 +24580,7 @@ public interface WebAppsClient
      * @param webJobName Name of Web Job.
      * @param slot Name of the deployment slot. If a slot is not specified, the API uses the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu continuous web job information elements.
      */
@@ -24563,8 +24596,7 @@ public interface WebAppsClient
      * @param webJobName Name of Web Job.
      * @param slot Name of the deployment slot. If a slot is not specified, the API uses the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu continuous web job information elements.
      */
@@ -24581,8 +24613,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API uses the production slot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu continuous web job information elements.
      */
@@ -24599,8 +24630,7 @@ public interface WebAppsClient
      * @param id History ID.
      * @param slot Name of the deployment slot. If a slot is not specified, the API uses the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return triggered Web Job History.
      */
@@ -24617,8 +24647,7 @@ public interface WebAppsClient
      * @param id History ID.
      * @param slot Name of the deployment slot. If a slot is not specified, the API uses the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return triggered Web Job History.
      */
@@ -24635,8 +24664,7 @@ public interface WebAppsClient
      * @param id History ID.
      * @param slot Name of the deployment slot. If a slot is not specified, the API uses the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return triggered Web Job History.
      */
@@ -24654,8 +24682,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API uses the production slot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return triggered Web Job History.
      */
@@ -24671,8 +24698,7 @@ public interface WebAppsClient
      * @param webJobName Name of Web Job.
      * @param slot Name of the deployment slot. If a slot is not specified, the API uses the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -24688,8 +24714,7 @@ public interface WebAppsClient
      * @param webJobName Name of Web Job.
      * @param slot Name of the deployment slot. If a slot is not specified, the API uses the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -24704,8 +24729,7 @@ public interface WebAppsClient
      * @param webJobName Name of Web Job.
      * @param slot Name of the deployment slot. If a slot is not specified, the API uses the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -24720,8 +24744,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API uses the production slot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -24813,10 +24836,10 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of VnetInfo.
+     * @return array of VnetInfoResource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<List<VnetInfoInner>>> listVnetConnectionsSlotWithResponseAsync(
+    Mono<Response<List<VnetInfoResourceInner>>> listVnetConnectionsSlotWithResponseAsync(
         String resourceGroupName, String name, String slot);
 
     /**
@@ -24830,10 +24853,10 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of VnetInfo.
+     * @return array of VnetInfoResource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<List<VnetInfoInner>> listVnetConnectionsSlotAsync(String resourceGroupName, String name, String slot);
+    Mono<List<VnetInfoResourceInner>> listVnetConnectionsSlotAsync(String resourceGroupName, String name, String slot);
 
     /**
      * Description for Gets the virtual networks the app (or deployment slot) is connected to.
@@ -24846,10 +24869,10 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of VnetInfo.
+     * @return array of VnetInfoResource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    List<VnetInfoInner> listVnetConnectionsSlot(String resourceGroupName, String name, String slot);
+    List<VnetInfoResourceInner> listVnetConnectionsSlot(String resourceGroupName, String name, String slot);
 
     /**
      * Description for Gets the virtual networks the app (or deployment slot) is connected to.
@@ -24863,10 +24886,10 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of VnetInfo.
+     * @return array of VnetInfoResource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<VnetInfoInner>> listVnetConnectionsSlotWithResponse(
+    Response<List<VnetInfoResourceInner>> listVnetConnectionsSlotWithResponse(
         String resourceGroupName, String name, String slot, Context context);
 
     /**
@@ -24881,10 +24904,10 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VnetInfoInner>> getVnetConnectionSlotWithResponseAsync(
+    Mono<Response<VnetInfoResourceInner>> getVnetConnectionSlotWithResponseAsync(
         String resourceGroupName, String name, String vnetName, String slot);
 
     /**
@@ -24899,10 +24922,11 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VnetInfoInner> getVnetConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot);
+    Mono<VnetInfoResourceInner> getVnetConnectionSlotAsync(
+        String resourceGroupName, String name, String vnetName, String slot);
 
     /**
      * Description for Gets a virtual network the app (or deployment slot) is connected to by name.
@@ -24916,10 +24940,10 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VnetInfoInner getVnetConnectionSlot(String resourceGroupName, String name, String vnetName, String slot);
+    VnetInfoResourceInner getVnetConnectionSlot(String resourceGroupName, String name, String vnetName, String slot);
 
     /**
      * Description for Gets a virtual network the app (or deployment slot) is connected to by name.
@@ -24934,10 +24958,10 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VnetInfoInner> getVnetConnectionSlotWithResponse(
+    Response<VnetInfoResourceInner> getVnetConnectionSlotWithResponse(
         String resourceGroupName, String name, String vnetName, String slot, Context context);
 
     /**
@@ -24954,11 +24978,11 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VnetInfoInner>> createOrUpdateVnetConnectionSlotWithResponseAsync(
-        String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope);
+    Mono<Response<VnetInfoResourceInner>> createOrUpdateVnetConnectionSlotWithResponseAsync(
+        String resourceGroupName, String name, String vnetName, String slot, VnetInfoResourceInner connectionEnvelope);
 
     /**
      * Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
@@ -24974,11 +24998,11 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VnetInfoInner> createOrUpdateVnetConnectionSlotAsync(
-        String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope);
+    Mono<VnetInfoResourceInner> createOrUpdateVnetConnectionSlotAsync(
+        String resourceGroupName, String name, String vnetName, String slot, VnetInfoResourceInner connectionEnvelope);
 
     /**
      * Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
@@ -24994,11 +25018,11 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VnetInfoInner createOrUpdateVnetConnectionSlot(
-        String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope);
+    VnetInfoResourceInner createOrUpdateVnetConnectionSlot(
+        String resourceGroupName, String name, String vnetName, String slot, VnetInfoResourceInner connectionEnvelope);
 
     /**
      * Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
@@ -25015,15 +25039,15 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VnetInfoInner> createOrUpdateVnetConnectionSlotWithResponse(
+    Response<VnetInfoResourceInner> createOrUpdateVnetConnectionSlotWithResponse(
         String resourceGroupName,
         String name,
         String vnetName,
         String slot,
-        VnetInfoInner connectionEnvelope,
+        VnetInfoResourceInner connectionEnvelope,
         Context context);
 
     /**
@@ -25035,8 +25059,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the connection for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -25053,8 +25076,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the connection for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -25070,8 +25092,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the connection for the
      *     production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -25087,8 +25108,7 @@ public interface WebAppsClient
      *     production slot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -25110,11 +25130,11 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VnetInfoInner>> updateVnetConnectionSlotWithResponseAsync(
-        String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope);
+    Mono<Response<VnetInfoResourceInner>> updateVnetConnectionSlotWithResponseAsync(
+        String resourceGroupName, String name, String vnetName, String slot, VnetInfoResourceInner connectionEnvelope);
 
     /**
      * Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
@@ -25130,11 +25150,11 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VnetInfoInner> updateVnetConnectionSlotAsync(
-        String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope);
+    Mono<VnetInfoResourceInner> updateVnetConnectionSlotAsync(
+        String resourceGroupName, String name, String vnetName, String slot, VnetInfoResourceInner connectionEnvelope);
 
     /**
      * Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
@@ -25150,11 +25170,11 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VnetInfoInner updateVnetConnectionSlot(
-        String resourceGroupName, String name, String vnetName, String slot, VnetInfoInner connectionEnvelope);
+    VnetInfoResourceInner updateVnetConnectionSlot(
+        String resourceGroupName, String name, String vnetName, String slot, VnetInfoResourceInner connectionEnvelope);
 
     /**
      * Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
@@ -25171,15 +25191,15 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VnetInfoInner> updateVnetConnectionSlotWithResponse(
+    Response<VnetInfoResourceInner> updateVnetConnectionSlotWithResponse(
         String resourceGroupName,
         String name,
         String vnetName,
         String slot,
-        VnetInfoInner connectionEnvelope,
+        VnetInfoResourceInner connectionEnvelope,
         Context context);
 
     /**
@@ -25192,8 +25212,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get a gateway for the
      *     production slot's Virtual Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Virtual Network gateway contract.
      */
@@ -25211,8 +25230,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get a gateway for the
      *     production slot's Virtual Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Virtual Network gateway contract.
      */
@@ -25230,8 +25248,7 @@ public interface WebAppsClient
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get a gateway for the
      *     production slot's Virtual Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Virtual Network gateway contract.
      */
@@ -25250,8 +25267,7 @@ public interface WebAppsClient
      *     production slot's Virtual Network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Virtual Network gateway contract.
      */
@@ -25660,7 +25676,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginSwapSlotWithProductionAsync(
         String resourceGroupName, String name, CsmSlotEntity slotSwapEntity);
 
@@ -25676,7 +25692,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginSwapSlotWithProduction(
         String resourceGroupName, String name, CsmSlotEntity slotSwapEntity);
 
@@ -25693,7 +25709,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginSwapSlotWithProduction(
         String resourceGroupName, String name, CsmSlotEntity slotSwapEntity, Context context);
 
@@ -25913,7 +25929,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return source control configuration for an app.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<SiteSourceControlInner>, SiteSourceControlInner> beginCreateOrUpdateSourceControlAsync(
         String resourceGroupName, String name, SiteSourceControlInner siteSourceControl);
 
@@ -25929,7 +25945,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return source control configuration for an app.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SiteSourceControlInner>, SiteSourceControlInner> beginCreateOrUpdateSourceControl(
         String resourceGroupName, String name, SiteSourceControlInner siteSourceControl);
 
@@ -25946,7 +25962,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return source control configuration for an app.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SiteSourceControlInner>, SiteSourceControlInner> beginCreateOrUpdateSourceControl(
         String resourceGroupName, String name, SiteSourceControlInner siteSourceControl, Context context);
 
@@ -26006,8 +26022,7 @@ public interface WebAppsClient
      * @param name Name of the app.
      * @param additionalFlags The additionalFlags parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -26022,8 +26037,7 @@ public interface WebAppsClient
      * @param name Name of the app.
      * @param additionalFlags The additionalFlags parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -26036,8 +26050,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -26050,8 +26063,7 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -26065,8 +26077,7 @@ public interface WebAppsClient
      * @param additionalFlags The additionalFlags parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -26227,7 +26238,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of NetworkTrace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Object>, Object> beginStartNetworkTraceAsync(
         String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl);
 
@@ -26245,7 +26256,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of NetworkTrace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginStartNetworkTrace(
         String resourceGroupName, String name, Integer durationInSeconds, Integer maxFrameLength, String sasUrl);
 
@@ -26264,7 +26275,7 @@ public interface WebAppsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of NetworkTrace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginStartNetworkTrace(
         String resourceGroupName,
         String name,
@@ -26635,8 +26646,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param webJobName Name of Web Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return triggered Web Job Information.
      */
@@ -26651,8 +26661,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param webJobName Name of Web Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return triggered Web Job Information.
      */
@@ -26666,8 +26675,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param webJobName Name of Web Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return triggered Web Job Information.
      */
@@ -26682,8 +26690,7 @@ public interface WebAppsClient
      * @param webJobName Name of Web Job.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return triggered Web Job Information.
      */
@@ -26760,8 +26767,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param webJobName Name of Web Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu continuous web job information elements.
      */
@@ -26776,8 +26782,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param webJobName Name of Web Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu continuous web job information elements.
      */
@@ -26793,8 +26798,7 @@ public interface WebAppsClient
      * @param webJobName Name of Web Job.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kudu continuous web job information elements.
      */
@@ -26810,8 +26814,7 @@ public interface WebAppsClient
      * @param webJobName Name of Web Job.
      * @param id History ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return triggered Web Job History.
      */
@@ -26827,8 +26830,7 @@ public interface WebAppsClient
      * @param webJobName Name of Web Job.
      * @param id History ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return triggered Web Job History.
      */
@@ -26844,8 +26846,7 @@ public interface WebAppsClient
      * @param webJobName Name of Web Job.
      * @param id History ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return triggered Web Job History.
      */
@@ -26862,8 +26863,7 @@ public interface WebAppsClient
      * @param id History ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return triggered Web Job History.
      */
@@ -26878,8 +26878,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param webJobName Name of Web Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -26893,8 +26892,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param webJobName Name of Web Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -26908,8 +26906,7 @@ public interface WebAppsClient
      * @param name Site name.
      * @param webJobName Name of Web Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -26923,8 +26920,7 @@ public interface WebAppsClient
      * @param webJobName Name of Web Job.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -27004,10 +27000,11 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of VnetInfo.
+     * @return array of VnetInfoResource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<List<VnetInfoInner>>> listVnetConnectionsWithResponseAsync(String resourceGroupName, String name);
+    Mono<Response<List<VnetInfoResourceInner>>> listVnetConnectionsWithResponseAsync(
+        String resourceGroupName, String name);
 
     /**
      * Description for Gets the virtual networks the app (or deployment slot) is connected to.
@@ -27018,10 +27015,10 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of VnetInfo.
+     * @return array of VnetInfoResource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<List<VnetInfoInner>> listVnetConnectionsAsync(String resourceGroupName, String name);
+    Mono<List<VnetInfoResourceInner>> listVnetConnectionsAsync(String resourceGroupName, String name);
 
     /**
      * Description for Gets the virtual networks the app (or deployment slot) is connected to.
@@ -27032,10 +27029,10 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of VnetInfo.
+     * @return array of VnetInfoResource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    List<VnetInfoInner> listVnetConnections(String resourceGroupName, String name);
+    List<VnetInfoResourceInner> listVnetConnections(String resourceGroupName, String name);
 
     /**
      * Description for Gets the virtual networks the app (or deployment slot) is connected to.
@@ -27047,10 +27044,10 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of VnetInfo.
+     * @return array of VnetInfoResource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<VnetInfoInner>> listVnetConnectionsWithResponse(
+    Response<List<VnetInfoResourceInner>> listVnetConnectionsWithResponse(
         String resourceGroupName, String name, Context context);
 
     /**
@@ -27063,10 +27060,10 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VnetInfoInner>> getVnetConnectionWithResponseAsync(
+    Mono<Response<VnetInfoResourceInner>> getVnetConnectionWithResponseAsync(
         String resourceGroupName, String name, String vnetName);
 
     /**
@@ -27079,10 +27076,10 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VnetInfoInner> getVnetConnectionAsync(String resourceGroupName, String name, String vnetName);
+    Mono<VnetInfoResourceInner> getVnetConnectionAsync(String resourceGroupName, String name, String vnetName);
 
     /**
      * Description for Gets a virtual network the app (or deployment slot) is connected to by name.
@@ -27094,10 +27091,10 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VnetInfoInner getVnetConnection(String resourceGroupName, String name, String vnetName);
+    VnetInfoResourceInner getVnetConnection(String resourceGroupName, String name, String vnetName);
 
     /**
      * Description for Gets a virtual network the app (or deployment slot) is connected to by name.
@@ -27110,10 +27107,10 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VnetInfoInner> getVnetConnectionWithResponse(
+    Response<VnetInfoResourceInner> getVnetConnectionWithResponse(
         String resourceGroupName, String name, String vnetName, Context context);
 
     /**
@@ -27128,11 +27125,11 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VnetInfoInner>> createOrUpdateVnetConnectionWithResponseAsync(
-        String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope);
+    Mono<Response<VnetInfoResourceInner>> createOrUpdateVnetConnectionWithResponseAsync(
+        String resourceGroupName, String name, String vnetName, VnetInfoResourceInner connectionEnvelope);
 
     /**
      * Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
@@ -27146,11 +27143,11 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VnetInfoInner> createOrUpdateVnetConnectionAsync(
-        String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope);
+    Mono<VnetInfoResourceInner> createOrUpdateVnetConnectionAsync(
+        String resourceGroupName, String name, String vnetName, VnetInfoResourceInner connectionEnvelope);
 
     /**
      * Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
@@ -27164,11 +27161,11 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VnetInfoInner createOrUpdateVnetConnection(
-        String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope);
+    VnetInfoResourceInner createOrUpdateVnetConnection(
+        String resourceGroupName, String name, String vnetName, VnetInfoResourceInner connectionEnvelope);
 
     /**
      * Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
@@ -27183,11 +27180,15 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VnetInfoInner> createOrUpdateVnetConnectionWithResponse(
-        String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope, Context context);
+    Response<VnetInfoResourceInner> createOrUpdateVnetConnectionWithResponse(
+        String resourceGroupName,
+        String name,
+        String vnetName,
+        VnetInfoResourceInner connectionEnvelope,
+        Context context);
 
     /**
      * Description for Deletes a connection from an app (or deployment slot to a named virtual network.
@@ -27196,8 +27197,7 @@ public interface WebAppsClient
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -27211,8 +27211,7 @@ public interface WebAppsClient
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -27226,8 +27225,7 @@ public interface WebAppsClient
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -27241,8 +27239,7 @@ public interface WebAppsClient
      * @param vnetName Name of the virtual network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -27262,11 +27259,11 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VnetInfoInner>> updateVnetConnectionWithResponseAsync(
-        String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope);
+    Mono<Response<VnetInfoResourceInner>> updateVnetConnectionWithResponseAsync(
+        String resourceGroupName, String name, String vnetName, VnetInfoResourceInner connectionEnvelope);
 
     /**
      * Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
@@ -27280,11 +27277,11 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VnetInfoInner> updateVnetConnectionAsync(
-        String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope);
+    Mono<VnetInfoResourceInner> updateVnetConnectionAsync(
+        String resourceGroupName, String name, String vnetName, VnetInfoResourceInner connectionEnvelope);
 
     /**
      * Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
@@ -27298,11 +27295,11 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VnetInfoInner updateVnetConnection(
-        String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope);
+    VnetInfoResourceInner updateVnetConnection(
+        String resourceGroupName, String name, String vnetName, VnetInfoResourceInner connectionEnvelope);
 
     /**
      * Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
@@ -27317,11 +27314,15 @@ public interface WebAppsClient
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VnetInfoInner> updateVnetConnectionWithResponse(
-        String resourceGroupName, String name, String vnetName, VnetInfoInner connectionEnvelope, Context context);
+    Response<VnetInfoResourceInner> updateVnetConnectionWithResponse(
+        String resourceGroupName,
+        String name,
+        String vnetName,
+        VnetInfoResourceInner connectionEnvelope,
+        Context context);
 
     /**
      * Description for Gets an app's Virtual Network gateway.
@@ -27331,8 +27332,7 @@ public interface WebAppsClient
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Currently, the only supported string is "primary".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Virtual Network gateway contract.
      */
@@ -27348,8 +27348,7 @@ public interface WebAppsClient
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Currently, the only supported string is "primary".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Virtual Network gateway contract.
      */
@@ -27365,8 +27364,7 @@ public interface WebAppsClient
      * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Currently, the only supported string is "primary".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Virtual Network gateway contract.
      */
@@ -27383,8 +27381,7 @@ public interface WebAppsClient
      * @param gatewayName Name of the gateway. Currently, the only supported string is "primary".
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Virtual Network gateway contract.
      */

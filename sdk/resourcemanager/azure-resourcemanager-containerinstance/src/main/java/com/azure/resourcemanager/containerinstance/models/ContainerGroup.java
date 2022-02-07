@@ -8,6 +8,7 @@ import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.containerinstance.ContainerInstanceManager;
 import com.azure.resourcemanager.containerinstance.fluent.models.ContainerGroupInner;
 import com.azure.resourcemanager.msi.models.Identity;
+import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
@@ -83,8 +84,10 @@ public interface ContainerGroup
     /** @return the DNS configuration for the container group */
     DnsConfiguration dnsConfig();
 
-    /** @return the id of the network profile for the container group */
-    String networkProfileId();
+    /**
+     * @return the id of the subnets.
+     */
+    List<ContainerGroupSubnetId> subnetIds();
 
     /** @return whether managed service identity is enabled for the container group */
     boolean isManagedServiceIdentityEnabled();
@@ -743,7 +746,19 @@ public interface ContainerGroup
                 WithContainerInstanceAttach<ParentT> withCpuCoreCount(double cpuCoreCount);
             }
 
+            /**
+             * The stage of the container instance definition allowing to specify the GPU resource.
+             *
+             * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+             */
             interface WithGpuResource<ParentT> {
+                /**
+                 * Specifies the GPU core count and SKU.
+                 *
+                 * @param gpuCoreCount the GPU core count
+                 * @param gpuSku the GPU SKU
+                 * @return the next stage of the definition
+                 */
                 WithContainerInstanceAttach<ParentT> withGpuResource(int gpuCoreCount, GpuSku gpuSku);
             }
 
@@ -1043,45 +1058,36 @@ public interface ContainerGroup
         /** The stage of the container group definition allowing to specify the network profile id. */
         interface WithNetworkProfile {
             /**
-             * Specifies the network profile information for a container group.
+             * Specifies the subnet of virtual network for a container group.
              *
-             * @param subscriptionId the ID of the subscription of the network profile
-             * @param resourceGroupName the name of the resource group of the network profile
-             * @param networkProfileName the name of the network profile
+             * @param subnet the subnet.
+             *               the subnet must have delegation for 'Microsoft.ContainerInstance/containerGroups'.
              * @return the next stage of the definition
              */
-            DnsConfigFork withExistingNetworkProfile(
-                String subscriptionId, String resourceGroupName, String networkProfileName);
+            DnsConfigFork withExistingSubnet(Subnet subnet);
 
             /**
-             * Specifies the network profile information for a container group.
+             * Specifies the subnet of virtual network for a container group.
              *
-             * @param networkProfileId the ID of the network profile
+             * @param subnetId the ID of the subnet.
+             *                 the subnet must have delegation for 'Microsoft.ContainerInstance/containerGroups'.
              * @return the next stage of the definition
              */
-            DnsConfigFork withExistingNetworkProfile(String networkProfileId);
+            DnsConfigFork withExistingSubnet(String subnetId);
 
             /**
              * Specifies the virtual network in network profile for a container group.
+             *
+             * @deprecated use {@link #withExistingSubnet(Subnet)}.
+             * The NetworkProfile configuration of ContainerGroup is deprecated by service due to security concern.
              *
              * @param virtualNetworkId the ID of the virtual network
              * @param subnetName the name of the subnet within the virtual network.;
              *                   the subnet must have delegation for 'Microsoft.ContainerInstance/containerGroups'.
              * @return the next stage of the definition
              */
+            @Deprecated
             DnsConfigFork withNewNetworkProfileOnExistingVirtualNetwork(String virtualNetworkId, String subnetName);
-
-            /**
-             * Specifies the virtual network in network profile for a container group.
-             *
-             * @param networkProfileName the name of the network profile.
-             * @param virtualNetworkId the ID of the virtual network
-             * @param subnetName the name of the subnet within the virtual network.;
-             *                   the subnet must have delegation for 'Microsoft.ContainerInstance/containerGroups'.
-             * @return the next stage of the definition
-             */
-            DnsConfigFork withNewNetworkProfileOnExistingVirtualNetwork(String networkProfileName,
-                                                                        String virtualNetworkId, String subnetName);
 
             /**
              * Creates a new virtual network to associate with network profile in a container group.
@@ -1092,6 +1098,9 @@ public interface ContainerGroup
             DnsConfigFork withNewVirtualNetwork(String addressSpace);
         }
 
+        /**
+         * The stage of the container group definition allowing to specify the DNS configuration of the container group.
+         */
         interface DnsConfigFork extends WithDnsConfig, WithCreate {
         }
 

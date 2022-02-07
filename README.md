@@ -40,7 +40,7 @@ Last stable versions of packages that have been provided for usage with Azure an
 ### Management: New Releases
 A new set of management libraries that follow the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java/guidelines/) are now Generally Available (GA) and ready for production uses. These new libraries provide a higher-level, object-oriented API for _managing_ Azure resources, that is optimized for ease of use, succinctness and consistency. You can find the list of new packages **[on this page](https://azure.github.io/azure-sdk/releases/latest/mgmt/java.html)**.
 
-**For general documentation on how to use the new libraries for Azure Resource Management, please [visit here](https://aka.ms/azsdk/java/mgmt)**. We have also prepared **[plenty of code samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/SAMPLE.md)** as well as **[migraton guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/MIGRATION_GUIDE.md)** in case you are upgrading from previous versions.
+**For general documentation on how to use the new libraries for Azure Resource Management, please [visit here](https://aka.ms/azsdk/java/mgmt)**. We have also prepared **[plenty of code samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/SAMPLE.md)** as well as **[migration guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/MIGRATION_GUIDE.md)** in case you are upgrading from previous versions.
 
 New Management libraries can be identified by namespaces that start with `azure-resourcemanager`, e.g. `azure-resourcemanager-compute`
 
@@ -82,7 +82,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 Many people all over the world have helped make this project better.  You'll want to check out:
 
-- [What are some good first issues for new contributors to the repo?](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3A%22up+for+grabs%22)
+- [What are some good first issues for new contributors to the repo?](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22)
 - [How to build and test your change](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md#developer-guide)
 - [How you can make a change happen!](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md#pull-requests)
 - Frequently Asked Questions (FAQ) and Conceptual Topics in the detailed [Azure SDK for Java wiki](https://github.com/azure/azure-sdk-for-java/wiki).

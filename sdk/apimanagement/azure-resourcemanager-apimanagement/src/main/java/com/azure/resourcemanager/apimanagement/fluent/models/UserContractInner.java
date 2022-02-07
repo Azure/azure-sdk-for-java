@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.apimanagement.models.GroupContractProperties;
 import com.azure.resourcemanager.apimanagement.models.UserState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,123 +14,23 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 /** User details. */
-@JsonFlatten
 @Fluent
-public class UserContractInner extends ProxyResource {
+public final class UserContractInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UserContractInner.class);
 
     /*
-     * Account state. Specifies whether the user is active or not. Blocked
-     * users are unable to sign into the developer portal or call any APIs of
-     * subscribed products. Default state is Active.
+     * User entity contract properties.
      */
-    @JsonProperty(value = "properties.state")
-    private UserState state;
-
-    /*
-     * Optional note about a user set by the administrator.
-     */
-    @JsonProperty(value = "properties.note")
-    private String note;
-
-    /*
-     * Collection of user identities.
-     */
-    @JsonProperty(value = "properties.identities")
-    private List<UserIdentityContractInner> identities;
-
-    /*
-     * First name.
-     */
-    @JsonProperty(value = "properties.firstName")
-    private String firstName;
-
-    /*
-     * Last name.
-     */
-    @JsonProperty(value = "properties.lastName")
-    private String lastName;
-
-    /*
-     * Email address.
-     */
-    @JsonProperty(value = "properties.email")
-    private String email;
-
-    /*
-     * Date of user registration. The date conforms to the following format:
-     * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
-     */
-    @JsonProperty(value = "properties.registrationDate")
-    private OffsetDateTime registrationDate;
-
-    /*
-     * Collection of groups user is part of.
-     */
-    @JsonProperty(value = "properties.groups", access = JsonProperty.Access.WRITE_ONLY)
-    private List<GroupContractProperties> groups;
+    @JsonProperty(value = "properties")
+    private UserContractProperties innerProperties;
 
     /**
-     * Get the state property: Account state. Specifies whether the user is active or not. Blocked users are unable to
-     * sign into the developer portal or call any APIs of subscribed products. Default state is Active.
+     * Get the innerProperties property: User entity contract properties.
      *
-     * @return the state value.
+     * @return the innerProperties value.
      */
-    public UserState state() {
-        return this.state;
-    }
-
-    /**
-     * Set the state property: Account state. Specifies whether the user is active or not. Blocked users are unable to
-     * sign into the developer portal or call any APIs of subscribed products. Default state is Active.
-     *
-     * @param state the state value to set.
-     * @return the UserContractInner object itself.
-     */
-    public UserContractInner withState(UserState state) {
-        this.state = state;
-        return this;
-    }
-
-    /**
-     * Get the note property: Optional note about a user set by the administrator.
-     *
-     * @return the note value.
-     */
-    public String note() {
-        return this.note;
-    }
-
-    /**
-     * Set the note property: Optional note about a user set by the administrator.
-     *
-     * @param note the note value to set.
-     * @return the UserContractInner object itself.
-     */
-    public UserContractInner withNote(String note) {
-        this.note = note;
-        return this;
-    }
-
-    /**
-     * Get the identities property: Collection of user identities.
-     *
-     * @return the identities value.
-     */
-    public List<UserIdentityContractInner> identities() {
-        return this.identities;
-    }
-
-    /**
-     * Set the identities property: Collection of user identities.
-     *
-     * @param identities the identities value to set.
-     * @return the UserContractInner object itself.
-     */
-    public UserContractInner withIdentities(List<UserIdentityContractInner> identities) {
-        this.identities = identities;
-        return this;
+    private UserContractProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -141,7 +39,7 @@ public class UserContractInner extends ProxyResource {
      * @return the firstName value.
      */
     public String firstName() {
-        return this.firstName;
+        return this.innerProperties() == null ? null : this.innerProperties().firstName();
     }
 
     /**
@@ -151,7 +49,10 @@ public class UserContractInner extends ProxyResource {
      * @return the UserContractInner object itself.
      */
     public UserContractInner withFirstName(String firstName) {
-        this.firstName = firstName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserContractProperties();
+        }
+        this.innerProperties().withFirstName(firstName);
         return this;
     }
 
@@ -161,7 +62,7 @@ public class UserContractInner extends ProxyResource {
      * @return the lastName value.
      */
     public String lastName() {
-        return this.lastName;
+        return this.innerProperties() == null ? null : this.innerProperties().lastName();
     }
 
     /**
@@ -171,7 +72,10 @@ public class UserContractInner extends ProxyResource {
      * @return the UserContractInner object itself.
      */
     public UserContractInner withLastName(String lastName) {
-        this.lastName = lastName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserContractProperties();
+        }
+        this.innerProperties().withLastName(lastName);
         return this;
     }
 
@@ -181,7 +85,7 @@ public class UserContractInner extends ProxyResource {
      * @return the email value.
      */
     public String email() {
-        return this.email;
+        return this.innerProperties() == null ? null : this.innerProperties().email();
     }
 
     /**
@@ -191,7 +95,10 @@ public class UserContractInner extends ProxyResource {
      * @return the UserContractInner object itself.
      */
     public UserContractInner withEmail(String email) {
-        this.email = email;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserContractProperties();
+        }
+        this.innerProperties().withEmail(email);
         return this;
     }
 
@@ -202,7 +109,7 @@ public class UserContractInner extends ProxyResource {
      * @return the registrationDate value.
      */
     public OffsetDateTime registrationDate() {
-        return this.registrationDate;
+        return this.innerProperties() == null ? null : this.innerProperties().registrationDate();
     }
 
     /**
@@ -213,7 +120,10 @@ public class UserContractInner extends ProxyResource {
      * @return the UserContractInner object itself.
      */
     public UserContractInner withRegistrationDate(OffsetDateTime registrationDate) {
-        this.registrationDate = registrationDate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserContractProperties();
+        }
+        this.innerProperties().withRegistrationDate(registrationDate);
         return this;
     }
 
@@ -223,7 +133,78 @@ public class UserContractInner extends ProxyResource {
      * @return the groups value.
      */
     public List<GroupContractProperties> groups() {
-        return this.groups;
+        return this.innerProperties() == null ? null : this.innerProperties().groups();
+    }
+
+    /**
+     * Get the state property: Account state. Specifies whether the user is active or not. Blocked users are unable to
+     * sign into the developer portal or call any APIs of subscribed products. Default state is Active.
+     *
+     * @return the state value.
+     */
+    public UserState state() {
+        return this.innerProperties() == null ? null : this.innerProperties().state();
+    }
+
+    /**
+     * Set the state property: Account state. Specifies whether the user is active or not. Blocked users are unable to
+     * sign into the developer portal or call any APIs of subscribed products. Default state is Active.
+     *
+     * @param state the state value to set.
+     * @return the UserContractInner object itself.
+     */
+    public UserContractInner withState(UserState state) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserContractProperties();
+        }
+        this.innerProperties().withState(state);
+        return this;
+    }
+
+    /**
+     * Get the note property: Optional note about a user set by the administrator.
+     *
+     * @return the note value.
+     */
+    public String note() {
+        return this.innerProperties() == null ? null : this.innerProperties().note();
+    }
+
+    /**
+     * Set the note property: Optional note about a user set by the administrator.
+     *
+     * @param note the note value to set.
+     * @return the UserContractInner object itself.
+     */
+    public UserContractInner withNote(String note) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserContractProperties();
+        }
+        this.innerProperties().withNote(note);
+        return this;
+    }
+
+    /**
+     * Get the identities property: Collection of user identities.
+     *
+     * @return the identities value.
+     */
+    public List<UserIdentityContractInner> identities() {
+        return this.innerProperties() == null ? null : this.innerProperties().identities();
+    }
+
+    /**
+     * Set the identities property: Collection of user identities.
+     *
+     * @param identities the identities value to set.
+     * @return the UserContractInner object itself.
+     */
+    public UserContractInner withIdentities(List<UserIdentityContractInner> identities) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserContractProperties();
+        }
+        this.innerProperties().withIdentities(identities);
+        return this;
     }
 
     /**
@@ -232,11 +213,8 @@ public class UserContractInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (identities() != null) {
-            identities().forEach(e -> e.validate());
-        }
-        if (groups() != null) {
-            groups().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

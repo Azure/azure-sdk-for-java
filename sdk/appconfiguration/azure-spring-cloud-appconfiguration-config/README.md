@@ -1,4 +1,4 @@
-# Azure Spring cloud azure appconfiguration config client library for Java
+# Spring Cloud for Azure appconfiguration config client library for Java
 
 ## Key concepts
 ## Getting started

@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.azure.core.util.CoreUtils.isNullOrEmpty;
+
 /**
  * An entity within a table.
  *
@@ -21,13 +23,6 @@ import java.util.Objects;
  * return {@code TableEntity} instances. After creating an instance, call the {@link #addProperty(String, Object)} or
  * {@link #setProperties(Map)} methods to add properties to the entity. When retrieving an entity from the service, call
  * the {@link #getProperty(String)} or {@link #getProperties()} methods to access the entity's properties.
- *
- * As an alternative, developers can also create a subclass of {@code TableEntity} and add property getters and setters
- * to it. If the properties' types are compatible with the Table service, they will automatically be included in any
- * write operations, and will automatically be populated in any read operations. Any properties that expose enum types
- * will be converted to string values for write operations, and will be converted back into enum values for read
- * operations. See <a href="https://msdn.microsoft.com/library/azure/dd179338.aspx#property-types">Property Types</a>
- * for more information about data types supported by the Tables service.
  */
 @Fluent
 public final class TableEntity {
@@ -48,14 +43,14 @@ public final class TableEntity {
      * @param rowKey The row key of the entity.
      */
     public TableEntity(String partitionKey, String rowKey) {
-        if (partitionKey == null || partitionKey.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                "'%s' is an empty value.", TablesConstants.PARTITION_KEY)));
+        if (isNullOrEmpty(partitionKey)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException(String.format("'%s' is an empty value.", TablesConstants.PARTITION_KEY)));
         }
 
-        if (rowKey == null || rowKey.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                "'%s' is an empty value.", TablesConstants.ROW_KEY)));
+        if (isNullOrEmpty(rowKey)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException(String.format("'%s' is an empty value.", TablesConstants.ROW_KEY)));
         }
 
         this.properties = new HashMap<>();
@@ -77,8 +72,7 @@ public final class TableEntity {
      * Gets a single property from the entity's properties map.
      *
      * Only properties that have been added by calling {@link #addProperty(String, Object)} or
-     * {@link #setProperties(Map)} will be returned from this method. Calling this method on a subclass of
-     * {@code TableEntity} will not retrieve a property which is being supplied via a getter method on the subclass.
+     * {@link #setProperties(Map)} will be returned from this method.
      *
      * @param key Key for the property.
      * @return Value of the property.
@@ -92,8 +86,7 @@ public final class TableEntity {
      * Gets the map of the entity's properties.
      *
      * Only properties that have been added by calling {@link #addProperty(String, Object)} or
-     * {@link #setProperties(Map)} will be returned from this method. Calling this method on a subclass of
-     * {@code TableEntity} will not retrieve properties which are being supplied via a getter methods on the subclass.
+     * {@link #setProperties(Map)} will be returned from this method.
      *
      * @return A map of all properties representing this entity, including system properties.
      */

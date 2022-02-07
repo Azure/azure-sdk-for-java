@@ -7,10 +7,10 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/quantum/ci.yml
+      - sdk/quantum/
+    exclude:
       - sdk/quantum/pom.xml
-      - sdk/quantum/tests.yml
-      - sdk/quantum/azure-quantum-jobs
+      - sdk/quantum/azure-quantum-jobs/pom.xml
 
 pr:
   branches:
@@ -21,10 +21,10 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/quantum/ci.yml
+      - sdk/quantum/
+    exclude:
       - sdk/quantum/pom.xml
-      - sdk/quantum/tests.yml
-      - sdk/quantum/azure-quantum-jobs
+      - sdk/quantum/azure-quantum-jobs/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

@@ -25,7 +25,7 @@ public final class StorageAccountCheckNameAvailabilityParameters {
      * The type of resource, Microsoft.Storage/storageAccounts
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "Microsoft.Storage/storageAccounts";
 
     /** Creates an instance of StorageAccountCheckNameAvailabilityParameters class. */
     public StorageAccountCheckNameAvailabilityParameters() {

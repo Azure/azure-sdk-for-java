@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/datamigration/
+      - sdk/datamigration/ci.yml
+      - sdk/datamigration/azure-resourcemanager-datamigration/
+    exclude:
+      - sdk/datamigration/pom.xml
+      - sdk/datamigration/azure-resourcemanager-datamigration/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/datamigration/
+      - sdk/datamigration/ci.yml
+      - sdk/datamigration/azure-resourcemanager-datamigration/
+    exclude:
+      - sdk/datamigration/pom.xml
+      - sdk/datamigration/azure-resourcemanager-datamigration/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

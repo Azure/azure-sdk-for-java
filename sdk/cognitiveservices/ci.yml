@@ -8,7 +8,49 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/cognitiveservices/
+      - sdk/cognitiveservices/ci.yml
+      - sdk/cognitiveservices/azure-resourcemanager-cognitiveservices/
+      - sdk/cognitiveservices/ms-azure-cs-autosuggest/
+      - sdk/cognitiveservices/ms-azure-cs-computervision/
+      - sdk/cognitiveservices/ms-azure-cs-contentmoderator/
+      - sdk/cognitiveservices/ms-azure-cs-customimagesearch/
+      - sdk/cognitiveservices/ms-azure-cs-customsearch/
+      - sdk/cognitiveservices/ms-azure-cs-customvision-prediction/
+      - sdk/cognitiveservices/ms-azure-cs-customvision-training/
+      - sdk/cognitiveservices/ms-azure-cs-entitysearch/
+      - sdk/cognitiveservices/ms-azure-cs-faceapi/
+      - sdk/cognitiveservices/ms-azure-cs-imagesearch/
+      - sdk/cognitiveservices/ms-azure-cs-luis-authoring/
+      - sdk/cognitiveservices/ms-azure-cs-luis-runtime/
+      - sdk/cognitiveservices/ms-azure-cs-newssearch/
+      - sdk/cognitiveservices/ms-azure-cs-qnamaker/
+      - sdk/cognitiveservices/ms-azure-cs-spellcheck/
+      - sdk/cognitiveservices/ms-azure-cs-textanalytics/
+      - sdk/cognitiveservices/ms-azure-cs-videosearch/
+      - sdk/cognitiveservices/ms-azure-cs-visualsearch/
+      - sdk/cognitiveservices/ms-azure-cs-websearch/
+    exclude:
+      - sdk/cognitiveservices/pom.xml
+      - sdk/cognitiveservices/azure-resourcemanager-cognitiveservices/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-autosuggest/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-computervision/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-contentmoderator/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-customimagesearch/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-customsearch/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-customvision-prediction/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-customvision-training/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-entitysearch/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-faceapi/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-imagesearch/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-luis-authoring/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-luis-runtime/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-newssearch/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-qnamaker/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-spellcheck/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-textanalytics/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-videosearch/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-visualsearch/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-websearch/pom.xml
 
 pr:
   branches:
@@ -19,7 +61,49 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/cognitiveservices/
+      - sdk/cognitiveservices/ci.yml
+      - sdk/cognitiveservices/azure-resourcemanager-cognitiveservices/
+      - sdk/cognitiveservices/ms-azure-cs-autosuggest/
+      - sdk/cognitiveservices/ms-azure-cs-computervision/
+      - sdk/cognitiveservices/ms-azure-cs-contentmoderator/
+      - sdk/cognitiveservices/ms-azure-cs-customimagesearch/
+      - sdk/cognitiveservices/ms-azure-cs-customsearch/
+      - sdk/cognitiveservices/ms-azure-cs-customvision-prediction/
+      - sdk/cognitiveservices/ms-azure-cs-customvision-training/
+      - sdk/cognitiveservices/ms-azure-cs-entitysearch/
+      - sdk/cognitiveservices/ms-azure-cs-faceapi/
+      - sdk/cognitiveservices/ms-azure-cs-imagesearch/
+      - sdk/cognitiveservices/ms-azure-cs-luis-authoring/
+      - sdk/cognitiveservices/ms-azure-cs-luis-runtime/
+      - sdk/cognitiveservices/ms-azure-cs-newssearch/
+      - sdk/cognitiveservices/ms-azure-cs-qnamaker/
+      - sdk/cognitiveservices/ms-azure-cs-spellcheck/
+      - sdk/cognitiveservices/ms-azure-cs-textanalytics/
+      - sdk/cognitiveservices/ms-azure-cs-videosearch/
+      - sdk/cognitiveservices/ms-azure-cs-visualsearch/
+      - sdk/cognitiveservices/ms-azure-cs-websearch/
+    exclude:
+      - sdk/cognitiveservices/pom.xml
+      - sdk/cognitiveservices/azure-resourcemanager-cognitiveservices/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-autosuggest/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-computervision/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-contentmoderator/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-customimagesearch/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-customsearch/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-customvision-prediction/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-customvision-training/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-entitysearch/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-faceapi/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-imagesearch/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-luis-authoring/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-luis-runtime/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-newssearch/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-qnamaker/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-spellcheck/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-textanalytics/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-videosearch/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-visualsearch/pom.xml
+      - sdk/cognitiveservices/ms-azure-cs-websearch/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

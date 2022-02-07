@@ -69,8 +69,8 @@ You can find sample code that illustrates Batch usage scenarios in https://githu
 
 # Pre-requisites
 
-- A Java Developer Kit (JDK), v 1.7 or later
-- Maven
+- [A Java Developer Kit (JDK)](https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable), v 1.7 or later
+- [Maven](https://search.maven.org/artifact/com.microsoft.azure/azure-batch)
 - Azure Service Principal - see [how to create authentication info](https://docs.microsoft.com/azure/batch/batch-aad-auth#use-a-service-principal).
 
 

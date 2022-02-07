@@ -5,83 +5,31 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.apimanagement.fluent.models.SubscriptionUpdateParameterProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Subscription update details. */
-@JsonFlatten
 @Fluent
-public class SubscriptionUpdateParameters {
+public final class SubscriptionUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionUpdateParameters.class);
 
     /*
-     * User identifier path: /users/{userId}
+     * Subscription Update contract properties.
      */
-    @JsonProperty(value = "properties.ownerId")
-    private String ownerId;
+    @JsonProperty(value = "properties")
+    private SubscriptionUpdateParameterProperties innerProperties;
 
-    /*
-     * Scope like /products/{productId} or /apis or /apis/{apiId}
+    /**
+     * Get the innerProperties property: Subscription Update contract properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.scope")
-    private String scope;
-
-    /*
-     * Subscription expiration date. The setting is for audit purposes only and
-     * the subscription is not automatically expired. The subscription
-     * lifecycle can be managed by using the `state` property. The date
-     * conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by
-     * the ISO 8601 standard.
-     */
-    @JsonProperty(value = "properties.expirationDate")
-    private OffsetDateTime expirationDate;
-
-    /*
-     * Subscription name.
-     */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
-
-    /*
-     * Primary subscription key.
-     */
-    @JsonProperty(value = "properties.primaryKey")
-    private String primaryKey;
-
-    /*
-     * Secondary subscription key.
-     */
-    @JsonProperty(value = "properties.secondaryKey")
-    private String secondaryKey;
-
-    /*
-     * Subscription state. Possible states are * active – the subscription is
-     * active, * suspended – the subscription is blocked, and the subscriber
-     * cannot call any APIs of the product, * submitted – the subscription
-     * request has been made by the developer, but has not yet been approved or
-     * rejected, * rejected – the subscription request has been denied by an
-     * administrator, * cancelled – the subscription has been cancelled by the
-     * developer or administrator, * expired – the subscription reached its
-     * expiration date and was deactivated.
-     */
-    @JsonProperty(value = "properties.state")
-    private SubscriptionState state;
-
-    /*
-     * Comments describing subscription state change by the administrator when
-     * the state is changed to the 'rejected'.
-     */
-    @JsonProperty(value = "properties.stateComment")
-    private String stateComment;
-
-    /*
-     * Determines whether tracing can be enabled
-     */
-    @JsonProperty(value = "properties.allowTracing")
-    private Boolean allowTracing;
+    private SubscriptionUpdateParameterProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the ownerId property: User identifier path: /users/{userId}.
@@ -89,7 +37,7 @@ public class SubscriptionUpdateParameters {
      * @return the ownerId value.
      */
     public String ownerId() {
-        return this.ownerId;
+        return this.innerProperties() == null ? null : this.innerProperties().ownerId();
     }
 
     /**
@@ -99,7 +47,10 @@ public class SubscriptionUpdateParameters {
      * @return the SubscriptionUpdateParameters object itself.
      */
     public SubscriptionUpdateParameters withOwnerId(String ownerId) {
-        this.ownerId = ownerId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubscriptionUpdateParameterProperties();
+        }
+        this.innerProperties().withOwnerId(ownerId);
         return this;
     }
 
@@ -109,7 +60,7 @@ public class SubscriptionUpdateParameters {
      * @return the scope value.
      */
     public String scope() {
-        return this.scope;
+        return this.innerProperties() == null ? null : this.innerProperties().scope();
     }
 
     /**
@@ -119,7 +70,10 @@ public class SubscriptionUpdateParameters {
      * @return the SubscriptionUpdateParameters object itself.
      */
     public SubscriptionUpdateParameters withScope(String scope) {
-        this.scope = scope;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubscriptionUpdateParameterProperties();
+        }
+        this.innerProperties().withScope(scope);
         return this;
     }
 
@@ -132,7 +86,7 @@ public class SubscriptionUpdateParameters {
      * @return the expirationDate value.
      */
     public OffsetDateTime expirationDate() {
-        return this.expirationDate;
+        return this.innerProperties() == null ? null : this.innerProperties().expirationDate();
     }
 
     /**
@@ -145,7 +99,10 @@ public class SubscriptionUpdateParameters {
      * @return the SubscriptionUpdateParameters object itself.
      */
     public SubscriptionUpdateParameters withExpirationDate(OffsetDateTime expirationDate) {
-        this.expirationDate = expirationDate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubscriptionUpdateParameterProperties();
+        }
+        this.innerProperties().withExpirationDate(expirationDate);
         return this;
     }
 
@@ -155,7 +112,7 @@ public class SubscriptionUpdateParameters {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -165,7 +122,10 @@ public class SubscriptionUpdateParameters {
      * @return the SubscriptionUpdateParameters object itself.
      */
     public SubscriptionUpdateParameters withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubscriptionUpdateParameterProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -175,7 +135,7 @@ public class SubscriptionUpdateParameters {
      * @return the primaryKey value.
      */
     public String primaryKey() {
-        return this.primaryKey;
+        return this.innerProperties() == null ? null : this.innerProperties().primaryKey();
     }
 
     /**
@@ -185,7 +145,10 @@ public class SubscriptionUpdateParameters {
      * @return the SubscriptionUpdateParameters object itself.
      */
     public SubscriptionUpdateParameters withPrimaryKey(String primaryKey) {
-        this.primaryKey = primaryKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubscriptionUpdateParameterProperties();
+        }
+        this.innerProperties().withPrimaryKey(primaryKey);
         return this;
     }
 
@@ -195,7 +158,7 @@ public class SubscriptionUpdateParameters {
      * @return the secondaryKey value.
      */
     public String secondaryKey() {
-        return this.secondaryKey;
+        return this.innerProperties() == null ? null : this.innerProperties().secondaryKey();
     }
 
     /**
@@ -205,7 +168,10 @@ public class SubscriptionUpdateParameters {
      * @return the SubscriptionUpdateParameters object itself.
      */
     public SubscriptionUpdateParameters withSecondaryKey(String secondaryKey) {
-        this.secondaryKey = secondaryKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubscriptionUpdateParameterProperties();
+        }
+        this.innerProperties().withSecondaryKey(secondaryKey);
         return this;
     }
 
@@ -219,7 +185,7 @@ public class SubscriptionUpdateParameters {
      * @return the state value.
      */
     public SubscriptionState state() {
-        return this.state;
+        return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
     /**
@@ -233,7 +199,10 @@ public class SubscriptionUpdateParameters {
      * @return the SubscriptionUpdateParameters object itself.
      */
     public SubscriptionUpdateParameters withState(SubscriptionState state) {
-        this.state = state;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubscriptionUpdateParameterProperties();
+        }
+        this.innerProperties().withState(state);
         return this;
     }
 
@@ -244,7 +213,7 @@ public class SubscriptionUpdateParameters {
      * @return the stateComment value.
      */
     public String stateComment() {
-        return this.stateComment;
+        return this.innerProperties() == null ? null : this.innerProperties().stateComment();
     }
 
     /**
@@ -255,7 +224,10 @@ public class SubscriptionUpdateParameters {
      * @return the SubscriptionUpdateParameters object itself.
      */
     public SubscriptionUpdateParameters withStateComment(String stateComment) {
-        this.stateComment = stateComment;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubscriptionUpdateParameterProperties();
+        }
+        this.innerProperties().withStateComment(stateComment);
         return this;
     }
 
@@ -265,7 +237,7 @@ public class SubscriptionUpdateParameters {
      * @return the allowTracing value.
      */
     public Boolean allowTracing() {
-        return this.allowTracing;
+        return this.innerProperties() == null ? null : this.innerProperties().allowTracing();
     }
 
     /**
@@ -275,7 +247,10 @@ public class SubscriptionUpdateParameters {
      * @return the SubscriptionUpdateParameters object itself.
      */
     public SubscriptionUpdateParameters withAllowTracing(Boolean allowTracing) {
-        this.allowTracing = allowTracing;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubscriptionUpdateParameterProperties();
+        }
+        this.innerProperties().withAllowTracing(allowTracing);
         return this;
     }
 
@@ -285,5 +260,8 @@ public class SubscriptionUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -33,6 +33,51 @@ public interface AuthorizationServerContract {
     String type();
 
     /**
+     * Gets the displayName property: User-friendly authorization server name.
+     *
+     * @return the displayName value.
+     */
+    String displayName();
+
+    /**
+     * Gets the clientRegistrationEndpoint property: Optional reference to a page where client or app registration for
+     * this authorization server is performed. Contains absolute URL to entity being referenced.
+     *
+     * @return the clientRegistrationEndpoint value.
+     */
+    String clientRegistrationEndpoint();
+
+    /**
+     * Gets the authorizationEndpoint property: OAuth authorization endpoint. See
+     * http://tools.ietf.org/html/rfc6749#section-3.2.
+     *
+     * @return the authorizationEndpoint value.
+     */
+    String authorizationEndpoint();
+
+    /**
+     * Gets the grantTypes property: Form of an authorization grant, which the client uses to request the access token.
+     *
+     * @return the grantTypes value.
+     */
+    List<GrantType> grantTypes();
+
+    /**
+     * Gets the clientId property: Client or app id registered with this authorization server.
+     *
+     * @return the clientId value.
+     */
+    String clientId();
+
+    /**
+     * Gets the clientSecret property: Client or app secret registered with this authorization server. This property
+     * will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
+     *
+     * @return the clientSecret value.
+     */
+    String clientSecret();
+
+    /**
      * Gets the description property: Description of the authorization server. Can contain HTML formatting tags.
      *
      * @return the description value.
@@ -112,51 +157,6 @@ public interface AuthorizationServerContract {
     String resourceOwnerPassword();
 
     /**
-     * Gets the displayName property: User-friendly authorization server name.
-     *
-     * @return the displayName value.
-     */
-    String displayName();
-
-    /**
-     * Gets the clientRegistrationEndpoint property: Optional reference to a page where client or app registration for
-     * this authorization server is performed. Contains absolute URL to entity being referenced.
-     *
-     * @return the clientRegistrationEndpoint value.
-     */
-    String clientRegistrationEndpoint();
-
-    /**
-     * Gets the authorizationEndpoint property: OAuth authorization endpoint. See
-     * http://tools.ietf.org/html/rfc6749#section-3.2.
-     *
-     * @return the authorizationEndpoint value.
-     */
-    String authorizationEndpoint();
-
-    /**
-     * Gets the grantTypes property: Form of an authorization grant, which the client uses to request the access token.
-     *
-     * @return the grantTypes value.
-     */
-    List<GrantType> grantTypes();
-
-    /**
-     * Gets the clientId property: Client or app id registered with this authorization server.
-     *
-     * @return the clientId value.
-     */
-    String clientId();
-
-    /**
-     * Gets the clientSecret property: Client or app secret registered with this authorization server. This property
-     * will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
-     *
-     * @return the clientSecret value.
-     */
-    String clientSecret();
-
-    /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.AuthorizationServerContractInner object.
      *
      * @return the inner object.
@@ -188,7 +188,13 @@ public interface AuthorizationServerContract {
          * for the resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithDescription,
+            extends DefinitionStages.WithDisplayName,
+                DefinitionStages.WithClientRegistrationEndpoint,
+                DefinitionStages.WithAuthorizationEndpoint,
+                DefinitionStages.WithGrantTypes,
+                DefinitionStages.WithClientId,
+                DefinitionStages.WithClientSecret,
+                DefinitionStages.WithDescription,
                 DefinitionStages.WithAuthorizationMethods,
                 DefinitionStages.WithClientAuthenticationMethod,
                 DefinitionStages.WithTokenBodyParameters,
@@ -198,12 +204,6 @@ public interface AuthorizationServerContract {
                 DefinitionStages.WithBearerTokenSendingMethods,
                 DefinitionStages.WithResourceOwnerUsername,
                 DefinitionStages.WithResourceOwnerPassword,
-                DefinitionStages.WithDisplayName,
-                DefinitionStages.WithClientRegistrationEndpoint,
-                DefinitionStages.WithAuthorizationEndpoint,
-                DefinitionStages.WithGrantTypes,
-                DefinitionStages.WithClientId,
-                DefinitionStages.WithClientSecret,
                 DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
@@ -219,6 +219,74 @@ public interface AuthorizationServerContract {
              * @return the created resource.
              */
             AuthorizationServerContract create(Context context);
+        }
+        /** The stage of the AuthorizationServerContract definition allowing to specify displayName. */
+        interface WithDisplayName {
+            /**
+             * Specifies the displayName property: User-friendly authorization server name..
+             *
+             * @param displayName User-friendly authorization server name.
+             * @return the next definition stage.
+             */
+            WithCreate withDisplayName(String displayName);
+        }
+        /** The stage of the AuthorizationServerContract definition allowing to specify clientRegistrationEndpoint. */
+        interface WithClientRegistrationEndpoint {
+            /**
+             * Specifies the clientRegistrationEndpoint property: Optional reference to a page where client or app
+             * registration for this authorization server is performed. Contains absolute URL to entity being
+             * referenced..
+             *
+             * @param clientRegistrationEndpoint Optional reference to a page where client or app registration for this
+             *     authorization server is performed. Contains absolute URL to entity being referenced.
+             * @return the next definition stage.
+             */
+            WithCreate withClientRegistrationEndpoint(String clientRegistrationEndpoint);
+        }
+        /** The stage of the AuthorizationServerContract definition allowing to specify authorizationEndpoint. */
+        interface WithAuthorizationEndpoint {
+            /**
+             * Specifies the authorizationEndpoint property: OAuth authorization endpoint. See
+             * http://tools.ietf.org/html/rfc6749#section-3.2..
+             *
+             * @param authorizationEndpoint OAuth authorization endpoint. See
+             *     http://tools.ietf.org/html/rfc6749#section-3.2.
+             * @return the next definition stage.
+             */
+            WithCreate withAuthorizationEndpoint(String authorizationEndpoint);
+        }
+        /** The stage of the AuthorizationServerContract definition allowing to specify grantTypes. */
+        interface WithGrantTypes {
+            /**
+             * Specifies the grantTypes property: Form of an authorization grant, which the client uses to request the
+             * access token..
+             *
+             * @param grantTypes Form of an authorization grant, which the client uses to request the access token.
+             * @return the next definition stage.
+             */
+            WithCreate withGrantTypes(List<GrantType> grantTypes);
+        }
+        /** The stage of the AuthorizationServerContract definition allowing to specify clientId. */
+        interface WithClientId {
+            /**
+             * Specifies the clientId property: Client or app id registered with this authorization server..
+             *
+             * @param clientId Client or app id registered with this authorization server.
+             * @return the next definition stage.
+             */
+            WithCreate withClientId(String clientId);
+        }
+        /** The stage of the AuthorizationServerContract definition allowing to specify clientSecret. */
+        interface WithClientSecret {
+            /**
+             * Specifies the clientSecret property: Client or app secret registered with this authorization server. This
+             * property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value..
+             *
+             * @param clientSecret Client or app secret registered with this authorization server. This property will
+             *     not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
+             * @return the next definition stage.
+             */
+            WithCreate withClientSecret(String clientSecret);
         }
         /** The stage of the AuthorizationServerContract definition allowing to specify description. */
         interface WithDescription {
@@ -344,74 +412,6 @@ public interface AuthorizationServerContract {
              */
             WithCreate withResourceOwnerPassword(String resourceOwnerPassword);
         }
-        /** The stage of the AuthorizationServerContract definition allowing to specify displayName. */
-        interface WithDisplayName {
-            /**
-             * Specifies the displayName property: User-friendly authorization server name..
-             *
-             * @param displayName User-friendly authorization server name.
-             * @return the next definition stage.
-             */
-            WithCreate withDisplayName(String displayName);
-        }
-        /** The stage of the AuthorizationServerContract definition allowing to specify clientRegistrationEndpoint. */
-        interface WithClientRegistrationEndpoint {
-            /**
-             * Specifies the clientRegistrationEndpoint property: Optional reference to a page where client or app
-             * registration for this authorization server is performed. Contains absolute URL to entity being
-             * referenced..
-             *
-             * @param clientRegistrationEndpoint Optional reference to a page where client or app registration for this
-             *     authorization server is performed. Contains absolute URL to entity being referenced.
-             * @return the next definition stage.
-             */
-            WithCreate withClientRegistrationEndpoint(String clientRegistrationEndpoint);
-        }
-        /** The stage of the AuthorizationServerContract definition allowing to specify authorizationEndpoint. */
-        interface WithAuthorizationEndpoint {
-            /**
-             * Specifies the authorizationEndpoint property: OAuth authorization endpoint. See
-             * http://tools.ietf.org/html/rfc6749#section-3.2..
-             *
-             * @param authorizationEndpoint OAuth authorization endpoint. See
-             *     http://tools.ietf.org/html/rfc6749#section-3.2.
-             * @return the next definition stage.
-             */
-            WithCreate withAuthorizationEndpoint(String authorizationEndpoint);
-        }
-        /** The stage of the AuthorizationServerContract definition allowing to specify grantTypes. */
-        interface WithGrantTypes {
-            /**
-             * Specifies the grantTypes property: Form of an authorization grant, which the client uses to request the
-             * access token..
-             *
-             * @param grantTypes Form of an authorization grant, which the client uses to request the access token.
-             * @return the next definition stage.
-             */
-            WithCreate withGrantTypes(List<GrantType> grantTypes);
-        }
-        /** The stage of the AuthorizationServerContract definition allowing to specify clientId. */
-        interface WithClientId {
-            /**
-             * Specifies the clientId property: Client or app id registered with this authorization server..
-             *
-             * @param clientId Client or app id registered with this authorization server.
-             * @return the next definition stage.
-             */
-            WithCreate withClientId(String clientId);
-        }
-        /** The stage of the AuthorizationServerContract definition allowing to specify clientSecret. */
-        interface WithClientSecret {
-            /**
-             * Specifies the clientSecret property: Client or app secret registered with this authorization server. This
-             * property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value..
-             *
-             * @param clientSecret Client or app secret registered with this authorization server. This property will
-             *     not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
-             * @return the next definition stage.
-             */
-            WithCreate withClientSecret(String clientSecret);
-        }
         /** The stage of the AuthorizationServerContract definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -434,7 +434,13 @@ public interface AuthorizationServerContract {
 
     /** The template for AuthorizationServerContract update. */
     interface Update
-        extends UpdateStages.WithDescription,
+        extends UpdateStages.WithDisplayName,
+            UpdateStages.WithClientRegistrationEndpoint,
+            UpdateStages.WithAuthorizationEndpoint,
+            UpdateStages.WithGrantTypes,
+            UpdateStages.WithClientId,
+            UpdateStages.WithClientSecret,
+            UpdateStages.WithDescription,
             UpdateStages.WithAuthorizationMethods,
             UpdateStages.WithClientAuthenticationMethod,
             UpdateStages.WithTokenBodyParameters,
@@ -444,12 +450,6 @@ public interface AuthorizationServerContract {
             UpdateStages.WithBearerTokenSendingMethods,
             UpdateStages.WithResourceOwnerUsername,
             UpdateStages.WithResourceOwnerPassword,
-            UpdateStages.WithDisplayName,
-            UpdateStages.WithClientRegistrationEndpoint,
-            UpdateStages.WithAuthorizationEndpoint,
-            UpdateStages.WithGrantTypes,
-            UpdateStages.WithClientId,
-            UpdateStages.WithClientSecret,
             UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
@@ -468,6 +468,74 @@ public interface AuthorizationServerContract {
     }
     /** The AuthorizationServerContract update stages. */
     interface UpdateStages {
+        /** The stage of the AuthorizationServerContract update allowing to specify displayName. */
+        interface WithDisplayName {
+            /**
+             * Specifies the displayName property: User-friendly authorization server name..
+             *
+             * @param displayName User-friendly authorization server name.
+             * @return the next definition stage.
+             */
+            Update withDisplayName(String displayName);
+        }
+        /** The stage of the AuthorizationServerContract update allowing to specify clientRegistrationEndpoint. */
+        interface WithClientRegistrationEndpoint {
+            /**
+             * Specifies the clientRegistrationEndpoint property: Optional reference to a page where client or app
+             * registration for this authorization server is performed. Contains absolute URL to entity being
+             * referenced..
+             *
+             * @param clientRegistrationEndpoint Optional reference to a page where client or app registration for this
+             *     authorization server is performed. Contains absolute URL to entity being referenced.
+             * @return the next definition stage.
+             */
+            Update withClientRegistrationEndpoint(String clientRegistrationEndpoint);
+        }
+        /** The stage of the AuthorizationServerContract update allowing to specify authorizationEndpoint. */
+        interface WithAuthorizationEndpoint {
+            /**
+             * Specifies the authorizationEndpoint property: OAuth authorization endpoint. See
+             * http://tools.ietf.org/html/rfc6749#section-3.2..
+             *
+             * @param authorizationEndpoint OAuth authorization endpoint. See
+             *     http://tools.ietf.org/html/rfc6749#section-3.2.
+             * @return the next definition stage.
+             */
+            Update withAuthorizationEndpoint(String authorizationEndpoint);
+        }
+        /** The stage of the AuthorizationServerContract update allowing to specify grantTypes. */
+        interface WithGrantTypes {
+            /**
+             * Specifies the grantTypes property: Form of an authorization grant, which the client uses to request the
+             * access token..
+             *
+             * @param grantTypes Form of an authorization grant, which the client uses to request the access token.
+             * @return the next definition stage.
+             */
+            Update withGrantTypes(List<GrantType> grantTypes);
+        }
+        /** The stage of the AuthorizationServerContract update allowing to specify clientId. */
+        interface WithClientId {
+            /**
+             * Specifies the clientId property: Client or app id registered with this authorization server..
+             *
+             * @param clientId Client or app id registered with this authorization server.
+             * @return the next definition stage.
+             */
+            Update withClientId(String clientId);
+        }
+        /** The stage of the AuthorizationServerContract update allowing to specify clientSecret. */
+        interface WithClientSecret {
+            /**
+             * Specifies the clientSecret property: Client or app secret registered with this authorization server. This
+             * property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value..
+             *
+             * @param clientSecret Client or app secret registered with this authorization server. This property will
+             *     not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
+             * @return the next definition stage.
+             */
+            Update withClientSecret(String clientSecret);
+        }
         /** The stage of the AuthorizationServerContract update allowing to specify description. */
         interface WithDescription {
             /**
@@ -591,74 +659,6 @@ public interface AuthorizationServerContract {
              * @return the next definition stage.
              */
             Update withResourceOwnerPassword(String resourceOwnerPassword);
-        }
-        /** The stage of the AuthorizationServerContract update allowing to specify displayName. */
-        interface WithDisplayName {
-            /**
-             * Specifies the displayName property: User-friendly authorization server name..
-             *
-             * @param displayName User-friendly authorization server name.
-             * @return the next definition stage.
-             */
-            Update withDisplayName(String displayName);
-        }
-        /** The stage of the AuthorizationServerContract update allowing to specify clientRegistrationEndpoint. */
-        interface WithClientRegistrationEndpoint {
-            /**
-             * Specifies the clientRegistrationEndpoint property: Optional reference to a page where client or app
-             * registration for this authorization server is performed. Contains absolute URL to entity being
-             * referenced..
-             *
-             * @param clientRegistrationEndpoint Optional reference to a page where client or app registration for this
-             *     authorization server is performed. Contains absolute URL to entity being referenced.
-             * @return the next definition stage.
-             */
-            Update withClientRegistrationEndpoint(String clientRegistrationEndpoint);
-        }
-        /** The stage of the AuthorizationServerContract update allowing to specify authorizationEndpoint. */
-        interface WithAuthorizationEndpoint {
-            /**
-             * Specifies the authorizationEndpoint property: OAuth authorization endpoint. See
-             * http://tools.ietf.org/html/rfc6749#section-3.2..
-             *
-             * @param authorizationEndpoint OAuth authorization endpoint. See
-             *     http://tools.ietf.org/html/rfc6749#section-3.2.
-             * @return the next definition stage.
-             */
-            Update withAuthorizationEndpoint(String authorizationEndpoint);
-        }
-        /** The stage of the AuthorizationServerContract update allowing to specify grantTypes. */
-        interface WithGrantTypes {
-            /**
-             * Specifies the grantTypes property: Form of an authorization grant, which the client uses to request the
-             * access token..
-             *
-             * @param grantTypes Form of an authorization grant, which the client uses to request the access token.
-             * @return the next definition stage.
-             */
-            Update withGrantTypes(List<GrantType> grantTypes);
-        }
-        /** The stage of the AuthorizationServerContract update allowing to specify clientId. */
-        interface WithClientId {
-            /**
-             * Specifies the clientId property: Client or app id registered with this authorization server..
-             *
-             * @param clientId Client or app id registered with this authorization server.
-             * @return the next definition stage.
-             */
-            Update withClientId(String clientId);
-        }
-        /** The stage of the AuthorizationServerContract update allowing to specify clientSecret. */
-        interface WithClientSecret {
-            /**
-             * Specifies the clientSecret property: Client or app secret registered with this authorization server. This
-             * property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value..
-             *
-             * @param clientSecret Client or app secret registered with this authorization server. This property will
-             *     not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
-             * @return the next definition stage.
-             */
-            Update withClientSecret(String clientSecret);
         }
         /** The stage of the AuthorizationServerContract update allowing to specify ifMatch. */
         interface WithIfMatch {

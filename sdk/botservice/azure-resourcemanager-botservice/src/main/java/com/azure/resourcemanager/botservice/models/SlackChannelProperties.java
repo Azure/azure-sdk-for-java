@@ -35,6 +35,12 @@ public final class SlackChannelProperties {
     private String verificationToken;
 
     /*
+     * The Slack permission scopes.
+     */
+    @JsonProperty(value = "scopes")
+    private String scopes;
+
+    /*
      * The Slack landing page Url
      */
     @JsonProperty(value = "landingPageUrl")
@@ -62,7 +68,7 @@ public final class SlackChannelProperties {
     /*
      * Whether this channel is validated for the bot
      */
-    @JsonProperty(value = "isValidated", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "IsValidated", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isValidated;
 
     /*
@@ -138,6 +144,26 @@ public final class SlackChannelProperties {
      */
     public SlackChannelProperties withVerificationToken(String verificationToken) {
         this.verificationToken = verificationToken;
+        return this;
+    }
+
+    /**
+     * Get the scopes property: The Slack permission scopes.
+     *
+     * @return the scopes value.
+     */
+    public String scopes() {
+        return this.scopes;
+    }
+
+    /**
+     * Set the scopes property: The Slack permission scopes.
+     *
+     * @param scopes the scopes value to set.
+     * @return the SlackChannelProperties object itself.
+     */
+    public SlackChannelProperties withScopes(String scopes) {
+        this.scopes = scopes;
         return this;
     }
 

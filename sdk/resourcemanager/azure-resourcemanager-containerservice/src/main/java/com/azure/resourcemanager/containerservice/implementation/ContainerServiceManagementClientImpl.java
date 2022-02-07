@@ -19,6 +19,7 @@ import com.azure.resourcemanager.containerservice.fluent.OperationsClient;
 import com.azure.resourcemanager.containerservice.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.containerservice.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.containerservice.fluent.ResolvePrivateLinkServiceIdsClient;
+import com.azure.resourcemanager.containerservice.fluent.SnapshotsClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
@@ -200,6 +201,18 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         return this.resolvePrivateLinkServiceIds;
     }
 
+    /** The SnapshotsClient object to access its operations. */
+    private final SnapshotsClient snapshots;
+
+    /**
+     * Gets the SnapshotsClient object to access its operations.
+     *
+     * @return the SnapshotsClient object.
+     */
+    public SnapshotsClient getSnapshots() {
+        return this.snapshots;
+    }
+
     /**
      * Initializes an instance of ContainerServiceManagementClient client.
      *
@@ -233,5 +246,6 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.resolvePrivateLinkServiceIds = new ResolvePrivateLinkServiceIdsClientImpl(this);
+        this.snapshots = new SnapshotsClientImpl(this);
     }
 }

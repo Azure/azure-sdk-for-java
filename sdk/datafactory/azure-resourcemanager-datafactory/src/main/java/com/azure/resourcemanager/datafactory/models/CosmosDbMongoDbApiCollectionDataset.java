@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.CosmosDbMongoDbApiCollectionDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,38 +17,24 @@ import java.util.Map;
 /** The CosmosDB (MongoDB API) database dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("CosmosDbMongoDbApiCollection")
-@JsonFlatten
 @Fluent
-public class CosmosDbMongoDbApiCollectionDataset extends Dataset {
+public final class CosmosDbMongoDbApiCollectionDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CosmosDbMongoDbApiCollectionDataset.class);
 
     /*
-     * The collection name of the CosmosDB (MongoDB API) database. Type: string
-     * (or Expression with resultType string).
+     * CosmosDB (MongoDB API) database dataset properties.
      */
-    @JsonProperty(value = "typeProperties.collection", required = true)
-    private Object collection;
+    @JsonProperty(value = "typeProperties", required = true)
+    private CosmosDbMongoDbApiCollectionDatasetTypeProperties innerTypeProperties =
+        new CosmosDbMongoDbApiCollectionDatasetTypeProperties();
 
     /**
-     * Get the collection property: The collection name of the CosmosDB (MongoDB API) database. Type: string (or
-     * Expression with resultType string).
+     * Get the innerTypeProperties property: CosmosDB (MongoDB API) database dataset properties.
      *
-     * @return the collection value.
+     * @return the innerTypeProperties value.
      */
-    public Object collection() {
-        return this.collection;
-    }
-
-    /**
-     * Set the collection property: The collection name of the CosmosDB (MongoDB API) database. Type: string (or
-     * Expression with resultType string).
-     *
-     * @param collection the collection value to set.
-     * @return the CosmosDbMongoDbApiCollectionDataset object itself.
-     */
-    public CosmosDbMongoDbApiCollectionDataset withCollection(Object collection) {
-        this.collection = collection;
-        return this;
+    private CosmosDbMongoDbApiCollectionDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -101,6 +87,31 @@ public class CosmosDbMongoDbApiCollectionDataset extends Dataset {
     }
 
     /**
+     * Get the collection property: The collection name of the CosmosDB (MongoDB API) database. Type: string (or
+     * Expression with resultType string).
+     *
+     * @return the collection value.
+     */
+    public Object collection() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().collection();
+    }
+
+    /**
+     * Set the collection property: The collection name of the CosmosDB (MongoDB API) database. Type: string (or
+     * Expression with resultType string).
+     *
+     * @param collection the collection value to set.
+     * @return the CosmosDbMongoDbApiCollectionDataset object itself.
+     */
+    public CosmosDbMongoDbApiCollectionDataset withCollection(Object collection) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new CosmosDbMongoDbApiCollectionDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withCollection(collection);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -108,11 +119,13 @@ public class CosmosDbMongoDbApiCollectionDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
-        if (collection() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property collection in model CosmosDbMongoDbApiCollectionDataset"));
+                        "Missing required property innerTypeProperties in model CosmosDbMongoDbApiCollectionDataset"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

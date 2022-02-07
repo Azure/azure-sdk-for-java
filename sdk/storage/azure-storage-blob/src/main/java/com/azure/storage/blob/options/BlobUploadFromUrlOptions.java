@@ -3,8 +3,8 @@
 
 package com.azure.storage.blob.options;
 
+import com.azure.core.http.HttpAuthorization;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.experimental.http.HttpAuthorization;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -90,10 +90,10 @@ public class BlobUploadFromUrlOptions {
     }
 
     /**
-     * @return An MD5 hash of the content. This hash is used to verify the integrity of the content during
-     * transport. When this header is specified, the storage service compares the hash of the content that has arrived
-     * with this header value. Note that this MD5 hash is not stored with the blob. If the two hashes do not match, the
-     * operation will fail.
+     * @return An MD5 hash of the content. This hash is used to verify the integrity of the content during transport.
+     * When this header is specified, the storage service compares the hash of the content that has arrived with this
+     * header value. Note that this MD5 hash is not stored with the blob. If the two hashes do not match, the operation
+     * will fail.
      */
     public byte[] getContentMd5() {
         return CoreUtils.clone(contentMd5);
@@ -123,7 +123,7 @@ public class BlobUploadFromUrlOptions {
      * @return The updated options.
      */
     public BlobUploadFromUrlOptions setDestinationRequestConditions(BlobRequestConditions
-                                                                        destinationRequestConditions) {
+        destinationRequestConditions) {
         this.destinationRequestConditions = destinationRequestConditions;
         return this;
     }
@@ -146,6 +146,7 @@ public class BlobUploadFromUrlOptions {
 
     /**
      * Optional, default is true.  Indicates if properties from the source blob should be copied.
+     *
      * @return Whether properties from the source blob should be copied.
      */
     public Boolean isCopySourceBlobProperties() {
@@ -154,6 +155,7 @@ public class BlobUploadFromUrlOptions {
 
     /**
      * Optional, default is true.  Indicates if properties from the source blob should be copied.
+     *
      * @param copySourceBlobProperties Whether properties from the source blob should be copied.
      * @return The updated options.
      */

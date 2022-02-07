@@ -140,7 +140,8 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL pool's transparent data encryption configuration.
+     * @return a SQL pool's transparent data encryption configuration along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TransparentDataEncryptionInner>> getWithResponseAsync(
@@ -176,6 +177,7 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
                     new IllegalArgumentException(
                         "Parameter transparentDataEncryptionName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -183,7 +185,7 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -205,7 +207,8 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL pool's transparent data encryption configuration.
+     * @return a SQL pool's transparent data encryption configuration along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TransparentDataEncryptionInner>> getWithResponseAsync(
@@ -242,12 +245,13 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
                     new IllegalArgumentException(
                         "Parameter transparentDataEncryptionName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -267,7 +271,7 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL pool's transparent data encryption configuration.
+     * @return a SQL pool's transparent data encryption configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TransparentDataEncryptionInner> getAsync(
@@ -318,7 +322,7 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL pool's transparent data encryption configuration.
+     * @return a SQL pool's transparent data encryption configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TransparentDataEncryptionInner> getWithResponse(
@@ -343,7 +347,8 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Sql pool transparent data encryption configuration.
+     * @return represents a Sql pool transparent data encryption configuration along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TransparentDataEncryptionInner>> createOrUpdateWithResponseAsync(
@@ -385,6 +390,7 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -392,7 +398,7 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
                     service
                         .createOrUpdate(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -416,7 +422,8 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Sql pool transparent data encryption configuration.
+     * @return represents a Sql pool transparent data encryption configuration along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TransparentDataEncryptionInner>> createOrUpdateWithResponseAsync(
@@ -459,12 +466,13 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -486,7 +494,7 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Sql pool transparent data encryption configuration.
+     * @return represents a Sql pool transparent data encryption configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TransparentDataEncryptionInner> createOrUpdateAsync(
@@ -544,7 +552,7 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Sql pool transparent data encryption configuration.
+     * @return represents a Sql pool transparent data encryption configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TransparentDataEncryptionInner> createOrUpdateWithResponse(
@@ -568,7 +576,8 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pool's transparent data encryption configurations.
+     * @return list of SQL pool's transparent data encryption configurations along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TransparentDataEncryptionInner>> listSinglePageAsync(
@@ -595,6 +604,7 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -602,7 +612,7 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
                     service
                         .list(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -631,7 +641,8 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pool's transparent data encryption configurations.
+     * @return list of SQL pool's transparent data encryption configurations along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TransparentDataEncryptionInner>> listSinglePageAsync(
@@ -658,12 +669,13 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -762,7 +774,8 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of transparent data encryption configurations.
+     * @return a list of transparent data encryption configurations along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TransparentDataEncryptionInner>> listNextSinglePageAsync(String nextLink) {
@@ -798,7 +811,8 @@ public final class SqlPoolTransparentDataEncryptionsClientImpl implements SqlPoo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of transparent data encryption configurations.
+     * @return a list of transparent data encryption configurations along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TransparentDataEncryptionInner>> listNextSinglePageAsync(

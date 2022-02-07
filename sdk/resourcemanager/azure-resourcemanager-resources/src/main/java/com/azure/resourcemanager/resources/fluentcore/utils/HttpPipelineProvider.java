@@ -7,7 +7,9 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -17,6 +19,7 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.resources.fluentcore.policy.AuthenticationPolicy;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.resourcemanager.resources.fluentcore.policy.ReturnRequestIdHeaderPolicy;
@@ -25,6 +28,7 @@ import com.azure.resourcemanager.resources.fluentcore.policy.UserAgentPolicy;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This class provides common patterns on building {@link HttpPipeline}.
@@ -65,8 +69,17 @@ public final class HttpPipelineProvider {
         HttpClient httpClient) {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new UserAgentPolicy(httpLogOptions, configuration));
+        policies.add(new AddHeadersFromContextPolicy());
         policies.add(new RequestIdPolicy());
         policies.add(new ReturnRequestIdHeaderPolicy(ReturnRequestIdHeaderPolicy.Option.COPY_CLIENT_REQUEST_ID));
+        if (!CoreUtils.isNullOrEmpty(additionalPolicies)) {
+            policies.addAll(
+                additionalPolicies
+                    .stream()
+                    .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                    .collect(Collectors.toList())
+            );
+        }
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy);
         policies.add(new AddDatePolicy());
@@ -74,8 +87,13 @@ public final class HttpPipelineProvider {
             policies.add(new AuthenticationPolicy(credential, profile.getEnvironment(), scopes));
         }
         policies.add(new ProviderRegistrationPolicy());
-        if (additionalPolicies != null && !additionalPolicies.isEmpty()) {
-            policies.addAll(additionalPolicies);
+        if (!CoreUtils.isNullOrEmpty(additionalPolicies)) {
+            policies.addAll(
+                additionalPolicies
+                    .stream()
+                    .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                    .collect(Collectors.toList())
+            );
         }
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));

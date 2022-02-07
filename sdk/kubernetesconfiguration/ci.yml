@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/kubernetesconfiguration/
+      - sdk/kubernetesconfiguration/ci.yml
+      - sdk/kubernetesconfiguration/azure-resourcemanager-kubernetesconfiguration/
+    exclude:
+      - sdk/kubernetesconfiguration/pom.xml
+      - sdk/kubernetesconfiguration/azure-resourcemanager-kubernetesconfiguration/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/kubernetesconfiguration/
+      - sdk/kubernetesconfiguration/ci.yml
+      - sdk/kubernetesconfiguration/azure-resourcemanager-kubernetesconfiguration/
+    exclude:
+      - sdk/kubernetesconfiguration/pom.xml
+      - sdk/kubernetesconfiguration/azure-resourcemanager-kubernetesconfiguration/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

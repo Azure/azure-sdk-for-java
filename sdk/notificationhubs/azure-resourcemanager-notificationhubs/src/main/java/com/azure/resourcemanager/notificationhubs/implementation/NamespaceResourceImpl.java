@@ -47,6 +47,10 @@ public final class NamespaceResourceImpl
         }
     }
 
+    public Sku sku() {
+        return this.innerModel().sku();
+    }
+
     public String namePropertiesName() {
         return this.innerModel().namePropertiesName();
     }
@@ -101,10 +105,6 @@ public final class NamespaceResourceImpl
 
     public NamespaceType namespaceType() {
         return this.innerModel().namespaceType();
-    }
-
-    public Sku sku() {
-        return this.innerModel().sku();
     }
 
     public NamespaceResourceInner innerModel() {
@@ -230,6 +230,16 @@ public final class NamespaceResourceImpl
         }
     }
 
+    public NamespaceResourceImpl withSku(Sku sku) {
+        if (isInCreateMode()) {
+            this.createParameters.withSku(sku);
+            return this;
+        } else {
+            this.updateParameters.withSku(sku);
+            return this;
+        }
+    }
+
     public NamespaceResourceImpl withNamePropertiesName(String namePropertiesName) {
         this.createParameters.withNamePropertiesName(namePropertiesName);
         return this;
@@ -293,16 +303,6 @@ public final class NamespaceResourceImpl
     public NamespaceResourceImpl withNamespaceType(NamespaceType namespaceType) {
         this.createParameters.withNamespaceType(namespaceType);
         return this;
-    }
-
-    public NamespaceResourceImpl withSku(Sku sku) {
-        if (isInCreateMode()) {
-            this.createParameters.withSku(sku);
-            return this;
-        } else {
-            this.updateParameters.withSku(sku);
-            return this;
-        }
     }
 
     private boolean isInCreateMode() {

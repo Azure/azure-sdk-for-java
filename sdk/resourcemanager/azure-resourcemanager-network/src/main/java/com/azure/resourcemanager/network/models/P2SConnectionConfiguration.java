@@ -5,17 +5,22 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.fluent.models.P2SConnectionConfigurationProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** P2SConnectionConfiguration Resource. */
-@JsonFlatten
 @Fluent
-public class P2SConnectionConfiguration extends SubResource {
+public final class P2SConnectionConfiguration extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(P2SConnectionConfiguration.class);
+
+    /*
+     * Properties of the P2S connection configuration.
+     */
+    @JsonProperty(value = "properties")
+    private P2SConnectionConfigurationProperties innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This
@@ -30,32 +35,14 @@ public class P2SConnectionConfiguration extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /*
-     * The reference to the address space resource which represents Address
-     * space for P2S VpnClient.
+    /**
+     * Get the innerProperties property: Properties of the P2S connection configuration.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.vpnClientAddressPool")
-    private AddressSpace vpnClientAddressPool;
-
-    /*
-     * The Routing Configuration indicating the associated and propagated route
-     * tables on this connection.
-     */
-    @JsonProperty(value = "properties.routingConfiguration")
-    private RoutingConfiguration routingConfiguration;
-
-    /*
-     * Flag indicating whether the enable internet security flag is turned on
-     * for the P2S Connections or not.
-     */
-    @JsonProperty(value = "properties.enableInternetSecurity")
-    private Boolean enableInternetSecurity;
-
-    /*
-     * The provisioning state of the P2SConnectionConfiguration resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private P2SConnectionConfigurationProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
@@ -88,6 +75,13 @@ public class P2SConnectionConfiguration extends SubResource {
         return this.etag;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public P2SConnectionConfiguration withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the vpnClientAddressPool property: The reference to the address space resource which represents Address space
      * for P2S VpnClient.
@@ -95,7 +89,7 @@ public class P2SConnectionConfiguration extends SubResource {
      * @return the vpnClientAddressPool value.
      */
     public AddressSpace vpnClientAddressPool() {
-        return this.vpnClientAddressPool;
+        return this.innerProperties() == null ? null : this.innerProperties().vpnClientAddressPool();
     }
 
     /**
@@ -106,7 +100,10 @@ public class P2SConnectionConfiguration extends SubResource {
      * @return the P2SConnectionConfiguration object itself.
      */
     public P2SConnectionConfiguration withVpnClientAddressPool(AddressSpace vpnClientAddressPool) {
-        this.vpnClientAddressPool = vpnClientAddressPool;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new P2SConnectionConfigurationProperties();
+        }
+        this.innerProperties().withVpnClientAddressPool(vpnClientAddressPool);
         return this;
     }
 
@@ -117,7 +114,7 @@ public class P2SConnectionConfiguration extends SubResource {
      * @return the routingConfiguration value.
      */
     public RoutingConfiguration routingConfiguration() {
-        return this.routingConfiguration;
+        return this.innerProperties() == null ? null : this.innerProperties().routingConfiguration();
     }
 
     /**
@@ -128,7 +125,10 @@ public class P2SConnectionConfiguration extends SubResource {
      * @return the P2SConnectionConfiguration object itself.
      */
     public P2SConnectionConfiguration withRoutingConfiguration(RoutingConfiguration routingConfiguration) {
-        this.routingConfiguration = routingConfiguration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new P2SConnectionConfigurationProperties();
+        }
+        this.innerProperties().withRoutingConfiguration(routingConfiguration);
         return this;
     }
 
@@ -139,7 +139,7 @@ public class P2SConnectionConfiguration extends SubResource {
      * @return the enableInternetSecurity value.
      */
     public Boolean enableInternetSecurity() {
-        return this.enableInternetSecurity;
+        return this.innerProperties() == null ? null : this.innerProperties().enableInternetSecurity();
     }
 
     /**
@@ -150,7 +150,10 @@ public class P2SConnectionConfiguration extends SubResource {
      * @return the P2SConnectionConfiguration object itself.
      */
     public P2SConnectionConfiguration withEnableInternetSecurity(Boolean enableInternetSecurity) {
-        this.enableInternetSecurity = enableInternetSecurity;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new P2SConnectionConfigurationProperties();
+        }
+        this.innerProperties().withEnableInternetSecurity(enableInternetSecurity);
         return this;
     }
 
@@ -160,14 +163,7 @@ public class P2SConnectionConfiguration extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public P2SConnectionConfiguration withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -176,11 +172,8 @@ public class P2SConnectionConfiguration extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (vpnClientAddressPool() != null) {
-            vpnClientAddressPool().validate();
-        }
-        if (routingConfiguration() != null) {
-            routingConfiguration().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

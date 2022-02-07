@@ -3,6 +3,7 @@
 package com.azure.spring.data.cosmos.common;
 
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.spring.data.cosmos.core.ResponseDiagnostics;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
@@ -10,6 +11,8 @@ import com.azure.spring.data.cosmos.exception.IllegalQueryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
+
+import java.util.UUID;
 
 /**
  * Util class to fill and process response diagnostics
@@ -49,6 +52,22 @@ public class CosmosUtils {
     }
 
     /**
+     * Generate ResponseDiagnostics with CosmosException diagnostics
+     * @param responseDiagnosticsProcessor response diagnostics processor
+     * @param cosmosException cosmos exception
+     */
+    public static void fillAndProcessCosmosExceptionDiagnostics(ResponseDiagnosticsProcessor responseDiagnosticsProcessor,
+                                                         CosmosException cosmosException) {
+        if (responseDiagnosticsProcessor == null) {
+            return;
+        }
+        if (cosmosException == null || cosmosException.getDiagnostics() == null) {
+            return;
+        }
+        fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor, cosmosException.getDiagnostics(), null);
+    }
+
+    /**
      * ID value should be string value, real id type will be String, Integer, Long,
      * all of these must be converted to String type.
      * @param idValue id value to find
@@ -65,8 +84,10 @@ public class CosmosUtils {
             return Integer.toString((Integer) idValue);
         } else if (idValue instanceof Long) {
             return Long.toString((Long) idValue);
+        } else if (idValue instanceof UUID) {
+            return idValue.toString();
         } else {
-            throw new IllegalQueryException("Type of id field must be String or Integer or Long");
+            throw new IllegalQueryException("Type of id field must be String or Integer or Long or UUID");
         }
     }
 }

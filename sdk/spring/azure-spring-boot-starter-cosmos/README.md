@@ -50,6 +50,8 @@ azure.cosmos.key=your-cosmos-key
 azure.cosmos.database=your-cosmos-databasename
 azure.cosmos.populateQueryMetrics=true
 secondary-key=put-your-cosmos-secondary-key-here
+# Whether to validate the uri, default is true.
+azure.cosmos.validateUri=true
 ```
 
 Property `azure.cosmos.consistency-level` is also supported.
@@ -78,8 +80,7 @@ Call `http://{hostname}:{port}/actuator/health/cosmos` to get the Cosmos DB heal
 
 ### Define an entity
 Define a simple entity as Document in Cosmos DB.
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/cosmos/User.java#L10-L65 -->
-```java
+```java readme-sample-CosmosUser
 @Container(containerName = "mycollection")
 public class User {
     @Id
@@ -143,8 +144,7 @@ Annotation `@Container(containerName = "mycollection")` is used to specify the c
 
 ### Create repositories
 Extends ReactiveCosmosRepository interface, which provides Spring Data repository support.
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/cosmos/UserRepository.java#L10-L14 -->
-```java
+```java readme-sample-UserRepository
 @Repository
 public interface UserRepository extends ReactiveCosmosRepository<User, String> {
 
@@ -156,8 +156,7 @@ So far ReactiveCosmosRepository provides basic save, delete and find operations.
 
 ### Create an Application class
 Here create an application class with all the components
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/cosmos/CosmosSampleApplication.java#L21-L116 -->
-```java
+```java readme-sample-CosmosSampleApplication
 @SpringBootApplication
 public class CosmosSampleApplication implements CommandLineRunner {
 
@@ -258,22 +257,16 @@ public class CosmosSampleApplication implements CommandLineRunner {
 Autowired UserRepository interface, then can do save, delete and find operations.
 
 ## Troubleshooting
-### Enable client logging
-Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
+### Logging setting
+Please refer to [spring logging document] to get more information about logging.
 
-### Enable Spring logging
-Spring allow all the supported logging systems to set logger levels set in the Spring Environment (for example, in application.properties) by using `logging.level.<logger-name>=<level>` where level is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. The root logger can be configured by using logging.level.root.
-
-The following example shows potential logging settings in `application.properties`:
-
+#### Logging setting examples
+- Example: Setting logging level of hibernate
 ```properties
 logging.level.root=WARN
 logging.level.org.springframework.web=DEBUG
 logging.level.org.hibernate=ERROR
 ```
-
-For more information about setting loging in pring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging).
- 
 
 ## Next steps
 
@@ -293,7 +286,7 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
 [package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-boot-starter-cosmos
 [sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/cosmos/azure-spring-boot-sample-cosmos
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
+[spring logging document]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
 [sample_cosmos_switch_key]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-spring-data-cosmos/src/samples/java/com/azure/spring/data/cosmos/SampleApplication.java
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [Add azure-spring-boot-bom]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-boot-bom

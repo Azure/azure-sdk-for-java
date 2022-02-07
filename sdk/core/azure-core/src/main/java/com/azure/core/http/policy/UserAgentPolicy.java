@@ -87,9 +87,10 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
      * @param configuration Configuration store that will be checked for {@link
      * Configuration#PROPERTY_AZURE_TELEMETRY_DISABLED}. If {@code null} is passed the {@link
      * Configuration#getGlobalConfiguration() global configuration} will be checked.
+     * @deprecated Use {@link UserAgentPolicy#UserAgentPolicy(String, String, String, Configuration)} instead.
      */
+    @Deprecated
     public UserAgentPolicy(String sdkName, String sdkVersion, Configuration configuration, ServiceVersion version) {
-        // TODO: ServiceVersion is not used in user agent string. This method should be deprecated.
         this.userAgent = UserAgentUtil.toUserAgentString(null, sdkName, sdkVersion, configuration);
     }
 

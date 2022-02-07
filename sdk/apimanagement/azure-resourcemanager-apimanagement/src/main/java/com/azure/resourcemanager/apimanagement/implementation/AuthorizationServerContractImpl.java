@@ -36,6 +36,35 @@ public final class AuthorizationServerContractImpl
         return this.innerModel().type();
     }
 
+    public String displayName() {
+        return this.innerModel().displayName();
+    }
+
+    public String clientRegistrationEndpoint() {
+        return this.innerModel().clientRegistrationEndpoint();
+    }
+
+    public String authorizationEndpoint() {
+        return this.innerModel().authorizationEndpoint();
+    }
+
+    public List<GrantType> grantTypes() {
+        List<GrantType> inner = this.innerModel().grantTypes();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public String clientId() {
+        return this.innerModel().clientId();
+    }
+
+    public String clientSecret() {
+        return this.innerModel().clientSecret();
+    }
+
     public String description() {
         return this.innerModel().description();
     }
@@ -94,35 +123,6 @@ public final class AuthorizationServerContractImpl
 
     public String resourceOwnerPassword() {
         return this.innerModel().resourceOwnerPassword();
-    }
-
-    public String displayName() {
-        return this.innerModel().displayName();
-    }
-
-    public String clientRegistrationEndpoint() {
-        return this.innerModel().clientRegistrationEndpoint();
-    }
-
-    public String authorizationEndpoint() {
-        return this.innerModel().authorizationEndpoint();
-    }
-
-    public List<GrantType> grantTypes() {
-        List<GrantType> inner = this.innerModel().grantTypes();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public String clientId() {
-        return this.innerModel().clientId();
-    }
-
-    public String clientSecret() {
-        return this.innerModel().clientSecret();
     }
 
     public AuthorizationServerContractInner innerModel() {
@@ -248,6 +248,66 @@ public final class AuthorizationServerContractImpl
             .listSecretsWithResponse(resourceGroupName, serviceName, authsid, context);
     }
 
+    public AuthorizationServerContractImpl withDisplayName(String displayName) {
+        if (isInCreateMode()) {
+            this.innerModel().withDisplayName(displayName);
+            return this;
+        } else {
+            this.updateParameters.withDisplayName(displayName);
+            return this;
+        }
+    }
+
+    public AuthorizationServerContractImpl withClientRegistrationEndpoint(String clientRegistrationEndpoint) {
+        if (isInCreateMode()) {
+            this.innerModel().withClientRegistrationEndpoint(clientRegistrationEndpoint);
+            return this;
+        } else {
+            this.updateParameters.withClientRegistrationEndpoint(clientRegistrationEndpoint);
+            return this;
+        }
+    }
+
+    public AuthorizationServerContractImpl withAuthorizationEndpoint(String authorizationEndpoint) {
+        if (isInCreateMode()) {
+            this.innerModel().withAuthorizationEndpoint(authorizationEndpoint);
+            return this;
+        } else {
+            this.updateParameters.withAuthorizationEndpoint(authorizationEndpoint);
+            return this;
+        }
+    }
+
+    public AuthorizationServerContractImpl withGrantTypes(List<GrantType> grantTypes) {
+        if (isInCreateMode()) {
+            this.innerModel().withGrantTypes(grantTypes);
+            return this;
+        } else {
+            this.updateParameters.withGrantTypes(grantTypes);
+            return this;
+        }
+    }
+
+    public AuthorizationServerContractImpl withClientId(String clientId) {
+        if (isInCreateMode()) {
+            this.innerModel().withClientId(clientId);
+            return this;
+        } else {
+            this.updateParameters.withClientId(clientId);
+            return this;
+        }
+    }
+
+    public AuthorizationServerContractImpl withClientSecret(String clientSecret) {
+        if (isInCreateMode()) {
+            this.innerModel().withClientSecret(clientSecret);
+            return this;
+        } else {
+            this.updateParameters.withClientSecret(clientSecret);
+            return this;
+        }
+    }
+
     public AuthorizationServerContractImpl withDescription(String description) {
         if (isInCreateMode()) {
             this.innerModel().withDescription(description);
@@ -347,66 +407,6 @@ public final class AuthorizationServerContractImpl
             return this;
         } else {
             this.updateParameters.withResourceOwnerPassword(resourceOwnerPassword);
-            return this;
-        }
-    }
-
-    public AuthorizationServerContractImpl withDisplayName(String displayName) {
-        if (isInCreateMode()) {
-            this.innerModel().withDisplayName(displayName);
-            return this;
-        } else {
-            this.updateParameters.withDisplayName(displayName);
-            return this;
-        }
-    }
-
-    public AuthorizationServerContractImpl withClientRegistrationEndpoint(String clientRegistrationEndpoint) {
-        if (isInCreateMode()) {
-            this.innerModel().withClientRegistrationEndpoint(clientRegistrationEndpoint);
-            return this;
-        } else {
-            this.updateParameters.withClientRegistrationEndpoint(clientRegistrationEndpoint);
-            return this;
-        }
-    }
-
-    public AuthorizationServerContractImpl withAuthorizationEndpoint(String authorizationEndpoint) {
-        if (isInCreateMode()) {
-            this.innerModel().withAuthorizationEndpoint(authorizationEndpoint);
-            return this;
-        } else {
-            this.updateParameters.withAuthorizationEndpoint(authorizationEndpoint);
-            return this;
-        }
-    }
-
-    public AuthorizationServerContractImpl withGrantTypes(List<GrantType> grantTypes) {
-        if (isInCreateMode()) {
-            this.innerModel().withGrantTypes(grantTypes);
-            return this;
-        } else {
-            this.updateParameters.withGrantTypes(grantTypes);
-            return this;
-        }
-    }
-
-    public AuthorizationServerContractImpl withClientId(String clientId) {
-        if (isInCreateMode()) {
-            this.innerModel().withClientId(clientId);
-            return this;
-        } else {
-            this.updateParameters.withClientId(clientId);
-            return this;
-        }
-    }
-
-    public AuthorizationServerContractImpl withClientSecret(String clientSecret) {
-        if (isInCreateMode()) {
-            this.innerModel().withClientSecret(clientSecret);
-            return this;
-        } else {
-            this.updateParameters.withClientSecret(clientSecret);
             return this;
         }
     }

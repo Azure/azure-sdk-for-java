@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.OperationDisplay;
 import com.azure.resourcemanager.netapp.models.ServiceSpecification;
@@ -13,9 +12,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Microsoft.NetApp REST API operation definition. */
-@JsonFlatten
 @Fluent
-public class OperationInner {
+public final class OperationInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);
 
     /*
@@ -37,10 +35,10 @@ public class OperationInner {
     private String origin;
 
     /*
-     * One property of operation, include metric specifications.
+     * Properties of operation, include metric specifications.
      */
-    @JsonProperty(value = "properties.serviceSpecification")
-    private ServiceSpecification serviceSpecification;
+    @JsonProperty(value = "properties")
+    private OperationProperties innerProperties;
 
     /**
      * Get the name property: Operation name: {provider}/{resource}/{operation}.
@@ -103,12 +101,21 @@ public class OperationInner {
     }
 
     /**
+     * Get the innerProperties property: Properties of operation, include metric specifications.
+     *
+     * @return the innerProperties value.
+     */
+    private OperationProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the serviceSpecification property: One property of operation, include metric specifications.
      *
      * @return the serviceSpecification value.
      */
     public ServiceSpecification serviceSpecification() {
-        return this.serviceSpecification;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceSpecification();
     }
 
     /**
@@ -118,7 +125,10 @@ public class OperationInner {
      * @return the OperationInner object itself.
      */
     public OperationInner withServiceSpecification(ServiceSpecification serviceSpecification) {
-        this.serviceSpecification = serviceSpecification;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OperationProperties();
+        }
+        this.innerProperties().withServiceSpecification(serviceSpecification);
         return this;
     }
 
@@ -131,8 +141,8 @@ public class OperationInner {
         if (display() != null) {
             display().validate();
         }
-        if (serviceSpecification() != null) {
-            serviceSpecification().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

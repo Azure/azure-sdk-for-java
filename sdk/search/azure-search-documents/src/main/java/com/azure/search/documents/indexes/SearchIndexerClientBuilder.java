@@ -39,11 +39,25 @@ import java.util.Objects;
  *
  * <p><strong>Instantiating an asynchronous Search Indexer Client</strong></p>
  *
- * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.instantiation}
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.instantiation -->
+ * <pre>
+ * SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.instantiation -->
  *
  * <p><strong>Instantiating a synchronous Search Indexer Client</strong></p>
  *
- * {@codesnippet com.azure.search.documents.indexes.SearchIndexerClient.instantiation}
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.instantiation -->
+ * <pre>
+ * SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.instantiation -->
  *
  * @see SearchIndexerClient
  * @see SearchIndexerAsyncClient

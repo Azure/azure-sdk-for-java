@@ -45,6 +45,21 @@ public interface VirtualMachine
      */
     Mono<Void> deallocateAsync();
 
+    /**
+     * Shuts down the virtual machine and releases the compute resources.
+     *
+     * @param hibernate hibernate the virtual machine
+     */
+    void deallocate(boolean hibernate);
+
+    /**
+     * Shuts down the virtual machine and releases the compute resources asynchronously.
+     *
+     * @param hibernate hibernate the virtual machine
+     * @return a representation of the deferred computation of this call
+     */
+    Mono<Void> deallocateAsync(boolean hibernate);
+
     /** Generalizes the virtual machine. */
     void generalize();
 
@@ -363,6 +378,11 @@ public interface VirtualMachine
 
     /** @return the billing related details of a low priority virtual machine */
     BillingProfile billingProfile();
+
+    /**
+     * @return true if hibernation feature is enabled on the virtual machine.
+     */
+    boolean isHibernationEnabled();
 
     // Setters
     //
@@ -1715,6 +1735,20 @@ public interface VirtualMachine
             WithCreate withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions deleteOptions);
         }
 
+        /** The stage of the VM definition allowing to specify additional capacities. */
+        interface WithAdditionalCapacities {
+            /**
+             * Enables hibernation feature.
+             *
+             * Hibernation is supported on premium general purpose SKUs, e.g. STANDARD_D2S_V3.
+             * Hibernation is supported on Windows 10 19H1 and higher, and Windows Server 2019 and higher.
+             * For Ubuntu 18.04 or higher, hibernation-setup-tool is required to be installed on the virtual machine.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate enableHibernation();
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
@@ -1735,10 +1769,15 @@ public interface VirtualMachine
                 DefinitionStages.WithSystemAssignedManagedServiceIdentity,
                 DefinitionStages.WithUserAssignedManagedServiceIdentity,
                 DefinitionStages.WithLicenseType,
+                DefinitionStages.WithAdditionalCapacities,
                 DefinitionStages.WithNetworkInterfaceDeleteOptions {
 
             /**
              * Begins creating the virtual machine resource.
+             *
+             * Virtual machine extensions can only be created after the completion of virtual machine.
+             * Therefore, the configuration of virtual machine extensions is not compatible with this operation.
+             * Please use {@link WithCreate#create()} if virtual machine extensions is configured.
              *
              * @return the accepted create operation
              */
@@ -2185,6 +2224,27 @@ public interface VirtualMachine
              */
             Update withLicenseType(String licenseType);
         }
+
+        /** The stage of the VM update allowing to specify additional capacities. */
+        interface WithAdditionalCapacities {
+            /**
+             * Enables hibernation feature.
+             *
+             * Update can only be applied when the virtual machine is stopped (deallocated).
+             *
+             * @return the next stage of the update
+             */
+            Update enableHibernation();
+
+            /**
+             * Disables hibernation feature.
+             *
+             * Update can only be applied when the virtual machine is stopped (deallocated).
+             *
+             * @return the next stage of the update
+             */
+            Update disableHibernation();
+        }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
@@ -2200,7 +2260,8 @@ public interface VirtualMachine
             UpdateStages.WithBillingProfile,
             UpdateStages.WithSystemAssignedManagedServiceIdentity,
             UpdateStages.WithUserAssignedManagedServiceIdentity,
-            UpdateStages.WithLicenseType {
+            UpdateStages.WithLicenseType,
+            UpdateStages.WithAdditionalCapacities {
         /**
          * Specifies the encryption settings for the OS Disk.
          *

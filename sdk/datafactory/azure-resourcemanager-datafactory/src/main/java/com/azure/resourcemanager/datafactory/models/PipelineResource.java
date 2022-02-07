@@ -20,6 +20,34 @@ public interface PipelineResource {
     String id();
 
     /**
+     * Gets the name property: The resource name.
+     *
+     * @return the name value.
+     */
+    String name();
+
+    /**
+     * Gets the type property: The resource type.
+     *
+     * @return the type value.
+     */
+    String type();
+
+    /**
+     * Gets the etag property: Etag identifies change in the resource.
+     *
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
+     * Gets the additionalProperties property: Pipeline resource type.
+     *
+     * @return the additionalProperties value.
+     */
+    Map<String, Object> additionalProperties();
+
+    /**
      * Gets the description property: The description of the pipeline.
      *
      * @return the description value.
@@ -84,34 +112,6 @@ public interface PipelineResource {
     PipelinePolicy policy();
 
     /**
-     * Gets the name property: The resource name.
-     *
-     * @return the name value.
-     */
-    String name();
-
-    /**
-     * Gets the type property: The resource type.
-     *
-     * @return the type value.
-     */
-    String type();
-
-    /**
-     * Gets the etag property: Etag identifies change in the resource.
-     *
-     * @return the etag value.
-     */
-    String etag();
-
-    /**
-     * Gets the additionalProperties property: Pipeline resource type.
-     *
-     * @return the additionalProperties value.
-     */
-    Map<String, Object> additionalProperties();
-
-    /**
      * Gets the inner com.azure.resourcemanager.datafactory.fluent.models.PipelineResourceInner object.
      *
      * @return the inner object.
@@ -143,7 +143,8 @@ public interface PipelineResource {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithDescription,
+            extends DefinitionStages.WithAdditionalProperties,
+                DefinitionStages.WithDescription,
                 DefinitionStages.WithActivities,
                 DefinitionStages.WithParameters,
                 DefinitionStages.WithVariables,
@@ -152,7 +153,6 @@ public interface PipelineResource {
                 DefinitionStages.WithRunDimensions,
                 DefinitionStages.WithFolder,
                 DefinitionStages.WithPolicy,
-                DefinitionStages.WithAdditionalProperties,
                 DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
@@ -168,6 +168,16 @@ public interface PipelineResource {
              * @return the created resource.
              */
             PipelineResource create(Context context);
+        }
+        /** The stage of the PipelineResource definition allowing to specify additionalProperties. */
+        interface WithAdditionalProperties {
+            /**
+             * Specifies the additionalProperties property: Pipeline resource type..
+             *
+             * @param additionalProperties Pipeline resource type.
+             * @return the next definition stage.
+             */
+            WithCreate withAdditionalProperties(Map<String, Object> additionalProperties);
         }
         /** The stage of the PipelineResource definition allowing to specify description. */
         interface WithDescription {
@@ -261,16 +271,6 @@ public interface PipelineResource {
              */
             WithCreate withPolicy(PipelinePolicy policy);
         }
-        /** The stage of the PipelineResource definition allowing to specify additionalProperties. */
-        interface WithAdditionalProperties {
-            /**
-             * Specifies the additionalProperties property: Pipeline resource type..
-             *
-             * @param additionalProperties Pipeline resource type.
-             * @return the next definition stage.
-             */
-            WithCreate withAdditionalProperties(Map<String, Object> additionalProperties);
-        }
         /** The stage of the PipelineResource definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -293,7 +293,8 @@ public interface PipelineResource {
 
     /** The template for PipelineResource update. */
     interface Update
-        extends UpdateStages.WithDescription,
+        extends UpdateStages.WithAdditionalProperties,
+            UpdateStages.WithDescription,
             UpdateStages.WithActivities,
             UpdateStages.WithParameters,
             UpdateStages.WithVariables,
@@ -302,7 +303,6 @@ public interface PipelineResource {
             UpdateStages.WithRunDimensions,
             UpdateStages.WithFolder,
             UpdateStages.WithPolicy,
-            UpdateStages.WithAdditionalProperties,
             UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
@@ -321,6 +321,16 @@ public interface PipelineResource {
     }
     /** The PipelineResource update stages. */
     interface UpdateStages {
+        /** The stage of the PipelineResource update allowing to specify additionalProperties. */
+        interface WithAdditionalProperties {
+            /**
+             * Specifies the additionalProperties property: Pipeline resource type..
+             *
+             * @param additionalProperties Pipeline resource type.
+             * @return the next definition stage.
+             */
+            Update withAdditionalProperties(Map<String, Object> additionalProperties);
+        }
         /** The stage of the PipelineResource update allowing to specify description. */
         interface WithDescription {
             /**
@@ -413,16 +423,6 @@ public interface PipelineResource {
              */
             Update withPolicy(PipelinePolicy policy);
         }
-        /** The stage of the PipelineResource update allowing to specify additionalProperties. */
-        interface WithAdditionalProperties {
-            /**
-             * Specifies the additionalProperties property: Pipeline resource type..
-             *
-             * @param additionalProperties Pipeline resource type.
-             * @return the next definition stage.
-             */
-            Update withAdditionalProperties(Map<String, Object> additionalProperties);
-        }
         /** The stage of the PipelineResource update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -477,7 +477,7 @@ public interface PipelineResource {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body with a run identifier.
+     * @return response body with a run identifier along with {@link Response}.
      */
     Response<CreateRunResponse> createRunWithResponse(
         String referencePipelineRunId,

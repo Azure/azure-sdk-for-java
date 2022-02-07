@@ -4,13 +4,14 @@
 package com.azure.data.schemaregistry;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.data.schemaregistry.models.SerializationType;
+import com.azure.data.schemaregistry.models.SchemaFormat;
+import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-import java.util.concurrent.CountDownLatch;
-
 /**
- * Sample to demonstrate retrieving the schema id of a schema from Schema Registry.
+ * Sample to demonstrate retrieving properties of a schema from Schema Registry.
+ *
+ * @see GetSchemaIdSampleAsync for the async sample.
  */
 public class GetSchemaIdSample {
 
@@ -18,25 +19,18 @@ public class GetSchemaIdSample {
      * The main method to run this program.
      * @param args Ignored args.
      */
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
-        SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder()
-            .endpoint("{schema-registry-endpoint")
+        SchemaRegistryClient schemaRegistryClient = new SchemaRegistryClientBuilder()
+            .fullyQualifiedNamespace("{schema-registry-endpoint")
             .credential(tokenCredential)
-            .buildAsyncClient();
+            .buildClient();
 
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-        // Register a schema
-        schemaRegistryAsyncClient
-            .getSchemaId("{group-name}", "{schema-name}", "{schema-string}", SerializationType.AVRO)
-            .subscribe(schemaId -> {
-                System.out.println("Successfully retrieved the schema id: " + schemaId);
-                countDownLatch.countDown();
-            });
+        // Gets the properties of an existing schema.
+        SchemaProperties schemaProperties = schemaRegistryClient
+            .getSchemaProperties("{group-name}", "{schema-name}", "{schema-string}", SchemaFormat.AVRO);
 
-        // wait for the async task to complete
-        countDownLatch.await();
-
+        System.out.println("Successfully retrieved the schema id: " + schemaProperties.getId());
     }
 }

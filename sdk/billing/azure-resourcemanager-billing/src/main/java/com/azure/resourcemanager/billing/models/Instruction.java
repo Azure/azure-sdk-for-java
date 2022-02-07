@@ -35,7 +35,7 @@ public interface Instruction {
      *
      * @return the amount value.
      */
-    Float amount();
+    float amount();
 
     /**
      * Gets the startDate property: The date this billing instruction goes into effect.

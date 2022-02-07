@@ -185,7 +185,8 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command.
+     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -224,7 +225,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
@@ -256,7 +257,8 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command.
+     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -296,7 +298,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
@@ -324,9 +326,9 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command.
+     * @return the {@link PollerFlux} for polling of describes a Virtual Machine run command.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -343,7 +345,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
                 this.client.getHttpPipeline(),
                 VirtualMachineRunCommandInner.class,
                 VirtualMachineRunCommandInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -358,9 +360,9 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command.
+     * @return the {@link PollerFlux} for polling of describes a Virtual Machine run command.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -394,9 +396,9 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command.
+     * @return the {@link SyncPoller} for polling of describes a Virtual Machine run command.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginCreateOrUpdate(
         String resourceGroupName,
         String vmScaleSetName,
@@ -419,9 +421,9 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command.
+     * @return the {@link SyncPoller} for polling of describes a Virtual Machine run command.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginCreateOrUpdate(
         String resourceGroupName,
         String vmScaleSetName,
@@ -445,7 +447,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command.
+     * @return describes a Virtual Machine run command on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineRunCommandInner> createOrUpdateAsync(
@@ -471,7 +473,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command.
+     * @return describes a Virtual Machine run command on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VirtualMachineRunCommandInner> createOrUpdateAsync(
@@ -547,7 +549,8 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command.
+     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -586,7 +589,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
@@ -618,7 +621,8 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command.
+     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -658,7 +662,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
         } else {
             runCommand.validate();
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
@@ -686,9 +690,9 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command.
+     * @return the {@link PollerFlux} for polling of describes a Virtual Machine run command.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginUpdateAsync(
         String resourceGroupName,
         String vmScaleSetName,
@@ -704,7 +708,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
                 this.client.getHttpPipeline(),
                 VirtualMachineRunCommandInner.class,
                 VirtualMachineRunCommandInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -719,9 +723,9 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command.
+     * @return the {@link PollerFlux} for polling of describes a Virtual Machine run command.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginUpdateAsync(
         String resourceGroupName,
         String vmScaleSetName,
@@ -753,9 +757,9 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command.
+     * @return the {@link SyncPoller} for polling of describes a Virtual Machine run command.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginUpdate(
         String resourceGroupName,
         String vmScaleSetName,
@@ -778,9 +782,9 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command.
+     * @return the {@link SyncPoller} for polling of describes a Virtual Machine run command.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginUpdate(
         String resourceGroupName,
         String vmScaleSetName,
@@ -803,7 +807,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command.
+     * @return describes a Virtual Machine run command on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineRunCommandInner> updateAsync(
@@ -829,7 +833,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command.
+     * @return describes a Virtual Machine run command on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VirtualMachineRunCommandInner> updateAsync(
@@ -902,7 +906,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -932,7 +936,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
@@ -962,7 +966,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -992,7 +996,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
@@ -1018,16 +1022,17 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1041,9 +1046,9 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName, Context context) {
         context = this.client.mergeContext(context);
@@ -1064,9 +1069,9 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName) {
         return beginDeleteAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName).getSyncPoller();
@@ -1083,9 +1088,9 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName, Context context) {
         return beginDeleteAsync(resourceGroupName, vmScaleSetName, instanceId, runCommandName, context).getSyncPoller();
@@ -1101,7 +1106,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
@@ -1122,7 +1127,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1177,7 +1182,8 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command.
+     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VirtualMachineRunCommandInner>> getWithResponseAsync(
@@ -1207,7 +1213,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
@@ -1239,7 +1245,8 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command.
+     * @return describes a Virtual Machine run command along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VirtualMachineRunCommandInner>> getWithResponseAsync(
@@ -1274,7 +1281,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
@@ -1302,7 +1309,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command.
+     * @return describes a Virtual Machine run command on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineRunCommandInner> getAsync(
@@ -1328,7 +1335,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command.
+     * @return describes a Virtual Machine run command on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualMachineRunCommandInner> getAsync(
@@ -1376,7 +1383,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command.
+     * @return describes a Virtual Machine run command along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualMachineRunCommandInner> getWithResponse(
@@ -1400,7 +1407,8 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List run command operation response.
+     * @return the List run command operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineRunCommandInner>> listSinglePageAsync(
@@ -1427,7 +1435,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
@@ -1466,7 +1474,8 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List run command operation response.
+     * @return the List run command operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineRunCommandInner>> listSinglePageAsync(
@@ -1493,7 +1502,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-11-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
@@ -1528,7 +1537,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List run command operation response.
+     * @return the List run command operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualMachineRunCommandInner> listAsync(
@@ -1547,7 +1556,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List run command operation response.
+     * @return the List run command operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualMachineRunCommandInner> listAsync(
@@ -1569,7 +1578,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List run command operation response.
+     * @return the List run command operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VirtualMachineRunCommandInner> listAsync(
@@ -1588,7 +1597,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List run command operation response.
+     * @return the List run command operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineRunCommandInner> list(
@@ -1608,7 +1617,7 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List run command operation response.
+     * @return the List run command operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineRunCommandInner> list(
@@ -1623,7 +1632,8 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List run command operation response.
+     * @return the List run command operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineRunCommandInner>> listNextSinglePageAsync(String nextLink) {
@@ -1659,7 +1669,8 @@ public final class VirtualMachineScaleSetVMRunCommandsClientImpl implements Virt
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List run command operation response.
+     * @return the List run command operation response along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineRunCommandInner>> listNextSinglePageAsync(

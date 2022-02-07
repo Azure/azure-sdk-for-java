@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.client.traits.AmqpTrait;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
@@ -19,6 +20,11 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.annotation.ServiceClientProtocol;
+import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
+import com.azure.core.client.traits.AzureSasCredentialTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
@@ -59,22 +65,93 @@ import java.util.regex.Pattern;
  * The builder to create Service Bus clients:
  *
  * <p><strong>Instantiate a synchronous sender</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.sender.sync.client.instantiation}
+ * <!-- src_embed com.azure.messaging.servicebus.sender.sync.client.instantiation -->
+ * <pre>
+ * &#47;&#47; Retrieve 'connectionString' and 'queueName' from your configuration.
+ * ServiceBusClientBuilder builder = new ServiceBusClientBuilder&#40;&#41;
+ *     .connectionString&#40;connectionString&#41;;
+ * ServiceBusSenderClient sender = builder
+ *     .sender&#40;&#41;
+ *     .queueName&#40;queueName&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.sender.sync.client.instantiation -->
  *
  * <p><strong>Instantiate an asynchronous receiver</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.receiver.async.client.instantiation}
+ * <!-- src_embed com.azure.messaging.servicebus.receiver.async.client.instantiation -->
+ * <pre>
+ * &#47;&#47; Retrieve 'connectionString', 'topicName' and 'subscriptionName' from your configuration.
+ * ServiceBusClientBuilder builder = new ServiceBusClientBuilder&#40;&#41;
+ *     .connectionString&#40;connectionString&#41;;
+ * ServiceBusReceiverAsyncClient receiver = builder
+ *     .receiver&#40;&#41;
+ *     .disableAutoComplete&#40;&#41; &#47;&#47; Allows user to take control of settling a message.
+ *     .topicName&#40;topicName&#41;
+ *     .subscriptionName&#40;subscriptionName&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.receiver.async.client.instantiation -->
  *
  * <p><strong>Instantiate an asynchronous session receiver</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.session.receiver.async.client.instantiation}
+ * <!-- src_embed com.azure.messaging.servicebus.session.receiver.async.client.instantiation -->
+ * <pre>
+ * &#47;&#47; Retrieve 'connectionString', 'topicName' and 'subscriptionName' from your configuration.
+ * ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder&#40;&#41;
+ *     .connectionString&#40;connectionString&#41;
+ *     .sessionReceiver&#40;&#41;
+ *     .receiveMode&#40;ServiceBusReceiveMode.PEEK_LOCK&#41;
+ *     .topicName&#40;topicName&#41;
+ *     .subscriptionName&#40;subscriptionName&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ *
+ * &#47;&#47; Receiving messages from the first available sessions. It waits up to the AmqpRetryOptions.getTryTimeout&#40;&#41;.
+ * &#47;&#47; If no session is available within that operation timeout, it completes with an error. Otherwise, a receiver
+ * &#47;&#47; is returned when a lock on the session is acquired.
+ * Mono&lt;ServiceBusReceiverAsyncClient&gt; receiverMono = sessionReceiver.acceptNextSession&#40;&#41;;
+ *
+ * Flux.usingWhen&#40;receiverMono,
+ *     receiver -&gt; receiver.receiveMessages&#40;&#41;,
+ *     receiver -&gt; Mono.fromRunnable&#40;receiver::close&#41;&#41;
+ *     .subscribe&#40;message -&gt; System.out.println&#40;message.getBody&#40;&#41;.toString&#40;&#41;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.session.receiver.async.client.instantiation -->
  *
  * <p><strong>Instantiate the processor</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.processor.client.instantiation}
+ * <!-- src_embed com.azure.messaging.servicebus.processor.client.instantiation -->
+ * <pre>
+ * &#47;&#47; Retrieve 'connectionString' and 'queueName' from your configuration.
+ * ServiceBusClientBuilder builder = new ServiceBusClientBuilder&#40;&#41;
+ *     .connectionString&#40;connectionString&#41;;
+ * ServiceBusProcessorClient processor = builder
+ *     .processor&#40;&#41;
+ *     .queueName&#40;queueName&#41;
+ *     .processMessage&#40;System.out::println&#41;
+ *     .processError&#40;context -&gt; System.err.println&#40;context.getErrorSource&#40;&#41;&#41;&#41;
+ *     .buildProcessorClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.processor.client.instantiation -->
 
  * <p><strong>Sharing a connection between clients</strong></p>
  * The creation of physical connection to Service Bus requires resources. If your architecture allows, an application
  * should share connection between clients which can be achieved by sharing the top level builder as shown below.
  *
- * {@codesnippet com.azure.messaging.servicebus.connection.sharing}
+ * <!-- src_embed com.azure.messaging.servicebus.connection.sharing -->
+ * <pre>
+ * &#47;&#47; Retrieve 'connectionString' and 'queueName' from your configuration.
+ * &#47;&#47; Create shared builder.
+ * ServiceBusClientBuilder sharedConnectionBuilder = new ServiceBusClientBuilder&#40;&#41;
+ *     .connectionString&#40;connectionString&#41;;
+ * &#47;&#47; Create receiver and sender which will share the connection.
+ * ServiceBusReceiverClient receiver = sharedConnectionBuilder
+ *     .receiver&#40;&#41;
+ *     .queueName&#40;queueName&#41;
+ *     .buildClient&#40;&#41;;
+ * ServiceBusSenderClient sender = sharedConnectionBuilder
+ *     .sender&#40;&#41;
+ *     .queueName&#40;queueName&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.connection.sharing -->
  *
  * <p><strong>Clients for sending messages</strong></p>
  * <ul>
@@ -102,7 +179,13 @@ import java.util.regex.Pattern;
 @ServiceClientBuilder(serviceClients = {ServiceBusReceiverAsyncClient.class, ServiceBusSenderAsyncClient.class,
     ServiceBusSenderClient.class, ServiceBusReceiverClient.class, ServiceBusProcessorClient.class},
     protocol = ServiceClientProtocol.AMQP)
-public final class ServiceBusClientBuilder {
+public final class ServiceBusClientBuilder implements
+    TokenCredentialTrait<ServiceBusClientBuilder>,
+    AzureNamedKeyCredentialTrait<ServiceBusClientBuilder>,
+    ConnectionStringTrait<ServiceBusClientBuilder>,
+    AzureSasCredentialTrait<ServiceBusClientBuilder>,
+    AmqpTrait<ServiceBusClientBuilder>,
+    ConfigurationTrait<ServiceBusClientBuilder> {
     private static final AmqpRetryOptions DEFAULT_RETRY =
         new AmqpRetryOptions().setTryTimeout(ServiceBusConstants.OPERATION_TIMEOUT);
 
@@ -158,9 +241,35 @@ public final class ServiceBusClientBuilder {
      *
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
+    @Override
     public ServiceBusClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
+    }
+
+    /**
+     * Sets the fully-qualified namespace for the Service Bus.
+     *
+     * @param fullyQualifiedNamespace The fully-qualified namespace for the Service Bus.
+     *
+     * @return The updated {@link ServiceBusClientBuilder} object.
+     */
+    public ServiceBusClientBuilder fullyQualifiedNamespace(String fullyQualifiedNamespace) {
+        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
+            "'fullyQualifiedNamespace' cannot be null.");
+        if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
+        }
+        return this;
+    }
+
+    private String getAndValidateFullyQualifiedNamespace() {
+        if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
+        }
+        return fullyQualifiedNamespace;
     }
 
     /**
@@ -243,6 +352,7 @@ public final class ServiceBusClientBuilder {
      *
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
+    @Override
     public ServiceBusClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
@@ -271,6 +381,22 @@ public final class ServiceBusClientBuilder {
                 new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
         }
 
+        return this;
+    }
+
+    /**
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
+     * documentation for more details on proper usage of the {@link TokenCredential} type.
+     *
+     * @param credential The token credential to use for authentication. Access controls may be specified by the
+     * ServiceBus namespace or the requested Service Bus entity, depending on Azure configuration.
+     *
+     * @return The updated {@link ServiceBusClientBuilder} object.
+     */
+    @Override
+    public ServiceBusClientBuilder credential(TokenCredential credential) {
+        this.credentials = Objects.requireNonNull(credential, "'credential' cannot be null.");
         return this;
     }
 
@@ -305,6 +431,27 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
+     * Sets the credential with the shared access policies for the Service Bus resource.
+     * You can find the shared access policies on the azure portal or Azure CLI.
+     * For instance, on the portal, "Shared Access policies" has 'policy' and its 'Primary Key' and 'Secondary Key'.
+     * The 'name' attribute of the {@link AzureNamedKeyCredential} is the 'policy' on portal and the 'key' attribute
+     * can be either 'Primary Key' or 'Secondary Key'.
+     * This method and {@link #connectionString(String)} take the same information in different forms. But it allows
+     * you to update the name and key.
+     *
+     * @param credential {@link AzureNamedKeyCredential} to be used for authentication.
+     *
+     * @return The updated {@link ServiceBusClientBuilder} object.
+     */
+    @Override
+    public ServiceBusClientBuilder credential(AzureNamedKeyCredential credential) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.credentials = new ServiceBusSharedKeyCredential(credential.getAzureNamedKey().getName(),
+            credential.getAzureNamedKey().getKey(), ServiceBusConstants.TOKEN_VALIDITY);
+        return this;
+    }
+
+    /**
      * Sets the credential with Shared Access Signature for the Service Bus resource.
      * Refer to <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-sas">
      *     Service Bus access control with Shared Access Signatures</a>.
@@ -331,6 +478,22 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
+     * Sets the credential with Shared Access Signature for the Service Bus resource.
+     * Refer to <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-sas">
+     *     Service Bus access control with Shared Access Signatures</a>.
+     *
+     * @param credential {@link AzureSasCredential} to be used for authentication.
+     *
+     * @return The updated {@link ServiceBusClientBuilder} object.
+     */
+    @Override
+    public ServiceBusClientBuilder credential(AzureSasCredential credential) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.credentials = new ServiceBusSharedKeyCredential(credential.getSignature());
+        return this;
+    }
+
+    /**
      * Sets the proxy configuration to use for {@link ServiceBusSenderAsyncClient}. When a proxy is configured, {@link
      * AmqpTransportType#AMQP_WEB_SOCKETS} must be used for the transport type.
      *
@@ -338,6 +501,7 @@ public final class ServiceBusClientBuilder {
      *
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
+    @Override
     public ServiceBusClientBuilder proxyOptions(ProxyOptions proxyOptions) {
         this.proxyOptions = proxyOptions;
         return this;
@@ -361,6 +525,7 @@ public final class ServiceBusClientBuilder {
      *
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
+    @Override
     public ServiceBusClientBuilder retryOptions(AmqpRetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
@@ -386,6 +551,7 @@ public final class ServiceBusClientBuilder {
      *
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
+    @Override
     public ServiceBusClientBuilder transportType(AmqpTransportType transportType) {
         this.transport = transportType;
         return this;
@@ -535,7 +701,7 @@ public final class ServiceBusClientBuilder {
         final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
         final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
 
-        return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType,
+        return new ConnectionOptions(getAndValidateFullyQualifiedNamespace(), credentials, authorizationType,
             ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
             options, verificationMode, product, clientVersion);
     }
@@ -552,10 +718,12 @@ public final class ServiceBusClientBuilder {
             return ProxyOptions.SYSTEM_DEFAULTS;
         }
 
-        return getProxyOptions(authentication, proxyAddress);
+        return getProxyOptions(authentication, proxyAddress, configuration,
+            Boolean.parseBoolean(configuration.get("java.net.useSystemProxies")));
     }
 
-    private ProxyOptions getProxyOptions(ProxyAuthenticationType authentication, String proxyAddress) {
+    private ProxyOptions getProxyOptions(ProxyAuthenticationType authentication, String proxyAddress,
+        Configuration configuration, boolean useSystemProxies) {
         String host;
         int port;
         if (HOST_PORT_PATTERN.matcher(proxyAddress.trim()).find()) {
@@ -566,11 +734,17 @@ public final class ServiceBusClientBuilder {
             final String username = configuration.get(ProxyOptions.PROXY_USERNAME);
             final String password = configuration.get(ProxyOptions.PROXY_PASSWORD);
             return new ProxyOptions(authentication, proxy, username, password);
-        } else {
+        } else if (useSystemProxies) {
+            // java.net.useSystemProxies needs to be set to true in this scenario.
+            // If it is set to false 'ProxyOptions' in azure-core will return null.
             com.azure.core.http.ProxyOptions coreProxyOptions = com.azure.core.http.ProxyOptions
                 .fromConfiguration(configuration);
             return new ProxyOptions(authentication, new Proxy(coreProxyOptions.getType().toProxyType(),
                 coreProxyOptions.getAddress()), coreProxyOptions.getUsername(), coreProxyOptions.getPassword());
+        } else {
+            logger.verbose("'HTTP_PROXY' was configured but ignored as 'java.net.useSystemProxies' wasn't "
+                + "set or was false.");
+            return ProxyOptions.SYSTEM_DEFAULTS;
         }
     }
 
@@ -767,7 +941,42 @@ public final class ServiceBusClientBuilder {
      * </ul>
      *
      * <p><strong>Instantiate a session-enabled processor client</strong></p>
-     * {@codesnippet com.azure.messaging.servicebus.servicebusprocessorclient#session-instantiation}
+     * <!-- src_embed com.azure.messaging.servicebus.servicebusprocessorclient#session-instantiation -->
+     * <pre>
+     * Consumer&lt;ServiceBusReceivedMessageContext&gt; onMessage = context -&gt; &#123;
+     *     ServiceBusReceivedMessage message = context.getMessage&#40;&#41;;
+     *     System.out.printf&#40;&quot;Processing message. Session: %s, Sequence #: %s. Contents: %s%n&quot;,
+     *         message.getSessionId&#40;&#41;, message.getSequenceNumber&#40;&#41;, message.getBody&#40;&#41;&#41;;
+     * &#125;;
+     *
+     * Consumer&lt;ServiceBusErrorContext&gt; onError = context -&gt; &#123;
+     *     System.out.printf&#40;&quot;Error when receiving messages from namespace: '%s'. Entity: '%s'%n&quot;,
+     *         context.getFullyQualifiedNamespace&#40;&#41;, context.getEntityPath&#40;&#41;&#41;;
+     *
+     *     if &#40;context.getException&#40;&#41; instanceof ServiceBusException&#41; &#123;
+     *         ServiceBusException exception = &#40;ServiceBusException&#41; context.getException&#40;&#41;;
+     *         System.out.printf&#40;&quot;Error source: %s, reason %s%n&quot;, context.getErrorSource&#40;&#41;,
+     *             exception.getReason&#40;&#41;&#41;;
+     *     &#125; else &#123;
+     *         System.out.printf&#40;&quot;Error occurred: %s%n&quot;, context.getException&#40;&#41;&#41;;
+     *     &#125;
+     * &#125;;
+     *
+     * &#47;&#47; Retrieve 'connectionString&#47;queueName' from your configuration.
+     *
+     * ServiceBusProcessorClient sessionProcessor = new ServiceBusClientBuilder&#40;&#41;
+     *     .connectionString&#40;connectionString&#41;
+     *     .sessionProcessor&#40;&#41;
+     *     .queueName&#40;queueName&#41;
+     *     .maxConcurrentSessions&#40;2&#41;
+     *     .processMessage&#40;onMessage&#41;
+     *     .processError&#40;onError&#41;
+     *     .buildProcessorClient&#40;&#41;;
+     *
+     * &#47;&#47; Start the processor in the background
+     * sessionProcessor.start&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.messaging.servicebus.servicebusprocessorclient#session-instantiation -->
      *
      * @see ServiceBusProcessorClient
      */
@@ -1248,7 +1457,41 @@ public final class ServiceBusClientBuilder {
      * with auto-completion and auto-lock renewal capabilities.
      *
      * <p><strong>Sample code to instantiate a processor client</strong></p>
-     * {@codesnippet com.azure.messaging.servicebus.servicebusprocessorclient#instantiation}
+     * <!-- src_embed com.azure.messaging.servicebus.servicebusprocessorclient#instantiation -->
+     * <pre>
+     * Consumer&lt;ServiceBusReceivedMessageContext&gt; onMessage = context -&gt; &#123;
+     *     ServiceBusReceivedMessage message = context.getMessage&#40;&#41;;
+     *     System.out.printf&#40;&quot;Processing message. Sequence #: %s. Contents: %s%n&quot;,
+     *         message.getSequenceNumber&#40;&#41;, message.getBody&#40;&#41;&#41;;
+     * &#125;;
+     *
+     * Consumer&lt;ServiceBusErrorContext&gt; onError = context -&gt; &#123;
+     *     System.out.printf&#40;&quot;Error when receiving messages from namespace: '%s'. Entity: '%s'%n&quot;,
+     *         context.getFullyQualifiedNamespace&#40;&#41;, context.getEntityPath&#40;&#41;&#41;;
+     *
+     *     if &#40;context.getException&#40;&#41; instanceof ServiceBusException&#41; &#123;
+     *         ServiceBusException exception = &#40;ServiceBusException&#41; context.getException&#40;&#41;;
+     *         System.out.printf&#40;&quot;Error source: %s, reason %s%n&quot;, context.getErrorSource&#40;&#41;,
+     *             exception.getReason&#40;&#41;&#41;;
+     *     &#125; else &#123;
+     *         System.out.printf&#40;&quot;Error occurred: %s%n&quot;, context.getException&#40;&#41;&#41;;
+     *     &#125;
+     * &#125;;
+     *
+     * &#47;&#47; Retrieve 'connectionString&#47;queueName' from your configuration.
+     *
+     * ServiceBusProcessorClient processor = new ServiceBusClientBuilder&#40;&#41;
+     *     .connectionString&#40;connectionString&#41;
+     *     .processor&#40;&#41;
+     *     .queueName&#40;queueName&#41;
+     *     .processMessage&#40;onMessage&#41;
+     *     .processError&#40;onError&#41;
+     *     .buildProcessorClient&#40;&#41;;
+     *
+     * &#47;&#47; Start the processor in the background
+     * processor.start&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.messaging.servicebus.servicebusprocessorclient#instantiation -->
      *
      * @see ServiceBusProcessorClient
      */
@@ -1267,7 +1510,7 @@ public final class ServiceBusClientBuilder {
 
         /**
          * Sets the prefetch count of the processor. For both {@link ServiceBusReceiveMode#PEEK_LOCK PEEK_LOCK} and
-         * {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} modes the default value is 1.
+         * {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} modes the default value is 0.
          *
          * Prefetch speeds up the message flow by aiming to have a message readily available for local retrieval when
          * and before the application starts the processor.

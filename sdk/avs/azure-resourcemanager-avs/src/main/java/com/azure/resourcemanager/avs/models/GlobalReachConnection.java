@@ -69,6 +69,14 @@ public interface GlobalReachConnection {
     String peerExpressRouteCircuit();
 
     /**
+     * Gets the expressRouteId property: The ID of the Private Cloud's ExpressRoute Circuit that is participating in the
+     * global reach connection.
+     *
+     * @return the expressRouteId value.
+     */
+    String expressRouteId();
+
+    /**
      * Gets the inner com.azure.resourcemanager.avs.fluent.models.GlobalReachConnectionInner object.
      *
      * @return the inner object.
@@ -100,7 +108,9 @@ public interface GlobalReachConnection {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithAuthorizationKey, DefinitionStages.WithPeerExpressRouteCircuit {
+            extends DefinitionStages.WithAuthorizationKey,
+                DefinitionStages.WithPeerExpressRouteCircuit,
+                DefinitionStages.WithExpressRouteId {
             /**
              * Executes the create request.
              *
@@ -140,6 +150,18 @@ public interface GlobalReachConnection {
              */
             WithCreate withPeerExpressRouteCircuit(String peerExpressRouteCircuit);
         }
+        /** The stage of the GlobalReachConnection definition allowing to specify expressRouteId. */
+        interface WithExpressRouteId {
+            /**
+             * Specifies the expressRouteId property: The ID of the Private Cloud's ExpressRoute Circuit that is
+             * participating in the global reach connection.
+             *
+             * @param expressRouteId The ID of the Private Cloud's ExpressRoute Circuit that is participating in the
+             *     global reach connection.
+             * @return the next definition stage.
+             */
+            WithCreate withExpressRouteId(String expressRouteId);
+        }
     }
     /**
      * Begins update for the GlobalReachConnection resource.
@@ -149,7 +171,10 @@ public interface GlobalReachConnection {
     GlobalReachConnection.Update update();
 
     /** The template for GlobalReachConnection update. */
-    interface Update extends UpdateStages.WithAuthorizationKey, UpdateStages.WithPeerExpressRouteCircuit {
+    interface Update
+        extends UpdateStages.WithAuthorizationKey,
+            UpdateStages.WithPeerExpressRouteCircuit,
+            UpdateStages.WithExpressRouteId {
         /**
          * Executes the update request.
          *
@@ -190,6 +215,18 @@ public interface GlobalReachConnection {
              * @return the next definition stage.
              */
             Update withPeerExpressRouteCircuit(String peerExpressRouteCircuit);
+        }
+        /** The stage of the GlobalReachConnection update allowing to specify expressRouteId. */
+        interface WithExpressRouteId {
+            /**
+             * Specifies the expressRouteId property: The ID of the Private Cloud's ExpressRoute Circuit that is
+             * participating in the global reach connection.
+             *
+             * @param expressRouteId The ID of the Private Cloud's ExpressRoute Circuit that is participating in the
+             *     global reach connection.
+             * @return the next definition stage.
+             */
+            Update withExpressRouteId(String expressRouteId);
         }
     }
     /**

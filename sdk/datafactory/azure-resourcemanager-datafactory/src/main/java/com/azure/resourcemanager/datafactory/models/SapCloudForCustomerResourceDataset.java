@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.SapCloudForCustomerResourceDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,38 +17,24 @@ import java.util.Map;
 /** The path of the SAP Cloud for Customer OData entity. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SapCloudForCustomerResource")
-@JsonFlatten
 @Fluent
-public class SapCloudForCustomerResourceDataset extends Dataset {
+public final class SapCloudForCustomerResourceDataset extends Dataset {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SapCloudForCustomerResourceDataset.class);
 
     /*
-     * The path of the SAP Cloud for Customer OData entity. Type: string (or
-     * Expression with resultType string).
+     * SAP Cloud For Customer OData resource dataset properties.
      */
-    @JsonProperty(value = "typeProperties.path", required = true)
-    private Object path;
+    @JsonProperty(value = "typeProperties", required = true)
+    private SapCloudForCustomerResourceDatasetTypeProperties innerTypeProperties =
+        new SapCloudForCustomerResourceDatasetTypeProperties();
 
     /**
-     * Get the path property: The path of the SAP Cloud for Customer OData entity. Type: string (or Expression with
-     * resultType string).
+     * Get the innerTypeProperties property: SAP Cloud For Customer OData resource dataset properties.
      *
-     * @return the path value.
+     * @return the innerTypeProperties value.
      */
-    public Object path() {
-        return this.path;
-    }
-
-    /**
-     * Set the path property: The path of the SAP Cloud for Customer OData entity. Type: string (or Expression with
-     * resultType string).
-     *
-     * @param path the path value to set.
-     * @return the SapCloudForCustomerResourceDataset object itself.
-     */
-    public SapCloudForCustomerResourceDataset withPath(Object path) {
-        this.path = path;
-        return this;
+    private SapCloudForCustomerResourceDatasetTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -101,6 +87,31 @@ public class SapCloudForCustomerResourceDataset extends Dataset {
     }
 
     /**
+     * Get the path property: The path of the SAP Cloud for Customer OData entity. Type: string (or Expression with
+     * resultType string).
+     *
+     * @return the path value.
+     */
+    public Object path() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().path();
+    }
+
+    /**
+     * Set the path property: The path of the SAP Cloud for Customer OData entity. Type: string (or Expression with
+     * resultType string).
+     *
+     * @param path the path value to set.
+     * @return the SapCloudForCustomerResourceDataset object itself.
+     */
+    public SapCloudForCustomerResourceDataset withPath(Object path) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SapCloudForCustomerResourceDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withPath(path);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -108,11 +119,13 @@ public class SapCloudForCustomerResourceDataset extends Dataset {
     @Override
     public void validate() {
         super.validate();
-        if (path() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property path in model SapCloudForCustomerResourceDataset"));
+                        "Missing required property innerTypeProperties in model SapCloudForCustomerResourceDataset"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

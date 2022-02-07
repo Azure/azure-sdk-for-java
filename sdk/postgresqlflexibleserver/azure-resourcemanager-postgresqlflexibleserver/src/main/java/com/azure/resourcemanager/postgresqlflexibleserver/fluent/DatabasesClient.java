@@ -27,7 +27,7 @@ public interface DatabasesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a Database.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreate(
         String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters);
 
@@ -44,7 +44,7 @@ public interface DatabasesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a Database.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreate(
         String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters, Context context);
 
@@ -91,7 +91,7 @@ public interface DatabasesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName, String databaseName);
 
     /**
@@ -106,7 +106,7 @@ public interface DatabasesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String databaseName, Context context);
 

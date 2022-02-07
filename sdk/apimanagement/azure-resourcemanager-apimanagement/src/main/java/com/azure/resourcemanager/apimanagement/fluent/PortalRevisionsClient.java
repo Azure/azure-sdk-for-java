@@ -17,7 +17,7 @@ import com.azure.resourcemanager.apimanagement.models.PortalRevisionsGetResponse
 /** An instance of this class provides access to all the operations defined in PortalRevisionsClient. */
 public interface PortalRevisionsClient {
     /**
-     * Lists a collection of developer portal revision entities.
+     * Lists developer portal's revisions.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -30,7 +30,7 @@ public interface PortalRevisionsClient {
     PagedIterable<PortalRevisionContractInner> listByService(String resourceGroupName, String serviceName);
 
     /**
-     * Lists a collection of developer portal revision entities.
+     * Lists developer portal's revisions.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -51,7 +51,7 @@ public interface PortalRevisionsClient {
         String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
 
     /**
-     * Gets developer portal revision specified by its identifier.
+     * Gets the developer portal revision specified by its identifier.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -65,7 +65,7 @@ public interface PortalRevisionsClient {
     void getEntityTag(String resourceGroupName, String serviceName, String portalRevisionId);
 
     /**
-     * Gets developer portal revision specified by its identifier.
+     * Gets the developer portal revision specified by its identifier.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -75,14 +75,14 @@ public interface PortalRevisionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer portal revision specified by its identifier.
+     * @return the developer portal revision specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PortalRevisionsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String portalRevisionId, Context context);
 
     /**
-     * Gets developer portal revision specified by its identifier.
+     * Gets the developer portal's revision specified by its identifier.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -91,13 +91,13 @@ public interface PortalRevisionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer portal revision specified by its identifier.
+     * @return the developer portal's revision specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PortalRevisionContractInner get(String resourceGroupName, String serviceName, String portalRevisionId);
 
     /**
-     * Gets developer portal revision specified by its identifier.
+     * Gets the developer portal's revision specified by its identifier.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -107,14 +107,15 @@ public interface PortalRevisionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer portal revision specified by its identifier.
+     * @return the developer portal's revision specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PortalRevisionsGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String portalRevisionId, Context context);
 
     /**
-     * Creates a new developer portal revision.
+     * Creates a new developer portal's revision by running the portal's publishing. The `isCurrent` property indicates
+     * if the revision is publicly accessible.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -131,7 +132,8 @@ public interface PortalRevisionsClient {
         String resourceGroupName, String serviceName, String portalRevisionId, PortalRevisionContractInner parameters);
 
     /**
-     * Creates a new developer portal revision.
+     * Creates a new developer portal's revision by running the portal's publishing. The `isCurrent` property indicates
+     * if the revision is publicly accessible.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -153,7 +155,8 @@ public interface PortalRevisionsClient {
         Context context);
 
     /**
-     * Creates a new developer portal revision.
+     * Creates a new developer portal's revision by running the portal's publishing. The `isCurrent` property indicates
+     * if the revision is publicly accessible.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.
@@ -170,7 +173,8 @@ public interface PortalRevisionsClient {
         String resourceGroupName, String serviceName, String portalRevisionId, PortalRevisionContractInner parameters);
 
     /**
-     * Creates a new developer portal revision.
+     * Creates a new developer portal's revision by running the portal's publishing. The `isCurrent` property indicates
+     * if the revision is publicly accessible.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the API Management service.

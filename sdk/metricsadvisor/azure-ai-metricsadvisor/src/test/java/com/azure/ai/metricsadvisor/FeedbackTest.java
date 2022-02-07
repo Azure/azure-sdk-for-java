@@ -10,6 +10,7 @@ import com.azure.ai.metricsadvisor.models.ListMetricFeedbackFilter;
 import com.azure.ai.metricsadvisor.models.ListMetricFeedbackOptions;
 import com.azure.ai.metricsadvisor.models.MetricFeedback;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -72,14 +73,21 @@ public class FeedbackTest extends FeedbackTestBase {
             final OffsetDateTime firstFeedbackCreatedTime = firstFeedback.getCreatedTime();
 
             // Act & Assert
-            client.listFeedback(METRIC_ID,
+            int pageCount = 0;
+            for (PagedResponse<MetricFeedback> metricFeedbackPagedResponse : client.listFeedback(METRIC_ID,
                 new ListMetricFeedbackOptions()
                     .setFilter(new ListMetricFeedbackFilter()
                         .setTimeMode(FeedbackQueryTimeMode.FEEDBACK_CREATED_TIME)
                         .setStartTime(firstFeedbackCreatedTime.minusDays(1))
                         .setEndTime(firstFeedbackCreatedTime.plusDays(1))),
-                Context.NONE)
-                .forEach(actualMetricFeedbackList::add);
+                Context.NONE).iterableByPage()) {
+                metricFeedbackPagedResponse.getValue()
+                    .forEach(actualMetricFeedbackList::add);
+                pageCount++;
+                if (pageCount > 4) {
+                    break;
+                }
+            }
 
             final List<String> expectedMetricFeedbackIdList = expectedMetricFeedbackList.stream()
                 .map(MetricFeedback::getId)

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.PacketCaptureFilter;
 import com.azure.resourcemanager.network.models.PacketCaptureStorageLocation;
@@ -14,46 +13,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Parameters that define the create packet capture operation. */
-@JsonFlatten
 @Fluent
-public class PacketCaptureInner {
+public final class PacketCaptureInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PacketCaptureInner.class);
 
     /*
-     * The ID of the targeted resource, only VM is currently supported.
+     * Properties of the packet capture.
      */
-    @JsonProperty(value = "properties.target", required = true)
-    private String target;
+    @JsonProperty(value = "properties", required = true)
+    private PacketCaptureParameters innerProperties = new PacketCaptureParameters();
 
-    /*
-     * Number of bytes captured per packet, the remaining bytes are truncated.
+    /**
+     * Get the innerProperties property: Properties of the packet capture.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.bytesToCapturePerPacket")
-    private Long bytesToCapturePerPacket;
-
-    /*
-     * Maximum size of the capture output.
-     */
-    @JsonProperty(value = "properties.totalBytesPerSession")
-    private Long totalBytesPerSession;
-
-    /*
-     * Maximum duration of the capture session in seconds.
-     */
-    @JsonProperty(value = "properties.timeLimitInSeconds")
-    private Integer timeLimitInSeconds;
-
-    /*
-     * The storage location for a packet capture session.
-     */
-    @JsonProperty(value = "properties.storageLocation", required = true)
-    private PacketCaptureStorageLocation storageLocation;
-
-    /*
-     * A list of packet capture filters.
-     */
-    @JsonProperty(value = "properties.filters")
-    private List<PacketCaptureFilter> filters;
+    private PacketCaptureParameters innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the target property: The ID of the targeted resource, only VM is currently supported.
@@ -61,7 +38,7 @@ public class PacketCaptureInner {
      * @return the target value.
      */
     public String target() {
-        return this.target;
+        return this.innerProperties() == null ? null : this.innerProperties().target();
     }
 
     /**
@@ -71,7 +48,10 @@ public class PacketCaptureInner {
      * @return the PacketCaptureInner object itself.
      */
     public PacketCaptureInner withTarget(String target) {
-        this.target = target;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PacketCaptureParameters();
+        }
+        this.innerProperties().withTarget(target);
         return this;
     }
 
@@ -81,7 +61,7 @@ public class PacketCaptureInner {
      * @return the bytesToCapturePerPacket value.
      */
     public Long bytesToCapturePerPacket() {
-        return this.bytesToCapturePerPacket;
+        return this.innerProperties() == null ? null : this.innerProperties().bytesToCapturePerPacket();
     }
 
     /**
@@ -91,7 +71,10 @@ public class PacketCaptureInner {
      * @return the PacketCaptureInner object itself.
      */
     public PacketCaptureInner withBytesToCapturePerPacket(Long bytesToCapturePerPacket) {
-        this.bytesToCapturePerPacket = bytesToCapturePerPacket;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PacketCaptureParameters();
+        }
+        this.innerProperties().withBytesToCapturePerPacket(bytesToCapturePerPacket);
         return this;
     }
 
@@ -101,7 +84,7 @@ public class PacketCaptureInner {
      * @return the totalBytesPerSession value.
      */
     public Long totalBytesPerSession() {
-        return this.totalBytesPerSession;
+        return this.innerProperties() == null ? null : this.innerProperties().totalBytesPerSession();
     }
 
     /**
@@ -111,7 +94,10 @@ public class PacketCaptureInner {
      * @return the PacketCaptureInner object itself.
      */
     public PacketCaptureInner withTotalBytesPerSession(Long totalBytesPerSession) {
-        this.totalBytesPerSession = totalBytesPerSession;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PacketCaptureParameters();
+        }
+        this.innerProperties().withTotalBytesPerSession(totalBytesPerSession);
         return this;
     }
 
@@ -121,7 +107,7 @@ public class PacketCaptureInner {
      * @return the timeLimitInSeconds value.
      */
     public Integer timeLimitInSeconds() {
-        return this.timeLimitInSeconds;
+        return this.innerProperties() == null ? null : this.innerProperties().timeLimitInSeconds();
     }
 
     /**
@@ -131,7 +117,10 @@ public class PacketCaptureInner {
      * @return the PacketCaptureInner object itself.
      */
     public PacketCaptureInner withTimeLimitInSeconds(Integer timeLimitInSeconds) {
-        this.timeLimitInSeconds = timeLimitInSeconds;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PacketCaptureParameters();
+        }
+        this.innerProperties().withTimeLimitInSeconds(timeLimitInSeconds);
         return this;
     }
 
@@ -141,7 +130,7 @@ public class PacketCaptureInner {
      * @return the storageLocation value.
      */
     public PacketCaptureStorageLocation storageLocation() {
-        return this.storageLocation;
+        return this.innerProperties() == null ? null : this.innerProperties().storageLocation();
     }
 
     /**
@@ -151,7 +140,10 @@ public class PacketCaptureInner {
      * @return the PacketCaptureInner object itself.
      */
     public PacketCaptureInner withStorageLocation(PacketCaptureStorageLocation storageLocation) {
-        this.storageLocation = storageLocation;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PacketCaptureParameters();
+        }
+        this.innerProperties().withStorageLocation(storageLocation);
         return this;
     }
 
@@ -161,7 +153,7 @@ public class PacketCaptureInner {
      * @return the filters value.
      */
     public List<PacketCaptureFilter> filters() {
-        return this.filters;
+        return this.innerProperties() == null ? null : this.innerProperties().filters();
     }
 
     /**
@@ -171,7 +163,10 @@ public class PacketCaptureInner {
      * @return the PacketCaptureInner object itself.
      */
     public PacketCaptureInner withFilters(List<PacketCaptureFilter> filters) {
-        this.filters = filters;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PacketCaptureParameters();
+        }
+        this.innerProperties().withFilters(filters);
         return this;
     }
 
@@ -181,21 +176,13 @@ public class PacketCaptureInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (target() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property target in model PacketCaptureInner"));
-        }
-        if (storageLocation() == null) {
+        if (innerProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property storageLocation in model PacketCaptureInner"));
+                        "Missing required property innerProperties in model PacketCaptureInner"));
         } else {
-            storageLocation().validate();
-        }
-        if (filters() != null) {
-            filters().forEach(e -> e.validate());
+            innerProperties().validate();
         }
     }
 }

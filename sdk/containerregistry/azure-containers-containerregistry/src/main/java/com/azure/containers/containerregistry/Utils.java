@@ -5,6 +5,7 @@ package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryTokenService;
 import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
+import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
@@ -54,9 +55,10 @@ final class Utils {
     private static final String CLIENT_VERSION;
     private static final int HTTP_STATUS_CODE_NOT_FOUND = 404;
     private static final int HTTP_STATUS_CODE_ACCEPTED = 202;
+    static final String CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE = "Microsoft.ContainerRegistry";
 
     static {
-        Map<String, String> properties = CoreUtils.getProperties("azure-search-documents.properties");
+        Map<String, String> properties = CoreUtils.getProperties("azure-containers-containerregistry.properties");
         CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
         CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
 
@@ -177,6 +179,7 @@ final class Utils {
      * @param perRetryPolicies per retry policies.
      * @param httpClient http client
      * @param endpoint endpoint to be called
+     * @param serviceVersion the service api version being targeted by the client.
      * @return returns the httpPipeline to be consumed by the builders.
      */
     static HttpPipeline buildHttpPipeline(
@@ -185,11 +188,12 @@ final class Utils {
         Configuration configuration,
         RetryPolicy retryPolicy,
         TokenCredential credential,
-        String authenticationScope,
+        ContainerRegistryAudience audience,
         List<HttpPipelinePolicy> perCallPolicies,
         List<HttpPipelinePolicy> perRetryPolicies,
         HttpClient httpClient,
         String endpoint,
+        ContainerRegistryServiceVersion serviceVersion,
         ClientLogger logger) {
 
         ArrayList<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -222,8 +226,9 @@ final class Utils {
 
         ContainerRegistryTokenService tokenService = new ContainerRegistryTokenService(
             credential,
-            authenticationScope,
+            audience,
             endpoint,
+            serviceVersion,
             new HttpPipelineBuilder()
                 .policies(credentialPolicies.toArray(new HttpPipelinePolicy[0]))
                 .httpClient(httpClient)
@@ -251,18 +256,22 @@ final class Utils {
         return clonedPolicy;
     }
 
-    static Mono<Response<Void>> deleteResponseToSuccess(Response<Void> responseT) {
+    static <T> Mono<Response<Void>> deleteResponseToSuccess(Response<T> responseT) {
         if (responseT.getStatusCode() != HTTP_STATUS_CODE_NOT_FOUND) {
-            return Mono.just(responseT);
+            // In case of success scenario return Response<Void>.
+            return getAcceptedDeleteResponse(responseT, responseT.getStatusCode());
         }
 
-        Response<Void> successResponse = new ResponseBase<String, Void>(
+        // In case of 400, we still convert it to success i.e. no-op.
+        return getAcceptedDeleteResponse(responseT, HTTP_STATUS_CODE_ACCEPTED);
+    }
+
+    static <T> Mono<Response<Void>> getAcceptedDeleteResponse(Response<T> responseT, int statusCode) {
+        return Mono.just(new ResponseBase<String, Void>(
             responseT.getRequest(),
-            HTTP_STATUS_CODE_ACCEPTED,
+            statusCode,
             responseT.getHeaders(),
             null,
-            null);
-
-        return Mono.just(successResponse);
+            null));
     }
 }

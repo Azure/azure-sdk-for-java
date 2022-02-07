@@ -8,7 +8,7 @@ import java.time.OffsetDateTime;
 /**
  * Optional parameters for setting the immutability policy of a blob, blob snapshot or blob version.
  */
-public class BlobImmutabilityPolicy {
+public final class BlobImmutabilityPolicy {
 
     private OffsetDateTime expiryTime;
     private BlobImmutabilityPolicyMode policyMode;

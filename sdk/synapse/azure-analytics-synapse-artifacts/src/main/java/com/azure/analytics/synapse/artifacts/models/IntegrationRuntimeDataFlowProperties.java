@@ -36,6 +36,14 @@ public final class IntegrationRuntimeDataFlowProperties {
     private Integer timeToLive;
 
     /*
+     * Cluster will not be recycled and it will be used in next data flow
+     * activity run until TTL (time to live) is reached if this is set as
+     * false. Default is true.
+     */
+    @JsonProperty(value = "cleanup")
+    private Boolean cleanup;
+
+    /*
      * Data flow properties for managed integration runtime.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
@@ -99,6 +107,28 @@ public final class IntegrationRuntimeDataFlowProperties {
      */
     public IntegrationRuntimeDataFlowProperties setTimeToLive(Integer timeToLive) {
         this.timeToLive = timeToLive;
+        return this;
+    }
+
+    /**
+     * Get the cleanup property: Cluster will not be recycled and it will be used in next data flow activity run until
+     * TTL (time to live) is reached if this is set as false. Default is true.
+     *
+     * @return the cleanup value.
+     */
+    public Boolean isCleanup() {
+        return this.cleanup;
+    }
+
+    /**
+     * Set the cleanup property: Cluster will not be recycled and it will be used in next data flow activity run until
+     * TTL (time to live) is reached if this is set as false. Default is true.
+     *
+     * @param cleanup the cleanup value to set.
+     * @return the IntegrationRuntimeDataFlowProperties object itself.
+     */
+    public IntegrationRuntimeDataFlowProperties setCleanup(Boolean cleanup) {
+        this.cleanup = cleanup;
         return this;
     }
 

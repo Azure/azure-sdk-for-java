@@ -41,7 +41,7 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
         final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOMV", 15);
         final String pipName = Utils.randomResourceName(azureResourceManager, "pip1", 15);
         final String userName = "tirekicker";
-        final String password = Utils.password();
+        final String sshPublicKey = Utils.sshPublicKey();
         final Region region = Region.US_WEST_CENTRAL;
 
         final String installScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/create_resources_with_msi.sh";
@@ -64,7 +64,7 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
                         .withNewPrimaryPublicIPAddress(pipName)
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                         .withRootUsername(userName)
-                        .withRootPassword(password)
+                        .withSsh(sshPublicKey)
                         .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                         .withOSDiskCaching(CachingTypes.READ_WRITE)
                         .withSystemAssignedManagedServiceIdentity()

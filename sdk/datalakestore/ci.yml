@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/datalakestore/
+      - sdk/datalakestore/ci.yml
+      - sdk/datalakestore/azure-resourcemanager-datalakestore/
+    exclude:
+      - sdk/datalakestore/pom.xml
+      - sdk/datalakestore/azure-resourcemanager-datalakestore/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/datalakestore/
+      - sdk/datalakestore/ci.yml
+      - sdk/datalakestore/azure-resourcemanager-datalakestore/
+    exclude:
+      - sdk/datalakestore/pom.xml
+      - sdk/datalakestore/azure-resourcemanager-datalakestore/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

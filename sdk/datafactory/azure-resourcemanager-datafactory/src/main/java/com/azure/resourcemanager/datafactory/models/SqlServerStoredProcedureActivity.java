@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.SqlServerStoredProcedureActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,66 +17,24 @@ import java.util.Map;
 /** SQL stored procedure activity type. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SqlServerStoredProcedure")
-@JsonFlatten
 @Fluent
-public class SqlServerStoredProcedureActivity extends ExecutionActivity {
+public final class SqlServerStoredProcedureActivity extends ExecutionActivity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlServerStoredProcedureActivity.class);
 
     /*
-     * Stored procedure name. Type: string (or Expression with resultType
-     * string).
+     * SQL stored procedure activity properties.
      */
-    @JsonProperty(value = "typeProperties.storedProcedureName", required = true)
-    private Object storedProcedureName;
-
-    /*
-     * Value and type setting for stored procedure parameters. Example:
-     * "{Parameter1: {value: "1", type: "int"}}".
-     */
-    @JsonProperty(value = "typeProperties.storedProcedureParameters")
-    private Map<String, StoredProcedureParameter> storedProcedureParameters;
+    @JsonProperty(value = "typeProperties", required = true)
+    private SqlServerStoredProcedureActivityTypeProperties innerTypeProperties =
+        new SqlServerStoredProcedureActivityTypeProperties();
 
     /**
-     * Get the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType string).
+     * Get the innerTypeProperties property: SQL stored procedure activity properties.
      *
-     * @return the storedProcedureName value.
+     * @return the innerTypeProperties value.
      */
-    public Object storedProcedureName() {
-        return this.storedProcedureName;
-    }
-
-    /**
-     * Set the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType string).
-     *
-     * @param storedProcedureName the storedProcedureName value to set.
-     * @return the SqlServerStoredProcedureActivity object itself.
-     */
-    public SqlServerStoredProcedureActivity withStoredProcedureName(Object storedProcedureName) {
-        this.storedProcedureName = storedProcedureName;
-        return this;
-    }
-
-    /**
-     * Get the storedProcedureParameters property: Value and type setting for stored procedure parameters. Example:
-     * "{Parameter1: {value: "1", type: "int"}}".
-     *
-     * @return the storedProcedureParameters value.
-     */
-    public Map<String, StoredProcedureParameter> storedProcedureParameters() {
-        return this.storedProcedureParameters;
-    }
-
-    /**
-     * Set the storedProcedureParameters property: Value and type setting for stored procedure parameters. Example:
-     * "{Parameter1: {value: "1", type: "int"}}".
-     *
-     * @param storedProcedureParameters the storedProcedureParameters value to set.
-     * @return the SqlServerStoredProcedureActivity object itself.
-     */
-    public SqlServerStoredProcedureActivity withStoredProcedureParameters(
-        Map<String, StoredProcedureParameter> storedProcedureParameters) {
-        this.storedProcedureParameters = storedProcedureParameters;
-        return this;
+    private SqlServerStoredProcedureActivityTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -122,6 +80,55 @@ public class SqlServerStoredProcedureActivity extends ExecutionActivity {
     }
 
     /**
+     * Get the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType string).
+     *
+     * @return the storedProcedureName value.
+     */
+    public Object storedProcedureName() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().storedProcedureName();
+    }
+
+    /**
+     * Set the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType string).
+     *
+     * @param storedProcedureName the storedProcedureName value to set.
+     * @return the SqlServerStoredProcedureActivity object itself.
+     */
+    public SqlServerStoredProcedureActivity withStoredProcedureName(Object storedProcedureName) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SqlServerStoredProcedureActivityTypeProperties();
+        }
+        this.innerTypeProperties().withStoredProcedureName(storedProcedureName);
+        return this;
+    }
+
+    /**
+     * Get the storedProcedureParameters property: Value and type setting for stored procedure parameters. Example:
+     * "{Parameter1: {value: "1", type: "int"}}".
+     *
+     * @return the storedProcedureParameters value.
+     */
+    public Map<String, StoredProcedureParameter> storedProcedureParameters() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().storedProcedureParameters();
+    }
+
+    /**
+     * Set the storedProcedureParameters property: Value and type setting for stored procedure parameters. Example:
+     * "{Parameter1: {value: "1", type: "int"}}".
+     *
+     * @param storedProcedureParameters the storedProcedureParameters value to set.
+     * @return the SqlServerStoredProcedureActivity object itself.
+     */
+    public SqlServerStoredProcedureActivity withStoredProcedureParameters(
+        Map<String, StoredProcedureParameter> storedProcedureParameters) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SqlServerStoredProcedureActivityTypeProperties();
+        }
+        this.innerTypeProperties().withStoredProcedureParameters(storedProcedureParameters);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -129,21 +136,13 @@ public class SqlServerStoredProcedureActivity extends ExecutionActivity {
     @Override
     public void validate() {
         super.validate();
-        if (storedProcedureName() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property storedProcedureName in model SqlServerStoredProcedureActivity"));
-        }
-        if (storedProcedureParameters() != null) {
-            storedProcedureParameters()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+                        "Missing required property innerTypeProperties in model SqlServerStoredProcedureActivity"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

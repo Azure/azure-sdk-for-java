@@ -26,9 +26,11 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.schemaregistry.implementation.AzureSchemaRegistry;
-import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryBuilder;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryImpl;
+import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryImplBuilder;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -37,25 +39,67 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentSkipListMap;
-import java.util.function.Function;
 
 /**
- * Builder implementation for {@link SchemaRegistryAsyncClient}.
+ * Fluent builder for interacting with the Schema Registry service via {@link SchemaRegistryAsyncClient} and
+ * {@link SchemaRegistryClient}.  To build the client, the builder requires the service endpoint of the Schema Registry
+ * and an Azure AD credential.
+ *
+ * <p><strong>Instantiating the client</strong></p>
+ * <!-- src_embed com.azure.data.schemaregistry.schemaregistryclient.instantiation -->
+ * <pre>
+ * &#47;&#47; AAD credential to authorize with Schema Registry service.
+ * DefaultAzureCredential azureCredential = new DefaultAzureCredentialBuilder&#40;&#41;
+ *     .build&#40;&#41;;
+ * SchemaRegistryClient client = new SchemaRegistryClientBuilder&#40;&#41;
+ *     .fullyQualifiedNamespace&#40;&quot;https:&#47;&#47;&lt;your-schema-registry-endpoint&gt;.servicebus.windows.net&quot;&#41;
+ *     .credential&#40;azureCredential&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.schemaregistry.schemaregistryclient.instantiation -->
+ *
+ * <p><strong>Instantiating the async client</strong></p>
+ * <!-- src_embed com.azure.data.schemaregistry.schemaregistryasyncclient.instantiation -->
+ * <pre>
+ * &#47;&#47; AAD credential to authorize with Schema Registry service.
+ * DefaultAzureCredential azureCredential = new DefaultAzureCredentialBuilder&#40;&#41;
+ *     .build&#40;&#41;;
+ * SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder&#40;&#41;
+ *     .fullyQualifiedNamespace&#40;&quot;https:&#47;&#47;&lt;your-schema-registry-endpoint&gt;.servicebus.windows.net&quot;&#41;
+ *     .credential&#40;azureCredential&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.schemaregistry.schemaregistryasyncclient.instantiation -->
+ *
+ * <p><strong>Instantiating with custom retry policy and HTTP log options</strong></p>
+ * <!-- src_embed com.azure.data.schemaregistry.schemaregistryasyncclient.retrypolicy.instantiation -->
+ * <pre>
+ * DefaultAzureCredential azureCredential = new DefaultAzureCredentialBuilder&#40;&#41;
+ *     .build&#40;&#41;;
+ *
+ * HttpLogOptions httpLogOptions = new HttpLogOptions&#40;&#41;
+ *     .setLogLevel&#40;HttpLogDetailLevel.BODY&#41;
+ *     .setPrettyPrintBody&#40;true&#41;;
+ *
+ * RetryPolicy retryPolicy = new RetryPolicy&#40;new FixedDelay&#40;5, Duration.ofSeconds&#40;30&#41;&#41;&#41;;
+ * SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder&#40;&#41;
+ *     .fullyQualifiedNamespace&#40;&quot;https:&#47;&#47;&lt;your-schema-registry-endpoint&gt;.servicebus.windows.net&quot;&#41;
+ *     .httpLogOptions&#40;httpLogOptions&#41;
+ *     .retryPolicy&#40;retryPolicy&#41;
+ *     .credential&#40;azureCredential&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.schemaregistry.schemaregistryasyncclient.retrypolicy.instantiation -->
  */
-@ServiceClientBuilder(serviceClients = SchemaRegistryAsyncClient.class)
+@ServiceClientBuilder(serviceClients = {SchemaRegistryAsyncClient.class, SchemaRegistryClient.class})
 public class SchemaRegistryClientBuilder {
     private final ClientLogger logger = new ClientLogger(SchemaRegistryClientBuilder.class);
 
     private static final String DEFAULT_SCOPE = "https://eventhubs.azure.net/.default";
-    private static final String CLIENT_PROPERTIES = "azure-data-schemaregistry-client.properties";
+    private static final String CLIENT_PROPERTIES = "azure-data-schemaregistry.properties";
     private static final String NAME = "name";
     private static final String VERSION = "version";
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
-    private static final AddHeadersPolicy API_HEADER_POLICY = new AddHeadersPolicy(new HttpHeaders()
-        .set("api-version", "2020-09-01-preview"));
-
-    private final ConcurrentSkipListMap<String, Function<String, Object>> typeParserMap;
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
@@ -63,24 +107,21 @@ public class SchemaRegistryClientBuilder {
     private final String clientName;
     private final String clientVersion;
 
-    private String endpoint;
-    private String host;
+    private String fullyQualifiedNamespace;
     private HttpClient httpClient;
-    private Integer maxSchemaMapSize;
     private TokenCredential credential;
     private ClientOptions clientOptions;
     private HttpLogOptions httpLogOptions;
     private HttpPipeline httpPipeline;
     private RetryPolicy retryPolicy;
     private Configuration configuration;
+    private ServiceVersion serviceVersion;
 
     /**
-     * Constructor for CachedSchemaRegistryClientBuilder.  Supplies client defaults.
+     * Constructor for SchemaRegistryClientBuilder. Supplies client defaults.
      */
     public SchemaRegistryClientBuilder() {
         this.httpLogOptions = new HttpLogOptions();
-        this.maxSchemaMapSize = null;
-        this.typeParserMap = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
         this.httpClient = null;
         this.credential = null;
         this.retryPolicy = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
@@ -91,48 +132,24 @@ public class SchemaRegistryClientBuilder {
     }
 
     /**
-     * Sets the service endpoint for the Azure Schema Registry instance.
+     * Sets the fully qualified namespace for the Azure Schema Registry instance. This is likely to be
+     * similar to <strong>{@literal "{your-namespace}.servicebus.windows.net}"</strong>.
      *
-     * @param endpoint The URL of the Azure Schema Registry instance
+     * @param fullyQualifiedNamespace The fully qualified namespace of the Azure Schema Registry instance.
      * @return The updated {@link SchemaRegistryClientBuilder} object.
-     * @throws NullPointerException if {@code endpoint} is null
-     * @throws IllegalArgumentException if {@code endpoint} cannot be parsed into a valid URL
+     * @throws NullPointerException if {@code fullyQualifiedNamespace} is null
+     * @throws IllegalArgumentException if {@code fullyQualifiedNamespace} cannot be parsed into a valid URL
      */
-    public SchemaRegistryClientBuilder endpoint(String endpoint) {
-        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
-
+    public SchemaRegistryClientBuilder fullyQualifiedNamespace(String fullyQualifiedNamespace) {
+        Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
         try {
-            URL url = new URL(endpoint);
-            this.host = url.getHost();
+            URL url = new URL(fullyQualifiedNamespace);
+            this.fullyQualifiedNamespace = url.getHost();
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsWarning(
-                new IllegalArgumentException("'endpoint' must be a valid URL.", ex));
+            logger.verbose("Fully qualified namespace did not contain protocol.");
+            this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         }
 
-        if (endpoint.endsWith("/")) {
-            this.endpoint = endpoint.substring(0, endpoint.length() - 1);
-        } else {
-            this.endpoint = endpoint;
-        }
-
-        return this;
-    }
-
-    /**
-     * Sets schema cache size limit.  If limit is exceeded on any cache, all caches are recycled.
-     *
-     * @param maxCacheSize max size for internal schema caches in {@link SchemaRegistryAsyncClient}
-     * @return The updated {@link SchemaRegistryClientBuilder} object.
-     * @throws IllegalArgumentException on invalid maxCacheSize value
-     */
-    public SchemaRegistryClientBuilder maxCacheSize(int maxCacheSize) {
-        if (maxCacheSize < SchemaRegistryAsyncClient.MAX_SCHEMA_MAP_SIZE_MINIMUM) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                String.format("Schema map size must be greater than %s entries",
-                    SchemaRegistryAsyncClient.MAX_SCHEMA_MAP_SIZE_MINIMUM)));
-        }
-
-        this.maxSchemaMapSize = maxCacheSize;
         return this;
     }
 
@@ -234,6 +251,17 @@ public class SchemaRegistryClientBuilder {
     }
 
     /**
+     * Sets the service version to use.
+     *
+     * @param serviceVersion Service version.
+     * @return The updated instance.
+     */
+    public SchemaRegistryClientBuilder serviceVersion(ServiceVersion serviceVersion) {
+        this.serviceVersion = serviceVersion;
+        return this;
+    }
+
+    /**
      * Adds a policy to the set of existing policies that are executed after required policies.
      *
      * @param policy The retry policy for service requests.
@@ -259,12 +287,21 @@ public class SchemaRegistryClientBuilder {
      * If {@link #pipeline(HttpPipeline) pipeline} is set, then all HTTP pipeline related settings are ignored.
      *
      * @return A {@link SchemaRegistryAsyncClient} with the options set from the builder.
-     * @throws NullPointerException if {@link #endpoint(String) endpoint} and {@link #credential(TokenCredential)
-     * credential} are not set.
+     * @throws NullPointerException if {@link #fullyQualifiedNamespace(String) fullyQualifiedNamespace} and
+     *      {@link #credential(TokenCredential) credential} are not set.
+     * @throws IllegalArgumentException if {@link #fullyQualifiedNamespace(String) fullyQualifiedNamespace} is an empty
+     *      string.
      */
     public SchemaRegistryAsyncClient buildAsyncClient() {
-        Objects.requireNonNull(credential, "'credential' cannot be null");
-        Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
+        Objects.requireNonNull(credential,
+            "'credential' cannot be null and must be set via builder.credential(TokenCredential)");
+        Objects.requireNonNull(fullyQualifiedNamespace,
+            "'fullyQualifiedNamespace' cannot be null and must be set via builder.fullyQualifiedNamespace(String)");
+
+        if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "'fullyQualifiedNamespace' cannot be an empty string."));
+        }
 
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()
@@ -280,7 +317,6 @@ public class SchemaRegistryClientBuilder {
                 clientVersion, buildConfiguration));
             policies.add(new RequestIdPolicy());
             policies.add(new AddHeadersFromContextPolicy());
-            policies.add(API_HEADER_POLICY);
 
             policies.addAll(perCallPolicies);
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
@@ -313,23 +349,24 @@ public class SchemaRegistryClientBuilder {
                 .build();
         }
 
-        AzureSchemaRegistry restService = new AzureSchemaRegistryBuilder()
-            .endpoint(host)
+        ServiceVersion version = (serviceVersion == null) ? SchemaRegistryVersion.getLatest() : serviceVersion;
+        SerializerAdapter serializerAdapter = new SchemaRegistryJsonSerializer();
+
+        AzureSchemaRegistryImpl restService = new AzureSchemaRegistryImplBuilder()
+            .serializerAdapter(serializerAdapter)
+            .endpoint(fullyQualifiedNamespace)
+            .apiVersion(version.getVersion())
             .pipeline(buildPipeline)
             .buildClient();
 
-        int buildMaxSchemaMapSize = (maxSchemaMapSize == null)
-            ? SchemaRegistryAsyncClient.MAX_SCHEMA_MAP_SIZE_DEFAULT
-            : maxSchemaMapSize;
-
-        return new SchemaRegistryAsyncClient(restService, buildMaxSchemaMapSize, typeParserMap);
+        return new SchemaRegistryAsyncClient(restService);
     }
 
     /**
      * Creates synchronous {@link SchemaRegistryClient} instance. See async builder method for options validation.
      *
      * @return {@link SchemaRegistryClient} with the options set from the builder.
-     * @throws NullPointerException if {@link #endpoint(String) endpoint} and {@link #credential(TokenCredential)
+     * @throws NullPointerException if {@link #fullyQualifiedNamespace(String) endpoint} and {@link #credential(TokenCredential)
      * credential} are not set.
      */
     public SchemaRegistryClient buildClient() {

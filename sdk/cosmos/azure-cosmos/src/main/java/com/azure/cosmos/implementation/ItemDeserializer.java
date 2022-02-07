@@ -3,12 +3,13 @@
 
 package com.azure.cosmos.implementation;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 
 public interface ItemDeserializer {
     <T> T parseFrom(Class<T> classType, byte[] bytes);
-    <T> T convert(Class<T> classType, ObjectNode objectNode);
+    <T> T convert(Class<T> classType, JsonNode objectNode);
 
 
     class JsonDeserializer implements ItemDeserializer {
@@ -23,12 +24,12 @@ public interface ItemDeserializer {
 
         @Override
         @SuppressWarnings("unchecked")
-        public <T> T convert(Class<T> classType, ObjectNode objectNode) {
+        public <T> T convert(Class<T> classType, JsonNode jsonNode) {
             if (classType == ObjectNode.class) {
-                return (T) objectNode;
+                return (T) jsonNode;
             }
 
-            return Utils.getSimpleObjectMapper().convertValue(objectNode, classType);
+            return Utils.getSimpleObjectMapper().convertValue(jsonNode, classType);
         }
     }
 }

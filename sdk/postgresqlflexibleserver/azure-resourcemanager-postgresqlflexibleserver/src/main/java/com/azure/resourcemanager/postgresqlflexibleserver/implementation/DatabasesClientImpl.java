@@ -69,7 +69,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     private interface DatabasesService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForPostgreSql"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
                 + "/flexibleServers/{serverName}/databases/{databaseName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -86,7 +86,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForPostgreSql"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
                 + "/flexibleServers/{serverName}/databases/{databaseName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -102,7 +102,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForPostgreSql"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
                 + "/flexibleServers/{serverName}/databases/{databaseName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -118,7 +118,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForPostgreSql"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
                 + "/flexibleServers/{serverName}/databases")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -272,7 +272,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a Database.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginCreateAsync(
         String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -296,7 +296,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a Database.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginCreateAsync(
         String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -320,7 +320,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a Database.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreate(
         String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters) {
         return beginCreateAsync(resourceGroupName, serverName, databaseName, parameters).getSyncPoller();
@@ -339,7 +339,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a Database.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreate(
         String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters, Context context) {
         return beginCreateAsync(resourceGroupName, serverName, databaseName, parameters, context).getSyncPoller();
@@ -538,7 +538,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serverName, String databaseName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serverName, databaseName);
@@ -559,7 +559,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serverName, String databaseName, Context context) {
         context = this.client.mergeContext(context);
@@ -581,7 +581,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String databaseName) {
         return beginDeleteAsync(resourceGroupName, serverName, databaseName).getSyncPoller();
@@ -599,7 +599,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serverName, String databaseName, Context context) {
         return beginDeleteAsync(resourceGroupName, serverName, databaseName, context).getSyncPoller();

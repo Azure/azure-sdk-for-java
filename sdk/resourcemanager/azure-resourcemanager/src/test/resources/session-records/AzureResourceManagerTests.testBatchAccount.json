@@ -212,7 +212,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/batch671694group/providers/Microsoft.Storage/storageAccounts/batchsa671694?api-version=2021-02-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/batch671694group/providers/Microsoft.Storage/storageAccounts/batchsa671694?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d916ff2a485200f321d6cba23dc3377b781cd392a6e37bf910c332cb391ba0cc Java:1.8.0_202 (StorageManagementClient, 2019-06-01)",
       "Content-Type" : "application/json; charset=utf-8"
@@ -231,14 +231,14 @@
       "x-content-type-options" : "nosniff",
       "x-ms-routing-request-id" : "JAPANEAST:20200202T221258Z:8e1e1d6d-8b69-4801-bfb8-7ec5c64d730a",
       "content-type" : "text/plain; charset=utf-8",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/centralindia/asyncoperations/54db0db8-3b40-4bab-8c09-7214fb1b9dd9?monitor=true&api-version=2021-02-01",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/centralindia/asyncoperations/54db0db8-3b40-4bab-8c09-7214fb1b9dd9?monitor=true&api-version=2021-04-01",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "54db0db8-3b40-4bab-8c09-7214fb1b9dd9",
       "Body" : ""
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/centralindia/asyncoperations/54db0db8-3b40-4bab-8c09-7214fb1b9dd9?monitor=true&api-version=2021-02-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/centralindia/asyncoperations/54db0db8-3b40-4bab-8c09-7214fb1b9dd9?monitor=true&api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d916ff2a485200f321d6cba23dc3377b781cd392a6e37bf910c332cb391ba0cc Java:1.8.0_202 (StorageManagementClient, 2019-06-01)"
     },
@@ -256,14 +256,14 @@
       "x-content-type-options" : "nosniff",
       "x-ms-routing-request-id" : "JAPANEAST:20200202T221258Z:d898e527-3af7-476c-bd9c-a02a594a9333",
       "content-type" : "text/plain; charset=utf-8",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/centralindia/asyncoperations/54db0db8-3b40-4bab-8c09-7214fb1b9dd9?monitor=true&api-version=2021-02-01",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/centralindia/asyncoperations/54db0db8-3b40-4bab-8c09-7214fb1b9dd9?monitor=true&api-version=2021-04-01",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "49c330e0-15ac-4121-81ac-46a030a0e539",
       "Body" : ""
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/centralindia/asyncoperations/54db0db8-3b40-4bab-8c09-7214fb1b9dd9?monitor=true&api-version=2021-02-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/centralindia/asyncoperations/54db0db8-3b40-4bab-8c09-7214fb1b9dd9?monitor=true&api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d916ff2a485200f321d6cba23dc3377b781cd392a6e37bf910c332cb391ba0cc Java:1.8.0_202 (StorageManagementClient, 2019-06-01)"
     },
@@ -289,7 +289,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/batch671694group/providers/Microsoft.Storage/storageAccounts/batchsa671694?api-version=2021-02-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/batch671694group/providers/Microsoft.Storage/storageAccounts/batchsa671694?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:d916ff2a485200f321d6cba23dc3377b781cd392a6e37bf910c332cb391ba0cc Java:1.8.0_202 (StorageManagementClient, 2019-06-01)",
       "Content-Type" : "application/json; charset=utf-8"

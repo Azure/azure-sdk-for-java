@@ -46,7 +46,7 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
         final String publicIpDnsLabel = Utils.randomResourceName(azureResourceManager, "pip", 15);
         final String storageAccountName = Utils.randomResourceName(azureResourceManager, "stg", 15);
         final String userName = "tirekicker";
-        final String password = Utils.password();
+        final String sshPublicKey = Utils.sshPublicKey();
         final Region region = Region.US_WEST;
 
         final String apacheInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/install_apache.sh";
@@ -67,7 +67,7 @@ public class CreateVirtualMachineUsingSpecializedDiskFromVhd {
                     .withNewPrimaryPublicIPAddress(publicIpDnsLabel)
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
-                    .withRootPassword(password)
+                    .withSsh(sshPublicKey)
                     .withUnmanagedDisks()
                     .defineUnmanagedDataDisk("disk-1")
                         .withNewVhd(50)

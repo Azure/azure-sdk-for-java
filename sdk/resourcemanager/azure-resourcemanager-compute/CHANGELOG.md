@@ -1,6 +1,60 @@
 # Release History
 
-## 2.7.0-beta.1 (Unreleased)
+## 2.12.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Supported option of `filter` and `expand` for list instances of virtual machines by `VirtualMachineScaleSetVMs.list`.
+- Changed to include the instance view of the virtual machine, when getting the virtual machine by `VirtualMachineScaleSetVMs.getInstance`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-11-01`.
+
+## 2.11.0 (2022-01-17)
+
+### Features Added
+
+- Supported Flexible orchestration mode for `VirtualMachineScaleSet` during create.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-08-01`.
+
+## 2.10.0 (2021-11-22)
+
+### Features Added
+
+- Supported hibernation for `VirtualMachine` (preview).
+- Supported `withPlan()` for `VirtualMachineScaleSet` during create.
+- Supported `getNetworkInterfaceByInstanceIdAsync()` in `VirtualMachineScaleSet`.
+- Supported `getNetworkInterfaceAsync()` in `VirtualMachineScaleSetVM`.
+- Supported `orchestrationMode()` in `VirtualMachineScaleSet`.
+
+## 2.9.0 (2021-10-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources
+
+## 2.8.0 (2021-09-15)
+
+### Dependency Updates
+
+- Updated `api-version` to `2021-07-01`.
+
+### Breaking Changes
+
+- Removed unused class `ManagedArtifact`.
+
+## 2.7.0 (2021-08-12)
+
 ### Dependency Updates
 
 - Updated `api-version` to `2021-04-01`.

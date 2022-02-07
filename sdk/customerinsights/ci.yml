@@ -9,6 +9,9 @@ trigger:
   paths:
     include:
       - sdk/customerinsights/
+    exclude:
+      - sdk/customerinsights/pom.xml
+      - sdk/customerinsights/azure-resourcemanager-customerinsights/pom.xml
 
 pr:
   branches:
@@ -20,6 +23,9 @@ pr:
   paths:
     include:
       - sdk/customerinsights/
+    exclude:
+      - sdk/customerinsights/pom.xml
+      - sdk/customerinsights/azure-resourcemanager-customerinsights/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

@@ -14,6 +14,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.synapse.fluent.models.IpFirewallRuleInfoInner;
 import com.azure.resourcemanager.synapse.fluent.models.ReplaceAllFirewallRulesOperationResponseInner;
 import com.azure.resourcemanager.synapse.models.ReplaceAllIpFirewallRulesRequest;
+import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in IpFirewallRulesClient. */
 public interface IpFirewallRulesClient {
@@ -55,9 +56,9 @@ public interface IpFirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return iP firewall rule.
+     * @return iP firewall rule along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IpFirewallRuleInfoInner>, IpFirewallRuleInfoInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String ruleName, IpFirewallRuleInfoInner ipFirewallRuleInfo);
 
@@ -72,9 +73,9 @@ public interface IpFirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return iP firewall rule.
+     * @return iP firewall rule along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IpFirewallRuleInfoInner>, IpFirewallRuleInfoInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,
@@ -128,9 +129,9 @@ public interface IpFirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginDelete(String resourceGroupName, String workspaceName, String ruleName);
 
     /**
@@ -143,9 +144,9 @@ public interface IpFirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Object>, Object> beginDelete(
         String resourceGroupName, String workspaceName, String ruleName, Context context);
 
@@ -202,7 +203,7 @@ public interface IpFirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a firewall rule.
+     * @return a firewall rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IpFirewallRuleInfoInner> getWithResponse(
@@ -217,9 +218,10 @@ public interface IpFirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing operation for replacing the firewall rules.
+     * @return an existing operation for replacing the firewall rules along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplaceAllFirewallRulesOperationResponseInner>, ReplaceAllFirewallRulesOperationResponseInner>
         beginReplaceAll(String resourceGroupName, String workspaceName, ReplaceAllIpFirewallRulesRequest request);
 
@@ -233,9 +235,10 @@ public interface IpFirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing operation for replacing the firewall rules.
+     * @return an existing operation for replacing the firewall rules along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplaceAllFirewallRulesOperationResponseInner>, ReplaceAllFirewallRulesOperationResponseInner>
         beginReplaceAll(
             String resourceGroupName, String workspaceName, ReplaceAllIpFirewallRulesRequest request, Context context);

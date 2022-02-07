@@ -20,7 +20,7 @@ autorest --java --use=C:/work/autorest.java
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/cognitiveservices/data-plane/FormRecognizer/stable/v2.1/FormRecognizer.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs-pr/36c999237f4c0d0bae9c610976c4a2cb6e2c2ace/specification/cognitiveservices/data-plane/FormRecognizer/preview/2022-01-30-preview/FormRecognizer.json?token=GHSAT0AAAAAABJXDFRP4QTQNNWE3PJOPNDGYPGHGZA
 java: true
 output-folder: ..\
 generate-client-as-impl: true
@@ -32,25 +32,5 @@ add-context-parameter: true
 models-subpackage: implementation.models
 context-client-method-parameter: true
 custom-types-subpackage: models
-custom-types: LengthUnit
 service-interface-as-public: true
-```
-
-### Add multiple service API support
-This is better to fixed in the swagger, but we are working around now.
-```yaml
-directive:
-- from: swagger-document
-  where: $["x-ms-parameterized-host"]
-  transform: >
-    $.hostTemplate = "{endpoint}/formrecognizer/{ApiVersion}";
-    $.parameters.push({
-      "name": "ApiVersion",
-      "description": "Form Recognizer API version.",
-      "x-ms-parameter-location": "client",
-      "required": true,
-      "type": "string",
-      "in": "path",
-      "x-ms-skip-url-encoding": true
-    });
 ```

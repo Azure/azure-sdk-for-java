@@ -136,19 +136,28 @@ public interface WebPubSubResource {
     WebPubSubTlsSettings tls();
 
     /**
-     * Gets the diagnosticConfiguration property: Diagnostic configuration of a Microsoft.SignalRService resource. Used
-     * together with Azure monitor DiagnosticSettings.
+     * Gets the hostnamePrefix property: Deprecated.
      *
-     * @return the diagnosticConfiguration value.
+     * @return the hostnamePrefix value.
      */
-    DiagnosticConfiguration diagnosticConfiguration();
+    String hostnamePrefix();
 
     /**
-     * Gets the eventHandler property: The settings for event handler in webpubsub service.
+     * Gets the liveTraceConfiguration property: Live trace configuration of a Microsoft.SignalRService resource.
      *
-     * @return the eventHandler value.
+     * @return the liveTraceConfiguration value.
      */
-    EventHandlerSettings eventHandler();
+    LiveTraceConfiguration liveTraceConfiguration();
+
+    /**
+     * Gets the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService resource. If
+     * resourceLogConfiguration isn't null or empty, it will override options "EnableConnectivityLog" and
+     * "EnableMessagingLogs" in features. Otherwise, use options "EnableConnectivityLog" and "EnableMessagingLogs" in
+     * features.
+     *
+     * @return the resourceLogConfiguration value.
+     */
+    ResourceLogConfiguration resourceLogConfiguration();
 
     /**
      * Gets the networkACLs property: Network ACLs.
@@ -253,8 +262,8 @@ public interface WebPubSubResource {
                 DefinitionStages.WithSku,
                 DefinitionStages.WithIdentity,
                 DefinitionStages.WithTls,
-                DefinitionStages.WithDiagnosticConfiguration,
-                DefinitionStages.WithEventHandler,
+                DefinitionStages.WithLiveTraceConfiguration,
+                DefinitionStages.WithResourceLogConfiguration,
                 DefinitionStages.WithNetworkACLs,
                 DefinitionStages.WithPublicNetworkAccess,
                 DefinitionStages.WithDisableLocalAuth,
@@ -314,27 +323,32 @@ public interface WebPubSubResource {
              */
             WithCreate withTls(WebPubSubTlsSettings tls);
         }
-        /** The stage of the WebPubSubResource definition allowing to specify diagnosticConfiguration. */
-        interface WithDiagnosticConfiguration {
+        /** The stage of the WebPubSubResource definition allowing to specify liveTraceConfiguration. */
+        interface WithLiveTraceConfiguration {
             /**
-             * Specifies the diagnosticConfiguration property: Diagnostic configuration of a Microsoft.SignalRService
-             * resource. Used together with Azure monitor DiagnosticSettings..
+             * Specifies the liveTraceConfiguration property: Live trace configuration of a Microsoft.SignalRService
+             * resource..
              *
-             * @param diagnosticConfiguration Diagnostic configuration of a Microsoft.SignalRService resource. Used
-             *     together with Azure monitor DiagnosticSettings.
+             * @param liveTraceConfiguration Live trace configuration of a Microsoft.SignalRService resource.
              * @return the next definition stage.
              */
-            WithCreate withDiagnosticConfiguration(DiagnosticConfiguration diagnosticConfiguration);
+            WithCreate withLiveTraceConfiguration(LiveTraceConfiguration liveTraceConfiguration);
         }
-        /** The stage of the WebPubSubResource definition allowing to specify eventHandler. */
-        interface WithEventHandler {
+        /** The stage of the WebPubSubResource definition allowing to specify resourceLogConfiguration. */
+        interface WithResourceLogConfiguration {
             /**
-             * Specifies the eventHandler property: The settings for event handler in webpubsub service..
+             * Specifies the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService
+             * resource. If resourceLogConfiguration isn't null or empty, it will override options
+             * "EnableConnectivityLog" and "EnableMessagingLogs" in features. Otherwise, use options
+             * "EnableConnectivityLog" and "EnableMessagingLogs" in features..
              *
-             * @param eventHandler The settings for event handler in webpubsub service.
+             * @param resourceLogConfiguration Resource log configuration of a Microsoft.SignalRService resource. If
+             *     resourceLogConfiguration isn't null or empty, it will override options "EnableConnectivityLog" and
+             *     "EnableMessagingLogs" in features. Otherwise, use options "EnableConnectivityLog" and
+             *     "EnableMessagingLogs" in features.
              * @return the next definition stage.
              */
-            WithCreate withEventHandler(EventHandlerSettings eventHandler);
+            WithCreate withResourceLogConfiguration(ResourceLogConfiguration resourceLogConfiguration);
         }
         /** The stage of the WebPubSubResource definition allowing to specify networkACLs. */
         interface WithNetworkACLs {
@@ -398,8 +412,8 @@ public interface WebPubSubResource {
             UpdateStages.WithSku,
             UpdateStages.WithIdentity,
             UpdateStages.WithTls,
-            UpdateStages.WithDiagnosticConfiguration,
-            UpdateStages.WithEventHandler,
+            UpdateStages.WithLiveTraceConfiguration,
+            UpdateStages.WithResourceLogConfiguration,
             UpdateStages.WithNetworkACLs,
             UpdateStages.WithPublicNetworkAccess,
             UpdateStages.WithDisableLocalAuth,
@@ -461,27 +475,32 @@ public interface WebPubSubResource {
              */
             Update withTls(WebPubSubTlsSettings tls);
         }
-        /** The stage of the WebPubSubResource update allowing to specify diagnosticConfiguration. */
-        interface WithDiagnosticConfiguration {
+        /** The stage of the WebPubSubResource update allowing to specify liveTraceConfiguration. */
+        interface WithLiveTraceConfiguration {
             /**
-             * Specifies the diagnosticConfiguration property: Diagnostic configuration of a Microsoft.SignalRService
-             * resource. Used together with Azure monitor DiagnosticSettings..
+             * Specifies the liveTraceConfiguration property: Live trace configuration of a Microsoft.SignalRService
+             * resource..
              *
-             * @param diagnosticConfiguration Diagnostic configuration of a Microsoft.SignalRService resource. Used
-             *     together with Azure monitor DiagnosticSettings.
+             * @param liveTraceConfiguration Live trace configuration of a Microsoft.SignalRService resource.
              * @return the next definition stage.
              */
-            Update withDiagnosticConfiguration(DiagnosticConfiguration diagnosticConfiguration);
+            Update withLiveTraceConfiguration(LiveTraceConfiguration liveTraceConfiguration);
         }
-        /** The stage of the WebPubSubResource update allowing to specify eventHandler. */
-        interface WithEventHandler {
+        /** The stage of the WebPubSubResource update allowing to specify resourceLogConfiguration. */
+        interface WithResourceLogConfiguration {
             /**
-             * Specifies the eventHandler property: The settings for event handler in webpubsub service..
+             * Specifies the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService
+             * resource. If resourceLogConfiguration isn't null or empty, it will override options
+             * "EnableConnectivityLog" and "EnableMessagingLogs" in features. Otherwise, use options
+             * "EnableConnectivityLog" and "EnableMessagingLogs" in features..
              *
-             * @param eventHandler The settings for event handler in webpubsub service.
+             * @param resourceLogConfiguration Resource log configuration of a Microsoft.SignalRService resource. If
+             *     resourceLogConfiguration isn't null or empty, it will override options "EnableConnectivityLog" and
+             *     "EnableMessagingLogs" in features. Otherwise, use options "EnableConnectivityLog" and
+             *     "EnableMessagingLogs" in features.
              * @return the next definition stage.
              */
-            Update withEventHandler(EventHandlerSettings eventHandler);
+            Update withResourceLogConfiguration(ResourceLogConfiguration resourceLogConfiguration);
         }
         /** The stage of the WebPubSubResource update allowing to specify networkACLs. */
         interface WithNetworkACLs {

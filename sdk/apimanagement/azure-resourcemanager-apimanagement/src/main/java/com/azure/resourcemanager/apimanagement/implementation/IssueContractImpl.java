@@ -28,18 +28,6 @@ public final class IssueContractImpl implements IssueContract, IssueContract.Def
         return this.innerModel().type();
     }
 
-    public OffsetDateTime createdDate() {
-        return this.innerModel().createdDate();
-    }
-
-    public State state() {
-        return this.innerModel().state();
-    }
-
-    public String apiId() {
-        return this.innerModel().apiId();
-    }
-
     public String title() {
         return this.innerModel().title();
     }
@@ -50,6 +38,18 @@ public final class IssueContractImpl implements IssueContract, IssueContract.Def
 
     public String userId() {
         return this.innerModel().userId();
+    }
+
+    public OffsetDateTime createdDate() {
+        return this.innerModel().createdDate();
+    }
+
+    public State state() {
+        return this.innerModel().state();
+    }
+
+    public String apiId() {
+        return this.innerModel().apiId();
     }
 
     public IssueContractInner innerModel() {
@@ -172,36 +172,6 @@ public final class IssueContractImpl implements IssueContract, IssueContract.Def
         return this;
     }
 
-    public IssueContractImpl withCreatedDate(OffsetDateTime createdDate) {
-        if (isInCreateMode()) {
-            this.innerModel().withCreatedDate(createdDate);
-            return this;
-        } else {
-            this.updateParameters.withCreatedDate(createdDate);
-            return this;
-        }
-    }
-
-    public IssueContractImpl withState(State state) {
-        if (isInCreateMode()) {
-            this.innerModel().withState(state);
-            return this;
-        } else {
-            this.updateParameters.withState(state);
-            return this;
-        }
-    }
-
-    public IssueContractImpl withApiId(String apiId) {
-        if (isInCreateMode()) {
-            this.innerModel().withApiId(apiId);
-            return this;
-        } else {
-            this.updateParameters.withApiId(apiId);
-            return this;
-        }
-    }
-
     public IssueContractImpl withTitle(String title) {
         if (isInCreateMode()) {
             this.innerModel().withTitle(title);
@@ -228,6 +198,36 @@ public final class IssueContractImpl implements IssueContract, IssueContract.Def
             return this;
         } else {
             this.updateParameters.withUserId(userId);
+            return this;
+        }
+    }
+
+    public IssueContractImpl withCreatedDate(OffsetDateTime createdDate) {
+        if (isInCreateMode()) {
+            this.innerModel().withCreatedDate(createdDate);
+            return this;
+        } else {
+            this.updateParameters.withCreatedDate(createdDate);
+            return this;
+        }
+    }
+
+    public IssueContractImpl withState(State state) {
+        if (isInCreateMode()) {
+            this.innerModel().withState(state);
+            return this;
+        } else {
+            this.updateParameters.withState(state);
+            return this;
+        }
+    }
+
+    public IssueContractImpl withApiId(String apiId) {
+        if (isInCreateMode()) {
+            this.innerModel().withApiId(apiId);
+            return this;
+        } else {
+            this.updateParameters.withApiId(apiId);
             return this;
         }
     }

@@ -18,7 +18,6 @@ import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.options.ShareCreateOptions
 import com.azure.storage.file.share.options.ShareSetPropertiesOptions
 import reactor.test.StepVerifier
-import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.time.LocalDateTime
@@ -42,7 +41,7 @@ class ShareAsyncAPITests extends APISpec {
 
     def "Get share URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net/%s", accountName, shareName)
         when:
         def shareURL = primaryShareAsyncClient.getShareUrl()
@@ -113,7 +112,7 @@ class ShareAsyncAPITests extends APISpec {
         then:
         createSnapshotVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 201)
-            def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(env.primaryAccount.connectionString)
+            def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(environment.primaryAccount.connectionString)
                 .snapshot(it.getValue().getSnapshot()).httpClient(new NettyAsyncHttpClientBuilder().build()).buildClient()
             assert Objects.equals(it.getValue().getSnapshot(),
                 shareSnapshotClient.getSnapshotId())
@@ -139,7 +138,7 @@ class ShareAsyncAPITests extends APISpec {
         then:
         createSnapshotVerifier.assertNext {
             assert FileTestHelper.assertResponseStatusCode(it, 201)
-            def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(env.primaryAccount.connectionString)
+            def shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName).connectionString(environment.primaryAccount.connectionString)
                 .snapshot(it.getValue().getSnapshot()).httpClient(new NettyAsyncHttpClientBuilder().build()).buildClient()
             assert Objects.equals(it.getValue().getSnapshot(),
                 shareSnapshotClient.getSnapshotId())

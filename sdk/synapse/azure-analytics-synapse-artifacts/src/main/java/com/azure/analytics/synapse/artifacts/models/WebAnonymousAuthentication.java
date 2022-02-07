@@ -4,12 +4,12 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** A WebLinkedService that uses anonymous authentication to communicate with an HTTP endpoint. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authenticationType")
 @JsonTypeName("Anonymous")
-@Immutable
+@Fluent
 public final class WebAnonymousAuthentication extends WebLinkedServiceTypeProperties {}

@@ -3,14 +3,13 @@
 
 package com.azure.security.keyvault.jca;
 
-import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.security.Provider;
 
 /**
  * The Azure Key Vault TrustManagerFactory provider.
  */
-public class KeyVaultTrustManagerFactoryProvider extends Provider {
+public final class KeyVaultTrustManagerFactoryProvider extends Provider {
 
     /**
      * Stores the serial version UID.
@@ -43,8 +42,9 @@ public class KeyVaultTrustManagerFactoryProvider extends Provider {
     /**
      * Initialize the provider.
      */
+    @SuppressWarnings("removal")
     private void initialize() {
-        AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+        java.security.AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
             putService(
                 new Provider.Service(
                     this,

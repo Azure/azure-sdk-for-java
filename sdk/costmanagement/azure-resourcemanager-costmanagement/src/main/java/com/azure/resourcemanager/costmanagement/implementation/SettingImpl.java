@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.costmanagement.implementation;
 
 import com.azure.resourcemanager.costmanagement.fluent.models.SettingInner;
+import com.azure.resourcemanager.costmanagement.models.CacheItem;
 import com.azure.resourcemanager.costmanagement.models.Setting;
+import com.azure.resourcemanager.costmanagement.models.SettingsPropertiesStartOn;
+import java.util.Collections;
+import java.util.List;
 
 public final class SettingImpl implements Setting {
     private SettingInner innerObject;
@@ -36,6 +40,19 @@ public final class SettingImpl implements Setting {
 
     public String scope() {
         return this.innerModel().scope();
+    }
+
+    public SettingsPropertiesStartOn startOn() {
+        return this.innerModel().startOn();
+    }
+
+    public List<CacheItem> cache() {
+        List<CacheItem> inner = this.innerModel().cache();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public SettingInner innerModel() {

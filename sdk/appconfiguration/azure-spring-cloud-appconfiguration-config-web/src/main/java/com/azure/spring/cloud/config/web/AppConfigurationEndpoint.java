@@ -7,7 +7,7 @@ import com.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring.
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring.PushNotification;
 import com.fasterxml.jackson.databind.JsonNode;
 
-import static com.azure.spring.cloud.config.web.Constants.VALIDATION_TOPIC;
+import static com.azure.spring.cloud.config.web.AppConfigurationWebConstants.VALIDATION_TOPIC;
 
 import java.util.List;
 import java.util.Locale;
@@ -52,6 +52,11 @@ public class AppConfigurationEndpoint {
 
     }
 
+    /**
+     * Checks if the request is from a valid AppConfiguration Store and has a valid Token and Secret.
+     * 
+     * @return true if a valid connection.
+     */
     public boolean authenticate() {
         for (ConfigStore configStore : configStores) {
             if (configStore.getEndpoint().equals(endpoint)) {
@@ -82,6 +87,11 @@ public class AppConfigurationEndpoint {
 
     }
 
+    /**
+     * Checks if the endpoint's store has been configured for refresh.
+     * 
+     * @return true, if the configured endpoint has monitoring enabled.
+     */
     public boolean triggerRefresh() {
         for (ConfigStore configStore : configStores) {
             if (configStore.getEndpoint().equals(endpoint) && configStore.getMonitoring().isEnabled()) {

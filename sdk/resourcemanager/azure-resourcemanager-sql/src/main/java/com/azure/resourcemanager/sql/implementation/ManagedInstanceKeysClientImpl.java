@@ -667,7 +667,7 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
                 this.client.getHttpPipeline(),
                 ManagedInstanceKeyInner.class,
                 ManagedInstanceKeyInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -963,7 +963,8 @@ public final class ManagedInstanceKeysClientImpl implements ManagedInstanceKeysC
             deleteWithResponseAsync(resourceGroupName, managedInstanceName, keyName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

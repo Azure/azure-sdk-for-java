@@ -3,7 +3,6 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.google.common.collect.ImmutableSet;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader.Builder;
@@ -31,6 +30,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -84,7 +84,10 @@ public class AADAppRoleAuthenticationFilterTest {
     @Test
     public void testDoFilterGoodCase()
         throws ParseException, JOSEException, BadJOSEException, ServletException, IOException {
-        final UserPrincipal dummyPrincipal = createUserPrincipal(ImmutableSet.of("user", "admin"));
+        Set<String> dummyValues = new HashSet<>(2);
+        dummyValues.add("user");
+        dummyValues.add("admin");
+        final UserPrincipal dummyPrincipal = createUserPrincipal(Collections.unmodifiableSet(dummyValues));
 
         when(request.getHeader(HttpHeaders.AUTHORIZATION)).thenReturn("Bearer " + TOKEN);
         when(userPrincipalManager.buildUserPrincipal(TOKEN)).thenReturn(dummyPrincipal);
@@ -158,8 +161,11 @@ public class AADAppRoleAuthenticationFilterTest {
     public void testToSimpleGrantedAuthoritySetWithWhitespaceRole() {
         AADAppRoleStatelessAuthenticationFilter filter = new AADAppRoleStatelessAuthenticationFilter(null);
         UserPrincipal userPrincipal = new UserPrincipal(null, null, null);
-        Set<String> roles = ImmutableSet.of("user", "", "ADMIN");
-        userPrincipal.setRoles(roles);
+        Set<String> roles = new HashSet<>(3);
+        roles.add("user");
+        roles.add("");
+        roles.add("ADMIN");
+        userPrincipal.setRoles(Collections.unmodifiableSet(roles));
         Set<SimpleGrantedAuthority> result = filter.toSimpleGrantedAuthoritySet(userPrincipal);
         assertThat(
             "Set should contain the two granted authority 'ROLE_user' and 'ROLE_ADMIN'.",
@@ -175,7 +181,7 @@ public class AADAppRoleAuthenticationFilterTest {
     public void testToSimpleGrantedAuthoritySetWithNoRole() {
         AADAppRoleStatelessAuthenticationFilter filter = new AADAppRoleStatelessAuthenticationFilter(null);
         UserPrincipal userPrincipal = new UserPrincipal(null, null, null);
-        Set<String> roles = ImmutableSet.of();
+        Set<String> roles = Collections.unmodifiableSet(new HashSet<>());
         userPrincipal.setRoles(roles);
         Set<SimpleGrantedAuthority> result = filter.toSimpleGrantedAuthoritySet(userPrincipal);
         assertThat(

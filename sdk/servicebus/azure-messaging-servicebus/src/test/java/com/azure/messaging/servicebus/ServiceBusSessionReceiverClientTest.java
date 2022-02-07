@@ -34,7 +34,7 @@ class ServiceBusSessionReceiverClientTest {
 
     @AfterEach
     void afterEach(TestInfo testInfo) {
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
     }
 
 

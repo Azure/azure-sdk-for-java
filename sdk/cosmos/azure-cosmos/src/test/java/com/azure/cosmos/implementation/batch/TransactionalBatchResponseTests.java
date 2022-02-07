@@ -3,13 +3,13 @@
 
 package com.azure.cosmos.implementation.batch;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosItemOperationType;
-import com.azure.cosmos.TransactionalBatchOperationResult;
-import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
+import com.azure.cosmos.models.CosmosBatchOperationResult;
+import com.azure.cosmos.models.CosmosBatchResponse;
+import com.azure.cosmos.models.CosmosItemOperationType;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.testng.annotations.Test;
@@ -31,7 +31,7 @@ public class TransactionalBatchResponseTests {
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void validateAllSetValuesInResponse() {
-        List<TransactionalBatchOperationResult> results = new ArrayList<>();
+        List<CosmosBatchOperationResult> results = new ArrayList<>();
         ItemBatchOperation<?>[] arrayOperations = new ItemBatchOperation<?>[1];
 
         ItemBatchOperation<?> operation = new ItemBatchOperation<>(
@@ -48,7 +48,7 @@ public class TransactionalBatchResponseTests {
             Arrays.asList(arrayOperations));
 
         // Create dummy result
-        TransactionalBatchOperationResult transactionalBatchOperationResult = BridgeInternal.createTransactionBatchResult(
+        CosmosBatchOperationResult transactionalBatchOperationResult = ModelBridgeInternal.createCosmosBatchResult(
             operation.getId(),
             5.0,
             null,
@@ -61,7 +61,7 @@ public class TransactionalBatchResponseTests {
         results.add(transactionalBatchOperationResult);
         String responseContent = new BatchResponsePayloadWriter(results).generatePayload();
 
-        // TransactionalBatchResponse headers
+        // CosmosBatchResponse headers
         String activityId = UUID.randomUUID().toString();
         Map<String, String> headers = new HashMap<>();
         headers.put(HttpConstants.HttpHeaders.ACTIVITY_ID, activityId);
@@ -75,7 +75,7 @@ public class TransactionalBatchResponseTests {
             new ArrayList<>(headers.entrySet()),
             responseContent.getBytes(StandardCharsets.UTF_8));
 
-        TransactionalBatchResponse batchResponse = BatchResponseParser.fromDocumentServiceResponse(
+        CosmosBatchResponse batchResponse = BatchResponseParser.fromDocumentServiceResponse(
             new RxDocumentServiceResponse(null, storeResponse),
             batchRequest,
             true);
@@ -100,7 +100,7 @@ public class TransactionalBatchResponseTests {
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void validateEmptyHeaderInResponse() {
-        List<TransactionalBatchOperationResult> results = new ArrayList<>();
+        List<CosmosBatchOperationResult> results = new ArrayList<>();
         ItemBatchOperation<?>[] arrayOperations = new ItemBatchOperation<?>[1];
 
         ItemBatchOperation<?> operation = new ItemBatchOperation<>(
@@ -117,7 +117,7 @@ public class TransactionalBatchResponseTests {
             Arrays.asList(arrayOperations));
 
         // Create dummy result
-        TransactionalBatchOperationResult transactionalBatchOperationResult = BridgeInternal.createTransactionBatchResult(
+        CosmosBatchOperationResult transactionalBatchOperationResult = ModelBridgeInternal.createCosmosBatchResult(
             null,
             5.0,
             null,
@@ -135,7 +135,7 @@ public class TransactionalBatchResponseTests {
             new ArrayList<>(),
             responseContent.getBytes(StandardCharsets.UTF_8));
 
-        TransactionalBatchResponse batchResponse = BatchResponseParser.fromDocumentServiceResponse(
+        CosmosBatchResponse batchResponse = BatchResponseParser.fromDocumentServiceResponse(
             new RxDocumentServiceResponse(null, storeResponse),
             batchRequest,
             true);

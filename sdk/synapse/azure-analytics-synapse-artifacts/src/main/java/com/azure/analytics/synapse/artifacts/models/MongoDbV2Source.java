@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.List;
 
 /** A copy activity source for a MongoDB database. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -48,10 +47,11 @@ public final class MongoDbV2Source extends CopySource {
 
     /*
      * Specifies the additional columns to be added to source data. Type: array
-     * of objects (or Expression with resultType array of objects).
+     * of objects(AdditionalColumns) (or Expression with resultType array of
+     * objects).
      */
     @JsonProperty(value = "additionalColumns")
-    private List<AdditionalColumns> additionalColumns;
+    private Object additionalColumns;
 
     /**
      * Get the filter property: Specifies selection filter using query operators. To return all documents in a
@@ -147,22 +147,22 @@ public final class MongoDbV2Source extends CopySource {
 
     /**
      * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
-     * objects (or Expression with resultType array of objects).
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
      *
      * @return the additionalColumns value.
      */
-    public List<AdditionalColumns> getAdditionalColumns() {
+    public Object getAdditionalColumns() {
         return this.additionalColumns;
     }
 
     /**
      * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
-     * objects (or Expression with resultType array of objects).
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
      *
      * @param additionalColumns the additionalColumns value to set.
      * @return the MongoDbV2Source object itself.
      */
-    public MongoDbV2Source setAdditionalColumns(List<AdditionalColumns> additionalColumns) {
+    public MongoDbV2Source setAdditionalColumns(Object additionalColumns) {
         this.additionalColumns = additionalColumns;
         return this;
     }

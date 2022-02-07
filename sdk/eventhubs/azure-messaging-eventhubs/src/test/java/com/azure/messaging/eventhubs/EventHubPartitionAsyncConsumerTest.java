@@ -113,7 +113,7 @@ class EventHubPartitionAsyncConsumerTest {
 
     @AfterEach
     void teardown() {
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
 
         if (consumer != null) {
             consumer.close();

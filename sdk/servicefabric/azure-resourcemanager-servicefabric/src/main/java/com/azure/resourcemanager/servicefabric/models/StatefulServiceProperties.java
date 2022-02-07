@@ -6,6 +6,7 @@ package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.servicefabric.fluent.models.ServiceResourceProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -208,6 +209,13 @@ public final class StatefulServiceProperties extends ServiceResourceProperties {
     public StatefulServiceProperties withServicePackageActivationMode(
         ArmServicePackageActivationMode servicePackageActivationMode) {
         super.withServicePackageActivationMode(servicePackageActivationMode);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public StatefulServiceProperties withServiceDnsName(String serviceDnsName) {
+        super.withServiceDnsName(serviceDnsName);
         return this;
     }
 

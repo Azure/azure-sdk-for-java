@@ -7,6 +7,7 @@ package com.azure.resourcemanager.batch.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -25,12 +26,11 @@ public class BatchPoolIdentity {
     private PoolIdentityType type;
 
     /*
-     * The list of user identities associated with the Batch pool. The user
-     * identity dictionary key references will be ARM resource ids in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     * The list of user identities associated with the Batch pool.
      */
     @JsonProperty(value = "userAssignedIdentities")
-    private Map<String, BatchPoolIdentityUserAssignedIdentities> userAssignedIdentities;
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, UserAssignedIdentities> userAssignedIdentities;
 
     /**
      * Get the type property: The type of identity used for the Batch Pool.
@@ -53,26 +53,21 @@ public class BatchPoolIdentity {
     }
 
     /**
-     * Get the userAssignedIdentities property: The list of user identities associated with the Batch pool. The user
-     * identity dictionary key references will be ARM resource ids in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     * Get the userAssignedIdentities property: The list of user identities associated with the Batch pool.
      *
      * @return the userAssignedIdentities value.
      */
-    public Map<String, BatchPoolIdentityUserAssignedIdentities> userAssignedIdentities() {
+    public Map<String, UserAssignedIdentities> userAssignedIdentities() {
         return this.userAssignedIdentities;
     }
 
     /**
-     * Set the userAssignedIdentities property: The list of user identities associated with the Batch pool. The user
-     * identity dictionary key references will be ARM resource ids in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     * Set the userAssignedIdentities property: The list of user identities associated with the Batch pool.
      *
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the BatchPoolIdentity object itself.
      */
-    public BatchPoolIdentity withUserAssignedIdentities(
-        Map<String, BatchPoolIdentityUserAssignedIdentities> userAssignedIdentities) {
+    public BatchPoolIdentity withUserAssignedIdentities(Map<String, UserAssignedIdentities> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }

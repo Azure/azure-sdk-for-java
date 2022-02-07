@@ -14,12 +14,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appservice.fluent.models.AppServiceCertificateOrderInner;
+import com.azure.resourcemanager.appservice.fluent.models.AppServiceCertificatePatchResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.AppServiceCertificateResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.CertificateEmailInner;
 import com.azure.resourcemanager.appservice.fluent.models.CertificateOrderActionInner;
+import com.azure.resourcemanager.appservice.fluent.models.NameIdentifierInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteSealInner;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrderPatchResource;
-import com.azure.resourcemanager.appservice.models.AppServiceCertificatePatchResource;
 import com.azure.resourcemanager.appservice.models.ReissueCertificateOrderRequest;
 import com.azure.resourcemanager.appservice.models.RenewCertificateOrderRequest;
 import com.azure.resourcemanager.appservice.models.SiteSealRequest;
@@ -255,7 +256,7 @@ public interface AppServiceCertificateOrdersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sSL certificate purchase order.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<AppServiceCertificateOrderInner>, AppServiceCertificateOrderInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String certificateOrderName,
@@ -273,7 +274,7 @@ public interface AppServiceCertificateOrdersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sSL certificate purchase order.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AppServiceCertificateOrderInner>, AppServiceCertificateOrderInner> beginCreateOrUpdate(
         String resourceGroupName,
         String certificateOrderName,
@@ -292,7 +293,7 @@ public interface AppServiceCertificateOrdersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sSL certificate purchase order.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AppServiceCertificateOrderInner>, AppServiceCertificateOrderInner> beginCreateOrUpdate(
         String resourceGroupName,
         String certificateOrderName,
@@ -629,7 +630,7 @@ public interface AppServiceCertificateOrdersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return key Vault container ARM resource for a certificate that is purchased through Azure.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<AppServiceCertificateResourceInner>, AppServiceCertificateResourceInner>
         beginCreateOrUpdateCertificateAsync(
             String resourceGroupName,
@@ -650,7 +651,7 @@ public interface AppServiceCertificateOrdersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return key Vault container ARM resource for a certificate that is purchased through Azure.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AppServiceCertificateResourceInner>, AppServiceCertificateResourceInner>
         beginCreateOrUpdateCertificate(
             String resourceGroupName,
@@ -672,7 +673,7 @@ public interface AppServiceCertificateOrdersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return key Vault container ARM resource for a certificate that is purchased through Azure.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AppServiceCertificateResourceInner>, AppServiceCertificateResourceInner>
         beginCreateOrUpdateCertificate(
             String resourceGroupName,
@@ -823,7 +824,7 @@ public interface AppServiceCertificateOrdersClient
         String resourceGroupName,
         String certificateOrderName,
         String name,
-        AppServiceCertificatePatchResource keyVaultCertificate);
+        AppServiceCertificatePatchResourceInner keyVaultCertificate);
 
     /**
      * Description for Creates or updates a certificate and associates with key vault secret.
@@ -843,7 +844,7 @@ public interface AppServiceCertificateOrdersClient
         String resourceGroupName,
         String certificateOrderName,
         String name,
-        AppServiceCertificatePatchResource keyVaultCertificate);
+        AppServiceCertificatePatchResourceInner keyVaultCertificate);
 
     /**
      * Description for Creates or updates a certificate and associates with key vault secret.
@@ -863,7 +864,7 @@ public interface AppServiceCertificateOrdersClient
         String resourceGroupName,
         String certificateOrderName,
         String name,
-        AppServiceCertificatePatchResource keyVaultCertificate);
+        AppServiceCertificatePatchResourceInner keyVaultCertificate);
 
     /**
      * Description for Creates or updates a certificate and associates with key vault secret.
@@ -884,7 +885,7 @@ public interface AppServiceCertificateOrdersClient
         String resourceGroupName,
         String certificateOrderName,
         String name,
-        AppServiceCertificatePatchResource keyVaultCertificate,
+        AppServiceCertificatePatchResourceInner keyVaultCertificate,
         Context context);
 
     /**
@@ -1090,11 +1091,12 @@ public interface AppServiceCertificateOrdersClient
     Response<Void> resendEmailWithResponse(String resourceGroupName, String certificateOrderName, Context context);
 
     /**
-     * Description for Verify domain ownership for this certificate order.
+     * Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
+     * order.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param name Name of the object.
+     * @param nameIdentifier Email address.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -1103,14 +1105,15 @@ public interface AppServiceCertificateOrdersClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> resendRequestEmailsWithResponseAsync(
-        String resourceGroupName, String certificateOrderName, String name);
+        String resourceGroupName, String certificateOrderName, NameIdentifierInner nameIdentifier);
 
     /**
-     * Description for Verify domain ownership for this certificate order.
+     * Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
+     * order.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param name Name of the object.
+     * @param nameIdentifier Email address.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -1118,41 +1121,31 @@ public interface AppServiceCertificateOrdersClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> resendRequestEmailsAsync(String resourceGroupName, String certificateOrderName, String name);
+    Mono<Void> resendRequestEmailsAsync(
+        String resourceGroupName, String certificateOrderName, NameIdentifierInner nameIdentifier);
 
     /**
-     * Description for Verify domain ownership for this certificate order.
+     * Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
+     * order.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> resendRequestEmailsAsync(String resourceGroupName, String certificateOrderName);
-
-    /**
-     * Description for Verify domain ownership for this certificate order.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param nameIdentifier Email address.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void resendRequestEmails(String resourceGroupName, String certificateOrderName);
+    void resendRequestEmails(String resourceGroupName, String certificateOrderName, NameIdentifierInner nameIdentifier);
 
     /**
-     * Description for Verify domain ownership for this certificate order.
+     * Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
+     * order.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param name Name of the object.
+     * @param nameIdentifier Email address.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1162,10 +1155,16 @@ public interface AppServiceCertificateOrdersClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> resendRequestEmailsWithResponse(
-        String resourceGroupName, String certificateOrderName, String name, Context context);
+        String resourceGroupName, String certificateOrderName, NameIdentifierInner nameIdentifier, Context context);
 
     /**
-     * Description for Verify domain ownership for this certificate order.
+     * This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic that
+     * the certificate purchaser can embed on their web site to show their visitors information about their SSL
+     * certificate. If a web site visitor clicks on the site seal image, a pop-up page is displayed that contains
+     * detailed information about the SSL certificate. The site seal token is used to link the site seal graphic image
+     * to the appropriate certificate details pop-up page display when a user clicks on the site seal. The site seal
+     * images are expected to be static images and hosted by the reseller, to minimize delays for customer page load
+     * times.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
@@ -1181,7 +1180,13 @@ public interface AppServiceCertificateOrdersClient
         String resourceGroupName, String certificateOrderName, SiteSealRequest siteSealRequest);
 
     /**
-     * Description for Verify domain ownership for this certificate order.
+     * This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic that
+     * the certificate purchaser can embed on their web site to show their visitors information about their SSL
+     * certificate. If a web site visitor clicks on the site seal image, a pop-up page is displayed that contains
+     * detailed information about the SSL certificate. The site seal token is used to link the site seal graphic image
+     * to the appropriate certificate details pop-up page display when a user clicks on the site seal. The site seal
+     * images are expected to be static images and hosted by the reseller, to minimize delays for customer page load
+     * times.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
@@ -1197,7 +1202,13 @@ public interface AppServiceCertificateOrdersClient
         String resourceGroupName, String certificateOrderName, SiteSealRequest siteSealRequest);
 
     /**
-     * Description for Verify domain ownership for this certificate order.
+     * This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic that
+     * the certificate purchaser can embed on their web site to show their visitors information about their SSL
+     * certificate. If a web site visitor clicks on the site seal image, a pop-up page is displayed that contains
+     * detailed information about the SSL certificate. The site seal token is used to link the site seal graphic image
+     * to the appropriate certificate details pop-up page display when a user clicks on the site seal. The site seal
+     * images are expected to be static images and hosted by the reseller, to minimize delays for customer page load
+     * times.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
@@ -1213,7 +1224,13 @@ public interface AppServiceCertificateOrdersClient
         String resourceGroupName, String certificateOrderName, SiteSealRequest siteSealRequest);
 
     /**
-     * Description for Verify domain ownership for this certificate order.
+     * This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic that
+     * the certificate purchaser can embed on their web site to show their visitors information about their SSL
+     * certificate. If a web site visitor clicks on the site seal image, a pop-up page is displayed that contains
+     * detailed information about the SSL certificate. The site seal token is used to link the site seal graphic image
+     * to the appropriate certificate details pop-up page display when a user clicks on the site seal. The site seal
+     * images are expected to be static images and hosted by the reseller, to minimize delays for customer page load
+     * times.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.

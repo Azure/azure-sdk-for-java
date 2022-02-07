@@ -13,7 +13,7 @@ import org.springframework.util.Assert;
 /**
  * Properties for Monitoring an Azure App Configuratin Store.
  */
-public class AppConfigurationStoreMonitoring {
+public final class AppConfigurationStoreMonitoring {
 
     private boolean enabled = false;
 
@@ -98,6 +98,9 @@ public class AppConfigurationStoreMonitoring {
         this.pushNotification = pushNotification;
     }
 
+    /**
+     * Validates refreshInterals are at least 1 second, and if enabled triggers are valid.
+     */
     @PostConstruct
     public void validateAndInit() {
         if (enabled) {
@@ -185,6 +188,10 @@ public class AppConfigurationStoreMonitoring {
             this.secret = secret;
         }
 
+        /**
+         * Checks if name and secret are not null.
+         * @return boolean true if name and secret are not null.
+         */
         public boolean isValid() {
             return this.name != null && this.secret != null;
         }

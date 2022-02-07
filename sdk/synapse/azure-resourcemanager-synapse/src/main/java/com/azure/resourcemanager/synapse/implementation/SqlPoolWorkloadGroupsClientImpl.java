@@ -156,7 +156,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool's workload group.
+     * @return a Sql pool's workload group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkloadGroupInner>> getWithResponseAsync(
@@ -187,6 +187,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
             return Mono
                 .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -194,7 +195,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -216,7 +217,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool's workload group.
+     * @return a Sql pool's workload group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkloadGroupInner>> getWithResponseAsync(
@@ -247,12 +248,13 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
             return Mono
                 .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -272,7 +274,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool's workload group.
+     * @return a Sql pool's workload group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadGroupInner> getAsync(
@@ -317,7 +319,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool's workload group.
+     * @return a Sql pool's workload group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkloadGroupInner> getWithResponse(
@@ -336,7 +338,8 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload group operations for a sql pool.
+     * @return workload group operations for a sql pool along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -376,6 +379,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -383,7 +387,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
                     service
                         .createOrUpdate(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -407,7 +411,8 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload group operations for a sql pool.
+     * @return workload group operations for a sql pool along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -448,12 +453,13 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -475,9 +481,10 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload group operations for a sql pool.
+     * @return workload group operations for a sql pool along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String workspaceName,
@@ -490,7 +497,11 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
         return this
             .client
             .<WorkloadGroupInner, WorkloadGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), WorkloadGroupInner.class, WorkloadGroupInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                WorkloadGroupInner.class,
+                WorkloadGroupInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -505,9 +516,10 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload group operations for a sql pool.
+     * @return workload group operations for a sql pool along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String workspaceName,
@@ -536,9 +548,10 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload group operations for a sql pool.
+     * @return workload group operations for a sql pool along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,
@@ -561,9 +574,10 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload group operations for a sql pool.
+     * @return workload group operations for a sql pool along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,
@@ -587,7 +601,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload group operations for a sql pool.
+     * @return workload group operations for a sql pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadGroupInner> createOrUpdateAsync(
@@ -613,7 +627,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workload group operations for a sql pool.
+     * @return workload group operations for a sql pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadGroupInner> createOrUpdateAsync(
@@ -690,7 +704,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -721,13 +735,14 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
             return Mono
                 .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         return FluxUtil
             .withContext(
                 context ->
                     service
                         .delete(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -748,7 +763,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -779,11 +794,12 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
             return Mono
                 .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -802,16 +818,17 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -825,9 +842,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName, Context context) {
         context = this.client.mergeContext(context);
@@ -848,9 +865,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName) {
         return beginDeleteAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName).getSyncPoller();
@@ -867,9 +884,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName, Context context) {
         return beginDeleteAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, context)
@@ -886,7 +903,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -907,7 +924,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -960,7 +977,8 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Sql pool's workload groups.
+     * @return list of Sql pool's workload groups along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadGroupInner>> listSinglePageAsync(
@@ -987,6 +1005,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -994,7 +1013,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
                     service
                         .list(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -1023,7 +1042,8 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Sql pool's workload groups.
+     * @return list of Sql pool's workload groups along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadGroupInner>> listSinglePageAsync(
@@ -1050,12 +1070,13 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -1153,7 +1174,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workload groups.
+     * @return a list of workload groups along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadGroupInner>> listNextSinglePageAsync(String nextLink) {
@@ -1189,7 +1210,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workload groups.
+     * @return a list of workload groups along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadGroupInner>> listNextSinglePageAsync(String nextLink, Context context) {

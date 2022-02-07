@@ -20,6 +20,12 @@ public final class AccessUriInner {
     @JsonProperty(value = "accessSAS", access = JsonProperty.Access.WRITE_ONLY)
     private String accessSas;
 
+    /*
+     * A SAS uri for accessing a VM guest state.
+     */
+    @JsonProperty(value = "securityDataAccessSAS", access = JsonProperty.Access.WRITE_ONLY)
+    private String securityDataAccessSas;
+
     /**
      * Get the accessSas property: A SAS uri for accessing a disk.
      *
@@ -27,6 +33,15 @@ public final class AccessUriInner {
      */
     public String accessSas() {
         return this.accessSas;
+    }
+
+    /**
+     * Get the securityDataAccessSas property: A SAS uri for accessing a VM guest state.
+     *
+     * @return the securityDataAccessSas value.
+     */
+    public String securityDataAccessSas() {
+        return this.securityDataAccessSas;
     }
 
     /**

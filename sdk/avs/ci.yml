@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/avs/
+      - sdk/avs/ci.yml
+      - sdk/avs/azure-resourcemanager-avs/
+    exclude:
+      - sdk/avs/pom.xml
+      - sdk/avs/azure-resourcemanager-avs/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/avs/
+      - sdk/avs/ci.yml
+      - sdk/avs/azure-resourcemanager-avs/
+    exclude:
+      - sdk/avs/pom.xml
+      - sdk/avs/azure-resourcemanager-avs/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

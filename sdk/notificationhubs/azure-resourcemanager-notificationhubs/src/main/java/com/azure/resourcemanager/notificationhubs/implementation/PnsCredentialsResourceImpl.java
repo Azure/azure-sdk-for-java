@@ -53,6 +53,10 @@ public final class PnsCredentialsResourceImpl implements PnsCredentialsResource 
         }
     }
 
+    public Sku sku() {
+        return this.innerModel().sku();
+    }
+
     public ApnsCredential apnsCredential() {
         return this.innerModel().apnsCredential();
     }
@@ -75,10 +79,6 @@ public final class PnsCredentialsResourceImpl implements PnsCredentialsResource 
 
     public BaiduCredential baiduCredential() {
         return this.innerModel().baiduCredential();
-    }
-
-    public Sku sku() {
-        return this.innerModel().sku();
     }
 
     public PnsCredentialsResourceInner innerModel() {

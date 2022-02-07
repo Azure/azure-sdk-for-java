@@ -21,6 +21,12 @@ public final class ServiceSpecification {
     @JsonProperty(value = "metricSpecifications")
     private List<MetricSpecification> metricSpecifications;
 
+    /*
+     * Log specification of operation.
+     */
+    @JsonProperty(value = "logSpecifications")
+    private List<LogSpecification> logSpecifications;
+
     /**
      * Get the metricSpecifications property: Metric specifications of operation.
      *
@@ -42,6 +48,26 @@ public final class ServiceSpecification {
     }
 
     /**
+     * Get the logSpecifications property: Log specification of operation.
+     *
+     * @return the logSpecifications value.
+     */
+    public List<LogSpecification> logSpecifications() {
+        return this.logSpecifications;
+    }
+
+    /**
+     * Set the logSpecifications property: Log specification of operation.
+     *
+     * @param logSpecifications the logSpecifications value to set.
+     * @return the ServiceSpecification object itself.
+     */
+    public ServiceSpecification withLogSpecifications(List<LogSpecification> logSpecifications) {
+        this.logSpecifications = logSpecifications;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -49,6 +75,9 @@ public final class ServiceSpecification {
     public void validate() {
         if (metricSpecifications() != null) {
             metricSpecifications().forEach(e -> e.validate());
+        }
+        if (logSpecifications() != null) {
+            logSpecifications().forEach(e -> e.validate());
         }
     }
 }

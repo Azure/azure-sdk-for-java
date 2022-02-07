@@ -114,6 +114,9 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         this.addSupportSpatialLegacyCoordinates(headers);
         this.addUsePolygonsSmallerThanAHemisphere(headers);
         this.addReturnPreference(headers);
+        this.addPopulateIndexMetrics(headers);
+        this.addIsClientEncrypted(headers);
+        this.addIntendedCollectionRid(headers);
 
         // Normal headers (Strings, Ints, Longs, etc.)
 
@@ -418,6 +421,18 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
     private RntbdToken getPopulateQueryMetrics() {
         return this.get(RntbdRequestHeader.PopulateQueryMetrics);
+    }
+
+    private RntbdToken getPopulateIndexMetrics() {
+        return this.get(RntbdRequestHeader.PopulateIndexMetrics);
+    }
+
+    private RntbdToken getIsClientEncrypted() {
+        return this.get(RntbdRequestHeader.IsClientEncrypted);
+    }
+
+    private RntbdToken getIntendedCollectionRid() {
+        return this.get(RntbdRequestHeader.IntendedCollectionRid);
     }
 
     private RntbdToken getPopulateQuotaInfo() {
@@ -963,6 +978,27 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         final String value = headers.get(HttpHeaders.POPULATE_QUERY_METRICS);
         if (StringUtils.isNotEmpty(value)) {
             this.getPopulateQueryMetrics().setValue(Boolean.parseBoolean(value));
+        }
+    }
+
+    private void addPopulateIndexMetrics(final Map<String, String> headers) {
+        final String value = headers.get(HttpHeaders.POPULATE_INDEX_METRICS);
+        if (StringUtils.isNotEmpty(value)) {
+            this.getPopulateIndexMetrics().setValue(Boolean.parseBoolean(value));
+        }
+    }
+
+    private void addIsClientEncrypted(final Map<String, String> headers) {
+        final String value = headers.get(HttpHeaders.IS_CLIENT_ENCRYPTED_HEADER);
+        if (StringUtils.isNotEmpty(value)) {
+            this.getIsClientEncrypted().setValue(Boolean.parseBoolean(value));
+        }
+    }
+
+    private void addIntendedCollectionRid(final Map<String, String> headers) {
+        final String value = headers.get(HttpHeaders.INTENDED_COLLECTION_RID_HEADER);
+        if (StringUtils.isNotEmpty(value)) {
+            this.getIntendedCollectionRid().setValue(value);
         }
     }
 

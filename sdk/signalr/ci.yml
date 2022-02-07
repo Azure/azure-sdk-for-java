@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/signalr/
+      - sdk/signalr/ci.yml
+      - sdk/signalr/azure-resourcemanager-signalr/
+    exclude:
+      - sdk/signalr/pom.xml
+      - sdk/signalr/azure-resourcemanager-signalr/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/signalr/
+      - sdk/signalr/ci.yml
+      - sdk/signalr/azure-resourcemanager-signalr/
+    exclude:
+      - sdk/signalr/pom.xml
+      - sdk/signalr/azure-resourcemanager-signalr/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

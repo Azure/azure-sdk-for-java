@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.GitHubActionConfiguration;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
@@ -13,56 +12,31 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Source control configuration for an app. */
-@JsonFlatten
 @Fluent
-public class SiteSourceControlInner extends ProxyOnlyResource {
+public final class SiteSourceControlInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SiteSourceControlInner.class);
 
     /*
-     * Repository or source control URL.
+     * SiteSourceControl resource specific properties
      */
-    @JsonProperty(value = "properties.repoUrl")
-    private String repoUrl;
+    @JsonProperty(value = "properties")
+    private SiteSourceControlProperties innerProperties;
 
-    /*
-     * Name of branch to use for deployment.
+    /**
+     * Get the innerProperties property: SiteSourceControl resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.branch")
-    private String branch;
+    private SiteSourceControlProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * <code>true</code> to limit to manual integration; <code>false</code> to
-     * enable continuous integration (which configures webhooks into online
-     * repos like GitHub).
-     */
-    @JsonProperty(value = "properties.isManualIntegration")
-    private Boolean isManualIntegration;
-
-    /*
-     * <code>true</code> if this is deployed via GitHub action.
-     */
-    @JsonProperty(value = "properties.isGitHubAction")
-    private Boolean isGitHubAction;
-
-    /*
-     * <code>true</code> to enable deployment rollback; otherwise,
-     * <code>false</code>.
-     */
-    @JsonProperty(value = "properties.deploymentRollbackEnabled")
-    private Boolean deploymentRollbackEnabled;
-
-    /*
-     * <code>true</code> for a Mercurial repository; <code>false</code> for a
-     * Git repository.
-     */
-    @JsonProperty(value = "properties.isMercurial")
-    private Boolean isMercurial;
-
-    /*
-     * If GitHub Action is selected, than the associated configuration.
-     */
-    @JsonProperty(value = "properties.gitHubActionConfiguration")
-    private GitHubActionConfiguration gitHubActionConfiguration;
+    /** {@inheritDoc} */
+    @Override
+    public SiteSourceControlInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the repoUrl property: Repository or source control URL.
@@ -70,7 +44,7 @@ public class SiteSourceControlInner extends ProxyOnlyResource {
      * @return the repoUrl value.
      */
     public String repoUrl() {
-        return this.repoUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().repoUrl();
     }
 
     /**
@@ -80,7 +54,10 @@ public class SiteSourceControlInner extends ProxyOnlyResource {
      * @return the SiteSourceControlInner object itself.
      */
     public SiteSourceControlInner withRepoUrl(String repoUrl) {
-        this.repoUrl = repoUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteSourceControlProperties();
+        }
+        this.innerProperties().withRepoUrl(repoUrl);
         return this;
     }
 
@@ -90,7 +67,7 @@ public class SiteSourceControlInner extends ProxyOnlyResource {
      * @return the branch value.
      */
     public String branch() {
-        return this.branch;
+        return this.innerProperties() == null ? null : this.innerProperties().branch();
     }
 
     /**
@@ -100,7 +77,10 @@ public class SiteSourceControlInner extends ProxyOnlyResource {
      * @return the SiteSourceControlInner object itself.
      */
     public SiteSourceControlInner withBranch(String branch) {
-        this.branch = branch;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteSourceControlProperties();
+        }
+        this.innerProperties().withBranch(branch);
         return this;
     }
 
@@ -112,7 +92,7 @@ public class SiteSourceControlInner extends ProxyOnlyResource {
      * @return the isManualIntegration value.
      */
     public Boolean isManualIntegration() {
-        return this.isManualIntegration;
+        return this.innerProperties() == null ? null : this.innerProperties().isManualIntegration();
     }
 
     /**
@@ -124,7 +104,10 @@ public class SiteSourceControlInner extends ProxyOnlyResource {
      * @return the SiteSourceControlInner object itself.
      */
     public SiteSourceControlInner withIsManualIntegration(Boolean isManualIntegration) {
-        this.isManualIntegration = isManualIntegration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteSourceControlProperties();
+        }
+        this.innerProperties().withIsManualIntegration(isManualIntegration);
         return this;
     }
 
@@ -134,7 +117,7 @@ public class SiteSourceControlInner extends ProxyOnlyResource {
      * @return the isGitHubAction value.
      */
     public Boolean isGitHubAction() {
-        return this.isGitHubAction;
+        return this.innerProperties() == null ? null : this.innerProperties().isGitHubAction();
     }
 
     /**
@@ -144,7 +127,10 @@ public class SiteSourceControlInner extends ProxyOnlyResource {
      * @return the SiteSourceControlInner object itself.
      */
     public SiteSourceControlInner withIsGitHubAction(Boolean isGitHubAction) {
-        this.isGitHubAction = isGitHubAction;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteSourceControlProperties();
+        }
+        this.innerProperties().withIsGitHubAction(isGitHubAction);
         return this;
     }
 
@@ -155,7 +141,7 @@ public class SiteSourceControlInner extends ProxyOnlyResource {
      * @return the deploymentRollbackEnabled value.
      */
     public Boolean deploymentRollbackEnabled() {
-        return this.deploymentRollbackEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().deploymentRollbackEnabled();
     }
 
     /**
@@ -166,7 +152,10 @@ public class SiteSourceControlInner extends ProxyOnlyResource {
      * @return the SiteSourceControlInner object itself.
      */
     public SiteSourceControlInner withDeploymentRollbackEnabled(Boolean deploymentRollbackEnabled) {
-        this.deploymentRollbackEnabled = deploymentRollbackEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteSourceControlProperties();
+        }
+        this.innerProperties().withDeploymentRollbackEnabled(deploymentRollbackEnabled);
         return this;
     }
 
@@ -177,7 +166,7 @@ public class SiteSourceControlInner extends ProxyOnlyResource {
      * @return the isMercurial value.
      */
     public Boolean isMercurial() {
-        return this.isMercurial;
+        return this.innerProperties() == null ? null : this.innerProperties().isMercurial();
     }
 
     /**
@@ -188,7 +177,10 @@ public class SiteSourceControlInner extends ProxyOnlyResource {
      * @return the SiteSourceControlInner object itself.
      */
     public SiteSourceControlInner withIsMercurial(Boolean isMercurial) {
-        this.isMercurial = isMercurial;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteSourceControlProperties();
+        }
+        this.innerProperties().withIsMercurial(isMercurial);
         return this;
     }
 
@@ -198,7 +190,7 @@ public class SiteSourceControlInner extends ProxyOnlyResource {
      * @return the gitHubActionConfiguration value.
      */
     public GitHubActionConfiguration gitHubActionConfiguration() {
-        return this.gitHubActionConfiguration;
+        return this.innerProperties() == null ? null : this.innerProperties().gitHubActionConfiguration();
     }
 
     /**
@@ -208,14 +200,10 @@ public class SiteSourceControlInner extends ProxyOnlyResource {
      * @return the SiteSourceControlInner object itself.
      */
     public SiteSourceControlInner withGitHubActionConfiguration(GitHubActionConfiguration gitHubActionConfiguration) {
-        this.gitHubActionConfiguration = gitHubActionConfiguration;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public SiteSourceControlInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteSourceControlProperties();
+        }
+        this.innerProperties().withGitHubActionConfiguration(gitHubActionConfiguration);
         return this;
     }
 
@@ -227,8 +215,8 @@ public class SiteSourceControlInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (gitHubActionConfiguration() != null) {
-            gitHubActionConfiguration().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

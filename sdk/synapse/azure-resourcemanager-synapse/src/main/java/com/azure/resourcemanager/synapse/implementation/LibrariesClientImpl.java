@@ -80,7 +80,7 @@ public final class LibrariesClientImpl implements LibrariesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return library by name in a workspace.
+     * @return library by name in a workspace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LibraryResourceInner>> getWithResponseAsync(
@@ -107,6 +107,7 @@ public final class LibrariesClientImpl implements LibrariesClient {
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -114,7 +115,7 @@ public final class LibrariesClientImpl implements LibrariesClient {
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             libraryName,
@@ -134,7 +135,7 @@ public final class LibrariesClientImpl implements LibrariesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return library by name in a workspace.
+     * @return library by name in a workspace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LibraryResourceInner>> getWithResponseAsync(
@@ -161,12 +162,13 @@ public final class LibrariesClientImpl implements LibrariesClient {
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 libraryName,
@@ -184,7 +186,7 @@ public final class LibrariesClientImpl implements LibrariesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return library by name in a workspace.
+     * @return library by name in a workspace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LibraryResourceInner> getAsync(String resourceGroupName, String libraryName, String workspaceName) {
@@ -225,7 +227,7 @@ public final class LibrariesClientImpl implements LibrariesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return library by name in a workspace.
+     * @return library by name in a workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LibraryResourceInner> getWithResponse(

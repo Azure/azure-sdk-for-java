@@ -49,6 +49,10 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
         return this.innerModel().identity();
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
     public String displayName() {
         return this.innerModel().displayName();
     }
@@ -177,10 +181,6 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
         } else {
             return Collections.emptyList();
         }
-    }
-
-    public String etag() {
-        return this.innerModel().etag();
     }
 
     public PoolInner innerModel() {
@@ -402,8 +402,13 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
     }
 
     public PoolImpl withIfMatch(String ifMatch) {
-        this.createIfMatch = ifMatch;
-        return this;
+        if (isInCreateMode()) {
+            this.createIfMatch = ifMatch;
+            return this;
+        } else {
+            this.updateIfMatch = ifMatch;
+            return this;
+        }
     }
 
     public PoolImpl withIfNoneMatch(String ifNoneMatch) {
@@ -411,8 +416,7 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
         return this;
     }
 
-    public PoolImpl ifMatch(String ifMatch) {
-        this.updateIfMatch = ifMatch;
-        return this;
+    private boolean isInCreateMode() {
+        return this.innerModel().id() == null;
     }
 }

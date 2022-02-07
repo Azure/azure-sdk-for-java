@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.List;
 
 /** A copy activity source for web page table. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,29 +16,30 @@ import java.util.List;
 public final class WebSource extends CopySource {
     /*
      * Specifies the additional columns to be added to source data. Type: array
-     * of objects (or Expression with resultType array of objects).
+     * of objects(AdditionalColumns) (or Expression with resultType array of
+     * objects).
      */
     @JsonProperty(value = "additionalColumns")
-    private List<AdditionalColumns> additionalColumns;
+    private Object additionalColumns;
 
     /**
      * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
-     * objects (or Expression with resultType array of objects).
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
      *
      * @return the additionalColumns value.
      */
-    public List<AdditionalColumns> getAdditionalColumns() {
+    public Object getAdditionalColumns() {
         return this.additionalColumns;
     }
 
     /**
      * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
-     * objects (or Expression with resultType array of objects).
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
      *
      * @param additionalColumns the additionalColumns value to set.
      * @return the WebSource object itself.
      */
-    public WebSource setAdditionalColumns(List<AdditionalColumns> additionalColumns) {
+    public WebSource setAdditionalColumns(Object additionalColumns) {
         this.additionalColumns = additionalColumns;
         return this;
     }

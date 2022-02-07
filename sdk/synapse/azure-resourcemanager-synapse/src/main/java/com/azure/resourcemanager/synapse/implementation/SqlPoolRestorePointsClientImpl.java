@@ -155,7 +155,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool backup information.
+     * @return sQL pool backup information along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RestorePointInner>> listSinglePageAsync(
@@ -182,6 +182,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -189,7 +190,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
                     service
                         .list(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -218,7 +219,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool backup information.
+     * @return sQL pool backup information along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RestorePointInner>> listSinglePageAsync(
@@ -245,12 +246,13 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -350,7 +352,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points.
+     * @return database restore points along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -385,6 +387,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -392,7 +395,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
                     service
                         .create(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -414,7 +417,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points.
+     * @return database restore points along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -450,12 +453,13 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .create(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -475,9 +479,9 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points.
+     * @return database restore points along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RestorePointInner>, RestorePointInner> beginCreateAsync(
         String resourceGroupName,
         String workspaceName,
@@ -488,7 +492,11 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
         return this
             .client
             .<RestorePointInner, RestorePointInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RestorePointInner.class, RestorePointInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                RestorePointInner.class,
+                RestorePointInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -502,9 +510,9 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points.
+     * @return database restore points along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RestorePointInner>, RestorePointInner> beginCreateAsync(
         String resourceGroupName,
         String workspaceName,
@@ -530,9 +538,9 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points.
+     * @return database restore points along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(
         String resourceGroupName,
         String workspaceName,
@@ -552,9 +560,9 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points.
+     * @return database restore points along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(
         String resourceGroupName,
         String workspaceName,
@@ -574,7 +582,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points.
+     * @return database restore points on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RestorePointInner> createAsync(
@@ -598,7 +606,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return database restore points.
+     * @return database restore points on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RestorePointInner> createAsync(
@@ -666,7 +674,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a restore point.
+     * @return a restore point along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RestorePointInner>> getWithResponseAsync(
@@ -697,6 +705,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
             return Mono
                 .error(new IllegalArgumentException("Parameter restorePointName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -704,7 +713,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -726,7 +735,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a restore point.
+     * @return a restore point along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RestorePointInner>> getWithResponseAsync(
@@ -757,12 +766,13 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
             return Mono
                 .error(new IllegalArgumentException("Parameter restorePointName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -782,7 +792,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a restore point.
+     * @return a restore point on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RestorePointInner> getAsync(
@@ -827,7 +837,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a restore point.
+     * @return a restore point along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RestorePointInner> getWithResponse(
@@ -845,7 +855,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -876,13 +886,14 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
             return Mono
                 .error(new IllegalArgumentException("Parameter restorePointName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         return FluxUtil
             .withContext(
                 context ->
                     service
                         .delete(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -903,7 +914,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -934,11 +945,12 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
             return Mono
                 .error(new IllegalArgumentException("Parameter restorePointName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -957,7 +969,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -993,7 +1005,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -1009,7 +1021,8 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RestorePointInner>> listNextSinglePageAsync(String nextLink) {
@@ -1045,7 +1058,8 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups.
+     * @return a list of long term retention backups along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RestorePointInner>> listNextSinglePageAsync(String nextLink, Context context) {

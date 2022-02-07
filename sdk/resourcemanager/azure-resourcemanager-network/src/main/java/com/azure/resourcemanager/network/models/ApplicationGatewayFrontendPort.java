@@ -5,17 +5,22 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayFrontendPortPropertiesFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Frontend port of an application gateway. */
-@JsonFlatten
 @Fluent
-public class ApplicationGatewayFrontendPort extends SubResource {
+public final class ApplicationGatewayFrontendPort extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayFrontendPort.class);
+
+    /*
+     * Properties of the application gateway frontend port.
+     */
+    @JsonProperty(value = "properties")
+    private ApplicationGatewayFrontendPortPropertiesFormat innerProperties;
 
     /*
      * Name of the frontend port that is unique within an Application Gateway.
@@ -35,17 +40,14 @@ public class ApplicationGatewayFrontendPort extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * Frontend port.
+    /**
+     * Get the innerProperties property: Properties of the application gateway frontend port.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.port")
-    private Integer port;
-
-    /*
-     * The provisioning state of the frontend port resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private ApplicationGatewayFrontendPortPropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Name of the frontend port that is unique within an Application Gateway.
@@ -85,13 +87,20 @@ public class ApplicationGatewayFrontendPort extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayFrontendPort withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the port property: Frontend port.
      *
      * @return the port value.
      */
     public Integer port() {
-        return this.port;
+        return this.innerProperties() == null ? null : this.innerProperties().port();
     }
 
     /**
@@ -101,7 +110,10 @@ public class ApplicationGatewayFrontendPort extends SubResource {
      * @return the ApplicationGatewayFrontendPort object itself.
      */
     public ApplicationGatewayFrontendPort withPort(Integer port) {
-        this.port = port;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayFrontendPortPropertiesFormat();
+        }
+        this.innerProperties().withPort(port);
         return this;
     }
 
@@ -111,14 +123,7 @@ public class ApplicationGatewayFrontendPort extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ApplicationGatewayFrontendPort withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -127,5 +132,8 @@ public class ApplicationGatewayFrontendPort extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

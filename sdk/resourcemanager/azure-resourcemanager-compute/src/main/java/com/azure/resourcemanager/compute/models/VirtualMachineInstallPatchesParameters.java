@@ -18,7 +18,7 @@ public final class VirtualMachineInstallPatchesParameters {
      * Specifies the maximum amount of time that the operation will run. It
      * must be an ISO 8601-compliant duration string such as PT4H (4 hours)
      */
-    @JsonProperty(value = "maximumDuration", required = true)
+    @JsonProperty(value = "maximumDuration")
     private String maximumDuration;
 
     /*
@@ -129,12 +129,6 @@ public final class VirtualMachineInstallPatchesParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (maximumDuration() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property maximumDuration in model VirtualMachineInstallPatchesParameters"));
-        }
         if (rebootSetting() == null) {
             throw logger
                 .logExceptionAsError(

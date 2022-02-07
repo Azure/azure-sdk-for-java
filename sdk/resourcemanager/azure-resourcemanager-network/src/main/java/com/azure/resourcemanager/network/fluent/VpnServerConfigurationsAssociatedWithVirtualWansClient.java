@@ -44,7 +44,7 @@ public interface VpnServerConfigurationsAssociatedWithVirtualWansClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnServerConfigurations list associated with VirtualWan Response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VpnServerConfigurationsResponseInner>, VpnServerConfigurationsResponseInner> beginListAsync(
         String resourceGroupName, String virtualWanName);
 
@@ -58,7 +58,7 @@ public interface VpnServerConfigurationsAssociatedWithVirtualWansClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnServerConfigurations list associated with VirtualWan Response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VpnServerConfigurationsResponseInner>, VpnServerConfigurationsResponseInner> beginList(
         String resourceGroupName, String virtualWanName);
 
@@ -73,7 +73,7 @@ public interface VpnServerConfigurationsAssociatedWithVirtualWansClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnServerConfigurations list associated with VirtualWan Response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VpnServerConfigurationsResponseInner>, VpnServerConfigurationsResponseInner> beginList(
         String resourceGroupName, String virtualWanName, Context context);
 

@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/hanaonazure/
+      - sdk/hanaonazure/ci.yml
+      - sdk/hanaonazure/azure-resourcemanager-hanaonazure/
+    exclude:
+      - sdk/hanaonazure/pom.xml
+      - sdk/hanaonazure/azure-resourcemanager-hanaonazure/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/hanaonazure/
+      - sdk/hanaonazure/ci.yml
+      - sdk/hanaonazure/azure-resourcemanager-hanaonazure/
+    exclude:
+      - sdk/hanaonazure/pom.xml
+      - sdk/hanaonazure/azure-resourcemanager-hanaonazure/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

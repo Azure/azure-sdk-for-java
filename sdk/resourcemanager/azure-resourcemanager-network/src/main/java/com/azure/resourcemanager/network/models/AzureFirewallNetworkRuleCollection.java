@@ -5,18 +5,23 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.fluent.models.AzureFirewallNetworkRuleCollectionPropertiesFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Network rule collection resource. */
-@JsonFlatten
 @Fluent
-public class AzureFirewallNetworkRuleCollection extends SubResource {
+public final class AzureFirewallNetworkRuleCollection extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallNetworkRuleCollection.class);
+
+    /*
+     * Properties of the azure firewall network rule collection.
+     */
+    @JsonProperty(value = "properties")
+    private AzureFirewallNetworkRuleCollectionPropertiesFormat innerProperties;
 
     /*
      * The name of the resource that is unique within the Azure firewall. This
@@ -31,29 +36,14 @@ public class AzureFirewallNetworkRuleCollection extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /*
-     * Priority of the network rule collection resource.
+    /**
+     * Get the innerProperties property: Properties of the azure firewall network rule collection.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.priority")
-    private Integer priority;
-
-    /*
-     * The action type of a rule collection.
-     */
-    @JsonProperty(value = "properties.action")
-    private AzureFirewallRCAction action;
-
-    /*
-     * Collection of rules used by a network rule collection.
-     */
-    @JsonProperty(value = "properties.rules")
-    private List<AzureFirewallNetworkRule> rules;
-
-    /*
-     * The provisioning state of the network rule collection resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private AzureFirewallNetworkRuleCollectionPropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of the resource that is unique within the Azure firewall. This name can be used
@@ -86,13 +76,20 @@ public class AzureFirewallNetworkRuleCollection extends SubResource {
         return this.etag;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureFirewallNetworkRuleCollection withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the priority property: Priority of the network rule collection resource.
      *
      * @return the priority value.
      */
     public Integer priority() {
-        return this.priority;
+        return this.innerProperties() == null ? null : this.innerProperties().priority();
     }
 
     /**
@@ -102,7 +99,10 @@ public class AzureFirewallNetworkRuleCollection extends SubResource {
      * @return the AzureFirewallNetworkRuleCollection object itself.
      */
     public AzureFirewallNetworkRuleCollection withPriority(Integer priority) {
-        this.priority = priority;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureFirewallNetworkRuleCollectionPropertiesFormat();
+        }
+        this.innerProperties().withPriority(priority);
         return this;
     }
 
@@ -112,7 +112,7 @@ public class AzureFirewallNetworkRuleCollection extends SubResource {
      * @return the action value.
      */
     public AzureFirewallRCAction action() {
-        return this.action;
+        return this.innerProperties() == null ? null : this.innerProperties().action();
     }
 
     /**
@@ -122,7 +122,10 @@ public class AzureFirewallNetworkRuleCollection extends SubResource {
      * @return the AzureFirewallNetworkRuleCollection object itself.
      */
     public AzureFirewallNetworkRuleCollection withAction(AzureFirewallRCAction action) {
-        this.action = action;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureFirewallNetworkRuleCollectionPropertiesFormat();
+        }
+        this.innerProperties().withAction(action);
         return this;
     }
 
@@ -132,7 +135,7 @@ public class AzureFirewallNetworkRuleCollection extends SubResource {
      * @return the rules value.
      */
     public List<AzureFirewallNetworkRule> rules() {
-        return this.rules;
+        return this.innerProperties() == null ? null : this.innerProperties().rules();
     }
 
     /**
@@ -142,7 +145,10 @@ public class AzureFirewallNetworkRuleCollection extends SubResource {
      * @return the AzureFirewallNetworkRuleCollection object itself.
      */
     public AzureFirewallNetworkRuleCollection withRules(List<AzureFirewallNetworkRule> rules) {
-        this.rules = rules;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureFirewallNetworkRuleCollectionPropertiesFormat();
+        }
+        this.innerProperties().withRules(rules);
         return this;
     }
 
@@ -152,14 +158,7 @@ public class AzureFirewallNetworkRuleCollection extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureFirewallNetworkRuleCollection withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -168,11 +167,8 @@ public class AzureFirewallNetworkRuleCollection extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (action() != null) {
-            action().validate();
-        }
-        if (rules() != null) {
-            rules().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,10 +12,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Deleted Api Management Service information. */
-@JsonFlatten
 @Fluent
-public class DeletedServiceContractInner extends ProxyResource {
+public final class DeletedServiceContractInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DeletedServiceContractInner.class);
+
+    /*
+     * Deleted Api Management Service details.
+     */
+    @JsonProperty(value = "properties")
+    private DeletedServiceContractProperties innerProperties;
 
     /*
      * Api Management Service Master Location.
@@ -24,27 +28,14 @@ public class DeletedServiceContractInner extends ProxyResource {
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
-    /*
-     * Fully-qualified API Management Service Resource ID
+    /**
+     * Get the innerProperties property: Deleted Api Management Service details.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.serviceId")
-    private String serviceId;
-
-    /*
-     * UTC Date and Time when the service will be automatically purged. The
-     * date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified
-     * by the ISO 8601 standard.
-     */
-    @JsonProperty(value = "properties.scheduledPurgeDate")
-    private OffsetDateTime scheduledPurgeDate;
-
-    /*
-     * UTC Timestamp when the service was soft-deleted. The date conforms to
-     * the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601
-     * standard.
-     */
-    @JsonProperty(value = "properties.deletionDate")
-    private OffsetDateTime deletionDate;
+    private DeletedServiceContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the location property: Api Management Service Master Location.
@@ -61,7 +52,7 @@ public class DeletedServiceContractInner extends ProxyResource {
      * @return the serviceId value.
      */
     public String serviceId() {
-        return this.serviceId;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceId();
     }
 
     /**
@@ -71,7 +62,10 @@ public class DeletedServiceContractInner extends ProxyResource {
      * @return the DeletedServiceContractInner object itself.
      */
     public DeletedServiceContractInner withServiceId(String serviceId) {
-        this.serviceId = serviceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeletedServiceContractProperties();
+        }
+        this.innerProperties().withServiceId(serviceId);
         return this;
     }
 
@@ -82,7 +76,7 @@ public class DeletedServiceContractInner extends ProxyResource {
      * @return the scheduledPurgeDate value.
      */
     public OffsetDateTime scheduledPurgeDate() {
-        return this.scheduledPurgeDate;
+        return this.innerProperties() == null ? null : this.innerProperties().scheduledPurgeDate();
     }
 
     /**
@@ -93,7 +87,10 @@ public class DeletedServiceContractInner extends ProxyResource {
      * @return the DeletedServiceContractInner object itself.
      */
     public DeletedServiceContractInner withScheduledPurgeDate(OffsetDateTime scheduledPurgeDate) {
-        this.scheduledPurgeDate = scheduledPurgeDate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeletedServiceContractProperties();
+        }
+        this.innerProperties().withScheduledPurgeDate(scheduledPurgeDate);
         return this;
     }
 
@@ -104,7 +101,7 @@ public class DeletedServiceContractInner extends ProxyResource {
      * @return the deletionDate value.
      */
     public OffsetDateTime deletionDate() {
-        return this.deletionDate;
+        return this.innerProperties() == null ? null : this.innerProperties().deletionDate();
     }
 
     /**
@@ -115,7 +112,10 @@ public class DeletedServiceContractInner extends ProxyResource {
      * @return the DeletedServiceContractInner object itself.
      */
     public DeletedServiceContractInner withDeletionDate(OffsetDateTime deletionDate) {
-        this.deletionDate = deletionDate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DeletedServiceContractProperties();
+        }
+        this.innerProperties().withDeletionDate(deletionDate);
         return this;
     }
 
@@ -125,5 +125,8 @@ public class DeletedServiceContractInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

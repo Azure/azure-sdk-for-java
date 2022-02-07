@@ -44,6 +44,7 @@ public final class TopicProperties {
     private final OffsetDateTime updatedAt;
     private final OffsetDateTime accessedAt;
     private long maxSizeInMegabytes;
+    private long maxMessageSizeInKilobytes;
     private final MessageCountDetails messageCountDetails;
     private boolean requiresDuplicateDetection;
     private final int sizeInBytes;
@@ -78,6 +79,7 @@ public final class TopicProperties {
                     .setFilteringMessagesBeforePublishing(topic.isFilteringMessagesBeforePublishing())
                     .setIsAnonymousAccessible(topic.isAnonymousAccessible)
                     .setMaxSizeInMegabytes(topic.getMaxSizeInMegabytes())
+                    .setMaxMessageSizeInKilobytes(topic.getMaxMessageSizeInKilobytes())
                     .setMessageCountDetails(topic.getMessageCountDetails())
                     .setSupportOrdering(topic.supportOrdering)
                     .setSubscriptionCount(topic.getSubscriptionCount())
@@ -89,6 +91,9 @@ public final class TopicProperties {
 
                 if (!rules.isEmpty()) {
                     description.setAuthorizationRules(rules);
+                }
+                if (topic.getMaxMessageSizeInKilobytes() != 0) {
+                    description.setMaxMessageSizeInKilobytes(topic.getMaxMessageSizeInKilobytes());
                 }
 
                 return description;
@@ -125,6 +130,7 @@ public final class TopicProperties {
         this.entityAvailabilityStatus = topic.getEntityAvailabilityStatus();
         this.isAnonymousAccessible = topic.isAnonymousAccessible();
         this.maxSizeInMegabytes = toPrimitive(topic.getMaxSizeInMegabytes());
+        this.maxMessageSizeInKilobytes = toPrimitive(topic.getMaxMessageSizeInKilobytes());
         this.messageCountDetails = topic.getMessageCountDetails();
         this.requiresDuplicateDetection = toPrimitive(topic.isRequiresDuplicateDetection());
         this.sizeInBytes = toPrimitive(topic.getSizeInBytes());
@@ -499,6 +505,27 @@ public final class TopicProperties {
      */
     TopicProperties setEnableExpress(boolean enableExpress) {
         this.enableExpress = enableExpress;
+        return this;
+    }
+
+
+    /**
+     * Get the maxMessageSizeInKilobytes property: The maximum size of a message in kilobytes.
+     *
+     * @return the maxMessageSizeInKilobytes value.
+     */
+    public long getMaxMessageSizeInKilobytes() {
+        return this.maxMessageSizeInKilobytes;
+    }
+
+    /**
+     * Set the maxMessageSizeInKilobytes property: The maximum size of a message in kilobytes.
+     *
+     * @param maxMessageSizeInKilobytes the maxMessageSizeInKilobytes value to set.
+     * @return the QueueDescription object itself.
+     */
+    public TopicProperties setMaxMessageSizeInKilobytes(long maxMessageSizeInKilobytes) {
+        this.maxMessageSizeInKilobytes = maxMessageSizeInKilobytes;
         return this;
     }
 }

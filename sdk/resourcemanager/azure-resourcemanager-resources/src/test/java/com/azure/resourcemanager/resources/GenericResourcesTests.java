@@ -5,6 +5,7 @@ package com.azure.resourcemanager.resources;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -17,6 +18,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import com.azure.resourcemanager.resources.models.GenericResource;
 import com.azure.resourcemanager.resources.models.GenericResources;
 import com.azure.resourcemanager.resources.models.Identity;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.models.ResourceGroups;
 import com.azure.resourcemanager.resources.models.ResourceIdentityType;
 import com.azure.resourcemanager.resources.models.Sku;
@@ -26,6 +28,9 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public class GenericResourcesTests extends ResourceManagementTest {
@@ -98,6 +103,55 @@ public class GenericResourcesTests extends ResourceManagementTest {
         genericResources.deleteById(resource.id());
         Assertions.assertFalse(genericResources.checkExistence(newRgName, resource.resourceProviderNamespace(), resource.parentResourcePath(), resource.resourceType(), resource.name(), resource.apiVersion()));
         Assertions.assertFalse(genericResources.checkExistenceById(resource.id()));
+    }
+
+    @Test
+    public void canValidateMoveResources() throws Exception {
+        final String resourceName = "rs" + testId;
+        final Map<String, Object> properties = new HashMap<>();
+        properties.put("publicIPAllocationMethod", "Dynamic");
+
+        GenericResource resource = genericResources.define(resourceName)
+            .withRegion(Region.US_EAST2)
+            .withExistingResourceGroup(rgName)
+            .withResourceType("publicIPAddresses")
+            .withProviderNamespace("Microsoft.Network")
+            .withoutPlan()
+            .withProperties(properties)
+            .create();
+
+        ResourceGroup targetResourceGroup = resourceGroups.getByName(newRgName);
+        // validate pass as public IP can be moved
+        genericResources.validateMoveResources(rgName, targetResourceGroup, Collections.singletonList(resource.id()));
+
+        // create resource in target group with same name
+        GenericResource resource2 = genericResources.define(resourceName)
+            .withRegion(Region.US_EAST2)
+            .withExistingResourceGroup(newRgName)
+            .withResourceType("publicIPAddresses")
+            .withProviderNamespace("Microsoft.Network")
+            .withoutPlan()
+            .withProperties(properties)
+            .create();
+
+        // validate fail as name conflict
+        Assertions.assertThrows(ManagementException.class, () -> {
+            genericResources.validateMoveResources(rgName, targetResourceGroup, Collections.singletonList(resource.id()));
+        });
+
+        final String resourceName3 = "rs2" + testId;
+        GenericResource resource3 = genericResources.define(resourceName3)
+            .withRegion(Region.US_EAST2)
+            .withExistingResourceGroup(rgName)
+            .withResourceType("userAssignedIdentities")
+            .withProviderNamespace("Microsoft.ManagedIdentity")
+            .withoutPlan()
+            .create();
+
+        // validate fail as managed identity does not support move
+        Assertions.assertThrows(ManagementException.class, () -> {
+            genericResources.validateMoveResources(rgName, targetResourceGroup, Collections.singletonList(resource3.id()));
+        });
     }
 
     @Test

@@ -49,7 +49,7 @@ public interface SnapshotPoliciesClient {
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -63,7 +63,7 @@ public interface SnapshotPoliciesClient {
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -79,7 +79,7 @@ public interface SnapshotPoliciesClient {
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param body Snapshot policy object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -95,7 +95,7 @@ public interface SnapshotPoliciesClient {
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param body Snapshot policy object supplied in the body of the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -116,14 +116,14 @@ public interface SnapshotPoliciesClient {
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param body Snapshot policy object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return snapshot policy information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SnapshotPolicyInner>, SnapshotPolicyInner> beginUpdate(
         String resourceGroupName, String accountName, String snapshotPolicyName, SnapshotPolicyPatch body);
 
@@ -132,7 +132,7 @@ public interface SnapshotPoliciesClient {
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param body Snapshot policy object supplied in the body of the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -140,7 +140,7 @@ public interface SnapshotPoliciesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return snapshot policy information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SnapshotPolicyInner>, SnapshotPolicyInner> beginUpdate(
         String resourceGroupName,
         String accountName,
@@ -153,7 +153,7 @@ public interface SnapshotPoliciesClient {
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param body Snapshot policy object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -169,7 +169,7 @@ public interface SnapshotPoliciesClient {
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param body Snapshot policy object supplied in the body of the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -190,13 +190,13 @@ public interface SnapshotPoliciesClient {
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String snapshotPolicyName);
 
@@ -205,14 +205,14 @@ public interface SnapshotPoliciesClient {
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String snapshotPolicyName, Context context);
 
@@ -221,7 +221,7 @@ public interface SnapshotPoliciesClient {
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -234,7 +234,7 @@ public interface SnapshotPoliciesClient {
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -248,7 +248,7 @@ public interface SnapshotPoliciesClient {
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -262,7 +262,7 @@ public interface SnapshotPoliciesClient {
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

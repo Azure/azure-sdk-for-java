@@ -4,11 +4,10 @@
 
 package com.azure.resourcemanager.redis.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.models.ProvisioningState;
 import com.azure.resourcemanager.redis.models.PublicNetworkAccess;
-import com.azure.resourcemanager.redis.models.RedisCreateProperties;
 import com.azure.resourcemanager.redis.models.RedisInstanceDetails;
 import com.azure.resourcemanager.redis.models.RedisLinkedServer;
 import com.azure.resourcemanager.redis.models.Sku;
@@ -19,15 +18,9 @@ import java.util.List;
 import java.util.Map;
 
 /** Properties of the redis cache. */
-@Immutable
+@Fluent
 public final class RedisPropertiesInner extends RedisCreateProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RedisPropertiesInner.class);
-
-    /*
-     * Redis version.
-     */
-    @JsonProperty(value = "redisVersion", access = JsonProperty.Access.WRITE_ONLY)
-    private String redisVersion;
 
     /*
      * Redis instance provisioning status.
@@ -78,15 +71,6 @@ public final class RedisPropertiesInner extends RedisCreateProperties {
      */
     @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
-
-    /**
-     * Get the redisVersion property: Redis version.
-     *
-     * @return the redisVersion value.
-     */
-    public String redisVersion() {
-        return this.redisVersion;
-    }
 
     /**
      * Get the provisioningState property: Redis instance provisioning status.
@@ -192,6 +176,13 @@ public final class RedisPropertiesInner extends RedisCreateProperties {
 
     /** {@inheritDoc} */
     @Override
+    public RedisPropertiesInner withRedisVersion(String redisVersion) {
+        super.withRedisVersion(redisVersion);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public RedisPropertiesInner withEnableNonSslPort(Boolean enableNonSslPort) {
         super.withEnableNonSslPort(enableNonSslPort);
         return this;
@@ -201,6 +192,13 @@ public final class RedisPropertiesInner extends RedisCreateProperties {
     @Override
     public RedisPropertiesInner withReplicasPerMaster(Integer replicasPerMaster) {
         super.withReplicasPerMaster(replicasPerMaster);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RedisPropertiesInner withReplicasPerPrimary(Integer replicasPerPrimary) {
+        super.withReplicasPerPrimary(replicasPerPrimary);
         return this;
     }
 

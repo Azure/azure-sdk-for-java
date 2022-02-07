@@ -10,6 +10,9 @@ trigger:
   paths:
     include:
       - sdk/postgresqlflexibleserver/
+    exclude:
+      - sdk/postgresqlflexibleserver/pom.xml
+      - sdk/postgresqlflexibleserver/azure-resourcemanager-postgresqlflexibleserver/pom.xml
 
 pr:
   branches:
@@ -22,6 +25,9 @@ pr:
   paths:
     include:
       - sdk/postgresqlflexibleserver/
+    exclude:
+      - sdk/postgresqlflexibleserver/pom.xml
+      - sdk/postgresqlflexibleserver/azure-resourcemanager-postgresqlflexibleserver/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

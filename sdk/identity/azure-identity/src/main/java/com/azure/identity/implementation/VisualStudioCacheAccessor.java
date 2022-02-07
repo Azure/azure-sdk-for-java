@@ -5,8 +5,8 @@ package com.azure.identity.implementation;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.AzureAuthorityHosts;
+import com.azure.identity.CredentialUnavailableException;
 import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,44 +26,39 @@ import java.util.regex.Pattern;
  */
 public class VisualStudioCacheAccessor {
     private static final String PLATFORM_NOT_SUPPORTED_ERROR = "Platform could not be determined for VS Code"
-                                               + " credential authentication.";
+        + " credential authentication.";
     private final ClientLogger logger = new ClientLogger(VisualStudioCacheAccessor.class);
     private static final Pattern REFRESH_TOKEN_PATTERN = Pattern.compile("^[-_.a-zA-Z0-9]+$");
 
+    private static final ObjectMapper MAPPER = new ObjectMapper()
+        .configure(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature(), true)
+        .configure(JsonReadFeature.ALLOW_JAVA_COMMENTS.mappedFeature(), true)
+        .configure(JsonReadFeature.ALLOW_TRAILING_COMMA.mappedFeature(), true);
 
     private JsonNode getUserSettings() {
-        JsonNode output = null;
+        JsonNode output;
         String homeDir = System.getProperty("user.home");
-        String settingsPath = "";
+        String settingsPath;
         try {
             if (Platform.isWindows()) {
-                settingsPath = Paths.get(System.getenv("APPDATA"), "Code", "User", "settings.json")
-                        .toString();
+                settingsPath = Paths.get(System.getenv("APPDATA"), "Code", "User", "settings.json").toString();
             } else if (Platform.isMac()) {
-                settingsPath = Paths.get(homeDir, "Library",
-                        "Application Support", "Code", "User", "settings.json").toString();
+                settingsPath = Paths.get(homeDir, "Library", "Application Support", "Code", "User", "settings.json")
+                    .toString();
             } else if (Platform.isLinux()) {
-                settingsPath = Paths.get(homeDir, ".config", "Code", "User", "settings.json")
-                        .toString();
-            }  else {
-                throw logger.logExceptionAsError(
-                        new CredentialUnavailableException(PLATFORM_NOT_SUPPORTED_ERROR));
+                settingsPath = Paths.get(homeDir, ".config", "Code", "User", "settings.json").toString();
+            } else {
+                throw logger.logExceptionAsError(new CredentialUnavailableException(PLATFORM_NOT_SUPPORTED_ERROR));
             }
-            output =  readJsonFile(settingsPath);
+            output = readJsonFile(settingsPath);
         } catch (Exception e) {
             return null;
         }
         return output;
     }
 
-    JsonNode readJsonFile(String path) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature(), true);
-        mapper.configure(JsonReadFeature.ALLOW_JAVA_COMMENTS.mappedFeature(), true);
-        mapper.configure(JsonReadFeature.ALLOW_TRAILING_COMMA.mappedFeature(), true);
-
-        File settingsFile = new File(path);
-        return mapper.readTree(settingsFile);
+    static JsonNode readJsonFile(String path) throws IOException {
+        return MAPPER.readTree(new File(path));
     }
 
     /**
@@ -97,7 +92,6 @@ public class VisualStudioCacheAccessor {
     }
 
 
-
     /**
      * Get the credential for the specified service and account name.
      *
@@ -111,39 +105,36 @@ public class VisualStudioCacheAccessor {
         if (Platform.isWindows()) {
 
             try {
-                WindowsCredentialAccessor winCredAccessor =
-                        new WindowsCredentialAccessor(serviceName, accountName);
-                credential = winCredAccessor.read();
+                credential = new WindowsCredentialAccessor(serviceName, accountName).read();
             } catch (Exception | Error e) {
                 throw logger.logExceptionAsError(new CredentialUnavailableException(
-                        "Failed to read Vs Code credentials from Windows Credential API.", e));
+                    "Failed to read Vs Code credentials from Windows Credential API.", e));
             }
 
         } else if (Platform.isMac()) {
 
             try {
-                KeyChainAccessor keyChainAccessor = new KeyChainAccessor(null,
-                        serviceName, accountName);
+                KeyChainAccessor keyChainAccessor = new KeyChainAccessor(null, serviceName, accountName);
 
                 byte[] readCreds = keyChainAccessor.read();
                 credential = new String(readCreds, StandardCharsets.UTF_8);
             } catch (Exception | Error e) {
                 throw logger.logExceptionAsError(new CredentialUnavailableException(
-                        "Failed to read Vs Code credentials from Mac Native Key Chain.", e));
+                    "Failed to read Vs Code credentials from Mac Native Key Chain.", e));
             }
 
         } else if (Platform.isLinux()) {
 
             try {
                 LinuxKeyRingAccessor keyRingAccessor = new LinuxKeyRingAccessor(
-                        "org.freedesktop.Secret.Generic", "service",
-                        serviceName, "account", accountName);
+                    "org.freedesktop.Secret.Generic", "service",
+                    serviceName, "account", accountName);
 
                 byte[] readCreds = keyRingAccessor.read();
                 credential = new String(readCreds, StandardCharsets.UTF_8);
             } catch (Exception | Error e) {
                 throw logger.logExceptionAsError(new CredentialUnavailableException(
-                        "Failed to read Vs Code credentials from Linux Key Ring.", e));
+                    "Failed to read Vs Code credentials from Linux Key Ring.", e));
             }
 
         } else {
@@ -153,7 +144,7 @@ public class VisualStudioCacheAccessor {
 
         if (CoreUtils.isNullOrEmpty(credential) || !isRefreshTokenString(credential)) {
             throw logger.logExceptionAsError(
-                    new CredentialUnavailableException("Please authenticate via Azure Tools plugin in VS Code IDE."));
+                new CredentialUnavailableException("Please authenticate via Azure Tools plugin in VS Code IDE."));
         }
         return credential;
     }

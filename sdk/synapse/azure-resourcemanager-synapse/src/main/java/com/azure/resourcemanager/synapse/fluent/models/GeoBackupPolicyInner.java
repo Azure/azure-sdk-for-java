@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.GeoBackupPolicyState;
@@ -13,10 +12,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A database geo backup policy. */
-@JsonFlatten
 @Fluent
-public class GeoBackupPolicyInner extends ProxyResource {
+public final class GeoBackupPolicyInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GeoBackupPolicyInner.class);
+
+    /*
+     * The properties of the geo backup policy.
+     */
+    @JsonProperty(value = "properties", required = true)
+    private GeoBackupPolicyProperties innerProperties = new GeoBackupPolicyProperties();
 
     /*
      * Kind of geo backup policy.  This is metadata used for the Azure portal
@@ -31,17 +35,14 @@ public class GeoBackupPolicyInner extends ProxyResource {
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
-    /*
-     * The state of the geo backup policy.
+    /**
+     * Get the innerProperties property: The properties of the geo backup policy.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.state", required = true)
-    private GeoBackupPolicyState state;
-
-    /*
-     * The storage type of the geo backup policy.
-     */
-    @JsonProperty(value = "properties.storageType", access = JsonProperty.Access.WRITE_ONLY)
-    private String storageType;
+    private GeoBackupPolicyProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the kind property: Kind of geo backup policy. This is metadata used for the Azure portal experience.
@@ -67,7 +68,7 @@ public class GeoBackupPolicyInner extends ProxyResource {
      * @return the state value.
      */
     public GeoBackupPolicyState state() {
-        return this.state;
+        return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
     /**
@@ -77,7 +78,10 @@ public class GeoBackupPolicyInner extends ProxyResource {
      * @return the GeoBackupPolicyInner object itself.
      */
     public GeoBackupPolicyInner withState(GeoBackupPolicyState state) {
-        this.state = state;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GeoBackupPolicyProperties();
+        }
+        this.innerProperties().withState(state);
         return this;
     }
 
@@ -87,7 +91,7 @@ public class GeoBackupPolicyInner extends ProxyResource {
      * @return the storageType value.
      */
     public String storageType() {
-        return this.storageType;
+        return this.innerProperties() == null ? null : this.innerProperties().storageType();
     }
 
     /**
@@ -96,10 +100,13 @@ public class GeoBackupPolicyInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (state() == null) {
+        if (innerProperties() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property state in model GeoBackupPolicyInner"));
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model GeoBackupPolicyInner"));
+        } else {
+            innerProperties().validate();
         }
     }
 }

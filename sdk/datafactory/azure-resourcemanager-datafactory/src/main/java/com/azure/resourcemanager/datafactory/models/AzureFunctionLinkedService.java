@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.AzureFunctionLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,94 +17,24 @@ import java.util.Map;
 /** Azure Function linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureFunction")
-@JsonFlatten
 @Fluent
-public class AzureFunctionLinkedService extends LinkedService {
+public final class AzureFunctionLinkedService extends LinkedService {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFunctionLinkedService.class);
 
     /*
-     * The endpoint of the Azure Function App. URL will be in the format
-     * https://<accountName>.azurewebsites.net.
+     * Azure Function linked service properties.
      */
-    @JsonProperty(value = "typeProperties.functionAppUrl", required = true)
-    private Object functionAppUrl;
-
-    /*
-     * Function or Host key for Azure Function App.
-     */
-    @JsonProperty(value = "typeProperties.functionKey")
-    private SecretBase functionKey;
-
-    /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
-    private Object encryptedCredential;
+    @JsonProperty(value = "typeProperties", required = true)
+    private AzureFunctionLinkedServiceTypeProperties innerTypeProperties =
+        new AzureFunctionLinkedServiceTypeProperties();
 
     /**
-     * Get the functionAppUrl property: The endpoint of the Azure Function App. URL will be in the format
-     * https://&lt;accountName&gt;.azurewebsites.net.
+     * Get the innerTypeProperties property: Azure Function linked service properties.
      *
-     * @return the functionAppUrl value.
+     * @return the innerTypeProperties value.
      */
-    public Object functionAppUrl() {
-        return this.functionAppUrl;
-    }
-
-    /**
-     * Set the functionAppUrl property: The endpoint of the Azure Function App. URL will be in the format
-     * https://&lt;accountName&gt;.azurewebsites.net.
-     *
-     * @param functionAppUrl the functionAppUrl value to set.
-     * @return the AzureFunctionLinkedService object itself.
-     */
-    public AzureFunctionLinkedService withFunctionAppUrl(Object functionAppUrl) {
-        this.functionAppUrl = functionAppUrl;
-        return this;
-    }
-
-    /**
-     * Get the functionKey property: Function or Host key for Azure Function App.
-     *
-     * @return the functionKey value.
-     */
-    public SecretBase functionKey() {
-        return this.functionKey;
-    }
-
-    /**
-     * Set the functionKey property: Function or Host key for Azure Function App.
-     *
-     * @param functionKey the functionKey value to set.
-     * @return the AzureFunctionLinkedService object itself.
-     */
-    public AzureFunctionLinkedService withFunctionKey(SecretBase functionKey) {
-        this.functionKey = functionKey;
-        return this;
-    }
-
-    /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @return the encryptedCredential value.
-     */
-    public Object encryptedCredential() {
-        return this.encryptedCredential;
-    }
-
-    /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @param encryptedCredential the encryptedCredential value to set.
-     * @return the AzureFunctionLinkedService object itself.
-     */
-    public AzureFunctionLinkedService withEncryptedCredential(Object encryptedCredential) {
-        this.encryptedCredential = encryptedCredential;
-        return this;
+    private AzureFunctionLinkedServiceTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -136,6 +66,150 @@ public class AzureFunctionLinkedService extends LinkedService {
     }
 
     /**
+     * Get the functionAppUrl property: The endpoint of the Azure Function App. URL will be in the format
+     * https://&lt;accountName&gt;.azurewebsites.net.
+     *
+     * @return the functionAppUrl value.
+     */
+    public Object functionAppUrl() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().functionAppUrl();
+    }
+
+    /**
+     * Set the functionAppUrl property: The endpoint of the Azure Function App. URL will be in the format
+     * https://&lt;accountName&gt;.azurewebsites.net.
+     *
+     * @param functionAppUrl the functionAppUrl value to set.
+     * @return the AzureFunctionLinkedService object itself.
+     */
+    public AzureFunctionLinkedService withFunctionAppUrl(Object functionAppUrl) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureFunctionLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withFunctionAppUrl(functionAppUrl);
+        return this;
+    }
+
+    /**
+     * Get the functionKey property: Function or Host key for Azure Function App.
+     *
+     * @return the functionKey value.
+     */
+    public SecretBase functionKey() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().functionKey();
+    }
+
+    /**
+     * Set the functionKey property: Function or Host key for Azure Function App.
+     *
+     * @param functionKey the functionKey value to set.
+     * @return the AzureFunctionLinkedService object itself.
+     */
+    public AzureFunctionLinkedService withFunctionKey(SecretBase functionKey) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureFunctionLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withFunctionKey(functionKey);
+        return this;
+    }
+
+    /**
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @return the encryptedCredential value.
+     */
+    public Object encryptedCredential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
+    }
+
+    /**
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @param encryptedCredential the encryptedCredential value to set.
+     * @return the AzureFunctionLinkedService object itself.
+     */
+    public AzureFunctionLinkedService withEncryptedCredential(Object encryptedCredential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureFunctionLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEncryptedCredential(encryptedCredential);
+        return this;
+    }
+
+    /**
+     * Get the credential property: The credential reference containing authentication information.
+     *
+     * @return the credential value.
+     */
+    public CredentialReference credential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().credential();
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     *
+     * @param credential the credential value to set.
+     * @return the AzureFunctionLinkedService object itself.
+     */
+    public AzureFunctionLinkedService withCredential(CredentialReference credential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureFunctionLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withCredential(credential);
+        return this;
+    }
+
+    /**
+     * Get the resourceId property: Allowed token audiences for azure function.
+     *
+     * @return the resourceId value.
+     */
+    public Object resourceId() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().resourceId();
+    }
+
+    /**
+     * Set the resourceId property: Allowed token audiences for azure function.
+     *
+     * @param resourceId the resourceId value to set.
+     * @return the AzureFunctionLinkedService object itself.
+     */
+    public AzureFunctionLinkedService withResourceId(Object resourceId) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureFunctionLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withResourceId(resourceId);
+        return this;
+    }
+
+    /**
+     * Get the authentication property: Type of authentication (Required to specify MSI) used to connect to
+     * AzureFunction. Type: string (or Expression with resultType string).
+     *
+     * @return the authentication value.
+     */
+    public Object authentication() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().authentication();
+    }
+
+    /**
+     * Set the authentication property: Type of authentication (Required to specify MSI) used to connect to
+     * AzureFunction. Type: string (or Expression with resultType string).
+     *
+     * @param authentication the authentication value to set.
+     * @return the AzureFunctionLinkedService object itself.
+     */
+    public AzureFunctionLinkedService withAuthentication(Object authentication) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureFunctionLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withAuthentication(authentication);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -143,14 +217,13 @@ public class AzureFunctionLinkedService extends LinkedService {
     @Override
     public void validate() {
         super.validate();
-        if (functionAppUrl() == null) {
+        if (innerTypeProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property functionAppUrl in model AzureFunctionLinkedService"));
-        }
-        if (functionKey() != null) {
-            functionKey().validate();
+                        "Missing required property innerTypeProperties in model AzureFunctionLinkedService"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

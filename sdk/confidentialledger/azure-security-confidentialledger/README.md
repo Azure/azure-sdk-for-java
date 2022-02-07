@@ -3,8 +3,6 @@
 Azure Confidential Ledger provides a service for logging to an immutable, tamper-proof ledger. As part of the [Azure Confidential Computing][azure_confidential_computing]
 portfolio, Azure Confidential Ledger runs in SGX enclaves. It is built on Microsoft Research's [Confidential Consortium Framework][ccf].
 
-**Please rely heavily on the javadocs and our [Low-Level client docs][low_level_client] to use this library**
-
 [Source code][source_code] | [Package (Maven)][package] | [Product Documentation][product_documentation] | [Samples][samples_readme]
 
 ## Getting started
@@ -58,8 +56,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
 ##### Example
-<!-- embedme ./src/samples/java/com/azure/security/confidentialledger/ReadmeSamples.java#L32-L56 -->
-```java
+```java readme-sample-createClient
 ConfidentialLedgerIdentityServiceBaseClient identityServiceClient = new ConfidentialLedgerClientBuilder()
     .ledgerUri(new URL("<confidential-ledger-url>"))
     .identityServiceUri(new URL("<confidential-ledger-identity-service-url>"))
@@ -150,6 +147,14 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [package]: https://mvnrepository.com/artifact/com.azure/azure-security-confidentialledger
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/confidentialledger/azure-security-confidentialledger/src/samples/README.md
+[azure_resource_manager]: https://docs.microsoft.com/azure/azure-resource-manager/
+[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
+[DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#defaultazurecredential
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+[cla]: https://cla.opensource.microsoft.com/
+[coc]: https://opensource.microsoft.com/codeofconduct/
+[coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
+[coc_contact]: mailto:opencode@microsoft.com
 
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fconfidentialledger%2Fazure-security-confidentialledger%2FREADME.png)

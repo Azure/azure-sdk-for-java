@@ -5,43 +5,30 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.apimanagement.fluent.models.GroupUpdateParametersProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters supplied to the Update Group operation. */
-@JsonFlatten
 @Fluent
-public class GroupUpdateParameters {
+public final class GroupUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GroupUpdateParameters.class);
 
     /*
-     * Group name.
+     * Group entity update contract properties.
      */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
+    @JsonProperty(value = "properties")
+    private GroupUpdateParametersProperties innerProperties;
 
-    /*
-     * Group description.
+    /**
+     * Get the innerProperties property: Group entity update contract properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * Group type.
-     */
-    @JsonProperty(value = "properties.type")
-    private GroupType type;
-
-    /*
-     * Identifier of the external groups, this property contains the id of the
-     * group from the external identity provider, e.g. for Azure Active
-     * Directory `aad://<tenant>.onmicrosoft.com/groups/<group object id>`;
-     * otherwise the value is null.
-     */
-    @JsonProperty(value = "properties.externalId")
-    private String externalId;
+    private GroupUpdateParametersProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the displayName property: Group name.
@@ -49,7 +36,7 @@ public class GroupUpdateParameters {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -59,7 +46,10 @@ public class GroupUpdateParameters {
      * @return the GroupUpdateParameters object itself.
      */
     public GroupUpdateParameters withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GroupUpdateParametersProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -69,7 +59,7 @@ public class GroupUpdateParameters {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -79,7 +69,10 @@ public class GroupUpdateParameters {
      * @return the GroupUpdateParameters object itself.
      */
     public GroupUpdateParameters withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GroupUpdateParametersProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -89,7 +82,7 @@ public class GroupUpdateParameters {
      * @return the type value.
      */
     public GroupType type() {
-        return this.type;
+        return this.innerProperties() == null ? null : this.innerProperties().type();
     }
 
     /**
@@ -99,7 +92,10 @@ public class GroupUpdateParameters {
      * @return the GroupUpdateParameters object itself.
      */
     public GroupUpdateParameters withType(GroupType type) {
-        this.type = type;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GroupUpdateParametersProperties();
+        }
+        this.innerProperties().withType(type);
         return this;
     }
 
@@ -111,7 +107,7 @@ public class GroupUpdateParameters {
      * @return the externalId value.
      */
     public String externalId() {
-        return this.externalId;
+        return this.innerProperties() == null ? null : this.innerProperties().externalId();
     }
 
     /**
@@ -123,7 +119,10 @@ public class GroupUpdateParameters {
      * @return the GroupUpdateParameters object itself.
      */
     public GroupUpdateParameters withExternalId(String externalId) {
-        this.externalId = externalId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GroupUpdateParametersProperties();
+        }
+        this.innerProperties().withExternalId(externalId);
         return this;
     }
 
@@ -133,5 +132,8 @@ public class GroupUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

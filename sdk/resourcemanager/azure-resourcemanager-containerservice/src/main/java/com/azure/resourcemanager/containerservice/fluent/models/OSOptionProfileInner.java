@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.OSOptionProperty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,37 +12,36 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The OS option profile. */
-@JsonFlatten
 @Fluent
-public class OSOptionProfileInner {
+public final class OSOptionProfileInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OSOptionProfileInner.class);
 
     /*
-     * Id of the OS option profile.
+     * The ID of the OS option resource.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
-     * Name of the OS option profile.
+     * The name of the OS option resource.
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
-     * Type of the OS option profile.
+     * The type of the OS option resource.
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
-     * The list of OS option properties.
+     * The list of OS options.
      */
-    @JsonProperty(value = "properties.osOptionPropertyList", required = true)
-    private List<OSOptionProperty> osOptionPropertyList;
+    @JsonProperty(value = "properties", required = true)
+    private OSOptionPropertyList innerProperties = new OSOptionPropertyList();
 
     /**
-     * Get the id property: Id of the OS option profile.
+     * Get the id property: The ID of the OS option resource.
      *
      * @return the id value.
      */
@@ -52,7 +50,7 @@ public class OSOptionProfileInner {
     }
 
     /**
-     * Get the name property: Name of the OS option profile.
+     * Get the name property: The name of the OS option resource.
      *
      * @return the name value.
      */
@@ -61,7 +59,7 @@ public class OSOptionProfileInner {
     }
 
     /**
-     * Get the type property: Type of the OS option profile.
+     * Get the type property: The type of the OS option resource.
      *
      * @return the type value.
      */
@@ -70,22 +68,34 @@ public class OSOptionProfileInner {
     }
 
     /**
-     * Get the osOptionPropertyList property: The list of OS option properties.
+     * Get the innerProperties property: The list of OS options.
+     *
+     * @return the innerProperties value.
+     */
+    private OSOptionPropertyList innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the osOptionPropertyList property: The list of OS options.
      *
      * @return the osOptionPropertyList value.
      */
     public List<OSOptionProperty> osOptionPropertyList() {
-        return this.osOptionPropertyList;
+        return this.innerProperties() == null ? null : this.innerProperties().osOptionPropertyList();
     }
 
     /**
-     * Set the osOptionPropertyList property: The list of OS option properties.
+     * Set the osOptionPropertyList property: The list of OS options.
      *
      * @param osOptionPropertyList the osOptionPropertyList value to set.
      * @return the OSOptionProfileInner object itself.
      */
     public OSOptionProfileInner withOsOptionPropertyList(List<OSOptionProperty> osOptionPropertyList) {
-        this.osOptionPropertyList = osOptionPropertyList;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OSOptionPropertyList();
+        }
+        this.innerProperties().withOsOptionPropertyList(osOptionPropertyList);
         return this;
     }
 
@@ -95,13 +105,13 @@ public class OSOptionProfileInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (osOptionPropertyList() == null) {
+        if (innerProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property osOptionPropertyList in model OSOptionProfileInner"));
+                        "Missing required property innerProperties in model OSOptionProfileInner"));
         } else {
-            osOptionPropertyList().forEach(e -> e.validate());
+            innerProperties().validate();
         }
     }
 }

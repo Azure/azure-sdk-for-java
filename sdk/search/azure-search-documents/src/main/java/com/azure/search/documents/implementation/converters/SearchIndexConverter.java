@@ -49,6 +49,7 @@ public final class SearchIndexConverter {
         searchIndex.setCorsOptions(obj.getCorsOptions());
         searchIndex.setETag(obj.getETag());
         searchIndex.setScoringProfiles(obj.getScoringProfiles());
+        searchIndex.setSemanticSettings(obj.getSemanticSettings());
 
         return searchIndex;
     }
@@ -89,6 +90,7 @@ public final class SearchIndexConverter {
         searchIndex.setCorsOptions(obj.getCorsOptions());
         searchIndex.setETag(obj.getETag());
         searchIndex.setScoringProfiles(obj.getScoringProfiles());
+        searchIndex.setSemanticSettings(obj.getSemanticSettings());
 
         return searchIndex;
     }

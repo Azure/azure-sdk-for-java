@@ -5,25 +5,23 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AzureStaticWebAppsRegistration model. */
-@JsonFlatten
+/** The configuration settings of the registration for the Azure Static Web Apps provider. */
 @Fluent
-public class AzureStaticWebAppsRegistration extends ProxyOnlyResource {
+public final class AzureStaticWebAppsRegistration {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureStaticWebAppsRegistration.class);
 
     /*
-     * The clientId property.
+     * The Client ID of the app used for login.
      */
-    @JsonProperty(value = "properties.clientId")
+    @JsonProperty(value = "clientId")
     private String clientId;
 
     /**
-     * Get the clientId property: The clientId property.
+     * Get the clientId property: The Client ID of the app used for login.
      *
      * @return the clientId value.
      */
@@ -32,7 +30,7 @@ public class AzureStaticWebAppsRegistration extends ProxyOnlyResource {
     }
 
     /**
-     * Set the clientId property: The clientId property.
+     * Set the clientId property: The Client ID of the app used for login.
      *
      * @param clientId the clientId value to set.
      * @return the AzureStaticWebAppsRegistration object itself.
@@ -42,20 +40,11 @@ public class AzureStaticWebAppsRegistration extends ProxyOnlyResource {
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public AzureStaticWebAppsRegistration withKind(String kind) {
-        super.withKind(kind);
-        return this;
-    }
-
     /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
     }
 }

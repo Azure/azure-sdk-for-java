@@ -1,4 +1,4 @@
-# Azure Spring Cloud Dependencies client library for Java
+# Spring Cloud for Azure Dependencies client library for Java
 
 ## Getting started
 

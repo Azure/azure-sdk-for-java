@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.Activity;
@@ -22,65 +21,15 @@ import java.util.List;
 import java.util.Map;
 
 /** Pipeline resource type. */
-@JsonFlatten
 @Fluent
-public class PipelineResourceInner extends SubResource {
+public final class PipelineResourceInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PipelineResourceInner.class);
 
     /*
-     * The description of the pipeline.
+     * Properties of the pipeline.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * List of activities in pipeline.
-     */
-    @JsonProperty(value = "properties.activities")
-    private List<Activity> activities;
-
-    /*
-     * List of parameters for pipeline.
-     */
-    @JsonProperty(value = "properties.parameters")
-    private Map<String, ParameterSpecification> parameters;
-
-    /*
-     * List of variables for pipeline.
-     */
-    @JsonProperty(value = "properties.variables")
-    private Map<String, VariableSpecification> variables;
-
-    /*
-     * The max number of concurrent runs for the pipeline.
-     */
-    @JsonProperty(value = "properties.concurrency")
-    private Integer concurrency;
-
-    /*
-     * List of tags that can be used for describing the Pipeline.
-     */
-    @JsonProperty(value = "properties.annotations")
-    private List<Object> annotations;
-
-    /*
-     * Dimensions emitted by Pipeline.
-     */
-    @JsonProperty(value = "properties.runDimensions")
-    private Map<String, Object> runDimensions;
-
-    /*
-     * The folder that this Pipeline is in. If not specified, Pipeline will
-     * appear at the root level.
-     */
-    @JsonProperty(value = "properties.folder")
-    private PipelineFolder folder;
-
-    /*
-     * Pipeline Policy.
-     */
-    @JsonProperty(value = "properties.policy")
-    private PipelinePolicy policy;
+    @JsonProperty(value = "properties", required = true)
+    private Pipeline innerProperties = new Pipeline();
 
     /*
      * The resource name.
@@ -106,185 +55,12 @@ public class PipelineResourceInner extends SubResource {
     @JsonIgnore private Map<String, Object> additionalProperties;
 
     /**
-     * Get the description property: The description of the pipeline.
+     * Get the innerProperties property: Properties of the pipeline.
      *
-     * @return the description value.
+     * @return the innerProperties value.
      */
-    public String description() {
-        return this.description;
-    }
-
-    /**
-     * Set the description property: The description of the pipeline.
-     *
-     * @param description the description value to set.
-     * @return the PipelineResourceInner object itself.
-     */
-    public PipelineResourceInner withDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
-     * Get the activities property: List of activities in pipeline.
-     *
-     * @return the activities value.
-     */
-    public List<Activity> activities() {
-        return this.activities;
-    }
-
-    /**
-     * Set the activities property: List of activities in pipeline.
-     *
-     * @param activities the activities value to set.
-     * @return the PipelineResourceInner object itself.
-     */
-    public PipelineResourceInner withActivities(List<Activity> activities) {
-        this.activities = activities;
-        return this;
-    }
-
-    /**
-     * Get the parameters property: List of parameters for pipeline.
-     *
-     * @return the parameters value.
-     */
-    public Map<String, ParameterSpecification> parameters() {
-        return this.parameters;
-    }
-
-    /**
-     * Set the parameters property: List of parameters for pipeline.
-     *
-     * @param parameters the parameters value to set.
-     * @return the PipelineResourceInner object itself.
-     */
-    public PipelineResourceInner withParameters(Map<String, ParameterSpecification> parameters) {
-        this.parameters = parameters;
-        return this;
-    }
-
-    /**
-     * Get the variables property: List of variables for pipeline.
-     *
-     * @return the variables value.
-     */
-    public Map<String, VariableSpecification> variables() {
-        return this.variables;
-    }
-
-    /**
-     * Set the variables property: List of variables for pipeline.
-     *
-     * @param variables the variables value to set.
-     * @return the PipelineResourceInner object itself.
-     */
-    public PipelineResourceInner withVariables(Map<String, VariableSpecification> variables) {
-        this.variables = variables;
-        return this;
-    }
-
-    /**
-     * Get the concurrency property: The max number of concurrent runs for the pipeline.
-     *
-     * @return the concurrency value.
-     */
-    public Integer concurrency() {
-        return this.concurrency;
-    }
-
-    /**
-     * Set the concurrency property: The max number of concurrent runs for the pipeline.
-     *
-     * @param concurrency the concurrency value to set.
-     * @return the PipelineResourceInner object itself.
-     */
-    public PipelineResourceInner withConcurrency(Integer concurrency) {
-        this.concurrency = concurrency;
-        return this;
-    }
-
-    /**
-     * Get the annotations property: List of tags that can be used for describing the Pipeline.
-     *
-     * @return the annotations value.
-     */
-    public List<Object> annotations() {
-        return this.annotations;
-    }
-
-    /**
-     * Set the annotations property: List of tags that can be used for describing the Pipeline.
-     *
-     * @param annotations the annotations value to set.
-     * @return the PipelineResourceInner object itself.
-     */
-    public PipelineResourceInner withAnnotations(List<Object> annotations) {
-        this.annotations = annotations;
-        return this;
-    }
-
-    /**
-     * Get the runDimensions property: Dimensions emitted by Pipeline.
-     *
-     * @return the runDimensions value.
-     */
-    public Map<String, Object> runDimensions() {
-        return this.runDimensions;
-    }
-
-    /**
-     * Set the runDimensions property: Dimensions emitted by Pipeline.
-     *
-     * @param runDimensions the runDimensions value to set.
-     * @return the PipelineResourceInner object itself.
-     */
-    public PipelineResourceInner withRunDimensions(Map<String, Object> runDimensions) {
-        this.runDimensions = runDimensions;
-        return this;
-    }
-
-    /**
-     * Get the folder property: The folder that this Pipeline is in. If not specified, Pipeline will appear at the root
-     * level.
-     *
-     * @return the folder value.
-     */
-    public PipelineFolder folder() {
-        return this.folder;
-    }
-
-    /**
-     * Set the folder property: The folder that this Pipeline is in. If not specified, Pipeline will appear at the root
-     * level.
-     *
-     * @param folder the folder value to set.
-     * @return the PipelineResourceInner object itself.
-     */
-    public PipelineResourceInner withFolder(PipelineFolder folder) {
-        this.folder = folder;
-        return this;
-    }
-
-    /**
-     * Get the policy property: Pipeline Policy.
-     *
-     * @return the policy value.
-     */
-    public PipelinePolicy policy() {
-        return this.policy;
-    }
-
-    /**
-     * Set the policy property: Pipeline Policy.
-     *
-     * @param policy the policy value to set.
-     * @return the PipelineResourceInner object itself.
-     */
-    public PipelineResourceInner withPolicy(PipelinePolicy policy) {
-        this.policy = policy;
-        return this;
+    private Pipeline innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -340,7 +116,7 @@ public class PipelineResourceInner extends SubResource {
         if (additionalProperties == null) {
             additionalProperties = new HashMap<>();
         }
-        additionalProperties.put(key.replace("\\.", "."), value);
+        additionalProperties.put(key, value);
     }
 
     /** {@inheritDoc} */
@@ -351,39 +127,227 @@ public class PipelineResourceInner extends SubResource {
     }
 
     /**
+     * Get the description property: The description of the pipeline.
+     *
+     * @return the description value.
+     */
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
+     * Set the description property: The description of the pipeline.
+     *
+     * @param description the description value to set.
+     * @return the PipelineResourceInner object itself.
+     */
+    public PipelineResourceInner withDescription(String description) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Pipeline();
+        }
+        this.innerProperties().withDescription(description);
+        return this;
+    }
+
+    /**
+     * Get the activities property: List of activities in pipeline.
+     *
+     * @return the activities value.
+     */
+    public List<Activity> activities() {
+        return this.innerProperties() == null ? null : this.innerProperties().activities();
+    }
+
+    /**
+     * Set the activities property: List of activities in pipeline.
+     *
+     * @param activities the activities value to set.
+     * @return the PipelineResourceInner object itself.
+     */
+    public PipelineResourceInner withActivities(List<Activity> activities) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Pipeline();
+        }
+        this.innerProperties().withActivities(activities);
+        return this;
+    }
+
+    /**
+     * Get the parameters property: List of parameters for pipeline.
+     *
+     * @return the parameters value.
+     */
+    public Map<String, ParameterSpecification> parameters() {
+        return this.innerProperties() == null ? null : this.innerProperties().parameters();
+    }
+
+    /**
+     * Set the parameters property: List of parameters for pipeline.
+     *
+     * @param parameters the parameters value to set.
+     * @return the PipelineResourceInner object itself.
+     */
+    public PipelineResourceInner withParameters(Map<String, ParameterSpecification> parameters) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Pipeline();
+        }
+        this.innerProperties().withParameters(parameters);
+        return this;
+    }
+
+    /**
+     * Get the variables property: List of variables for pipeline.
+     *
+     * @return the variables value.
+     */
+    public Map<String, VariableSpecification> variables() {
+        return this.innerProperties() == null ? null : this.innerProperties().variables();
+    }
+
+    /**
+     * Set the variables property: List of variables for pipeline.
+     *
+     * @param variables the variables value to set.
+     * @return the PipelineResourceInner object itself.
+     */
+    public PipelineResourceInner withVariables(Map<String, VariableSpecification> variables) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Pipeline();
+        }
+        this.innerProperties().withVariables(variables);
+        return this;
+    }
+
+    /**
+     * Get the concurrency property: The max number of concurrent runs for the pipeline.
+     *
+     * @return the concurrency value.
+     */
+    public Integer concurrency() {
+        return this.innerProperties() == null ? null : this.innerProperties().concurrency();
+    }
+
+    /**
+     * Set the concurrency property: The max number of concurrent runs for the pipeline.
+     *
+     * @param concurrency the concurrency value to set.
+     * @return the PipelineResourceInner object itself.
+     */
+    public PipelineResourceInner withConcurrency(Integer concurrency) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Pipeline();
+        }
+        this.innerProperties().withConcurrency(concurrency);
+        return this;
+    }
+
+    /**
+     * Get the annotations property: List of tags that can be used for describing the Pipeline.
+     *
+     * @return the annotations value.
+     */
+    public List<Object> annotations() {
+        return this.innerProperties() == null ? null : this.innerProperties().annotations();
+    }
+
+    /**
+     * Set the annotations property: List of tags that can be used for describing the Pipeline.
+     *
+     * @param annotations the annotations value to set.
+     * @return the PipelineResourceInner object itself.
+     */
+    public PipelineResourceInner withAnnotations(List<Object> annotations) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Pipeline();
+        }
+        this.innerProperties().withAnnotations(annotations);
+        return this;
+    }
+
+    /**
+     * Get the runDimensions property: Dimensions emitted by Pipeline.
+     *
+     * @return the runDimensions value.
+     */
+    public Map<String, Object> runDimensions() {
+        return this.innerProperties() == null ? null : this.innerProperties().runDimensions();
+    }
+
+    /**
+     * Set the runDimensions property: Dimensions emitted by Pipeline.
+     *
+     * @param runDimensions the runDimensions value to set.
+     * @return the PipelineResourceInner object itself.
+     */
+    public PipelineResourceInner withRunDimensions(Map<String, Object> runDimensions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Pipeline();
+        }
+        this.innerProperties().withRunDimensions(runDimensions);
+        return this;
+    }
+
+    /**
+     * Get the folder property: The folder that this Pipeline is in. If not specified, Pipeline will appear at the root
+     * level.
+     *
+     * @return the folder value.
+     */
+    public PipelineFolder folder() {
+        return this.innerProperties() == null ? null : this.innerProperties().folder();
+    }
+
+    /**
+     * Set the folder property: The folder that this Pipeline is in. If not specified, Pipeline will appear at the root
+     * level.
+     *
+     * @param folder the folder value to set.
+     * @return the PipelineResourceInner object itself.
+     */
+    public PipelineResourceInner withFolder(PipelineFolder folder) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Pipeline();
+        }
+        this.innerProperties().withFolder(folder);
+        return this;
+    }
+
+    /**
+     * Get the policy property: Pipeline Policy.
+     *
+     * @return the policy value.
+     */
+    public PipelinePolicy policy() {
+        return this.innerProperties() == null ? null : this.innerProperties().policy();
+    }
+
+    /**
+     * Set the policy property: Pipeline Policy.
+     *
+     * @param policy the policy value to set.
+     * @return the PipelineResourceInner object itself.
+     */
+    public PipelineResourceInner withPolicy(PipelinePolicy policy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Pipeline();
+        }
+        this.innerProperties().withPolicy(policy);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (activities() != null) {
-            activities().forEach(e -> e.validate());
-        }
-        if (parameters() != null) {
-            parameters()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
-        }
-        if (variables() != null) {
-            variables()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
-        }
-        if (folder() != null) {
-            folder().validate();
-        }
-        if (policy() != null) {
-            policy().validate();
+        if (innerProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model PipelineResourceInner"));
+        } else {
+            innerProperties().validate();
         }
     }
 }

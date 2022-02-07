@@ -3,7 +3,7 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20210603.1
+      ref: refs/tags/azure-sdk-build-tools_20211215.1
 
 parameters:
 - name: Artifacts
@@ -21,9 +21,6 @@ parameters:
 - name: ServiceDirectory
   type: string
   default: not-specified
-- name: TargetDocRepoOwner
-  type: string
-  default: Azure
 - name: TargetDocRepoName
   type: string
   default: azure-docs-sdk-java
@@ -44,6 +41,15 @@ parameters:
 - name: MatrixReplace
   type: object
   default: []
+- name: SkipAggregateReports
+  type: boolean
+  default: false
+- name: PreBuildSteps
+  type: object
+  default: []
+- name: AdditionalLintingOptions
+  type: string
+  default: ''
 
 stages:
   - stage: Build
@@ -56,6 +62,7 @@ stages:
         SDKType: ${{ parameters.SDKType }}
         Artifacts: ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
+        SkipAggregateReports: ${{ parameters.SkipAggregateReports }}
         MatrixConfigs:
           - ${{ each config in parameters.MatrixConfigs }}:
             -  ${{ config }}
@@ -70,10 +77,13 @@ stages:
         MatrixReplace:
           - ${{ each replacement in parameters.MatrixReplace }}:
             - ${{ replacement }}
-          - ${{ if eq(parameters.SDKType, 'data') }}:
-            - TestGoals=.*/verify
-            - TestOptions=.*/-am
+
           - AZURE_TEST.*=.*/
+        PreBuildSteps: ${{ parameters.PreBuildSteps }}
+        AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
+        ${{ if eq(parameters.SDKType, 'data') }}:
+          TestGoals: 'verify'
+          TestOptions: '-am'
 
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
@@ -88,6 +98,5 @@ stages:
         ${{ if eq(parameters.ServiceDirectory, 'template') }}:
           TestPipeline: true
         ArtifactName: packages
-        TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
         TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
 

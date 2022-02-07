@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/logic/
+      - sdk/logic/ci.yml
+      - sdk/logic/azure-resourcemanager-logic/
+    exclude:
+      - sdk/logic/pom.xml
+      - sdk/logic/azure-resourcemanager-logic/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/logic/
+      - sdk/logic/ci.yml
+      - sdk/logic/azure-resourcemanager-logic/
+    exclude:
+      - sdk/logic/pom.xml
+      - sdk/logic/azure-resourcemanager-logic/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

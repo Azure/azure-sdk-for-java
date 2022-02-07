@@ -129,6 +129,13 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public GalleryApplicationVersionPublishingProfile withReplicationMode(ReplicationMode replicationMode) {
+        super.withReplicationMode(replicationMode);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

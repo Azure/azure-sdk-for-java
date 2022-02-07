@@ -10,11 +10,12 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.appservice.fluent.models.AppserviceGithubTokenInner;
 import com.azure.resourcemanager.appservice.fluent.models.BillingMeterInner;
+import com.azure.resourcemanager.appservice.fluent.models.CustomHostnameSitesInner;
 import com.azure.resourcemanager.appservice.fluent.models.DeploymentLocationsInner;
 import com.azure.resourcemanager.appservice.fluent.models.GeoRegionInner;
 import com.azure.resourcemanager.appservice.fluent.models.IdentifierInner;
+import com.azure.resourcemanager.appservice.fluent.models.NameIdentifierInner;
 import com.azure.resourcemanager.appservice.fluent.models.PremierAddOnOfferInner;
 import com.azure.resourcemanager.appservice.fluent.models.ResourceNameAvailabilityInner;
 import com.azure.resourcemanager.appservice.fluent.models.SkuInfosInner;
@@ -22,8 +23,8 @@ import com.azure.resourcemanager.appservice.fluent.models.SourceControlInner;
 import com.azure.resourcemanager.appservice.fluent.models.UserInner;
 import com.azure.resourcemanager.appservice.fluent.models.ValidateResponseInner;
 import com.azure.resourcemanager.appservice.fluent.models.VnetValidationFailureDetailsInner;
-import com.azure.resourcemanager.appservice.models.CheckNameResourceTypes;
 import com.azure.resourcemanager.appservice.models.CsmMoveResourceEnvelope;
+import com.azure.resourcemanager.appservice.models.ResourceNameAvailabilityRequest;
 import com.azure.resourcemanager.appservice.models.SkuName;
 import com.azure.resourcemanager.appservice.models.ValidateRequest;
 import com.azure.resourcemanager.appservice.models.VnetParameters;
@@ -31,65 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
 public interface ResourceProvidersClient {
-    /**
-     * Description for Exchange code for GitHub access token for AppService CLI.
-     *
-     * @param code Code string to exchange for Github Access token.
-     * @param state State string used for verification.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return github access token for Appservice CLI github integration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<AppserviceGithubTokenInner>> generateGithubAccessTokenForAppserviceCliAsyncWithResponseAsync(
-        String code, String state);
-
-    /**
-     * Description for Exchange code for GitHub access token for AppService CLI.
-     *
-     * @param code Code string to exchange for Github Access token.
-     * @param state State string used for verification.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return github access token for Appservice CLI github integration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AppserviceGithubTokenInner> generateGithubAccessTokenForAppserviceCliAsyncAsync(String code, String state);
-
-    /**
-     * Description for Exchange code for GitHub access token for AppService CLI.
-     *
-     * @param code Code string to exchange for Github Access token.
-     * @param state State string used for verification.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return github access token for Appservice CLI github integration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AppserviceGithubTokenInner generateGithubAccessTokenForAppserviceCliAsync(String code, String state);
-
-    /**
-     * Description for Exchange code for GitHub access token for AppService CLI.
-     *
-     * @param code Code string to exchange for Github Access token.
-     * @param state State string used for verification.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return github access token for Appservice CLI github integration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AppserviceGithubTokenInner> generateGithubAccessTokenForAppserviceCliAsyncWithResponse(
-        String code, String state, Context context);
-
     /**
      * Description for Gets publishing user.
      *
@@ -390,9 +332,7 @@ public interface ResourceProvidersClient {
     /**
      * Description for Check if a resource name is available.
      *
-     * @param name Resource name to verify.
-     * @param type Resource type used for verification.
-     * @param isFqdn Is fully qualified domain name.
+     * @param request Name availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -401,14 +341,12 @@ public interface ResourceProvidersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ResourceNameAvailabilityInner>> checkNameAvailabilityWithResponseAsync(
-        String name, CheckNameResourceTypes type, Boolean isFqdn);
+        ResourceNameAvailabilityRequest request);
 
     /**
      * Description for Check if a resource name is available.
      *
-     * @param name Resource name to verify.
-     * @param type Resource type used for verification.
-     * @param isFqdn Is fully qualified domain name.
+     * @param request Name availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -416,14 +354,12 @@ public interface ResourceProvidersClient {
      * @return information regarding availability of a resource name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ResourceNameAvailabilityInner> checkNameAvailabilityAsync(
-        String name, CheckNameResourceTypes type, Boolean isFqdn);
+    Mono<ResourceNameAvailabilityInner> checkNameAvailabilityAsync(ResourceNameAvailabilityRequest request);
 
     /**
      * Description for Check if a resource name is available.
      *
-     * @param name Resource name to verify.
-     * @param type Resource type used for verification.
+     * @param request Name availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -431,28 +367,12 @@ public interface ResourceProvidersClient {
      * @return information regarding availability of a resource name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ResourceNameAvailabilityInner> checkNameAvailabilityAsync(String name, CheckNameResourceTypes type);
+    ResourceNameAvailabilityInner checkNameAvailability(ResourceNameAvailabilityRequest request);
 
     /**
      * Description for Check if a resource name is available.
      *
-     * @param name Resource name to verify.
-     * @param type Resource type used for verification.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information regarding availability of a resource name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ResourceNameAvailabilityInner checkNameAvailability(String name, CheckNameResourceTypes type);
-
-    /**
-     * Description for Check if a resource name is available.
-     *
-     * @param name Resource name to verify.
-     * @param type Resource type used for verification.
-     * @param isFqdn Is fully qualified domain name.
+     * @param request Name availability request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -462,7 +382,42 @@ public interface ResourceProvidersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ResourceNameAvailabilityInner> checkNameAvailabilityWithResponse(
-        String name, CheckNameResourceTypes type, Boolean isFqdn, Context context);
+        ResourceNameAvailabilityRequest request, Context context);
+
+    /**
+     * Get custom hostnames under this subscription.
+     *
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom hostnames under this subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<CustomHostnameSitesInner> listCustomHostnameSitesAsync();
+
+    /**
+     * Get custom hostnames under this subscription.
+     *
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom hostnames under this subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<CustomHostnameSitesInner> listCustomHostnameSites();
+
+    /**
+     * Get custom hostnames under this subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom hostnames under this subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<CustomHostnameSitesInner> listCustomHostnameSites(Context context);
 
     /**
      * Description for Gets list of available geo regions plus ministamps.
@@ -584,7 +539,7 @@ public interface ResourceProvidersClient {
     /**
      * Description for List all apps that are assigned to a hostname.
      *
-     * @param name Name of the object.
+     * @param nameIdentifier Hostname information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -592,34 +547,25 @@ public interface ResourceProvidersClient {
      * @return collection of identifiers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<IdentifierInner> listSiteIdentifiersAssignedToHostnameAsync(String name);
+    PagedFlux<IdentifierInner> listSiteIdentifiersAssignedToHostnameAsync(NameIdentifierInner nameIdentifier);
 
     /**
      * Description for List all apps that are assigned to a hostname.
      *
+     * @param nameIdentifier Hostname information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of identifiers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<IdentifierInner> listSiteIdentifiersAssignedToHostnameAsync();
+    PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostname(NameIdentifierInner nameIdentifier);
 
     /**
      * Description for List all apps that are assigned to a hostname.
      *
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of identifiers.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostname();
-
-    /**
-     * Description for List all apps that are assigned to a hostname.
-     *
-     * @param name Name of the object.
+     * @param nameIdentifier Hostname information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -628,7 +574,8 @@ public interface ResourceProvidersClient {
      * @return collection of identifiers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostname(String name, Context context);
+    PagedIterable<IdentifierInner> listSiteIdentifiersAssignedToHostname(
+        NameIdentifierInner nameIdentifier, Context context);
 
     /**
      * Description for List all premier add-on offers.

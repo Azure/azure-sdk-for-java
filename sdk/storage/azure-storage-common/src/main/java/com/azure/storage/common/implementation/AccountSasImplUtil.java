@@ -41,12 +41,15 @@ public class AccountSasImplUtil {
 
     private String resourceTypes;
 
+    private String encryptionScope;
+
     /**
      * Creates a new {@link AccountSasImplUtil} with the specified parameters
      *
      * @param sasValues {@link AccountSasSignatureValues}
+     * @param encryptionScope An encryption scope that will be applied to any write operations performed with the sas
      */
-    public AccountSasImplUtil(AccountSasSignatureValues sasValues) {
+    public AccountSasImplUtil(AccountSasSignatureValues sasValues, String encryptionScope) {
         this.protocol = sasValues.getProtocol();
         this.startTime = sasValues.getStartTime();
         this.expiryTime = sasValues.getExpiryTime();
@@ -54,6 +57,7 @@ public class AccountSasImplUtil {
         this.sasIpRange = sasValues.getSasIpRange();
         this.services = sasValues.getServices();
         this.resourceTypes = sasValues.getResourceTypes();
+        this.encryptionScope = encryptionScope;
     }
 
     /**
@@ -80,18 +84,34 @@ public class AccountSasImplUtil {
     }
 
     private String stringToSign(final StorageSharedKeyCredential storageSharedKeyCredentials) {
-        return String.join("\n",
-            storageSharedKeyCredentials.getAccountName(),
-            AccountSasPermission.parse(this.permissions).toString(), // guarantees ordering
-            this.services,
-            resourceTypes,
-            this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
-            Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
-            this.sasIpRange == null ? "" : this.sasIpRange.toString(),
-            this.protocol == null ? "" : this.protocol.toString(),
-            VERSION,
-            "" // Account SAS requires an additional newline character
-        );
+        if (VERSION.compareTo("2020-10-02") <= 0) {
+            return String.join("\n",
+                storageSharedKeyCredentials.getAccountName(),
+                AccountSasPermission.parse(this.permissions).toString(), // guarantees ordering
+                this.services,
+                resourceTypes,
+                this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
+                Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
+                this.sasIpRange == null ? "" : this.sasIpRange.toString(),
+                this.protocol == null ? "" : this.protocol.toString(),
+                VERSION,
+                "" // Account SAS requires an additional newline character
+            );
+        } else {
+            return String.join("\n",
+                storageSharedKeyCredentials.getAccountName(),
+                AccountSasPermission.parse(this.permissions).toString(), // guarantees ordering
+                this.services,
+                resourceTypes,
+                this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
+                Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
+                this.sasIpRange == null ? "" : this.sasIpRange.toString(),
+                this.protocol == null ? "" : this.protocol.toString(),
+                VERSION,
+                this.encryptionScope == null ? "" : this.encryptionScope,
+                "" // Account SAS requires an additional newline character
+            );
+        }
     }
 
     private String encode(String signature) {
@@ -105,10 +125,13 @@ public class AccountSasImplUtil {
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SERVICES, this.services);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_RESOURCES_TYPES, this.resourceTypes);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_PROTOCOL, this.protocol);
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_START_TIME, formatQueryParameterDate(this.startTime));
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_EXPIRY_TIME, formatQueryParameterDate(this.expiryTime));
+        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_START_TIME, formatQueryParameterDate(
+            new TimeAndFormat(this.startTime, null)));
+        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_EXPIRY_TIME, formatQueryParameterDate(
+            new TimeAndFormat(this.expiryTime, null)));
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_IP_RANGE, this.sasIpRange);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_PERMISSIONS, this.permissions);
+        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_ENCRYPTION_SCOPE, this.encryptionScope);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNATURE, signature);
 
         return sb.toString();

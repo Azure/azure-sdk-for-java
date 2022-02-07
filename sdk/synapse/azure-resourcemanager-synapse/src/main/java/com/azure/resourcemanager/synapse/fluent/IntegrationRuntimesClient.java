@@ -11,9 +11,11 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner;
 import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeResourceInner;
 import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeStatusResponseInner;
 import com.azure.resourcemanager.synapse.models.UpdateIntegrationRuntimeRequest;
+import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in IntegrationRuntimesClient. */
 public interface IntegrationRuntimesClient {
@@ -47,7 +49,7 @@ public interface IntegrationRuntimesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime resource type.
+     * @return integration runtime resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IntegrationRuntimeResourceInner> updateWithResponse(
@@ -83,7 +85,7 @@ public interface IntegrationRuntimesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration runtime.
+     * @return an integration runtime along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IntegrationRuntimeResourceInner> getWithResponse(
@@ -105,9 +107,9 @@ public interface IntegrationRuntimesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime resource type.
+     * @return integration runtime resource type along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IntegrationRuntimeResourceInner>, IntegrationRuntimeResourceInner> beginCreate(
         String resourceGroupName,
         String workspaceName,
@@ -128,9 +130,9 @@ public interface IntegrationRuntimesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime resource type.
+     * @return integration runtime resource type along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IntegrationRuntimeResourceInner>, IntegrationRuntimeResourceInner> beginCreate(
         String resourceGroupName,
         String workspaceName,
@@ -213,9 +215,9 @@ public interface IntegrationRuntimesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String workspaceName, String integrationRuntimeName);
 
@@ -229,9 +231,9 @@ public interface IntegrationRuntimesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
 
@@ -285,7 +287,7 @@ public interface IntegrationRuntimesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> upgradeWithResponse(
@@ -328,9 +330,9 @@ public interface IntegrationRuntimesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime status response.
+     * @return integration runtime status response along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner> beginStart(
         String resourceGroupName, String workspaceName, String integrationRuntimeName);
 
@@ -344,9 +346,9 @@ public interface IntegrationRuntimesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration runtime status response.
+     * @return integration runtime status response along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner> beginStart(
         String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
 
@@ -390,9 +392,9 @@ public interface IntegrationRuntimesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String workspaceName, String integrationRuntimeName);
 
@@ -406,9 +408,9 @@ public interface IntegrationRuntimesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
 
@@ -440,6 +442,39 @@ public interface IntegrationRuntimesClient {
     void stop(String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
 
     /**
+     * Gets the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param integrationRuntimeName Integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner listOutboundNetworkDependenciesEndpoints(
+        String resourceGroupName, String workspaceName, String integrationRuntimeName);
+
+    /**
+     * Gets the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param integrationRuntimeName Integration runtime name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime along with {@link
+     *     Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner>
+        listOutboundNetworkDependenciesEndpointsWithResponse(
+            String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+
+    /**
      * Enable interactive query in integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -448,9 +483,9 @@ public interface IntegrationRuntimesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginEnableInteractiveQuery(
         String resourceGroupName, String workspaceName, String integrationRuntimeName);
 
@@ -464,9 +499,9 @@ public interface IntegrationRuntimesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginEnableInteractiveQuery(
         String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
 
@@ -507,9 +542,9 @@ public interface IntegrationRuntimesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDisableInteractiveQuery(
         String resourceGroupName, String workspaceName, String integrationRuntimeName);
 
@@ -523,9 +558,9 @@ public interface IntegrationRuntimesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDisableInteractiveQuery(
         String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
 

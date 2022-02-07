@@ -135,7 +135,8 @@ public final class SqlPoolSecurityAlertPoliciesClientImpl implements SqlPoolSecu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Sql pool's security alert policies.
+     * @return a list of Sql pool's security alert policies along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolSecurityAlertPolicyInner>> listSinglePageAsync(
@@ -162,6 +163,7 @@ public final class SqlPoolSecurityAlertPoliciesClientImpl implements SqlPoolSecu
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -169,7 +171,7 @@ public final class SqlPoolSecurityAlertPoliciesClientImpl implements SqlPoolSecu
                     service
                         .list(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -198,7 +200,8 @@ public final class SqlPoolSecurityAlertPoliciesClientImpl implements SqlPoolSecu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Sql pool's security alert policies.
+     * @return a list of Sql pool's security alert policies along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolSecurityAlertPolicyInner>> listSinglePageAsync(
@@ -225,12 +228,13 @@ public final class SqlPoolSecurityAlertPoliciesClientImpl implements SqlPoolSecu
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -332,7 +336,7 @@ public final class SqlPoolSecurityAlertPoliciesClientImpl implements SqlPoolSecu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool's security alert policy.
+     * @return a Sql pool's security alert policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SqlPoolSecurityAlertPolicyInner>> getWithResponseAsync(
@@ -367,6 +371,7 @@ public final class SqlPoolSecurityAlertPoliciesClientImpl implements SqlPoolSecu
                 .error(
                     new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -374,7 +379,7 @@ public final class SqlPoolSecurityAlertPoliciesClientImpl implements SqlPoolSecu
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -396,7 +401,7 @@ public final class SqlPoolSecurityAlertPoliciesClientImpl implements SqlPoolSecu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool's security alert policy.
+     * @return a Sql pool's security alert policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SqlPoolSecurityAlertPolicyInner>> getWithResponseAsync(
@@ -432,12 +437,13 @@ public final class SqlPoolSecurityAlertPoliciesClientImpl implements SqlPoolSecu
                 .error(
                     new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -457,7 +463,7 @@ public final class SqlPoolSecurityAlertPoliciesClientImpl implements SqlPoolSecu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool's security alert policy.
+     * @return a Sql pool's security alert policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SqlPoolSecurityAlertPolicyInner> getAsync(
@@ -508,7 +514,7 @@ public final class SqlPoolSecurityAlertPoliciesClientImpl implements SqlPoolSecu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool's security alert policy.
+     * @return a Sql pool's security alert policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SqlPoolSecurityAlertPolicyInner> getWithResponse(
@@ -532,7 +538,7 @@ public final class SqlPoolSecurityAlertPoliciesClientImpl implements SqlPoolSecu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool security alert policy.
+     * @return a Sql pool security alert policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SqlPoolSecurityAlertPolicyInner>> createOrUpdateWithResponseAsync(
@@ -573,6 +579,7 @@ public final class SqlPoolSecurityAlertPoliciesClientImpl implements SqlPoolSecu
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -580,7 +587,7 @@ public final class SqlPoolSecurityAlertPoliciesClientImpl implements SqlPoolSecu
                     service
                         .createOrUpdate(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -604,7 +611,7 @@ public final class SqlPoolSecurityAlertPoliciesClientImpl implements SqlPoolSecu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool security alert policy.
+     * @return a Sql pool security alert policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SqlPoolSecurityAlertPolicyInner>> createOrUpdateWithResponseAsync(
@@ -646,12 +653,13 @@ public final class SqlPoolSecurityAlertPoliciesClientImpl implements SqlPoolSecu
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -673,7 +681,7 @@ public final class SqlPoolSecurityAlertPoliciesClientImpl implements SqlPoolSecu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool security alert policy.
+     * @return a Sql pool security alert policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SqlPoolSecurityAlertPolicyInner> createOrUpdateAsync(
@@ -730,7 +738,7 @@ public final class SqlPoolSecurityAlertPoliciesClientImpl implements SqlPoolSecu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool security alert policy.
+     * @return a Sql pool security alert policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SqlPoolSecurityAlertPolicyInner> createOrUpdateWithResponse(
@@ -752,7 +760,8 @@ public final class SqlPoolSecurityAlertPoliciesClientImpl implements SqlPoolSecu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SQL pool security alert policies.
+     * @return a list of SQL pool security alert policies along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolSecurityAlertPolicyInner>> listNextSinglePageAsync(String nextLink) {
@@ -788,7 +797,8 @@ public final class SqlPoolSecurityAlertPoliciesClientImpl implements SqlPoolSecu
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SQL pool security alert policies.
+     * @return a list of SQL pool security alert policies along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolSecurityAlertPolicyInner>> listNextSinglePageAsync(

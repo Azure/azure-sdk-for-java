@@ -4,7 +4,7 @@
 package com.azure.storage.blob.options;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.experimental.http.HttpAuthorization;
+import com.azure.core.http.HttpAuthorization;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobRange;
@@ -14,7 +14,7 @@ import com.azure.storage.blob.models.BlobRequestConditions;
  * Extended options that may be passed when appending a block from a source URL.
  */
 @Fluent
-public class AppendBlobAppendBlockFromUrlOptions {
+public final class AppendBlobAppendBlockFromUrlOptions {
     private final String sourceUrl;
     private BlobRange sourceRange;
     private byte[] sourceContentMd5;

@@ -3,11 +3,13 @@
 
 package com.azure.spring.autoconfigure.b2c;
 
+import com.azure.spring.aad.webapi.AADJwtBearerTokenAuthenticationConverter;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+// BEGIN: readme-sample-ResourceServerConfiguration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceServerConfiguration extends WebSecurityConfigurerAdapter {
@@ -17,6 +19,7 @@ public class ResourceServerConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests((requests) -> requests.anyRequest().authenticated())
             .oauth2ResourceServer()
             .jwt()
-            .jwtAuthenticationConverter(new AADB2CJwtBearerTokenAuthenticationConverter());
+            .jwtAuthenticationConverter(new AADJwtBearerTokenAuthenticationConverter());
     }
 }
+// END: readme-sample-ResourceServerConfiguration

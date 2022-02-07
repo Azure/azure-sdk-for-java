@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Gateway certificate authority details. */
-@JsonFlatten
 @Fluent
-public class GatewayCertificateAuthorityContractInner extends ProxyResource {
+public final class GatewayCertificateAuthorityContractInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GatewayCertificateAuthorityContractInner.class);
 
     /*
-     * Determines whether certificate authority is trusted.
+     * Gateway certificate authority details.
      */
-    @JsonProperty(value = "properties.isTrusted")
-    private Boolean isTrusted;
+    @JsonProperty(value = "properties")
+    private GatewayCertificateAuthorityContractProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: Gateway certificate authority details.
+     *
+     * @return the innerProperties value.
+     */
+    private GatewayCertificateAuthorityContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the isTrusted property: Determines whether certificate authority is trusted.
@@ -29,7 +36,7 @@ public class GatewayCertificateAuthorityContractInner extends ProxyResource {
      * @return the isTrusted value.
      */
     public Boolean isTrusted() {
-        return this.isTrusted;
+        return this.innerProperties() == null ? null : this.innerProperties().isTrusted();
     }
 
     /**
@@ -39,7 +46,10 @@ public class GatewayCertificateAuthorityContractInner extends ProxyResource {
      * @return the GatewayCertificateAuthorityContractInner object itself.
      */
     public GatewayCertificateAuthorityContractInner withIsTrusted(Boolean isTrusted) {
-        this.isTrusted = isTrusted;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GatewayCertificateAuthorityContractProperties();
+        }
+        this.innerProperties().withIsTrusted(isTrusted);
         return this;
     }
 
@@ -49,5 +59,8 @@ public class GatewayCertificateAuthorityContractInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

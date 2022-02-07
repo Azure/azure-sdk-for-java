@@ -15,6 +15,7 @@ import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.DeleteOptions;
 import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.DiskState;
+import com.azure.resourcemanager.compute.models.InstanceViewStatus;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.PowerState;
@@ -50,6 +51,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -80,7 +82,9 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(rgName);
+        if (rgName != null) {
+            resourceManager.resourceGroups().beginDeleteByName(rgName);
+        }
     }
 
     @Test
@@ -197,6 +201,43 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
         // Delete VM
         computeManager.virtualMachines().deleteById(foundVM.id());
+    }
+
+    @Test
+    public void cannotCreateVirtualMachineSyncPoll() throws Exception {
+        final String mySqlInstallScript = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/4397e808d07df60ff3cdfd1ae40999f0130eb1b3/mysql-standalone-server-ubuntu/scripts/install_mysql_server_5.6.sh";
+        final String installCommand = "bash install_mysql_server_5.6.sh Abc.123x(";
+
+        Assertions.assertThrows(IllegalStateException.class, () -> {
+            Accepted<VirtualMachine> acceptedVirtualMachine =
+                this.computeManager.virtualMachines()
+                    .define(vmName)
+                    .withRegion(region)
+                    .withNewResourceGroup(rgName)
+                    .withNewPrimaryNetwork("10.0.0.0/28")
+                    .withPrimaryPrivateIPAddressDynamic()
+                    .withoutPrimaryPublicIPAddress()
+                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+                    .withRootUsername("Foo12")
+                    .withSsh(sshPublicKey())
+                    // virtual machine extensions is not compatible with "beginCreate" method
+                    .defineNewExtension("CustomScriptForLinux")
+                        .withPublisher("Microsoft.OSTCExtensions")
+                        .withType("CustomScriptForLinux")
+                        .withVersion("1.4")
+                        .withMinorVersionAutoUpgrade()
+                        .withPublicSetting("fileUris", Collections.singletonList(mySqlInstallScript))
+                        .withPublicSetting("commandToExecute", installCommand)
+                        .attach()
+                    .beginCreate();
+        });
+
+        // verify dependent resources is not created in the case of above failed "beginCreate" method
+        boolean dependentResourceCreated = computeManager.resourceManager().serviceClient().getResourceGroups().checkExistence(rgName);
+        Assertions.assertFalse(dependentResourceCreated);
+
+        // skip cleanup
+        rgName = null;
     }
 
     @Test
@@ -895,7 +936,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withoutPrimaryPublicIPAddress()
             .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
             .withAdminUsername("Foo12")
-            .withAdminPassword("abc!@#F0orL")
+            .withAdminPassword(password())
             .create();
         // Get
         VirtualMachine virtualMachine = computeManager.virtualMachines().getByResourceGroup(rgName, vmName);
@@ -970,6 +1011,49 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         List<GenericResource> resources = computeManager.resourceManager().genericResources().listByResourceGroup(rgName).stream().collect(Collectors.toList());
         // only Network remains in the resource group, others is deleted together with the virtual machine resource
         Assertions.assertEquals(1, resources.size());
+    }
+
+    @Test
+    public void canHibernateVirtualMachine() {
+        // preview feature
+
+        // create to enable hibernation
+        VirtualMachine vm = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion("eastus2euap")
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+//            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+//            .withRootUsername("Foo12")
+//            .withSsh(sshPublicKey())
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2019_DATACENTER)
+            .withAdminUsername("Foo12")
+            .withAdminPassword(password())
+            .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
+            .enableHibernation()
+            .create();
+
+        Assertions.assertTrue(vm.isHibernationEnabled());
+
+        // deallocate with hibernate
+        vm.deallocate(true);
+
+        InstanceViewStatus hibernationStatus = vm.instanceView().statuses().stream()
+            .filter(status -> "HibernationState/Hibernated".equals(status.code()))
+            .findFirst().orElse(null);
+        Assertions.assertNotNull(hibernationStatus);
+
+        vm.start();
+
+        // update to disable hibernation
+        vm.deallocate();
+        vm.update()
+            .disableHibernation()
+            .apply();
+
+        Assertions.assertFalse(vm.isHibernationEnabled());
     }
 
     private CreatablesInfo prepareCreatableVirtualMachines(

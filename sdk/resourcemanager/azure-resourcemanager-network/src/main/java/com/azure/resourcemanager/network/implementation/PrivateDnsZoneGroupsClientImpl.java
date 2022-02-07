@@ -183,7 +183,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -241,7 +241,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -267,14 +267,15 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, privateEndpointName, privateDnsZoneGroupName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -289,7 +290,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName, Context context) {
         context = this.client.mergeContext(context);
@@ -311,7 +312,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName) {
         return beginDeleteAsync(resourceGroupName, privateEndpointName, privateDnsZoneGroupName).getSyncPoller();
@@ -329,7 +330,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName, Context context) {
         return beginDeleteAsync(resourceGroupName, privateEndpointName, privateDnsZoneGroupName, context)
@@ -446,7 +447,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -504,7 +505,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -627,7 +628,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -696,7 +697,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -724,7 +725,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private dns zone group resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<PrivateDnsZoneGroupInner>, PrivateDnsZoneGroupInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String privateEndpointName,
@@ -740,7 +741,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
                 this.client.getHttpPipeline(),
                 PrivateDnsZoneGroupInner.class,
                 PrivateDnsZoneGroupInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -756,7 +757,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private dns zone group resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateDnsZoneGroupInner>, PrivateDnsZoneGroupInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String privateEndpointName,
@@ -789,7 +790,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private dns zone group resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateDnsZoneGroupInner>, PrivateDnsZoneGroupInner> beginCreateOrUpdate(
         String resourceGroupName,
         String privateEndpointName,
@@ -812,7 +813,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private dns zone group resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateDnsZoneGroupInner>, PrivateDnsZoneGroupInner> beginCreateOrUpdate(
         String resourceGroupName,
         String privateEndpointName,
@@ -951,7 +952,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1011,7 +1012,7 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

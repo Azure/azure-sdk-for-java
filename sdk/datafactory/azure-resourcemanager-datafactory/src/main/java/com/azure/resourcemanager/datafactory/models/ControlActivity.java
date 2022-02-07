@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.datafactory.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -25,6 +25,7 @@ import java.util.List;
     @JsonSubTypes.Type(name = "Switch", value = SwitchActivity.class),
     @JsonSubTypes.Type(name = "ForEach", value = ForEachActivity.class),
     @JsonSubTypes.Type(name = "Wait", value = WaitActivity.class),
+    @JsonSubTypes.Type(name = "Fail", value = FailActivity.class),
     @JsonSubTypes.Type(name = "Until", value = UntilActivity.class),
     @JsonSubTypes.Type(name = "Validation", value = ValidationActivity.class),
     @JsonSubTypes.Type(name = "Filter", value = FilterActivity.class),
@@ -32,7 +33,7 @@ import java.util.List;
     @JsonSubTypes.Type(name = "AppendVariable", value = AppendVariableActivity.class),
     @JsonSubTypes.Type(name = "WebHook", value = WebhookActivity.class)
 })
-@Immutable
+@Fluent
 public class ControlActivity extends Activity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ControlActivity.class);
 

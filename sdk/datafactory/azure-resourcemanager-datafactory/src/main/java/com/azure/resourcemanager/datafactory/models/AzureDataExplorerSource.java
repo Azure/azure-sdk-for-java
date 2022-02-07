@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.List;
 
 /** A copy activity Azure Data Explorer (Kusto) source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -42,10 +41,11 @@ public final class AzureDataExplorerSource extends CopySource {
 
     /*
      * Specifies the additional columns to be added to source data. Type: array
-     * of objects (or Expression with resultType array of objects).
+     * of objects(AdditionalColumns) (or Expression with resultType array of
+     * objects).
      */
     @JsonProperty(value = "additionalColumns")
-    private List<AdditionalColumns> additionalColumns;
+    private Object additionalColumns;
 
     /**
      * Get the query property: Database query. Should be a Kusto Query Language (KQL) query. Type: string (or Expression
@@ -115,22 +115,22 @@ public final class AzureDataExplorerSource extends CopySource {
 
     /**
      * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
-     * objects (or Expression with resultType array of objects).
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
      *
      * @return the additionalColumns value.
      */
-    public List<AdditionalColumns> additionalColumns() {
+    public Object additionalColumns() {
         return this.additionalColumns;
     }
 
     /**
      * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
-     * objects (or Expression with resultType array of objects).
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
      *
      * @param additionalColumns the additionalColumns value to set.
      * @return the AzureDataExplorerSource object itself.
      */
-    public AzureDataExplorerSource withAdditionalColumns(List<AdditionalColumns> additionalColumns) {
+    public AzureDataExplorerSource withAdditionalColumns(Object additionalColumns) {
         this.additionalColumns = additionalColumns;
         return this;
     }
@@ -175,9 +175,6 @@ public final class AzureDataExplorerSource extends CopySource {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property query in model AzureDataExplorerSource"));
-        }
-        if (additionalColumns() != null) {
-            additionalColumns().forEach(e -> e.validate());
         }
     }
 }

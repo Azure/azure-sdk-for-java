@@ -34,11 +34,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.FileSharesClient;
 import com.azure.resourcemanager.storage.fluent.models.FileShareInner;
 import com.azure.resourcemanager.storage.fluent.models.FileShareItemInner;
+import com.azure.resourcemanager.storage.fluent.models.LeaseShareResponseInner;
 import com.azure.resourcemanager.storage.models.DeletedShare;
 import com.azure.resourcemanager.storage.models.FileShareItems;
-import com.azure.resourcemanager.storage.models.GetShareExpand;
-import com.azure.resourcemanager.storage.models.ListSharesExpand;
-import com.azure.resourcemanager.storage.models.PutSharesExpand;
+import com.azure.resourcemanager.storage.models.FileSharesLeaseResponse;
+import com.azure.resourcemanager.storage.models.LeaseShareRequest;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in FileSharesClient. */
@@ -83,7 +83,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("$maxpagesize") String maxpagesize,
             @QueryParam("$filter") String filter,
-            @QueryParam("$expand") ListSharesExpand expand,
+            @QueryParam("$expand") String expand,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -98,7 +98,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @PathParam("shareName") String shareName,
-            @QueryParam("$expand") PutSharesExpand expand,
+            @QueryParam("$expand") String expand,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") FileShareInner fileShare,
@@ -135,7 +135,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
             @PathParam("shareName") String shareName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("$expand") GetShareExpand expand,
+            @QueryParam("$expand") String expand,
             @HeaderParam("x-ms-snapshot") String xMsSnapshot,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -154,6 +154,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("x-ms-snapshot") String xMsSnapshot,
+            @QueryParam("$include") String include,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -171,6 +172,24 @@ public final class FileSharesClientImpl implements FileSharesClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") DeletedShare deletedShare,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
+                + "/storageAccounts/{accountName}/fileServices/default/shares/{shareName}/lease")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<FileSharesLeaseResponse> lease(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("shareName") String shareName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("x-ms-snapshot") String xMsSnapshot,
+            @BodyParam("application/json") LeaseShareRequest parameters,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -194,7 +213,8 @@ public final class FileSharesClientImpl implements FileSharesClient {
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param maxpagesize Optional. Specified maximum number of shares that can be included in the list.
      * @param filter Optional. When specified, only share names starting with the filter will be listed.
-     * @param expand Optional, used to expand the properties within share's properties.
+     * @param expand Optional, used to expand the properties within share's properties. Valid values are: deleted,
+     *     snapshots. Should be passed as a string with delimiter ','.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -202,7 +222,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FileShareItemInner>> listSinglePageAsync(
-        String resourceGroupName, String accountName, String maxpagesize, String filter, ListSharesExpand expand) {
+        String resourceGroupName, String accountName, String maxpagesize, String filter, String expand) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -259,7 +279,8 @@ public final class FileSharesClientImpl implements FileSharesClient {
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param maxpagesize Optional. Specified maximum number of shares that can be included in the list.
      * @param filter Optional. When specified, only share names starting with the filter will be listed.
-     * @param expand Optional, used to expand the properties within share's properties.
+     * @param expand Optional, used to expand the properties within share's properties. Valid values are: deleted,
+     *     snapshots. Should be passed as a string with delimiter ','.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -272,7 +293,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
         String accountName,
         String maxpagesize,
         String filter,
-        ListSharesExpand expand,
+        String expand,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -327,7 +348,8 @@ public final class FileSharesClientImpl implements FileSharesClient {
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param maxpagesize Optional. Specified maximum number of shares that can be included in the list.
      * @param filter Optional. When specified, only share names starting with the filter will be listed.
-     * @param expand Optional, used to expand the properties within share's properties.
+     * @param expand Optional, used to expand the properties within share's properties. Valid values are: deleted,
+     *     snapshots. Should be passed as a string with delimiter ','.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -335,7 +357,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<FileShareItemInner> listAsync(
-        String resourceGroupName, String accountName, String maxpagesize, String filter, ListSharesExpand expand) {
+        String resourceGroupName, String accountName, String maxpagesize, String filter, String expand) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter, expand),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -357,7 +379,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
     public PagedFlux<FileShareItemInner> listAsync(String resourceGroupName, String accountName) {
         final String maxpagesize = null;
         final String filter = null;
-        final ListSharesExpand expand = null;
+        final String expand = null;
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter, expand),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -372,7 +394,8 @@ public final class FileSharesClientImpl implements FileSharesClient {
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param maxpagesize Optional. Specified maximum number of shares that can be included in the list.
      * @param filter Optional. When specified, only share names starting with the filter will be listed.
-     * @param expand Optional, used to expand the properties within share's properties.
+     * @param expand Optional, used to expand the properties within share's properties. Valid values are: deleted,
+     *     snapshots. Should be passed as a string with delimiter ','.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -385,7 +408,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
         String accountName,
         String maxpagesize,
         String filter,
-        ListSharesExpand expand,
+        String expand,
         Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter, expand, context),
@@ -408,7 +431,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
     public PagedIterable<FileShareItemInner> list(String resourceGroupName, String accountName) {
         final String maxpagesize = null;
         final String filter = null;
-        final ListSharesExpand expand = null;
+        final String expand = null;
         return new PagedIterable<>(listAsync(resourceGroupName, accountName, maxpagesize, filter, expand));
     }
 
@@ -421,7 +444,8 @@ public final class FileSharesClientImpl implements FileSharesClient {
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param maxpagesize Optional. Specified maximum number of shares that can be included in the list.
      * @param filter Optional. When specified, only share names starting with the filter will be listed.
-     * @param expand Optional, used to expand the properties within share's properties.
+     * @param expand Optional, used to expand the properties within share's properties. Valid values are: deleted,
+     *     snapshots. Should be passed as a string with delimiter ','.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -434,7 +458,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
         String accountName,
         String maxpagesize,
         String filter,
-        ListSharesExpand expand,
+        String expand,
         Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, accountName, maxpagesize, filter, expand, context));
     }
@@ -451,7 +475,8 @@ public final class FileSharesClientImpl implements FileSharesClient {
      *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      *     character must be immediately preceded and followed by a letter or number.
      * @param fileShare Properties of the file share to create.
-     * @param expand Optional, used to create a snapshot.
+     * @param expand Optional, used to expand the properties within share's properties. Valid values are: snapshots.
+     *     Should be passed as a string with delimiter ','.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -459,11 +484,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<FileShareInner>> createWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String shareName,
-        FileShareInner fileShare,
-        PutSharesExpand expand) {
+        String resourceGroupName, String accountName, String shareName, FileShareInner fileShare, String expand) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -522,7 +543,8 @@ public final class FileSharesClientImpl implements FileSharesClient {
      *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      *     character must be immediately preceded and followed by a letter or number.
      * @param fileShare Properties of the file share to create.
-     * @param expand Optional, used to create a snapshot.
+     * @param expand Optional, used to expand the properties within share's properties. Valid values are: snapshots.
+     *     Should be passed as a string with delimiter ','.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -535,7 +557,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
         String accountName,
         String shareName,
         FileShareInner fileShare,
-        PutSharesExpand expand,
+        String expand,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -592,7 +614,8 @@ public final class FileSharesClientImpl implements FileSharesClient {
      *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      *     character must be immediately preceded and followed by a letter or number.
      * @param fileShare Properties of the file share to create.
-     * @param expand Optional, used to create a snapshot.
+     * @param expand Optional, used to expand the properties within share's properties. Valid values are: snapshots.
+     *     Should be passed as a string with delimiter ','.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -600,11 +623,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileShareInner> createAsync(
-        String resourceGroupName,
-        String accountName,
-        String shareName,
-        FileShareInner fileShare,
-        PutSharesExpand expand) {
+        String resourceGroupName, String accountName, String shareName, FileShareInner fileShare, String expand) {
         return createWithResponseAsync(resourceGroupName, accountName, shareName, fileShare, expand)
             .flatMap(
                 (Response<FileShareInner> res) -> {
@@ -636,7 +655,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileShareInner> createAsync(
         String resourceGroupName, String accountName, String shareName, FileShareInner fileShare) {
-        final PutSharesExpand expand = null;
+        final String expand = null;
         return createWithResponseAsync(resourceGroupName, accountName, shareName, fileShare, expand)
             .flatMap(
                 (Response<FileShareInner> res) -> {
@@ -668,7 +687,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FileShareInner create(
         String resourceGroupName, String accountName, String shareName, FileShareInner fileShare) {
-        final PutSharesExpand expand = null;
+        final String expand = null;
         return createAsync(resourceGroupName, accountName, shareName, fileShare, expand).block();
     }
 
@@ -684,7 +703,8 @@ public final class FileSharesClientImpl implements FileSharesClient {
      *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      *     character must be immediately preceded and followed by a letter or number.
      * @param fileShare Properties of the file share to create.
-     * @param expand Optional, used to create a snapshot.
+     * @param expand Optional, used to expand the properties within share's properties. Valid values are: snapshots.
+     *     Should be passed as a string with delimiter ','.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -697,7 +717,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
         String accountName,
         String shareName,
         FileShareInner fileShare,
-        PutSharesExpand expand,
+        String expand,
         Context context) {
         return createWithResponseAsync(resourceGroupName, accountName, shareName, fileShare, expand, context).block();
     }
@@ -918,7 +938,8 @@ public final class FileSharesClientImpl implements FileSharesClient {
      * @param shareName The name of the file share within the specified storage account. File share names must be
      *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      *     character must be immediately preceded and followed by a letter or number.
-     * @param expand Optional, used to expand the properties within share's properties.
+     * @param expand Optional, used to expand the properties within share's properties. Valid values are: stats. Should
+     *     be passed as a string with delimiter ','.
      * @param xMsSnapshot Optional, used to retrieve properties of a snapshot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -927,7 +948,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<FileShareInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String shareName, GetShareExpand expand, String xMsSnapshot) {
+        String resourceGroupName, String accountName, String shareName, String expand, String xMsSnapshot) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -979,7 +1000,8 @@ public final class FileSharesClientImpl implements FileSharesClient {
      * @param shareName The name of the file share within the specified storage account. File share names must be
      *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      *     character must be immediately preceded and followed by a letter or number.
-     * @param expand Optional, used to expand the properties within share's properties.
+     * @param expand Optional, used to expand the properties within share's properties. Valid values are: stats. Should
+     *     be passed as a string with delimiter ','.
      * @param xMsSnapshot Optional, used to retrieve properties of a snapshot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -992,7 +1014,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
         String resourceGroupName,
         String accountName,
         String shareName,
-        GetShareExpand expand,
+        String expand,
         String xMsSnapshot,
         Context context) {
         if (this.client.getEndpoint() == null) {
@@ -1043,7 +1065,8 @@ public final class FileSharesClientImpl implements FileSharesClient {
      * @param shareName The name of the file share within the specified storage account. File share names must be
      *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      *     character must be immediately preceded and followed by a letter or number.
-     * @param expand Optional, used to expand the properties within share's properties.
+     * @param expand Optional, used to expand the properties within share's properties. Valid values are: stats. Should
+     *     be passed as a string with delimiter ','.
      * @param xMsSnapshot Optional, used to retrieve properties of a snapshot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1052,7 +1075,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileShareInner> getAsync(
-        String resourceGroupName, String accountName, String shareName, GetShareExpand expand, String xMsSnapshot) {
+        String resourceGroupName, String accountName, String shareName, String expand, String xMsSnapshot) {
         return getWithResponseAsync(resourceGroupName, accountName, shareName, expand, xMsSnapshot)
             .flatMap(
                 (Response<FileShareInner> res) -> {
@@ -1081,7 +1104,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileShareInner> getAsync(String resourceGroupName, String accountName, String shareName) {
-        final GetShareExpand expand = null;
+        final String expand = null;
         final String xMsSnapshot = null;
         return getWithResponseAsync(resourceGroupName, accountName, shareName, expand, xMsSnapshot)
             .flatMap(
@@ -1111,7 +1134,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FileShareInner get(String resourceGroupName, String accountName, String shareName) {
-        final GetShareExpand expand = null;
+        final String expand = null;
         final String xMsSnapshot = null;
         return getAsync(resourceGroupName, accountName, shareName, expand, xMsSnapshot).block();
     }
@@ -1126,7 +1149,8 @@ public final class FileSharesClientImpl implements FileSharesClient {
      * @param shareName The name of the file share within the specified storage account. File share names must be
      *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      *     character must be immediately preceded and followed by a letter or number.
-     * @param expand Optional, used to expand the properties within share's properties.
+     * @param expand Optional, used to expand the properties within share's properties. Valid values are: stats. Should
+     *     be passed as a string with delimiter ','.
      * @param xMsSnapshot Optional, used to retrieve properties of a snapshot.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1139,7 +1163,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
         String resourceGroupName,
         String accountName,
         String shareName,
-        GetShareExpand expand,
+        String expand,
         String xMsSnapshot,
         Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, shareName, expand, xMsSnapshot, context).block();
@@ -1156,6 +1180,11 @@ public final class FileSharesClientImpl implements FileSharesClient {
      *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      *     character must be immediately preceded and followed by a letter or number.
      * @param xMsSnapshot Optional, used to delete a snapshot.
+     * @param include Optional. Valid values are: snapshots, leased-snapshots, none. The default value is snapshots. For
+     *     'snapshots', the file share is deleted including all of its file share snapshots. If the file share contains
+     *     leased-snapshots, the deletion fails. For 'leased-snapshots', the file share is deleted included all of its
+     *     file share snapshots (leased/unleased). For 'none', the file share is deleted if it has no share snapshots.
+     *     If the file share contains any snapshots (leased or unleased), the deletion fails.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1163,7 +1192,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String shareName, String xMsSnapshot) {
+        String resourceGroupName, String accountName, String shareName, String xMsSnapshot, String include) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1199,6 +1228,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             xMsSnapshot,
+                            include,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1215,6 +1245,11 @@ public final class FileSharesClientImpl implements FileSharesClient {
      *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      *     character must be immediately preceded and followed by a letter or number.
      * @param xMsSnapshot Optional, used to delete a snapshot.
+     * @param include Optional. Valid values are: snapshots, leased-snapshots, none. The default value is snapshots. For
+     *     'snapshots', the file share is deleted including all of its file share snapshots. If the file share contains
+     *     leased-snapshots, the deletion fails. For 'leased-snapshots', the file share is deleted included all of its
+     *     file share snapshots (leased/unleased). For 'none', the file share is deleted if it has no share snapshots.
+     *     If the file share contains any snapshots (leased or unleased), the deletion fails.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1223,7 +1258,12 @@ public final class FileSharesClientImpl implements FileSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String shareName, String xMsSnapshot, Context context) {
+        String resourceGroupName,
+        String accountName,
+        String shareName,
+        String xMsSnapshot,
+        String include,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1257,6 +1297,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 xMsSnapshot,
+                include,
                 accept,
                 context);
     }
@@ -1272,14 +1313,20 @@ public final class FileSharesClientImpl implements FileSharesClient {
      *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      *     character must be immediately preceded and followed by a letter or number.
      * @param xMsSnapshot Optional, used to delete a snapshot.
+     * @param include Optional. Valid values are: snapshots, leased-snapshots, none. The default value is snapshots. For
+     *     'snapshots', the file share is deleted including all of its file share snapshots. If the file share contains
+     *     leased-snapshots, the deletion fails. For 'leased-snapshots', the file share is deleted included all of its
+     *     file share snapshots (leased/unleased). For 'none', the file share is deleted if it has no share snapshots.
+     *     If the file share contains any snapshots (leased or unleased), the deletion fails.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String accountName, String shareName, String xMsSnapshot) {
-        return deleteWithResponseAsync(resourceGroupName, accountName, shareName, xMsSnapshot)
+    public Mono<Void> deleteAsync(
+        String resourceGroupName, String accountName, String shareName, String xMsSnapshot, String include) {
+        return deleteWithResponseAsync(resourceGroupName, accountName, shareName, xMsSnapshot, include)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -1301,7 +1348,8 @@ public final class FileSharesClientImpl implements FileSharesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String accountName, String shareName) {
         final String xMsSnapshot = null;
-        return deleteWithResponseAsync(resourceGroupName, accountName, shareName, xMsSnapshot)
+        final String include = null;
+        return deleteWithResponseAsync(resourceGroupName, accountName, shareName, xMsSnapshot, include)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -1322,7 +1370,8 @@ public final class FileSharesClientImpl implements FileSharesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String shareName) {
         final String xMsSnapshot = null;
-        deleteAsync(resourceGroupName, accountName, shareName, xMsSnapshot).block();
+        final String include = null;
+        deleteAsync(resourceGroupName, accountName, shareName, xMsSnapshot, include).block();
     }
 
     /**
@@ -1336,6 +1385,11 @@ public final class FileSharesClientImpl implements FileSharesClient {
      *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      *     character must be immediately preceded and followed by a letter or number.
      * @param xMsSnapshot Optional, used to delete a snapshot.
+     * @param include Optional. Valid values are: snapshots, leased-snapshots, none. The default value is snapshots. For
+     *     'snapshots', the file share is deleted including all of its file share snapshots. If the file share contains
+     *     leased-snapshots, the deletion fails. For 'leased-snapshots', the file share is deleted included all of its
+     *     file share snapshots (leased/unleased). For 'none', the file share is deleted if it has no share snapshots.
+     *     If the file share contains any snapshots (leased or unleased), the deletion fails.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1344,8 +1398,14 @@ public final class FileSharesClientImpl implements FileSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String shareName, String xMsSnapshot, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, accountName, shareName, xMsSnapshot, context).block();
+        String resourceGroupName,
+        String accountName,
+        String shareName,
+        String xMsSnapshot,
+        String include,
+        Context context) {
+        return deleteWithResponseAsync(resourceGroupName, accountName, shareName, xMsSnapshot, include, context)
+            .block();
     }
 
     /**
@@ -1358,8 +1418,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
      * @param shareName The name of the file share within the specified storage account. File share names must be
      *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      *     character must be immediately preceded and followed by a letter or number.
-     * @param deletedShareName Required. Identify the name of the deleted share that will be restored.
-     * @param deletedShareVersion Required. Identify the version of the deleted share that will be restored.
+     * @param deletedShare The deleted share to be restored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1367,11 +1426,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> restoreWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String shareName,
-        String deletedShareName,
-        String deletedShareVersion) {
+        String resourceGroupName, String accountName, String shareName, DeletedShare deletedShare) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1394,18 +1449,12 @@ public final class FileSharesClientImpl implements FileSharesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (deletedShareName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter deletedShareName is required and cannot be null."));
-        }
-        if (deletedShareVersion == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter deletedShareVersion is required and cannot be null."));
+        if (deletedShare == null) {
+            return Mono.error(new IllegalArgumentException("Parameter deletedShare is required and cannot be null."));
+        } else {
+            deletedShare.validate();
         }
         final String accept = "application/json";
-        DeletedShare deletedShare = new DeletedShare();
-        deletedShare.withDeletedShareName(deletedShareName);
-        deletedShare.withDeletedShareVersion(deletedShareVersion);
         return FluxUtil
             .withContext(
                 context ->
@@ -1433,8 +1482,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
      * @param shareName The name of the file share within the specified storage account. File share names must be
      *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      *     character must be immediately preceded and followed by a letter or number.
-     * @param deletedShareName Required. Identify the name of the deleted share that will be restored.
-     * @param deletedShareVersion Required. Identify the version of the deleted share that will be restored.
+     * @param deletedShare The deleted share to be restored.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1443,12 +1491,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> restoreWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String shareName,
-        String deletedShareName,
-        String deletedShareVersion,
-        Context context) {
+        String resourceGroupName, String accountName, String shareName, DeletedShare deletedShare, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1471,18 +1514,12 @@ public final class FileSharesClientImpl implements FileSharesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (deletedShareName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter deletedShareName is required and cannot be null."));
-        }
-        if (deletedShareVersion == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter deletedShareVersion is required and cannot be null."));
+        if (deletedShare == null) {
+            return Mono.error(new IllegalArgumentException("Parameter deletedShare is required and cannot be null."));
+        } else {
+            deletedShare.validate();
         }
         final String accept = "application/json";
-        DeletedShare deletedShare = new DeletedShare();
-        deletedShare.withDeletedShareName(deletedShareName);
-        deletedShare.withDeletedShareVersion(deletedShareVersion);
         context = this.client.mergeContext(context);
         return service
             .restore(
@@ -1507,8 +1544,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
      * @param shareName The name of the file share within the specified storage account. File share names must be
      *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      *     character must be immediately preceded and followed by a letter or number.
-     * @param deletedShareName Required. Identify the name of the deleted share that will be restored.
-     * @param deletedShareVersion Required. Identify the version of the deleted share that will be restored.
+     * @param deletedShare The deleted share to be restored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1516,13 +1552,8 @@ public final class FileSharesClientImpl implements FileSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> restoreAsync(
-        String resourceGroupName,
-        String accountName,
-        String shareName,
-        String deletedShareName,
-        String deletedShareVersion) {
-        return restoreWithResponseAsync(
-                resourceGroupName, accountName, shareName, deletedShareName, deletedShareVersion)
+        String resourceGroupName, String accountName, String shareName, DeletedShare deletedShare) {
+        return restoreWithResponseAsync(resourceGroupName, accountName, shareName, deletedShare)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -1536,20 +1567,14 @@ public final class FileSharesClientImpl implements FileSharesClient {
      * @param shareName The name of the file share within the specified storage account. File share names must be
      *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      *     character must be immediately preceded and followed by a letter or number.
-     * @param deletedShareName Required. Identify the name of the deleted share that will be restored.
-     * @param deletedShareVersion Required. Identify the version of the deleted share that will be restored.
+     * @param deletedShare The deleted share to be restored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void restore(
-        String resourceGroupName,
-        String accountName,
-        String shareName,
-        String deletedShareName,
-        String deletedShareVersion) {
-        restoreAsync(resourceGroupName, accountName, shareName, deletedShareName, deletedShareVersion).block();
+    public void restore(String resourceGroupName, String accountName, String shareName, DeletedShare deletedShare) {
+        restoreAsync(resourceGroupName, accountName, shareName, deletedShare).block();
     }
 
     /**
@@ -1562,8 +1587,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
      * @param shareName The name of the file share within the specified storage account. File share names must be
      *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      *     character must be immediately preceded and followed by a letter or number.
-     * @param deletedShareName Required. Identify the name of the deleted share that will be restored.
-     * @param deletedShareVersion Required. Identify the version of the deleted share that will be restored.
+     * @param deletedShare The deleted share to be restored.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1572,14 +1596,265 @@ public final class FileSharesClientImpl implements FileSharesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> restoreWithResponse(
+        String resourceGroupName, String accountName, String shareName, DeletedShare deletedShare, Context context) {
+        return restoreWithResponseAsync(resourceGroupName, accountName, shareName, deletedShare, context).block();
+    }
+
+    /**
+     * The Lease Share operation establishes and manages a lock on a share for delete operations. The lock duration can
+     * be 15 to 60 seconds, or can be infinite.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param shareName The name of the file share within the specified storage account. File share names must be
+     *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
+     *     character must be immediately preceded and followed by a letter or number.
+     * @param xMsSnapshot Optional. Specify the snapshot time to lease a snapshot.
+     * @param parameters Lease Share request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return lease Share response schema.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FileSharesLeaseResponse> leaseWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String shareName,
-        String deletedShareName,
-        String deletedShareVersion,
+        String xMsSnapshot,
+        LeaseShareRequest parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (shareName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter shareName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters != null) {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .lease(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            accountName,
+                            shareName,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            xMsSnapshot,
+                            parameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * The Lease Share operation establishes and manages a lock on a share for delete operations. The lock duration can
+     * be 15 to 60 seconds, or can be infinite.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param shareName The name of the file share within the specified storage account. File share names must be
+     *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
+     *     character must be immediately preceded and followed by a letter or number.
+     * @param xMsSnapshot Optional. Specify the snapshot time to lease a snapshot.
+     * @param parameters Lease Share request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return lease Share response schema.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<FileSharesLeaseResponse> leaseWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String shareName,
+        String xMsSnapshot,
+        LeaseShareRequest parameters,
         Context context) {
-        return restoreWithResponseAsync(
-                resourceGroupName, accountName, shareName, deletedShareName, deletedShareVersion, context)
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (shareName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter shareName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters != null) {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .lease(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                accountName,
+                shareName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                xMsSnapshot,
+                parameters,
+                accept,
+                context);
+    }
+
+    /**
+     * The Lease Share operation establishes and manages a lock on a share for delete operations. The lock duration can
+     * be 15 to 60 seconds, or can be infinite.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param shareName The name of the file share within the specified storage account. File share names must be
+     *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
+     *     character must be immediately preceded and followed by a letter or number.
+     * @param xMsSnapshot Optional. Specify the snapshot time to lease a snapshot.
+     * @param parameters Lease Share request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return lease Share response schema.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LeaseShareResponseInner> leaseAsync(
+        String resourceGroupName,
+        String accountName,
+        String shareName,
+        String xMsSnapshot,
+        LeaseShareRequest parameters) {
+        return leaseWithResponseAsync(resourceGroupName, accountName, shareName, xMsSnapshot, parameters)
+            .flatMap(
+                (FileSharesLeaseResponse res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * The Lease Share operation establishes and manages a lock on a share for delete operations. The lock duration can
+     * be 15 to 60 seconds, or can be infinite.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param shareName The name of the file share within the specified storage account. File share names must be
+     *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
+     *     character must be immediately preceded and followed by a letter or number.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return lease Share response schema.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LeaseShareResponseInner> leaseAsync(String resourceGroupName, String accountName, String shareName) {
+        final String xMsSnapshot = null;
+        final LeaseShareRequest parameters = null;
+        return leaseWithResponseAsync(resourceGroupName, accountName, shareName, xMsSnapshot, parameters)
+            .flatMap(
+                (FileSharesLeaseResponse res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * The Lease Share operation establishes and manages a lock on a share for delete operations. The lock duration can
+     * be 15 to 60 seconds, or can be infinite.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param shareName The name of the file share within the specified storage account. File share names must be
+     *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
+     *     character must be immediately preceded and followed by a letter or number.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return lease Share response schema.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LeaseShareResponseInner lease(String resourceGroupName, String accountName, String shareName) {
+        final String xMsSnapshot = null;
+        final LeaseShareRequest parameters = null;
+        return leaseAsync(resourceGroupName, accountName, shareName, xMsSnapshot, parameters).block();
+    }
+
+    /**
+     * The Lease Share operation establishes and manages a lock on a share for delete operations. The lock duration can
+     * be 15 to 60 seconds, or can be infinite.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param shareName The name of the file share within the specified storage account. File share names must be
+     *     between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
+     *     character must be immediately preceded and followed by a letter or number.
+     * @param xMsSnapshot Optional. Specify the snapshot time to lease a snapshot.
+     * @param parameters Lease Share request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return lease Share response schema.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FileSharesLeaseResponse leaseWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String shareName,
+        String xMsSnapshot,
+        LeaseShareRequest parameters,
+        Context context) {
+        return leaseWithResponseAsync(resourceGroupName, accountName, shareName, xMsSnapshot, parameters, context)
             .block();
     }
 

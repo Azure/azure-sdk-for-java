@@ -3,150 +3,68 @@
 
 package com.azure.monitor.query.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.monitor.query.implementation.metrics.models.MetricsHelper;
 
-/** Metric namespace class specifies the metadata for a metric namespace. */
-@Fluent
+/**
+ * Metric namespace class specifies the metadata for a metric namespace.
+ */
 public final class MetricNamespace {
-    /*
-     * The ID of the metric namespace.
-     */
-    @JsonProperty(value = "id")
+    private NamespaceClassification classification;
     private String id;
-
-    /*
-     * The type of the namespace.
-     */
-    @JsonProperty(value = "type")
+    private String name;
+    private String fullyQualifiedName;
     private String type;
 
-    /*
-     * The escaped name of the namespace.
-     */
-    @JsonProperty(value = "name")
-    private String name;
-
-    /*
-     * Kind of namespace
-     */
-    @JsonProperty(value = "classification")
-    private NamespaceClassification classification;
-
-    /*
-     * Properties which include the fully qualified namespace name.
-     */
-    @JsonProperty(value = "properties")
-    private MetricNamespaceName properties;
-
-    /**
-     * Get the id property: The ID of the metric namespace.
-     *
-     * @return the id value.
-     */
-    public String getId() {
-        return this.id;
+    static {
+        MetricsHelper.setMetricNamespaceAccessor(MetricNamespace::setMetricNamespaceProperties);
     }
 
-    /**
-     * Set the id property: The ID of the metric namespace.
-     *
-     * @param id the id value to set.
-     * @return the MetricNamespace object itself.
-     */
-    public MetricNamespace setId(String id) {
+    private void setMetricNamespaceProperties(NamespaceClassification classification, String id, String name,
+                                              String fullyQualifiedName, String type) {
+        this.classification = classification;
         this.id = id;
-        return this;
-    }
-
-    /**
-     * Get the type property: The type of the namespace.
-     *
-     * @return the type value.
-     */
-    public String getType() {
-        return this.type;
-    }
-
-    /**
-     * Set the type property: The type of the namespace.
-     *
-     * @param type the type value to set.
-     * @return the MetricNamespace object itself.
-     */
-    public MetricNamespace setType(String type) {
-        this.type = type;
-        return this;
-    }
-
-    /**
-     * Get the name property: The escaped name of the namespace.
-     *
-     * @return the name value.
-     */
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Set the name property: The escaped name of the namespace.
-     *
-     * @param name the name value to set.
-     * @return the MetricNamespace object itself.
-     */
-    public MetricNamespace setName(String name) {
         this.name = name;
-        return this;
+        this.fullyQualifiedName = fullyQualifiedName;
+        this.type = type;
     }
 
     /**
-     * Get the classification property: Kind of namespace.
-     *
-     * @return the classification value.
+     * Returns the kind of namespace.
+     * @return the kind of namespace.
      */
     public NamespaceClassification getClassification() {
-        return this.classification;
+        return classification;
     }
 
     /**
-     * Set the classification property: Kind of namespace.
-     *
-     * @param classification the classification value to set.
-     * @return the MetricNamespace object itself.
+     * Returns the ID of the metric namespace.
+     * @return the ID of the metric namespace.
      */
-    public MetricNamespace setClassification(NamespaceClassification classification) {
-        this.classification = classification;
-        return this;
+    public String getId() {
+        return id;
     }
 
     /**
-     * Get the properties property: Properties which include the fully qualified namespace name.
-     *
-     * @return the properties value.
+     * Returns the escaped name of the namespace.
+     * @return the escaped name of the namespace.
      */
-    public MetricNamespaceName getProperties() {
-        return this.properties;
+    public String getName() {
+        return name;
     }
 
     /**
-     * Set the properties property: Properties which include the fully qualified namespace name.
-     *
-     * @param properties the properties value to set.
-     * @return the MetricNamespace object itself.
+     * Returns the fully qualified name of the metric namespace.
+     * @return the fully qualified name of the metric namespace.
      */
-    public MetricNamespace setProperties(MetricNamespaceName properties) {
-        this.properties = properties;
-        return this;
+    public String getFullyQualifiedName() {
+        return fullyQualifiedName;
     }
 
     /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * Returns the type of the namespace.
+     * @return the type of the namespace.
      */
-    public void validate() {
-        if (getProperties() != null) {
-            getProperties().validate();
-        }
+    public String getType() {
+        return type;
     }
 }

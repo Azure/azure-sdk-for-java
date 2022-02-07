@@ -49,7 +49,7 @@ public interface SqlPool {
     Map<String, String> tags();
 
     /**
-     * Gets the sku property: SQL pool SKU.
+     * Gets the sku property: Sku SQL pool SKU.
      *
      * @return the sku value.
      */
@@ -105,11 +105,23 @@ public interface SqlPool {
     OffsetDateTime restorePointInTime();
 
     /**
-     * Gets the createMode property: What is this?.
+     * Gets the createMode property: Specifies the mode of sql pool creation.
+     *
+     * <p>Default: regular sql pool creation.
+     *
+     * <p>PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool.
+     * sourceDatabaseId must be specified as the resource ID of the existing sql pool, and restorePointInTime must be
+     * specified.
+     *
+     * <p>Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId must be specified as the
+     * recoverableDatabaseId to restore.
+     *
+     * <p>Restore: Creates a sql pool by restoring a backup of a deleted sql pool. SourceDatabaseId should be the sql
+     * pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be specified.
      *
      * @return the createMode value.
      */
-    String createMode();
+    CreateMode createMode();
 
     /**
      * Gets the creationDate property: Date the SQL pool was created.
@@ -124,6 +136,13 @@ public interface SqlPool {
      * @return the storageAccountType value.
      */
     StorageAccountType storageAccountType();
+
+    /**
+     * Gets the sourceDatabaseDeletionDate property: Specifies the time that the sql pool was deleted.
+     *
+     * @return the sourceDatabaseDeletionDate value.
+     */
+    OffsetDateTime sourceDatabaseDeletionDate();
 
     /**
      * Gets the region of the resource.
@@ -199,11 +218,10 @@ public interface SqlPool {
                 DefinitionStages.WithSourceDatabaseId,
                 DefinitionStages.WithRecoverableDatabaseId,
                 DefinitionStages.WithProvisioningState,
-                DefinitionStages.WithStatus,
                 DefinitionStages.WithRestorePointInTime,
                 DefinitionStages.WithCreateMode,
-                DefinitionStages.WithCreationDate,
-                DefinitionStages.WithStorageAccountType {
+                DefinitionStages.WithStorageAccountType,
+                DefinitionStages.WithSourceDatabaseDeletionDate {
             /**
              * Executes the create request.
              *
@@ -232,9 +250,9 @@ public interface SqlPool {
         /** The stage of the SqlPool definition allowing to specify sku. */
         interface WithSku {
             /**
-             * Specifies the sku property: SQL pool SKU.
+             * Specifies the sku property: Sku SQL pool SKU.
              *
-             * @param sku SQL pool SKU.
+             * @param sku Sku SQL pool SKU.
              * @return the next definition stage.
              */
             WithCreate withSku(Sku sku);
@@ -289,16 +307,6 @@ public interface SqlPool {
              */
             WithCreate withProvisioningState(String provisioningState);
         }
-        /** The stage of the SqlPool definition allowing to specify status. */
-        interface WithStatus {
-            /**
-             * Specifies the status property: Resource status.
-             *
-             * @param status Resource status.
-             * @return the next definition stage.
-             */
-            WithCreate withStatus(String status);
-        }
         /** The stage of the SqlPool definition allowing to specify restorePointInTime. */
         interface WithRestorePointInTime {
             /**
@@ -312,22 +320,33 @@ public interface SqlPool {
         /** The stage of the SqlPool definition allowing to specify createMode. */
         interface WithCreateMode {
             /**
-             * Specifies the createMode property: What is this?.
+             * Specifies the createMode property: Specifies the mode of sql pool creation.
              *
-             * @param createMode What is this?.
+             * <p>Default: regular sql pool creation.
+             *
+             * <p>PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool.
+             * sourceDatabaseId must be specified as the resource ID of the existing sql pool, and restorePointInTime
+             * must be specified.
+             *
+             * <p>Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId must be specified as the
+             * recoverableDatabaseId to restore.
+             *
+             * <p>Restore: Creates a sql pool by restoring a backup of a deleted sql pool. SourceDatabaseId should be
+             * the sql pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be specified..
+             *
+             * @param createMode Specifies the mode of sql pool creation.
+             *     <p>Default: regular sql pool creation.
+             *     <p>PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql
+             *     pool. sourceDatabaseId must be specified as the resource ID of the existing sql pool, and
+             *     restorePointInTime must be specified.
+             *     <p>Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId must be specified as the
+             *     recoverableDatabaseId to restore.
+             *     <p>Restore: Creates a sql pool by restoring a backup of a deleted sql pool. SourceDatabaseId should
+             *     be the sql pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be
+             *     specified.
              * @return the next definition stage.
              */
-            WithCreate withCreateMode(String createMode);
-        }
-        /** The stage of the SqlPool definition allowing to specify creationDate. */
-        interface WithCreationDate {
-            /**
-             * Specifies the creationDate property: Date the SQL pool was created.
-             *
-             * @param creationDate Date the SQL pool was created.
-             * @return the next definition stage.
-             */
-            WithCreate withCreationDate(OffsetDateTime creationDate);
+            WithCreate withCreateMode(CreateMode createMode);
         }
         /** The stage of the SqlPool definition allowing to specify storageAccountType. */
         interface WithStorageAccountType {
@@ -339,6 +358,16 @@ public interface SqlPool {
              * @return the next definition stage.
              */
             WithCreate withStorageAccountType(StorageAccountType storageAccountType);
+        }
+        /** The stage of the SqlPool definition allowing to specify sourceDatabaseDeletionDate. */
+        interface WithSourceDatabaseDeletionDate {
+            /**
+             * Specifies the sourceDatabaseDeletionDate property: Specifies the time that the sql pool was deleted.
+             *
+             * @param sourceDatabaseDeletionDate Specifies the time that the sql pool was deleted.
+             * @return the next definition stage.
+             */
+            WithCreate withSourceDatabaseDeletionDate(OffsetDateTime sourceDatabaseDeletionDate);
         }
     }
     /**
@@ -357,10 +386,8 @@ public interface SqlPool {
             UpdateStages.WithSourceDatabaseId,
             UpdateStages.WithRecoverableDatabaseId,
             UpdateStages.WithProvisioningState,
-            UpdateStages.WithStatus,
             UpdateStages.WithRestorePointInTime,
             UpdateStages.WithCreateMode,
-            UpdateStages.WithCreationDate,
             UpdateStages.WithStorageAccountType {
         /**
          * Executes the update request.
@@ -392,9 +419,9 @@ public interface SqlPool {
         /** The stage of the SqlPool update allowing to specify sku. */
         interface WithSku {
             /**
-             * Specifies the sku property: SQL pool SKU.
+             * Specifies the sku property: Sku SQL pool SKU.
              *
-             * @param sku SQL pool SKU.
+             * @param sku Sku SQL pool SKU.
              * @return the next definition stage.
              */
             Update withSku(Sku sku);
@@ -449,16 +476,6 @@ public interface SqlPool {
              */
             Update withProvisioningState(String provisioningState);
         }
-        /** The stage of the SqlPool update allowing to specify status. */
-        interface WithStatus {
-            /**
-             * Specifies the status property: Resource status.
-             *
-             * @param status Resource status.
-             * @return the next definition stage.
-             */
-            Update withStatus(String status);
-        }
         /** The stage of the SqlPool update allowing to specify restorePointInTime. */
         interface WithRestorePointInTime {
             /**
@@ -472,22 +489,33 @@ public interface SqlPool {
         /** The stage of the SqlPool update allowing to specify createMode. */
         interface WithCreateMode {
             /**
-             * Specifies the createMode property: What is this?.
+             * Specifies the createMode property: Specifies the mode of sql pool creation.
              *
-             * @param createMode What is this?.
+             * <p>Default: regular sql pool creation.
+             *
+             * <p>PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool.
+             * sourceDatabaseId must be specified as the resource ID of the existing sql pool, and restorePointInTime
+             * must be specified.
+             *
+             * <p>Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId must be specified as the
+             * recoverableDatabaseId to restore.
+             *
+             * <p>Restore: Creates a sql pool by restoring a backup of a deleted sql pool. SourceDatabaseId should be
+             * the sql pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be specified..
+             *
+             * @param createMode Specifies the mode of sql pool creation.
+             *     <p>Default: regular sql pool creation.
+             *     <p>PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql
+             *     pool. sourceDatabaseId must be specified as the resource ID of the existing sql pool, and
+             *     restorePointInTime must be specified.
+             *     <p>Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId must be specified as the
+             *     recoverableDatabaseId to restore.
+             *     <p>Restore: Creates a sql pool by restoring a backup of a deleted sql pool. SourceDatabaseId should
+             *     be the sql pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be
+             *     specified.
              * @return the next definition stage.
              */
-            Update withCreateMode(String createMode);
-        }
-        /** The stage of the SqlPool update allowing to specify creationDate. */
-        interface WithCreationDate {
-            /**
-             * Specifies the creationDate property: Date the SQL pool was created.
-             *
-             * @param creationDate Date the SQL pool was created.
-             * @return the next definition stage.
-             */
-            Update withCreationDate(OffsetDateTime creationDate);
+            Update withCreateMode(CreateMode createMode);
         }
         /** The stage of the SqlPool update allowing to specify storageAccountType. */
         interface WithStorageAccountType {
@@ -574,7 +602,7 @@ public interface SqlPool {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> renameWithResponse(ResourceMoveDefinition parameters, Context context);
 }

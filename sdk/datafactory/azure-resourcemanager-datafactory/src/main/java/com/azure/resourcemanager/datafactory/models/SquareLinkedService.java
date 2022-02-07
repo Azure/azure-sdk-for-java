@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.fluent.models.SquareLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -17,263 +17,23 @@ import java.util.Map;
 /** Square Service linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Square")
-@JsonFlatten
 @Fluent
-public class SquareLinkedService extends LinkedService {
+public final class SquareLinkedService extends LinkedService {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SquareLinkedService.class);
 
     /*
-     * Properties used to connect to Square. It is mutually exclusive with any
-     * other properties in the linked service. Type: object.
+     * Square Service linked service properties.
      */
-    @JsonProperty(value = "typeProperties.connectionProperties")
-    private Object connectionProperties;
-
-    /*
-     * The URL of the Square instance. (i.e. mystore.mysquare.com)
-     */
-    @JsonProperty(value = "typeProperties.host")
-    private Object host;
-
-    /*
-     * The client ID associated with your Square application.
-     */
-    @JsonProperty(value = "typeProperties.clientId")
-    private Object clientId;
-
-    /*
-     * The client secret associated with your Square application.
-     */
-    @JsonProperty(value = "typeProperties.clientSecret")
-    private SecretBase clientSecret;
-
-    /*
-     * The redirect URL assigned in the Square application dashboard. (i.e.
-     * http://localhost:2500)
-     */
-    @JsonProperty(value = "typeProperties.redirectUri")
-    private Object redirectUri;
-
-    /*
-     * Specifies whether the data source endpoints are encrypted using HTTPS.
-     * The default value is true.
-     */
-    @JsonProperty(value = "typeProperties.useEncryptedEndpoints")
-    private Object useEncryptedEndpoints;
-
-    /*
-     * Specifies whether to require the host name in the server's certificate
-     * to match the host name of the server when connecting over SSL. The
-     * default value is true.
-     */
-    @JsonProperty(value = "typeProperties.useHostVerification")
-    private Object useHostVerification;
-
-    /*
-     * Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true.
-     */
-    @JsonProperty(value = "typeProperties.usePeerVerification")
-    private Object usePeerVerification;
-
-    /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
-     */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
-    private Object encryptedCredential;
+    @JsonProperty(value = "typeProperties", required = true)
+    private SquareLinkedServiceTypeProperties innerTypeProperties = new SquareLinkedServiceTypeProperties();
 
     /**
-     * Get the connectionProperties property: Properties used to connect to Square. It is mutually exclusive with any
-     * other properties in the linked service. Type: object.
+     * Get the innerTypeProperties property: Square Service linked service properties.
      *
-     * @return the connectionProperties value.
+     * @return the innerTypeProperties value.
      */
-    public Object connectionProperties() {
-        return this.connectionProperties;
-    }
-
-    /**
-     * Set the connectionProperties property: Properties used to connect to Square. It is mutually exclusive with any
-     * other properties in the linked service. Type: object.
-     *
-     * @param connectionProperties the connectionProperties value to set.
-     * @return the SquareLinkedService object itself.
-     */
-    public SquareLinkedService withConnectionProperties(Object connectionProperties) {
-        this.connectionProperties = connectionProperties;
-        return this;
-    }
-
-    /**
-     * Get the host property: The URL of the Square instance. (i.e. mystore.mysquare.com).
-     *
-     * @return the host value.
-     */
-    public Object host() {
-        return this.host;
-    }
-
-    /**
-     * Set the host property: The URL of the Square instance. (i.e. mystore.mysquare.com).
-     *
-     * @param host the host value to set.
-     * @return the SquareLinkedService object itself.
-     */
-    public SquareLinkedService withHost(Object host) {
-        this.host = host;
-        return this;
-    }
-
-    /**
-     * Get the clientId property: The client ID associated with your Square application.
-     *
-     * @return the clientId value.
-     */
-    public Object clientId() {
-        return this.clientId;
-    }
-
-    /**
-     * Set the clientId property: The client ID associated with your Square application.
-     *
-     * @param clientId the clientId value to set.
-     * @return the SquareLinkedService object itself.
-     */
-    public SquareLinkedService withClientId(Object clientId) {
-        this.clientId = clientId;
-        return this;
-    }
-
-    /**
-     * Get the clientSecret property: The client secret associated with your Square application.
-     *
-     * @return the clientSecret value.
-     */
-    public SecretBase clientSecret() {
-        return this.clientSecret;
-    }
-
-    /**
-     * Set the clientSecret property: The client secret associated with your Square application.
-     *
-     * @param clientSecret the clientSecret value to set.
-     * @return the SquareLinkedService object itself.
-     */
-    public SquareLinkedService withClientSecret(SecretBase clientSecret) {
-        this.clientSecret = clientSecret;
-        return this;
-    }
-
-    /**
-     * Get the redirectUri property: The redirect URL assigned in the Square application dashboard. (i.e.
-     * http://localhost:2500).
-     *
-     * @return the redirectUri value.
-     */
-    public Object redirectUri() {
-        return this.redirectUri;
-    }
-
-    /**
-     * Set the redirectUri property: The redirect URL assigned in the Square application dashboard. (i.e.
-     * http://localhost:2500).
-     *
-     * @param redirectUri the redirectUri value to set.
-     * @return the SquareLinkedService object itself.
-     */
-    public SquareLinkedService withRedirectUri(Object redirectUri) {
-        this.redirectUri = redirectUri;
-        return this;
-    }
-
-    /**
-     * Get the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
-     * The default value is true.
-     *
-     * @return the useEncryptedEndpoints value.
-     */
-    public Object useEncryptedEndpoints() {
-        return this.useEncryptedEndpoints;
-    }
-
-    /**
-     * Set the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
-     * The default value is true.
-     *
-     * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
-     * @return the SquareLinkedService object itself.
-     */
-    public SquareLinkedService withUseEncryptedEndpoints(Object useEncryptedEndpoints) {
-        this.useEncryptedEndpoints = useEncryptedEndpoints;
-        return this;
-    }
-
-    /**
-     * Get the useHostVerification property: Specifies whether to require the host name in the server's certificate to
-     * match the host name of the server when connecting over SSL. The default value is true.
-     *
-     * @return the useHostVerification value.
-     */
-    public Object useHostVerification() {
-        return this.useHostVerification;
-    }
-
-    /**
-     * Set the useHostVerification property: Specifies whether to require the host name in the server's certificate to
-     * match the host name of the server when connecting over SSL. The default value is true.
-     *
-     * @param useHostVerification the useHostVerification value to set.
-     * @return the SquareLinkedService object itself.
-     */
-    public SquareLinkedService withUseHostVerification(Object useHostVerification) {
-        this.useHostVerification = useHostVerification;
-        return this;
-    }
-
-    /**
-     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
-     * SSL. The default value is true.
-     *
-     * @return the usePeerVerification value.
-     */
-    public Object usePeerVerification() {
-        return this.usePeerVerification;
-    }
-
-    /**
-     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
-     * SSL. The default value is true.
-     *
-     * @param usePeerVerification the usePeerVerification value to set.
-     * @return the SquareLinkedService object itself.
-     */
-    public SquareLinkedService withUsePeerVerification(Object usePeerVerification) {
-        this.usePeerVerification = usePeerVerification;
-        return this;
-    }
-
-    /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @return the encryptedCredential value.
-     */
-    public Object encryptedCredential() {
-        return this.encryptedCredential;
-    }
-
-    /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
-     * @param encryptedCredential the encryptedCredential value to set.
-     * @return the SquareLinkedService object itself.
-     */
-    public SquareLinkedService withEncryptedCredential(Object encryptedCredential) {
-        this.encryptedCredential = encryptedCredential;
-        return this;
+    private SquareLinkedServiceTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
     }
 
     /** {@inheritDoc} */
@@ -305,6 +65,225 @@ public class SquareLinkedService extends LinkedService {
     }
 
     /**
+     * Get the connectionProperties property: Properties used to connect to Square. It is mutually exclusive with any
+     * other properties in the linked service. Type: object.
+     *
+     * @return the connectionProperties value.
+     */
+    public Object connectionProperties() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().connectionProperties();
+    }
+
+    /**
+     * Set the connectionProperties property: Properties used to connect to Square. It is mutually exclusive with any
+     * other properties in the linked service. Type: object.
+     *
+     * @param connectionProperties the connectionProperties value to set.
+     * @return the SquareLinkedService object itself.
+     */
+    public SquareLinkedService withConnectionProperties(Object connectionProperties) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SquareLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withConnectionProperties(connectionProperties);
+        return this;
+    }
+
+    /**
+     * Get the host property: The URL of the Square instance. (i.e. mystore.mysquare.com).
+     *
+     * @return the host value.
+     */
+    public Object host() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().host();
+    }
+
+    /**
+     * Set the host property: The URL of the Square instance. (i.e. mystore.mysquare.com).
+     *
+     * @param host the host value to set.
+     * @return the SquareLinkedService object itself.
+     */
+    public SquareLinkedService withHost(Object host) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SquareLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withHost(host);
+        return this;
+    }
+
+    /**
+     * Get the clientId property: The client ID associated with your Square application.
+     *
+     * @return the clientId value.
+     */
+    public Object clientId() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().clientId();
+    }
+
+    /**
+     * Set the clientId property: The client ID associated with your Square application.
+     *
+     * @param clientId the clientId value to set.
+     * @return the SquareLinkedService object itself.
+     */
+    public SquareLinkedService withClientId(Object clientId) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SquareLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withClientId(clientId);
+        return this;
+    }
+
+    /**
+     * Get the clientSecret property: The client secret associated with your Square application.
+     *
+     * @return the clientSecret value.
+     */
+    public SecretBase clientSecret() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().clientSecret();
+    }
+
+    /**
+     * Set the clientSecret property: The client secret associated with your Square application.
+     *
+     * @param clientSecret the clientSecret value to set.
+     * @return the SquareLinkedService object itself.
+     */
+    public SquareLinkedService withClientSecret(SecretBase clientSecret) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SquareLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withClientSecret(clientSecret);
+        return this;
+    }
+
+    /**
+     * Get the redirectUri property: The redirect URL assigned in the Square application dashboard. (i.e.
+     * http://localhost:2500).
+     *
+     * @return the redirectUri value.
+     */
+    public Object redirectUri() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().redirectUri();
+    }
+
+    /**
+     * Set the redirectUri property: The redirect URL assigned in the Square application dashboard. (i.e.
+     * http://localhost:2500).
+     *
+     * @param redirectUri the redirectUri value to set.
+     * @return the SquareLinkedService object itself.
+     */
+    public SquareLinkedService withRedirectUri(Object redirectUri) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SquareLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withRedirectUri(redirectUri);
+        return this;
+    }
+
+    /**
+     * Get the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
+     * The default value is true.
+     *
+     * @return the useEncryptedEndpoints value.
+     */
+    public Object useEncryptedEndpoints() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().useEncryptedEndpoints();
+    }
+
+    /**
+     * Set the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
+     * The default value is true.
+     *
+     * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
+     * @return the SquareLinkedService object itself.
+     */
+    public SquareLinkedService withUseEncryptedEndpoints(Object useEncryptedEndpoints) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SquareLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUseEncryptedEndpoints(useEncryptedEndpoints);
+        return this;
+    }
+
+    /**
+     * Get the useHostVerification property: Specifies whether to require the host name in the server's certificate to
+     * match the host name of the server when connecting over SSL. The default value is true.
+     *
+     * @return the useHostVerification value.
+     */
+    public Object useHostVerification() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().useHostVerification();
+    }
+
+    /**
+     * Set the useHostVerification property: Specifies whether to require the host name in the server's certificate to
+     * match the host name of the server when connecting over SSL. The default value is true.
+     *
+     * @param useHostVerification the useHostVerification value to set.
+     * @return the SquareLinkedService object itself.
+     */
+    public SquareLinkedService withUseHostVerification(Object useHostVerification) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SquareLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUseHostVerification(useHostVerification);
+        return this;
+    }
+
+    /**
+     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
+     * SSL. The default value is true.
+     *
+     * @return the usePeerVerification value.
+     */
+    public Object usePeerVerification() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().usePeerVerification();
+    }
+
+    /**
+     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
+     * SSL. The default value is true.
+     *
+     * @param usePeerVerification the usePeerVerification value to set.
+     * @return the SquareLinkedService object itself.
+     */
+    public SquareLinkedService withUsePeerVerification(Object usePeerVerification) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SquareLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUsePeerVerification(usePeerVerification);
+        return this;
+    }
+
+    /**
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @return the encryptedCredential value.
+     */
+    public Object encryptedCredential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
+    }
+
+    /**
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
+     * @param encryptedCredential the encryptedCredential value to set.
+     * @return the SquareLinkedService object itself.
+     */
+    public SquareLinkedService withEncryptedCredential(Object encryptedCredential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SquareLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withEncryptedCredential(encryptedCredential);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -312,8 +291,13 @@ public class SquareLinkedService extends LinkedService {
     @Override
     public void validate() {
         super.validate();
-        if (clientSecret() != null) {
-            clientSecret().validate();
+        if (innerTypeProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerTypeProperties in model SquareLinkedService"));
+        } else {
+            innerTypeProperties().validate();
         }
     }
 }

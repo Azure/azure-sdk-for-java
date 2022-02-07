@@ -80,6 +80,14 @@ public final class ApiManagementServiceResourceImpl
         }
     }
 
+    public String publisherEmail() {
+        return this.innerModel().publisherEmail();
+    }
+
+    public String publisherName() {
+        return this.innerModel().publisherName();
+    }
+
     public String notificationSenderEmail() {
         return this.innerModel().notificationSenderEmail();
     }
@@ -196,14 +204,6 @@ public final class ApiManagementServiceResourceImpl
 
     public Boolean restore() {
         return this.innerModel().restore();
-    }
-
-    public String publisherEmail() {
-        return this.innerModel().publisherEmail();
-    }
-
-    public String publisherName() {
-        return this.innerModel().publisherName();
     }
 
     public Region region() {

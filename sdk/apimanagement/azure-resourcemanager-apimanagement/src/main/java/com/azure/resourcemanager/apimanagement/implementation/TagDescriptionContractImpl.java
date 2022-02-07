@@ -27,6 +27,14 @@ public final class TagDescriptionContractImpl
         return this.innerModel().type();
     }
 
+    public String tagId() {
+        return this.innerModel().tagId();
+    }
+
+    public String displayName() {
+        return this.innerModel().displayName();
+    }
+
     public String description() {
         return this.innerModel().description();
     }
@@ -37,14 +45,6 @@ public final class TagDescriptionContractImpl
 
     public String externalDocsDescription() {
         return this.innerModel().externalDocsDescription();
-    }
-
-    public String tagId() {
-        return this.innerModel().tagId();
-    }
-
-    public String displayName() {
-        return this.innerModel().displayName();
     }
 
     public TagDescriptionContractInner innerModel() {

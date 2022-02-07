@@ -1,6 +1,6 @@
 ## Generate autorest code
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/applicationinsights/data-plane/Monitor.Exporters/preview/2020-09-15_Preview/swagger.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/applicationinsights/data-plane/Monitor.Exporters/preview/v2.1/swagger.json
 java: true
 output-folder: ../
 namespace: com.azure.monitor.opentelemetry.exporter

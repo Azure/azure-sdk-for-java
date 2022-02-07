@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/healthcareapis/
+      - sdk/healthcareapis/ci.yml
+      - sdk/healthcareapis/azure-resourcemanager-healthcareapis/
+    exclude:
+      - sdk/healthcareapis/pom.xml
+      - sdk/healthcareapis/azure-resourcemanager-healthcareapis/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/healthcareapis/
+      - sdk/healthcareapis/ci.yml
+      - sdk/healthcareapis/azure-resourcemanager-healthcareapis/
+    exclude:
+      - sdk/healthcareapis/pom.xml
+      - sdk/healthcareapis/azure-resourcemanager-healthcareapis/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

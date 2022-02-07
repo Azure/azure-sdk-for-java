@@ -19,6 +19,7 @@ import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetVMI
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetVMInstanceViewInner;
 import com.azure.resourcemanager.compute.models.InstanceViewTypes;
 import com.azure.resourcemanager.compute.models.RunCommandInput;
+import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMReimageParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -31,16 +32,18 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk);
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput);
 
     /**
      * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
@@ -48,16 +51,18 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginReimageAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk);
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput);
 
     /**
      * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
@@ -65,16 +70,18 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginReimage(
-        String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk);
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput);
 
     /**
      * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
@@ -82,17 +89,20 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginReimage(
-        String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk, Context context);
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput,
+        Context context);
 
     /**
      * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
@@ -100,15 +110,18 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> reimageAsync(String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk);
+    Mono<Void> reimageAsync(
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput);
 
     /**
      * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
@@ -117,9 +130,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> reimageAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
@@ -130,14 +143,17 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void reimage(String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk);
+    void reimage(
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput);
 
     /**
      * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
@@ -146,7 +162,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -158,15 +174,19 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void reimage(String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk, Context context);
+    void reimage(
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput,
+        Context context);
 
     /**
      * Allows you to re-image all the disks ( including data disks ) in the a VM scale set instance. This operation is
@@ -176,9 +196,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> reimageAllWithResponseAsync(
@@ -192,11 +212,11 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginReimageAllAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId);
 
@@ -208,11 +228,11 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginReimageAll(
         String resourceGroupName, String vmScaleSetName, String instanceId);
 
@@ -225,11 +245,11 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param instanceId The instance ID of the virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginReimageAll(
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context);
 
@@ -241,9 +261,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> reimageAllAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
@@ -256,7 +276,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -271,7 +291,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param instanceId The instance ID of the virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -285,9 +305,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deallocateWithResponseAsync(
@@ -301,11 +321,11 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId);
 
@@ -317,11 +337,11 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeallocate(
         String resourceGroupName, String vmScaleSetName, String instanceId);
 
@@ -334,11 +354,11 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param instanceId The instance ID of the virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeallocate(
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context);
 
@@ -350,9 +370,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deallocateAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
@@ -365,7 +385,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -380,7 +400,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param instanceId The instance ID of the virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -394,9 +414,10 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param instanceId The instance ID of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine Scale Sets VM operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a virtual machine scale set virtual machine.
+     * @return describes a virtual machine scale set virtual machine along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -410,11 +431,11 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param instanceId The instance ID of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine Scale Sets VM operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a virtual machine scale set virtual machine.
+     * @return the {@link PollerFlux} for polling of describes a virtual machine scale set virtual machine.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VirtualMachineScaleSetVMInner>, VirtualMachineScaleSetVMInner> beginUpdateAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId, VirtualMachineScaleSetVMInner parameters);
 
@@ -426,11 +447,11 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param instanceId The instance ID of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine Scale Sets VM operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a virtual machine scale set virtual machine.
+     * @return the {@link SyncPoller} for polling of describes a virtual machine scale set virtual machine.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineScaleSetVMInner>, VirtualMachineScaleSetVMInner> beginUpdate(
         String resourceGroupName, String vmScaleSetName, String instanceId, VirtualMachineScaleSetVMInner parameters);
 
@@ -443,11 +464,11 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param parameters Parameters supplied to the Update Virtual Machine Scale Sets VM operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a virtual machine scale set virtual machine.
+     * @return the {@link SyncPoller} for polling of describes a virtual machine scale set virtual machine.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineScaleSetVMInner>, VirtualMachineScaleSetVMInner> beginUpdate(
         String resourceGroupName,
         String vmScaleSetName,
@@ -463,9 +484,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param instanceId The instance ID of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine Scale Sets VM operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a virtual machine scale set virtual machine.
+     * @return describes a virtual machine scale set virtual machine on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<VirtualMachineScaleSetVMInner> updateAsync(
@@ -479,7 +500,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param instanceId The instance ID of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine Scale Sets VM operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a virtual machine scale set virtual machine.
      */
@@ -496,7 +517,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param parameters Parameters supplied to the Update Virtual Machine Scale Sets VM operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a virtual machine scale set virtual machine.
      */
@@ -517,9 +538,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param forceDeletion Optional parameter to force delete a virtual machine from a VM scale set. (Feature in
      *     Preview).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -534,11 +555,11 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param forceDeletion Optional parameter to force delete a virtual machine from a VM scale set. (Feature in
      *     Preview).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId, Boolean forceDeletion);
 
@@ -551,11 +572,11 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param forceDeletion Optional parameter to force delete a virtual machine from a VM scale set. (Feature in
      *     Preview).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String vmScaleSetName, String instanceId, Boolean forceDeletion);
 
@@ -569,11 +590,11 @@ public interface VirtualMachineScaleSetVMsClient {
      *     Preview).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String vmScaleSetName, String instanceId, Boolean forceDeletion, Context context);
 
@@ -586,9 +607,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param forceDeletion Optional parameter to force delete a virtual machine from a VM scale set. (Feature in
      *     Preview).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String vmScaleSetName, String instanceId, Boolean forceDeletion);
@@ -600,9 +621,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
@@ -616,7 +637,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param forceDeletion Optional parameter to force delete a virtual machine from a VM scale set. (Feature in
      *     Preview).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -629,7 +650,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -645,7 +666,7 @@ public interface VirtualMachineScaleSetVMsClient {
      *     Preview).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -661,9 +682,10 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the instance view of
      *     the virtual machine. 'UserData' will retrieve the UserData of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine from a VM scale set.
+     * @return a virtual machine from a VM scale set along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<VirtualMachineScaleSetVMInner>> getWithResponseAsync(
@@ -678,9 +700,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the instance view of
      *     the virtual machine. 'UserData' will retrieve the UserData of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine from a VM scale set.
+     * @return a virtual machine from a VM scale set on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<VirtualMachineScaleSetVMInner> getAsync(
@@ -693,9 +715,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine from a VM scale set.
+     * @return a virtual machine from a VM scale set on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<VirtualMachineScaleSetVMInner> getAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
@@ -707,7 +729,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a virtual machine from a VM scale set.
      */
@@ -724,9 +746,9 @@ public interface VirtualMachineScaleSetVMsClient {
      *     the virtual machine. 'UserData' will retrieve the UserData of the virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine from a VM scale set.
+     * @return a virtual machine from a VM scale set along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VirtualMachineScaleSetVMInner> getWithResponse(
@@ -739,9 +761,10 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a virtual machine from a VM scale set.
+     * @return the status of a virtual machine from a VM scale set along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<VirtualMachineScaleSetVMInstanceViewInner>> getInstanceViewWithResponseAsync(
@@ -754,9 +777,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a virtual machine from a VM scale set.
+     * @return the status of a virtual machine from a VM scale set on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<VirtualMachineScaleSetVMInstanceViewInner> getInstanceViewAsync(
@@ -769,7 +792,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of a virtual machine from a VM scale set.
      */
@@ -785,9 +808,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param instanceId The instance ID of the virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a virtual machine from a VM scale set.
+     * @return the status of a virtual machine from a VM scale set along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VirtualMachineScaleSetVMInstanceViewInner> getInstanceViewWithResponse(
@@ -803,9 +826,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param select The list parameters. Allowed values are 'instanceView', 'instanceView/statuses'.
      * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all virtual machines in a VM scale sets.
+     * @return a list of all virtual machines in a VM scale sets as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<VirtualMachineScaleSetVMInner> listAsync(
@@ -817,9 +840,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all virtual machines in a VM scale sets.
+     * @return a list of all virtual machines in a VM scale sets as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<VirtualMachineScaleSetVMInner> listAsync(String resourceGroupName, String virtualMachineScaleSetName);
@@ -830,9 +853,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param resourceGroupName The name of the resource group.
      * @param virtualMachineScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all virtual machines in a VM scale sets.
+     * @return a list of all virtual machines in a VM scale sets as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VirtualMachineScaleSetVMInner> list(String resourceGroupName, String virtualMachineScaleSetName);
@@ -848,9 +871,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all virtual machines in a VM scale sets.
+     * @return a list of all virtual machines in a VM scale sets as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VirtualMachineScaleSetVMInner> list(
@@ -872,9 +895,9 @@ public interface VirtualMachineScaleSetVMsClient {
      *     non-graceful shutdown whereas false indicates otherwise. Default value for this flag is false if not
      *     specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> powerOffWithResponseAsync(
@@ -891,11 +914,11 @@ public interface VirtualMachineScaleSetVMsClient {
      *     non-graceful shutdown whereas false indicates otherwise. Default value for this flag is false if not
      *     specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginPowerOffAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId, Boolean skipShutdown);
 
@@ -910,11 +933,11 @@ public interface VirtualMachineScaleSetVMsClient {
      *     non-graceful shutdown whereas false indicates otherwise. Default value for this flag is false if not
      *     specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginPowerOff(
         String resourceGroupName, String vmScaleSetName, String instanceId, Boolean skipShutdown);
 
@@ -930,11 +953,11 @@ public interface VirtualMachineScaleSetVMsClient {
      *     specified.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginPowerOff(
         String resourceGroupName, String vmScaleSetName, String instanceId, Boolean skipShutdown, Context context);
 
@@ -949,9 +972,9 @@ public interface VirtualMachineScaleSetVMsClient {
      *     non-graceful shutdown whereas false indicates otherwise. Default value for this flag is false if not
      *     specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> powerOffAsync(String resourceGroupName, String vmScaleSetName, String instanceId, Boolean skipShutdown);
@@ -964,9 +987,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> powerOffAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
@@ -982,7 +1005,7 @@ public interface VirtualMachineScaleSetVMsClient {
      *     non-graceful shutdown whereas false indicates otherwise. Default value for this flag is false if not
      *     specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -996,7 +1019,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1014,7 +1037,7 @@ public interface VirtualMachineScaleSetVMsClient {
      *     specified.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1028,9 +1051,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(
@@ -1043,11 +1066,11 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRestartAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId);
 
@@ -1058,11 +1081,11 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String vmScaleSetName, String instanceId);
 
     /**
@@ -1073,11 +1096,11 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param instanceId The instance ID of the virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestart(
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context);
 
@@ -1088,9 +1111,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> restartAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
@@ -1102,7 +1125,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1116,7 +1139,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param instanceId The instance ID of the virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1129,9 +1152,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
@@ -1144,11 +1167,11 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId);
 
@@ -1159,11 +1182,11 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String vmScaleSetName, String instanceId);
 
     /**
@@ -1174,11 +1197,11 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param instanceId The instance ID of the virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context);
 
@@ -1189,9 +1212,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> startAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
@@ -1203,7 +1226,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1217,7 +1240,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param instanceId The instance ID of the virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1230,9 +1253,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> redeployWithResponseAsync(
@@ -1245,11 +1268,11 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRedeployAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId);
 
@@ -1260,11 +1283,11 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRedeploy(
         String resourceGroupName, String vmScaleSetName, String instanceId);
 
@@ -1276,11 +1299,11 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param instanceId The instance ID of the virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRedeploy(
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context);
 
@@ -1291,9 +1314,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> redeployAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
@@ -1305,7 +1328,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1319,7 +1342,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param instanceId The instance ID of the virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1337,7 +1360,8 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SAS URIs of the console screenshot and serial log blobs.
+     * @return the SAS URIs of the console screenshot and serial log blobs along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<RetrieveBootDiagnosticsDataResultInner>> retrieveBootDiagnosticsDataWithResponseAsync(
@@ -1355,7 +1379,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SAS URIs of the console screenshot and serial log blobs.
+     * @return the SAS URIs of the console screenshot and serial log blobs on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RetrieveBootDiagnosticsDataResultInner> retrieveBootDiagnosticsDataAsync(
@@ -1370,7 +1394,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SAS URIs of the console screenshot and serial log blobs.
+     * @return the SAS URIs of the console screenshot and serial log blobs on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RetrieveBootDiagnosticsDataResultInner> retrieveBootDiagnosticsDataAsync(
@@ -1404,7 +1428,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SAS URIs of the console screenshot and serial log blobs.
+     * @return the SAS URIs of the console screenshot and serial log blobs along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RetrieveBootDiagnosticsDataResultInner> retrieveBootDiagnosticsDataWithResponse(
@@ -1421,9 +1445,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> performMaintenanceWithResponseAsync(
@@ -1436,11 +1460,11 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginPerformMaintenanceAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId);
 
@@ -1451,11 +1475,11 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginPerformMaintenance(
         String resourceGroupName, String vmScaleSetName, String instanceId);
 
@@ -1467,11 +1491,11 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param instanceId The instance ID of the virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginPerformMaintenance(
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context);
 
@@ -1482,9 +1506,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> performMaintenanceAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
@@ -1496,7 +1520,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1510,7 +1534,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param instanceId The instance ID of the virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1523,9 +1547,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> simulateEvictionWithResponseAsync(
@@ -1538,9 +1562,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> simulateEvictionAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
@@ -1552,7 +1576,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1566,9 +1590,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param instanceId The instance ID of the virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> simulateEvictionWithResponse(
@@ -1584,7 +1608,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> runCommandWithResponseAsync(
@@ -1600,9 +1624,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommandAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId, RunCommandInput parameters);
 
@@ -1616,9 +1640,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommand(
         String resourceGroupName, String vmScaleSetName, String instanceId, RunCommandInput parameters);
 
@@ -1633,9 +1657,9 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommand(
         String resourceGroupName,
         String vmScaleSetName,
@@ -1653,7 +1677,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RunCommandResultInner> runCommandAsync(

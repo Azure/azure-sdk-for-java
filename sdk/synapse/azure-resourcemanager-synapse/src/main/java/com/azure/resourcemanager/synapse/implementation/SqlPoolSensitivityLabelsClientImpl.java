@@ -253,7 +253,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool sensitivity labels.
+     * @return sQL pool sensitivity labels along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SensitivityLabelInner>> listCurrentSinglePageAsync(
@@ -280,6 +280,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -287,7 +288,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
                     service
                         .listCurrent(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -318,7 +319,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool sensitivity labels.
+     * @return sQL pool sensitivity labels along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SensitivityLabelInner>> listCurrentSinglePageAsync(
@@ -345,12 +346,13 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listCurrent(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -477,7 +479,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> updateWithResponseAsync(
@@ -509,13 +511,14 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         return FluxUtil
             .withContext(
                 context ->
                     service
                         .update(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -536,7 +539,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> updateWithResponseAsync(
@@ -572,11 +575,12 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -595,7 +599,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> updateAsync(
@@ -632,7 +636,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateWithResponse(
@@ -656,7 +660,8 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sensitivity labels of a given SQL pool.
+     * @return sensitivity labels of a given SQL pool along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SensitivityLabelInner>> listRecommendedSinglePageAsync(
@@ -688,6 +693,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -695,7 +701,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
                     service
                         .listRecommended(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -730,7 +736,8 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sensitivity labels of a given SQL pool.
+     * @return sensitivity labels of a given SQL pool along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SensitivityLabelInner>> listRecommendedSinglePageAsync(
@@ -763,12 +770,13 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listRecommended(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -949,7 +957,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sensitivity label.
+     * @return a sensitivity label along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SensitivityLabelInner>> createOrUpdateWithResponseAsync(
@@ -996,6 +1004,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String sensitivityLabelSource = "current";
         final String accept = "application/json";
         return FluxUtil
@@ -1004,7 +1013,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
                     service
                         .createOrUpdate(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -1033,7 +1042,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sensitivity label.
+     * @return a sensitivity label along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SensitivityLabelInner>> createOrUpdateWithResponseAsync(
@@ -1081,13 +1090,14 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String sensitivityLabelSource = "current";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -1114,7 +1124,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sensitivity label.
+     * @return a sensitivity label on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SensitivityLabelInner> createOrUpdateAsync(
@@ -1180,7 +1190,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sensitivity label.
+     * @return a sensitivity label along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SensitivityLabelInner> createOrUpdateWithResponse(
@@ -1209,7 +1219,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1250,6 +1260,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         if (columnName == null) {
             return Mono.error(new IllegalArgumentException("Parameter columnName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String sensitivityLabelSource = "current";
         return FluxUtil
             .withContext(
@@ -1257,7 +1268,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
                     service
                         .delete(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -1283,7 +1294,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1325,12 +1336,13 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         if (columnName == null) {
             return Mono.error(new IllegalArgumentException("Parameter columnName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String sensitivityLabelSource = "current";
         context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -1354,7 +1366,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1405,7 +1417,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -1434,7 +1446,8 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity label of a given column.
+     * @return the sensitivity label of a given column along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SensitivityLabelInner>> getWithResponseAsync(
@@ -1481,6 +1494,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
                 .error(
                     new IllegalArgumentException("Parameter sensitivityLabelSource is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1488,7 +1502,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -1516,7 +1530,8 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity label of a given column.
+     * @return the sensitivity label of a given column along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SensitivityLabelInner>> getWithResponseAsync(
@@ -1564,12 +1579,13 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
                 .error(
                     new IllegalArgumentException("Parameter sensitivityLabelSource is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -1595,7 +1611,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity label of a given column.
+     * @return the sensitivity label of a given column on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SensitivityLabelInner> getAsync(
@@ -1673,7 +1689,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the sensitivity label of a given column.
+     * @return the sensitivity label of a given column along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SensitivityLabelInner> getWithResponse(
@@ -1709,7 +1725,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> enableRecommendationWithResponseAsync(
@@ -1750,6 +1766,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         if (columnName == null) {
             return Mono.error(new IllegalArgumentException("Parameter columnName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String sensitivityLabelSource = "recommended";
         return FluxUtil
             .withContext(
@@ -1757,7 +1774,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
                     service
                         .enableRecommendation(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -1783,7 +1800,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> enableRecommendationWithResponseAsync(
@@ -1825,12 +1842,13 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         if (columnName == null) {
             return Mono.error(new IllegalArgumentException("Parameter columnName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String sensitivityLabelSource = "recommended";
         context = this.client.mergeContext(context);
         return service
             .enableRecommendation(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -1854,7 +1872,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> enableRecommendationAsync(
@@ -1907,7 +1925,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> enableRecommendationWithResponse(
@@ -1935,7 +1953,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> disableRecommendationWithResponseAsync(
@@ -1976,6 +1994,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         if (columnName == null) {
             return Mono.error(new IllegalArgumentException("Parameter columnName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String sensitivityLabelSource = "recommended";
         return FluxUtil
             .withContext(
@@ -1983,7 +2002,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
                     service
                         .disableRecommendation(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -2009,7 +2028,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> disableRecommendationWithResponseAsync(
@@ -2051,12 +2070,13 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         if (columnName == null) {
             return Mono.error(new IllegalArgumentException("Parameter columnName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String sensitivityLabelSource = "recommended";
         context = this.client.mergeContext(context);
         return service
             .disableRecommendation(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -2080,7 +2100,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> disableRecommendationAsync(
@@ -2133,7 +2153,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableRecommendationWithResponse(
@@ -2156,7 +2176,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sensitivity labels.
+     * @return a list of sensitivity labels along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SensitivityLabelInner>> listCurrentNextSinglePageAsync(String nextLink) {
@@ -2192,7 +2212,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sensitivity labels.
+     * @return a list of sensitivity labels along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SensitivityLabelInner>> listCurrentNextSinglePageAsync(
@@ -2228,7 +2248,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sensitivity labels.
+     * @return a list of sensitivity labels along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SensitivityLabelInner>> listRecommendedNextSinglePageAsync(String nextLink) {
@@ -2264,7 +2284,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sensitivity labels.
+     * @return a list of sensitivity labels along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SensitivityLabelInner>> listRecommendedNextSinglePageAsync(

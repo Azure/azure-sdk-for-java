@@ -540,7 +540,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an attestation resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtSubscriptionAsync(
         String attestationName, AttestationInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -548,7 +548,11 @@ public final class AttestationsClientImpl implements AttestationsClient {
         return this
             .client
             .<AttestationInner, AttestationInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AttestationInner.class, AttestationInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                AttestationInner.class,
+                AttestationInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -562,7 +566,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an attestation resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtSubscriptionAsync(
         String attestationName, AttestationInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -584,7 +588,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an attestation resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtSubscription(
         String attestationName, AttestationInner parameters) {
         return beginCreateOrUpdateAtSubscriptionAsync(attestationName, parameters).getSyncPoller();
@@ -601,7 +605,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an attestation resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtSubscription(
         String attestationName, AttestationInner parameters, Context context) {
         return beginCreateOrUpdateAtSubscriptionAsync(attestationName, parameters, context).getSyncPoller();
@@ -1263,7 +1267,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an attestation resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtResourceGroupAsync(
         String resourceGroupName, String attestationName, AttestationInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1271,7 +1275,11 @@ public final class AttestationsClientImpl implements AttestationsClient {
         return this
             .client
             .<AttestationInner, AttestationInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AttestationInner.class, AttestationInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                AttestationInner.class,
+                AttestationInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1286,7 +1294,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an attestation resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtResourceGroupAsync(
         String resourceGroupName, String attestationName, AttestationInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -1309,7 +1317,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an attestation resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtResourceGroup(
         String resourceGroupName, String attestationName, AttestationInner parameters) {
         return beginCreateOrUpdateAtResourceGroupAsync(resourceGroupName, attestationName, parameters).getSyncPoller();
@@ -1327,7 +1335,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an attestation resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtResourceGroup(
         String resourceGroupName, String attestationName, AttestationInner parameters, Context context) {
         return beginCreateOrUpdateAtResourceGroupAsync(resourceGroupName, attestationName, parameters, context)
@@ -1978,7 +1986,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an attestation resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtResourceAsync(
         String resourceId, String attestationName, AttestationInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1986,7 +1994,11 @@ public final class AttestationsClientImpl implements AttestationsClient {
         return this
             .client
             .<AttestationInner, AttestationInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AttestationInner.class, AttestationInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                AttestationInner.class,
+                AttestationInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -2001,7 +2013,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an attestation resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtResourceAsync(
         String resourceId, String attestationName, AttestationInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -2024,7 +2036,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an attestation resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtResource(
         String resourceId, String attestationName, AttestationInner parameters) {
         return beginCreateOrUpdateAtResourceAsync(resourceId, attestationName, parameters).getSyncPoller();
@@ -2042,7 +2054,7 @@ public final class AttestationsClientImpl implements AttestationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an attestation resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtResource(
         String resourceId, String attestationName, AttestationInner parameters, Context context) {
         return beginCreateOrUpdateAtResourceAsync(resourceId, attestationName, parameters, context).getSyncPoller();

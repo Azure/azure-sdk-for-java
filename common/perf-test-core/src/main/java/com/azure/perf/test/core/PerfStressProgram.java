@@ -57,6 +57,7 @@ public class PerfStressProgram {
             classList.add(Class.forName("com.azure.perf.test.core.NoOpTest"));
             classList.add(Class.forName("com.azure.perf.test.core.ExceptionTest"));
             classList.add(Class.forName("com.azure.perf.test.core.SleepTest"));
+            classList.add(Class.forName("com.azure.perf.test.core.HttpPipelineTest"));
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -133,9 +134,30 @@ public class PerfStressProgram {
 
         try {
             tests[0].globalSetupAsync().block();
+
+            boolean startedPlayback = false;
+
             try {
                 Flux.just(tests).flatMap(PerfStressTest::setupAsync).blockLast();
                 setupStatus.dispose();
+
+                if (options.getTestProxies() != null && !options.getTestProxies().isEmpty()) {
+                    Disposable recordStatus = printStatus("=== Record and Start Playback ===", () -> ".", false, false);
+
+                    try {
+                        ForkJoinPool forkJoinPool = new ForkJoinPool(tests.length);
+                        forkJoinPool.submit(() -> {
+                            IntStream.range(0, tests.length).parallel().forEach(i -> tests[i].recordAndStartPlayback());
+                        }).get();
+                    } catch (InterruptedException | ExecutionException e) {
+                        System.err.println("Error occurred when submitting jobs to ForkJoinPool. " + System.lineSeparator() + e);
+                        e.printStackTrace(System.err);
+                        throw new RuntimeException(e);
+                    }
+
+                    startedPlayback = true;
+                    recordStatus.dispose();
+                }
 
                 if (options.getWarmup() > 0) {
                     runTests(tests, options.isSync(), options.getParallel(), options.getWarmup(), "Warmup");
@@ -149,10 +171,18 @@ public class PerfStressProgram {
                     runTests(tests, options.isSync(), options.getParallel(), options.getDuration(), title);
                 }
             } finally {
-                if (!options.isNoCleanup()) {
-                    cleanupStatus = printStatus("=== Cleanup ===", () -> ".", false, false);
-
-                    Flux.just(tests).flatMap(t -> t.cleanupAsync()).blockLast();
+                try {
+                    if (startedPlayback) {
+                        Disposable playbackStatus = printStatus("=== Stop Playback ===", () -> ".", false, false);
+                        Flux.just(tests).flatMap(PerfStressTest::stopPlaybackAsync).blockLast();
+                        playbackStatus.dispose();
+                    }    
+                } finally {
+                    if (!options.isNoCleanup()) {
+                        cleanupStatus = printStatus("=== Cleanup ===", () -> ".", false, false);
+    
+                        Flux.just(tests).flatMap(t -> t.cleanupAsync()).blockLast();
+                    }    
                 }
             }
         } finally {

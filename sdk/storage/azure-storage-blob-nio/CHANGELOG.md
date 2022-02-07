@@ -1,7 +1,64 @@
 # Release History
 
-## 12.0.0-beta.8 (Unreleased)
+## 12.0.0-beta.15 (Unreleased)
 
+### Features Added
+- Added `AzurePath.fromBlobUrl` to help convert from a blob url to an AzurePath
+- Added a configuration option `AZURE_STORAGE_SKIP_INITIAL_CONTAINER_CHECK` to skip the initial container check in cases where the authentication method used will not have necessary permissions.
+
+### Breaking Changes
+
+### Bugs Fixed
+- Fixed a bug that would prevent deleting an empty directory in the case where one directory name was a prefix of the other.
+
+### Other Changes
+
+## 12.0.0-beta.14 (2022-01-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.23.0` to version `1.24.1`.
+- Upgraded `azure-core-http-netty` from `1.11.3` to version `1.11.6`.
+- Upgraded `azure-storage-blob` from `12.15.0-beta.2` to version `12.14.3`.
+
+## 12.0.0-beta.13 (2021-12-07)
+
+### Features Added
+- Added support for 2021-02-12 service version.
+
+## 12.0.0-beta.12 (2021-11-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.21.0` to version `1.22.0`.
+- Upgraded `azure-core-http-netty` from `1.11.1` to version `1.11.2`.
+- Upgraded `azure-storage-blob` from `12.15.0-beta.1` to version `12.14.2.
+
+## 12.0.0-beta.11 (2021-11-05)
+
+### Features Added
+- Added support for the 2020-12-06 service version.
+
+### Bugs Fixed
+- Fixes an off-by-one error in read() returns 0 bytes read instead of -1 (EOF) when reading at channel position == size.
+- Fixes a bug where read() (and write()) do not respect initial position (and limit) of provided ByteBuffer when backed by an array
+
+## 12.0.0-beta.10 (2021-10-12)
+
+### Other Changes
+#### Dependency Updates
+- Updated `azure-storage-blob` to version `12.14.1`
+
+## 12.0.0-beta.9 (2021-09-15)
+### Other changes
+- Updated `azure-storage-blob` to version `12.14.0`
+
+## 12.0.0-beta.8 (2021-07-28)
+- Added support for the 2020-10-02 service version.
 
 ## 12.0.0-beta.7 (2021-06-09)
 ### Dependency Updates

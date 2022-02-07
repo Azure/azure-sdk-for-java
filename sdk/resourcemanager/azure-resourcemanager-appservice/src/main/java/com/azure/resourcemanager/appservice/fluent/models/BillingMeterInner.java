@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,52 +14,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * App Service billing entity that contains information about meter which the Azure billing system utilizes to charge
  * users for services.
  */
-@JsonFlatten
 @Fluent
-public class BillingMeterInner extends ProxyOnlyResource {
+public final class BillingMeterInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingMeterInner.class);
 
     /*
-     * Meter GUID onboarded in Commerce
+     * BillingMeter resource specific properties
      */
-    @JsonProperty(value = "properties.meterId")
-    private String meterId;
+    @JsonProperty(value = "properties")
+    private BillingMeterProperties innerProperties;
 
-    /*
-     * Azure Location of billable resource
+    /**
+     * Get the innerProperties property: BillingMeter resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.billingLocation")
-    private String billingLocation;
+    private BillingMeterProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Short Name from App Service Azure pricing Page
-     */
-    @JsonProperty(value = "properties.shortName")
-    private String shortName;
-
-    /*
-     * Friendly name of the meter
-     */
-    @JsonProperty(value = "properties.friendlyName")
-    private String friendlyName;
-
-    /*
-     * App Service ResourceType meter used for
-     */
-    @JsonProperty(value = "properties.resourceType")
-    private String resourceType;
-
-    /*
-     * App Service OS type meter used for
-     */
-    @JsonProperty(value = "properties.osType")
-    private String osType;
-
-    /*
-     * Meter Multiplier
-     */
-    @JsonProperty(value = "properties.multiplier")
-    private Double multiplier;
+    /** {@inheritDoc} */
+    @Override
+    public BillingMeterInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the meterId property: Meter GUID onboarded in Commerce.
@@ -68,7 +46,7 @@ public class BillingMeterInner extends ProxyOnlyResource {
      * @return the meterId value.
      */
     public String meterId() {
-        return this.meterId;
+        return this.innerProperties() == null ? null : this.innerProperties().meterId();
     }
 
     /**
@@ -78,7 +56,10 @@ public class BillingMeterInner extends ProxyOnlyResource {
      * @return the BillingMeterInner object itself.
      */
     public BillingMeterInner withMeterId(String meterId) {
-        this.meterId = meterId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingMeterProperties();
+        }
+        this.innerProperties().withMeterId(meterId);
         return this;
     }
 
@@ -88,7 +69,7 @@ public class BillingMeterInner extends ProxyOnlyResource {
      * @return the billingLocation value.
      */
     public String billingLocation() {
-        return this.billingLocation;
+        return this.innerProperties() == null ? null : this.innerProperties().billingLocation();
     }
 
     /**
@@ -98,7 +79,10 @@ public class BillingMeterInner extends ProxyOnlyResource {
      * @return the BillingMeterInner object itself.
      */
     public BillingMeterInner withBillingLocation(String billingLocation) {
-        this.billingLocation = billingLocation;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingMeterProperties();
+        }
+        this.innerProperties().withBillingLocation(billingLocation);
         return this;
     }
 
@@ -108,7 +92,7 @@ public class BillingMeterInner extends ProxyOnlyResource {
      * @return the shortName value.
      */
     public String shortName() {
-        return this.shortName;
+        return this.innerProperties() == null ? null : this.innerProperties().shortName();
     }
 
     /**
@@ -118,7 +102,10 @@ public class BillingMeterInner extends ProxyOnlyResource {
      * @return the BillingMeterInner object itself.
      */
     public BillingMeterInner withShortName(String shortName) {
-        this.shortName = shortName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingMeterProperties();
+        }
+        this.innerProperties().withShortName(shortName);
         return this;
     }
 
@@ -128,7 +115,7 @@ public class BillingMeterInner extends ProxyOnlyResource {
      * @return the friendlyName value.
      */
     public String friendlyName() {
-        return this.friendlyName;
+        return this.innerProperties() == null ? null : this.innerProperties().friendlyName();
     }
 
     /**
@@ -138,7 +125,10 @@ public class BillingMeterInner extends ProxyOnlyResource {
      * @return the BillingMeterInner object itself.
      */
     public BillingMeterInner withFriendlyName(String friendlyName) {
-        this.friendlyName = friendlyName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingMeterProperties();
+        }
+        this.innerProperties().withFriendlyName(friendlyName);
         return this;
     }
 
@@ -148,7 +138,7 @@ public class BillingMeterInner extends ProxyOnlyResource {
      * @return the resourceType value.
      */
     public String resourceType() {
-        return this.resourceType;
+        return this.innerProperties() == null ? null : this.innerProperties().resourceType();
     }
 
     /**
@@ -158,7 +148,10 @@ public class BillingMeterInner extends ProxyOnlyResource {
      * @return the BillingMeterInner object itself.
      */
     public BillingMeterInner withResourceType(String resourceType) {
-        this.resourceType = resourceType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingMeterProperties();
+        }
+        this.innerProperties().withResourceType(resourceType);
         return this;
     }
 
@@ -168,7 +161,7 @@ public class BillingMeterInner extends ProxyOnlyResource {
      * @return the osType value.
      */
     public String osType() {
-        return this.osType;
+        return this.innerProperties() == null ? null : this.innerProperties().osType();
     }
 
     /**
@@ -178,7 +171,10 @@ public class BillingMeterInner extends ProxyOnlyResource {
      * @return the BillingMeterInner object itself.
      */
     public BillingMeterInner withOsType(String osType) {
-        this.osType = osType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingMeterProperties();
+        }
+        this.innerProperties().withOsType(osType);
         return this;
     }
 
@@ -188,7 +184,7 @@ public class BillingMeterInner extends ProxyOnlyResource {
      * @return the multiplier value.
      */
     public Double multiplier() {
-        return this.multiplier;
+        return this.innerProperties() == null ? null : this.innerProperties().multiplier();
     }
 
     /**
@@ -198,14 +194,10 @@ public class BillingMeterInner extends ProxyOnlyResource {
      * @return the BillingMeterInner object itself.
      */
     public BillingMeterInner withMultiplier(Double multiplier) {
-        this.multiplier = multiplier;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public BillingMeterInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingMeterProperties();
+        }
+        this.innerProperties().withMultiplier(multiplier);
         return this;
     }
 
@@ -217,5 +209,8 @@ public class BillingMeterInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

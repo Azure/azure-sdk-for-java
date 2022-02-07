@@ -3,22 +3,10 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import static com.azure.spring.autoconfigure.aad.Constants.DEFAULT_AUTHORITY_SET;
-import static com.azure.spring.autoconfigure.aad.Constants.ROLE_PREFIX;
+import com.azure.spring.aad.implementation.constants.AuthorityPrefix;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.proc.BadJOSEException;
 import com.nimbusds.jwt.proc.BadJWTException;
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.Collection;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -31,11 +19,24 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static com.azure.spring.autoconfigure.aad.Constants.DEFAULT_AUTHORITY_SET;
+
 /**
  * A stateless authentication filter which uses app roles feature of Azure Active Directory. Since it's a stateless
  * implementation so the principal will not be stored in session. By using roles claim in the token it will not call
  * Microsoft Graph to retrieve users' groups.
- * <p>
  *
  * @deprecated See the <a href="https://github.com/Azure/azure-sdk-for-java/issues/17860">Alternative method</a>.
  */
@@ -46,6 +47,11 @@ public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
 
     private final UserPrincipalManager principalManager;
 
+    /**
+     * Creates a new instance of {@link AADAppRoleStatelessAuthenticationFilter}.
+     *
+     * @param principalManager the user principal manager
+     */
     public AADAppRoleStatelessAuthenticationFilter(UserPrincipalManager principalManager) {
         this.principalManager = principalManager;
     }
@@ -96,6 +102,12 @@ public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
                        .orElse(false);
     }
 
+    /**
+     * Converts to user principal to a set of simple granted authorities.
+     *
+     * @param userPrincipal the user principal
+     * @return A set of SimpleGrantedAuthoritys
+     */
     protected Set<SimpleGrantedAuthority> toSimpleGrantedAuthoritySet(UserPrincipal userPrincipal) {
         Set<SimpleGrantedAuthority> simpleGrantedAuthoritySet =
             Optional.of(userPrincipal)
@@ -103,7 +115,7 @@ public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
                     .map(Collection::stream)
                     .orElseGet(Stream::empty)
                     .filter(StringUtils::hasText)
-                    .map(s -> new SimpleGrantedAuthority(ROLE_PREFIX + s))
+                    .map(s -> new SimpleGrantedAuthority(AuthorityPrefix.ROLE + s))
                     .collect(Collectors.toSet());
         return Optional.of(simpleGrantedAuthoritySet)
                        .filter(r -> !r.isEmpty())

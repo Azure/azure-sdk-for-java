@@ -7,7 +7,6 @@ import com.azure.spring.integration.core.AzureHeaders;
 import com.azure.spring.integration.core.api.PartitionSupplier;
 import com.azure.spring.integration.core.api.reactor.DefaultMessageHandler;
 import com.azure.spring.integration.core.api.reactor.SendOperation;
-import com.google.common.collect.ImmutableMap;
 import org.junit.jupiter.api.Test;
 import org.springframework.expression.Expression;
 import org.springframework.integration.MessageTimeoutException;
@@ -15,6 +14,9 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 import reactor.core.publisher.Mono;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
@@ -31,10 +33,16 @@ public abstract class MessageHandlerTest<O extends SendOperation> {
     protected DefaultMessageHandler handler;
     protected Mono<Void> mono = Mono.empty();
     protected O sendOperation;
-    private Message<?> message = new GenericMessage<>("testPayload",
-        ImmutableMap.of("key1", "value1", "key2", "value2"));
+    private Message<?> message;
     private String payload = "payload";
 
+
+    public MessageHandlerTest() {
+        Map<String, Object> valueMap = new HashMap<>(2);
+        valueMap.put("key1", "value1");
+        valueMap.put("key2", "value2");
+        message = new GenericMessage<>("testPayload", valueMap);
+    }
     public abstract void setUp();
 
     @Test
@@ -67,8 +75,9 @@ public abstract class MessageHandlerTest<O extends SendOperation> {
     @Test
     @SuppressWarnings("unchecked")
     public void testSendDynamicTopic() {
-        Message<?> dynamicMessage = new GenericMessage<>(payload,
-            ImmutableMap.of(AzureHeaders.NAME, dynamicDestination));
+        Map<String, Object> headers = new HashMap<>(1);
+        headers.put(AzureHeaders.NAME, dynamicDestination);
+        Message<?> dynamicMessage = new GenericMessage<>(payload, headers);
         this.handler.handleMessage(dynamicMessage);
         verify(this.sendOperation, times(1)).sendAsync(eq(dynamicDestination), isA(Message.class),
             isA(PartitionSupplier.class));

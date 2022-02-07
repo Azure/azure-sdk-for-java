@@ -11,13 +11,12 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.http.HttpPipelineCallContextHelper;
+import com.azure.core.implementation.jackson.ObjectMapperShim;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
@@ -37,7 +36,7 @@ import java.util.stream.Collectors;
  * The pipeline policy that handles logging of HTTP requests and responses.
  */
 public class HttpLoggingPolicy implements HttpPipelinePolicy {
-    private static final ObjectMapper PRETTY_PRINTER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+    private static final ObjectMapperShim PRETTY_PRINTER = ObjectMapperShim.createPrettyPrintMapper();
     private static final int MAX_BODY_LOG_SIZE = 1024 * 16;
     private static final String REDACTED_PLACEHOLDER = "REDACTED";
 
@@ -309,9 +308,18 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @return A URL with query parameters redacted based on configurations in this policy.
      */
     private static String getRedactedUrl(URL url, Set<String> allowedQueryParameterNames) {
-        return UrlBuilder.parse(url)
-            .setQuery(getAllowedQueryString(url.getQuery(), allowedQueryParameterNames))
-            .toString();
+        UrlBuilder builder = UrlBuilder.parse(url);
+        String allowedQueryString = getAllowedQueryString(url.getQuery(), allowedQueryParameterNames);
+
+        // return a UrlBuilder with a new query.
+        // builder.clearQuery() is required here to explicitly clear
+        // UrlBuilder.query field - simply calling setQuery() will not do it.
+        // setQuery() could have full-replacement semantics, but some SDKs are
+        // using it as an appending mechanism.
+        return builder
+                .clearQuery()
+                .setQuery(allowedQueryString)
+                .toString();
     }
 
     /*

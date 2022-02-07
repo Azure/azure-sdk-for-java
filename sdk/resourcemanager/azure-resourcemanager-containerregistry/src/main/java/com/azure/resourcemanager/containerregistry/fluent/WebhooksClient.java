@@ -26,6 +26,46 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in WebhooksClient. */
 public interface WebhooksClient {
     /**
+     * Lists all the webhooks for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list webhooks for a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<WebhookInner> listAsync(String resourceGroupName, String registryName);
+
+    /**
+     * Lists all the webhooks for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list webhooks for a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<WebhookInner> list(String resourceGroupName, String registryName);
+
+    /**
+     * Lists all the webhooks for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list webhooks for a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<WebhookInner> list(String resourceGroupName, String registryName, Context context);
+
+    /**
      * Gets the properties of the specified webhook.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
@@ -115,7 +155,7 @@ public interface WebhooksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a webhook for a container registry.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<WebhookInner>, WebhookInner> beginCreateAsync(
         String resourceGroupName,
         String registryName,
@@ -134,7 +174,7 @@ public interface WebhooksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a webhook for a container registry.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WebhookInner>, WebhookInner> beginCreate(
         String resourceGroupName,
         String registryName,
@@ -154,7 +194,7 @@ public interface WebhooksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a webhook for a container registry.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WebhookInner>, WebhookInner> beginCreate(
         String resourceGroupName,
         String registryName,
@@ -247,7 +287,7 @@ public interface WebhooksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String registryName, String webhookName);
 
@@ -262,7 +302,7 @@ public interface WebhooksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName, String webhookName);
 
     /**
@@ -277,7 +317,7 @@ public interface WebhooksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String registryName, String webhookName, Context context);
 
@@ -353,7 +393,7 @@ public interface WebhooksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a webhook for a container registry.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<WebhookInner>, WebhookInner> beginUpdateAsync(
         String resourceGroupName,
         String registryName,
@@ -372,7 +412,7 @@ public interface WebhooksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a webhook for a container registry.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WebhookInner>, WebhookInner> beginUpdate(
         String resourceGroupName,
         String registryName,
@@ -392,7 +432,7 @@ public interface WebhooksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a webhook for a container registry.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WebhookInner>, WebhookInner> beginUpdate(
         String resourceGroupName,
         String registryName,
@@ -460,46 +500,6 @@ public interface WebhooksClient {
         Context context);
 
     /**
-     * Lists all the webhooks for the specified container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list webhooks for a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<WebhookInner> listAsync(String resourceGroupName, String registryName);
-
-    /**
-     * Lists all the webhooks for the specified container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list webhooks for a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WebhookInner> list(String resourceGroupName, String registryName);
-
-    /**
-     * Lists all the webhooks for the specified container registry.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list webhooks for a container registry.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WebhookInner> list(String resourceGroupName, String registryName, Context context);
-
-    /**
      * Triggers a ping event to be sent to the webhook.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
@@ -559,6 +559,50 @@ public interface WebhooksClient {
         String resourceGroupName, String registryName, String webhookName, Context context);
 
     /**
+     * Lists recent events for the specified webhook.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param webhookName The name of the webhook.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list events for a webhook.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<EventInner> listEventsAsync(String resourceGroupName, String registryName, String webhookName);
+
+    /**
+     * Lists recent events for the specified webhook.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param webhookName The name of the webhook.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list events for a webhook.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<EventInner> listEvents(String resourceGroupName, String registryName, String webhookName);
+
+    /**
+     * Lists recent events for the specified webhook.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param webhookName The name of the webhook.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list events for a webhook.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<EventInner> listEvents(
+        String resourceGroupName, String registryName, String webhookName, Context context);
+
+    /**
      * Gets the configuration of service URI and custom headers for the webhook.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
@@ -615,49 +659,5 @@ public interface WebhooksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CallbackConfigInner> getCallbackConfigWithResponse(
-        String resourceGroupName, String registryName, String webhookName, Context context);
-
-    /**
-     * Lists recent events for the specified webhook.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param webhookName The name of the webhook.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list events for a webhook.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<EventInner> listEventsAsync(String resourceGroupName, String registryName, String webhookName);
-
-    /**
-     * Lists recent events for the specified webhook.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param webhookName The name of the webhook.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list events for a webhook.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EventInner> listEvents(String resourceGroupName, String registryName, String webhookName);
-
-    /**
-     * Lists recent events for the specified webhook.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param webhookName The name of the webhook.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list events for a webhook.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EventInner> listEvents(
         String resourceGroupName, String registryName, String webhookName, Context context);
 }

@@ -8,6 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.UUID;
 
 /** The details of the user assigned managed identity used by the Video Analyzer resource. */
 @Immutable
@@ -18,20 +19,20 @@ public class UserAssignedManagedIdentity {
      * The client ID.
      */
     @JsonProperty(value = "clientId", access = JsonProperty.Access.WRITE_ONLY)
-    private String clientId;
+    private UUID clientId;
 
     /*
      * The principal ID.
      */
     @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
-    private String principalId;
+    private UUID principalId;
 
     /**
      * Get the clientId property: The client ID.
      *
      * @return the clientId value.
      */
-    public String clientId() {
+    public UUID clientId() {
         return this.clientId;
     }
 
@@ -40,7 +41,7 @@ public class UserAssignedManagedIdentity {
      *
      * @return the principalId value.
      */
-    public String principalId() {
+    public UUID principalId() {
         return this.principalId;
     }
 

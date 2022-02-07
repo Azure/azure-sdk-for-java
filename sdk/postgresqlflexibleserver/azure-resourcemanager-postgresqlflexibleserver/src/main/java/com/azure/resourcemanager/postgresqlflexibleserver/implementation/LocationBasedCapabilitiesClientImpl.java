@@ -63,7 +63,7 @@ public final class LocationBasedCapabilitiesClientImpl implements LocationBasedC
     private interface LocationBasedCapabilitiesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.DBForPostgreSql/locations/{locationName}/capabilities")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/locations/{locationName}/capabilities")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CapabilitiesListResult>> execute(

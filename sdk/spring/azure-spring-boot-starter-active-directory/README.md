@@ -82,8 +82,7 @@ example `http://localhost:8080/login/oauth2/code/`. Note the tailing `/` cannot 
 
      (B). You can provide one by extending `AADWebSecurityConfigurerAdapter` and call `super.configure(http)` explicitly
     in the `configure(HttpSecurity http)` function. Here is an example:
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/webapp/AADOAuth2LoginSecurityConfig.java#L11-L25 -->
-    ```java
+    ```java readme-sample-AADOAuth2LoginSecurityConfig
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
     public class AADOAuth2LoginSecurityConfig extends AADWebSecurityConfigurerAdapter {
@@ -136,8 +135,7 @@ example `http://localhost:8080/login/oauth2/code/`. Note the tailing `/` cannot 
     Here, `graph` is the name of `OAuth2AuthorizedClient`, `scopes` means the scopes need to consent when login.
 
 * Step 4: Write your Java code:
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/webapp/ClientController.java#L40-L48 -->
-    ```java
+    ```java readme-sample-graph
     @GetMapping("/graph")
     @ResponseBody
     public String graph(
@@ -193,8 +191,7 @@ To use **aad-starter** in this scenario, we need these steps:
 
     (B). You can provide one by extending `AADResourceServerWebSecurityConfigurerAdapter` and call `super.configure(http)` explicitly
     in the `configure(HttpSecurity http)` function. Here is an example:
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/webapi/AADOAuth2ResourceServerSecurityConfig.java#L10-L21 -->
-    ```java
+    ```java readme-sample-AADOAuth2ResourceServerSecurityConfig
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
     public class AADOAuth2ResourceServerSecurityConfig extends AADResourceServerWebSecurityConfigurerAdapter {
@@ -254,8 +251,7 @@ To use **aad-starter** in this scenario, we need these steps:
 
     Using `@RegisteredOAuth2AuthorizedClient` to access related resource server:
 
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/webapi/SampleController.java#L64-L68 -->
-    ```java
+    ```java readme-sample-callGraph
     @PreAuthorize("hasAuthority('SCOPE_Obo.Graph.Read')")
     @GetMapping("call-graph")
     public String callGraph(@RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph) {
@@ -316,12 +312,11 @@ To use **aad-starter** in this scenario, we need these steps:
     
     Here is an example:
 
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/AADWebApplicationAndResourceServerConfig.java#L14-L42 -->
-    ```java
+    ```java readme-sample-AADWebApplicationAndResourceServerConfig
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
     public class AADWebApplicationAndResourceServerConfig {
-    
+
         @Order(1)
         @Configuration
         public static class ApiWebSecurityConfigurationAdapter extends AADResourceServerWebSecurityConfigurerAdapter {
@@ -332,10 +327,10 @@ To use **aad-starter** in this scenario, we need these steps:
                     .authorizeRequests().anyRequest().authenticated();
             }
         }
-    
+
         @Configuration
         public static class HtmlWebSecurityConfigurerAdapter extends AADWebSecurityConfigurerAdapter {
-    
+
             @Override
             protected void configure(HttpSecurity http) throws Exception {
                 super.configure(http);
@@ -353,11 +348,11 @@ To use **aad-starter** in this scenario, we need these steps:
 
 This property(`azure.activedirectory.application-type`) is optional, its value can be inferred by dependencies, only `web_application_and_resource_server` must be configured manually: `azure.activedirectory.application-type=web_application_and_resource_server`.
 
-| Has dependency: spring-security-oauth2-client | Has dependency: spring-security-oauth2-resource-server |                  Valid values of application type                 | Default value               |
-|-----------------------------------------------|--------------------------------------------------------|-------------------------------------------------------------------|-----------------------------|
-|                      Yes                      |                          No                            |                       `web_application`                           |       `web_application`     |
-|                      No                       |                          Yes                           |                       `resource_server`                           |       `resource_server`     |
-|                      Yes                      |                          Yes                           | `resource_server_with_obo`, `web_application_and_resource_server` | `resource_server_with_obo`  |
+| Has dependency: spring-security-oauth2-client | Has dependency: spring-security-oauth2-resource-server |                  Valid values of application type                                                     | Default value               |
+|-----------------------------------------------|--------------------------------------------------------|-------------------------------------------------------------------------------------------------------|-----------------------------|
+|                      Yes                      |                          No                            |                       `web_application`                                                               |       `web_application`     |
+|                      No                       |                          Yes                           |                       `resource_server`                                                               |       `resource_server`     |
+|                      Yes                      |                          Yes                           | `web_application`,`resource_server`,`resource_server_with_obo`, `web_application_and_resource_server` | `resource_server_with_obo`  |
 
 ### Configurable properties
 
@@ -376,6 +371,8 @@ This starter provides the following properties:
 | **azure.activedirectory**.client-secret                                                | client secret of the registered application.                                                   |
 | **azure.activedirectory**.graph-membership-uri                                         | It's used to load users' groups. The default value is `https://graph.microsoft.com/v1.0/me/memberOf`, this uri just get direct groups. To get all transitive membership, set it to `https://graph.microsoft.com/v1.0/me/transitiveMemberOf`. The 2 uris are both Azure Global, check `Property example 1` if you want to use Azure China.|
 | **azure.activedirectory**.post-logout-redirect-uri                                     | Redirect uri for posting log-out.                            |
+| **azure.activedirectory**.resource-server.principal-claim-name                         | Principal claim name. Default value is "sub".                                                  |
+| **azure.activedirectory**.resource-server.claim-to-authority-prefix-map                | Claim to authority prefix map. Default map is: "scp" -> "SCOPE_", "roles" -> "APPROLE_".       |
 | **azure.activedirectory**.tenant-id                                                    | Azure Tenant ID.                                             |
 | **azure.activedirectory**.user-group.allowed-group-names                               | Users' group name can be use in `@PreAuthorize("hasRole('ROLE_group_name_1')")`. Not all group name will take effect, only group names configured in this property will take effect. |
 | **azure.activedirectory**.user-group.allowed-group-ids                                 | Users' group id can be use in `@PreAuthorize("hasRole('ROLE_group_id_1')")`. Not all group id will take effect, only group id configured in this property will take effect. If this property's value is `all`, then all group id will take effect.|
@@ -409,8 +406,7 @@ Here are some examples about how to use these properties:
 
 * Step 2: Add `@EnableGlobalMethodSecurity(prePostEnabled = true)` in web application:
 
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/webapp/AADOAuth2LoginSecurityConfig.java#L10-L24 -->
-    ```java
+    ```java readme-sample-AADOAuth2LoginSecurityConfig
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
     public class AADOAuth2LoginSecurityConfig extends AADWebSecurityConfigurerAdapter {
@@ -429,8 +425,7 @@ Here are some examples about how to use these properties:
     ```
 
     Then we can protect the method by `@PreAuthorize` annotation:
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/webapp/RoleController.java#L11-L40 -->
-    ```java
+    ```java readme-sample-RoleController
     @Controller
     public class RoleController {
         @GetMapping("group1")
@@ -478,8 +473,7 @@ Here are some examples about how to use these properties:
     ```
 
 * Step 2: Write Java code:
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/webapp/OnDemandClientController.java#L17-L25 -->
-    ```java
+    ```java readme-sample-arm
     @GetMapping("/arm")
     @ResponseBody
     public String arm(
@@ -513,8 +507,7 @@ Here are some examples about how to use these properties:
     ```
 
 * Step 2: Write Java code:
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/webapi/SampleController.java#L134-L146 -->
-    ```java
+    ```java readme-sample-callClientCredential
     @PreAuthorize("hasAuthority('SCOPE_Obo.WebApiA.ExampleScope')")
     @GetMapping("webapiA/webapiC")
     public String callClientCredential() {
@@ -567,8 +560,7 @@ Follow the guide to [add app roles in your application and assign to users or gr
       ]
     ```
 * Step 2: Write Java code:
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/webapp/AuthorityController.java#L13-L18 -->
-    ```java
+    ```java readme-sample-admin
     @GetMapping("Admin")
     @ResponseBody
     @PreAuthorize("hasAuthority('APPROLE_Admin')")
@@ -645,17 +637,15 @@ In [Resource server visiting other resource server] scenario(For better descript
 
 * Step 5: Write your Java code:
     - webapp :
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/webapp/WebApiController.java#L34-L38 -->
-    ```java
+    ```java readme-sample-webapiA
     @GetMapping("/webapp/webapiA/webapiB")
     @ResponseBody
-    public String callWebApi(@RegisteredOAuth2AuthorizedClient("webapiA") OAuth2AuthorizedClient webapiAClient) {
+    public String webapiA(@RegisteredOAuth2AuthorizedClient("webapiA") OAuth2AuthorizedClient client) {
         return canVisitUri(client, WEB_API_A_URI);
     }
     ```
     - webapiA:
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/webapi/SampleController.java#L76-L81 -->
-    ```java
+    ```java readme-sample-callCustom
     @PreAuthorize("hasAuthority('SCOPE_Obo.WebApiA.ExampleScope')")
     @GetMapping("webapiA/webapiB")
     public String callCustom(
@@ -664,13 +654,12 @@ In [Resource server visiting other resource server] scenario(For better descript
     }
     ```
     - webapiB:
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/webapi/HomeController.java#L16-L21 -->
-    ```java
+    ```java readme-sample-file
     @GetMapping("/webapiB")
     @ResponseBody
     @PreAuthorize("hasAuthority('SCOPE_WebApiB.ExampleScope')")
     public String file() {
-        return "Response from WebApiB.";
+        return "Response from webApiB.";
     }
     ```
 
@@ -731,26 +720,18 @@ Please refer to [azure-spring-boot-sample-active-directory-resource-server].
 Please refer to [azure-spring-boot-sample-active-directory-resource-server-obo].
 
 ## Troubleshooting
-### Enable client logging
-Azure SDKs for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
+### Logging setting
+Please refer to [spring logging document] to get more information about logging.
 
-### Enable Spring logging
-Spring allow all the supported logging systems to set logger levels set in the Spring Environment (for example, in application.properties) by using `logging.level.<logger-name>=<level>` where level is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. The root logger can be configured by using logging.level.root.
-
-The following example shows potential logging settings in `application.properties`:
-
+#### Logging setting examples
+- Example 1: Setting logging level of hibernate
 ```properties
 logging.level.root=WARN
 logging.level.org.springframework.web=DEBUG
 logging.level.org.hibernate=ERROR
 ```
 
-For more information about setting logging in spring, please refer to the [official doc].
-
-### Enable authority logging.
-
-Add the following logging settings:
-
+- Example 2: Setting logging level of AADJwtGrantedAuthoritiesConverter
 ```properties
 # logging settings for web application scenario.
 logging.level.com.azure.spring.aad.webapp.AADOAuth2UserService=DEBUG
@@ -798,8 +779,7 @@ Please follow [instructions here] to build from source or contribute.
 [graph-api-list-member-of]: https://docs.microsoft.com/graph/api/user-list-memberof?view=graph-rest-1.0
 [graph-api-list-transitive-member-of]: https://docs.microsoft.com/graph/api/user-list-transitivememberof?view=graph-rest-1.0
 [instructions here]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/CONTRIBUTING.md
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
-[official doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
+[spring logging document]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
 [OAuth 2.0 implicit grant flow]: https://docs.microsoft.com/azure/active-directory/develop/v1-oauth2-implicit-grant-flow
 [package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-boot-starter-active-directory
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot

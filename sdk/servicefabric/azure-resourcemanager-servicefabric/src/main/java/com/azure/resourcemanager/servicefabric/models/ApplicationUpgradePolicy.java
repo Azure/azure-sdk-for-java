@@ -47,6 +47,21 @@ public final class ApplicationUpgradePolicy {
     @JsonProperty(value = "applicationHealthPolicy")
     private ArmApplicationHealthPolicy applicationHealthPolicy;
 
+    /*
+     * The mode used to monitor health during a rolling upgrade. The values are
+     * UnmonitoredAuto, UnmonitoredManual, and Monitored.
+     */
+    @JsonProperty(value = "upgradeMode")
+    private RollingUpgradeMode upgradeMode;
+
+    /*
+     * Determines whether the application should be recreated on update. If
+     * value=true, the rest of the upgrade policy parameters are not allowed
+     * and it will result in availability loss.
+     */
+    @JsonProperty(value = "recreateApplication")
+    private Boolean recreateApplication;
+
     /**
      * Get the upgradeReplicaSetCheckTimeout property: The maximum amount of time to block processing of an upgrade
      * domain and prevent loss of availability when there are unexpected issues. When this timeout expires, processing
@@ -135,6 +150,50 @@ public final class ApplicationUpgradePolicy {
      */
     public ApplicationUpgradePolicy withApplicationHealthPolicy(ArmApplicationHealthPolicy applicationHealthPolicy) {
         this.applicationHealthPolicy = applicationHealthPolicy;
+        return this;
+    }
+
+    /**
+     * Get the upgradeMode property: The mode used to monitor health during a rolling upgrade. The values are
+     * UnmonitoredAuto, UnmonitoredManual, and Monitored.
+     *
+     * @return the upgradeMode value.
+     */
+    public RollingUpgradeMode upgradeMode() {
+        return this.upgradeMode;
+    }
+
+    /**
+     * Set the upgradeMode property: The mode used to monitor health during a rolling upgrade. The values are
+     * UnmonitoredAuto, UnmonitoredManual, and Monitored.
+     *
+     * @param upgradeMode the upgradeMode value to set.
+     * @return the ApplicationUpgradePolicy object itself.
+     */
+    public ApplicationUpgradePolicy withUpgradeMode(RollingUpgradeMode upgradeMode) {
+        this.upgradeMode = upgradeMode;
+        return this;
+    }
+
+    /**
+     * Get the recreateApplication property: Determines whether the application should be recreated on update. If
+     * value=true, the rest of the upgrade policy parameters are not allowed and it will result in availability loss.
+     *
+     * @return the recreateApplication value.
+     */
+    public Boolean recreateApplication() {
+        return this.recreateApplication;
+    }
+
+    /**
+     * Set the recreateApplication property: Determines whether the application should be recreated on update. If
+     * value=true, the rest of the upgrade policy parameters are not allowed and it will result in availability loss.
+     *
+     * @param recreateApplication the recreateApplication value to set.
+     * @return the ApplicationUpgradePolicy object itself.
+     */
+    public ApplicationUpgradePolicy withRecreateApplication(Boolean recreateApplication) {
+        this.recreateApplication = recreateApplication;
         return this;
     }
 

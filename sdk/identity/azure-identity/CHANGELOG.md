@@ -1,6 +1,57 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
+## 1.5.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.4.3 (2022-01-11)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.24.1
+
+
+## 1.4.2 (2021-11-24)
+
+### Bugs Fixed
+- Fixes the edge case scenario when MSI Tokens return both `expires_on` and `expires_in` fields populated for `ManagedIdentityCredential`.
+
+## 1.4.1 (2021-11-09)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.22.0
+
+#### Behavioral Changes
+- The `ManagedIdentityCredential` reads value of AZURE_POD_IDENTITY_TOKEN_URL environment variable from AZURE_POD_IDENTITY_AUTHORITY_HOST now.
+
+## 1.4.0 (2021-10-14)
+
+### Features Added
+- Added `tenantId` setter on `AzurePowerShellCredential` and `AzureCliCredential`
+
+### Breaking Changes from 1.4.0-beta.1
+Note the breaking changes below don't apply if you're upgrading from a previous released stable version.
+
+- Removed 'AzureApplicationCredential' and 'AzureApplicationCredentialBuilder'
+- Removed 'regionalAuthority' setter on `ClientSecretCredentialBuilder` and `ClientCertificateCredentialBuilder`
+- Removed `RegionalAuthority` enum class.
+- Removed `allowMultiTenantAuthentication` method from Credential Builders. The Multi Tenant Authentication is enabled by default now.
+
+## 1.3.7 (2021-10-04)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.21.0
+
+
+## 1.4.0-beta.1 (2021-09-13)
 ### Features Added
 
 - Added support to `ManagedIdentityCredential` for Bridge to Kubernetes local development authentication.
@@ -10,6 +61,35 @@
     - If instead of a region, `RegionalAuthority.AutoDiscoverRegion` is specified as the value for `regionalAuthority`, MSAL will be used to attempt to discover the region.
     - A region can also be specified through the `AZURE_REGIONAL_AUTHORITY_NAME` environment variable.
 - Added `loginHint()` setter to `InteractiveBrowserCredentialBuilder` which allows a username to be pre-selected for interactive logins.
+- Added support to consume `TenantId` challenges from `TokenRequestContext`.
+- Added support for AKS Token Exchange support in `ManagedIdentityCredential`
+
+
+## 1.3.6 (2021-09-08)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to 1.20.0
+
+## 1.3.5 (2021-08-10)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to 1.19.0
+
+## 1.3.4 (2021-07-28)
+
+### Dependency Updates
+- Dropped `KeePassJava2` dependency
+
+## 1.3.3 (2021-07-07)
+
+### Dependency Updates
+- Pinned `json-smart` dependency to 2.4.7
+
+## 1.3.2 (2021-07-07)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to 1.18.0
+
 
 ## 1.3.1 (2021-06-08)
 

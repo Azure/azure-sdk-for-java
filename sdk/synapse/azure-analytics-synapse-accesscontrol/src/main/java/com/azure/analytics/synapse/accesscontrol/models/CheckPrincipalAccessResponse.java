@@ -15,7 +15,7 @@ public final class CheckPrincipalAccessResponse {
      * To check if the current user, group, or service principal has permission
      * to read artifacts in the specified workspace.
      */
-    @JsonProperty(value = "AccessDecisions")
+    @JsonProperty(value = "accessDecisions")
     private List<CheckAccessDecision> accessDecisions;
 
     /**

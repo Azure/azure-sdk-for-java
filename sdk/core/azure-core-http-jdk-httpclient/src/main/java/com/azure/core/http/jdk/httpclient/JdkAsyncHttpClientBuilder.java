@@ -99,7 +99,13 @@ public class JdkAsyncHttpClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.http.jdk.httpclient.JdkAsyncHttpClientBuilder.connectionTimeout#Duration}
+     * <!-- src_embed com.azure.core.http.jdk.httpclient.JdkAsyncHttpClientBuilder.connectionTimeout#Duration -->
+     * <pre>
+     * HttpClient client = new JdkAsyncHttpClientBuilder&#40;&#41;
+     *         .connectionTimeout&#40;Duration.ofSeconds&#40;250&#41;&#41; &#47;&#47; connection timeout of 250 seconds
+     *         .build&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.http.jdk.httpclient.JdkAsyncHttpClientBuilder.connectionTimeout#Duration -->
      *
      * The default connection timeout is 60 seconds.
      *
@@ -117,7 +123,17 @@ public class JdkAsyncHttpClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.http.jdk.httpclient.JdkAsyncHttpClientBuilder.proxy#ProxyOptions}
+     * <!-- src_embed com.azure.core.http.jdk.httpclient.JdkAsyncHttpClientBuilder.proxy#ProxyOptions -->
+     * <pre>
+     * final String proxyHost = &quot;&lt;proxy-host&gt;&quot;; &#47;&#47; e.g. localhost
+     * final int proxyPort = 9999; &#47;&#47; Proxy port
+     * ProxyOptions proxyOptions = new ProxyOptions&#40;ProxyOptions.Type.HTTP,
+     *         new InetSocketAddress&#40;proxyHost, proxyPort&#41;&#41;;
+     * HttpClient client = new JdkAsyncHttpClientBuilder&#40;&#41;
+     *         .proxy&#40;proxyOptions&#41;
+     *         .build&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.http.jdk.httpclient.JdkAsyncHttpClientBuilder.proxy#ProxyOptions -->
      *
      * @param proxyOptions The proxy configuration to use.
      * @return the updated {@link JdkAsyncHttpClientBuilder} object

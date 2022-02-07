@@ -12,11 +12,11 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.CapacityReservationGroupInner;
 import com.azure.resourcemanager.compute.models.CapacityReservationGroupInstanceViewTypes;
+import com.azure.resourcemanager.compute.models.CapacityReservationGroupUpdate;
 import com.azure.resourcemanager.compute.models.ExpandTypesForGetCapacityReservationGroups;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import java.util.Map;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CapacityReservationGroupsClient. */
@@ -35,7 +35,7 @@ public interface CapacityReservationGroupsClient
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation group that the capacity reservations should be
-     *     assigned to.
+     *     assigned to along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<CapacityReservationGroupInner>> createOrUpdateWithResponseAsync(
@@ -52,7 +52,7 @@ public interface CapacityReservationGroupsClient
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation group that the capacity reservations should be
-     *     assigned to.
+     *     assigned to on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<CapacityReservationGroupInner> createOrUpdateAsync(
@@ -87,7 +87,7 @@ public interface CapacityReservationGroupsClient
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation group that the capacity reservations should be
-     *     assigned to.
+     *     assigned to along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CapacityReservationGroupInner> createOrUpdateWithResponse(
@@ -102,16 +102,16 @@ public interface CapacityReservationGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to the Update capacity reservation Group operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation group that the capacity reservations should be
-     *     assigned to.
+     *     assigned to along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<CapacityReservationGroupInner>> updateWithResponseAsync(
-        String resourceGroupName, String capacityReservationGroupName, Map<String, String> tags);
+        String resourceGroupName, String capacityReservationGroupName, CapacityReservationGroupUpdate parameters);
 
     /**
      * The operation to update a capacity reservation group. When updating a capacity reservation group, only tags may
@@ -119,16 +119,16 @@ public interface CapacityReservationGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to the Update capacity reservation Group operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation group that the capacity reservations should be
-     *     assigned to.
+     *     assigned to on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<CapacityReservationGroupInner> updateAsync(
-        String resourceGroupName, String capacityReservationGroupName, Map<String, String> tags);
+        String resourceGroupName, String capacityReservationGroupName, CapacityReservationGroupUpdate parameters);
 
     /**
      * The operation to update a capacity reservation group. When updating a capacity reservation group, only tags may
@@ -136,6 +136,7 @@ public interface CapacityReservationGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
+     * @param parameters Parameters supplied to the Update capacity reservation Group operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -143,7 +144,8 @@ public interface CapacityReservationGroupsClient
      *     assigned to.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CapacityReservationGroupInner> updateAsync(String resourceGroupName, String capacityReservationGroupName);
+    CapacityReservationGroupInner update(
+        String resourceGroupName, String capacityReservationGroupName, CapacityReservationGroupUpdate parameters);
 
     /**
      * The operation to update a capacity reservation group. When updating a capacity reservation group, only tags may
@@ -151,32 +153,20 @@ public interface CapacityReservationGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation group that the capacity reservations should be
-     *     assigned to.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CapacityReservationGroupInner update(String resourceGroupName, String capacityReservationGroupName);
-
-    /**
-     * The operation to update a capacity reservation group. When updating a capacity reservation group, only tags may
-     * be modified.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to the Update capacity reservation Group operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation group that the capacity reservations should be
-     *     assigned to.
+     *     assigned to along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CapacityReservationGroupInner> updateWithResponse(
-        String resourceGroupName, String capacityReservationGroupName, Map<String, String> tags, Context context);
+        String resourceGroupName,
+        String capacityReservationGroupName,
+        CapacityReservationGroupUpdate parameters,
+        Context context);
 
     /**
      * The operation to delete a capacity reservation group. This operation is allowed only if all the associated
@@ -188,7 +178,7 @@ public interface CapacityReservationGroupsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String capacityReservationGroupName);
@@ -203,7 +193,7 @@ public interface CapacityReservationGroupsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String capacityReservationGroupName);
@@ -233,7 +223,7 @@ public interface CapacityReservationGroupsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(String resourceGroupName, String capacityReservationGroupName, Context context);
@@ -251,7 +241,7 @@ public interface CapacityReservationGroupsClient
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation group that the capacity reservations should be
-     *     assigned to.
+     *     assigned to along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<CapacityReservationGroupInner>> getByResourceGroupWithResponseAsync(
@@ -272,7 +262,7 @@ public interface CapacityReservationGroupsClient
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation group that the capacity reservations should be
-     *     assigned to.
+     *     assigned to on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<CapacityReservationGroupInner> getByResourceGroupAsync(
@@ -289,7 +279,7 @@ public interface CapacityReservationGroupsClient
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation group that the capacity reservations should be
-     *     assigned to.
+     *     assigned to on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<CapacityReservationGroupInner> getByResourceGroupAsync(
@@ -323,7 +313,7 @@ public interface CapacityReservationGroupsClient
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation group that the capacity reservations should be
-     *     assigned to.
+     *     assigned to along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CapacityReservationGroupInner> getByResourceGroupWithResponse(
@@ -343,7 +333,8 @@ public interface CapacityReservationGroupsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response.
+     * @return the List capacity reservation group with resource group response as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<CapacityReservationGroupInner> listByResourceGroupAsync(
@@ -357,7 +348,8 @@ public interface CapacityReservationGroupsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response.
+     * @return the List capacity reservation group with resource group response as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<CapacityReservationGroupInner> listByResourceGroupAsync(String resourceGroupName);
@@ -370,7 +362,8 @@ public interface CapacityReservationGroupsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response.
+     * @return the List capacity reservation group with resource group response as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CapacityReservationGroupInner> listByResourceGroup(String resourceGroupName);
@@ -387,7 +380,8 @@ public interface CapacityReservationGroupsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response.
+     * @return the List capacity reservation group with resource group response as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CapacityReservationGroupInner> listByResourceGroup(
@@ -403,7 +397,8 @@ public interface CapacityReservationGroupsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response.
+     * @return the List capacity reservation group with resource group response as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<CapacityReservationGroupInner> listAsync(ExpandTypesForGetCapacityReservationGroups expand);
@@ -414,7 +409,8 @@ public interface CapacityReservationGroupsClient
      *
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response.
+     * @return the List capacity reservation group with resource group response as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<CapacityReservationGroupInner> listAsync();
@@ -425,7 +421,8 @@ public interface CapacityReservationGroupsClient
      *
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response.
+     * @return the List capacity reservation group with resource group response as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CapacityReservationGroupInner> list();
@@ -441,7 +438,8 @@ public interface CapacityReservationGroupsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response.
+     * @return the List capacity reservation group with resource group response as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CapacityReservationGroupInner> list(

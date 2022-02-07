@@ -8,6 +8,10 @@ trigger:
   paths:
     include:
       - sdk/textanalytics/
+    exclude:
+      - sdk/textanalytics/pom.xml
+      - sdk/textanalytics/azure-ai-textanalytics/pom.xml
+      - sdk/textanalytics/azure-ai-textanalytics-perf/pom.xml
 
 pr:
   branches:
@@ -19,6 +23,10 @@ pr:
   paths:
     include:
       - sdk/textanalytics/
+    exclude:
+      - sdk/textanalytics/pom.xml
+      - sdk/textanalytics/azure-ai-textanalytics/pom.xml
+      - sdk/textanalytics/azure-ai-textanalytics-perf/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

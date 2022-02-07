@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.MessageHeaders;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.time.Duration;
@@ -105,8 +106,7 @@ public class ServiceBusMessageConverter
             }
         });
         getAndRemove(copySpringMessageHeaders, TIME_TO_LIVE, Duration.class).ifPresent(message::setTimeToLive);
-        getAndRemove(copySpringMessageHeaders, SCHEDULED_ENQUEUE_TIME, Instant.class)
-            .map((ins) -> OffsetDateTime.ofInstant(ins, ZoneId.systemDefault()))
+        getAndRemove(copySpringMessageHeaders, SCHEDULED_ENQUEUE_TIME, OffsetDateTime.class)
             .ifPresent(val -> {
                 message.setScheduledEnqueueTime(val);
                 logOverriddenHeaders(SCHEDULED_ENQUEUE_TIME, AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE, headers);
@@ -115,7 +115,20 @@ public class ServiceBusMessageConverter
         getAndRemove(copySpringMessageHeaders, CORRELATION_ID).ifPresent(message::setCorrelationId);
         getAndRemove(copySpringMessageHeaders, TO).ifPresent(message::setTo);
         getAndRemove(copySpringMessageHeaders, REPLY_TO_SESSION_ID).ifPresent(message::setReplyToSessionId);
-        getAndRemove(copySpringMessageHeaders, PARTITION_KEY).ifPresent(message::setPartitionKey);
+
+        if (StringUtils.hasText(message.getSessionId())) {
+            if (!ObjectUtils.isEmpty(headers.get(PARTITION_KEY)) && !ObjectUtils.nullSafeEquals(message.getSessionId(),
+                headers.get(PARTITION_KEY))) {
+                LOGGER.warn("Different session id and partition key are set in the message header, and the partition "
+                    + "key header will be overwritten by the session id header.");
+            }
+            message.setPartitionKey(message.getSessionId());
+            if (copySpringMessageHeaders.containsKey(PARTITION_KEY)) {
+                copySpringMessageHeaders.remove(PARTITION_KEY);
+            }
+        } else {
+            getAndRemove(copySpringMessageHeaders, PARTITION_KEY).ifPresent(message::setPartitionKey);
+        }
 
         copySpringMessageHeaders.forEach((key, value) -> {
             message.getApplicationProperties().put(key, value.toString());

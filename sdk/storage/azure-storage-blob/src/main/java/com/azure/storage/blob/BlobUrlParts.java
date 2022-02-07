@@ -403,11 +403,11 @@ public final class BlobUrlParts {
         parts.setHost(url.getAuthority());
 
         String path = url.getPath();
-        if (path.charAt(0) == '/') {
+        if (!path.isEmpty() && path.charAt(0) == '/') {
             path = path.substring(1);
         }
 
-        String[] pathPieces = path.split("/", 3);
+        String[] pathPieces = ModelHelper.FORWARD_SLASH.split(path, 3);
         parts.setAccountName(pathPieces[0]);
 
         if (pathPieces.length >= 3) {

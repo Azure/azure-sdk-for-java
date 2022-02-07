@@ -10,7 +10,9 @@ import com.azure.core.http.HttpHeaders
 import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
+import com.azure.core.http.policy.FixedDelayOptions
 import com.azure.core.http.policy.HttpLogOptions
+import com.azure.core.http.policy.RetryOptions
 import com.azure.core.test.http.MockHttpResponse
 import com.azure.core.util.ClientOptions
 import com.azure.core.util.Configuration
@@ -28,10 +30,13 @@ import reactor.test.StepVerifier
 import spock.lang.Specification
 import spock.lang.Unroll
 
+import java.time.Duration
+
 class BuildHelperTest extends Specification {
     static def credentials = new StorageSharedKeyCredential("accountName", "accountKey")
     static def endpoint = "https://account.queue.core.windows.net/"
     static def requestRetryOptions = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 2, 1000, 4000, null)
+    static def coreRetryOptions = new RetryOptions(new FixedDelayOptions(1, Duration.ofSeconds(2)))
 
     static HttpRequest request(String url) {
         return new HttpRequest(HttpMethod.HEAD, new URL(url), new HttpHeaders().put("Content-Length", "0"),
@@ -43,7 +48,8 @@ class BuildHelperTest extends Specification {
      */
     def "Fresh date applied on retry"() {
         when:
-        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, null, endpoint, requestRetryOptions, BuilderHelper.defaultHttpLogOptions,
+        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, null, endpoint, requestRetryOptions, null,
+            BuilderHelper.defaultHttpLogOptions,
             new ClientOptions(), new FreshDateTestClient(), new ArrayList<>(), new ArrayList<>(), Configuration.NONE, new ClientLogger(BuildHelperTest.class))
 
         then:
@@ -96,7 +102,7 @@ class BuildHelperTest extends Specification {
     def "Custom application id in UA string"() {
         when:
         def pipeline = BuilderHelper.buildPipeline(credentials, null, null, null,
-            endpoint, new RequestRetryOptions(), new HttpLogOptions().setApplicationId(logOptionsUA), new ClientOptions().setApplicationId(clientOptionsUA),
+            endpoint, new RequestRetryOptions(), null, new HttpLogOptions().setApplicationId(logOptionsUA), new ClientOptions().setApplicationId(clientOptionsUA),
             new ApplicationIdUAStringTestClient(expectedUA), new ArrayList<>(), new ArrayList<>(), Configuration.NONE, new ClientLogger(BuildHelperTest.class))
 
         then:
@@ -176,7 +182,7 @@ class BuildHelperTest extends Specification {
 
         when:
         def pipeline = BuilderHelper.buildPipeline(credentials, null, null, null,
-            endpoint, new RequestRetryOptions(), BuilderHelper.defaultHttpLogOptions, new ClientOptions().setHeaders(headers),
+            endpoint, new RequestRetryOptions(), null, BuilderHelper.defaultHttpLogOptions, new ClientOptions().setHeaders(headers),
             new ClientOptionsHeadersTestClient(headers), new ArrayList<>(), new ArrayList<>(), Configuration.NONE, new ClientLogger(BuildHelperTest.class))
 
         then:
@@ -337,6 +343,31 @@ class BuildHelperTest extends Specification {
         new QueueServiceClientBuilder()
             .endpoint(endpoint + "?sig=foo")
             .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+    }
+
+    def "Only one retryOptions can be applied"() {
+        when:
+        new QueueServiceClientBuilder()
+            .endpoint(endpoint)
+            .credential(credentials)
+            .retryOptions(requestRetryOptions)
+            .retryOptions(coreRetryOptions)
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new QueueClientBuilder()
+            .endpoint(endpoint)
+            .credential(credentials)
+            .queueName("foo")
+            .retryOptions(requestRetryOptions)
+            .retryOptions(coreRetryOptions)
             .buildClient()
 
         then:

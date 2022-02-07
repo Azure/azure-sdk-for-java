@@ -34,12 +34,6 @@ public final class AutoHealTriggers {
     private List<StatusCodesBasedTrigger> statusCodes;
 
     /*
-     * A rule based on status codes ranges.
-     */
-    @JsonProperty(value = "statusCodesRange")
-    private List<StatusCodesRangeBasedTrigger> statusCodesRange;
-
-    /*
      * A rule based on request execution time.
      */
     @JsonProperty(value = "slowRequests")
@@ -50,6 +44,12 @@ public final class AutoHealTriggers {
      */
     @JsonProperty(value = "slowRequestsWithPath")
     private List<SlowRequestsBasedTrigger> slowRequestsWithPath;
+
+    /*
+     * A rule based on status codes ranges.
+     */
+    @JsonProperty(value = "statusCodesRange")
+    private List<StatusCodesRangeBasedTrigger> statusCodesRange;
 
     /**
      * Get the requests property: A rule based on total requests.
@@ -112,26 +112,6 @@ public final class AutoHealTriggers {
     }
 
     /**
-     * Get the statusCodesRange property: A rule based on status codes ranges.
-     *
-     * @return the statusCodesRange value.
-     */
-    public List<StatusCodesRangeBasedTrigger> statusCodesRange() {
-        return this.statusCodesRange;
-    }
-
-    /**
-     * Set the statusCodesRange property: A rule based on status codes ranges.
-     *
-     * @param statusCodesRange the statusCodesRange value to set.
-     * @return the AutoHealTriggers object itself.
-     */
-    public AutoHealTriggers withStatusCodesRange(List<StatusCodesRangeBasedTrigger> statusCodesRange) {
-        this.statusCodesRange = statusCodesRange;
-        return this;
-    }
-
-    /**
      * Get the slowRequests property: A rule based on request execution time.
      *
      * @return the slowRequests value.
@@ -172,6 +152,26 @@ public final class AutoHealTriggers {
     }
 
     /**
+     * Get the statusCodesRange property: A rule based on status codes ranges.
+     *
+     * @return the statusCodesRange value.
+     */
+    public List<StatusCodesRangeBasedTrigger> statusCodesRange() {
+        return this.statusCodesRange;
+    }
+
+    /**
+     * Set the statusCodesRange property: A rule based on status codes ranges.
+     *
+     * @param statusCodesRange the statusCodesRange value to set.
+     * @return the AutoHealTriggers object itself.
+     */
+    public AutoHealTriggers withStatusCodesRange(List<StatusCodesRangeBasedTrigger> statusCodesRange) {
+        this.statusCodesRange = statusCodesRange;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -183,14 +183,14 @@ public final class AutoHealTriggers {
         if (statusCodes() != null) {
             statusCodes().forEach(e -> e.validate());
         }
-        if (statusCodesRange() != null) {
-            statusCodesRange().forEach(e -> e.validate());
-        }
         if (slowRequests() != null) {
             slowRequests().validate();
         }
         if (slowRequestsWithPath() != null) {
             slowRequestsWithPath().forEach(e -> e.validate());
+        }
+        if (statusCodesRange() != null) {
+            statusCodesRange().forEach(e -> e.validate());
         }
     }
 }

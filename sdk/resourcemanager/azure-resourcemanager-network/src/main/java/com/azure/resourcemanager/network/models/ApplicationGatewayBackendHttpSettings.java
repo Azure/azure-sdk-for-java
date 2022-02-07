@@ -5,18 +5,23 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayBackendHttpSettingsPropertiesFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Backend address pool settings of an application gateway. */
-@JsonFlatten
 @Fluent
-public class ApplicationGatewayBackendHttpSettings extends SubResource {
+public final class ApplicationGatewayBackendHttpSettings extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayBackendHttpSettings.class);
+
+    /*
+     * Properties of the application gateway backend HTTP settings.
+     */
+    @JsonProperty(value = "properties")
+    private ApplicationGatewayBackendHttpSettingsPropertiesFormat innerProperties;
 
     /*
      * Name of the backend http settings that is unique within an Application
@@ -37,93 +42,14 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * The destination port on the backend.
+    /**
+     * Get the innerProperties property: Properties of the application gateway backend HTTP settings.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.port")
-    private Integer port;
-
-    /*
-     * The protocol used to communicate with the backend.
-     */
-    @JsonProperty(value = "properties.protocol")
-    private ApplicationGatewayProtocol protocol;
-
-    /*
-     * Cookie based affinity.
-     */
-    @JsonProperty(value = "properties.cookieBasedAffinity")
-    private ApplicationGatewayCookieBasedAffinity cookieBasedAffinity;
-
-    /*
-     * Request timeout in seconds. Application Gateway will fail the request if
-     * response is not received within RequestTimeout. Acceptable values are
-     * from 1 second to 86400 seconds.
-     */
-    @JsonProperty(value = "properties.requestTimeout")
-    private Integer requestTimeout;
-
-    /*
-     * Probe resource of an application gateway.
-     */
-    @JsonProperty(value = "properties.probe")
-    private SubResource probe;
-
-    /*
-     * Array of references to application gateway authentication certificates.
-     */
-    @JsonProperty(value = "properties.authenticationCertificates")
-    private List<SubResource> authenticationCertificates;
-
-    /*
-     * Array of references to application gateway trusted root certificates.
-     */
-    @JsonProperty(value = "properties.trustedRootCertificates")
-    private List<SubResource> trustedRootCertificates;
-
-    /*
-     * Connection draining of the backend http settings resource.
-     */
-    @JsonProperty(value = "properties.connectionDraining")
-    private ApplicationGatewayConnectionDraining connectionDraining;
-
-    /*
-     * Host header to be sent to the backend servers.
-     */
-    @JsonProperty(value = "properties.hostName")
-    private String hostname;
-
-    /*
-     * Whether to pick host header should be picked from the host name of the
-     * backend server. Default value is false.
-     */
-    @JsonProperty(value = "properties.pickHostNameFromBackendAddress")
-    private Boolean pickHostnameFromBackendAddress;
-
-    /*
-     * Cookie name to use for the affinity cookie.
-     */
-    @JsonProperty(value = "properties.affinityCookieName")
-    private String affinityCookieName;
-
-    /*
-     * Whether the probe is enabled. Default value is false.
-     */
-    @JsonProperty(value = "properties.probeEnabled")
-    private Boolean probeEnabled;
-
-    /*
-     * Path which should be used as a prefix for all HTTP requests. Null means
-     * no path will be prefixed. Default value is null.
-     */
-    @JsonProperty(value = "properties.path")
-    private String path;
-
-    /*
-     * The provisioning state of the backend HTTP settings resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private ApplicationGatewayBackendHttpSettingsPropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Name of the backend http settings that is unique within an Application Gateway.
@@ -163,13 +89,20 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayBackendHttpSettings withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the port property: The destination port on the backend.
      *
      * @return the port value.
      */
     public Integer port() {
-        return this.port;
+        return this.innerProperties() == null ? null : this.innerProperties().port();
     }
 
     /**
@@ -179,7 +112,10 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
      * @return the ApplicationGatewayBackendHttpSettings object itself.
      */
     public ApplicationGatewayBackendHttpSettings withPort(Integer port) {
-        this.port = port;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayBackendHttpSettingsPropertiesFormat();
+        }
+        this.innerProperties().withPort(port);
         return this;
     }
 
@@ -189,7 +125,7 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
      * @return the protocol value.
      */
     public ApplicationGatewayProtocol protocol() {
-        return this.protocol;
+        return this.innerProperties() == null ? null : this.innerProperties().protocol();
     }
 
     /**
@@ -199,7 +135,10 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
      * @return the ApplicationGatewayBackendHttpSettings object itself.
      */
     public ApplicationGatewayBackendHttpSettings withProtocol(ApplicationGatewayProtocol protocol) {
-        this.protocol = protocol;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayBackendHttpSettingsPropertiesFormat();
+        }
+        this.innerProperties().withProtocol(protocol);
         return this;
     }
 
@@ -209,7 +148,7 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
      * @return the cookieBasedAffinity value.
      */
     public ApplicationGatewayCookieBasedAffinity cookieBasedAffinity() {
-        return this.cookieBasedAffinity;
+        return this.innerProperties() == null ? null : this.innerProperties().cookieBasedAffinity();
     }
 
     /**
@@ -220,7 +159,10 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
      */
     public ApplicationGatewayBackendHttpSettings withCookieBasedAffinity(
         ApplicationGatewayCookieBasedAffinity cookieBasedAffinity) {
-        this.cookieBasedAffinity = cookieBasedAffinity;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayBackendHttpSettingsPropertiesFormat();
+        }
+        this.innerProperties().withCookieBasedAffinity(cookieBasedAffinity);
         return this;
     }
 
@@ -231,7 +173,7 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
      * @return the requestTimeout value.
      */
     public Integer requestTimeout() {
-        return this.requestTimeout;
+        return this.innerProperties() == null ? null : this.innerProperties().requestTimeout();
     }
 
     /**
@@ -242,7 +184,10 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
      * @return the ApplicationGatewayBackendHttpSettings object itself.
      */
     public ApplicationGatewayBackendHttpSettings withRequestTimeout(Integer requestTimeout) {
-        this.requestTimeout = requestTimeout;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayBackendHttpSettingsPropertiesFormat();
+        }
+        this.innerProperties().withRequestTimeout(requestTimeout);
         return this;
     }
 
@@ -252,7 +197,7 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
      * @return the probe value.
      */
     public SubResource probe() {
-        return this.probe;
+        return this.innerProperties() == null ? null : this.innerProperties().probe();
     }
 
     /**
@@ -262,7 +207,10 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
      * @return the ApplicationGatewayBackendHttpSettings object itself.
      */
     public ApplicationGatewayBackendHttpSettings withProbe(SubResource probe) {
-        this.probe = probe;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayBackendHttpSettingsPropertiesFormat();
+        }
+        this.innerProperties().withProbe(probe);
         return this;
     }
 
@@ -273,7 +221,7 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
      * @return the authenticationCertificates value.
      */
     public List<SubResource> authenticationCertificates() {
-        return this.authenticationCertificates;
+        return this.innerProperties() == null ? null : this.innerProperties().authenticationCertificates();
     }
 
     /**
@@ -285,7 +233,10 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
      */
     public ApplicationGatewayBackendHttpSettings withAuthenticationCertificates(
         List<SubResource> authenticationCertificates) {
-        this.authenticationCertificates = authenticationCertificates;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayBackendHttpSettingsPropertiesFormat();
+        }
+        this.innerProperties().withAuthenticationCertificates(authenticationCertificates);
         return this;
     }
 
@@ -295,7 +246,7 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
      * @return the trustedRootCertificates value.
      */
     public List<SubResource> trustedRootCertificates() {
-        return this.trustedRootCertificates;
+        return this.innerProperties() == null ? null : this.innerProperties().trustedRootCertificates();
     }
 
     /**
@@ -306,7 +257,10 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
      */
     public ApplicationGatewayBackendHttpSettings withTrustedRootCertificates(
         List<SubResource> trustedRootCertificates) {
-        this.trustedRootCertificates = trustedRootCertificates;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayBackendHttpSettingsPropertiesFormat();
+        }
+        this.innerProperties().withTrustedRootCertificates(trustedRootCertificates);
         return this;
     }
 
@@ -316,7 +270,7 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
      * @return the connectionDraining value.
      */
     public ApplicationGatewayConnectionDraining connectionDraining() {
-        return this.connectionDraining;
+        return this.innerProperties() == null ? null : this.innerProperties().connectionDraining();
     }
 
     /**
@@ -327,7 +281,10 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
      */
     public ApplicationGatewayBackendHttpSettings withConnectionDraining(
         ApplicationGatewayConnectionDraining connectionDraining) {
-        this.connectionDraining = connectionDraining;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayBackendHttpSettingsPropertiesFormat();
+        }
+        this.innerProperties().withConnectionDraining(connectionDraining);
         return this;
     }
 
@@ -337,7 +294,7 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
      * @return the hostname value.
      */
     public String hostname() {
-        return this.hostname;
+        return this.innerProperties() == null ? null : this.innerProperties().hostname();
     }
 
     /**
@@ -347,7 +304,10 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
      * @return the ApplicationGatewayBackendHttpSettings object itself.
      */
     public ApplicationGatewayBackendHttpSettings withHostname(String hostname) {
-        this.hostname = hostname;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayBackendHttpSettingsPropertiesFormat();
+        }
+        this.innerProperties().withHostname(hostname);
         return this;
     }
 
@@ -358,7 +318,7 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
      * @return the pickHostnameFromBackendAddress value.
      */
     public Boolean pickHostnameFromBackendAddress() {
-        return this.pickHostnameFromBackendAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().pickHostnameFromBackendAddress();
     }
 
     /**
@@ -370,7 +330,10 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
      */
     public ApplicationGatewayBackendHttpSettings withPickHostnameFromBackendAddress(
         Boolean pickHostnameFromBackendAddress) {
-        this.pickHostnameFromBackendAddress = pickHostnameFromBackendAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayBackendHttpSettingsPropertiesFormat();
+        }
+        this.innerProperties().withPickHostnameFromBackendAddress(pickHostnameFromBackendAddress);
         return this;
     }
 
@@ -380,7 +343,7 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
      * @return the affinityCookieName value.
      */
     public String affinityCookieName() {
-        return this.affinityCookieName;
+        return this.innerProperties() == null ? null : this.innerProperties().affinityCookieName();
     }
 
     /**
@@ -390,7 +353,10 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
      * @return the ApplicationGatewayBackendHttpSettings object itself.
      */
     public ApplicationGatewayBackendHttpSettings withAffinityCookieName(String affinityCookieName) {
-        this.affinityCookieName = affinityCookieName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayBackendHttpSettingsPropertiesFormat();
+        }
+        this.innerProperties().withAffinityCookieName(affinityCookieName);
         return this;
     }
 
@@ -400,7 +366,7 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
      * @return the probeEnabled value.
      */
     public Boolean probeEnabled() {
-        return this.probeEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().probeEnabled();
     }
 
     /**
@@ -410,7 +376,10 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
      * @return the ApplicationGatewayBackendHttpSettings object itself.
      */
     public ApplicationGatewayBackendHttpSettings withProbeEnabled(Boolean probeEnabled) {
-        this.probeEnabled = probeEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayBackendHttpSettingsPropertiesFormat();
+        }
+        this.innerProperties().withProbeEnabled(probeEnabled);
         return this;
     }
 
@@ -421,7 +390,7 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
      * @return the path value.
      */
     public String path() {
-        return this.path;
+        return this.innerProperties() == null ? null : this.innerProperties().path();
     }
 
     /**
@@ -432,7 +401,10 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
      * @return the ApplicationGatewayBackendHttpSettings object itself.
      */
     public ApplicationGatewayBackendHttpSettings withPath(String path) {
-        this.path = path;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayBackendHttpSettingsPropertiesFormat();
+        }
+        this.innerProperties().withPath(path);
         return this;
     }
 
@@ -442,14 +414,7 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ApplicationGatewayBackendHttpSettings withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -458,8 +423,8 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (connectionDraining() != null) {
-            connectionDraining().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -10,7 +10,7 @@ import java.util.Objects;
 
 /**
  * Represents a single header to be set on a request.
- *<p>
+ * <p>
  * If multiple header values are added to a request with the same name (case-insensitive), then the values will be
  * appended at the end of the same {@link Header} with commas separating them.
  */
@@ -48,9 +48,7 @@ public class Header {
         Objects.requireNonNull(name, "'name' cannot be null.");
         this.name = name;
         this.values = new LinkedList<>();
-        for (String value : values) {
-            this.values.add(value);
-        }
+        Collections.addAll(this.values, values);
     }
 
     /**
@@ -91,7 +89,7 @@ public class Header {
      * @return the values of this {@link Header} that are separated by a comma
      */
     public String[] getValues() {
-        return values.toArray(new String[] { });
+        return values.toArray(new String[0]);
     }
 
     /**

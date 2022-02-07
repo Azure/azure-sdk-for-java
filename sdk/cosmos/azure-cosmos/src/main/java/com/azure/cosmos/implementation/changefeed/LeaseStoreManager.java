@@ -100,9 +100,10 @@ public interface LeaseStoreManager extends LeaseContainer, LeaseManager, LeaseSt
      *
      * @param lease the Lease to renew.
      * @param continuationToken the continuation token.
+     * @param cancellationToken the cancellation token.
      * @return the updated renewed lease.
      */
-    Mono<Lease> checkpoint(Lease lease, String continuationToken);
+    Mono<Lease> checkpoint(Lease lease, String continuationToken, CancellationToken cancellationToken);
 
     /**
      * @return true if the lease store is initialized.

@@ -5,16 +5,14 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Vault information. */
-@JsonFlatten
 @Fluent
-public class VaultInner extends ProxyResource {
+public final class VaultInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VaultInner.class);
 
     /*
@@ -24,10 +22,10 @@ public class VaultInner extends ProxyResource {
     private String location;
 
     /*
-     * Vault Name
+     * Vault Properties
      */
-    @JsonProperty(value = "properties.vaultName")
-    private String vaultName;
+    @JsonProperty(value = "properties", required = true)
+    private VaultProperties innerProperties = new VaultProperties();
 
     /**
      * Get the location property: Resource location.
@@ -50,12 +48,21 @@ public class VaultInner extends ProxyResource {
     }
 
     /**
+     * Get the innerProperties property: Vault Properties.
+     *
+     * @return the innerProperties value.
+     */
+    private VaultProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the vaultName property: Vault Name.
      *
      * @return the vaultName value.
      */
     public String vaultName() {
-        return this.vaultName;
+        return this.innerProperties() == null ? null : this.innerProperties().vaultName();
     }
 
     /**
@@ -65,7 +72,10 @@ public class VaultInner extends ProxyResource {
      * @return the VaultInner object itself.
      */
     public VaultInner withVaultName(String vaultName) {
-        this.vaultName = vaultName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VaultProperties();
+        }
+        this.innerProperties().withVaultName(vaultName);
         return this;
     }
 
@@ -79,6 +89,13 @@ public class VaultInner extends ProxyResource {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property location in model VaultInner"));
+        }
+        if (innerProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property innerProperties in model VaultInner"));
+        } else {
+            innerProperties().validate();
         }
     }
 }

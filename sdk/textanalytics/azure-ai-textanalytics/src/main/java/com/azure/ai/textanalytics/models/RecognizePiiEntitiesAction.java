@@ -13,10 +13,32 @@ import java.util.Arrays;
  */
 @Fluent
 public final class RecognizePiiEntitiesAction {
+    private String actionName;
     private String modelVersion;
-    private boolean disableServiceLogs;
+    private Boolean disableServiceLogs;
     private PiiEntityDomain domainFilter;
     private Iterable<PiiEntityCategory> categoriesFilter;
+
+    /**
+     * Get the name of action.
+     *
+     * @return the name of action.
+     */
+    public String getActionName() {
+        return actionName;
+    }
+
+    /**
+     * Set the custom name for the action.
+     *
+     * @param actionName the custom name for the action.
+     *
+     * @return The {@link RecognizePiiEntitiesAction} object itself.
+     */
+    public RecognizePiiEntitiesAction setActionName(String actionName) {
+        this.actionName = actionName;
+        return this;
+    }
 
     /**
      * Gets the version of the text analytics model used by this operation.
@@ -41,18 +63,18 @@ public final class RecognizePiiEntitiesAction {
     }
 
     /**
-     * Gets the value of {@code disableServiceLogs}.
+     * Gets the value of service logs disable status. The default value of this property is 'true'. This means,
+     * Text Analytics service won't log your input text. Setting this property to 'false', enables logging your input
+     * text for 48 hours, solely to allow for troubleshooting issues.
      *
-     * @return The value of {@code disableServiceLogs}. The default value of this property is 'false'. This means,
-     * Text Analytics service logs your input text for 48 hours, solely to allow for troubleshooting issues. Setting
-     * this property to true, disables input logging and may limit our ability to investigate issues that occur.
+     * @return true if service logging of input text is disabled.
      */
     public boolean isServiceLogsDisabled() {
-        return disableServiceLogs;
+        return disableServiceLogs == null ? true : disableServiceLogs;
     }
 
     /**
-     * Sets the value of {@code disableServiceLogs}.
+     * Sets the value of service logs disable status.
      *
      * @param disableServiceLogs The default value of this property is 'true'. This means, Text Analytics service won't
      * log your input text. Setting this property to 'false', enables logging your input text for 48 hours,
