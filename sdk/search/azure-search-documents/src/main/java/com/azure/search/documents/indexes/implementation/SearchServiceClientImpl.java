@@ -222,7 +222,8 @@ public final class SearchServiceClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service level statistics for a search service.
+     * @return service level statistics for a search service along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchServiceStatistics>> getServiceStatisticsWithResponseAsync(

@@ -1,5 +1,7 @@
 ## Release History
 
+### 4.26.0-beta.2 (Unreleased)
+
 ### 4.26.0-beta.1 (2022-01-25)
 
 #### Features Added

@@ -187,7 +187,7 @@ public final class UsagesClientImpl implements UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Usages operation response.
+     * @return the List Usages operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<UsageInner> listAsync(String location) {
@@ -203,7 +203,7 @@ public final class UsagesClientImpl implements UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Usages operation response.
+     * @return the List Usages operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<UsageInner> listAsync(String location, Context context) {
@@ -219,7 +219,7 @@ public final class UsagesClientImpl implements UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Usages operation response.
+     * @return the List Usages operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsageInner> list(String location) {
@@ -235,7 +235,7 @@ public final class UsagesClientImpl implements UsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Usages operation response.
+     * @return the List Usages operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsageInner> list(String location, Context context) {

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for LiveToken Get. */
 public final class LiveTokenGetSamples {
     /*
-     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/preview/2020-06-02-preview/examples/LiveTokenGet.json
+     * x-ms-original-file: specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2021-10-14/examples/LiveTokenGet.json
      */
     /**
      * Sample code: Get live token for resource.
