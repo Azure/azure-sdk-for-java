@@ -39,6 +39,8 @@ public final class EncryptionSettings {
     private AeadAes256CbcHmac256EncryptionAlgorithm aeadAes256CbcHmac256EncryptionAlgorithm;
     private EncryptionType encryptionType;
     private String databaseRid;
+    private String ifNonematchEtag;
+    private CosmosClientEncryptionKeyProperties cosmosClientEncryptionKeyProperties;
 
     public Mono<EncryptionSettings> getEncryptionSettingForPropertyAsync(
         String propertyName,
@@ -71,6 +73,7 @@ public final class EncryptionSettings {
             EncryptionBridgeInternal.getContainerPropertiesMono(encryptionProcessor.getEncryptionCosmosClient(),
                 encryptionProcessor.getCosmosAsyncContainer(), false);
         AtomicBoolean forceRefreshClientEncryptionKey = new AtomicBoolean(false);
+        AtomicBoolean forceRefreshClientEncryptionKeyGateway = new AtomicBoolean(false);
         return containerPropertiesMono.flatMap(cosmosContainerProperties -> {
             if (cosmosContainerProperties.getClientEncryptionPolicy() != null) {
                 for (ClientEncryptionIncludedPath propertyToEncrypt : cosmosContainerProperties.getClientEncryptionPolicy().getIncludedPaths()) {
@@ -80,23 +83,25 @@ public final class EncryptionSettings {
                             this.databaseRid,
                             encryptionProcessor.getCosmosAsyncContainer(),
                             null,
-                            forceRefreshClientEncryptionKey.get())
+                            forceRefreshClientEncryptionKey.get(),
+                            forceRefreshClientEncryptionKeyGateway.get())
                             .publishOn(Schedulers.boundedElastic())
                             .flatMap(keyProperties -> {
-                                AtomicReference<ProtectedDataEncryptionKey> protectedDataEncryptionKey = null;
+                                cosmosClientEncryptionKeyProperties = keyProperties;
+                                ProtectedDataEncryptionKey protectedDataEncryptionKey;
                                 try {
-                                    protectedDataEncryptionKey.set(buildProtectedDataEncryptionKey(keyProperties,
+                                    protectedDataEncryptionKey = buildProtectedDataEncryptionKey(keyProperties,
                                         encryptionProcessor.getEncryptionKeyStoreProvider(),
-                                        propertyToEncrypt.getClientEncryptionKeyId()));
-                                } catch (Exception ex)  {
-                                    forceRefreshGatewayCacheAndBuildProtectedDataEncryptionKeyAsync(keyProperties.getETag(), encryptionProcessor, propertyToEncrypt).flatMap(key -> protectedDataEncryptionKey.set(key));
+                                        propertyToEncrypt.getClientEncryptionKeyId());
+                                } catch (Exception ex) {
+                                    return Mono.error(ex);
                                 }
                                 EncryptionSettings encryptionSettings = new EncryptionSettings();
                                 encryptionSettings.setDatabaseRid(databaseRid);
                                 encryptionSettings.encryptionSettingTimeToLive =
                                     Instant.now().plus(Duration.ofMinutes(Constants.CACHED_ENCRYPTION_SETTING_DEFAULT_DEFAULT_TTL_IN_MINUTES));
                                 encryptionSettings.clientEncryptionKeyId = propertyToEncrypt.getClientEncryptionKeyId();
-                                encryptionSettings.dataEncryptionKey = protectedDataEncryptionKey.get();
+                                encryptionSettings.dataEncryptionKey = protectedDataEncryptionKey;
                                 EncryptionType encryptionType = EncryptionType.Plaintext;
                                 switch (propertyToEncrypt.getEncryptionType()) {
                                     case CosmosEncryptionType.DETERMINISTIC:
@@ -131,6 +136,14 @@ public final class EncryptionSettings {
                                     forceRefreshClientEncryptionKey.set(true);
                                     return Mono.delay(Duration.ZERO).flux();
                                 }
+
+                                // Retrying again to force refresh the gateway cache to fetch the latest client
+                                // encryption key to build ProtectedDataEncryptionKey object for the encryption setting.
+                                if (invalidKeyException != null && !forceRefreshClientEncryptionKeyGateway.get()) {
+                                    forceRefreshClientEncryptionKeyGateway.set(true);
+                                    this.ifNonematchEtag = cosmosClientEncryptionKeyProperties.getETag();
+                                    return Mono.delay(Duration.ZERO).flux();
+                                }
                                 return Flux.error(throwable);
                             }))));
                     }
@@ -139,33 +152,6 @@ public final class EncryptionSettings {
             return Mono.empty();
         });
     }
-
-//    private void populateProtectedDataEncryptionKey(Mono<ProtectedDataEncryptionKey> protectedDataEncryptionKeyMono, ProtectedDataEncryptionKey protectedDataEncryptionKey) {
-//        protectedDataEncryptionKeyMono.map(key -> protectedDataEncryptionKey = key);
-//    }
-
-    Mono<ProtectedDataEncryptionKey> forceRefreshGatewayCacheAndBuildProtectedDataEncryptionKeyAsync(String existingCekEtag, EncryptionProcessor encryptionProcessor, ClientEncryptionIncludedPath propertyToEncrypt) {
-
-        return EncryptionBridgeInternal.getClientEncryptionPropertiesAsync(encryptionProcessor.getEncryptionCosmosClient(),
-            propertyToEncrypt.getClientEncryptionKeyId(),
-            this.databaseRid,
-            encryptionProcessor.getCosmosAsyncContainer(),
-            existingCekEtag,
-            false)
-            .publishOn(Schedulers.boundedElastic())
-            .flatMap(keyProperties -> {
-                ProtectedDataEncryptionKey protectedDataEncryptionKey;
-                try {
-                    protectedDataEncryptionKey = buildProtectedDataEncryptionKey(keyProperties,
-                        encryptionProcessor.getEncryptionKeyStoreProvider(),
-                        propertyToEncrypt.getClientEncryptionKeyId());
-                } catch (Exception ex) {
-                    return Mono.error(ex);
-                }
-                return Mono.just(protectedDataEncryptionKey);
-            });
-    }
-
 
     ProtectedDataEncryptionKey buildProtectedDataEncryptionKey(CosmosClientEncryptionKeyProperties keyProperties,
                                                                EncryptionKeyStoreProvider encryptionKeyStoreProvider,

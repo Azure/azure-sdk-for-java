@@ -59,7 +59,7 @@ public class CosmosClientEncryptionKeyTest extends TestSuiteBase {
         validateClientEncryptionKeyResponse(cosmosClientEncryptionKeyProperties, keyResponse.getProperties());
 
         CosmosAsyncClientEncryptionKey clientEncryptionKey = createdDatabase.getClientEncryptionKey("key1");
-        keyResponse = clientEncryptionKey.read().block();
+        keyResponse = clientEncryptionKey.read(null).block();
         validateClientEncryptionKeyResponse(cosmosClientEncryptionKeyProperties, keyResponse.getProperties());
     }
 

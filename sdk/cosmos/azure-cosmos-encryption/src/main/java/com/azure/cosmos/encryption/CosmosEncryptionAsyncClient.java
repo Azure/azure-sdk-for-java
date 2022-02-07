@@ -89,7 +89,8 @@ public class CosmosEncryptionAsyncClient {
         String databaseRid,
         CosmosAsyncContainer cosmosAsyncContainer,
         String ifNonematchEtag,
-        boolean shouldForceRefresh) {
+        boolean shouldForceRefresh,
+        boolean shouldForceRefreshGateway) {
         /// Client Encryption key Id is unique within a Database.
         String cacheKey = databaseRid + "/" + clientEncryptionKeyId;
 
@@ -108,15 +109,15 @@ public class CosmosEncryptionAsyncClient {
         if (!shouldForceRefresh) {
             return this.clientEncryptionKeyPropertiesCacheByKeyId.getAsync(cacheKey, null, () -> {
                 return this.fetchClientEncryptionKeyPropertiesAsync(cosmosAsyncContainer,
-                    clientEncryptionKeyId, requestOptions,);
+                    clientEncryptionKeyId, requestOptions);
             });
         } else {
             return this.clientEncryptionKeyPropertiesCacheByKeyId.getAsync(cacheKey, null, () ->
                 this.fetchClientEncryptionKeyPropertiesAsync(cosmosAsyncContainer,
-                    clientEncryptionKeyId, requestOptions,)
+                    clientEncryptionKeyId, requestOptions)
             ).flatMap(cachedClientEncryptionProperties -> this.clientEncryptionKeyPropertiesCacheByKeyId.getAsync(cacheKey, cachedClientEncryptionProperties, () ->
                 this.fetchClientEncryptionKeyPropertiesAsync(cosmosAsyncContainer,
-                    clientEncryptionKeyId, requestOptions,)));
+                    clientEncryptionKeyId, requestOptions)));
         }
     }
 

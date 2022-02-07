@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyResponse;
 import com.azure.cosmos.util.Beta;
 
@@ -40,7 +41,7 @@ public class CosmosClientEncryptionKey {
      * @return the single resource response with the read client encryption key or an error.
      */
     @Beta(value = Beta.SinceVersion.V4_15_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public CosmosClientEncryptionKeyResponse read() {
-        return this.database.blockClientEncryptionKeyResponse(this.cosmosAsyncClientEncryptionKey.read());
+    public CosmosClientEncryptionKeyResponse read(RequestOptions requestOptions) {
+        return this.database.blockClientEncryptionKeyResponse(this.cosmosAsyncClientEncryptionKey.read(requestOptions));
     }
 }

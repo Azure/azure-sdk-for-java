@@ -108,9 +108,10 @@ public class EncryptionProcessor {
             this.clientEncryptionPolicy.getIncludedPaths().stream()
                 .map(clientEncryptionIncludedPath -> clientEncryptionIncludedPath.getClientEncryptionKeyId()).distinct().forEach(clientEncryptionKeyId -> {
                 AtomicBoolean forceRefreshClientEncryptionKey = new AtomicBoolean(false);
+                AtomicBoolean forceRefreshClientEncryptionKeyGateway = new AtomicBoolean(false);
                 Mono<Object> clientEncryptionPropertiesMono =
                     EncryptionBridgeInternal.getClientEncryptionPropertiesAsync(this.encryptionCosmosClient,
-                        clientEncryptionKeyId, this.databaseRid, this.cosmosAsyncContainer, null, forceRefreshClientEncryptionKey.get())
+                        clientEncryptionKeyId, this.databaseRid, this.cosmosAsyncContainer, null, forceRefreshClientEncryptionKey.get(), forceRefreshClientEncryptionKeyGateway.get())
                         .publishOn(Schedulers.boundedElastic())
                         .flatMap(keyProperties -> {
                             ProtectedDataEncryptionKey protectedDataEncryptionKey;
