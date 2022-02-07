@@ -38,7 +38,7 @@ If you are using Spring Boot in your project, you can determine the version of a
 | ---------------------- | ----------------------- |
 | 2.6.x                  | 1.1.0                   |
 | 2.5.x                  | 1.0.6                   |
-| 2.4.x                  | 1.0.0                   |
+| 2.4.x                  | 1.0.3                   |
 | < 2.4.0                | Not supported           |
 
 ### Adding libraries to your project
