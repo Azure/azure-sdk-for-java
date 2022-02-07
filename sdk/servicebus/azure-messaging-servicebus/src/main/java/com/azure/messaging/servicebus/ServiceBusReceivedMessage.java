@@ -46,14 +46,14 @@ import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION
  *     </a>
  */
 public final class ServiceBusReceivedMessage {
-    private static final String SERVICE_BUS_MESSAGE_STATE_KEY = "x-opt-message-state";
-
     private final ClientLogger logger = new ClientLogger(ServiceBusReceivedMessage.class);
-
     private final AmqpAnnotatedMessage amqpAnnotatedMessage;
+
     private UUID lockToken;
     private boolean isSettled = false;
     private Context context;
+
+    static final String SERVICE_BUS_MESSAGE_STATE_KEY = "x-opt-message-state";
 
     ServiceBusReceivedMessage(BinaryData body) {
         Objects.requireNonNull(body, "'body' cannot be null.");
@@ -330,15 +330,11 @@ public final class ServiceBusReceivedMessage {
      * messages have Scheduled state, all other messages have Active state.
      *
      * @return The state of the message.
+     * @throws UnsupportedOperationException if the message state is an unknown value.
      */
     public ServiceBusMessageState getMessageState() {
-        final Map<String, Object> messageAnnotations = amqpAnnotatedMessage.getMessageAnnotations();
+        final Object value = amqpAnnotatedMessage.getMessageAnnotations().get(SERVICE_BUS_MESSAGE_STATE_KEY);
 
-        if (messageAnnotations == null || !messageAnnotations.containsKey(SERVICE_BUS_MESSAGE_STATE_KEY)) {
-            return ServiceBusMessageState.ACTIVE;
-        }
-
-        final Object value = messageAnnotations.get(SERVICE_BUS_MESSAGE_STATE_KEY);
         if (value instanceof Integer) {
             return ServiceBusMessageState.fromValue((Integer) value);
         } else {
