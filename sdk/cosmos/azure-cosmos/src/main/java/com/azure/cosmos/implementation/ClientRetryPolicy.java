@@ -9,6 +9,7 @@ import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
+import com.azure.cosmos.implementation.diagnostics.SingleRequestDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +48,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     private boolean canUseMultipleWriteLocations;
     private URI locationEndpoint;
     private RetryContext retryContext;
-    private CosmosDiagnostics cosmosDiagnostics;
+    private SingleRequestDiagnostics cosmosDiagnostics;
     private AtomicInteger cnt = new AtomicInteger(0);
     private int serviceUnavailableRetryCount;
     private int queryPlanAddressRefreshCount;
@@ -70,7 +71,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         this.throttlingRetry = new ResourceThrottleRetryPolicy(
             throttlingRetryOptions.getMaxRetryAttemptsOnThrottledRequests(),
             throttlingRetryOptions.getMaxRetryWaitTime(),
-            BridgeInternal.getRetryContext(this.getCosmosDiagnostics()),
+            this.cosmosDiagnostics.getClientSideRequestStatistics().getRetryContext(),
             false);
         this.rxCollectionCache = rxCollectionCache;
     }
@@ -314,7 +315,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         this.isReadRequest = request.isReadOnlyRequest();
         this.canUseMultipleWriteLocations = this.globalEndpointManager.canUseMultipleWriteLocations(request);
         if (request.requestContext != null) {
-            request.requestContext.cosmosDiagnostics = this.cosmosDiagnostics;
+            request.requestContext.singleRequestDiagnostics = this.cosmosDiagnostics;
         }
 
         // clear previous location-based routing directive
@@ -336,11 +337,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
     @Override
     public com.azure.cosmos.implementation.RetryContext getRetryContext() {
-        return BridgeInternal.getRetryContext(this.getCosmosDiagnostics());
-    }
-
-    CosmosDiagnostics getCosmosDiagnostics() {
-        return cosmosDiagnostics;
+        return this.cosmosDiagnostics.getClientSideRequestStatistics().getRetryContext();
     }
 
     private static class RetryContext {

@@ -3,20 +3,14 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
-import com.azure.cosmos.implementation.DiagnosticsClientContext;
-import com.azure.cosmos.implementation.FeedResponseDiagnostics;
-import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.diagnostics.ICosmosDiagnostics;
+import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.util.Beta;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.time.Duration;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -24,32 +18,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * This class represents response diagnostic statistics associated with a request to Azure Cosmos DB
  */
 public final class CosmosDiagnostics {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosDiagnostics.class);
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    private static final String COSMOS_DIAGNOSTICS_KEY = "cosmosDiagnostics";
+    private ICosmosDiagnostics internalCosmosDiagnostics;
 
-    private ClientSideRequestStatistics clientSideRequestStatistics;
-    private FeedResponseDiagnostics feedResponseDiagnostics;
-    private AtomicBoolean diagnosticsCapturedInPagedFlux = new AtomicBoolean(false);
-
-    static final String USER_AGENT = Utils.getUserAgent();
-    static final String USER_AGENT_KEY = "userAgent";
-
-    CosmosDiagnostics(DiagnosticsClientContext diagnosticsClientContext, GlobalEndpointManager globalEndpointManager) {
-        this.clientSideRequestStatistics = new ClientSideRequestStatistics(diagnosticsClientContext, globalEndpointManager);
-    }
-
-    CosmosDiagnostics(FeedResponseDiagnostics feedResponseDiagnostics) {
-        this.feedResponseDiagnostics = feedResponseDiagnostics;
-    }
-
-    ClientSideRequestStatistics clientSideRequestStatistics() {
-        return clientSideRequestStatistics;
-    }
-
-    CosmosDiagnostics clientSideRequestStatistics(ClientSideRequestStatistics clientSideRequestStatistics) {
-        this.clientSideRequestStatistics = clientSideRequestStatistics;
-        return this;
+    CosmosDiagnostics(ICosmosDiagnostics internalCosmosDiagnostics) {
+        this.internalCosmosDiagnostics = internalCosmosDiagnostics;
     }
 
     /**
@@ -59,9 +31,7 @@ public final class CosmosDiagnostics {
      */
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        fillCosmosDiagnostics(null, stringBuilder);
-        return stringBuilder.toString();
+        return this.internalCosmosDiagnostics.toString();
     }
 
     /**
@@ -72,11 +42,7 @@ public final class CosmosDiagnostics {
      * @return request completion duration
      */
     public Duration getDuration() {
-        if (this.feedResponseDiagnostics != null) {
-            return null;
-        }
-
-        return this.clientSideRequestStatistics.getDuration();
+        return this.internalCosmosDiagnostics.getDuration();
     }
 
     /**
@@ -87,10 +53,7 @@ public final class CosmosDiagnostics {
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     @Deprecated
     public Set<URI> getRegionsContacted() {
-        if (this.feedResponseDiagnostics != null) {
-            return null;
-        }
-        return this.clientSideRequestStatistics.getLocationEndpointsContacted();
+        return this.internalCosmosDiagnostics.getRegionsContacted();
     }
 
     /**
@@ -100,48 +63,19 @@ public final class CosmosDiagnostics {
      */
     @Beta(value = Beta.SinceVersion.V4_22_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Set<String> getContactedRegionNames() {
-        if (this.feedResponseDiagnostics != null) {
-            return null;
-        }
-        return this.clientSideRequestStatistics.getContactedRegionNames();
+        return this.getContactedRegionNames();
     }
 
-    FeedResponseDiagnostics getFeedResponseDiagnostics() {
-        return feedResponseDiagnostics;
+    AtomicBoolean isDiagnosticsCapturedInPagedFlux(){
+        return this.internalCosmosDiagnostics.isDiagnosticsCapturedInPagedFlux();
     }
 
-    void fillCosmosDiagnostics(ObjectNode parentNode, StringBuilder stringBuilder) {
-        if (this.feedResponseDiagnostics != null) {
-            if (parentNode != null) {
-                parentNode.put(USER_AGENT_KEY, USER_AGENT);
-                parentNode.putPOJO(COSMOS_DIAGNOSTICS_KEY, feedResponseDiagnostics);
-            }
-
-            if (stringBuilder != null) {
-                stringBuilder.append(USER_AGENT_KEY + "=").append(USER_AGENT).append(System.lineSeparator());
-                stringBuilder.append(feedResponseDiagnostics);
-            }
-        } else {
-            if (parentNode != null) {
-                parentNode.putPOJO(COSMOS_DIAGNOSTICS_KEY, clientSideRequestStatistics);
-            }
-
-            if (stringBuilder != null) {
-                try {
-                    stringBuilder.append(OBJECT_MAPPER.writeValueAsString(this.clientSideRequestStatistics));
-                } catch (JsonProcessingException e) {
-                    LOGGER.error("Error while parsing diagnostics ", e);
-                }
-            }
-        }
+    List<ClientSideRequestStatistics> getClientSideRequestDiagnosticsList() {
+        return this.internalCosmosDiagnostics.getClientSideRequestDiagnosticsList();
     }
 
-    void setFeedResponseDiagnostics(FeedResponseDiagnostics feedResponseDiagnostics) {
-        this.feedResponseDiagnostics = feedResponseDiagnostics;
-    }
-
-    private AtomicBoolean isDiagnosticsCapturedInPagedFlux(){
-        return this.diagnosticsCapturedInPagedFlux;
+    void setQueryPlanDiagnosticsContext(QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnosticsContext) {
+        this.internalCosmosDiagnostics.setQueryPlanDiagnosticsContext(queryPlanDiagnosticsContext);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -152,17 +86,13 @@ public final class CosmosDiagnostics {
         ImplementationBridgeHelpers.CosmosDiagnosticsHelper.setCosmosDiagnosticsAccessor(
             new ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor() {
                 @Override
-                public FeedResponseDiagnostics getFeedResponseDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
-                    if (cosmosDiagnostics != null) {
-                        return cosmosDiagnostics.getFeedResponseDiagnostics();
-                    }
-
-                    return null;
+                public AtomicBoolean isDiagnosticsCapturedInPagedFlux(CosmosDiagnostics cosmosDiagnostics) {
+                    return cosmosDiagnostics.isDiagnosticsCapturedInPagedFlux();
                 }
 
                 @Override
-                public AtomicBoolean isDiagnosticsCapturedInPagedFlux(CosmosDiagnostics cosmosDiagnostics) {
-                    return cosmosDiagnostics.isDiagnosticsCapturedInPagedFlux();
+                public List<ClientSideRequestStatistics> getClientSideRequestDiagnosticsList(CosmosDiagnostics cosmosDiagnostics) {
+                    return cosmosDiagnostics.getClientSideRequestDiagnosticsList();
                 }
             });
     }

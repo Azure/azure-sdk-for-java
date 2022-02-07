@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
@@ -103,8 +102,8 @@ public class ConsistencyWriter {
             // skip throwing RequestTimeout on first retry because the first retry with
             // force address refresh header can be critical to recover for example from
             // stale Gateway caches etc.
-            BridgeInternal.getRetryContext(entity.requestContext.cosmosDiagnostics) != null &&
-            BridgeInternal.getRetryContext(entity.requestContext.cosmosDiagnostics).getRetryCount() > 1) {
+            entity.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getRetryContext() != null &&
+            entity.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getRetryContext().getRetryCount() > 1) {
             return Mono.error(new RequestTimeoutException());
         }
 
@@ -113,7 +112,8 @@ public class ConsistencyWriter {
         return  BackoffRetryUtility
             .executeRetry(
                 () -> this.writePrivateAsync(entity, timeout, forceRefresh),
-                new SessionTokenMismatchRetryPolicy(BridgeInternal.getRetryContext(entity.requestContext.cosmosDiagnostics)))
+                new SessionTokenMismatchRetryPolicy(
+                    entity.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getRetryContext()))
             .doOnEach(
             arg -> {
                 try {
@@ -134,8 +134,8 @@ public class ConsistencyWriter {
             // skip throwing RequestTimeout on first retry because the first retry with
             // force address refresh header can be critical to recover for example from
             // stale Gateway caches etc.
-            BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics) != null &&
-            BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics).getRetryCount() > 1) {
+            request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getRetryContext() != null &&
+            request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getRetryContext().getRetryCount() > 1) {
             return Mono.error(new RequestTimeoutException());
         }
 
@@ -145,8 +145,8 @@ public class ConsistencyWriter {
             request.requestContext.requestChargeTracker = new RequestChargeTracker();
         }
 
-        if (request.requestContext.cosmosDiagnostics == null) {
-            request.requestContext.cosmosDiagnostics = request.createCosmosDiagnostics();
+        if (request.requestContext.singleRequestDiagnostics == null) {
+            request.requestContext.singleRequestDiagnostics = request.createCosmosDiagnostics();
         }
 
         request.requestContext.forceRefreshAddressCache = forceRefresh;
@@ -160,7 +160,7 @@ public class ConsistencyWriter {
                 try {
                     List<URI> contactedReplicas = new ArrayList<>();
                     replicaAddresses.forEach(replicaAddress -> contactedReplicas.add(replicaAddress.getPhysicalUri().getURI()));
-                    BridgeInternal.setContactedReplicas(request.requestContext.cosmosDiagnostics, contactedReplicas);
+                    request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().setContactedReplicas(contactedReplicas);
                     return Mono.just(AddressSelector.getPrimaryUri(request, replicaAddresses));
                 } catch (GoneException e) {
                     // RxJava1 doesn't allow throwing checked exception from Observable operators

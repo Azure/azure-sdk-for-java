@@ -65,7 +65,7 @@ public class InvalidPartitionExceptionRetryPolicy extends DocumentClientRetryPol
                 //this.clientCollectionCache.Refresh(clientException.ResourceAddress);
                 // TODO: this is blocking. is that fine?
                 this.clientCollectionCache.refresh(
-                    this.request != null ? BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics) : null,
+                    this.request != null ? this.request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getMetadataDiagnosticsContext() : null,
                     collectionLink,
                     requestOptionProperties);
 

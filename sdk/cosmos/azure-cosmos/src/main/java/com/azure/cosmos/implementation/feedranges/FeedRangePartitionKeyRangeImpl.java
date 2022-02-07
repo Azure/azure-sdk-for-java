@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.feedranges;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
@@ -143,7 +142,7 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
         request.routeTo(this.partitionKeyRangeIdentity);
 
         MetadataDiagnosticsContext metadataDiagnosticsCtx =
-            BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+            request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getMetadataDiagnosticsContext();
 
         return this
             .getNormalizedEffectiveRange(routingMapProvider, metadataDiagnosticsCtx, collectionResolutionMono)

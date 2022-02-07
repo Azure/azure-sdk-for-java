@@ -11,6 +11,8 @@ import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.query.aggregation.AggregateOperator;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Flux;
 
@@ -63,13 +65,12 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
                     List<ClientSideRequestStatistics> diagnosticsList = new ArrayList<>();
 
                     for(FeedResponse<T> page : superList) {
-                        diagnosticsList.addAll(BridgeInternal
-                                                   .getClientSideRequestStatisticsList(page.getCosmosDiagnostics()));
+                        diagnosticsList.addAll(ModelBridgeInternal.feedResponseDiagnostics(page).getClientSideRequestDiagnosticsList());
 
                         if (page.getResults().size() == 0) {
                             headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge));
                             FeedResponse<Document> frp = BridgeInternal.createFeedResponse(aggregateResults, headers);
-                            BridgeInternal.addClientSideDiagnosticsToFeed(frp.getCosmosDiagnostics(), diagnosticsList);
+                            BridgeInternal.getFeedResponseDiagnostics(frp).addClientSideRequestStatistics(diagnosticsList);
                             return (FeedResponse<T>) frp;
                         }
 
@@ -104,7 +105,7 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
                             BridgeInternal.putQueryMetricsIntoMap(frp, entry.getKey(), entry.getValue());
                         }
                     }
-                    BridgeInternal.addClientSideDiagnosticsToFeed(frp.getCosmosDiagnostics(), diagnosticsList);
+                    BridgeInternal.getFeedResponseDiagnostics(frp).addClientSideRequestStatistics(diagnosticsList);
                     return (FeedResponse<T>) frp;
                 }).flux();
     }

@@ -3,7 +3,6 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
@@ -18,6 +17,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
+import com.azure.cosmos.implementation.diagnostics.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -214,7 +214,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
         private DocumentProducer<T>.DocumentProducerFeedResponse previousPage;
         private final CosmosQueryRequestOptions cosmosQueryRequestOptions;
         private ConcurrentMap<String, QueryMetrics> emptyPageQueryMetricsMap = new ConcurrentHashMap<>();
-        private CosmosDiagnostics cosmosDiagnostics;
+        private FeedResponseDiagnostics feedResponseDiagnostics;
 
         public EmptyPagesFilterTransformer(RequestChargeTracker tracker, CosmosQueryRequestOptions options) {
 
@@ -242,7 +242,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 ModelBridgeInternal.getQueryPlanDiagnosticsContext(page),
                 false,
                 false,
-                page.getCosmosDiagnostics());
+                ModelBridgeInternal.feedResponseDiagnostics(page));
             documentProducerFeedResponse.pageResult = newPage;
             return documentProducerFeedResponse;
         }
@@ -260,8 +260,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                 ModelBridgeInternal.getQueryPlanDiagnosticsContext(page),
                 false,
                 false,
-                page.getCosmosDiagnostics()
-            );
+                ModelBridgeInternal.feedResponseDiagnostics(page));
             documentProducerFeedResponse.pageResult = newPage;
             return documentProducerFeedResponse;
         }
@@ -285,7 +284,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                     ConcurrentMap<String, QueryMetrics> currentQueryMetrics =
                         BridgeInternal.queryMetricsFromFeedResponse(documentProducerFeedResponse.pageResult);
                     QueryMetrics.mergeQueryMetricsMap(emptyPageQueryMetricsMap, currentQueryMetrics);
-                    cosmosDiagnostics = documentProducerFeedResponse.pageResult.getCosmosDiagnostics();
+                    feedResponseDiagnostics = ModelBridgeInternal.feedResponseDiagnostics(documentProducerFeedResponse.pageResult);
                     return false;
                 }
                 return true;
@@ -361,7 +360,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                     null,
                     false,
                     false,
-                    cosmosDiagnostics));
+                    feedResponseDiagnostics));
             }));
         }
     }

@@ -109,7 +109,7 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
             "Argument 'collectionResolutionMono' must not be null");
 
         MetadataDiagnosticsContext metadataDiagnosticsCtx =
-            BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+            request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getMetadataDiagnosticsContext();
 
         return collectionResolutionMono
             .flatMap(documentCollectionResourceResponse -> {
@@ -161,7 +161,7 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
         request.setPartitionKeyInternal(this.partitionKey);
 
         MetadataDiagnosticsContext metadataDiagnosticsCtx =
-            BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+            request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getMetadataDiagnosticsContext();
 
         return this
             .getNormalizedEffectiveRange(routingMapProvider, metadataDiagnosticsCtx, collectionResolutionMono)

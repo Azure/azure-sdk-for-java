@@ -3,10 +3,10 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.diagnostics.SingleRequestDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import org.slf4j.Logger;
@@ -25,7 +25,7 @@ public class StoreResponse {
     final private String[] responseHeaderValues;
     final private byte[] content;
 
-    private CosmosDiagnostics cosmosDiagnostics;
+    private SingleRequestDiagnostics singleResponseDiagnostics;
     private int pendingRequestQueueSize;
     private int requestPayloadLength;
     private RequestTimeline requestTimeline;
@@ -147,8 +147,8 @@ public class StoreResponse {
         return null;
     }
 
-    public CosmosDiagnostics getCosmosDiagnostics() {
-        return cosmosDiagnostics;
+    public SingleRequestDiagnostics getSingleResponseDiagnostics() {
+        return singleResponseDiagnostics;
     }
 
     public double getRequestCharge() {
@@ -159,8 +159,8 @@ public class StoreResponse {
         return Double.parseDouble(value);
     }
 
-    StoreResponse setCosmosDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
-        this.cosmosDiagnostics = cosmosDiagnostics;
+    public StoreResponse setSingleResponseDiagnostics(SingleRequestDiagnostics singleResponseDiagnostics) {
+        this.singleResponseDiagnostics = singleResponseDiagnostics;
         return this;
     }
 

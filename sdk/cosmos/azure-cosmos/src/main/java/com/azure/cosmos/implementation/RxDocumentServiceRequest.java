@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.diagnostics.SingleRequestDiagnostics;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -1085,7 +1086,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         return bytes != null ? ByteBuffer.wrap(bytes) : null;
     }
 
-    public CosmosDiagnostics createCosmosDiagnostics() {
+    public SingleRequestDiagnostics createCosmosDiagnostics() {
         return this.clientContext.createDiagnostics();
     }
 

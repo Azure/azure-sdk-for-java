@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.implementation.diagnostics.SingleRequestDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.guava27.Strings;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
@@ -27,7 +27,7 @@ public interface DiagnosticsClientContext {
 
     DiagnosticsClientConfig getConfig();
 
-    CosmosDiagnostics createDiagnostics();
+    SingleRequestDiagnostics createDiagnostics();
 
 
     static final class ClientContextSerializer extends StdSerializer<DiagnosticsClientContext> {

@@ -109,7 +109,7 @@ public class DistinctDocumentQueryExecutionContext<T extends Resource> implement
                 ModelBridgeInternal.getQueryPlanDiagnosticsContext(tFeedResponse),
                 false,
                 false,
-                tFeedResponse.getCosmosDiagnostics());
+                ModelBridgeInternal.feedResponseDiagnostics(tFeedResponse));
         });
 
     }

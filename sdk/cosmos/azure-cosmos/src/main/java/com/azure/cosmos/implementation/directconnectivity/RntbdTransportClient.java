@@ -223,8 +223,8 @@ public class RntbdTransportClient extends TransportClient {
         final Mono<StoreResponse> result = Mono.fromFuture(record.whenComplete((response, throwable) -> {
             record.stage(RntbdRequestRecord.Stage.COMPLETED);
 
-            if (request.requestContext.cosmosDiagnostics == null) {
-                request.requestContext.cosmosDiagnostics = request.createCosmosDiagnostics();
+            if (request.requestContext.singleRequestDiagnostics == null) {
+                request.requestContext.singleRequestDiagnostics = request.createCosmosDiagnostics();
             }
 
             if (response != null) {

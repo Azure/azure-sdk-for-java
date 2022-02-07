@@ -66,12 +66,12 @@ public class PartitionKeyMismatchRetryPolicy extends DocumentClientRetryPolicy {
             //this.clientCollectionCache.refresh(clientException.ResourceAddress);
             if (this.options != null) {
                 this.clientCollectionCache.refresh(
-                    BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics),
+                    this.request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getMetadataDiagnosticsContext(),
                     collectionLink,
                     this.options.getProperties());
             } else {
                 this.clientCollectionCache.refresh(
-                    BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics),
+                    this.request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getMetadataDiagnosticsContext(),
                     collectionLink,
                     null);
             }

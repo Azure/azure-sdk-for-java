@@ -115,7 +115,7 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
                         ModelBridgeInternal.getQueryPlanDiagnosticsContext(t),
                         false,
                         false,
-                        t.getCosmosDiagnostics());
+                        ModelBridgeInternal.feedResponseDiagnostics(t));
                 } else {
                     assert lastPage == false;
                     lastPage = true;
@@ -132,7 +132,7 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
                         ModelBridgeInternal.getQueryPlanDiagnosticsContext(t),
                         false,
                         false,
-                        t.getCosmosDiagnostics());
+                        ModelBridgeInternal.feedResponseDiagnostics(t));
                 }
             }
         });

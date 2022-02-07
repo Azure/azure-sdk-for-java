@@ -6,7 +6,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
-import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosDiagnosticsHelper;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor;
@@ -18,6 +17,7 @@ import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.diagnostics.SingleRequestDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -495,7 +495,7 @@ public class CosmosTracerTest extends TestSuiteBase {
     private void verifyTracerAttributes(TracerProvider tracerProvider, Tracer mockTracer, String methodName,
                                         Context context, String databaseName,
                                         int numberOfTimesCalledWithinTest, String errorType,
-                                        CosmosDiagnostics cosmosDiagnostics,
+                                        SingleRequestDiagnostics singleResponseCosmosDiagnostics,
                                         Map<String, Map<String, Object>> eventAttributesMap) throws JsonProcessingException {
         Mockito.verify(tracerProvider, Mockito.times(numberOfTimesCalledWithinTest)).startSpan(ArgumentMatchers.any(),
             ArgumentMatchers.any(),
@@ -516,14 +516,13 @@ public class CosmosTracerTest extends TestSuiteBase {
         assertThat(startAttributes.get(Tracer.AZ_TRACING_NAMESPACE_KEY)).isEqualTo(TracerProvider.RESOURCE_PROVIDER_NAME);
 
         //verifying diagnostics as events
-        verifyTracerDiagnostics(tracerProvider, cosmosDiagnostics, eventAttributesMap);
+        verifyTracerDiagnostics(tracerProvider, singleResponseCosmosDiagnostics, eventAttributesMap);
     }
 
     private void verifyTracerDiagnostics(TracerProvider tracerProvider,
-                                         CosmosDiagnostics cosmosDiagnostics,
+                                         SingleRequestDiagnostics singleOperationCosmosDiagnostics,
                                          Map<String, Map<String, Object>> attributesMap) throws JsonProcessingException {
-        ClientSideRequestStatistics clientSideRequestStatistics =
-            BridgeInternal.getClientSideRequestStatics(cosmosDiagnostics);
+        ClientSideRequestStatistics clientSideRequestStatistics = singleOperationCosmosDiagnostics.getClientSideRequestStatistics();
         int counter = 1;
         if (clientSideRequestStatistics != null) {
             //verifying add event call for systemInformation
@@ -548,7 +547,7 @@ public class CosmosTracerTest extends TestSuiteBase {
 
 
             //verifying add event call for serializationDiagnostics
-            if (BridgeInternal.getClientSideRequestStatics(cosmosDiagnostics).getSerializationDiagnosticsContext().serializationDiagnosticsList != null) {
+            if (singleOperationCosmosDiagnostics.getClientSideRequestStatistics().getSerializationDiagnosticsContext().serializationDiagnosticsList != null) {
                 for (SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics :
                     clientSideRequestStatistics.getSerializationDiagnosticsContext().serializationDiagnosticsList) {
                     Mockito.verify(tracerProvider, Mockito.times(1)).addEvent(Mockito.eq("SerializationDiagnostics " + serializationDiagnostics.serializationType)
@@ -627,7 +626,7 @@ public class CosmosTracerTest extends TestSuiteBase {
 
             counter = 1;
             for (ClientSideRequestStatistics.AddressResolutionStatistics addressResolutionStatistics :
-                BridgeInternal.getClientSideRequestStatics(cosmosDiagnostics).getAddressResolutionStatistics().values()) {
+                singleOperationCosmosDiagnostics.getClientSideRequestStatistics().getAddressResolutionStatistics().values()) {
                 Mockito.verify(tracerProvider, Mockito.times(1)).addEvent(Mockito.eq("AddressResolutionStatistics" + counter)
                     , ArgumentMatchers.any(),
                     Mockito.eq(OffsetDateTime.ofInstant(addressResolutionStatistics.getStartTimeUTC(),
@@ -638,7 +637,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         }
 
         FeedResponseDiagnostics feedResponseDiagnostics =
-            cosmosDiagnosticsAccessor.getFeedResponseDiagnostics(cosmosDiagnostics);
+            cosmosDiagnosticsAccessor.getFeedResponseDiagnostics(singleOperationcosmosDiagnostics);
         if (feedResponseDiagnostics != null && feedResponseDiagnostics.getClientSideRequestStatisticsList().size() > 0) {
             if (feedResponseDiagnostics.getQueryPlanDiagnosticsContext() != null) {
                 //verifying add event call for query plan

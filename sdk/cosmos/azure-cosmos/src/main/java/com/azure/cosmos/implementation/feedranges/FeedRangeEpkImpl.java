@@ -96,7 +96,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
             "Argument 'collectionResolutionMono' must not be null");
 
         MetadataDiagnosticsContext metadataDiagnosticsCtx =
-            BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+            request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getMetadataDiagnosticsContext();
 
         return collectionResolutionMono
             .flatMap(documentCollectionResourceResponse -> {
@@ -147,7 +147,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
             "Argument 'collectionResolutionMono' must not be null");
 
         MetadataDiagnosticsContext metadataDiagnosticsCtx =
-            BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+            request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getMetadataDiagnosticsContext();
 
         return collectionResolutionMono
             .flatMap(documentCollectionResourceResponse -> {

@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -11,6 +10,7 @@ import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.diagnostics.CosmosDiagnosticsFactory;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -51,7 +51,8 @@ public class CosmosItemResponse<T> {
             return item;
         }
 
-        SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(this.getDiagnostics());
+        SerializationDiagnosticsContext serializationDiagnosticsContext =
+            this.resourceResponse.getDiagnostics().getClientSideRequestStatistics().getSerializationDiagnosticsContext();
         if (item == null && this.itemClassType == InternalObjectNode.class) {
             Instant serializationStartTime = Instant.now();
             item =(T) getProperties();
@@ -178,7 +179,7 @@ public class CosmosItemResponse<T> {
      * @return diagnostics information for the current request to Azure Cosmos DB service.
      */
     public CosmosDiagnostics getDiagnostics() {
-        return resourceResponse.getDiagnostics();
+        return CosmosDiagnosticsFactory.createCosmosDiagnostics(resourceResponse.getDiagnostics());
     }
 
     /**

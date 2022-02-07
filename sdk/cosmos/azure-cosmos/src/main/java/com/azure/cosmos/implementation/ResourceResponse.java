@@ -3,8 +3,8 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.diagnostics.SingleRequestDiagnostics;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -329,7 +329,7 @@ public final class ResourceResponse<T extends Resource> {
      *
      * @return diagnostic statistics for the current request to Azure Cosmos DB service.
      */
-    public CosmosDiagnostics getDiagnostics() {
+    public SingleRequestDiagnostics getDiagnostics() {
         return this.response.getCosmosDiagnostics();
     }
 
@@ -339,7 +339,7 @@ public final class ResourceResponse<T extends Resource> {
      * @return end-to-end request latency for the current request to Azure Cosmos DB service.
      */
     public Duration getDuration() {
-        CosmosDiagnostics cosmosDiagnostics = this.response.getCosmosDiagnostics();
+        SingleRequestDiagnostics  cosmosDiagnostics = this.response.getCosmosDiagnostics();
         if (cosmosDiagnostics == null) {
             return Duration.ZERO;
         }
@@ -353,7 +353,7 @@ public final class ResourceResponse<T extends Resource> {
      * @return diagnostics information for the current request to Azure Cosmos DB service.
      */
     public String getCosmosDiagnosticString() {
-        CosmosDiagnostics cosmosDiagnosticStatistics = this.response.getCosmosDiagnostics();
+        SingleRequestDiagnostics cosmosDiagnosticStatistics = this.response.getCosmosDiagnostics();
         if (cosmosDiagnosticStatistics == null) {
             return StringUtils.EMPTY;
         }

@@ -2,10 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosDiagnostics;
-import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
-import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
+import com.azure.cosmos.implementation.diagnostics.CosmosDiagnosticsFactory;
 import org.mockito.Mockito;
 
 import java.util.UUID;
@@ -45,7 +42,9 @@ public class TestUtils {
     public static DiagnosticsClientContext mockDiagnosticsClientContext() {
         DiagnosticsClientContext clientContext = Mockito.mock(DiagnosticsClientContext.class);
         Mockito.doReturn(new DiagnosticsClientContext.DiagnosticsClientConfig()).when(clientContext).getConfig();
-        Mockito.doReturn(BridgeInternal.createCosmosDiagnostics(clientContext, Mockito.mock(GlobalEndpointManager.class))).when(clientContext).createDiagnostics();
+        Mockito
+            .doReturn(CosmosDiagnosticsFactory.createSingleRequestDiagnostics(clientContext, Mockito.mock(GlobalEndpointManager.class)))
+            .when(clientContext).createDiagnostics();
 
         return clientContext;
     }
@@ -53,7 +52,7 @@ public class TestUtils {
     public static RxDocumentServiceRequest mockDocumentServiceRequest(DiagnosticsClientContext clientContext) {
         RxDocumentServiceRequest dsr = Mockito.mock(RxDocumentServiceRequest.class);
         dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
-        dsr.requestContext.cosmosDiagnostics = clientContext.createDiagnostics();
+        dsr.requestContext.singleRequestDiagnostics = clientContext.createDiagnostics();
         Mockito.doReturn(clientContext.createDiagnostics()).when(dsr).createCosmosDiagnostics();
         Mockito.doReturn(UUID.randomUUID()).when(dsr).getActivityId();
         return dsr;

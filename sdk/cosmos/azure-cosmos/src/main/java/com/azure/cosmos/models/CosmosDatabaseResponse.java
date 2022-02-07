@@ -2,16 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.time.Instant;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 
 /**
  * The type Cosmos database response.
@@ -24,7 +20,8 @@ public class CosmosDatabaseResponse extends CosmosResponse<CosmosDatabasePropert
         if (StringUtils.isEmpty(bodyAsString)) {
             super.setProperties(null);
         } else {
-            SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(this.getDiagnostics());
+            SerializationDiagnosticsContext serializationDiagnosticsContext =
+                response.getDiagnostics().getClientSideRequestStatistics().getSerializationDiagnosticsContext();
             Instant serializationStartTime = Instant.now();
             CosmosDatabaseProperties props =  new CosmosDatabaseProperties(bodyAsString, null);
             Instant serializationEndTime = Instant.now();

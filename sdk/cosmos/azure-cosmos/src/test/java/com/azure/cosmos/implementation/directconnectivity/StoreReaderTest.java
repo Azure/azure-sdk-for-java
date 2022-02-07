@@ -845,7 +845,7 @@ public class StoreReaderTest {
             // catch any exceptions here
         }
 
-        String cosmosDiagnostics = dsr.requestContext.cosmosDiagnostics.toString();
+        String cosmosDiagnostics = dsr.requestContext.singleRequestDiagnostics.toString();
         assertThat(this.getMatchingElementCount(cosmosDiagnostics, "storeResult") >= 1).isTrue();
     }
 

@@ -74,9 +74,7 @@ public class DCountDocumentQueryExecutionContext<T extends Resource> implements 
                        List<ClientSideRequestStatistics> diagnosticsList = new ArrayList<>();
 
                        for (FeedResponse<T> page : superList) {
-                           diagnosticsList.addAll(BridgeInternal
-                                                      .getClientSideRequestStatisticsList(page
-                                                                                              .getCosmosDiagnostics()));
+                           diagnosticsList.addAll(ModelBridgeInternal.feedResponseDiagnostics(page).getClientSideRequestStatisticsList());
                            count += page.getResults().size();
                            requestCharge += page.getRequestCharge();
                            QueryMetrics.mergeQueryMetricsMap(queryMetricsMap,
@@ -100,7 +98,7 @@ public class DCountDocumentQueryExecutionContext<T extends Resource> implements 
                                                                              queryMetricsMap, null, false,
                                                                              false, null);
 
-                       BridgeInternal.addClientSideDiagnosticsToFeed(frp.getCosmosDiagnostics(), diagnosticsList);
+                       BridgeInternal.getFeedResponseDiagnostics(frp).addClientSideRequestStatistics(diagnosticsList);
                        return (FeedResponse<T>) BridgeInternal
                                         .createFeedResponseWithQueryMetrics(Collections
                                                                                 .singletonList(result),
@@ -111,7 +109,7 @@ public class DCountDocumentQueryExecutionContext<T extends Resource> implements 
                                                                                 .getQueryPlanDiagnosticsContext(frp),
                                                                             false,
                                                                             false,
-                                                                            frp.getCosmosDiagnostics());
+                                                                            ModelBridgeInternal.feedResponseDiagnostics(frp));
                    })
                    .flux();
     }

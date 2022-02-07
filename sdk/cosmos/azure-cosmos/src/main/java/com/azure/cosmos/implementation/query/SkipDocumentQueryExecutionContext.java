@@ -84,7 +84,7 @@ public final class SkipDocumentQueryExecutionContext<T extends Resource> impleme
                 ModelBridgeInternal.getQueryPlanDiagnosticsContext(tFeedResponse),
                 false,
                 false,
-                tFeedResponse.getCosmosDiagnostics());
+                ModelBridgeInternal.feedResponseDiagnostics(tFeedResponse));
         });
     }
 

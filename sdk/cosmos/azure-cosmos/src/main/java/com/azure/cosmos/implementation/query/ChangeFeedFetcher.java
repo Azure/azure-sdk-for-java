@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.InvalidPartitionExceptionRetryPolicy;
@@ -197,7 +196,7 @@ class ChangeFeedFetcher<T extends Resource> extends Fetcher<T> {
         @Override
         public void onBeforeSendRequest(RxDocumentServiceRequest request) {
             this.diagnosticsContext =
-                BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+                request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getMetadataDiagnosticsContext();
             this.nextRetryPolicy.onBeforeSendRequest(request);
         }
 

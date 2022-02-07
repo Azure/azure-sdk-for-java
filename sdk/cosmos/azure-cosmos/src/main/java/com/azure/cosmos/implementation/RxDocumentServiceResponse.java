@@ -4,8 +4,8 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.diagnostics.SingleRequestDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.Address;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -194,11 +194,11 @@ public class RxDocumentServiceResponse {
         return null;
     }
 
-    public CosmosDiagnostics getCosmosDiagnostics() {
+    public SingleRequestDiagnostics getCosmosDiagnostics() {
         if (this.storeResponse == null) {
             return null;
         }
-        return this.storeResponse.getCosmosDiagnostics();
+        return this.storeResponse.getSingleResponseDiagnostics();
     }
 
     public DiagnosticsClientContext getDiagnosticsClientContext() {

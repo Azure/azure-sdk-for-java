@@ -521,8 +521,8 @@ public class ImplementationBridgeHelpers {
         }
 
         public interface CosmosDiagnosticsAccessor {
-            FeedResponseDiagnostics getFeedResponseDiagnostics(CosmosDiagnostics cosmosDiagnostics);
             AtomicBoolean isDiagnosticsCapturedInPagedFlux(CosmosDiagnostics cosmosDiagnostics);
+            List<ClientSideRequestStatistics> getClientSideRequestDiagnosticsList(CosmosDiagnostics cosmosDiagnostics);
         }
     }
 

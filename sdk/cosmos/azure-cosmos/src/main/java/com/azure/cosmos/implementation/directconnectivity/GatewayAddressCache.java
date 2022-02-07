@@ -383,7 +383,7 @@ public class GatewayAddressCache implements IAddressCache {
         return dsrObs.map(
             dsr -> {
                 MetadataDiagnosticsContext metadataDiagnosticsContext =
-                    BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+                    request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getMetadataDiagnosticsContext();
                 if (metadataDiagnosticsContext != null) {
                     Instant addressCallEndTime = Instant.now();
                     MetadataDiagnostics metaDataDiagnostic = new MetadataDiagnostics(addressCallStartTime,
@@ -435,11 +435,12 @@ public class GatewayAddressCache implements IAddressCache {
                 }
             }
 
-            if (request.requestContext.cosmosDiagnostics != null) {
-                BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null,
-                    dce);
-                BridgeInternal.setCosmosDiagnostics(dce,
-                    request.requestContext.cosmosDiagnostics);
+            if (request.requestContext.singleRequestDiagnostics != null) {
+                request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().recordGatewayResponse(
+                    request, null, dce);
+                BridgeInternal.setCosmosDiagnostics(
+                    dce,
+                    request.requestContext.singleRequestDiagnostics);
             }
 
             return Mono.error(dce);
@@ -711,7 +712,7 @@ public class GatewayAddressCache implements IAddressCache {
         return dsrObs.map(
             dsr -> {
                 MetadataDiagnosticsContext metadataDiagnosticsContext =
-                    BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+                    request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getMetadataDiagnosticsContext();
                 if (metadataDiagnosticsContext != null) {
                     Instant addressCallEndTime = Instant.now();
                     MetadataDiagnostics metaDataDiagnostic = new MetadataDiagnostics(addressCallStartTime,
@@ -760,11 +761,11 @@ public class GatewayAddressCache implements IAddressCache {
                 }
             }
 
-            if (request.requestContext.cosmosDiagnostics != null) {
-                BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null,
-                    dce);
+            if (request.requestContext.singleRequestDiagnostics != null) {
+                request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().recordGatewayResponse(
+                    request, null, dce);
                 BridgeInternal.setCosmosDiagnostics(dce,
-                    request.requestContext.cosmosDiagnostics);
+                    request.requestContext.singleRequestDiagnostics);
             }
 
             return Mono.error(dce);
@@ -868,20 +869,17 @@ public class GatewayAddressCache implements IAddressCache {
         URI targetEndpointUrl,
         boolean forceRefresh,
         boolean forceCollectionRoutingMapRefresh) {
-        if (request.requestContext.cosmosDiagnostics != null) {
-            return BridgeInternal.recordAddressResolutionStart(
-                request.requestContext.cosmosDiagnostics,
-                targetEndpointUrl,
-                forceRefresh,
-                forceCollectionRoutingMapRefresh);
+        if (request.requestContext.singleRequestDiagnostics != null) {
+            request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().recordAddressResolutionStart(
+                targetEndpointUrl, forceRefresh, forceCollectionRoutingMapRefresh);
         }
 
         return null;
     }
 
     private static void logAddressResolutionEnd(RxDocumentServiceRequest request, String identifier, String errorMessage) {
-        if (request.requestContext.cosmosDiagnostics != null) {
-            BridgeInternal.recordAddressResolutionEnd(request.requestContext.cosmosDiagnostics, identifier, errorMessage);
+        if (request.requestContext.singleRequestDiagnostics != null) {
+            request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().recordAddressResolutionEnd(identifier, errorMessage);
         }
     }
 

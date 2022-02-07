@@ -87,7 +87,7 @@ public final class GroupByDocumentQueryExecutionContext<T extends Resource> impl
                     documentList.addAll(results);
                     requestCharge += page.getRequestCharge();
                     QueryMetrics.mergeQueryMetricsMap(queryMetrics, BridgeInternal.queryMetricsFromFeedResponse(page));
-                    diagnosticsList.addAll(BridgeInternal.getClientSideRequestStatisticsList(page.getCosmosDiagnostics()));
+                    diagnosticsList.addAll(ModelBridgeInternal.feedResponseDiagnostics(page).getClientSideRequestDiagnosticsList());
                 }
 
                 this.aggregateGroupings(documentList);
@@ -133,7 +133,7 @@ public final class GroupByDocumentQueryExecutionContext<T extends Resource> impl
             FeedResponse<Document> frp = BridgeInternal.createFeedResponseWithQueryMetrics(groupByResults, headers,
                                                                                            queryMetrics, null, false,
                                                                                            false, null);
-            BridgeInternal.addClientSideDiagnosticsToFeed(frp.getCosmosDiagnostics(), diagnosticsList);
+            BridgeInternal.getFeedResponseDiagnostics(frp).addClientSideRequestStatistics(diagnosticsList);
             return (FeedResponse<T>) frp;
         }
 

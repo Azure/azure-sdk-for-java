@@ -9,10 +9,8 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.batch.BatchResponseParser;
 import com.azure.cosmos.implementation.batch.PartitionKeyRangeServerBatchRequest;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
@@ -24,6 +22,8 @@ import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
+import com.azure.cosmos.implementation.diagnostics.CosmosDiagnosticsFactory;
+import com.azure.cosmos.implementation.diagnostics.SingleRequestDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.ServerStoreModel;
@@ -385,8 +385,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public CosmosDiagnostics createDiagnostics() {
-       return BridgeInternal.createCosmosDiagnostics(this, this.globalEndpointManager);
+    public SingleRequestDiagnostics createDiagnostics() {
+        return new SingleRequestDiagnostics(this, this.globalEndpointManager);
     }
 
     private void initializeGatewayConfigurationReader() {
@@ -647,7 +647,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
+            SerializationDiagnosticsContext serializationDiagnosticsContext =
+                request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getSerializationDiagnosticsContext();
             if (serializationDiagnosticsContext != null) {
                 serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
             }
@@ -896,7 +897,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
+            SerializationDiagnosticsContext serializationDiagnosticsContext =
+                request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getSerializationDiagnosticsContext();
             if (serializationDiagnosticsContext != null) {
                 serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
             }
@@ -949,7 +951,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
+            SerializationDiagnosticsContext serializationDiagnosticsContext =
+                request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getSerializationDiagnosticsContext();
             if (serializationDiagnosticsContext != null) {
                 serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
             }
@@ -1278,7 +1281,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                                       Document document,
                                                                       RequestOptions options) {
 
-        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs =
+            this.collectionCache.resolveCollectionAsync(
+                request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getMetadataDiagnosticsContext(),
+                request);
         return collectionObs
                 .map(collectionValueHolder -> {
                     addPartitionKeyInformation(request, contentAsByteBuffer, document, options, collectionValueHolder.v);
@@ -1336,7 +1342,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 serializationEndTime,
                 SerializationDiagnosticsContext.SerializationType.PARTITION_KEY_FETCH_SERIALIZATION
             );
-            SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
+            SerializationDiagnosticsContext serializationDiagnosticsContext =
+                request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getSerializationDiagnosticsContext();
             if (serializationDiagnosticsContext != null) {
                 serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
             }
@@ -1419,12 +1426,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             requestRetryPolicy.onBeforeSendRequest(request);
         }
 
-        SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
+        SerializationDiagnosticsContext serializationDiagnosticsContext =
+            request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getSerializationDiagnosticsContext();
         if (serializationDiagnosticsContext != null) {
             serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
         }
 
-        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs =
+            this.collectionCache.resolveCollectionAsync(
+                request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getMetadataDiagnosticsContext(), request);
         return addPartitionKeyInformation(request, content, document, options, collectionObs);
     }
 
@@ -1462,13 +1472,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             requestRetryPolicy.onBeforeSendRequest(request);
         }
 
-        SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
+        SerializationDiagnosticsContext serializationDiagnosticsContext =
+            request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getSerializationDiagnosticsContext();
         if (serializationDiagnosticsContext != null) {
             serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
         }
 
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs =
-            this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
+            this.collectionCache.resolveCollectionAsync(
+                request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getMetadataDiagnosticsContext(),
+                request);
 
         return collectionObs.map((Utils.ValueHolder<DocumentCollection> collectionValueHolder) -> {
             addBatchHeaders(request, serverBatchRequest, collectionValueHolder.v);
@@ -1546,7 +1559,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         MetadataDiagnosticsContext metadataDiagnosticsCtx =
-            BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+            request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getMetadataDiagnosticsContext();
 
         if (this.requiresFeedRangeFiltering(request)) {
             return request.getFeedRange()
@@ -1861,12 +1874,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             retryPolicyInstance.onBeforeSendRequest(request);
         }
 
-        SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
+        SerializationDiagnosticsContext serializationDiagnosticsContext =
+            request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getSerializationDiagnosticsContext();
         if (serializationDiagnosticsContext != null) {
             serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
         }
 
-        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs =
+            collectionCache.resolveCollectionAsync(
+                request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getMetadataDiagnosticsContext(),
+                request);
         Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, content, document, options, collectionObs);
 
         return requestObs.flatMap(req -> replace(request, retryPolicyInstance)
@@ -1917,13 +1934,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             retryPolicyInstance.onBeforeSendRequest(request);
         }
 
-        SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
+        SerializationDiagnosticsContext serializationDiagnosticsContext =
+            request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getSerializationDiagnosticsContext();
         if (serializationDiagnosticsContext != null) {
             serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
         }
 
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(
-            BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
+            request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getMetadataDiagnosticsContext(),
+            request);
 
         // options will always have partition key info, so contentAsByteBuffer can be null and is not needed.
         Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(
@@ -1966,7 +1985,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
+            Mono<Utils.ValueHolder<DocumentCollection>> collectionObs =
+                collectionCache.resolveCollectionAsync(
+                    request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getMetadataDiagnosticsContext(),
+                    request);
 
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, internalObjectNode, options, collectionObs);
 
@@ -2003,7 +2025,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
+            Mono<Utils.ValueHolder<DocumentCollection>> collectionObs =
+                collectionCache.resolveCollectionAsync(
+                    request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getMetadataDiagnosticsContext(),
+                    request);
 
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs);
 
@@ -2038,7 +2063,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
+            Mono<Utils.ValueHolder<DocumentCollection>> collectionObs =
+                this.collectionCache.resolveCollectionAsync(
+                    request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getMetadataDiagnosticsContext(),
+                    request);
 
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs);
 
@@ -2090,7 +2118,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     final PartitionKeyDefinition pkDefinition = collection.getPartitionKey();
 
                     Mono<Utils.ValueHolder<CollectionRoutingMap>> valueHolderMono = partitionKeyRangeCache
-                        .tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
+                        .tryLookupAsync(
+                            request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getMetadataDiagnosticsContext(),
                             collection.getResourceId(),
                             null,
                             null);
@@ -2453,7 +2482,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 () -> {
                     Flux<Utils.ValueHolder<CollectionRoutingMap>> valueHolderMono = this.partitionKeyRangeCache
                         .tryLookupAsync(
-                            BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
+                            request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getMetadataDiagnosticsContext(),
                             collection.getResourceId(),
                             null,
                             null).flux();
@@ -4155,7 +4184,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             Mono<Utils.ValueHolder<List<PartitionKeyRange>>> valueHolderMono = partitionKeyRangeCache
                 .tryGetOverlappingRangesAsync(
-                    BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
+                    request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getMetadataDiagnosticsContext(),
                     collection.getResourceId(), RANGE_INCLUDING_ALL_PARTITION_KEY_RANGES, true, null);
 
             return valueHolderMono.map(partitionKeyRangeList -> toFeedRanges(partitionKeyRangeList, request));

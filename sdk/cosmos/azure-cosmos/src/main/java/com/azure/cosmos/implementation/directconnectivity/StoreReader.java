@@ -94,8 +94,8 @@ public class StoreReader {
 
         String originalSessionToken = entity.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
 
-        if (entity.requestContext.cosmosDiagnostics == null) {
-            entity.requestContext.cosmosDiagnostics = entity.createCosmosDiagnostics();
+        if (entity.requestContext.singleRequestDiagnostics == null) {
+            entity.requestContext.singleRequestDiagnostics = entity.createCosmosDiagnostics();
         }
 
         Mono<ReadReplicaResult> readQuorumResultObs = this.readMultipleReplicasInternalAsync(
@@ -151,7 +151,8 @@ public class StoreReader {
                                         readMode != ReadMode.Strong,
                                         storeRespAndURI.getRight());
 
-                                BridgeInternal.getContactedReplicas(request.requestContext.cosmosDiagnostics).add(storeRespAndURI.getRight().getURI());
+                                request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getContactedReplicas()
+                                        .add(storeRespAndURI.getRight().getURI());
                                 return Flux.just(storeResult);
                             } catch (Exception e) {
                                 // RxJava1 doesn't allow throwing checked exception from Observable operators
@@ -175,7 +176,8 @@ public class StoreReader {
                                 readMode != ReadMode.Strong,
                                 storeRespAndURI.getRight());
                         if (storeException instanceof TransportException) {
-                            BridgeInternal.getFailedReplicas(request.requestContext.cosmosDiagnostics).add(storeRespAndURI.getRight().getURI());
+                            request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getFailedReplicas()
+                                    .add(storeRespAndURI.getRight().getURI());
                         }
                         return Flux.just(storeResult);
                     } catch (Exception e) {
@@ -445,8 +447,8 @@ public class StoreReader {
         }
 
         String originalSessionToken = entity.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
-        if (entity.requestContext.cosmosDiagnostics == null) {
-            entity.requestContext.cosmosDiagnostics = entity.createCosmosDiagnostics();
+        if (entity.requestContext.singleRequestDiagnostics == null) {
+            entity.requestContext.singleRequestDiagnostics = entity.createCosmosDiagnostics();
         }
 
         return this.readPrimaryInternalAsync(
@@ -664,7 +666,7 @@ public class StoreReader {
         StoreResult storeResult = this.createStoreResult(storeResponse, responseException, requiresValidLsn, useLocalLSNBasedHeaders, storePhysicalAddress);
 
         try {
-            BridgeInternal.recordResponse(request.requestContext.cosmosDiagnostics, request, storeResult);
+            request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().recordResponse(request, storeResult);
             if (request.requestContext.requestChargeTracker != null) {
                 request.requestContext.requestChargeTracker.addCharge(storeResult.requestCharge);
             }

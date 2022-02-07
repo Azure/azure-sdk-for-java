@@ -37,6 +37,7 @@ import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
+import com.azure.cosmos.implementation.diagnostics.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
@@ -399,6 +400,11 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> ConcurrentMap<String, QueryMetrics> queryMetrics(FeedResponse<T> feedResponse) {
         return feedResponse.queryMetrics();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <T> FeedResponseDiagnostics feedResponseDiagnostics(FeedResponse<T> feedResponse) {
+        return feedResponse.getFeedResponseDiagnostics();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

@@ -40,7 +40,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
     private static final ThreadLocalRandom random = ThreadLocalRandom.current();
 
     public GoneAndRetryWithRetryPolicy(RxDocumentServiceRequest request, Integer waitTimeInSeconds) {
-        this.retryContext = BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics);
+        this.retryContext = BridgeInternal.getRetryContext(request.requestContext.singleRequestDiagnostics);
         this.goneRetryPolicy = new GoneRetryPolicy(
             request,
             waitTimeInSeconds,

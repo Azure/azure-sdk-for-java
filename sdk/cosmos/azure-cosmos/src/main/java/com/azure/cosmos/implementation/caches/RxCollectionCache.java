@@ -60,8 +60,10 @@ public abstract class RxCollectionCache {
                 init = mono.then(Mono.fromRunnable(() -> request.setForceNameCacheRefresh(false)));
             }
 
-            Mono<Utils.ValueHolder<DocumentCollection>> collectionInfoObs = this.resolveByPartitionKeyRangeIdentityAsync(
-                BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),request.getPartitionKeyRangeIdentity(), request.properties);
+            Mono<Utils.ValueHolder<DocumentCollection>> collectionInfoObs =
+                this.resolveByPartitionKeyRangeIdentityAsync(
+                    request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getMetadataDiagnosticsContext(),
+                    request.getPartitionKeyRangeIdentity(), request.properties);
 
             if (init != null) {
                 collectionInfoObs = init.then(collectionInfoObs);

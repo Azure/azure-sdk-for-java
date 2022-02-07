@@ -9,10 +9,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.implementation.DatabaseAccount;
-import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.implementation.FeedResponseDiagnostics;
-import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
@@ -29,6 +26,8 @@ import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.Warning;
+import com.azure.cosmos.implementation.diagnostics.FeedResponseDiagnostics;
+import com.azure.cosmos.implementation.diagnostics.ICosmosDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
@@ -71,16 +70,6 @@ import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
 public final class BridgeInternal {
 
     private BridgeInternal() {}
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosDiagnostics createCosmosDiagnostics(DiagnosticsClientContext diagnosticsClientContext, GlobalEndpointManager globalEndpointManager) {
-        return new CosmosDiagnostics(diagnosticsClientContext, globalEndpointManager);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static Set<String> getRegionsContacted(CosmosDiagnostics cosmosDiagnostics) {
-        return cosmosDiagnostics.clientSideRequestStatistics().getContactedRegionNames();
-    }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static AsyncDocumentClient getContextClient(CosmosAsyncClient cosmosAsyncClient) {
@@ -159,7 +148,7 @@ public final class BridgeInternal {
         QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext,
         boolean useEtagAsContinuation,
         boolean isNoChangesResponse,
-        CosmosDiagnostics cosmosDiagnostics) {
+        FeedResponseDiagnostics feedResponseDiagnostics) {
         FeedResponse<T> feedResponseWithQueryMetrics = ModelBridgeInternal.createFeedResponseWithQueryMetrics(
             results,
             headers,
@@ -168,41 +157,19 @@ public final class BridgeInternal {
             useEtagAsContinuation,
             isNoChangesResponse);
 
-        ClientSideRequestStatistics requestStatistics;
-        if (cosmosDiagnostics != null) {
-            requestStatistics = cosmosDiagnostics.clientSideRequestStatistics();
-            if (requestStatistics != null) {
-                BridgeInternal.addClientSideDiagnosticsToFeed(feedResponseWithQueryMetrics.getCosmosDiagnostics(),
-                                                              Collections.singletonList(requestStatistics));
-            }
-            BridgeInternal.addClientSideDiagnosticsToFeed(feedResponseWithQueryMetrics.getCosmosDiagnostics(),
-                                                          cosmosDiagnostics.getFeedResponseDiagnostics()
-                                                              .getClientSideRequestStatisticsList());
+        if (feedResponseDiagnostics != null) {
+            ModelBridgeInternal.feedResponseDiagnostics(feedResponseWithQueryMetrics).addClientSideRequestStatistics(feedResponseDiagnostics.getClientSideRequestStatisticsList());
         }
 
         return feedResponseWithQueryMetrics;
     }
 
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosDiagnostics createCosmosDiagnostics(Map<String, QueryMetrics> queryMetricsMap) {
-        return new CosmosDiagnostics(new FeedResponseDiagnostics(queryMetricsMap));
+    public static CosmosDiagnostics createCosmosDiagnostics(ICosmosDiagnostics internalCosmosDiagnostics) {
+        return new CosmosDiagnostics(internalCosmosDiagnostics);
     }
 
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setFeedResponseDiagnostics(CosmosDiagnostics cosmosDiagnostics,
-                                                  ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
-        cosmosDiagnostics.setFeedResponseDiagnostics(new FeedResponseDiagnostics(queryMetricsMap));
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setQueryPlanDiagnosticsContext(CosmosDiagnostics cosmosDiagnostics, QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext) {
-        cosmosDiagnostics.getFeedResponseDiagnostics().setDiagnosticsContext(diagnosticsContext);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void addClientSideDiagnosticsToFeed(CosmosDiagnostics cosmosDiagnostics,
-                         List<ClientSideRequestStatistics> requestStatistics) {
-        cosmosDiagnostics.getFeedResponseDiagnostics().addClientSideRequestStatistics(requestStatistics);
+    public static <T> FeedResponseDiagnostics getFeedResponseDiagnostics(FeedResponse<T> feedResponse) {
+        return ModelBridgeInternal.feedResponseDiagnostics(feedResponse);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -525,108 +492,6 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static List<ClientSideRequestStatistics> getClientSideRequestStatisticsList(CosmosDiagnostics cosmosDiagnostics) {
-        //Used only during aggregations like Aggregate/Orderby/Groupby which may contain clientSideStats in
-        //feedResponseDiagnostics. So we need to add from both the places
-        List<ClientSideRequestStatistics> clientSideRequestStatisticsList = new ArrayList<>();
-
-        if (cosmosDiagnostics != null) {
-            clientSideRequestStatisticsList
-                .addAll(cosmosDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatisticsList());
-            if (cosmosDiagnostics.clientSideRequestStatistics() != null) {
-                clientSideRequestStatisticsList.add(cosmosDiagnostics.clientSideRequestStatistics());
-            }
-        }
-        return clientSideRequestStatisticsList;
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static ClientSideRequestStatistics getClientSideRequestStatics(CosmosDiagnostics cosmosDiagnostics) {
-        ClientSideRequestStatistics clientSideRequestStatistics = null;
-        if (cosmosDiagnostics != null) {
-            clientSideRequestStatistics = cosmosDiagnostics.clientSideRequestStatistics();
-        }
-        return clientSideRequestStatistics;
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setGatewayRequestTimelineOnDiagnostics(CosmosDiagnostics cosmosDiagnostics,
-                                                              RequestTimeline requestTimeline) {
-        cosmosDiagnostics.clientSideRequestStatistics().setGatewayRequestTimeline(requestTimeline);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void recordResponse(CosmosDiagnostics cosmosDiagnostics,
-                                      RxDocumentServiceRequest request, StoreResult storeResult) {
-        cosmosDiagnostics.clientSideRequestStatistics().recordResponse(request, storeResult);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void recordRetryContextEndTime(CosmosDiagnostics cosmosDiagnostics) {
-        cosmosDiagnostics.clientSideRequestStatistics().recordRetryContextEndTime();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static MetadataDiagnosticsContext getMetaDataDiagnosticContext(CosmosDiagnostics cosmosDiagnostics){
-        if(cosmosDiagnostics == null) {
-            return null;
-        }
-
-        return cosmosDiagnostics.clientSideRequestStatistics().getMetadataDiagnosticsContext();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static SerializationDiagnosticsContext getSerializationDiagnosticsContext(CosmosDiagnostics cosmosDiagnostics){
-        if(cosmosDiagnostics == null) {
-            return null;
-        }
-
-        return cosmosDiagnostics.clientSideRequestStatistics().getSerializationDiagnosticsContext();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void recordGatewayResponse(CosmosDiagnostics cosmosDiagnostics,
-                                             RxDocumentServiceRequest rxDocumentServiceRequest,
-                                             StoreResponse storeResponse,
-                                             CosmosException exception) {
-        cosmosDiagnostics.clientSideRequestStatistics().recordGatewayResponse(rxDocumentServiceRequest, storeResponse, exception);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static String recordAddressResolutionStart(CosmosDiagnostics cosmosDiagnostics,
-                                                      URI targetEndpoint,
-                                                      boolean forceRefresh,
-                                                      boolean forceCollectionRoutingMapRefresh) {
-        return cosmosDiagnostics.clientSideRequestStatistics().recordAddressResolutionStart(
-            targetEndpoint,
-            forceRefresh,
-            forceCollectionRoutingMapRefresh);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void recordAddressResolutionEnd(CosmosDiagnostics cosmosDiagnostics,
-                                                  String identifier,
-                                                  String errorMessage) {
-        cosmosDiagnostics.clientSideRequestStatistics().recordAddressResolutionEnd(identifier, errorMessage);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static List<URI> getContactedReplicas(CosmosDiagnostics cosmosDiagnostics) {
-        return cosmosDiagnostics.clientSideRequestStatistics().getContactedReplicas();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void setContactedReplicas(CosmosDiagnostics cosmosDiagnostics,
-                                            List<URI> contactedReplicas) {
-        cosmosDiagnostics.clientSideRequestStatistics().setContactedReplicas(contactedReplicas);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static Set<URI> getFailedReplicas(CosmosDiagnostics cosmosDiagnostics) {
-        return cosmosDiagnostics.clientSideRequestStatistics().getFailedReplicas();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> ConcurrentMap<String, QueryMetrics> queryMetricsFromFeedResponse(FeedResponse<T> feedResponse) {
         return ModelBridgeInternal.queryMetrics(feedResponse);
     }
@@ -714,14 +579,5 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosAsyncContainer getControlContainerFromThroughputGlobalControlConfig(GlobalThroughputControlConfig globalControlConfig) {
         return globalControlConfig.getControlContainer();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static RetryContext getRetryContext(CosmosDiagnostics cosmosDiagnostics) {
-        if(cosmosDiagnostics != null && cosmosDiagnostics.clientSideRequestStatistics() != null) {
-            return cosmosDiagnostics.clientSideRequestStatistics().getRetryContext();
-        } else {
-            return null;
-        }
     }
 }

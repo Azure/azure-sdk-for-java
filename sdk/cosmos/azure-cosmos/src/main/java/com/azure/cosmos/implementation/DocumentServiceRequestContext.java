@@ -4,15 +4,13 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.implementation.diagnostics.SingleRequestDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class DocumentServiceRequestContext implements Cloneable {
@@ -36,7 +34,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile List<String> storeResponses;
     public volatile StoreResult quorumSelectedStoreResponse;
     public volatile PartitionKeyInternal effectivePartitionKey;
-    public volatile CosmosDiagnostics cosmosDiagnostics;
+    public volatile SingleRequestDiagnostics singleRequestDiagnostics;
     public volatile String resourcePhysicalAddress;
     public volatile String throughputControlCycleId;
 
@@ -98,7 +96,7 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.performLocalRefreshOnGoneException = this.performLocalRefreshOnGoneException;
         context.effectivePartitionKey = this.effectivePartitionKey;
         context.performedBackgroundAddressRefresh = this.performedBackgroundAddressRefresh;
-        context.cosmosDiagnostics = this.cosmosDiagnostics;
+        context.singleRequestDiagnostics = this.singleRequestDiagnostics;
         context.resourcePhysicalAddress = this.resourcePhysicalAddress;
         context.throughputControlCycleId = this.throughputControlCycleId;
         return context;

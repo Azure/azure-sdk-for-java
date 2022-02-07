@@ -98,7 +98,10 @@ public class RenameCollectionAwareClientRetryPolicyTest {
         DocumentCollection documentCollection = new DocumentCollection();
         ModelBridgeInternal.setResourceId(documentCollection, "rid_1");
 
-        Mockito.when(rxClientCollectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request)).thenReturn(Mono.just(new Utils.ValueHolder<>(documentCollection)));
+        Mockito.when(rxClientCollectionCache.resolveCollectionAsync(
+            request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().getMetadataDiagnosticsContext(),
+            request))
+            .thenReturn(Mono.just(new Utils.ValueHolder<>(documentCollection)));
 
         Mono<ShouldRetryResult> singleShouldRetry = renameCollectionAwareClientRetryPolicy
                 .shouldRetry(notFoundException);

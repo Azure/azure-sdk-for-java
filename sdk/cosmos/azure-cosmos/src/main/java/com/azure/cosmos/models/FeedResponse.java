@@ -5,7 +5,6 @@ package com.azure.cosmos.models;
 
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.ContinuablePage;
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -15,8 +14,12 @@ import com.azure.cosmos.implementation.QueryMetricsConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.diagnostics.CosmosDiagnosticsFactory;
+import com.azure.cosmos.implementation.diagnostics.FeedResponseDiagnostics;
+import com.azure.cosmos.implementation.diagnostics.SingleRequestDiagnostics;
 import com.azure.cosmos.implementation.query.QueryInfo;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,21 +41,17 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     final boolean nochanges;
     private final ConcurrentMap<String, QueryMetrics> queryMetricsMap;
     private final static String defaultPartition = "0";
-    private CosmosDiagnostics cosmosDiagnostics;
+    private FeedResponseDiagnostics feedResponseDiagnostics;
     private QueryInfo queryInfo;
     private QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnosticsContext;
 
     FeedResponse(List<T> results, Map<String, String> headers) {
-        this(results, headers, false, false, new ConcurrentHashMap<>());
+        this(results, headers, false, false, new ConcurrentHashMap<>(), null);
     }
 
     // TODO: probably have to add two booleans
     FeedResponse(List<T> results, RxDocumentServiceResponse response) {
-        this(results, response.getResponseHeaders(), false, false, new ConcurrentHashMap<>());
-        this.cosmosDiagnostics =response.getCosmosDiagnostics();
-        if (this.cosmosDiagnostics != null) {
-            BridgeInternal.setFeedResponseDiagnostics(this.cosmosDiagnostics, queryMetricsMap);
-        }
+        this(results, response.getResponseHeaders(), false, false, new ConcurrentHashMap<>(), response.getCosmosDiagnostics());
     }
 
     FeedResponse(
@@ -62,11 +61,11 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         boolean useEtagAsContinuation,
         boolean isNoChanges) {
 
-        this(results, headers, useEtagAsContinuation, isNoChanges, queryMetricsMap);
+        this(results, headers, useEtagAsContinuation, isNoChanges, queryMetricsMap, null);
     }
 
     FeedResponse(List<T> results, Map<String, String> header, boolean nochanges) {
-        this(results, header, true, nochanges, new ConcurrentHashMap<>());
+        this(results, header, true, nochanges, new ConcurrentHashMap<>(), null);
     }
 
     // TODO: need to more sure the query metrics can round trip just from the headers.
@@ -76,7 +75,8 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         Map<String, String> header,
         boolean useEtagAsContinuation,
         boolean nochanges,
-        ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
+        ConcurrentMap<String, QueryMetrics> queryMetricsMap,
+        SingleRequestDiagnostics cosmosDiagnostics) {
         this.results = results;
         this.header = header;
         this.usageHeaders = new HashMap<>();
@@ -84,7 +84,11 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         this.useEtagAsContinuation = useEtagAsContinuation;
         this.nochanges = nochanges;
         this.queryMetricsMap = new ConcurrentHashMap<>(queryMetricsMap);
-        this.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics(queryMetricsMap);
+
+        this.feedResponseDiagnostics = new FeedResponseDiagnostics(queryMetricsMap);
+        if (cosmosDiagnostics != null) {
+            this.feedResponseDiagnostics.addClientSideRequestStatistics(Arrays.asList(cosmosDiagnostics.getClientSideRequestStatistics()));
+        }
     }
 
     /**
@@ -373,7 +377,11 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
      * @return Feed response diagnostics
      */
     public CosmosDiagnostics getCosmosDiagnostics() {
-        return this.cosmosDiagnostics;
+        return CosmosDiagnosticsFactory.createCosmosDiagnostics(this.feedResponseDiagnostics);
+    }
+
+    FeedResponseDiagnostics getFeedResponseDiagnostics() {
+        return this.feedResponseDiagnostics;
     }
 
     ConcurrentMap<String, QueryMetrics> queryMetrics() {
@@ -484,7 +492,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
 
     void setQueryPlanDiagnosticsContext(QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnosticsContext) {
         this.queryPlanDiagnosticsContext = queryPlanDiagnosticsContext;
-        BridgeInternal.setQueryPlanDiagnosticsContext(cosmosDiagnostics, queryPlanDiagnosticsContext);
+        this.feedResponseDiagnostics.setQueryPlanDiagnosticsContext(queryPlanDiagnosticsContext);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////

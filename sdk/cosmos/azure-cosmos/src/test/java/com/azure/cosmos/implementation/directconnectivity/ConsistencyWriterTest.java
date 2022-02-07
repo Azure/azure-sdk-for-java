@@ -184,7 +184,7 @@ public class ConsistencyWriterTest {
         ConsistencyWriter spyConsistencyWriter = Mockito.spy(this.consistencyWriter);
         TestSubscriber<StoreResponse> subscriber = new TestSubscriber<>();
         RxDocumentServiceRequest request = mockDocumentServiceRequest(clientContext);
-        ClientSideRequestStatistics clientSideRequestStatistics = BridgeInternal.getClientSideRequestStatics(request.requestContext.cosmosDiagnostics);
+        ClientSideRequestStatistics clientSideRequestStatistics = BridgeInternal.getClientSideRequestStatics(request.requestContext.singleRequestDiagnostics);
         RetryContext retryContext = Mockito.mock(RetryContext.class);
         ReflectionUtils.setRetryContext(clientSideRequestStatistics, retryContext);
         Mockito.doReturn(2).when(retryContext).getRetryCount();
@@ -206,7 +206,7 @@ public class ConsistencyWriterTest {
         ConsistencyWriter spyConsistencyWriter = Mockito.spy(this.consistencyWriter);
         TestSubscriber<StoreResponse> subscriber = new TestSubscriber<>();
         RxDocumentServiceRequest request = mockDocumentServiceRequest(clientContext);
-        ClientSideRequestStatistics clientSideRequestStatistics = BridgeInternal.getClientSideRequestStatics(request.requestContext.cosmosDiagnostics);
+        ClientSideRequestStatistics clientSideRequestStatistics = BridgeInternal.getClientSideRequestStatics(request.requestContext.singleRequestDiagnostics);
         RetryContext retryContext = Mockito.mock(RetryContext.class);
         ReflectionUtils.setRetryContext(clientSideRequestStatistics, retryContext);
         Mockito.doReturn(2).when(retryContext).getRetryCount();
@@ -261,7 +261,7 @@ public class ConsistencyWriterTest {
 
         consistencyWriter.writeAsync(dsr, timeoutHelper, false).subscribe();
 
-        String cosmosDiagnostics = dsr.requestContext.cosmosDiagnostics.toString();
+        String cosmosDiagnostics = dsr.requestContext.singleRequestDiagnostics.toString();
         assertThat(cosmosDiagnostics).containsOnlyOnce("storeResult");
     }
 

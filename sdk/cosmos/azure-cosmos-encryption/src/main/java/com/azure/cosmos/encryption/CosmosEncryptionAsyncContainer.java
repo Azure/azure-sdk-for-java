@@ -704,7 +704,7 @@ public class CosmosEncryptionAsyncContainer {
                             ModelBridgeInternal.getQueryPlanDiagnosticsContext(page),
                             useEtagAsContinuation,
                             isNoChangesResponse,
-                            page.getCosmosDiagnostics())
+                            ModelBridgeInternal.feedResponseDiagnostics(page))
                         );
                     }
                 )

@@ -105,8 +105,8 @@ public class StoreClient implements IStoreClient {
                         return;
                     }
 
-                    BridgeInternal.recordRetryContextEndTime(request.requestContext.cosmosDiagnostics);
-                    exception = BridgeInternal.setCosmosDiagnostics(exception, request.requestContext.cosmosDiagnostics);
+                    request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().recordRetryContextEndTime();
+                    exception = BridgeInternal.setCosmosDiagnostics(exception, request.requestContext.singleRequestDiagnostics);
 
                     handleUnsuccessfulStoreResponse(request, exception);
                 } catch (Throwable throwable) {
@@ -152,8 +152,8 @@ public class StoreClient implements IStoreClient {
 
         this.updateResponseHeader(request, headers);
         this.captureSessionToken(request, headers);
-        BridgeInternal.recordRetryContextEndTime(request.requestContext.cosmosDiagnostics);
-        storeResponse.setCosmosDiagnostics(request.requestContext.cosmosDiagnostics);
+        request.requestContext.singleRequestDiagnostics.getClientSideRequestStatistics().recordRetryContextEndTime();
+        storeResponse.setSingleResponseDiagnostics(request.requestContext.singleRequestDiagnostics);
         return new RxDocumentServiceResponse(this.diagnosticsClientContext, storeResponse);
     }
 

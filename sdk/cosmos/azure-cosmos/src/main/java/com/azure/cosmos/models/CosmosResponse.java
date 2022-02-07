@@ -4,7 +4,7 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.ResourceResponse;
-import com.azure.cosmos.implementation.StoredProcedureResponse;
+import com.azure.cosmos.implementation.diagnostics.CosmosDiagnosticsFactory;
 
 import java.time.Duration;
 import java.util.Map;
@@ -118,7 +118,7 @@ public class CosmosResponse<T> {
      * @return diagnostics information for the current request to Azure Cosmos DB service.
      */
     public CosmosDiagnostics getDiagnostics() {
-        return resourceResponseWrapper.getDiagnostics();
+        return CosmosDiagnosticsFactory.createCosmosDiagnostics(resourceResponseWrapper.getDiagnostics());
     }
 
     /**

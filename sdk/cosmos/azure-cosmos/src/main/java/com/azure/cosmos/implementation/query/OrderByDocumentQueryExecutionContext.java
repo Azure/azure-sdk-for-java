@@ -601,7 +601,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                 ModelBridgeInternal.getQueryPlanDiagnosticsContext(page),
                 false,
                 false,
-                page.getCosmosDiagnostics());
+                ModelBridgeInternal.feedResponseDiagnostics(page));
         }
 
         @Override
@@ -683,9 +683,9 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                         BridgeInternal.queryMetricsFromFeedResponse(feedOfOrderByRowResults),
                         ModelBridgeInternal.getQueryPlanDiagnosticsContext(feedOfOrderByRowResults),
                         false,
-                        false, feedOfOrderByRowResults.getCosmosDiagnostics());
-                    BridgeInternal.addClientSideDiagnosticsToFeed(feedResponse.getCosmosDiagnostics(),
-                                                                  clientSideRequestStatisticsList);
+                        false,
+                        ModelBridgeInternal.feedResponseDiagnostics(feedOfOrderByRowResults));
+                    BridgeInternal.getFeedResponseDiagnostics(feedResponse).addClientSideRequestStatistics(clientSideRequestStatisticsList);
                     return feedResponse;
                 }).switchIfEmpty(Flux.defer(() -> {
                         // create an empty page if there is no result
@@ -697,8 +697,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                             false,
                             false,
                             null);
-                    BridgeInternal.addClientSideDiagnosticsToFeed(frp.getCosmosDiagnostics(),
-                                                                  clientSideRequestStatisticsList);
+                    BridgeInternal.getFeedResponseDiagnostics(frp).addClientSideRequestStatistics(clientSideRequestStatisticsList);
                     return Flux.just(frp);
                     }));
         }
