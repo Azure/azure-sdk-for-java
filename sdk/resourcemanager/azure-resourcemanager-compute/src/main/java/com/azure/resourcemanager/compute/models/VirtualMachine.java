@@ -1416,6 +1416,19 @@ public interface VirtualMachine
             WithCreate withNewSecondaryNetworkInterface(Creatable<NetworkInterface> creatable);
 
             /**
+             * Creates a new network interface to associate with the virtual machine, based on the provided definition.
+             *
+             * <p>Note this method's effect is additive, i.e. each time it is used, a new secondary network interface
+             * added to the virtual machine.
+             *
+             * @param creatable a creatable definition for a new network interface
+             * @param deleteOptions the delete options to the network interface
+             * @return the next stage of the definition
+             */
+            WithCreate withNewSecondaryNetworkInterface(Creatable<NetworkInterface> creatable,
+                                                        DeleteOptions deleteOptions);
+
+            /**
              * Associates an existing network interface with the virtual machine.
              *
              * <p>Note this method's effect is additive, i.e. each time it is used, the new secondary network interface
@@ -2011,6 +2024,19 @@ public interface VirtualMachine
              * @return the next stage of the update
              */
             Update withNewSecondaryNetworkInterface(Creatable<NetworkInterface> creatable);
+
+            /**
+             * Creates a new network interface to associate with the virtual machine, based on the provided definition.
+             *
+             * <p>Note this method's effect is additive, i.e. each time it is used, a new secondary network interface
+             * added to the virtual machine.
+             *
+             * @param creatable a creatable definition for a new network interface
+             * @param deleteOptions the delete options to the network interface
+             * @return the next stage of the definition
+             */
+            Update withNewSecondaryNetworkInterface(Creatable<NetworkInterface> creatable,
+                                                    DeleteOptions deleteOptions);
 
             /**
              * Associates an existing network interface with the virtual machine.

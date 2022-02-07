@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
@@ -136,8 +137,6 @@ class VirtualMachineImpl
     private String creatableAvailabilitySetKey;
     // unique key of a creatable network interface that needs to be used as virtual machine's primary network interface
     private String creatablePrimaryNetworkInterfaceKey;
-    //
-    private DeleteOptions primaryNetworkInterfaceDeleteOptions;
     // unique key of a creatable network interfaces that needs to be used as virtual machine's secondary network
     // interface
     private List<String> creatableSecondaryNetworkInterfaceKeys;
@@ -180,6 +179,11 @@ class VirtualMachineImpl
     private ProximityPlacementGroupType newProximityPlacementGroupType;
     // To manage OS profile
     private boolean removeOsProfile;
+
+    // delete option for primary network interface
+    private DeleteOptions primaryNetworkInterfaceDeleteOptions;
+    // delete options for secondary network interface
+    private final Map<String, DeleteOptions> secondaryNetworkInterfaceDeleteOptions = new HashMap<>();
 
     // Snapshot of the updateParameter when update() is called, used to compare whether there is modification to VM during updateResourceAsync
     VirtualMachineUpdateInner updateParameterSnapshotOnUpdate;
@@ -558,10 +562,10 @@ class VirtualMachineImpl
             definitionAfterGroup = definitionWithGroup.withExistingResourceGroup(this.resourceGroupName());
         }
         this.implicitPipCreatable = definitionAfterGroup.withLeafDomainLabel(leafDnsLabel);
-        if (deleteOptions != null) {
-            this.implicitPipCreatable = this.implicitPipCreatable.withDeleteOptions(
-                com.azure.resourcemanager.network.models.DeleteOptions.fromString(deleteOptions.toString()));
-        }
+//        if (deleteOptions != null) {
+//            this.implicitPipCreatable = this.implicitPipCreatable.withDeleteOptions(
+//                com.azure.resourcemanager.network.models.DeleteOptions.fromString(deleteOptions.toString()));
+//        }
         // Create NIC with creatable PIP
         Creatable<NetworkInterface> nicCreatable =
             this.nicDefinitionWithCreate.withNewPrimaryPublicIPAddress(this.implicitPipCreatable);
@@ -1248,6 +1252,17 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl withNewSecondaryNetworkInterface(Creatable<NetworkInterface> creatable) {
         this.creatableSecondaryNetworkInterfaceKeys.add(this.addDependency(creatable));
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withNewSecondaryNetworkInterface(Creatable<NetworkInterface> creatable,
+                                                               DeleteOptions deleteOptions) {
+        String key = this.addDependency(creatable);
+        this.creatableSecondaryNetworkInterfaceKeys.add(key);
+        if (deleteOptions != null) {
+            this.secondaryNetworkInterfaceDeleteOptions.put(key, deleteOptions);
+        }
         return this;
     }
 
@@ -1963,6 +1978,7 @@ class VirtualMachineImpl
         clearCachedRelatedResources();
         initializeDataDisks();
         virtualMachineMsiHandler.clear();
+        secondaryNetworkInterfaceDeleteOptions.clear();
     }
 
     VirtualMachineImpl withUnmanagedDataDisk(UnmanagedDataDiskImpl dataDisk) {
@@ -2196,6 +2212,11 @@ class VirtualMachineImpl
             NetworkInterfaceReference nicReference = new NetworkInterfaceReference();
             nicReference.withPrimary(false);
             nicReference.withId(secondaryNetworkInterface.id());
+            if (secondaryNetworkInterfaceDeleteOptions.containsKey(creatableSecondaryNetworkInterfaceKey)) {
+                DeleteOptions deleteOptions
+                    = secondaryNetworkInterfaceDeleteOptions.get(creatableSecondaryNetworkInterfaceKey);
+                nicReference.withDeleteOption(deleteOptions);
+            }
             this.innerModel().networkProfile().networkInterfaces().add(nicReference);
         }
 
