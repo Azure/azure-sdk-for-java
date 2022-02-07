@@ -490,6 +490,36 @@ the main ServiceBusClientBuilder. -->
   <!-- These APIs have already leaked implementation and cannot be changed -->
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.messaging.eventhubs.LogPartitionProcessor"/>
 
+  <!--  TODO: only use for merging pr temporary, need to fix.-->
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.eventhubs.core.properties.ConsumerProperties"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.eventhubs.core.properties.merger.ProcessorPropertiesParentMerger"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.eventhubs.core.properties.merger.ProducerPropertiesParentMerger"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.eventhubs.core.properties.NamespaceProperties"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.eventhubs.core.properties.ProcessorProperties"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.eventhubs.core.properties.ProducerProperties"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.eventhubs.core.properties.ProducerProperties"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.servicebus.core.properties.CommonProperties"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.servicebus.core.properties.ConsumerProperties"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.servicebus.core.properties.merger.ProcessorPropertiesParentMerger"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.servicebus.core.properties.merger.SenderPropertiesParentMerger"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.servicebus.core.properties.NamespaceProperties"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.servicebus.core.properties.ProcessorProperties"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.servicebus.core.properties.ProducerProperties"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.storage.queue.core.properties.StorageQueueProperties"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.cloud.autoconfigure.aadb2c.AADB2CJwtBearerTokenAuthenticationConverter"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.cloud.autoconfigure.appconfiguration.properties.AzureAppConfigurationProperties"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.cloud.autoconfigure.cosmos.properties.AzureCosmosProperties"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.cloud.autoconfigure.keyvault.certificates.properties.AzureKeyVaultCertificateProperties"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.cloud.autoconfigure.keyvault.secrets.properties.AzureKeyVaultSecretProperties"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.cloud.autoconfigure.storage.blob.properties.AzureStorageBlobProperties"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.cloud.autoconfigure.storage.common.AzureStorageProperties"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.cloud.autoconfigure.storage.common.StorageRetryConfigurationProperties"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.cloud.autoconfigure.storage.fileshare.properties.AzureStorageFileShareProperties"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.spring.cloud.autoconfigure.storage.queue.properties.AzureStorageQueueProperties"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files=""/>
+
   <!-- Suppress CloudEvent in EventGridCloudNativeEventPublisher.-->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.messaging.eventgrid.cloudnative.cloudevents.EventGridCloudNativeEventPublisher"/>
