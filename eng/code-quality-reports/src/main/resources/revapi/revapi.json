@@ -150,13 +150,6 @@
         },
         {
           "regex": true,
-          "code": ".*",
-          "newArchive": "com\\.azure:azure-core:.*",
-          "newArchiveRole": "supplementary",
-          "justification": "Ignore dependency changes in azure-core."
-        },
-        {
-          "regex": true,
           "code": "java\\.class\\.externalClassExposedInAPI",
           "new": "(interface|class|enum) io\\.opentelemetry.*",
           "justification": "Azure Monitor Exporter is allowed to use OpenTelemetry types in public APIs as it implements interfaces defined by OpenTelemetry"
