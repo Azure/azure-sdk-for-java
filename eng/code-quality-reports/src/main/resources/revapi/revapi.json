@@ -150,6 +150,7 @@
         },
         {
           "regex": true,
+          "code": ".*",
           "newArchive": "com\\.azure:azure-core:.*",
           "newArchiveRole": "supplementary",
           "justification": "Ignore dependency changes in azure-core."
