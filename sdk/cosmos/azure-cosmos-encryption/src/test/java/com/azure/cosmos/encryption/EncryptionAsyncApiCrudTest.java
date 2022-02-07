@@ -9,7 +9,22 @@ import com.azure.cosmos.encryption.implementation.ReflectionUtils;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
-import com.azure.cosmos.models.*;
+import com.azure.cosmos.models.ClientEncryptionIncludedPath;
+import com.azure.cosmos.models.ClientEncryptionPolicy;
+import com.azure.cosmos.models.CosmosBatch;
+import com.azure.cosmos.models.CosmosBatchItemRequestOptions;
+import com.azure.cosmos.models.CosmosBatchResponse;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.EncryptionKeyWrapMetadata;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.CosmosPatchOperations;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -76,14 +91,6 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         EncryptionPojo readItem = cosmosEncryptionAsyncContainer.readItem(properties.getId(), new PartitionKey(properties.getMypk()),
             new CosmosItemRequestOptions(), EncryptionPojo.class).block().getItem();
         validateResponse(properties, readItem);
-
-        List<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
-        cosmosItemIdentities.add(new CosmosItemIdentity(new PartitionKey(properties.getMypk()), properties.getId()));
-        Mono<FeedResponse<EncryptionPojo>> feedResponseMono = cosmosEncryptionAsyncContainer.readMany(cosmosItemIdentities, EncryptionPojo.class);
-
-        if (feedResponseMono != null) {
-            System.out.println("abc");
-        }
 
         //Check for length support greater than 8000
         properties = getItem(UUID.randomUUID().toString());

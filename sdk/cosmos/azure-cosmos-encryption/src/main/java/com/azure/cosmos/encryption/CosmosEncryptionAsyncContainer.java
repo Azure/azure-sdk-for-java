@@ -21,10 +21,24 @@ import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.query.Transformer;
-import com.azure.cosmos.models.*;
+import com.azure.cosmos.models.CosmosBatch;
+import com.azure.cosmos.models.CosmosBatchOperationResult;
+import com.azure.cosmos.models.CosmosBatchRequestOptions;
+import com.azure.cosmos.models.CosmosBatchResponse;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.patch.PatchOperationCore;
 import com.azure.cosmos.implementation.patch.PatchOperationType;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -385,26 +399,7 @@ public class CosmosEncryptionAsyncContainer {
             .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse, classType)));
     }
 
-    /**
-     * Reads many documents.
-     *
-     * @param <T> the type parameter
-     * @param itemIdentityList CosmosItem id and partition key tuple of items that that needs to be read
-     * @param classType   class type
-     * @return a Mono with feed response of cosmos items
-     */
-    public <T> Mono<FeedResponse<T>> readMany(
-        List<CosmosItemIdentity> itemIdentityList,
-        Class<T> classType) {
 
-        Mono<FeedResponse<T>> feedResponseMono = this.container.readMany(itemIdentityList, classType);
-        FeedResponse<T> response = feedResponseMono.block();
-        if (feedResponseMono != null || response != null) {
-            System.out.println("abc");
-        }
-
-        return null;
-    }
 
     /**
      * Query for items in the current container.
