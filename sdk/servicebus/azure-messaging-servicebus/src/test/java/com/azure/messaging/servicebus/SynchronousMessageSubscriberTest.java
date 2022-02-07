@@ -14,7 +14,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.reactivestreams.Subscription;
+import reactor.core.publisher.Mono;
+import reactor.test.publisher.TestPublisher;
 
+import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,6 +32,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -42,6 +47,10 @@ public class SynchronousMessageSubscriberTest {
     private static final int NUMBER_OF_WORK_ITEMS = 4;
     private static final int NUMBER_OF_WORK_ITEMS_2 = 3;
 
+    private final Duration operationTimeout = Duration.ofSeconds(10);
+
+    @Mock
+    private ServiceBusReceiverAsyncClient asyncClient;
     @Mock
     private SynchronousReceiveWork work1;
     @Mock
@@ -66,7 +75,7 @@ public class SynchronousMessageSubscriberTest {
         when(work2.getId()).thenReturn(WORK_ID_2);
         when(work2.getNumberOfEvents()).thenReturn(NUMBER_OF_WORK_ITEMS_2);
 
-        syncSubscriber = new SynchronousMessageSubscriber(work1);
+        syncSubscriber = new SynchronousMessageSubscriber(asyncClient, work1, operationTimeout);
     }
 
     @AfterEach
@@ -106,7 +115,7 @@ public class SynchronousMessageSubscriberTest {
     @Test
     public void queueWorkTest() {
         // Arrange
-        syncSubscriber = new SynchronousMessageSubscriber(work1);
+        syncSubscriber = new SynchronousMessageSubscriber(asyncClient, work1, operationTimeout);
 
         // Act
         syncSubscriber.queueWork(work2);
@@ -149,7 +158,7 @@ public class SynchronousMessageSubscriberTest {
         when(work2.emitNext(message3)).thenReturn(true);
         when(work2.isTerminal()).thenReturn(false);
 
-        syncSubscriber = new SynchronousMessageSubscriber(work1);
+        syncSubscriber = new SynchronousMessageSubscriber(asyncClient, work1, operationTimeout);
         syncSubscriber.queueWork(work2);
         syncSubscriber.queueWork(work3);
 
@@ -237,5 +246,49 @@ public class SynchronousMessageSubscriberTest {
 
         // The current work has been polled, so this should be empty.
         assertEquals(0, syncSubscriber.getWorkQueueSize());
+    }
+
+    @Test
+    public void releaseExpiredMessage() {
+        // Arrange
+        when(asyncClient.release(any(ServiceBusReceivedMessage.class))).thenReturn(Mono.empty());
+
+        // This message has already expired
+        final ServiceBusReceivedMessage message1 = mock(ServiceBusReceivedMessage.class);
+        when(message1.isSettled()).thenReturn(false);
+        when(message1.getExpiresAt()).thenAnswer(invocation -> OffsetDateTime.now().minusSeconds(20));
+
+        final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
+        when(message2.isSettled()).thenReturn(false);
+        when(message2.getExpiresAt()).thenAnswer(invocation -> OffsetDateTime.now().plusMinutes(1));
+
+        final ServiceBusReceivedMessage message3 = mock(ServiceBusReceivedMessage.class);
+        when(message3.isSettled()).thenReturn(false);
+        when(message3.getExpiresAt()).thenAnswer(invocation -> OffsetDateTime.now().plusMinutes(1));
+
+        final ServiceBusReceivedMessage message4 = mock(ServiceBusReceivedMessage.class);
+        when(message4.isSettled()).thenReturn(false);
+        when(message4.getExpiresAt()).thenAnswer(invocation -> OffsetDateTime.now().plusMinutes(1));
+
+        when(work1.getRemainingEvents()).thenReturn(NUMBER_OF_WORK_ITEMS);
+        when(work1.emitNext(any())).thenReturn(true);
+
+        final TestPublisher<ServiceBusReceivedMessage> testPublisher = TestPublisher.createCold();
+        testPublisher.emit(message1, message2, message3, message4);
+
+        // Act
+        syncSubscriber.hookOnSubscribe(subscription);
+        syncSubscriber.hookOnNext(message1);
+        syncSubscriber.hookOnNext(message2);
+        syncSubscriber.hookOnNext(message3);
+        syncSubscriber.hookOnNext(message4);
+
+        // Assert
+        verify(asyncClient).release(message1);
+
+        verify(work1, never()).emitNext(message1);
+        verify(work1).emitNext(message2);
+        verify(work1).emitNext(message3);
+        verify(work1).emitNext(message4);
     }
 }
