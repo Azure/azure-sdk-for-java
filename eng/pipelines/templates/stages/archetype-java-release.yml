@@ -417,6 +417,44 @@ stages:
               Copy-Item "./eng/repo-docs/docms/daily.update.setting.xml" -Destination "~/.m2/settings.xml"
             displayName: 'Configure mvn'
             workingDirectory: $(Build.SourcesDirectory)
+          - pwsh: |
+              $filePaths = Get-ChildItem "$(Pipeline.Workspace)/${{parameters.ArtifactName}}/*-javadoc.jar" -Recurse 
+              foreach ($jarFile in $filePaths) {
+                # Looking for the jar file.
+                Write-Host $jarFile
+                $jarFileName = Split-Path $jarFile -leaf
+                $isDocsNeeded = $false
+                ${{parameters.Artifacts}} | ForEach-Object {
+                  if ($jarFileName -startWith $_.name -and $_.skipPublishDocMs -ne 'true') {
+                    $isDocsNeeded = $true
+                    $jarFileName = $_.name
+                    break
+                  }
+                }
+
+                # extract the jar file
+                if (!$isDocsNeeded) {
+                  continue
+                }
+                
+                $tempLocation = Join-Path ([System.IO.Path]::GetTempPath()) "jarFiles"
+                New-Item -ItemType Directory -Force -Path $tempLocation
+                $packageNameLocation = "$(System.DefaultWorkingDirectory)/packageList"
+                if (!(Test-Path $packageNameLocation))
+                  Write-Host "###vso[task.setvariable variable=PackageListLocation]$packageNameLocation"
+                  New-Item -ItemType Directory -Path $packageNameLocation
+                }
+                Push-Location $tempLocation
+                jar xf fileName.jar
+                if (Test-Path "./element-list") {
+                  # Rename and move to location
+                  Copy-Item "./element-list" -Destination "$packageNameLocation/$jarFileName.txt"
+                  Get-ChildItem $packageNameLocation
+                }
+                Pop-Location
+              }
+            displayName: Fetch namespace and checkin to docs repo
+
           - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
             parameters:
               PackageInfoLocations:
@@ -432,3 +470,4 @@ stages:
                 - docs-ref-services/
                 - metadata/
               DocValidationImageId: "$(DocValidationImageId)"
+              PackageListLocation: $(PackageListLocation)

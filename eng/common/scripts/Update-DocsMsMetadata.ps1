@@ -108,6 +108,7 @@ function GetAdjustedReadmeContent($ReadmeContent, $PackageInfo, $PackageMetadata
   
   # Get the first code owners of the package.
   Write-Host "Retrieve the code owner from $($PackageInfo.DirectoryPath)."
+<<<<<<< HEAD
   $author = GetPrimaryCodeOwner -TargetDirectory $PackageInfo.DirectoryPath 
   if (!$author) {
     $author = "ramya-rao-a" 
@@ -119,7 +120,19 @@ function GetAdjustedReadmeContent($ReadmeContent, $PackageInfo, $PackageMetadata
   # Default value
   if (!$msauthor) {
     $msauthor = $author
+=======
+  $codeOwnerArray = ."$PSScriptRoot/get-codeowners.ps1" `
+                    -TargetDirectory $PackageInfo.DirectoryPath 
+  if ($codeOwnerArray) {
+    Write-Host "Code Owners are $($codeOwnerArray -join ",")"
+    $author = $codeOwnerArray[0]
+>>>>>>> 905e9c9271e (temp changes for java toc)
   }
+  $msAlias = "$PSScriptRoot/Get-AADIdentityFromGithubUser.ps1" -TenantId -ClientId -ClientSecret
+  
+  
+  Write-Host "The script Get-AADIdentityFromGithubUser.ps1 file disappeared."
+  $msauthor = $author # This is a placeholder for now. Will change to the right ms alias.
   Write-Host "The author of package: $author"
   Write-Host "The ms author of package: $msauthor"
   $header = @"
