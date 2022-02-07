@@ -56,7 +56,7 @@ public enum ServiceBusMessageState {
                 return ServiceBusMessageState.SCHEDULED;
             default:
                 throw new UnsupportedOperationException(
-                    "Value is not supported. Should be ACTIVE, DEFERRED, or SCHEDULED. Actual: " + value);
+                    "Value is not supported. Should be 0(ACTIVE), 1(DEFERRED), or 2(SCHEDULED). Actual: " + value);
         }
     }
 }
