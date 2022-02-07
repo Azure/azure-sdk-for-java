@@ -5,6 +5,8 @@ package com.azure.perf.test.core;
 
 import reactor.core.publisher.Mono;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * Performance Test Base class.
  * @param <TOptions> the options used to configure the options class.
@@ -12,7 +14,9 @@ import reactor.core.publisher.Mono;
 public abstract class PerfTestBase<TOptions extends PerfStressOptions> {
     protected final TOptions options;
     protected long lastCompletionNanoTime;
-    protected long completedOperations;
+    protected final int parallelIndex;
+
+    private static final AtomicInteger GLOBAL_PARALLEL_INDEX = new AtomicInteger();
 
     /**
      * Creates an instance of Perf Test Base class.
@@ -20,6 +24,8 @@ public abstract class PerfTestBase<TOptions extends PerfStressOptions> {
      */
     public PerfTestBase(TOptions options) {
         this.options = options;
+        this.parallelIndex = GLOBAL_PARALLEL_INDEX.getAndIncrement();
+
     }
 
     /**
@@ -42,23 +48,21 @@ public abstract class PerfTestBase<TOptions extends PerfStressOptions> {
      * Runs the sync perf test until specified system nano time.
      * @param endNanoTime the target time to run the performance test for.
      */
-    public void runAll(long endNanoTime) { }
+    public abstract void runAll(long endNanoTime);
 
     /**
      * Runs the async perf test until specified system nano time.
      * @param endNanoTime the target time to run the performance test for.
      * @return A {@link Mono} containing void.
      */
-    public Mono<Void> runAllAsync(long endNanoTime) {
-        return Mono.empty();
-    }
+    public abstract Mono<Void> runAllAsync(long endNanoTime);
 
     /**
      * Runs before cleanup stage.
      *
      * @return A {@link Mono} containing void.
      */
-    public Mono<Void> preCleanupAsync() {
+    Mono<Void> preCleanupAsync() {
         return Mono.empty();
     }
 
@@ -78,24 +82,13 @@ public abstract class PerfTestBase<TOptions extends PerfStressOptions> {
         return Mono.empty();
     }
 
-    /**
-     * Stops playback tests.
-     * @return An empty {@link Mono}.
-     */
-    public Mono<Void> stopPlaybackAsync() {
+    Mono<Void> postSetupAsync() {
         return Mono.empty();
     }
-
-    /**
-     * Records responses and starts tests in playback mode.
-     */
-    public void postSetup() { }
 
     /**
      * Get completed operations.
      * @return the completed operations.
      */
-    public long getCompletedOperations() {
-        return completedOperations;
-    }
+    public abstract long getCompletedOperations();
 }

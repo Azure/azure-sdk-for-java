@@ -16,10 +16,10 @@ import javax.net.ssl.SSLException;
 import java.lang.reflect.Method;
 import java.net.URI;
 import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.CompletableFuture;
 
 /**
- * The Base Performance Test class for Http based Perf Tests.
+ * The Base Performance Test class for API based Perf Tests.
  * @param <TOptions> the performance test options to use while running the test.
  */
 public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extends PerfTestBase<TOptions> {
@@ -27,16 +27,13 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
     private final URI testProxy;
     private final TestProxyPolicy testProxyPolicy;
     private String recordingId;
+    private long completedOperations;
 
-    protected final TOptions options;
 
     // Derived classes should use the ConfigureClientBuilder() method by default.  If a ClientBuilder does not
     // follow the standard convention, it can be configured manually using these fields.
     protected final HttpClient httpClient;
     protected final Iterable<HttpPipelinePolicy> policies;
-
-    private static final AtomicInteger GLOBAL_PARALLEL_INDEX = new AtomicInteger();
-    protected final int parallelIndex;
 
     /**
      * Creates an instance of the Http Based Performance test.
@@ -45,11 +42,7 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
      */
     public ApiPerfTestBase(TOptions options) {
         super(options);
-        this.options = options;
-        this.parallelIndex = GLOBAL_PARALLEL_INDEX.getAndIncrement();
-
         final SslContext sslContext;
-
         if (options.isInsecure()) {
             try {
                 sslContext = SslContextBuilder.forClient()
@@ -163,7 +156,6 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
      * Stops playback tests.
      * @return An empty {@link Mono}.
      */
-    @Override
     public Mono<Void> stopPlaybackAsync() {
         return recordPlaybackHttpClient
             .headers(h -> {
@@ -183,67 +175,76 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
     }
 
     private Mono<Void> startRecordingAsync() {
-        return recordPlaybackHttpClient
+        return Mono.defer(() -> recordPlaybackHttpClient
             .post()
             .uri(testProxy.resolve("/record/start"))
             .response()
             .doOnNext(response -> {
                 recordingId = response.responseHeaders().get("x-recording-id");
-            })
-            .then();
+            }).then());
     }
 
     private Mono<Void> stopRecordingAsync() {
-        return recordPlaybackHttpClient
+        return Mono.defer(() -> recordPlaybackHttpClient
             .headers(h -> h.set("x-recording-id", recordingId))
             .post()
             .uri(testProxy.resolve("/record/stop"))
             .response()
-            .then();
+            .then());
     }
 
     private Mono<Void> startPlaybackAsync() {
-        return recordPlaybackHttpClient
+        return Mono.defer(() -> recordPlaybackHttpClient
             .headers(h -> h.set("x-recording-id", recordingId))
             .post()
             .uri(testProxy.resolve("/playback/start"))
             .response()
             .doOnNext(response -> {
                 recordingId = response.responseHeaders().get("x-recording-id");
-            })
-            .then();
+            }).then());
     }
 
 
     /**
      * Records responses and starts tests in playback mode.
+     * @return
      */
     @Override
-    public void postSetup() {
+    Mono<Void> postSetupAsync() {
         if (testProxyPolicy != null) {
 
             // Make one call to Run() before starting recording, to avoid capturing one-time setup like authorization requests.
-            runSyncOrAsync();
-
-            startRecordingAsync().block();
-
-            testProxyPolicy.setRecordingId(recordingId);
-            testProxyPolicy.setMode("record");
-
-            runSyncOrAsync();
-            stopRecordingAsync().block();
-            startPlaybackAsync().block();
-
-            testProxyPolicy.setRecordingId(recordingId);
-            testProxyPolicy.setMode("playback");
+            return runSyncOrAsync()
+            .then(startRecordingAsync())
+            .then(Mono.defer(() -> {
+                    testProxyPolicy.setRecordingId(recordingId);
+                    testProxyPolicy.setMode("record");
+                    return Mono.empty();
+                }))
+            .then(runSyncOrAsync())
+            .then(stopRecordingAsync())
+            .then(startPlaybackAsync())
+            .then(Mono.defer(() -> {
+                    testProxyPolicy.setRecordingId(recordingId);
+                    testProxyPolicy.setMode("playback");
+                    return Mono.empty();
+                }));
         }
+        return Mono.empty();
     }
 
-    private void runSyncOrAsync() {
-        if (options.isSync()) {
-            runTest();
-        } else {
-            runTestAsync().block();
-        }
+    private Mono<Void> runSyncOrAsync() {
+        return Mono.defer(() -> {
+            if (options.isSync()) {
+                return Mono.fromFuture(CompletableFuture.supplyAsync(() -> runTest())).then();
+            } else {
+                return runTestAsync().then();
+            }
+        });
+    }
+
+    @Override
+    public long getCompletedOperations() {
+        return completedOperations;
     }
 }

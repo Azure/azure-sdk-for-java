@@ -11,6 +11,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
@@ -22,7 +24,7 @@ import java.util.stream.IntStream;
 public class MockEventProcessor {
     private final Consumer<MockErrorContext> processError;
     private final Consumer<MockEventContext> processEvent;
-    private boolean process;
+    private volatile boolean process;
     private final double maxEventsPerSecondPerPartition;
     private final int maxEventsPerSecond;
     private final int partitions;
@@ -82,11 +84,14 @@ public class MockEventProcessor {
     }
 
     private Mono<Void> processEvents() {
-        while (process) {
-            for (int i = 0; i < partitions; i++) {
-                process(i);
+        ForkJoinPool forkJoinPool = new ForkJoinPool(partitions);
+            try {
+                forkJoinPool.submit(() -> {
+                    IntStream.range(0, partitions).parallel().forEach(i -> process(i));
+                }).get();
+            } catch (InterruptedException | ExecutionException e) {
+                return Mono.error(new RuntimeException(e));
             }
-        }
         return Mono.empty();
     }
 
@@ -103,18 +108,19 @@ public class MockEventProcessor {
                         processError(partition, new IllegalStateException("Test Exception"));
                         errorRaised = true;
                     }
-                }
-                int eventsSent = eventsRaised[partition];
-                double targetEventsSent = ((double) (elapsedTime / 1_000_000_000))
-                    * maxEventsPerSecondPerPartition;
-                if (eventsSent < targetEventsSent) {
-                    processEvent.accept(mockEventContext);
-                    eventsRaised[partition]++;
                 } else {
-                    try {
-                        Thread.sleep((long) ((1 / maxEventsPerSecondPerPartition) * 1000));
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
+                    int eventsSent = eventsRaised[partition];
+                    double targetEventsSent = ((double) (elapsedTime / 1_000_000_000))
+                        * maxEventsPerSecondPerPartition;
+                    if (eventsSent < targetEventsSent) {
+                        processEvent.accept(mockEventContext);
+                        eventsRaised[partition]++;
+                    } else {
+                        try {
+                            Thread.sleep((long) ((1 / maxEventsPerSecondPerPartition) * 1000));
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 }
             }
@@ -127,9 +133,10 @@ public class MockEventProcessor {
                         processError(partition, new IllegalStateException("Test Exception"));
                         errorRaised = true;
                     }
+                } else {
+                    processEvent.accept(mockEventContext);
+                    eventsRaised[partition]++;
                 }
-                processEvent.accept(mockEventContext);
-                eventsRaised[partition]++;
             }
         }
     }

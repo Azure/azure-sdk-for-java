@@ -21,15 +21,15 @@ public class MockEventProcessorTest extends EventPerfTest<MockEventProcessorTest
      */
     public MockEventProcessorTest(MockEventProcessorPerfOptions perfStressOptions) {
         super(perfStressOptions);
-        Consumer<MockErrorContext> errorprocessor = mockErrorContext -> errorRaised();
+        Consumer<MockErrorContext> errorProcessor = mockErrorContext -> errorRaised(mockErrorContext.getThrowable());
 
-        Consumer<MockEventContext> eventPrcessor = mockEventContext -> eventRaised();
+        Consumer<MockEventContext> eventProcessor = mockEventContext -> eventRaised();
 
         Duration errorAfter = perfStressOptions.getErrorAfterInSeconds() > 0
             ? Duration.ofSeconds(perfStressOptions.getErrorAfterInSeconds()) : null;
 
-        mockEventProcessor = new MockEventProcessor(2, perfStressOptions.getMaxEventsPerSecond(), errorAfter,
-            errorprocessor, eventPrcessor);
+        mockEventProcessor = new MockEventProcessor(perfStressOptions.getPartitions(), perfStressOptions.getMaxEventsPerSecond(), errorAfter,
+            errorProcessor, eventProcessor);
     }
 
     @Override
@@ -59,6 +59,9 @@ public class MockEventProcessorTest extends EventPerfTest<MockEventProcessorTest
         @Parameter(names = { "-ea", "--errorAfter" }, description = "Error After duration in seconds.")
         private int errorAfterInSeconds = 0;
 
+        @Parameter(names = { "-pt", "--partitions" }, description = "Error After duration in seconds.")
+        private int partitions = 1;
+
 
         /**
          * Get Error after duration in seconds.
@@ -74,6 +77,14 @@ public class MockEventProcessorTest extends EventPerfTest<MockEventProcessorTest
          */
         public int getMaxEventsPerSecond() {
             return maxEventsPerSecond;
+        }
+
+        /**
+         * Get Maximum events per second.
+         * @return the max events per second.
+         */
+        public int getPartitions() {
+            return partitions;
         }
     }
 }

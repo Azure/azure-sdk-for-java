@@ -24,6 +24,7 @@ public abstract class EventPerfTest<TOptions extends PerfStressOptions> extends 
     private volatile boolean errorRaised;
 
     private long startTime;
+    private Throwable throwable;
 
     /**
      * Creates an instance of performance test.
@@ -48,9 +49,10 @@ public abstract class EventPerfTest<TOptions extends PerfStressOptions> extends 
     /**
      * Indicates an error was raised, and stops the performance test flow.
      */
-    public void errorRaised() {
+    public void errorRaised(Throwable throwable) {
         errorRaised = true;
         lastCompletionNanoTime = System.nanoTime() - startTime;
+        this.throwable = throwable;
     }
 
     @Override
@@ -61,7 +63,7 @@ public abstract class EventPerfTest<TOptions extends PerfStressOptions> extends 
         lastCompletionNanoTime = 0;
         while (System.nanoTime() < endNanoTime) {
             if (errorRaised) {
-                break;
+                throw new RuntimeException(throwable);
             }
         }
     }

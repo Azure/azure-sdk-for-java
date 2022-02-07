@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
@@ -146,7 +147,7 @@ public class PerfStressProgram {
                     try {
                         ForkJoinPool forkJoinPool = new ForkJoinPool(tests.length);
                         forkJoinPool.submit(() -> {
-                            IntStream.range(0, tests.length).parallel().forEach(i -> tests[i].postSetup());
+                            IntStream.range(0, tests.length).parallel().forEach(i -> tests[i].postSetupAsync().block());
                         }).get();
                     } catch (InterruptedException | ExecutionException e) {
                         System.err.println("Error occurred when submitting jobs to ForkJoinPool. " + System.lineSeparator() + e);
@@ -173,7 +174,13 @@ public class PerfStressProgram {
                 try {
                     if (startedPlayback) {
                         Disposable playbackStatus = printStatus("=== Stop Playback ===", () -> ".", false, false);
-                        Flux.just(tests).flatMap(PerfTestBase::stopPlaybackAsync).blockLast();
+                        Flux.just(tests).flatMap(perfTestBase -> {
+                            if (perfTestBase instanceof ApiPerfTestBase) {
+                                return ((ApiPerfTestBase<?>) perfTestBase).stopPlaybackAsync();
+                            } else {
+                                return Mono.error(new IllegalStateException("Test Proxy not supported."));
+                            }
+                        }).blockLast();
                         playbackStatus.dispose();
                     }
                 } finally {
