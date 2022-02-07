@@ -88,6 +88,7 @@ steps:
 - pwsh: |
     $packageInfoJson = '${{ convertToJson(parameters.PackageInfoLocations) }}'.Trim('"').Replace("\\", "/")
     $packageInfoLocations = ConvertFrom-Json $packageInfoJson
+    if ($packageInfoLocations) {
     ${{ parameters.ScriptDirectory }}/Update-DocsMsMetadata.ps1 `
       -PackageInfoJsonLocations $packageInfoLocations `
       -DocRepoLocation "$(DocRepoLocation)" `
@@ -98,6 +99,7 @@ steps:
       -TenantId '$(opensource-aad-tenant-id)' `
       -ClientId '$(opensource-aad-app-id)' `
       -ClientSecret '$(opensource-aad-secret)' 
+    }
   displayName: Apply Documentation Updates
 
 - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
