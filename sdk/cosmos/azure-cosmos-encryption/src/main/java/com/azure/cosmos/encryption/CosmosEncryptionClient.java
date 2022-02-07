@@ -7,7 +7,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosDatabase;
-import com.azure.cosmos.encryption.mdesrc.cryptography.EncryptionKeyStoreProvider;
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.EncryptionKeyStoreProvider;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientHelper.CosmosClientAccessor;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientHelper;
 import org.slf4j.Logger;

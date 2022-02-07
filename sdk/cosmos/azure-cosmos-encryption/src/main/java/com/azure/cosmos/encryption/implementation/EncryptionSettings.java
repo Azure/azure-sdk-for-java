@@ -4,12 +4,12 @@
 package com.azure.cosmos.encryption.implementation;
 
 import com.azure.cosmos.encryption.EncryptionBridgeInternal;
-import com.azure.cosmos.encryption.mdesrc.cryptography.AeadAes256CbcHmac256EncryptionAlgorithm;
-import com.azure.cosmos.encryption.mdesrc.cryptography.EncryptionKeyStoreProvider;
-import com.azure.cosmos.encryption.mdesrc.cryptography.EncryptionType;
-import com.azure.cosmos.encryption.mdesrc.cryptography.KeyEncryptionKey;
-import com.azure.cosmos.encryption.mdesrc.cryptography.MicrosoftDataEncryptionException;
-import com.azure.cosmos.encryption.mdesrc.cryptography.ProtectedDataEncryptionKey;
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.AeadAes256CbcHmac256EncryptionAlgorithm;
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.EncryptionKeyStoreProvider;
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.EncryptionType;
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.KeyEncryptionKey;
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.MicrosoftDataEncryptionException;
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.ProtectedDataEncryptionKey;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
