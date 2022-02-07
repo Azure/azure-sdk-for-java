@@ -19,6 +19,7 @@ import com.azure.cosmos.benchmark.PojoizedJson;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncContainer;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncDatabase;
+import com.azure.cosmos.encryption.mdesupport.AzureKeyVaultKeyWrapProvider;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -46,8 +47,6 @@ import com.codahale.metrics.graphite.GraphiteReporter;
 import com.codahale.metrics.jvm.CachedThreadStatesGaugeSet;
 import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
 import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
-import com.microsoft.data.encryption.AzureKeyVaultKeyStoreProvider.AzureKeyVaultKeyStoreProvider;
-import com.microsoft.data.encryption.cryptography.MicrosoftDataEncryptionException;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.mpierce.metrics.reservoir.hdrhistogram.HdrHistogramResetOnSnapshotReservoir;
@@ -59,7 +58,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
@@ -85,7 +83,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
 
     private CosmosAsyncContainer cosmosAsyncContainer;
     private CosmosAsyncDatabase cosmosAsyncDatabase;
-    private AzureKeyVaultKeyStoreProvider encryptionKeyStoreProvider = null;
+    private AzureKeyVaultKeyWrapProvider azureKeyVaultKeyWrapProvider = null;
     private Properties keyVaultProperties;
 
     final Logger logger;
@@ -112,7 +110,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
 
     private AtomicBoolean warmupMode = new AtomicBoolean(false);
 
-    AsyncEncryptionBenchmark(Configuration cfg) throws IOException, MicrosoftDataEncryptionException {
+    AsyncEncryptionBenchmark(Configuration cfg) throws IOException {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(cfg.getServiceEndpoint())
             .key(cfg.getMasterKey())
@@ -420,14 +418,14 @@ public abstract class AsyncEncryptionBenchmark<T> {
         }
     }
 
-    private CosmosEncryptionAsyncClient createEncryptionClientInstance(CosmosAsyncClient cosmosClient) throws MicrosoftDataEncryptionException, IOException {
+    private CosmosEncryptionAsyncClient createEncryptionClientInstance(CosmosAsyncClient cosmosClient) throws IOException {
         keyVaultProperties = loadConfig();
         // Application credentials for authentication with Azure Key Vault.
         // This application must have keys/wrapKey and keys/unwrapKey permissions
         // on the keys that will be used for encryption.
         TokenCredential tokenCredentials = getTokenCredential(keyVaultProperties);
-        encryptionKeyStoreProvider = new AzureKeyVaultKeyStoreProvider(tokenCredentials);
-        return CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(cosmosClient, encryptionKeyStoreProvider);
+        azureKeyVaultKeyWrapProvider = new AzureKeyVaultKeyWrapProvider(tokenCredentials);
+        return CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(cosmosClient, azureKeyVaultKeyWrapProvider);
     }
 
     private TokenCredential getTokenCredential(Properties properties) {
@@ -498,7 +496,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
                 }
 
                 EncryptionKeyWrapMetadata metadata =
-                    new EncryptionKeyWrapMetadata(encryptionKeyStoreProvider.getProviderName(), dataEncryptionKeyId,
+                    new EncryptionKeyWrapMetadata(azureKeyVaultKeyWrapProvider.getProviderName(), dataEncryptionKeyId,
                         masterKeyUrlFromConfig);
                 /// Generates an encryption key, wraps it using the key wrap metadata provided
                 /// and saves the wrapped encryption key as an asynchronous operation in the Azure Cosmos service.
