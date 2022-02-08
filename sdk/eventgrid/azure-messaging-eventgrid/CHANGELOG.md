@@ -8,14 +8,13 @@
 `ResourceDeleteSuccessEventData`, `ResourceWriteCancelEventData`, `ResourceWriteFailureEventData`,
 `ResourceWriteSuccessEventData`. 
     - Added new type `ResourceAuthorization` and `ResourceHttpRequest`.
-    - Deprecated APIs: 
-      `getHttpRequest()`, `setHttpRequest(String httpRequest)`
-      `getClaims()`, `setClaims(String claims)`
-      `getAuthorization()`, `setAuthorization(String authorization)`
-    - Added new APIs to replace the deprecated APIs:
-      `getResourceAuthorization()`, `setResourceAuthorization(ResourceAuthorization authorization)`
-      `getResourceClaims()`, `setResourceClaims(Map<String, String> claims)`
-      `getResourceHttpRequest()`, `setResourceHttpRequest(ResourceHttpRequest httpRequest)`
+    - Deprecated 
+      `getHttpRequest()` and replaced it with `getResourceAuthorization()`,
+      `setHttpRequest(String httpRequest)` and replaced it with `setResourceAuthorization(ResourceAuthorization authorization)`,
+      `getClaims()` and replaced it with `getResourceClaims()`,
+      `setClaims(String claims)` and replaced it with `setResourceClaims(Map<String, String> claims)`,
+      `getAuthorization()` and replaced it with `getResourceHttpRequest()`,
+      `setAuthorization(String authorization)` and replaced it with `setResourceHttpRequest(ResourceHttpRequest httpRequest)`.
 ### Breaking Changes
 
 ### Bugs Fixed

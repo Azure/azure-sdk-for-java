@@ -5,7 +5,13 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -14,6 +20,9 @@ import java.util.Map;
  */
 @Fluent
 public final class ResourceDeleteCancelEventData {
+    static final ClientLogger LOGGER = new ClientLogger(ResourceDeleteCancelEventData.class);
+    final SerializerAdapter defaultSerializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
+
     /*
      * The tenant ID of the resource.
      */
@@ -235,7 +244,12 @@ public final class ResourceDeleteCancelEventData {
      */
     @Deprecated
     public String getAuthorization() {
-        return this.authorizationString;
+        final ResourceAuthorization resourceAuthorization = getResourceAuthorization();
+        try {
+            return defaultSerializerAdapter.serialize(resourceAuthorization, SerializerEncoding.JSON);
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
     /**
@@ -248,7 +262,13 @@ public final class ResourceDeleteCancelEventData {
      */
     @Deprecated
     public ResourceDeleteCancelEventData setAuthorization(String authorization) {
-        this.authorizationString = authorization;
+        try {
+            setResourceAuthorization(
+                defaultSerializerAdapter.deserialize(authorization, ResourceAuthorization.class,
+                    SerializerEncoding.JSON));
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
         return this;
     }
 
@@ -281,7 +301,15 @@ public final class ResourceDeleteCancelEventData {
      */
     @Deprecated
     public String getClaims() {
-        return this.claimsString;
+        final Map<String, String> resourceClaims = getResourceClaims();
+        if (!resourceClaims.isEmpty()) {
+            try {
+                return defaultSerializerAdapter.serialize(resourceClaims, SerializerEncoding.JSON);
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
+        }
+        return null;
     }
 
     /**
@@ -294,7 +322,11 @@ public final class ResourceDeleteCancelEventData {
      */
     @Deprecated
     public ResourceDeleteCancelEventData setClaims(String claims) {
-        this.claimsString = claims;
+        try {
+            setResourceClaims(defaultSerializerAdapter.deserialize(claims, Map.class, SerializerEncoding.JSON));
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
+        }
         return this;
     }
 
@@ -347,7 +379,12 @@ public final class ResourceDeleteCancelEventData {
      */
     @Deprecated
     public String getHttpRequest() {
-        return this.httpRequestString;
+        ResourceHttpRequest resourceHttpRequest = getResourceHttpRequest();
+        try {
+            return defaultSerializerAdapter.serialize(resourceHttpRequest, SerializerEncoding.JSON);
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
+        }
     }
 
     /**
@@ -360,7 +397,12 @@ public final class ResourceDeleteCancelEventData {
      */
     @Deprecated
     public ResourceDeleteCancelEventData setHttpRequest(String httpRequest) {
-        this.httpRequestString = httpRequest;
+        try {
+            setResourceHttpRequest(
+                defaultSerializerAdapter.deserialize(httpRequest, ResourceHttpRequest.class, SerializerEncoding.JSON));
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
+        }
         return this;
     }
 
