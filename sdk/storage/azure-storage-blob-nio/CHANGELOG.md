@@ -10,7 +10,6 @@
 ### Bugs Fixed
 - Fixed a bug that would prevent deleting an empty directory in the case where one directory name was a prefix of the other.
 
-
 ## 12.0.0-beta.14 (2022-01-14)
 
 ### Other Changes
