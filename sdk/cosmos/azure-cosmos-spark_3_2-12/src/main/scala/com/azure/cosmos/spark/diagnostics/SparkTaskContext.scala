@@ -31,7 +31,7 @@ private[spark] case class SparkTaskContext(correlationActivityId: UUID,
                                            taskAttemptId: Long,
                                            details: String) extends OperationContext {
 
-  requireNotNull(correlationActivityId, "cosmosClientConfig")
+  requireNotNull(correlationActivityId, "correlationActivityId")
 
   private val correlationActivityIdAsString = correlationActivityId.toString
 
