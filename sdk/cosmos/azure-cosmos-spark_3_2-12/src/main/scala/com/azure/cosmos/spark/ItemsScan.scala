@@ -106,7 +106,7 @@ private case class ItemsScan(session: SparkSession,
     ItemsScanPartitionReaderFactory(config,
       schema,
       cosmosQuery,
-      DiagnosticsContext(UUID.randomUUID().toString, cosmosQuery.queryText),
+      DiagnosticsContext(UUID.randomUUID(), cosmosQuery.queryText),
       cosmosClientStateHandle,
       DiagnosticsConfig.parseDiagnosticsConfig(config))
   }

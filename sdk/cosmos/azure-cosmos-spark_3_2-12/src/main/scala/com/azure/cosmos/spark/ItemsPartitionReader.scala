@@ -63,7 +63,8 @@ private case class ItemsPartitionReader
       val taskContext = TaskContext.get
       assert(taskContext != null)
 
-      val taskDiagnosticsContext = SparkTaskContext(diagnosticsContext.correlationActivityId,
+      val taskDiagnosticsContext = SparkTaskContext(
+        diagnosticsContext.correlationActivityId,
         taskContext.stageId(),
         taskContext.partitionId(),
         taskContext.taskAttemptId(),
@@ -91,6 +92,14 @@ private case class ItemsPartitionReader
           queryOptions, null, readConfig.maxItemCount)
         // scalastyle:on null
       }
+
+      ImplementationBridgeHelpers
+        .CosmosQueryRequestOptionsHelper
+        .getCosmosQueryRequestOptionsAccessor
+        .setCorrelationActivityId(
+          queryOptions,
+          diagnosticsContext.correlationActivityId)
+
       cosmosAsyncContainer.queryItems(cosmosQuery.toSqlQuerySpec, queryOptions, classOf[ObjectNode])
     },
     readConfig.maxItemCount
