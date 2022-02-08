@@ -1848,7 +1848,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         vmInstance2.refreshInstanceView();
         Assertions.assertEquals(PowerState.DEALLOCATED, vmInstance2.powerState());
 
-        // instance 0 is not affected
+        // instance 1 is not affected
         VirtualMachineScaleSetVM vmInstance1 = vmss.virtualMachines().getInstance("1");
         Assertions.assertEquals(PowerState.RUNNING, vmInstance1.powerState());
     }
