@@ -308,7 +308,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     }
 
     /**
-     * Gets the correlationActivity ID for the responses of a query operation or null if
+     * Gets the correlation activity ID for the responses of a query operation or null if
      * no correlation activity id is present
      *
      * @return the correlation activity id or null if no correlation activity id is present.
