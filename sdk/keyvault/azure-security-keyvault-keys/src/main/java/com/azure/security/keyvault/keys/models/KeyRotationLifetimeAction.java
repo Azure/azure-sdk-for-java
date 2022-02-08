@@ -36,7 +36,7 @@ public final class KeyRotationLifetimeAction {
      * Get the time after creation to attempt to rotate in ISO 8601 duration format. For example, 90 days is represented
      * as follows: "P90D".
      *
-     * @return The time after creation to attempt to rotate.
+     * @return The time after creation to attempt to rotate in ISO duration format.
      */
     public String getTimeAfterCreate() {
         return this.timeAfterCreate;
@@ -46,7 +46,7 @@ public final class KeyRotationLifetimeAction {
      * Set the time after creation to attempt to rotate in ISO 8601 duration format. For example, 90 days is represented
      * as follows: "P90D".
      *
-     * @param timeAfterCreate The time after creation to attempt to rotate.
+     * @param timeAfterCreate The time after creation to attempt to rotate in ISO duration format.
      *
      * @return The updated {@link KeyRotationLifetimeAction} object.
      */
@@ -60,7 +60,7 @@ public final class KeyRotationLifetimeAction {
      * Get the time before expiry to attempt to rotate or notify in ISO 8601 duration format. For example, 90 days is
      * represented as follows: "P90D".
      *
-     * @return The time before expiry to attempt to rotate or notify.
+     * @return The time before expiry to attempt to rotate or notify in ISO duration format.
      */
     public String getTimeBeforeExpiry() {
         return this.timeBeforeExpiry;
@@ -70,7 +70,7 @@ public final class KeyRotationLifetimeAction {
      * Set the time before expiry to attempt to rotate or notify in ISO 8601 duration format. For example, 90 days is
      * represented as follows: "P90D".
      *
-     * @param timeBeforeExpiry The time before expiry to attempt to rotate or notify.
+     * @param timeBeforeExpiry The time before expiry to attempt to rotate or notify in ISO duration format.
      *
      * @return The updated {@link KeyRotationLifetimeAction} object.
      */

@@ -21,7 +21,7 @@ public final class LifetimeActionTrigger {
      * Get the time after creation to attempt to rotate in ISO 8601 duration format. For example, 90 days is represented
      * as follows: "P90D".
      *
-     * @return The time after creation to attempt to rotate.
+     * @return The time after creation to attempt to rotate in ISO duration formmat.
      */
     public String getTimeAfterCreate() {
         return this.timeAfterCreate;
@@ -31,7 +31,7 @@ public final class LifetimeActionTrigger {
      * Set the time after creation to attempt to rotate in ISO 8601 duration format. For example, 90 days is represented
      * as follows: "P90D".
      *
-     * @param timeAfterCreate The time after creation to attempt to rotate.
+     * @param timeAfterCreate The time after creation to attempt to rotate in ISO duration formmat.
      *
      * @return The updated {@link LifetimeActionTrigger} object.
      */
@@ -45,7 +45,7 @@ public final class LifetimeActionTrigger {
      * Get the time before expiry to attempt to rotate or notify in ISO 8601 duration format. For example, 90 days is
      * represented as follows: "P90D".
      *
-     * @return The time before expiry to attempt to rotate or notify.
+     * @return The time before expiry to attempt to rotate or notify in ISO duration format.
      */
     public String getTimeBeforeExpiry() {
         return this.timeBeforeExpiry;
@@ -55,7 +55,7 @@ public final class LifetimeActionTrigger {
      * Set the time before expiry to attempt to rotate or notify in ISO 8601 duration format. For example, 90 days is
      * represented as follows: "P90D".
      *
-     * @param timeBeforeExpiry The time before expiry to attempt to rotate or notify.
+     * @param timeBeforeExpiry The time before expiry to attempt to rotate or notify in ISO duration format.
      *
      * @return The updated {@link LifetimeActionTrigger} object.
      */

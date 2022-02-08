@@ -20,7 +20,7 @@ public final class KeyRotationPolicy {
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
-    private List<KeyRotationLifetimeAction> keyRotationLifetimeActions;
+    private List<KeyRotationLifetimeAction> lifetimeActions;
     private String expiresIn;
     private OffsetDateTime createdOn;
     private OffsetDateTime updatedOn;
@@ -44,7 +44,7 @@ public final class KeyRotationPolicy {
      * @return The {@link KeyRotationLifetimeAction actions} in this {@link KeyRotationPolicy policy}.
      */
     public List<KeyRotationLifetimeAction> getLifetimeActions() {
-        return this.keyRotationLifetimeActions;
+        return this.lifetimeActions;
     }
 
     /**
@@ -52,12 +52,12 @@ public final class KeyRotationPolicy {
      *
      * <p>You may also pass an empty array to restore to its default values.</p>
      *
-     * @param keyRotationLifetimeActions The {@link KeyRotationLifetimeAction actions} to set.
+     * @param lifetimeActions The {@link KeyRotationLifetimeAction actions} to set.
      *
      * @return The updated {@link KeyRotationPolicy} object.
      */
-    public KeyRotationPolicy setLifetimeActions(List<KeyRotationLifetimeAction> keyRotationLifetimeActions) {
-        this.keyRotationLifetimeActions = keyRotationLifetimeActions;
+    public KeyRotationPolicy setLifetimeActions(List<KeyRotationLifetimeAction> lifetimeActions) {
+        this.lifetimeActions = lifetimeActions;
 
         return this;
     }
@@ -65,7 +65,7 @@ public final class KeyRotationPolicy {
     /**
      * Get the optional key expiration period used to define the duration after which a newly rotated key will expire.
      * It should be defined as an ISO 8601 duration. For example, 90 days would be formatted as follows: "P90D", 3
-     * months would be "P3M", 48 hours would be "PT48H" and 1 year and 10 days would be "P1Y10D".
+     * months would be "P3M" and 1 year and 10 days would be "P1Y10D".
      *
      * @return The expiration time in ISO 8601 format.
      */
@@ -75,10 +75,10 @@ public final class KeyRotationPolicy {
 
     /**
      * Set the optional key expiration period used to define the duration after which a newly rotated key will expire.
-     * It should be defined as an ISO 8601 duration. For example, 90 days would be formatted as follows: "P90D", 3
-     * months would be "P3M", 48 hours would be "PT48H" and 1 year and 10 days would be "P1Y10D".
+     * It should be at least 28 days and should be defined as an ISO 8601 duration. For example, 90 days would be
+     * formatted as follows: "P90D", 3 months would be "P3M" and 1 year and 10 days would be "P1Y10D".
      *
-     * @param expiresIn The expiration time to set in ISO 8601 format.
+     * @param expiresIn The expiration time to set in ISO 8601 duration format.
      *
      * @return The updated {@link KeyRotationPolicy} object.
      */
@@ -113,10 +113,10 @@ public final class KeyRotationPolicy {
     @JsonProperty(value = "lifetimeActions")
     private void unpackLifetimeActions(List<LifetimeAction> lifetimeActions) {
         if (lifetimeActions != null) {
-            this.keyRotationLifetimeActions = new ArrayList<>();
+            this.lifetimeActions = new ArrayList<>();
 
             for (LifetimeAction lifetimeAction : lifetimeActions) {
-                this.keyRotationLifetimeActions.add(new KeyRotationLifetimeAction(lifetimeAction.getAction().getType())
+                this.lifetimeActions.add(new KeyRotationLifetimeAction(lifetimeAction.getAction().getType())
                     .setTimeBeforeExpiry(lifetimeAction.getTrigger().getTimeBeforeExpiry())
                     .setTimeAfterCreate(lifetimeAction.getTrigger().getTimeAfterCreate()));
             }

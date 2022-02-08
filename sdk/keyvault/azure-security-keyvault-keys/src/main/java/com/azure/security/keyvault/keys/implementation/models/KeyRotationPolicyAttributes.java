@@ -22,43 +22,28 @@ public final class KeyRotationPolicyAttributes {
 
     /**
      * Get the optional key expiration period used to define the duration after which a newly rotated key will expire.
-     * It should be defined as an ISO 8601 duration. For example, 90 days would be formatted as follows: "P90D", 3
-     * months would be "P3M", 48 hours would be "PT48H" and 1 year and 10 days would be "P1Y10D".
+     * It should be at least 28 days and should be defined as an ISO 8601 duration. For example, 90 days would be
+     * formatted as follows: "P90D", 3 months would be "P3M" and 1 year and 10 days would be "P1Y10D".
      *
-     * @return The expiry time in ISO 8601 format.
+     * @return The expiry time in ISO 8601 duration format.
      */
     public String getExpiryTime() {
         return this.expiryTime;
     }
 
     /**
-     * Set the optional key expiration period used to define the duration after which a newly rotated key will expire.
-     * It should be defined as an ISO 8601 duration. For example, 90 days would be formatted as follows: "P90D", 3
-     * months would be "P3M", 48 hours would be "PT48H" and 1 year and 10 days would be "P1Y10D".
+     * Get the created time in UTC.
      *
-     * @param expiryTime The expiry time to set in ISO 8601 format.
-     *
-     * @return The updated {@link KeyRotationPolicyAttributes} object.
-     */
-    public KeyRotationPolicyAttributes setExpiryTime(String expiryTime) {
-        this.expiryTime = expiryTime;
-
-        return this;
-    }
-
-    /**
-     * Get the {@link KeyRotationPolicy policy's} created time in UTC.
-     *
-     * @return The {@link KeyRotationPolicy policy's} created time in UTC.
+     * @return The created time in UTC.
      */
     public Long getCreatedOn() {
         return this.createdOn;
     }
 
     /**
-     * Get the {@link KeyRotationPolicy policy's} last updated time in UTC.
+     * Get the last updated time in UTC.
      *
-     * @return The the {@link KeyRotationPolicy policy's} last updated time in UTC.
+     * @return The the last updated time in UTC.
      */
     public Long getUpdatedOn() {
         return this.updatedOn;
