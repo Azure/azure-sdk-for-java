@@ -6,13 +6,10 @@ package com.azure.messaging.servicebus;
 import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
-import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
 import reactor.util.context.Context;
 
 import java.time.Duration;
-import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -20,7 +17,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
-import java.util.stream.Collectors;
 
 /**
  * Subscriber that listens to events and publishes them downstream and publishes events to them in the order received.
@@ -369,21 +365,6 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                 w.complete(message, throwable);
                 w = workQueue.poll();
             }
-        }
-
-        if (bufferMessages.isEmpty()) {
-            return;
-        }
-
-        final List<Mono<Void>> pendingReleases = bufferMessages.stream()
-            .map(m -> asyncClient.release(m))
-            .collect(Collectors.toList());
-
-        logger.info("Client closed. Releasing {} messages.", pendingReleases.size());
-        try {
-            Mono.whenDelayError(pendingReleases).block(operationTimeout);
-        } catch (Exception e) {
-            logger.warning("Exception occurred while releasing messages.", e);
         }
     }
 

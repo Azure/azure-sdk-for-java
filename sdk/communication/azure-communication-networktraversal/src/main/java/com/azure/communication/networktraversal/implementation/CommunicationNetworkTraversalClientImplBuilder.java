@@ -23,17 +23,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** A builder for creating a new instance of the CommunicationNetworkingClient type. */
-@ServiceClientBuilder(serviceClients = {CommunicationNetworkingClientImpl.class})
-public final class CommunicationNetworkingClientImplBuilder {
+/** A builder for creating a new instance of the CommunicationNetworkTraversalClient type. */
+@ServiceClientBuilder(serviceClients = {CommunicationNetworkTraversalClientImpl.class})
+public final class CommunicationNetworkTraversalClientImplBuilder {
     private static final String SDK_NAME = "name";
 
     private static final String SDK_VERSION = "version";
 
     private final Map<String, String> properties = new HashMap<>();
 
-    /** Create an instance of the CommunicationNetworkingClientImplBuilder. */
-    public CommunicationNetworkingClientImplBuilder() {
+    /** Create an instance of the CommunicationNetworkTraversalClientImplBuilder. */
+    public CommunicationNetworkTraversalClientImplBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
 
@@ -47,9 +47,9 @@ public final class CommunicationNetworkingClientImplBuilder {
      * Sets The communication resource, for example https://my-resource.communication.azure.com.
      *
      * @param endpoint the endpoint value.
-     * @return the CommunicationNetworkingClientImplBuilder.
+     * @return the CommunicationNetworkTraversalClientImplBuilder.
      */
-    public CommunicationNetworkingClientImplBuilder endpoint(String endpoint) {
+    public CommunicationNetworkTraversalClientImplBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -63,9 +63,9 @@ public final class CommunicationNetworkingClientImplBuilder {
      * Sets Api Version.
      *
      * @param apiVersion the apiVersion value.
-     * @return the CommunicationNetworkingClientImplBuilder.
+     * @return the CommunicationNetworkTraversalClientImplBuilder.
      */
-    public CommunicationNetworkingClientImplBuilder apiVersion(String apiVersion) {
+    public CommunicationNetworkTraversalClientImplBuilder apiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
         return this;
     }
@@ -79,9 +79,9 @@ public final class CommunicationNetworkingClientImplBuilder {
      * Sets The HTTP pipeline to send requests through.
      *
      * @param pipeline the pipeline value.
-     * @return the CommunicationNetworkingClientImplBuilder.
+     * @return the CommunicationNetworkTraversalClientImplBuilder.
      */
-    public CommunicationNetworkingClientImplBuilder pipeline(HttpPipeline pipeline) {
+    public CommunicationNetworkTraversalClientImplBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -95,9 +95,9 @@ public final class CommunicationNetworkingClientImplBuilder {
      * Sets The serializer to serialize an object into a string.
      *
      * @param serializerAdapter the serializerAdapter value.
-     * @return the CommunicationNetworkingClientImplBuilder.
+     * @return the CommunicationNetworkTraversalClientImplBuilder.
      */
-    public CommunicationNetworkingClientImplBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+    public CommunicationNetworkTraversalClientImplBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
     }
@@ -111,9 +111,9 @@ public final class CommunicationNetworkingClientImplBuilder {
      * Sets The HTTP client used to send the request.
      *
      * @param httpClient the httpClient value.
-     * @return the CommunicationNetworkingClientImplBuilder.
+     * @return the CommunicationNetworkTraversalClientImplBuilder.
      */
-    public CommunicationNetworkingClientImplBuilder httpClient(HttpClient httpClient) {
+    public CommunicationNetworkTraversalClientImplBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
@@ -128,9 +128,9 @@ public final class CommunicationNetworkingClientImplBuilder {
      * Sets The configuration store that is used during construction of the service client.
      *
      * @param configuration the configuration value.
-     * @return the CommunicationNetworkingClientImplBuilder.
+     * @return the CommunicationNetworkTraversalClientImplBuilder.
      */
-    public CommunicationNetworkingClientImplBuilder configuration(Configuration configuration) {
+    public CommunicationNetworkTraversalClientImplBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -144,9 +144,9 @@ public final class CommunicationNetworkingClientImplBuilder {
      * Sets The logging configuration for HTTP requests and responses.
      *
      * @param httpLogOptions the httpLogOptions value.
-     * @return the CommunicationNetworkingClientImplBuilder.
+     * @return the CommunicationNetworkTraversalClientImplBuilder.
      */
-    public CommunicationNetworkingClientImplBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+    public CommunicationNetworkTraversalClientImplBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
     }
@@ -161,9 +161,9 @@ public final class CommunicationNetworkingClientImplBuilder {
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
      *
      * @param retryPolicy the retryPolicy value.
-     * @return the CommunicationNetworkingClientImplBuilder.
+     * @return the CommunicationNetworkTraversalClientImplBuilder.
      */
-    public CommunicationNetworkingClientImplBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public CommunicationNetworkTraversalClientImplBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
@@ -177,21 +177,21 @@ public final class CommunicationNetworkingClientImplBuilder {
      * Adds a custom Http pipeline policy.
      *
      * @param customPolicy The custom Http pipeline policy to add.
-     * @return the CommunicationNetworkingClientImplBuilder.
+     * @return the CommunicationNetworkTraversalClientImplBuilder.
      */
-    public CommunicationNetworkingClientImplBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+    public CommunicationNetworkTraversalClientImplBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         pipelinePolicies.add(customPolicy);
         return this;
     }
 
     /**
-     * Builds an instance of CommunicationNetworkingClientImpl with the provided parameters.
+     * Builds an instance of CommunicationNetworkTraversalClientImpl with the provided parameters.
      *
-     * @return an instance of CommunicationNetworkingClientImpl.
+     * @return an instance of CommunicationNetworkTraversalClientImpl.
      */
-    public CommunicationNetworkingClientImpl buildClient() {
+    public CommunicationNetworkTraversalClientImpl buildClient() {
         if (apiVersion == null) {
-            this.apiVersion = "2021-10-08-preview";
+            this.apiVersion = "2022-02-01";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
@@ -199,8 +199,8 @@ public final class CommunicationNetworkingClientImplBuilder {
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        CommunicationNetworkingClientImpl client =
-                new CommunicationNetworkingClientImpl(pipeline, serializerAdapter, endpoint, apiVersion);
+        CommunicationNetworkTraversalClientImpl client =
+                new CommunicationNetworkTraversalClientImpl(pipeline, serializerAdapter, endpoint, apiVersion);
         return client;
     }
 

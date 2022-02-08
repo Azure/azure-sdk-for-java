@@ -5,8 +5,8 @@ package com.azure.communication.networktraversal;
 
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
-import com.azure.communication.networktraversal.implementation.CommunicationNetworkingClientImpl;
-import com.azure.communication.networktraversal.implementation.CommunicationNetworkingClientImplBuilder;
+import com.azure.communication.networktraversal.implementation.CommunicationNetworkTraversalClientImpl;
+import com.azure.communication.networktraversal.implementation.CommunicationNetworkTraversalClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.AzureKeyCredential;
@@ -224,7 +224,7 @@ public final class CommunicationRelayClientBuilder {
         return new CommunicationRelayClient(buildAsyncClient());
     }
 
-    private CommunicationNetworkingClientImpl createServiceImpl() {
+    private CommunicationNetworkTraversalClientImpl createServiceImpl() {
 
 
         HttpPipeline builderPipeline = this.pipeline;
@@ -234,7 +234,7 @@ public final class CommunicationRelayClientBuilder {
                 customPolicies);
         }
 
-        CommunicationNetworkingClientImplBuilder clientBuilder = new CommunicationNetworkingClientImplBuilder();
+        CommunicationNetworkTraversalClientImplBuilder clientBuilder = new CommunicationNetworkTraversalClientImplBuilder();
         clientBuilder.endpoint(endpoint)
             .pipeline(builderPipeline);
 
@@ -288,7 +288,7 @@ public final class CommunicationRelayClientBuilder {
         } else if (!CoreUtils.isNullOrEmpty(buildLogOptions.getApplicationId())) {
             applicationId = buildLogOptions.getApplicationId();
         }
-        
+
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, configuration));
         policies.add(new RequestIdPolicy());
         policies.add(this.retryPolicy == null ? new RetryPolicy() : this.retryPolicy);
