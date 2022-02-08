@@ -4,7 +4,6 @@
 
 ### Features Added
 - Added interfaces from `com.azure.core.client.traits` to `ContainerRegistryClientBuilder`.
-- 
 ### Breaking Changes
 
 ### Bugs Fixed
