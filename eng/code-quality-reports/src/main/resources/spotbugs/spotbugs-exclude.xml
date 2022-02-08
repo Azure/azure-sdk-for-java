@@ -577,6 +577,7 @@
       <Class name="com.azure.security.keyvault.keys.cryptography.SecretKey"/>
       <Class name="com.azure.security.keyvault.keys.models.KeyVaultKey"/>
       <Class name="com.azure.security.keyvault.keys.models.KeyProperties"/>
+      <Class name="com.azure.security.keyvault.keys.models.KeyRotationPolicy"/>
       <Class name="com.azure.security.keyvault.certificates.models.DeletedCertificate"/>
       <Class name="com.azure.security.keyvault.certificates.models.Certificate"/>
       <Class name="com.azure.security.keyvault.certificates.models.CertificateProperties"/>

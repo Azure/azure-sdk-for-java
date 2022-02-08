@@ -25,10 +25,6 @@ public final class KeyRotationPolicy {
     private OffsetDateTime createdOn;
     private OffsetDateTime updatedOn;
 
-    public KeyRotationPolicy() {
-        // Empty constructor for Jackson deserialization.
-    }
-
     /**
      * Get the identifier of the {@link KeyRotationPolicy policy}.
      *
@@ -65,8 +61,6 @@ public final class KeyRotationPolicy {
 
         return this;
     }
-
-
 
     /**
      * Get the optional key expiration period used to define the duration after which a newly rotated key will expire.
