@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.network;
 
+import com.azure.core.management.Region;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -13,7 +14,6 @@ import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFirewallDisabledRuleGroup;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFirewallExclusion;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFirewallMode;
-import com.azure.resourcemanager.network.models.ApplicationGatewayRedirectType;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySkuName;
 import com.azure.resourcemanager.network.models.ApplicationGatewayTier;
 import com.azure.resourcemanager.network.models.ApplicationGatewayWebApplicationFirewallConfiguration;
@@ -22,15 +22,16 @@ import com.azure.resourcemanager.network.models.ManagedServiceIdentityUserAssign
 import com.azure.resourcemanager.network.models.PublicIPSkuType;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.ResourceIdentityType;
-import com.azure.core.management.Region;
 import com.azure.security.keyvault.certificates.CertificateClient;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -38,10 +39,6 @@ import java.io.FileReader;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 
 public class ApplicationGatewayTests extends NetworkManagementTest {
 
@@ -183,6 +180,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
 
         Assertions.assertEquals(hostname1, gateway.listeners().get(listenerName).hostname());
 
+        // wildcard hostname
         String hostname2 = "*.contoso.com";
         gateway.update()
             .updateListener(listenerName)

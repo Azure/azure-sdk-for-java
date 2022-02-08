@@ -4,11 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported wildcard hostname in `ApplicationGateway` listener.
 
 ## 2.11.0 (2022-01-17)
 
