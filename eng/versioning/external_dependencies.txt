@@ -103,7 +103,7 @@ org.graalvm.sdk:graal-sdk;21.3.0
 org.graalvm.nativeimage:svm;21.3.0
 org.powermock:powermock-api-mockito2;2.0.9
 org.powermock:powermock-module-junit4;2.0.9
-org.postgresql:postgresql;42.3.1
+org.postgresql:postgresql;42.3.2
 org.slf4j:slf4j-api;1.7.32
 org.slf4j:slf4j-nop;1.7.32
 org.slf4j:slf4j-simple;1.7.32
