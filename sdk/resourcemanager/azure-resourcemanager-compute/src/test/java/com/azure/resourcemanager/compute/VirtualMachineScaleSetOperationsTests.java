@@ -745,9 +745,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
      * but this was too long for some OSes and would cause git checkout to fail.
      */
     @Test
-    public void
-    canCreateTwoRegionalVMScaleSetsWithDifferentPoolOfZoneResilientLoadBalancer()
-        throws Exception {
+    public void canCreateTwoRegionalVMScaleSetsWithDifferentPoolOfZoneResilientLoadBalancer() throws Exception {
         // Zone resilient resource -> resources deployed in all zones by the service and it will be served by all AZs
         // all the time.
         // ZoneResilientLoadBalancer -> STANDARD LB -> [Since service deploy them to all zones, user don't have to set
