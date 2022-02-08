@@ -10,7 +10,6 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.keyvault.models.Secret;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.msi.models.Identity;
-import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayInner;
 import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFirewallDisabledRuleGroup;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFirewallExclusion;
@@ -23,7 +22,6 @@ import com.azure.resourcemanager.network.models.ManagedServiceIdentityUserAssign
 import com.azure.resourcemanager.network.models.PublicIPSkuType;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.ResourceIdentityType;
-import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.security.keyvault.certificates.CertificateClient;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;

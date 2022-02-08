@@ -68,7 +68,7 @@ class ApplicationGatewayListenerImpl
             return this.innerModel().hostname();
         }
         if (!CoreUtils.isNullOrEmpty(this.innerModel().hostNames())) {
-            // TODO deprecate and use hostNames() in case user creates multi-hosts in CLI
+            // future work: deprecate and use hostNames() in case user creates multi-hosts in CLI
             return this.innerModel().hostNames().get(0);
         }
         return null;
@@ -248,7 +248,7 @@ class ApplicationGatewayListenerImpl
     @Override
     public ApplicationGatewayListenerImpl withHostname(String hostname) {
         this.innerModel().withHostname(null);
-        // TODO add hostname instead of replacing
+        // future work: add hostname instead of replacing
         if (hostname == null) {
             this.innerModel().withHostNames(null);
         } else {
