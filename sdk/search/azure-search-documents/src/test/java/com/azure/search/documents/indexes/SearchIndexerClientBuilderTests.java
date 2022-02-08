@@ -9,8 +9,10 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.ClientOptions;
@@ -211,5 +213,16 @@ public class SearchIndexerClientBuilderTests {
             .buildClient();
 
         assertThrows(HttpResponseException.class, () -> searchIndexerClient.getIndexer("anindexer"));
+    }
+
+    @Test
+    public void bothRetryOptionsAndRetryPolicySet() {
+        assertThrows(IllegalStateException.class, () -> new SearchIndexerClientBuilder()
+            .endpoint(searchEndpoint)
+            .credential(searchApiKeyCredential)
+            .serviceVersion(apiVersion)
+            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+            .retryPolicy(new RetryPolicy())
+            .buildClient());
     }
 }

@@ -368,4 +368,10 @@ class PublicIpAddressImpl
         this.innerModel().withPublicIpAddressVersion(ipVersion);
         return this;
     }
+
+//    @Override
+//    public PublicIpAddressImpl withDeleteOptions(DeleteOptions deleteOptions) {
+//        this.innerModel().withDeleteOption(deleteOptions);
+//        return this;
+//    }
 }
