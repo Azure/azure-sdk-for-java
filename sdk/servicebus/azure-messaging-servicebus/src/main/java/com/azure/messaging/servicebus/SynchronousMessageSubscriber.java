@@ -34,6 +34,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
 
     private final Object currentWorkLock = new Object();
     private final ServiceBusReceiverAsyncClient asyncClient;
+    private final boolean isPrefetchDisabled;
     private final Duration operationTimeout;
 
     private volatile SynchronousReceiveWork currentWork;
@@ -55,18 +56,27 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
      *
      *
      * @param asyncClient Client to update disposition of messages.
+     * @param isPrefetchDisabled Indicates if the prefetch is disabled.
      * @param operationTimeout Timeout to wait for operation to complete.
      * @param initialWork Initial work to queue.
+     *
+     * <p>
+     * When {@code isPrefetchDisabled} is true, we release the messages those received during the timespan
+     * between the last terminated downstream and the next active downstream.
+     * </p>
      *
      * @throws NullPointerException if {@code initialWork} is null.
      * @throws IllegalArgumentException if {@code initialWork.getNumberOfEvents()} is less than 1.
      */
-    SynchronousMessageSubscriber(ServiceBusReceiverAsyncClient asyncClient, SynchronousReceiveWork initialWork,
-        Duration operationTimeout) {
+    SynchronousMessageSubscriber(ServiceBusReceiverAsyncClient asyncClient,
+                                 SynchronousReceiveWork initialWork,
+                                 boolean isPrefetchDisabled,
+                                 Duration operationTimeout) {
         this.asyncClient = Objects.requireNonNull(asyncClient, "'asyncClient' cannot be null.");
         this.operationTimeout = Objects.requireNonNull(operationTimeout, "'operationTimeout' cannot be null.");
         this.workQueue.add(Objects.requireNonNull(initialWork, "'initialWork' cannot be null."));
 
+        this.isPrefetchDisabled = isPrefetchDisabled;
         if (initialWork.getNumberOfEvents() < 1) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "'numberOfEvents' cannot be less than 1. Actual: " + initialWork.getNumberOfEvents()));
@@ -166,61 +176,59 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
         long numberRequested = REQUESTED.get(this);
         boolean isEmpty = bufferMessages.isEmpty();
 
-        SynchronousReceiveWork work;
+        SynchronousReceiveWork currentDownstream = null;
         while (numberRequested != 0L && !isEmpty) {
             if (isTerminated()) {
                 break;
             }
 
-            long numberEmitted = 0L;
-            while (numberRequested != numberEmitted) {
+            // Track the number of messages read from the buffer those are either emitted to downstream or released.
+            long numberConsumed = 0L;
+            // Iterate and attempt to read the requested number of events.
+            while (numberRequested != numberConsumed) {
                 if (isEmpty || isTerminated()) {
                     break;
                 }
 
                 final ServiceBusReceivedMessage message = bufferMessages.poll();
 
-                if (message != null && !message.isSettled() && message.getExpiresAt() != null
-                    && OffsetDateTime.now().isAfter(message.getExpiresAt())) {
-
-                    logger.info("lockToken[{}] expiration[{}] Releasing expired message.",
-                        message.getLockToken(), message.getExpiresAt());
-
-                    asyncClient.release(message).subscribe(unused -> {
-                    },
-                        error -> logger.warning("lockToken[{}] Issue encountered releasing expired message.",
-                            message.getLockToken(), error),
-                        () -> logger.verbose("lockToken[{}] Message successfully released."));
-
-                    // Try polling another message from the queue. Maybe the next one won't be expired.
-                    continue;
-                }
-
-                // While there are pending messages, try to find the current work item to emit it downstream to.
+                // While there are messages in the buffer, obtain the current (unterminated) downstream and
+                // attempt to emit the message to it.
                 boolean isEmitted = false;
                 while (!isEmitted) {
-                    work = getOrUpdateCurrentWork();
-                    if (work == null) {
+                    currentDownstream = getOrUpdateCurrentWork();
+                    if (currentDownstream == null) {
                         break;
                     }
 
-                    isEmitted = work.emitNext(message);
+                    isEmitted = currentDownstream.emitNext(message);
                 }
 
-                // We could not emit the last message that we polled because there were no work items.
-                // Push this back to the head of the work queue.
                 if (!isEmitted) {
-                    bufferMessages.addFirst(message);
-                    break;
+                    // The only reason we can't emit was the downstream(s) are/were terminated hence nobody
+                    // to receive the message.
+                    if (isPrefetchDisabled) {
+                        // release is enabled only for no-prefetch scenario.
+                        asyncClient.release(message).subscribe(__ -> { },
+                            error -> logger.warning("lockToken[{}] Couldn't release the message.",
+                                message.getLockToken(), error),
+                            () -> logger.verbose("lockToken[{}] Message successfully released.",
+                                message.getLockToken()));
+                    } else {
+                        // Re-buffer the message as it couldn't be emitted or release was disabled.
+                        bufferMessages.addFirst(message);
+                        break;
+                    }
                 }
 
-                numberEmitted++;
+                // account for consumed message - message is either emitted or released.
+                numberConsumed++;
                 isEmpty = bufferMessages.isEmpty();
             }
 
             final long requestedMessages = REQUESTED.get(this);
             if (requestedMessages != Long.MAX_VALUE) {
-                numberRequested = REQUESTED.addAndGet(this, -numberEmitted);
+                numberRequested = REQUESTED.addAndGet(this, -numberConsumed);
             }
         }
     }

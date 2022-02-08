@@ -75,7 +75,7 @@ public class SynchronousMessageSubscriberTest {
         when(work2.getId()).thenReturn(WORK_ID_2);
         when(work2.getNumberOfEvents()).thenReturn(NUMBER_OF_WORK_ITEMS_2);
 
-        syncSubscriber = new SynchronousMessageSubscriber(asyncClient, work1, operationTimeout);
+        syncSubscriber = new SynchronousMessageSubscriber(asyncClient, work1, false, operationTimeout);
     }
 
     @AfterEach
@@ -115,7 +115,7 @@ public class SynchronousMessageSubscriberTest {
     @Test
     public void queueWorkTest() {
         // Arrange
-        syncSubscriber = new SynchronousMessageSubscriber(asyncClient, work1, operationTimeout);
+        syncSubscriber = new SynchronousMessageSubscriber(asyncClient, work1, false, operationTimeout);
 
         // Act
         syncSubscriber.queueWork(work2);
@@ -158,7 +158,7 @@ public class SynchronousMessageSubscriberTest {
         when(work2.emitNext(message3)).thenReturn(true);
         when(work2.isTerminal()).thenReturn(false);
 
-        syncSubscriber = new SynchronousMessageSubscriber(asyncClient, work1, operationTimeout);
+        syncSubscriber = new SynchronousMessageSubscriber(asyncClient, work1, false, operationTimeout);
         syncSubscriber.queueWork(work2);
         syncSubscriber.queueWork(work3);
 
