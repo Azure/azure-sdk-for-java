@@ -6,7 +6,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncContainer;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncDatabase;
-import com.azure.cosmos.encryption.mdesupport.EncryptionKeyWrapProvider;
+import com.azure.cosmos.encryption.keyprovider.EncryptionKeyWrapProvider;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;

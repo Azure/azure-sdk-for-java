@@ -4,7 +4,7 @@
 package com.azure.cosmos.encryption.implementation;
 
 import com.azure.cosmos.encryption.EncryptionBridgeInternal;
-import com.azure.cosmos.encryption.mdesupport.MdeSupportBridgeHelpers;
+import com.azure.cosmos.encryption.keyprovider.MdeSupportBridgeHelpers;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.AsyncCache;

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.encryption.mdesupport;
+package com.azure.cosmos.encryption.models;
 
 /**
  * Represents the encryption algorithms supported for key encryption.

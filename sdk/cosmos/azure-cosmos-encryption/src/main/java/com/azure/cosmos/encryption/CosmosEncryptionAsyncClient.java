@@ -9,7 +9,7 @@ import com.azure.cosmos.CosmosAsyncClientEncryptionKey;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.encryption.mdesupport.EncryptionKeyWrapProvider;
+import com.azure.cosmos.encryption.keyprovider.EncryptionKeyWrapProvider;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.AsyncCache;

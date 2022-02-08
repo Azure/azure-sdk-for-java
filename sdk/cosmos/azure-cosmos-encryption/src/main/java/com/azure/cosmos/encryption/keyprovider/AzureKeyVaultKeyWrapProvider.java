@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.encryption.mdesupport;
+package com.azure.cosmos.encryption.keyprovider;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.cosmos.encryption.models.KeyEncryptionKeyAlgorithm;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.microsoft.data.encryption.AzureKeyVaultKeyStoreProvider.AzureKeyVaultKeyStoreProvider;

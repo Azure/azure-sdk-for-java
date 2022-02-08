@@ -7,7 +7,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
 import com.azure.cosmos.encryption.EncryptionAsyncApiCrudTest;
 import com.azure.cosmos.encryption.EncryptionBridgeInternal;
-import com.azure.cosmos.encryption.mdesupport.MdeSupportBridgeHelpers;
+import com.azure.cosmos.encryption.keyprovider.MdeSupportBridgeHelpers;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.implementation.Resource;

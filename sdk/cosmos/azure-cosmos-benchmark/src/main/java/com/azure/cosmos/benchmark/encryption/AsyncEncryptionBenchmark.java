@@ -19,7 +19,7 @@ import com.azure.cosmos.benchmark.PojoizedJson;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncContainer;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncDatabase;
-import com.azure.cosmos.encryption.mdesupport.AzureKeyVaultKeyWrapProvider;
+import com.azure.cosmos.encryption.keyprovider.AzureKeyVaultKeyWrapProvider;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.implementation.HttpConstants;
