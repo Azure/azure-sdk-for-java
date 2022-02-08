@@ -1168,7 +1168,7 @@ public final class KeyClient {
      * </pre>
      * <!-- end com.azure.security.keyvault.keys.KeyClient.listPropertiesOfKeys -->
      *
-     * <h4><strong>Iterate keys by page</strong></h4>
+     * <p><strong>Iterate keys by page</strong></p>
      * <p>It is possible to get {@link KeyVaultKey full keys} with key material from this information. Iterate over all
      * the {@link KeyProperties} by page and call {@link KeyClient#getKey(String, String)}. This will return the
      * {@link KeyVaultKey key} with key material included as of its latest version.</p>
@@ -1217,7 +1217,7 @@ public final class KeyClient {
      * </pre>
      * <!-- end com.azure.security.keyvault.keys.KeyClient.listPropertiesOfKeys#Context -->
      *
-     * <h4><strong>Iterate by page</strong></h4>
+     * <p><strong>Iterate by page</strong></p>
      * <p>It is possible to get {@link KeyVaultKey full keys} with key material from this information. Iterate over all
      * the {@link KeyProperties} by page and call {@link KeyClient#getKey(String, String)}. This will return the
      * {@link KeyVaultKey key} with key material included as of its latest version.</p>
@@ -1733,7 +1733,7 @@ public final class KeyClient {
      * KeyRotationPolicy updatedPolicy =
      *     keyClient.updateKeyRotationPolicy&#40;&quot;keyName&quot;, keyRotationPolicy&#41;;
      *
-     * System.out.printf&#40;&quot;Updated key rotation policy with id: %s%n&quot;, keyRotationPolicy.getId&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Updated key rotation policy with id: %s%n&quot;, updatedPolicy.getId&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.security.keyvault.keys.KeyClient.updateKeyRotationPolicy#String-KeyRotationPolicy -->
      *
