@@ -221,7 +221,12 @@ public class CosmosItemTest extends TestSuiteBase {
 
         feedResponseIterator1
             .iterableByPage()
-            .forEach(response -> assertThat(response.getCorrelationActivityId() == correlationId));
+            .forEach(response -> {
+                assertThat(response.getCorrelationActivityId() == correlationId)
+                    .withFailMessage("response.getCorrelationActivityId");
+                assertThat(response.getCosmosDiagnostics().toString().contains(correlationId.toString()))
+                    .withFailMessage("response.getCosmosDiagnostics");
+            });
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
