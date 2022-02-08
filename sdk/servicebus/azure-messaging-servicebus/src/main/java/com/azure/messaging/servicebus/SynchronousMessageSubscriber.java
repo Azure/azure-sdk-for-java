@@ -296,8 +296,8 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
 
                 work.start();
 
-                // Now that we considered the difference in number of events in lines 254 - 269, add the credits on the
-                // line for this new work item.
+                // Now that we updated REQUESTED to account for credits already on the line, we're good to
+                // place any credits for this new work item.
                 requestUpstream(work.getNumberOfEvents());
 
                 return work;
