@@ -56,11 +56,18 @@ public final class TransitiveCoreChangesTransform<E extends Element<E>> extends 
             return TransformationResult.keep();
         }
 
-        // The difference is from azure-core and azure-core is a dependency to this SDK, reclassify the difference
-        // as documented with a justification for why it will be ignored.
-        return TransformationResult.replaceWith(Difference.copy(difference)
-            .withCriticality(Criticality.DOCUMENTED)
-            .withJustification("Transitive changes from Core libraries should be ignored.")
-            .build());
+        // Only transform the Difference if the criticality is an error. If this isn't guarded it results in an
+        // infinite transformation loop as RevApi will keep running the transformation pipeline until there are no
+        // transformations applied in the pipeline run.
+        if (difference.criticality == Criticality.ERROR) {
+            // The difference is from azure-core and azure-core is a dependency to this SDK, reclassify the difference
+            // as documented with a justification for why it will be ignored.
+            return TransformationResult.replaceWith(Difference.copy(difference)
+                .withCriticality(Criticality.DOCUMENTED)
+                .withJustification("Transitive changes from Core libraries should be ignored.")
+                .build());
+        } else {
+            return TransformationResult.keep();
+        }
     }
 }
