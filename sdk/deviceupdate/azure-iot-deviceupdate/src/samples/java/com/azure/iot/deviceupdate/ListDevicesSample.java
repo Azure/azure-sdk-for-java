@@ -12,12 +12,12 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public class ListDevicesSample {
     public static void main(String[] args) {
         // BEGIN: com.azure.iot.deviceupdate.DeviceManagementAsyncClient.instantiate
-        DeviceManagementAsyncClient client = new DeviceUpdateClientBuilder()
+        DeviceManagementAsyncClient client = new DeviceManagementClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("AZURE_ACCOUNT_ENDPOINT"))
             .instanceId(Configuration.getGlobalConfiguration().get("AZURE_INSTANCE_ID"))
             .credential(new DefaultAzureCredentialBuilder().build())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .buildDeviceManagementAsyncClient();
+            .buildAsyncClient();
         // END: com.azure.iot.deviceupdate.DeviceManagementAsyncClient.instantiate
 
         PagedFlux<BinaryData> response = client.listDevices(null);
