@@ -10,6 +10,16 @@
 
 ### Other Changes
 
+## 11.4.7 (2022-02-08)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to version `1.25.0`.
+- Upgraded `azure-core-http-netty` from `1.11.6` to version `1.11.7`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.12` to version `1.2.13`.
+
 ## 11.5.0-beta.6 (2022-02-08)
 
 ### Features Added
