@@ -2761,9 +2761,6 @@ class VirtualMachineImpl
         }
 
         private DiskDeleteOptionTypes getDeleteOptions() {
-            if (defaultDeleteOptions == null) {
-                return DiskDeleteOptionTypes.DETACH;
-            }
             return defaultDeleteOptions;
         }
     }
