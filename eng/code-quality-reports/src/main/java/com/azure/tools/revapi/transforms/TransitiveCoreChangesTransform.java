@@ -1,6 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.tools.revapi.transforms;
 
 import org.revapi.Archive;
+import org.revapi.Criticality;
 import org.revapi.Difference;
 import org.revapi.Element;
 import org.revapi.TransformationResult;
@@ -9,7 +13,13 @@ import org.revapi.base.BaseDifferenceTransform;
 import javax.annotation.Nullable;
 import java.util.regex.Pattern;
 
-public class IgnoreCoreAdditionsTransform<E extends Element<E>> extends BaseDifferenceTransform<E> {
+/**
+ * Transform that runs after RevApi generates API differences that removes transitive azure-core changes from the
+ * flagged differences set.
+ *
+ * @param <E> Type of element to transform.
+ */
+public final class TransitiveCoreChangesTransform<E extends Element<E>> extends BaseDifferenceTransform<E> {
     private static final Pattern CORE_ARCHIVE = Pattern.compile("com\\.azure:azure-core:.*");
     private static final String SUPPLEMENTARY = Archive.Role.SUPPLEMENTARY.toString();
 
@@ -21,8 +31,8 @@ public class IgnoreCoreAdditionsTransform<E extends Element<E>> extends BaseDiff
 
     @Override
     public String getExtensionId() {
-        // Used to configure this transform in revapi.json
-        return "ignore-dependency-core-api-changes";
+        // Used to configure this transform in the RevApi pipeline.
+        return "transitive-core-changes";
     }
 
     @Override
@@ -46,8 +56,11 @@ public class IgnoreCoreAdditionsTransform<E extends Element<E>> extends BaseDiff
             return TransformationResult.keep();
         }
 
-        // The difference is from azure-core and azure-core is a dependency to this SDK, discard the difference
-        // since it should be ignored.
-        return TransformationResult.discard();
+        // The difference is from azure-core and azure-core is a dependency to this SDK, reclassify the difference
+        // as documented with a justification for why it will be ignored.
+        return TransformationResult.replaceWith(Difference.copy(difference)
+            .withCriticality(Criticality.DOCUMENTED)
+            .withJustification("Transitive changes from Core libraries should be ignored.")
+            .build());
     }
 }

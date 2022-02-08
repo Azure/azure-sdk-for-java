@@ -1,1 +1,1 @@
-com.azure.tools.revapi.transforms.IgnoreCoreAdditionsTransform
+com.azure.tools.revapi.transforms.TransitiveCoreChangesTransform

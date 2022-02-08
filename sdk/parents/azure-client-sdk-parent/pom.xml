@@ -783,7 +783,7 @@
               <transformationBlocks>
                 <block>
                   <item>revapi.differences</item>
-                  <item>ignore-dependency-core-api-changes</item>
+                  <item>transitive-core-changes</item>
                 </block>
               </transformationBlocks>
             </pipelineConfiguration>
