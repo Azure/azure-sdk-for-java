@@ -228,12 +228,15 @@ class SparkE2EQueryITest
       }
     }
 
+    val logTestCaseIdentifier = UUID.randomUUID().toString
     val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
       "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
       "spark.cosmos.read.maxItemCount" -> "2",
+      "spark.cosmos.read.customQuery" ->
+        s"SELECT * FROM c WHERE c.isAlive = true and c.type = 'cat' and c.id <> '$logTestCaseIdentifier'",
       "spark.cosmos.diagnostics" -> SimpleFileDiagnosticsProvider.getClass.getName.replace("$", "")
     )
 
@@ -254,7 +257,9 @@ class SparkE2EQueryITest
     ))
 
     val df = spark.read.schema(customSchema).format("cosmos.oltp").options(cfg).load()
-    val rowsArray = df.where("isAlive = 'true' and type = 'cat'").orderBy("age").collect()
+    val rowsArray = df
+      .orderBy("age")
+      .collect()
     rowsArray should have size 20
 
     for (index <- 0 until rowsArray.length) {
@@ -272,11 +277,13 @@ class SparkE2EQueryITest
     messages should not be null
     messages.size should not be 0
     for ((msg, throwable) <- messages) {
-      val itemCountPos = msg.indexOf("itemCount:")
-      if (itemCountPos > 0) {
-        val startPos = itemCountPos + "itemCount:".length
-        val itemCount = msg.substring(startPos, msg.indexOf(",", startPos)).toInt
-        itemCount should be <= 2
+      if (msg.contains(logTestCaseIdentifier)) {
+        val itemCountPos = msg.indexOf("itemCount:")
+        if (itemCountPos > 0) {
+          val startPos = itemCountPos + "itemCount:".length
+          val itemCount = msg.substring(startPos, msg.indexOf(",", startPos)).toInt
+          itemCount should be <= 2
+        }
       }
     }
   }
@@ -1000,6 +1007,7 @@ class SparkE2EQueryITest
       }
     }
 
+    val logTestCaseIdentifier = UUID.randomUUID().toString
     val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
@@ -1007,10 +1015,10 @@ class SparkE2EQueryITest
       "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
       "spark.cosmos.read.maxItemCount" -> "2",
       "spark.cosmos.read.inferSchema.enabled" -> "false",
+      "spark.cosmos.read.customQuery" ->
+        s"SELECT * FROM c WHERE c.isAlive = true and c.type = 'cat' and c.id <> '$logTestCaseIdentifier'",
       "spark.cosmos.diagnostics" -> SimpleFileDiagnosticsProvider.getClass.getName.replace("$", "")
     )
-
-    SimpleFileDiagnosticsProvider.reset()
 
     // scalastyle:off underscore.import
     // scalastyle:off import.grouping
@@ -1026,8 +1034,12 @@ class SparkE2EQueryITest
       StructField("isAlive", BooleanType)
     ))
 
+    SimpleFileDiagnosticsProvider.reset()
+
     val df = spark.read.schema(customSchema).format("cosmos.oltp").options(cfg).load()
-    val rowsArray = df.where("isAlive = 'true' and type = 'cat'").orderBy("age").collect()
+    val rowsArray = df
+      .orderBy("age")
+      .collect()
     rowsArray should have size 20
 
     for (index <- 0 until rowsArray.length) {
@@ -1047,20 +1059,22 @@ class SparkE2EQueryITest
 
     val correlationActivityIds = mutable.HashSet.empty[String]
     for ((msg, throwable) <- messages) {
-      var startPos = 0
-      var continueLoop = true
-      while (continueLoop && startPos < msg.length) {
-        val nextActivityIdPos = msg.indexOf("correlationActivityId", startPos)
+      if (msg.contains(logTestCaseIdentifier)) {
+        var startPos = 0
+        var continueLoop = true
+        while (continueLoop && startPos < msg.length) {
+          val nextActivityIdPos = msg.indexOf("correlationActivityId", startPos)
 
-        if (nextActivityIdPos < 0) {
-          continueLoop = false
-        } else {
-          val currentStartPos = nextActivityIdPos + "correlationActivityId".length + 1
-          val currentEndPos = math.min(currentStartPos + 36, msg.length - 1)
-          val correlationActivityId = msg.substring(currentStartPos, currentEndPos)
-          correlationActivityIds += correlationActivityId
+          if (nextActivityIdPos < 0) {
+            continueLoop = false
+          } else {
+            val currentStartPos = nextActivityIdPos + "correlationActivityId".length + 1
+            val currentEndPos = math.min(currentStartPos + 36, msg.length - 1)
+            val correlationActivityId = msg.substring(currentStartPos, currentEndPos)
+            correlationActivityIds += correlationActivityId
 
-          startPos = currentEndPos + 1
+            startPos = currentEndPos + 1
+          }
         }
       }
     }
