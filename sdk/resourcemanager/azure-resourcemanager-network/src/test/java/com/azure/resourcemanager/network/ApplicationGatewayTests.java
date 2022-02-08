@@ -192,7 +192,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
 
         Assertions.assertEquals(hostname2, gateway.listeners().get(listenerName).hostname());
 
-//         update and test override for hostname on hostnames
+        // override hostnames by hostname
         gateway.innerModel().httpListeners().iterator().next().withHostNames(null).withHostname(hostname1);
         gateway.update()
             .apply();
