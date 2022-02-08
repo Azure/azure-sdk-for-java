@@ -1005,8 +1005,6 @@ public class CosmosEncryptionAsyncContainer {
      * Use {@link CosmosBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
      * transactional batch succeeded.
      */
-    @Beta(value = Beta.SinceVersion.V1, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<CosmosBatchResponse> executeCosmosBatch(CosmosBatch cosmosBatch, CosmosBatchRequestOptions requestOptions) {
         if (requestOptions == null) {
             requestOptions = new CosmosBatchRequestOptions();
@@ -1116,8 +1114,6 @@ public class CosmosEncryptionAsyncContainer {
      * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
      * get the exception.
      */
-    @Beta(value = Beta.SinceVersion.V1, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <TContext> Flux<CosmosBulkOperationResponse<TContext>> executeBulkOperations(
         Flux<CosmosItemOperation> operations) {
 
@@ -1147,8 +1143,7 @@ public class CosmosEncryptionAsyncContainer {
      * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
      * get the exception.
      */
-    @Beta(value = Beta.SinceVersion.V1, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @SuppressWarnings("unchecked")
     public <TContext> Flux<CosmosBulkOperationResponse<TContext>> executeBulkOperations(
         Flux<CosmosItemOperation> operations,
         CosmosBulkExecutionOptions bulkOptions) {
@@ -1193,6 +1188,7 @@ public class CosmosEncryptionAsyncContainer {
         return executeBulkOperationsHelper(operationFlux, cosmosBulkExecutionOptions, false);
     }
 
+    @SuppressWarnings("unchecked")
     private <TContext> Flux<CosmosBulkOperationResponse<TContext>> executeBulkOperationsHelper(Flux<CosmosItemOperation> operations,
                                                                                                CosmosBulkExecutionOptions bulkOptions,
                                                                                                boolean isRetry) {

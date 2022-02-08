@@ -316,8 +316,6 @@ public class CosmosEncryptionContainer {
      * Use {@link CosmosBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
      * transactional batch succeeded.
      */
-    @Beta(value = Beta.SinceVersion.V1, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosBatchResponse executeCosmosBatch(CosmosBatch cosmosBatch) {
         return this.blockBatchResponse(this.cosmosEncryptionAsyncContainer.executeCosmosBatch(cosmosBatch));
     }
@@ -352,7 +350,6 @@ public class CosmosEncryptionContainer {
      * Use {@link CosmosBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
      * transactional batch succeeded.
      */
-    @Beta(value = Beta.SinceVersion.V1, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosBatchResponse executeCosmosBatch(
         CosmosBatch cosmosBatch,
         CosmosBatchRequestOptions requestOptions) {
