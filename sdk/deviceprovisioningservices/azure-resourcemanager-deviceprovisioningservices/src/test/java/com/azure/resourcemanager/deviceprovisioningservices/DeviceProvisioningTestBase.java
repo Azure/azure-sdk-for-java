@@ -3,6 +3,8 @@
 
 package com.azure.resourcemanager.deviceprovisioningservices;
 
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
@@ -24,6 +26,7 @@ import com.azure.resourcemanager.resources.models.ResourceGroup;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class DeviceProvisioningTestBase extends TestBase {
     protected static final String DEFAULT_INSTANCE_NAME = "JavaDpsControlPlaneSDKTest";
@@ -45,6 +48,7 @@ public class DeviceProvisioningTestBase extends TestBase {
 
     public IotDpsManager createIotDpsManager() {
         return IotDpsManager
+            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
     }
 
@@ -68,6 +72,7 @@ public class DeviceProvisioningTestBase extends TestBase {
 
     public IotHubManager createIotHubManager() {
         return IotHubManager
+            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
     }
 
@@ -80,6 +85,9 @@ public class DeviceProvisioningTestBase extends TestBase {
         } catch (ErrorDetailsException ex) {
             // error code signifies that the resource name is not available, need to delete it before creating a
             // new one.
+            if (ex.getValue().getHttpStatusCode() == null) {
+                fail("Unexpected exception: " + ex.getMessage());
+            }
             if (ex.getValue().getHttpStatusCode().equals("404307")) {
                 // Delete the service if it already exists
                 iotDpsManager.iotDpsResources().delete(resourceGroup.name(), serviceName, Context.NONE);

@@ -47,7 +47,7 @@ parameters:
 - name: PreBuildSteps
   type: object
   default: []
-- name: MavenVerifyAdditionalOptions
+- name: AdditionalLintingOptions
   type: string
   default: ''
 - name: AdditionalStagesAfterBuild
@@ -80,12 +80,13 @@ stages:
         MatrixReplace:
           - ${{ each replacement in parameters.MatrixReplace }}:
             - ${{ replacement }}
-          - ${{ if eq(parameters.SDKType, 'data') }}:
-            - TestGoals=.*/verify
-            - TestOptions=.*/-am
+
           - AZURE_TEST.*=.*/
         PreBuildSteps: ${{ parameters.PreBuildSteps }}
-        MavenVerifyAdditionalOptions: ${{ parameters.MavenVerifyAdditionalOptions }}
+        AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
+        ${{ if eq(parameters.SDKType, 'data') }}:
+          TestGoals: 'verify'
+          TestOptions: '-am'
 
   - ${{ parameters.AdditionalStagesAfterBuild }}
 
