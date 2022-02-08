@@ -149,17 +149,17 @@ class VirtualMachineScaleSetVMsImpl
             new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(new ArrayList<>(instanceIds)));
     }
 
-    @Override
-    public void reimageInstances(Collection<String> instanceIds) {
-        this.reimageInstancesAsync(instanceIds).block();
-    }
-
-    @Override
-    public Mono<Void> reimageInstancesAsync(Collection<String> instanceIds) {
-        return this.scaleSet.manager().serviceClient().getVirtualMachineScaleSets().reimageAsync(
-            this.scaleSet.resourceGroupName(), this.scaleSet.name(),
-            new VirtualMachineScaleSetReimageParameters().withInstanceIds(new ArrayList<>(instanceIds)));
-    }
+//    @Override
+//    public void reimageInstances(Collection<String> instanceIds) {
+//        this.reimageInstancesAsync(instanceIds).block();
+//    }
+//
+//    @Override
+//    public Mono<Void> reimageInstancesAsync(Collection<String> instanceIds) {
+//        return this.scaleSet.manager().serviceClient().getVirtualMachineScaleSets().reimageAsync(
+//            this.scaleSet.resourceGroupName(), this.scaleSet.name(),
+//            new VirtualMachineScaleSetReimageParameters().withInstanceIds(new ArrayList<>(instanceIds)));
+//    }
 
     @Override
     public VirtualMachineScaleSetVM getInstance(String instanceId) {
