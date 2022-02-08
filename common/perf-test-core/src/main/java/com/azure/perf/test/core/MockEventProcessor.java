@@ -3,16 +3,15 @@
 
 package com.azure.perf.test.core;
 
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
@@ -31,6 +30,7 @@ public class MockEventProcessor {
     private final Duration errorAfter;
     private boolean errorRaised;
     private final ReentrantLock errorLock;
+    private volatile boolean processPartitions;
 
     private final MockEventContext[] mockEventContexts;
     private int[] eventsRaised;
@@ -57,6 +57,7 @@ public class MockEventProcessor {
         this.maxEventsPerSecondPerPartition = ((double) maxEventsPerSecond) / partitions;
         this.errorAfter = errorAfter;
         this.errorLock = new ReentrantLock();
+        this.processPartitions = true;
 
         mockEventContexts = new MockEventContext[partitions];
         IntStream.range(0, partitions).boxed().forEach(integer -> {
@@ -72,26 +73,23 @@ public class MockEventProcessor {
         eventsRaised = new int[eventsRaised.length];
         process = true;
         errorRaised = false;
+        processPartitions = true;
         startTime = System.nanoTime();
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
         scheduler.set(executor);
 
-        Double jitterInMillis =
-            ThreadLocalRandom.current().nextDouble() * TimeUnit.SECONDS.toMillis(0);
-
         runner.set(scheduler.get().schedule(this::processEvents,
-            jitterInMillis.longValue(), TimeUnit.MILLISECONDS));
+            0l, TimeUnit.MILLISECONDS));
     }
 
     private Mono<Void> processEvents() {
-        ForkJoinPool forkJoinPool = new ForkJoinPool(partitions);
-            try {
-                forkJoinPool.submit(() -> {
-                    IntStream.range(0, partitions).parallel().forEach(i -> process(i));
-                }).get();
-            } catch (InterruptedException | ExecutionException e) {
-                return Mono.error(new RuntimeException(e));
-            }
+        if (processPartitions) {
+            Flux.range(0, partitions)
+                .parallel()
+                .runOn(Schedulers.boundedElastic())
+                .subscribe(integer -> process(integer));
+            processPartitions = false;
+        }
         return Mono.empty();
     }
 
