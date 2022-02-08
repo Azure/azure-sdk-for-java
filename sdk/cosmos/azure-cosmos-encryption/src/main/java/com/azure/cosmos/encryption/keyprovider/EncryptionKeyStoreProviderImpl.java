@@ -35,11 +35,9 @@ class EncryptionKeyStoreProviderImpl extends EncryptionKeyStoreProvider {
      * @param encryptedKey
      *        The ciphertext key.
      * @return The unwrapped data encryption key.
-     * @throws MicrosoftDataEncryptionException
-     *         on error
      */
     @Override
-    public byte[] unwrapKey(String encryptionKeyId, KeyEncryptionKeyAlgorithm algorithm, byte[] encryptedKey) throws MicrosoftDataEncryptionException {
+    public byte[] unwrapKey(String encryptionKeyId, KeyEncryptionKeyAlgorithm algorithm, byte[] encryptedKey) {
         return this.encryptionKeyWrapProvider.unwrapKey(encryptionKeyId, algorithm.toString(), encryptedKey);
     }
 
@@ -54,11 +52,9 @@ class EncryptionKeyStoreProviderImpl extends EncryptionKeyStoreProvider {
      * @param key
      *        The plaintext key
      * @return The wrapped data encryption key.
-     * @throws MicrosoftDataEncryptionException
-     *         on error
      */
     @Override
-    public byte[] wrapKey(String encryptionKeyId, KeyEncryptionKeyAlgorithm algorithm, byte[] key) throws MicrosoftDataEncryptionException {
+    public byte[] wrapKey(String encryptionKeyId, KeyEncryptionKeyAlgorithm algorithm, byte[] key) {
         return this.encryptionKeyWrapProvider.wrapKey(encryptionKeyId, algorithm.toString(), key);
     }
 
@@ -70,8 +66,6 @@ class EncryptionKeyStoreProviderImpl extends EncryptionKeyStoreProvider {
      * @param allowEnclaveComputations
      *        Indicates whether the key encryption key supports enclave computations.
      * @return The signature of the key encryption key metadata.
-     * @throws MicrosoftDataEncryptionException
-     *         on error
      */
     @Override
     public byte[] sign(String encryptionKeyId, boolean allowEnclaveComputations) {

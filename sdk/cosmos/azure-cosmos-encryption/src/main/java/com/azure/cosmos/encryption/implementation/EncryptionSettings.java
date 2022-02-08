@@ -4,7 +4,7 @@
 package com.azure.cosmos.encryption.implementation;
 
 import com.azure.cosmos.encryption.EncryptionBridgeInternal;
-import com.azure.cosmos.encryption.keyprovider.MdeSupportBridgeHelpers;
+import com.azure.cosmos.encryption.keyprovider.KeyProviderBridgeHelpers;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
@@ -39,8 +39,8 @@ public final class EncryptionSettings {
     private AeadAes256CbcHmac256EncryptionAlgorithm aeadAes256CbcHmac256EncryptionAlgorithm;
     private EncryptionType encryptionType;
     private String databaseRid;
-    private final static MdeSupportBridgeHelpers.EncryptionKeyWrapProviderHelper.EncryptionKeyWrapProviderAccessor encryptionKeyWrapProviderAccessor =
-        MdeSupportBridgeHelpers.EncryptionKeyWrapProviderHelper.getEncryptionKeyWrapProviderAccessor();
+    private final static KeyProviderBridgeHelpers.EncryptionKeyWrapProviderHelper.EncryptionKeyWrapProviderAccessor encryptionKeyWrapProviderAccessor =
+        KeyProviderBridgeHelpers.EncryptionKeyWrapProviderHelper.getEncryptionKeyWrapProviderAccessor();
 
     public Mono<EncryptionSettings> getEncryptionSettingForPropertyAsync(
         String propertyName,
@@ -99,11 +99,11 @@ public final class EncryptionSettings {
                                 encryptionSettings.clientEncryptionKeyId = propertyToEncrypt.getClientEncryptionKeyId();
                                 encryptionSettings.dataEncryptionKey = protectedDataEncryptionKey;
                                 EncryptionType encryptionType = EncryptionType.Plaintext;
-                                switch (propertyToEncrypt.getEncryptionType()) {
-                                    case CosmosEncryptionType.DETERMINISTIC:
+                                switch (CosmosEncryptionType.get(propertyToEncrypt.getEncryptionType())) {
+                                    case DETERMINISTIC:
                                         encryptionType = EncryptionType.Deterministic;
                                         break;
-                                    case CosmosEncryptionType.RANDOMIZED:
+                                    case RANDOMIZED:
                                         encryptionType = EncryptionType.Randomized;
                                         break;
                                     default:

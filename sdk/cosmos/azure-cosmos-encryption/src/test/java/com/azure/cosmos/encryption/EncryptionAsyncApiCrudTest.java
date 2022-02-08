@@ -1029,7 +1029,7 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         ClientEncryptionIncludedPath includedPath = new ClientEncryptionIncludedPath();
         includedPath.setClientEncryptionKeyId("key1");
         includedPath.setPath("/sensitiveString");
-        includedPath.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
+        includedPath.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
         includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
 
         List<ClientEncryptionIncludedPath> paths = new ArrayList<>();

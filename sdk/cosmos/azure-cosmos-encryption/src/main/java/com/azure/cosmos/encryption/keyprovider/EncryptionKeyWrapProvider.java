@@ -3,17 +3,7 @@
 
 package com.azure.cosmos.encryption.keyprovider;
 
-import com.azure.cosmos.implementation.Warning;
-import com.microsoft.data.encryption.cryptography.MicrosoftDataEncryptionException;
 
-import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
-
-/**
- * DO NOT USE.
- * This is meant to be used only internally as a bridge access to classes in
- * com.azure.cosmos.encryption.mdesupport
- **/
-@Warning(value = INTERNAL_USE_ONLY_WARNING)
 public abstract class EncryptionKeyWrapProvider {
     private EncryptionKeyStoreProviderImpl encryptionKeyStoreProviderImpl;
     public EncryptionKeyWrapProvider () {
@@ -33,8 +23,6 @@ public abstract class EncryptionKeyWrapProvider {
      * @param encryptedKey
      *        The ciphertext key.
      * @return The unwrapped data encryption key.
-     * @throws MicrosoftDataEncryptionException
-     *         on error
      */
     public abstract byte[] unwrapKey(String encryptionKeyId, String keyEncryptionKeyAlgorithm, byte[] encryptedKey);
 
@@ -49,8 +37,6 @@ public abstract class EncryptionKeyWrapProvider {
      * @param key
      *        The plaintext key
      * @return The wrapped data encryption key.
-     * @throws MicrosoftDataEncryptionException
-     *         on error
      */
     public abstract byte[] wrapKey(String encryptionKeyId, String keyEncryptionKeyAlgorithm, byte[] key);
 
@@ -59,7 +45,7 @@ public abstract class EncryptionKeyWrapProvider {
     }
 
     static {
-        MdeSupportBridgeHelpers.EncryptionKeyWrapProviderHelper.setPEncryptionKeyWrapProviderAccessor(new MdeSupportBridgeHelpers.EncryptionKeyWrapProviderHelper.EncryptionKeyWrapProviderAccessor() {
+        KeyProviderBridgeHelpers.EncryptionKeyWrapProviderHelper.setPEncryptionKeyWrapProviderAccessor(new KeyProviderBridgeHelpers.EncryptionKeyWrapProviderHelper.EncryptionKeyWrapProviderAccessor() {
             @Override
             public EncryptionKeyStoreProviderImpl getEncryptionKeyStoreProviderImpl(EncryptionKeyWrapProvider encryptionKeyWrapProvider) {
                 return encryptionKeyWrapProvider.getEncryptionKeyStoreProviderImpl();

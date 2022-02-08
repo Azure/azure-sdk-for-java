@@ -8,7 +8,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
 import com.azure.cosmos.encryption.EncryptionBridgeInternal;
 import com.azure.cosmos.encryption.keyprovider.EncryptionKeyWrapProvider;
-import com.azure.cosmos.encryption.keyprovider.MdeSupportBridgeHelpers;
+import com.azure.cosmos.encryption.keyprovider.KeyProviderBridgeHelpers;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Utils;
@@ -61,8 +61,8 @@ public class EncryptionProcessor {
     private String containerRid;
     private String databaseRid;
     private ImplementationBridgeHelpers.CosmosContainerPropertiesHelper.CosmosContainerPropertiesAccessor cosmosContainerPropertiesAccessor;
-    private final static MdeSupportBridgeHelpers.EncryptionKeyWrapProviderHelper.EncryptionKeyWrapProviderAccessor encryptionKeyWrapProviderAccessor =
-        MdeSupportBridgeHelpers.EncryptionKeyWrapProviderHelper.getEncryptionKeyWrapProviderAccessor();
+    private final static KeyProviderBridgeHelpers.EncryptionKeyWrapProviderHelper.EncryptionKeyWrapProviderAccessor encryptionKeyWrapProviderAccessor =
+        KeyProviderBridgeHelpers.EncryptionKeyWrapProviderHelper.getEncryptionKeyWrapProviderAccessor();
 
     public EncryptionProcessor(CosmosAsyncContainer cosmosAsyncContainer,
                                CosmosEncryptionAsyncClient encryptionCosmosClient) {
@@ -163,11 +163,11 @@ public class EncryptionProcessor {
         }).flatMap(ignoreVoid -> {
             for (ClientEncryptionIncludedPath propertyToEncrypt : clientEncryptionPolicy.getIncludedPaths()) {
                 EncryptionType encryptionType = EncryptionType.Plaintext;
-                switch (propertyToEncrypt.getEncryptionType()) {
-                    case CosmosEncryptionType.DETERMINISTIC:
+                switch (CosmosEncryptionType.get(propertyToEncrypt.getEncryptionType())) {
+                    case DETERMINISTIC:
                         encryptionType = EncryptionType.Deterministic;
                         break;
-                    case CosmosEncryptionType.RANDOMIZED:
+                    case RANDOMIZED:
                         encryptionType = EncryptionType.Randomized;
                         break;
                     default:
@@ -330,7 +330,7 @@ public class EncryptionProcessor {
                 if (child.getValue().isObject() || child.getValue().isArray()) {
                     JsonNode encryptedValue = encryptAndSerializePatchProperty(encryptionSettings, child.getValue(), child.getKey());
                     assert propertyValueHolder instanceof ObjectNode;
-                    ((ObjectNode) propertyValueHolder).put(child.getKey(), encryptedValue);
+                    ((ObjectNode) propertyValueHolder).set(child.getKey(), encryptedValue);
                 } else if (!child.getValue().isNull()){
                     assert propertyValueHolder instanceof ObjectNode;
                     encryptAndSerializeValue(encryptionSettings, (ObjectNode) propertyValueHolder, child.getValue(),
@@ -354,7 +354,7 @@ public class EncryptionProcessor {
                             if (child.getValue().isObject() || child.getValue().isArray()) {
                                 JsonNode encryptedValue = encryptAndSerializePatchProperty(encryptionSettings,
                                     child.getValue(), child.getKey());
-                                ((ObjectNode) nodeInArray).put(child.getKey(), encryptedValue);
+                                ((ObjectNode) nodeInArray).set(child.getKey(), encryptedValue);
 
                             } else if (!child.getValue().isNull()) {
                                 encryptAndSerializeValue(encryptionSettings, (ObjectNode) nodeInArray, child.getValue(),

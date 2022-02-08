@@ -7,7 +7,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
 import com.azure.cosmos.encryption.EncryptionAsyncApiCrudTest;
 import com.azure.cosmos.encryption.EncryptionBridgeInternal;
-import com.azure.cosmos.encryption.keyprovider.MdeSupportBridgeHelpers;
+import com.azure.cosmos.encryption.keyprovider.KeyProviderBridgeHelpers;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.implementation.Resource;
@@ -38,8 +38,8 @@ public class EncryptionProcessorAndSettingsTest {
     private static final int TIMEOUT = 6000_000;
     private static final EncryptionAsyncApiCrudTest.TestEncryptionKeyStoreProvider keyStoreProvider =
         new EncryptionAsyncApiCrudTest.TestEncryptionKeyStoreProvider();
-    private final static MdeSupportBridgeHelpers.EncryptionKeyWrapProviderHelper.EncryptionKeyWrapProviderAccessor encryptionKeyWrapProviderAccessor =
-        MdeSupportBridgeHelpers.EncryptionKeyWrapProviderHelper.getEncryptionKeyWrapProviderAccessor();
+    private final static KeyProviderBridgeHelpers.EncryptionKeyWrapProviderHelper.EncryptionKeyWrapProviderAccessor encryptionKeyWrapProviderAccessor =
+        KeyProviderBridgeHelpers.EncryptionKeyWrapProviderHelper.getEncryptionKeyWrapProviderAccessor();
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void initializeEncryptionSettingsAsync() {
@@ -189,7 +189,7 @@ public class EncryptionProcessorAndSettingsTest {
         ClientEncryptionIncludedPath includedPath1 = new ClientEncryptionIncludedPath();
         includedPath1.setClientEncryptionKeyId("key1");
         includedPath1.setPath("/sensitiveString");
-        includedPath1.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
+        includedPath1.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
         includedPath1.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
         List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
         paths.add(includedPath1);
@@ -203,7 +203,7 @@ public class EncryptionProcessorAndSettingsTest {
         ClientEncryptionIncludedPath includedPath1 = new ClientEncryptionIncludedPath();
         includedPath1.setClientEncryptionKeyId("key1");
         includedPath1.setPath("/sensitiveString");
-        includedPath1.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
+        includedPath1.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.toString());
         includedPath1.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
         List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
         paths.add(includedPath1);

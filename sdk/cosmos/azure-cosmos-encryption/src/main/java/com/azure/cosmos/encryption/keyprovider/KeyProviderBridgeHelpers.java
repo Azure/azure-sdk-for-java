@@ -3,11 +3,20 @@
 
 package com.azure.cosmos.encryption.keyprovider;
 
+import com.azure.cosmos.implementation.Warning;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MdeSupportBridgeHelpers {
-    private final static Logger logger = LoggerFactory.getLogger(MdeSupportBridgeHelpers.class);
+import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
+
+/**
+ * DO NOT USE.
+ * This is meant to be used only internally as a bridge access to classes in
+ * com.azure.cosmos.encryption.keyprovider
+ **/
+@Warning(value = INTERNAL_USE_ONLY_WARNING)
+public class KeyProviderBridgeHelpers {
+    private final static Logger logger = LoggerFactory.getLogger(KeyProviderBridgeHelpers.class);
     public static final class EncryptionKeyWrapProviderHelper {
         static {
             ensureClassLoaded(EncryptionKeyWrapProvider.class);
