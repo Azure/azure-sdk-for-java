@@ -15,7 +15,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.iot.deviceupdate.implementation.DeviceUpdatesImpl;
-import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the synchronous DeviceUpdateClient type. */
 @ServiceClient(builder = DeviceUpdateClientBuilder.class)
@@ -114,7 +113,7 @@ public final class DeviceUpdateClient {
      * @param updateToImport The update to be imported.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return update metadata along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of update metadata.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -187,7 +186,8 @@ public final class DeviceUpdateClient {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return a list of all updates that have been imported to Device Update for IoT Hub.
+     * @return a list of all updates that have been imported to Device Update for IoT Hub as paginated response with
+     *     {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -288,7 +288,7 @@ public final class DeviceUpdateClient {
      * @param version Update version.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -321,7 +321,8 @@ public final class DeviceUpdateClient {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return a list of all update providers that have been imported to Device Update for IoT Hub.
+     * @return a list of all update providers that have been imported to Device Update for IoT Hub as paginated response
+     *     with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -354,7 +355,8 @@ public final class DeviceUpdateClient {
      * @param provider Update provider.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return a list of all update names that match the specified provider.
+     * @return a list of all update names that match the specified provider as paginated response with {@link
+     *     PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -389,7 +391,8 @@ public final class DeviceUpdateClient {
      * @param name Update name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return a list of all update versions that match the specified provider and name.
+     * @return a list of all update versions that match the specified provider and name as paginated response with
+     *     {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -424,7 +427,8 @@ public final class DeviceUpdateClient {
      * @param version Update version.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return a list of all update file identifiers for the specified version.
+     * @return a list of all update file identifiers for the specified version as paginated response with {@link
+     *     PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -539,7 +543,7 @@ public final class DeviceUpdateClient {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return a list of all import update operations.
+     * @return a list of all import update operations as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)

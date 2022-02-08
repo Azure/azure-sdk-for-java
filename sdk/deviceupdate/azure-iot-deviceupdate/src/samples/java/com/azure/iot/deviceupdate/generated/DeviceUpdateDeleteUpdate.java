@@ -4,22 +4,23 @@
 
 package com.azure.iot.deviceupdate.generated;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.iot.deviceupdate.DeviceManagementClient;
-import com.azure.iot.deviceupdate.DeviceManagementClientBuilder;
+import com.azure.iot.deviceupdate.DeviceUpdateClient;
+import com.azure.iot.deviceupdate.DeviceUpdateClientBuilder;
 
-public class DeviceManagementListLogCollectionOperations {
+public class DeviceUpdateDeleteUpdate {
     public static void main(String[] args) {
-        DeviceManagementClient client =
-                new DeviceManagementClientBuilder()
+        DeviceUpdateClient client =
+                new DeviceUpdateClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("contoso.api.adu.microsoft.com")
                         .instanceId("blue")
                         .buildClient();
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = client.listLogCollectionOperations(requestOptions);
+        SyncPoller<BinaryData, BinaryData> response =
+                client.beginDeleteUpdate("microsoft", "adu", "1.0.0.0", requestOptions);
     }
 }

@@ -18,7 +18,7 @@ public class DeviceUpdateListFiles {
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("contoso.api.adu.microsoft.com")
                         .instanceId("blue")
-                        .buildDeviceUpdateClient();
+                        .buildClient();
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response = client.listFiles("microsoft", "adu", "1.0.0.0", requestOptions);
     }

@@ -68,7 +68,7 @@ public final class DeviceManagementAsyncClient {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @return a list of all device classes (unique combinations of device manufacturer and model) for all devices
-     *     connected to Device Update for IoT Hub.
+     *     connected to Device Update for IoT Hub as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -143,7 +143,7 @@ public final class DeviceManagementAsyncClient {
      * @param deviceClassId Device class identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return a list of installable updates for a device class.
+     * @return a list of installable updates for a device class as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -207,7 +207,7 @@ public final class DeviceManagementAsyncClient {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return a list of devices connected to Device Update for IoT Hub.
+     * @return a list of devices connected to Device Update for IoT Hub as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -265,7 +265,7 @@ public final class DeviceManagementAsyncClient {
      * @param importType The types of devices to import.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -455,7 +455,8 @@ public final class DeviceManagementAsyncClient {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return a list of available group device tags for all devices connected to Device Update for IoT Hub.
+     * @return a list of available group device tags for all devices connected to Device Update for IoT Hub as paginated
+     *     response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -529,7 +530,7 @@ public final class DeviceManagementAsyncClient {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return a list of all device groups.
+     * @return a list of all device groups as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -723,7 +724,8 @@ public final class DeviceManagementAsyncClient {
      * @param groupId Group identity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the best available updates for a group and a count of how many devices need each update.
+     * @return the best available updates for a group and a count of how many devices need each update as paginated
+     *     response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -768,7 +770,7 @@ public final class DeviceManagementAsyncClient {
      * @param groupId Group identity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return a list of deployments for a group.
+     * @return a list of deployments for a group as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -973,7 +975,7 @@ public final class DeviceManagementAsyncClient {
      * @param deploymentId Deployment identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return a list of devices in a deployment along with their state.
+     * @return a list of devices in a deployment along with their state as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1088,7 +1090,7 @@ public final class DeviceManagementAsyncClient {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return a list of all device import operations.
+     * @return a list of all device import operations as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1234,7 +1236,7 @@ public final class DeviceManagementAsyncClient {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return all device diagnostics log collection operations.
+     * @return all device diagnostics log collection operations as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)

@@ -18,7 +18,7 @@ public class DeviceUpdateGetUpdate {
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("contoso.api.adu.microsoft.com")
                         .instanceId("blue")
-                        .buildDeviceUpdateClient();
+                        .buildClient();
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = client.getUpdateWithResponse("microsoft", "adu", "1.0.0.0", requestOptions);
     }
