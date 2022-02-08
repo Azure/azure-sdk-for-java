@@ -309,6 +309,20 @@ class VirtualMachineImpl
     }
 
     @Override
+    public void powerOff(boolean skipShutdown) {
+        this.powerOffAsync(skipShutdown).block();
+    }
+
+    @Override
+    public Mono<Void> powerOffAsync(boolean skipShutdown) {
+        return this
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .powerOffAsync(this.resourceGroupName(), this.name(), skipShutdown);
+    }
+
+    @Override
     public void restart() {
         this.restartAsync().block();
     }

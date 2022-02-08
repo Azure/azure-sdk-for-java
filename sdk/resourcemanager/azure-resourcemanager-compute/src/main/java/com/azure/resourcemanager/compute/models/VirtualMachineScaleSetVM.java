@@ -186,6 +186,21 @@ public interface VirtualMachineScaleSetVM
      */
     Mono<Void> powerOffAsync();
 
+    /**
+     * Stops the virtual machine instance.
+     *
+     * @param skipShutdown power off without graceful shutdown
+     */
+    void powerOff(boolean skipShutdown);
+
+    /**
+     * Stops the virtual machine instances.
+     *
+     * @param skipShutdown power off without graceful shutdown
+     * @return a representation of the deferred computation of this call.
+     */
+    Mono<Void> powerOffAsync(boolean skipShutdown);
+
     /** Starts the virtual machine instance. */
     void start();
 

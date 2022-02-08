@@ -490,6 +490,17 @@ class VirtualMachineScaleSetVMImpl
     }
 
     @Override
+    public void powerOff(boolean skipShutdown) {
+        this.powerOffAsync(skipShutdown).block();
+    }
+
+    @Override
+    public Mono<Void> powerOffAsync(boolean skipShutdown) {
+        return this.client
+            .powerOffAsync(this.parent().resourceGroupName(), this.parent().name(), this.instanceId(), skipShutdown);
+    }
+
+    @Override
     public void start() {
         this.startAsync().block();
     }
